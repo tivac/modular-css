@@ -2,72 +2,92 @@
 
 var postcss = require("postcss"),
     hasha   = require("hasha"),
-    Graph   = require("dependency-graph").DepGraph;
+    Graph   = require("dependency-graph").DepGraph,
+    unique  = require("lodash.uniq"),
+    
+    name = "postcss-css-modules";
 
-module.exports = postcss.plugin("postcss-css-modules", function(opts) {
-    opts = opts || false;
-
+module.exports = postcss.plugin(name, function(opts) {
+    opts = opts || {};
+    
     return function(css, result) {
         var classes = {},
-            graph   = new Graph();
-
-        if(!opts.path) {
-            opts.path = hasha(css.toString(), { algorithm : "md5" });
+            graph   = new Graph(),
+            namer   = opts.namer,
+            prefix  = opts.prefix;
+            
+        if(!prefix && !namer) {
+            prefix = hasha(css.toString(), { algorithm : "md5" });
+        }
+        
+        if(typeof namer !== "function") {
+            namer = function(selector) {
+                return prefix + "_" + selector;
+            };
         }
 
-        // Go grab all classes, before they were transformed
+        // Walk all classes and save off prefixed selector values
         css.walkRules(/^./, function(rule) {
             rule.selectors.forEach(function(selector) {
                 graph.addNode(selector);
 
-                classes[selector] = "." + opts.path + "_" + selector.slice(1);
-            });
-        });
-
-        console.log(classes); // TODO: REMOVE DEBUGGING
-
-        // Go look up all composes uses and rewrite
-        css.walkDecls("composes", function(decl) {
-            var composed = decl.value.split(" ");
-
-            composed.forEach(function(id) {
-                id = "." + id;
-
-                if(!classes[id]) {
-                    return result.warn("Unable to find " + id, {
-                        node : decl,
-                        word : id
-                    });
-                }
-
-                decl.parent.selectors.forEach(function(parent) {
-                    graph.addDependency(parent, id);
-                });
-            });
-            
-
-            // If the rule only had the one declaration, clean up the rule
-            // And remove the empty class from the output
-            if(decl.parent.nodes.length === 1) {
-                decl.parent.selectors.forEach(function(selector) {
-                    classes[selector] = "";
-                });
-                
-                decl.parent.remove();
-            } else {
-                // otherwise just remove the declaration
-                decl.remove();
-            }
-        });
-
-        console.log(graph.overallOrder()); // TODO: REMOVE DEBUGGING
-
-        graph.overallOrder().forEach(function(node) {
-            graph.dependenciesOf(node).forEach(function(dep) {
-                classes[node] = classes[node] ? classes[dep] + " " + classes[node] : classes[dep];
+                classes[selector] = [ "." + namer(selector.slice(1)) ];
             });
         });
         
-        console.log(classes); // TODO: REMOVE DEBUGGING
+        // Go look up all composes uses and generate a dependency graph
+        css.walkDecls("composes", function(decl) {
+            if(decl.prev()) {
+                throw decl.error("composes must be the first declaration in the rule", { word : "composes" });
+            }
+            
+            decl.value.split(" ").forEach(function(id) {
+                id = "." + id;
+
+                if(!classes[id]) {
+                    throw decl.error("Unable to find " + id, { word : id });
+                }
+
+                decl.parent.selectors.forEach(function(selector) {
+                    graph.addDependency(selector, id);
+                });
+            });
+            
+            // More than one declaration just cleans up the composes: ... decl
+            if(decl.parent.nodes.length > 1) {
+                return decl.remove();
+            }
+
+            // If the parent rule only had the one declaration, clean up the rule
+            // And blank out the empty class from the output
+            decl.parent.selectors.forEach(function(selector) {
+                classes[selector] = [];
+            });
+            
+            return decl.parent.remove();
+        });
+    
+        css.walkRules(/^./, function(rule) {
+            rule.selectors.forEach(function(selector) {
+                rule.selector = rule.selector.replace(selector, classes[selector][0]);
+            });
+        });
+        
+        // Update output by walking dep graph and updating classes
+        try {
+            graph.overallOrder().forEach(function(selector) {
+                graph.dependenciesOf(selector).forEach(function(dep) {
+                    classes[selector] = unique(classes[dep].concat(classes[selector]));
+                });
+            });
+        } catch(e) {
+            throw css.error(e.toString());
+        }
+        
+        result.messages.push({
+            type    : "cssmodules",
+            plugin  : name,
+            classes : classes
+        });
     };
 });

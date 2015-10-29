@@ -15,6 +15,7 @@
   "dependencies": {
     "dependency-graph": "^0.4.1",
     "hasha": "^2.0.2",
+    "lodash.uniq": "^3.2.2",
     "postcss": "^5.0.10"
   },
   "eslintConfig": {
