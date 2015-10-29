@@ -12,6 +12,7 @@ module.exports = postcss.plugin(name, function(opts) {
     
     return function(css, result) {
         var classes = {},
+            values  = {},
             graph   = new Graph(),
             namer   = opts.namer,
             prefix  = opts.prefix;
@@ -25,6 +26,26 @@ module.exports = postcss.plugin(name, function(opts) {
                 return prefix + "_" + selector;
             };
         }
+        
+        // Find all defined values, catalog them, and remove them
+        css.walkAtRules("value", function(rule) {
+            var parts = rule.params.split(":");
+            
+            values[parts[0]] = parts[1].trim();
+            
+            rule.remove();
+        });
+        
+        // Replace all instances of @value names w/ the value
+        css.walkDecls(function(decl) {
+            var parts = decl.value.split(" ");
+            
+            parts.forEach(function(part) {
+                if(part in values) {
+                    decl.value = decl.value.replace(part, values[part]);
+                }
+            });
+        });
 
         // Walk all classes and save off prefixed selector values
         css.walkRules(/^./, function(rule) {
