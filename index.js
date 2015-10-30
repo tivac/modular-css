@@ -10,4 +10,6 @@ postcss([
     require("./plugins/composition.js")
 ])
 .process(fs.readFileSync(process.argv[2], { encoding: "utf8" }))
-.then(console.log.bind(console), console.log.bind(console));
+.then(function(result) {
+    console.log(result.css);
+}, console.log.bind(console));
