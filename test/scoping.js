@@ -6,7 +6,7 @@ function css(src, options) {
 }
 
 describe("postcss-css-modules", function() {
-    describe.only("scoping", function() {
+    describe("scoping", function() {
         it("should generate a prefix for class names", function() {
             assert.equal(
                 css(".wooga { color: red; }"),
