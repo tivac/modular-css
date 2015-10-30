@@ -1,12 +1,12 @@
 "use strict";
 
-var postcss = require("postcss"),
-    hasha   = require("hasha"),
-    Parser  = require("postcss-selector-parser"),
+var postcss      = require("postcss"),
+    hasha        = require("hasha"),
+    createParser = require("postcss-selector-parser"),
     
-    name = "postcss-modular-css-scoping";
+    plugin = "postcss-modular-css-scoping";
 
-module.exports = postcss.plugin(name, function(opts) {
+module.exports = postcss.plugin(plugin, function(opts) {
     var options = opts || {};
     
     return function(css, result) {
@@ -26,7 +26,7 @@ module.exports = postcss.plugin(name, function(opts) {
             };
         }
         
-        parser = Parser(function(selectors) {
+        parser = createParser(function(selectors) {
             // Walk top-level selectors
             selectors.each(function(child) {
                 // Walk the parts of each
@@ -51,7 +51,7 @@ module.exports = postcss.plugin(name, function(opts) {
                         
                         lookup[inner.value] = inner.value;
                         
-                        return false;
+                        return;
                     }
                     
                     if(selector.type === "class" || selector.type === "id") {
@@ -61,7 +61,7 @@ module.exports = postcss.plugin(name, function(opts) {
                         
                         selector.value = name;
                         
-                        return false;
+                        return;
                     }
                 });
             });
@@ -74,7 +74,7 @@ module.exports = postcss.plugin(name, function(opts) {
         
         result.messages.push({
             type    : "modularcss",
-            plugin  : name,
+            plugin  : plugin,
             classes : lookup
         });
     };
