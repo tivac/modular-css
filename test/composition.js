@@ -6,7 +6,7 @@ function css(src, options) {
 }
 
 describe("postcss-css-modules", function() {
-    describe.only("composition", function() {
+    describe("composition", function() {
         /* eslint no-unused-expressions:0 */
         it("should fail if attempting to compose a class that doesn't exist", function() {
             var out = plugin.process(".wooga { composes: googa; }");
