@@ -7,11 +7,64 @@ function css(src, options) {
 
 describe("postcss-css-modules", function() {
     describe("values", function() {
-        it("should support values in declarations", function() {
+        it("should replace values in declarations", function() {
             assert.equal(
                 css("@value color: red; .wooga { color: color; }"),
-                ".9dfd56c12e5e02cccbceec36981f8c11_wooga { color: red; }"
+                ".wooga { color: red; }"
             );
+        });
+
+        it("should replace values in media queries", function() {
+            assert.equal(
+                css("@value small: (max-width: 599px); @media small { .wooga { color: red; } }"),
+                "@media (max-width: 599px) { .wooga { color: red; } }"
+            );
+        });
+
+        it("should support multiple values", function() {
+            assert.equal(
+                css("@value color: red; @value 2color: blue; .wooga { color: color; background: 2color; }"),
+                ".wooga { color: red; background: blue; }"
+            );
+        });
+
+        it("should support multiple values in a single declaration", function() {
+            assert.equal(
+                css("@value color: red; @value 2color: blue; .wooga { background: linear-gradient(color, 2color); }"),
+                ".wooga { background: linear-gradient(red, blue); }"
+            );
+        });
+
+        it("should support complex values", function() {
+            assert.equal(
+                css("@value base: 10px; @value large: calc(base * 2); .wooga { margin: large; }"),
+                ".wooga { margin: calc(10px * 2); }"
+            );
+        });
+
+        it("should support value heirarchies", function() {
+            assert.equal(
+                css("@value color: red; @value 2color: color; .wooga { color: 2color; }"),
+                ".wooga { color: red; }"
+            );
+
+            assert.equal(
+                css("@value color: red; @value 2color: color; @value 3color: 2color; .wooga { color: 3color; }"),
+                ".wooga { color: red; }"
+            );
+        });
+
+        it("should output exported values in a message", function() {
+            var messages = plugin.process(
+                    "@value color: red; @value 2color: color; @value other: 20px;"
+                ).messages;
+            
+            assert.equal(messages.length, 1);
+            assert.deepEqual(messages[0].values, {
+                "2color" : "red",
+                color    : "red",
+                other    : "20px"
+            });
         });
     });
 });
