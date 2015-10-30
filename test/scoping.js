@@ -89,8 +89,7 @@ describe("postcss-css-modules", function() {
             assert.equal(messages[0].type, "modularcss");
             assert.equal(messages[0].plugin, "postcss-modular-css-scoping");
             
-            assert.deepEqual(messages[0].classes, { "wooga" : "83fe1a59eebdf17220df583a8e9048da_wooga" });
+            assert.deepEqual(messages[0].classes, { wooga : "83fe1a59eebdf17220df583a8e9048da_wooga" });
         });
-        
     });
 });
