@@ -1,8 +1,9 @@
 "use strict";
 
 var postcss      = require("postcss"),
-    hasha        = require("hasha"),
     createParser = require("postcss-selector-parser"),
+    
+    hasha = require("hasha"),
     
     plugin = "postcss-modular-css-scoping";
 
