@@ -4,12 +4,17 @@
   "description": "PostCSS plugin to try & replicate the functionality of CSS modules",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul test --print both ./node_modules/mocha/bin/_mocha"
+    "test": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
+    "lint": "eslint --config=arenanet --env=mocha . && jscs --config jscs-preset-arenanet ."
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^1.7.3",
+    "eslint-config-arenanet": "^1.0.0",
     "istanbul": "^0.4.0",
+    "jscs": "^2.5.0",
+    "jscs-preset-arenanet": "^1.0.0",
     "mocha": "^2.3.3"
   },
   "dependencies": {
@@ -17,213 +22,5 @@
     "hasha": "^2.0.2",
     "lodash.uniq": "^3.2.2",
     "postcss": "^5.0.10"
-  },
-  "eslintConfig": {
-    "ecmaFeatures": {
-      "templateStrings": true
-    },
-    "env": {
-      "node": true,
-      "mocha": true
-    },
-    "rules": {
-      "comma-dangle": 2,
-      "no-cond-assign": 2,
-      "no-console": 1,
-      "no-constant-condition": 2,
-      "no-control-regex": 0,
-      "no-debugger": 1,
-      "no-dupe-keys": 2,
-      "no-empty": 1,
-      "no-empty-character-class": 1,
-      "no-ex-assign": 2,
-      "no-extra-boolean-cast": 1,
-      "no-extra-parens": 0,
-      "no-extra-semi": 2,
-      "no-func-assign": 1,
-      "no-inner-declarations": 0,
-      "no-invalid-regexp": 0,
-      "no-irregular-whitespace": 1,
-      "no-negated-in-lhs": 1,
-      "no-obj-calls": 0,
-      "no-regex-spaces": 1,
-      "no-reserved-keys": 0,
-      "no-sparse-arrays": 1,
-      "no-unreachable": 2,
-      "use-isnan": 2,
-      "valid-jsdoc": 0,
-      "valid-typeof": 2,
-      "block-scoped-var": 0,
-      "complexity": [
-        2,
-        10
-      ],
-      "consistent-return": 2,
-      "curly": 2,
-      "default-case": 1,
-      "dot-notation": 2,
-      "eqeqeq": 2,
-      "guard-for-in": 0,
-      "no-alert": 1,
-      "no-caller": 2,
-      "no-div-regex": 1,
-      "no-else-return": 2,
-      "no-empty-label": 2,
-      "no-eq-null": 0,
-      "no-eval": 2,
-      "no-extend-native": 2,
-      "no-extra-bind": 2,
-      "no-fallthrough": 1,
-      "no-floating-decimal": 2,
-      "no-implied-eval": 2,
-      "no-iterator": 2,
-      "no-labels": 2,
-      "no-lone-blocks": 2,
-      "no-loop-func": 1,
-      "no-multi-spaces": [
-        1,
-        {
-          "exceptions": {
-            "AssignmentExpression": true,
-            "Property": true,
-            "VariableDeclarator": true
-          }
-        }
-      ],
-      "no-multi-str": 2,
-      "no-native-reassign": 2,
-      "no-new": 0,
-      "no-new-func": 0,
-      "no-new-wrappers": 2,
-      "no-octal": 2,
-      "no-octal-escape": 2,
-      "no-process-env": 0,
-      "no-proto": 2,
-      "no-redeclare": 2,
-      "no-return-assign": 2,
-      "no-script-url": 2,
-      "no-self-compare": 2,
-      "no-sequences": 2,
-      "no-unused-expressions": 2,
-      "no-void": 2,
-      "no-warning-comments": 0,
-      "no-with": 2,
-      "radix": 2,
-      "vars-on-top": 2,
-      "wrap-iife": 2,
-      "yoda": 2,
-      "strict": 0,
-      "no-catch-shadow": 2,
-      "no-delete-var": 2,
-      "no-label-var": 2,
-      "no-shadow": 2,
-      "no-shadow-restricted-names": 2,
-      "no-undef": 2,
-      "no-undef-init": 2,
-      "no-undefined": 0,
-      "no-unused-vars": 1,
-      "no-use-before-define": 2,
-      "handle-callback-err": 0,
-      "no-mixed-requires": 0,
-      "no-new-require": 0,
-      "no-path-concat": 0,
-      "no-process-exit": 0,
-      "no-restricted-modules": 0,
-      "no-sync": 0,
-      "brace-style": 2,
-      "camelcase": [
-        2,
-        {
-          "properties": "never"
-        }
-      ],
-      "comma-spacing": 2,
-      "comma-style": [
-        2,
-        "last"
-      ],
-      "consistent-this": [
-        2,
-        "self"
-      ],
-      "eol-last": 1,
-      "func-names": 0,
-      "func-style": [
-        1,
-        "declaration"
-      ],
-      "key-spacing": [
-        2,
-        {
-          "beforeColon": true,
-          "afterColon": true,
-          "align": "colon"
-        }
-      ],
-      "max-nested-callbacks": 0,
-      "new-cap": 2,
-      "new-parens": 2,
-      "no-array-constructor": 2,
-      "no-inline-comments": 0,
-      "no-lonely-if": 2,
-      "no-mixed-spaces-and-tabs": 2,
-      "no-multiple-empty-lines": 1,
-      "no-nested-ternary": 2,
-      "no-new-object": 2,
-      "semi-spacing": [
-        1,
-        {
-          "before": false,
-          "after": true
-        }
-      ],
-      "no-spaced-func": 2,
-      "no-ternary": 0,
-      "no-trailing-spaces": 0,
-      "no-underscore-dangle": 0,
-      "no-wrap-func": 0,
-      "one-var": 0,
-      "operator-assignment": 0,
-      "padded-blocks": [
-        1,
-        "never"
-      ],
-      "quote-props": [
-        2,
-        "as-needed"
-      ],
-      "quotes": [
-        2,
-        "double"
-      ],
-      "semi": 2,
-      "sort-vars": 0,
-      "space-before-function-paren": [
-        2,
-        "never"
-      ],
-      "space-after-keywords": 0,
-      "space-before-blocks": [
-        2,
-        "always"
-      ],
-      "object-curly-spacing": [
-        2,
-        "always"
-      ],
-      "array-bracket-spacing": [
-        2,
-        "always"
-      ],
-      "space-in-parens": 0,
-      "space-infix-ops": 2,
-      "space-return-throw-case": 2,
-      "space-unary-ops": 0,
-      "spaced-comment": [
-        1,
-        "always"
-      ],
-      "wrap-regex": 0
-    }
   }
 }

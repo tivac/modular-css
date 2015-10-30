@@ -1,5 +1,5 @@
 var assert = require("assert"),
-    plugin = require("../");
+    plugin = require("../plugins/composition");
 
 function css(src, options) {
     return plugin.process(src, options).css;
