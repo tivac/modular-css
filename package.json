@@ -4,7 +4,8 @@
   "description": "PostCSS plugin to try & replicate the functionality of CSS modules",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
+    "test": "mocha",
+    "cover": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
     "lint": "eslint . && jscs ."
   },
   "author": "Pat Cavit <npm@patcavit.com>",
