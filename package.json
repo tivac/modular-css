@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
-    "lint": "eslint --config=arenanet --env=mocha . && jscs --config jscs-preset-arenanet ."
+    "lint": "eslint . && jscs ."
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
@@ -23,5 +23,12 @@
     "lodash.uniq": "^3.2.2",
     "postcss": "^5.0.10",
     "postcss-selector-parser": "^1.3.0"
+  },
+  "eslintConfig": {
+    "extends": "arenanet",
+    "env": {
+      "node": true,
+      "mocha": true
+    }
   }
 }
