@@ -2,7 +2,7 @@
   "name": "postcss-css-modules",
   "version": "0.0.0",
   "description": "PostCSS plugin to try & replicate the functionality of CSS modules",
-  "main": "index.js",
+  "main": "./index.js",
   "scripts": {
     "test": "mocha",
     "cover": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
