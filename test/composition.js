@@ -6,7 +6,7 @@ function css(src, options) {
 }
 
 describe("postcss-css-modules", function() {
-    describe("composition", function() {
+    describe.only("composition", function() {
         /* eslint no-unused-expressions:0 */
         it("should fail if attempting to compose a class that doesn't exist", function() {
             var out = plugin.process(".wooga { composes: googa; }");
@@ -35,7 +35,7 @@ describe("postcss-css-modules", function() {
         it("should remove classes that only contain a composes rule", function() {
             assert.equal(
                 css(".wooga { color: red; } .fooga { composes: wooga; }"),
-                ".fe6ec05fbaecf633eb3bb3197f2f4ffd_wooga { color: red; }"
+                ".wooga { color: red; }"
             );
         });
         
@@ -43,8 +43,8 @@ describe("postcss-css-modules", function() {
             var messages = plugin.process(".wooga { color: red; } .fooga { composes: wooga; }").messages;
             
             assert.equal(messages.length, 1);
-            assert(".fooga" in messages[0].classes);
-            assert.equal(messages[0].classes[".fooga"][0], ".fe6ec05fbaecf633eb3bb3197f2f4ffd_wooga");
+            assert("fooga" in messages[0].classes);
+            assert.equal(messages[0].classes.fooga[0], "wooga");
         });
         
         it("should output the class heirarchy in a message", function() {
@@ -54,11 +54,11 @@ describe("postcss-css-modules", function() {
             
             assert.equal(messages.length, 1);
             assert.deepEqual(messages[0].classes, {
-                ".wooga" : [ ".dc76c9780ea5a534c9d7ee437d35dd21_wooga" ],
-                ".booga" : [ ".dc76c9780ea5a534c9d7ee437d35dd21_booga" ],
-                ".tooga" : [
-                    ".dc76c9780ea5a534c9d7ee437d35dd21_wooga",
-                    ".dc76c9780ea5a534c9d7ee437d35dd21_booga"
+                wooga : [ "wooga" ],
+                booga : [ "booga" ],
+                tooga : [
+                    "wooga",
+                    "booga"
                 ]
             });
         });
@@ -68,8 +68,8 @@ describe("postcss-css-modules", function() {
             
             assert.equal(messages.length, 1);
             assert.deepEqual(messages[0].classes, {
-                ".wooga" : [ ".22ae97ec1ad01f3434bf11b63f6a6bff_booga" ],
-                ".booga" : [ ".22ae97ec1ad01f3434bf11b63f6a6bff_booga" ]
+                wooga : [ "booga" ],
+                booga : [ "booga" ]
             });
         });
         
@@ -80,9 +80,9 @@ describe("postcss-css-modules", function() {
             
             assert.equal(messages.length, 1);
             assert.deepEqual(messages[0].classes, {
-                ".wooga" : [ ".a71b8d58846fb229a55bf284f51ee555_wooga" ],
-                ".booga" : [ ".a71b8d58846fb229a55bf284f51ee555_wooga" ],
-                ".tooga" : [ ".a71b8d58846fb229a55bf284f51ee555_wooga" ]
+                wooga : [ "wooga" ],
+                booga : [ "wooga" ],
+                tooga : [ "wooga" ]
             });
         });
         
@@ -93,15 +93,15 @@ describe("postcss-css-modules", function() {
             
             assert.equal(messages.length, 1);
             assert.deepEqual(messages[0].classes, {
-                ".wooga" : [ ".859d4ed7215a17c424b857f3306693e0_wooga" ],
-                ".booga" : [
-                    ".859d4ed7215a17c424b857f3306693e0_wooga",
-                    ".859d4ed7215a17c424b857f3306693e0_booga"
+                wooga : [ "wooga" ],
+                booga : [
+                    "wooga",
+                    "booga"
                 ],
-                ".tooga" : [
-                    ".859d4ed7215a17c424b857f3306693e0_wooga",
-                    ".859d4ed7215a17c424b857f3306693e0_booga",
-                    ".859d4ed7215a17c424b857f3306693e0_tooga"
+                tooga : [
+                    "wooga",
+                    "booga",
+                    "tooga"
                 ]
             });
         });
@@ -113,9 +113,9 @@ describe("postcss-css-modules", function() {
             
             assert.equal(messages.length, 1);
             assert.deepEqual(messages[0].classes, {
-                ".wooga" : [ ".a71b8d58846fb229a55bf284f51ee555_wooga" ],
-                ".booga" : [ ".a71b8d58846fb229a55bf284f51ee555_wooga" ],
-                ".tooga" : [ ".a71b8d58846fb229a55bf284f51ee555_wooga" ]
+                wooga : [ "wooga" ],
+                booga : [ "wooga" ],
+                tooga : [ "wooga" ]
             });
         });
     });

@@ -1,102 +1,104 @@
 "use strict";
 
-var postcss = require("postcss"),
-    hasha   = require("hasha"),
+var postcss      = require("postcss"),
+    createParser = require("postcss-selector-parser"),
+    
     Graph   = require("dependency-graph").DepGraph,
+    
     unique  = require("lodash.uniq"),
+    assign  = require("lodash.assign"),
+    invert  = require("lodash.invert"),
     
-    name = "postcss-css-modules";
+    plugin = "postcss-modular-css-composition";
 
-module.exports = postcss.plugin(name, function(opts) {
-    opts = opts || {};
+function findScopedClasses(result) {
+    var out;
     
+    result.messages.some(function(msg) {
+        if(msg.type === "modularcss" && msg.plugin === "postcss-modular-css-scoping" && msg.classes) {
+            out = msg.classes;
+        }
+        
+        return out;
+    });
+    
+    if(!out) {
+        return {};
+    }
+    
+    // Don't want to futz w/ a different plugin's output...
+    return assign({}, out);
+}
+
+// TODO: this is probably inefficient, but oh well for now
+function identifiers(selector, fn) {
+    createParser(function(selectors) {
+        selectors.eachClass(fn);
+        selectors.eachId(fn);
+    }).process(selector);
+}
+
+module.exports = postcss.plugin(plugin, function() {
     return function(css, result) {
-        var classes = {},
-            values  = {},
+        var classes = findScopedClasses(result),
             graph   = new Graph(),
-            namer   = opts.namer,
-            prefix  = opts.prefix;
-            
-        if(!prefix && !namer) {
-            prefix = hasha(css.toString(), { algorithm : "md5" });
+            lookup;
+        
+        if(Object.keys(classes).length === 0) {
+            // Walk all identifiers and create lookup object
+            css.walkRules(function(rule) {
+                identifiers(rule.selector, function(selector) {
+                    classes[selector.value] = selector.value;
+                });
+            });
         }
         
-        if(typeof namer !== "function") {
-            namer = function(selector) {
-                return prefix + "_" + selector;
-            };
-        }
+        lookup = invert(classes);
         
-        // Find all defined values, catalog them, and remove them
-        css.walkAtRules("value", function(rule) {
-            var parts = rule.params.split(":");
-            
-            values[parts[0]] = parts[1].trim();
-            
-            rule.remove();
-        });
-        
-        // Replace all instances of @value names w/ the value
-        css.walkDecls(function(decl) {
-            var parts = decl.value.split(" ");
-            
-            parts.forEach(function(part) {
-                if(part in values) {
-                    decl.value = decl.value.replace(part, values[part]);
-                }
-            });
-        });
-
-        // Walk all classes and save off prefixed selector values
-        css.walkRules(/^./, function(rule) {
-            rule.selectors.forEach(function(selector) {
-                graph.addNode(selector);
-
-                classes[selector] = [ "." + namer(selector.slice(1)) ];
-            });
+        Object.keys(classes).forEach(function(key) {
+            graph.addNode(key);
         });
         
         // Go look up all composes uses and generate a dependency graph
         css.walkDecls("composes", function(decl) {
+            var selectors = [];
+            
             if(decl.prev()) {
                 throw decl.error("composes must be the first declaration in the rule", { word : "composes" });
             }
             
+            identifiers(decl.parent.selector, function(selector) {
+                selectors.push(selector.value);
+            });
+            
             decl.value.split(" ").forEach(function(id) {
-                id = "." + id;
-
-                if(!classes[id]) {
+                if(!(id in classes)) {
                     throw decl.error("Unable to find " + id, { word : id });
                 }
-
-                decl.parent.selectors.forEach(function(selector) {
-                    graph.addDependency(selector, id);
+                
+                selectors.forEach(function(selector) {
+                    graph.addDependency(lookup[selector], id);
                 });
             });
             
-            // More than one declaration just cleans up the composes: ... decl
             if(decl.parent.nodes.length > 1) {
                 return decl.remove();
             }
 
             // If the parent rule only had the one declaration, clean up the rule
             // And blank out the empty class from the output
-            decl.parent.selectors.forEach(function(selector) {
-                classes[selector] = [];
+            selectors.forEach(function(selector) {
+                classes[selector] = "";
             });
             
             return decl.parent.remove();
         });
     
-        css.walkRules(/^./, function(rule) {
-            rule.selectors.forEach(function(selector) {
-                rule.selector = rule.selector.replace(selector, classes[selector][0]);
-            });
-        });
-        
         // Update output by walking dep graph and updating classes
         try {
             graph.overallOrder().forEach(function(selector) {
+                classes[selector] = classes[selector] ? [ classes[selector] ] : [];
+                    
                 graph.dependenciesOf(selector).forEach(function(dep) {
                     classes[selector] = unique(classes[dep].concat(classes[selector]));
                 });
@@ -106,8 +108,8 @@ module.exports = postcss.plugin(name, function(opts) {
         }
         
         result.messages.push({
-            type    : "cssmodules",
-            plugin  : name,
+            type    : "modularcss",
+            plugin  : plugin,
             classes : classes
         });
     };
