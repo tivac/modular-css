@@ -2,7 +2,8 @@
 
 var postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
-
+    
+    format = /^(.+?):(.*)$/,
     plugin = "postcss-modular-css-values";
 
 module.exports = postcss.plugin(plugin, function() {
@@ -19,7 +20,7 @@ module.exports = postcss.plugin(plugin, function() {
 
         // Find all defined values, catalog them, and remove them
         css.walkAtRules("value", function(rule) {
-            var parts = rule.params.split(/^(.+?):(.*)$/),
+            var parts = rule.params.match(format),
                 key   = parts[1],
                 value = parts[2].trim();
 
