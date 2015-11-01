@@ -21,10 +21,16 @@ module.exports = postcss.plugin(plugin, function() {
         // Find all defined values, catalog them, and remove them
         css.walkAtRules("value", function(rule) {
             var parts = rule.params.match(format),
-                key   = parts[1],
-                value = parts[2].trim();
+                key, val;
+            
+            if(!parts) {
+                throw rule.error("Invalid @value declaration", { plugin : plugin });
+            }
+            
+            key = parts[1];
+            val = parts[2].trim();
 
-            values[key] = value;
+            values[key] = val;
             graph.addNode(key);
             
             rule.remove();
