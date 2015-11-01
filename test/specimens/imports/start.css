@@ -1,0 +1,10 @@
+@value one, two from "./local.css";
+
+.wooga {
+    composes: booga from "./local.css";
+}
+
+.booga {
+    color: one;
+    background: two;
+}

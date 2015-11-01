@@ -1,18 +1,13 @@
-var assert = require("assert"),
-    plugin = require("../plugins/imports");
+"use strict";
 
-function css(src, options) {
-    return plugin.process(src, options).css;
-}
+var assert = require("assert"),
+    imports = require("../imports");
 
 describe("postcss-css-modules", function() {
     describe.only("imports", function() {
         it("should find import declarations", function() {
             assert.equal(
-                css(
-                    "@value color from \"./colors.css\"; @value one, two from \"./others.css\"; .wooga { composes: fooga from \"./fooga.css\"; }",
-                    { from : "./test.css" }
-                ),
+                imports.process("./test/specimens/imports/start.css"),
                 ".wooga { color: red; }"
             );
         });

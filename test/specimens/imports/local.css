@@ -1,0 +1,7 @@
+@value one: red;
+@value two: blue;
+@value folder from "./folder/folder.css";
+
+.booga {
+    background: green;
+}
