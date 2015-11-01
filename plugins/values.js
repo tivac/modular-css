@@ -1,10 +1,45 @@
 "use strict";
 
-var postcss = require("postcss"),
+var path = require("path"),
+
+    postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
     
-    format = /^(.+?):(.*)$/,
+    imports = require("../imports"),
+    
+    format = /^(.+?):(.*)$/i,
     plugin = "postcss-modular-css-values";
+
+function parseBase(rule) {
+    var parts = rule.params.match(format),
+        out   = {};
+    
+    out[parts[1].trim()] = parts[2].trim();
+    
+    return out;
+}
+
+function parseImports(options, rule) {
+    var parsed = imports.parse(rule.params),
+        out    = {},
+        source;
+    
+    if(!options.files || !options.root) {
+        throw rule.error("Invalid @value reference", { word : rule.params });
+    }
+    
+    source = options.files[path.resolve(options.root, parsed.source)];
+    
+    parsed.keys.forEach(function(key) {
+        if(!(key in source.values)) {
+            throw rule.error("Invalid @value reference", { word : key });
+        }
+        
+        out[key] = source.values[key];
+    });
+    
+    return out;
+}
 
 module.exports = postcss.plugin(plugin, function() {
     return function(css, result) {
@@ -20,18 +55,20 @@ module.exports = postcss.plugin(plugin, function() {
 
         // Find all defined values, catalog them, and remove them
         css.walkAtRules("value", function(rule) {
-            var parts = rule.params.match(format),
-                key, val;
+            var locals;
             
-            if(!parts) {
-                throw rule.error("Invalid @value declaration", { plugin : plugin });
+            if(rule.params.search(format) > -1) {
+                locals = parseBase(rule);
+            } else if(rule.params.search(imports.format) > -1) {
+                locals = parseImports(result.opts, rule);
+            } else {
+                throw rule.error("Invalid @value declaration", { word : rule.params });
             }
             
-            key = parts[1];
-            val = parts[2].trim();
-
-            values[key] = val;
-            graph.addNode(key);
+            Object.keys(locals).forEach(function(key) {
+                values[key] = locals[key];
+                graph.addNode(key);
+            });
             
             rule.remove();
         });
@@ -51,7 +88,7 @@ module.exports = postcss.plugin(plugin, function() {
                 graph.addDependency(key, ref);
             });
         });
-
+        
         // Ensure that any key references are updated
         graph.overallOrder().forEach(function(key) {
             values[key] = replacer(values[key]);
