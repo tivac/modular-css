@@ -42,17 +42,17 @@ function parseImports(options, rule) {
     return out;
 }
 
+function replacer(values, search, text) {
+    return text.replace(search, function(match, key) {
+        return values[key];
+    });
+}
+
 module.exports = postcss.plugin(plugin, function() {
     return function(css, result) {
         var values  = {},
             graph   = new Graph(),
             keys, search;
-        
-        function replacer(text) {
-            return text.replace(search, function(match, key) {
-                return values[key];
-            });
-        }
 
         // Find all defined values, catalog them, and remove them
         css.walkAtRules("value", function(rule) {
@@ -98,16 +98,16 @@ module.exports = postcss.plugin(plugin, function() {
         
         // Ensure that any key references are updated
         graph.overallOrder().forEach(function(key) {
-            values[key] = replacer(values[key]);
+            values[key] = replacer(values, search, values[key]);
         });
-        
+
         // Replace all instances of @value keys w/ the value in declarations & @media rules
         css.walkDecls(function(decl) {
-            decl.value = replacer(decl.value);
+            decl.value = replacer(values, search, decl.value);
         });
 
         css.walkAtRules("media", function(rule) {
-            rule.params = replacer(rule.params);
+            rule.params = replacer(values, search, rule.params);
         });
 
         result.messages.push({
