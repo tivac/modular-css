@@ -43,14 +43,12 @@ module.exports = postcss.plugin(plugin, function(opts) {
                         // Only support a single child, because simplicity
                         inner = selector.nodes[0].nodes[0];
                         
-                        if(inner.type !== "class" && inner.type !== "id") {
-                            return;
-                        }
-                        
                         // Replace :global() with its contents
                         selector.replaceWith(inner);
                         
-                        lookup[inner.value] = inner.value;
+                        if(inner.type === "class" || inner.type === "id") {
+                            lookup[inner.value] = inner.value;
+                        }
                         
                         return;
                     }

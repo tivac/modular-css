@@ -20,6 +20,13 @@ describe("postcss-css-modules", function() {
                 "#5dde9181034d498d7163570eea1e3987_wooga { color: red; }"
             );
         });
+
+        it("should remove :global() from non-class/non-id selectors", function() {
+            assert.equal(
+                css(":global(p) { color: red; }"),
+                "p { color: red; }"
+            );
+        });
         
         it("should ignore deep selectors", function() {
             assert.equal(
