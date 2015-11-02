@@ -72,10 +72,16 @@ module.exports = postcss.plugin(plugin, function() {
             
             rule.remove();
         });
-
-        keys   = Object.keys(values);
+        
+        keys = Object.keys(values);
+        
+        // Early out if no values to process
+        if(!keys.length) {
+            return;
+        }
+        
         search = new RegExp("(\\b" + keys.join("\\b|\\b") + "\\b)", "g");
-
+        
         keys.forEach(function(key) {
             var value = values[key],
                 refs  = value.match(search);
