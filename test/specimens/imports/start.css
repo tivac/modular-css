@@ -1,4 +1,4 @@
-@value one, two from "./local.css";
+@value one, two, folder from "./local.css";
 
 .wooga {
     composes: booga from "./local.css";
@@ -7,4 +7,8 @@
 .booga {
     color: one;
     background: two;
+}
+    
+.tooga {
+    border: 1px solid folder;
 }

@@ -5,3 +5,7 @@
 .booga {
     background: green;
 }
+
+.looga {
+    composes: booga;
+}
