@@ -1,15 +1,26 @@
 "use strict";
 
-var assert = require("assert"),
+var path   = require("path"),
+    assert = require("assert"),
+
     imports = require("../imports");
 
 describe("postcss-css-modules", function() {
-    describe.only("imports", function() {
-        it("should find import declarations", function() {
-            assert.equal(
-                imports.process("./test/specimens/imports/start.css"),
-                ".wooga { color: red; }"
-            );
+    describe("imports", function() {
+        it("should walk dependencies", function() {
+            var result = imports.process("./test/specimens/imports/start.css");
+            
+            assert("files" in result);
+            
+            assert(path.join(__dirname, "./specimens/imports/start.css") in result.files);
+            assert(path.join(__dirname, "./specimens/imports/local.css") in result.files);
+            assert(path.join(__dirname, "./specimens/imports/folder/folder.css") in result.files);
+        });
+        
+        it.only("should walk dependencies into node_modules", function() {
+            var result = imports.process("./test/specimens/imports/node_modules.css");
+            
+            console.log(result);
         });
     });
 });
