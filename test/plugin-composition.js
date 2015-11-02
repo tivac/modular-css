@@ -34,7 +34,15 @@ describe("postcss-css-modules", function() {
                 out.css;
             });
         });
-        
+
+        it("should fail if imports are referenced without having been parsed", function() {
+            var out = plugin.process(".wooga { composes: booga from \"./booga.css\"; }");
+            
+            assert.throws(function() {
+                out.css;
+            });
+        });
+
         it("should remove classes that only contain a composes rule", function() {
             assert.equal(
                 css(".wooga { color: red; } .fooga { composes: wooga; }"),
@@ -49,10 +57,18 @@ describe("postcss-css-modules", function() {
             assert("fooga" in messages[0].compositions);
             assert.equal(messages[0].compositions.fooga[0], "wooga");
         });
+
+        it("should support IDs instead of classes", function() {
+            var messages = plugin.process("#wooga { color: red; } .fooga { composes: wooga; }").messages;
+            
+            assert.equal(messages.length, 1);
+            assert("fooga" in messages[0].compositions);
+            assert.equal(messages[0].compositions.fooga[0], "wooga");
+        });
         
         it("should output the class hierarchy in a message", function() {
             var messages = plugin.process(
-                    ".wooga { color: red; } .booga { background: blue; } .tooga { composes: booga wooga; }"
+                    ".wooga { color: red; } .booga { background: blue; } #tooga { composes: booga wooga; }"
                 ).messages;
             
             assert.equal(messages.length, 1);
