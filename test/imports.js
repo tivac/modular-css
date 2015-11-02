@@ -17,10 +17,12 @@ describe("postcss-css-modules", function() {
             assert(path.join(__dirname, "./specimens/imports/folder/folder.css") in result.files);
         });
         
-        it.only("should walk dependencies into node_modules", function() {
+        it("should walk dependencies into node_modules", function() {
             var result = imports.process("./test/specimens/imports/node_modules.css");
             
-            console.log(result);
+            assert(path.join(__dirname, "./specimens/imports/node_modules.css") in result.files);
+            assert(path.join(__dirname, "./specimens/imports/node_modules/test-styles/styles.css") in result.files);
+        });
         });
     });
 });

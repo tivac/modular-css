@@ -1,7 +1,8 @@
 "use strict";
 
 var path = require("path"),
-
+    
+    resolve      = require("resolve"),
     postcss      = require("postcss"),
     createParser = require("postcss-selector-parser"),
     
@@ -66,11 +67,12 @@ function findScopedClasses(css, result) {
 module.exports = postcss.plugin(plugin, function() {
     return function(css, result) {
         var classes = findScopedClasses(css, result),
+            lookup  = _.invert(classes),
             graph   = new Graph(),
             options = result.opts,
-            lookup, parsed, source;
-            
-        lookup  = _.invert(classes);
+            parsed, source;
+
+        // Doing this now because invert doesn't understand arrays
         classes = _.map(classes, function(val) {
             return [ val ];
         });
@@ -98,11 +100,11 @@ module.exports = postcss.plugin(plugin, function() {
                 }
                 
                 parsed = imports.parse(decl.value);
-                source = options.files[path.resolve(options.root, parsed.source)];
-                
+                source = options.files[resolve.sync(parsed.source, { basedir : path.dirname(result.opts.from) })];
+
                 parsed.keys.forEach(function(key) {
                     if(!(key in source.classes)) {
-                        throw decl.error("Invalid @value reference", { word : key });
+                        throw decl.error("Invalid @value reference: " + key, { word : key });
                     }
                     
                     selectors.forEach(function(selector) {
@@ -110,8 +112,6 @@ module.exports = postcss.plugin(plugin, function() {
                     });
                 });
             } else {
-                console.log(decl.value, decl.value.split(" "));
-                
                 // composes: fooga wooga
                 decl.value.split(" ").forEach(function(id) {
                     if(!(id in classes)) {
@@ -133,7 +133,9 @@ module.exports = postcss.plugin(plugin, function() {
             
             // And blank out the empty class from the output
             selectors.forEach(function(selector) {
-                classes[selector] = false;
+                if(selector in classes) {
+                    classes[selector] = false;
+                }
             });
         });
 
