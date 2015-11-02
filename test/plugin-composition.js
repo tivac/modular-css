@@ -50,7 +50,7 @@ describe("postcss-css-modules", function() {
             assert.equal(messages[0].compositions.fooga[0], "wooga");
         });
         
-        it("should output the class heirarchy in a message", function() {
+        it("should output the class hierarchy in a message", function() {
             var messages = plugin.process(
                     ".wooga { color: red; } .booga { background: blue; } .tooga { composes: booga wooga; }"
                 ).messages;
@@ -60,8 +60,8 @@ describe("postcss-css-modules", function() {
                 wooga : [ "wooga" ],
                 booga : [ "booga" ],
                 tooga : [
-                    "wooga",
-                    "booga"
+                    "booga",
+                    "wooga"
                 ]
             });
         });

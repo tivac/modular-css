@@ -70,11 +70,16 @@ module.exports = postcss.plugin(plugin, function() {
             lookup  = _.invert(classes),
             graph   = new Graph(),
             options = result.opts,
+            output  = {},
             parsed, source;
 
         // Doing this now because invert doesn't understand arrays
-        classes = _.map(classes, function(val) {
-            return [ val ];
+        classes = _.map(classes, function(val, key) {
+            var value = [ val ];
+
+            output[key] = value;
+
+            return value;
         });
         
         // Do node addition in a different pass since we can't be sure where the object
@@ -100,26 +105,31 @@ module.exports = postcss.plugin(plugin, function() {
                 }
                 
                 parsed = imports.parse(decl.value);
-                source = options.files[resolve.sync(parsed.source, { basedir : path.dirname(result.opts.from) })];
+                source = resolve.sync(parsed.source, { basedir : path.dirname(result.opts.from) });
 
                 parsed.keys.forEach(function(key) {
-                    if(!(key in source.classes)) {
+                    var meta = source + key;
+
+                    if(!(key in options.files[source].classes)) {
                         throw decl.error("Invalid @value reference: " + key, { word : key });
                     }
+
+                    classes[meta] = options.files[source].classes[key];
+                    graph.addNode(meta);
                     
                     selectors.forEach(function(selector) {
-                        classes[lookup[selector]] = source.classes[key].concat(classes[lookup[selector]]);
+                        graph.addDependency(lookup[selector], meta);
                     });
                 });
             } else {
                 // composes: fooga wooga
-                decl.value.split(" ").forEach(function(id) {
-                    if(!(id in classes)) {
-                        throw decl.error("Unable to find " + id, { word : id });
+                decl.value.split(" ").forEach(function(key) {
+                    if(!(key in classes)) {
+                        throw decl.error("Unable to find " + key, { word : key });
                     }
                     
                     selectors.forEach(function(selector) {
-                        graph.addDependency(lookup[selector], id);
+                        graph.addDependency(lookup[selector], key);
                     });
                 });
             }
@@ -131,21 +141,18 @@ module.exports = postcss.plugin(plugin, function() {
             // If the parent rule only had the one declaration, clean up the rule
             decl.parent.remove();
             
-            // And blank out the empty class from the output
+            // And blank out default for the now-empty class
             selectors.forEach(function(selector) {
-                if(selector in classes) {
-                    classes[selector] = false;
-                }
+                classes[lookup[selector]] = [];
+                output[lookup[selector]] = [];
             });
         });
 
         try {
             // Update output by walking dep graph and updating classes
             graph.overallOrder().forEach(function(selector) {
-                graph.dependenciesOf(selector).forEach(function(dep) {
-                    classes[selector] = classes[selector] ?
-                        _.unique(classes[dep].concat(classes[selector])) :
-                        classes[dep];
+                graph.dependenciesOf(selector).reverse().forEach(function(dep) {
+                    output[selector] = _.unique(classes[dep].concat(output[selector]));
                 });
             });
         } catch(e) {
@@ -155,7 +162,7 @@ module.exports = postcss.plugin(plugin, function() {
         result.messages.push({
             type         : "modularcss",
             plugin       : plugin,
-            compositions : classes
+            compositions : output
         });
     };
 });
