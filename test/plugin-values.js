@@ -7,6 +7,22 @@ function css(src, options) {
 
 describe("postcss-css-modules", function() {
     describe("values", function() {
+        it("should fail to parse invalid declarations", function() {
+            assert.throws(function() {
+                css("@value green");
+            });
+            
+            assert.throws(function() {
+                css("@value red from './local.css");
+            });
+        });
+
+        it("should fail if imports are referenced without having been parsed", function() {
+            assert.throws(function() {
+                css("@value booga from \"./booga.css\";");
+            });
+        });
+
         it("should replace values in declarations", function() {
             assert.equal(
                 css("@value color: red; .wooga { color: color; }"),
