@@ -76,26 +76,22 @@ function parseFile(env, file) {
     });
 }
 
-module.exports.process = function(start, options) {
-    var opts   = options || false,
-        files  = {},
+module.exports.process = function(start) {
+    var files  = {},
         graph  = new Graph(),
         source = path.resolve(start),
-        root   = opts.root || path.dirname(source) || process.cwd(),
         result = "";
-    
+
     graph.addNode(source);
     
     parseFile({
         graph : graph,
-        files : files,
-        root  : root
+        files : files
     }, source);
     
     graph.overallOrder().forEach(function(file) {
         var parsed = parser.process(files[file].contents, {
                 from  : file,
-                root  : root,
                 files : files
             });
         

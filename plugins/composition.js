@@ -100,8 +100,8 @@ module.exports = postcss.plugin(plugin, function() {
             
             if(decl.value.search(imports.format) > -1) {
                 // composes: fooga, wooga from "./some-file.css"
-                if(!options.files || !options.root) {
-                    throw decl.error("Invalid @value reference", { word : decl.value });
+                if(!options.files) {
+                    throw decl.error("Invalid @value reference: " + decl.value, { word : decl.value });
                 }
                 
                 parsed = imports.parse(decl.value);

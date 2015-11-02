@@ -1,7 +1,8 @@
 "use strict";
 
 var path = require("path"),
-
+    
+    resolve = require("resolve"),
     postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
     
@@ -24,15 +25,15 @@ function parseImports(options, rule) {
         out    = {},
         source;
     
-    if(!options.files || !options.root) {
-        throw rule.error("Invalid @value reference", { word : rule.params });
+    if(!options.files) {
+        throw rule.error("Invalid @value reference: " + rule.params, { word : rule.params });
     }
     
-    source = options.files[path.resolve(options.root, parsed.source)];
+    source = options.files[resolve.sync(parsed.source, { basedir : path.dirname(options.from) })];
     
     parsed.keys.forEach(function(key) {
         if(!(key in source.values)) {
-            throw rule.error("Invalid @value reference", { word : key });
+            throw rule.error("Invalid @value reference: " + key, { word : key });
         }
         
         out[key] = source.values[key];
