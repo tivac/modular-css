@@ -1,4 +1,7 @@
+"use strict";
+
 var assert = require("assert"),
+    
     plugin = require("../plugins/composition");
 
 function css(src, options) {
@@ -43,8 +46,8 @@ describe("postcss-css-modules", function() {
             var messages = plugin.process(".wooga { color: red; } .fooga { composes: wooga; }").messages;
             
             assert.equal(messages.length, 1);
-            assert("fooga" in messages[0].classes);
-            assert.equal(messages[0].classes.fooga[0], "wooga");
+            assert("fooga" in messages[0].compositions);
+            assert.equal(messages[0].compositions.fooga[0], "wooga");
         });
         
         it("should output the class heirarchy in a message", function() {
@@ -53,7 +56,7 @@ describe("postcss-css-modules", function() {
                 ).messages;
             
             assert.equal(messages.length, 1);
-            assert.deepEqual(messages[0].classes, {
+            assert.deepEqual(messages[0].compositions, {
                 wooga : [ "wooga" ],
                 booga : [ "booga" ],
                 tooga : [
@@ -67,7 +70,7 @@ describe("postcss-css-modules", function() {
             var messages = plugin.process(".wooga { composes: booga; } .booga { color: red; }").messages;
             
             assert.equal(messages.length, 1);
-            assert.deepEqual(messages[0].classes, {
+            assert.deepEqual(messages[0].compositions, {
                 wooga : [ "booga" ],
                 booga : [ "booga" ]
             });
@@ -79,7 +82,7 @@ describe("postcss-css-modules", function() {
                 ).messages;
             
             assert.equal(messages.length, 1);
-            assert.deepEqual(messages[0].classes, {
+            assert.deepEqual(messages[0].compositions, {
                 wooga : [ "wooga" ],
                 booga : [ "wooga" ],
                 tooga : [ "wooga" ]
@@ -92,7 +95,7 @@ describe("postcss-css-modules", function() {
                 ).messages;
             
             assert.equal(messages.length, 1);
-            assert.deepEqual(messages[0].classes, {
+            assert.deepEqual(messages[0].compositions, {
                 wooga : [ "wooga" ],
                 booga : [
                     "wooga",
@@ -112,7 +115,7 @@ describe("postcss-css-modules", function() {
                 ).messages;
             
             assert.equal(messages.length, 1);
-            assert.deepEqual(messages[0].classes, {
+            assert.deepEqual(messages[0].compositions, {
                 wooga : [ "wooga" ],
                 booga : [ "wooga" ],
                 tooga : [ "wooga" ]
