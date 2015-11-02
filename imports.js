@@ -5,6 +5,7 @@ var fs   = require("fs"),
 
     postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
+    resolve = require("resolve"),
     
     parser = postcss([
         require("./plugins/values.js"),
@@ -35,6 +36,7 @@ function parseImports(text) {
 
 function parseFile(env, file) {
     var contents = fs.readFileSync(file, "utf8"),
+        basedir  = path.dirname(file),
         css      = postcss.parse(contents, { from : file });
     
     env.files[file] = {
@@ -49,7 +51,7 @@ function parseFile(env, file) {
             return;
         }
         
-        source = path.resolve(env.root, parsed.source);
+        source = resolve.sync(parsed.source, { basedir : basedir });
         
         env.graph.addNode(source);
         env.graph.addDependency(file, source);
@@ -63,7 +65,7 @@ function parseFile(env, file) {
             return;
         }
         
-        source = path.resolve(env.root, parsed.source);
+        source = resolve.sync(parsed.source, { basedir : basedir });
         
         env.graph.addNode(source);
         env.graph.addDependency(file, source);
@@ -108,7 +110,11 @@ module.exports.process = function(start, options) {
         result += parsed.css + "\n";
     });
     
-    return result;
+    return {
+        css     : result,
+        files   : files,
+        exports : files[source].classes
+    };
 };
 
 module.exports.parse  = parseImports;
