@@ -12,35 +12,15 @@ var fs   = require("fs"),
         require("./plugins/scoping.js"),
         require("./plugins/composition.js")
     ]),
-    format = /(.+) from ["']([^'"]+?)["']$/i;
+    
+    imports = require("./imports");
 
-function parseImports(text) {
-    var parts  = text.match(format),
-        keys, source;
-    
-    if(!parts) {
-        return false;
-    }
-    
-    keys   = parts[1].split(",");
-    source = parts[2];
-    
-    return {
-        keys : keys.map(function(value) {
-            return value.trim();
-        }),
-        
-        source : source
-    };
-}
-
-function parseFile(env, file) {
-    var contents = fs.readFileSync(file, "utf8"),
-        basedir  = path.dirname(file),
-        css      = postcss.parse(contents, { from : file });
+function parseFile(env, file, contents) {
+    var basedir = path.dirname(file),
+        css     = postcss.parse(contents, { from : file });
     
     function parse(field, rule) {
-        var parsed = parseImports(rule[field]),
+        var parsed = imports.parse(rule[field]),
             source;
         
         if(!parsed) {
@@ -61,11 +41,15 @@ function parseFile(env, file) {
     css.walkDecls("composes", parse.bind(null, "value"));
     
     env.graph.dependenciesOf(file).forEach(function(dependency) {
-        parseFile(env, dependency);
+        parseFile(env, dependency, fs.readFileSync(dependency, "utf8"));
     });
 }
 
-module.exports.process = function(start) {
+exports.file = function(file) {
+    return exports.string(file, fs.readFileSync(file, "utf8"));
+};
+
+exports.string = function(start, contents) {
     var files  = {},
         graph  = new Graph(),
         source = path.resolve(start),
@@ -76,7 +60,7 @@ module.exports.process = function(start) {
     parseFile({
         graph : graph,
         files : files
-    }, source);
+    }, source, contents);
     
     graph.overallOrder().forEach(function(file) {
         var parsed = parser.process(files[file].contents, {
@@ -102,5 +86,3 @@ module.exports.process = function(start) {
     };
 };
 
-module.exports.parse  = parseImports;
-module.exports.format = format;

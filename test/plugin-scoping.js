@@ -1,5 +1,5 @@
 var assert = require("assert"),
-    plugin = require("../plugins/scoping");
+    plugin = require("../src/plugins/scoping");
 
 function css(src, options) {
     return plugin.process(src, options).css;
@@ -18,6 +18,13 @@ describe("postcss-css-modules", function() {
             assert.equal(
                 css("#wooga { color: red; }"),
                 "#5dde9181034d498d7163570eea1e3987_wooga { color: red; }"
+            );
+        });
+        
+        it("should ignore non-class/non-id selectors", function() {
+            assert.equal(
+                css("p { color: red; }"),
+                "p { color: red; }"
             );
         });
 

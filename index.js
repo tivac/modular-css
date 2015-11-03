@@ -1,3 +1,4 @@
 "use strict";
 
-exports.process = require("./imports").process;
+exports.processor  = require("./src/processor");
+exports.browserify = require("./src/browserify");

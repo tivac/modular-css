@@ -1,5 +1,5 @@
 var assert = require("assert"),
-    plugin = require("../plugins/values");
+    plugin = require("../src/plugins/values");
 
 function css(src, options) {
     return plugin.process(src, options).css;
