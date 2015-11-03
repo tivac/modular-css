@@ -39,37 +39,26 @@ function parseFile(env, file) {
         basedir  = path.dirname(file),
         css      = postcss.parse(contents, { from : file });
     
+    function parse(field, rule) {
+        var parsed = parseImports(rule[field]),
+            source;
+        
+        if(!parsed) {
+            return;
+        }
+        
+        source = resolve.sync(parsed.source, { basedir : basedir });
+        
+        env.graph.addNode(source);
+        env.graph.addDependency(file, source);
+    }
+    
     env.files[file] = {
         contents : contents
     };
     
-    css.walkAtRules("value", function(rule) {
-        var parsed = parseImports(rule.params),
-            source;
-        
-        if(!parsed) {
-            return;
-        }
-        
-        source = resolve.sync(parsed.source, { basedir : basedir });
-        
-        env.graph.addNode(source);
-        env.graph.addDependency(file, source);
-    });
-    
-    css.walkDecls("composes", function(decl) {
-        var parsed = parseImports(decl.value),
-            source;
-        
-        if(!parsed) {
-            return;
-        }
-        
-        source = resolve.sync(parsed.source, { basedir : basedir });
-        
-        env.graph.addNode(source);
-        env.graph.addDependency(file, source);
-    });
+    css.walkAtRules("value", parse.bind(null, "params"));
+    css.walkDecls("composes", parse.bind(null, "value"));
     
     env.graph.dependenciesOf(file).forEach(function(dependency) {
         parseFile(env, dependency);
