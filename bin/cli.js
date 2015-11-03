@@ -1,8 +1,7 @@
 /* eslint no-console:0 */
 "use strict";
 
-var fs   = require("fs"),
-    path = require("path"),
+var fs = require("fs"),
 
     imports = require("../imports"),
 
@@ -18,7 +17,7 @@ out = process.argv[3];
 
 fs.writeFileSync(out, result.css, "utf8");
 fs.writeFileSync(
-    path.join(path.dirname(out), path.basename(out, path.extname(out)) + ".json"),
+    result.css + ".json",
     JSON.stringify(result.exports),
     "utf8"
 );
