@@ -20,7 +20,7 @@ function parseBase(rule) {
     return out;
 }
 
-function parseImports(options, rule) {
+function resolveImports(options, rule) {
     var parsed = imports.parse(rule.params),
         out    = {},
         source;
@@ -60,8 +60,8 @@ module.exports = postcss.plugin(plugin, function() {
             
             if(rule.params.search(format) > -1) {
                 locals = parseBase(rule);
-            } else if(rule.params.search(imports.format) > -1) {
-                locals = parseImports(result.opts, rule);
+            } else if(imports.match(rule.params)) {
+                locals = resolveImports(result.opts, rule);
             } else {
                 throw rule.error("Invalid @value declaration", { word : rule.params });
             }

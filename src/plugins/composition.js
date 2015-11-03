@@ -98,7 +98,7 @@ module.exports = postcss.plugin(plugin, function() {
             
             selectors = identifiers(decl.parent.selector);
             
-            if(decl.value.search(imports.format) > -1) {
+            if(imports.match(decl.value)) {
                 // composes: fooga, wooga from "./some-file.css"
                 if(!options.files) {
                     throw decl.error("Invalid @value reference: " + decl.value, { word : decl.value });
