@@ -17,13 +17,59 @@ This seemed like an interesting problem and a chance to pick & choose the most a
 
 ## Install
 
-**TBD**
+`$ npm i modular-css`
 
 ## Usage
 
-**TBD**
+### CLI
+
+`$ modular-css ./entry.css`
+
+Will process `./entry.css` and output the processed CSS to stdout
+
+`$ modular-css ./entry.css ./gen/entry.css`
+
+Will process `./entry.css` and output the processed CSS to `./gen/entry.css` as well as a JSON file containing the scoped mapping to `./gen/entry.css.json`.
+
+
+### API
+
+```js
+var process = require("modular-css").process,
+    output;
+
+output = process.file("./entry.css");
+
+// or
+
+output = process.string("./entry.css", ".fooga { ... } ...");
+
+// output now contains
+//  .css - processed CSS
+//  .exports - Scoped selector mappings
+//  .files - metadata about the file hierarchy
+```
+
+### Browserify
+
+```js
+var browserify = require("browserify"),
+    build;
+
+build = browserify("./entry.js");
+
+build.transform("modular-css");
+
+build.bundle(function(err, output) {
+    ...
+});
+```
 
 ## Thanks
+
+[@JoshGalvin](https://github.com/JoshGalvin) for ideas/encouragement to do this silly thing.
+
+The CSS modules team for inspiration!
 
 [@geelen](https://github.com/geelen)
 [@joshgillies](https://github.com/joshgillies)
