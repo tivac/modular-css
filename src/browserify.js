@@ -26,9 +26,7 @@ module.exports = function(file, opts) {
         
         function(callback) {
             var result = processor.string(file, buffer),
-                dest   =
-                    options.dest ||
-                    path.join(path.dirname(file), path.basename(file, options.extension) + "-compiled.css");
+                dest   = options.dest || file.replace(options.extension, ".compiled" + options.extension);
             
             fs.writeFileSync(dest, result.css, "utf8");
             

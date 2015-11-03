@@ -27,7 +27,7 @@ describe("postcss-css-modules", function() {
             
             build.bundle(function(err, out) {
                 var js  = out.toString(),
-                    css = fs.readFileSync("./start-compiled.css", "utf8");
+                    css = fs.readFileSync("./start.compiled.css", "utf8");
                 
                 assert(js.indexOf("module.exports = {\"wooga\":[\"f5507abd3eea0987714c5d92c3230347_booga\"],\"booga\":[\"2ba8076ec1145293c7e3600dbc63b306_booga\"],\"tooga\":[\"2ba8076ec1145293c7e3600dbc63b306_tooga\"]};") > -1);
                 
