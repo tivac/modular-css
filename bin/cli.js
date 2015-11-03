@@ -7,6 +7,9 @@ var fs = require("fs"),
 
     result, out;
 
+// Update checking
+require("update-notifier")({ pkg : require("../package.json" ) }).notify({ defer : true });
+
 result = imports.process(process.argv[2]);
 
 if(!process.argv[3]) {
