@@ -5,7 +5,7 @@ function css(src, options) {
     return plugin.process(src, options).css;
 }
 
-describe("postcss-css-modules", function() {
+describe("postcss-modular-css", function() {
     describe("scoping", function() {
         it("should generate a prefix for class names", function() {
             assert.equal(

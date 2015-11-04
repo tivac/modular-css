@@ -1,6 +1,10 @@
 "use strict";
 
-var format = /(.+) from ["']([^'"]+?)["']$/i;
+var path = require("path"),
+    
+    resolve = require("resolve-from"),
+    
+    format = /(.+) from ["']([^'"]+?)["']$/i;
 
 exports.format = format;
 
@@ -8,7 +12,7 @@ exports.match = function(text) {
     return text.search(format) > -1;
 };
 
-exports.parse = function(text) {
+exports.parse = function(file, text) {
     var parts  = text.match(format),
         keys, source;
     
@@ -24,6 +28,6 @@ exports.parse = function(text) {
             return value.trim();
         }),
         
-        source : source
+        source : path.relative(process.cwd(), resolve(path.dirname(file), source)).replace(/\\/g, "/")
     };
 };

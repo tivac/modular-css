@@ -5,7 +5,6 @@ var fs   = require("fs"),
 
     postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
-    resolve = require("resolve"),
     
     parser = postcss([
         require("./plugins/values.js"),
@@ -15,74 +14,124 @@ var fs   = require("fs"),
     
     imports = require("./imports");
 
-function parseFile(env, file, contents) {
-    var basedir = path.dirname(file),
-        css     = postcss.parse(contents, { from : file });
-    
-    function parse(field, rule) {
-        var parsed = imports.parse(rule[field]),
-            source;
-        
-        if(!parsed) {
-            return;
-        }
-        
-        source = resolve.sync(parsed.source, { basedir : basedir });
-        
-        env.graph.addNode(source);
-        env.graph.addDependency(file, source);
-    }
-    
-    env.files[file] = {
-        contents : contents
-    };
-    
-    css.walkAtRules("value", parse.bind(null, "params"));
-    css.walkDecls("composes", parse.bind(null, "value"));
-    
-    env.graph.dependenciesOf(file).forEach(function(dependency) {
-        parseFile(env, dependency, fs.readFileSync(dependency, "utf8"));
-    });
+function Processor() {
+    this._queue = [];
+    this._files = {};
+    this._all   = new Graph();
 }
 
-exports.file = function(file) {
-    return exports.string(file, fs.readFileSync(file, "utf8"));
-};
+Processor.prototype = {
+    file : function(file) {
+        return this.string(file, fs.readFileSync(file, "utf8"));
+    },
 
-exports.string = function(start, contents) {
-    var files  = {},
-        graph  = new Graph(),
-        source = path.resolve(start),
-        result = "";
+    string : function(name, text) {
+        var self  = this,
+            start = path.relative(process.cwd(), name).replace(/\\/g, "/");
 
-    graph.addNode(source);
-    
-    parseFile({
-        graph : graph,
-        files : files
-    }, source, contents);
-    
-    graph.overallOrder().forEach(function(file) {
-        var parsed = parser.process(files[file].contents, {
-                from  : file,
-                files : files
+        this._local = new Graph();
+
+        this._addNode(start);
+        this._walk(start, text);
+
+        this._local.overallOrder().forEach(function(file) {
+            var details = self._files[file],
+                parsed  = parser.process(details.text, {
+                    from  : file,
+                    files : self._files
+                });
+            
+            details.parsed = parsed.css;
+            
+            parsed.messages.forEach(function(msg) {
+                if(msg.values) {
+                    details.values = msg.values;
+                    
+                    return;
+                }
+                
+                if(msg.compositions) {
+                    details.compositions = msg.compositions;
+                    
+                    return;
+                }
             });
-        
-        parsed.messages.forEach(function(msg) {
-            if(msg.values) {
-                files[file].values = msg.values;
-            } else if(msg.compositions) {
-                files[file].classes = msg.compositions;
-            }
         });
         
-        result += parsed.css + "\n";
-    });
+        return {
+            files   : this._files,
+            exports : this._files[start].compositions
+        };
+    },
+
+    get css() {
+        var self = this,
+            css  = [];
+        
+        this._all.overallOrder().forEach(function(file) {
+            css.push(
+                "/* " + file + " */",
+                self._files[file].parsed
+            );
+        });
+
+        return css.join("\n");
+    },
+
+    get files() {
+        return this._files;
+    },
+
+    _addNode : function(name) {
+        this._local.addNode(name);
+        this._all.addNode(name);
+    },
+
+    _addDependency : function(from, to) {
+        this._local.addDependency(from, to);
+        this._all.addDependency(from, to);
+    },
+
+    _walk : function(name, text) {
+        var self = this,
+            css;
+
+        function parse(field, rule) {
+            var parsed = imports.parse(name, rule[field]);
+            
+            if(!parsed) {
+                return;
+            }
+            
+            this._addNode(parsed.source);
+            this._addDependency(name, parsed.source);
+        }
     
-    return {
-        css     : result,
-        files   : files,
-        exports : files[source].classes
-    };
+        // Avoid re-parsing
+        if(!this._files[name]) {
+            this._files[name] = {
+                text : text
+            };
+            
+            css = postcss.parse(text, { from : name });
+            css.walkAtRules("value", parse.bind(this, "params"));
+            css.walkDecls("composes", parse.bind(this, "value"));
+        } else {
+            // File already parsed so go figure out dep tree and copy it to the local graph
+            this._all.dependenciesOf(name).forEach(function(dependency) {
+                self._local.addNode(dependency);
+                self._local.addDependency(name, dependency);
+            });
+        }
+        
+        this._local.dependenciesOf(name).forEach(function(dependency) {
+            // Walk, but don't re-read files that've already been handled
+            self._walk(
+                dependency,
+                self._files[dependency] ? null : fs.readFileSync(dependency, "utf8")
+            );
+        });
+    }
 };
 
+module.exports = Processor;

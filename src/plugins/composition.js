@@ -1,9 +1,6 @@
 "use strict";
 
-var path = require("path"),
-    
-    resolve      = require("resolve"),
-    postcss      = require("postcss"),
+var postcss      = require("postcss"),
     createParser = require("postcss-selector-parser"),
     
     Graph   = require("dependency-graph").DepGraph,
@@ -71,7 +68,7 @@ module.exports = postcss.plugin(plugin, function() {
             graph   = new Graph(),
             options = result.opts,
             output  = {},
-            parsed, source;
+            parsed;
 
         // Doing this now because invert doesn't understand arrays
         classes = _.map(classes, function(val, key) {
@@ -101,20 +98,24 @@ module.exports = postcss.plugin(plugin, function() {
             if(imports.match(decl.value)) {
                 // composes: fooga, wooga from "./some-file.css"
                 if(!options.files) {
-                    throw decl.error("Invalid @value reference: " + decl.value, { word : decl.value });
+                    throw decl.error("Invalid file reference: " + decl.value, { word : decl.value });
                 }
                 
-                parsed = imports.parse(decl.value);
-                source = resolve.sync(parsed.source, { basedir : path.dirname(result.opts.from) });
+                parsed = imports.parse(options.from, decl.value);
+
+                if(!options.files[parsed.source]) {
+                    throw decl.error("Invalid file reference: " + decl.value, { word : decl.value });
+                }
 
                 parsed.keys.forEach(function(key) {
-                    var meta = source + key;
+                    var meta    = parsed.source + key,
+                        details = options.files[parsed.source];
 
-                    if(!(key in options.files[source].classes)) {
-                        throw decl.error("Invalid @value reference: " + key, { word : key });
+                    if(!(key in details.compositions)) {
+                        throw decl.error("Invalid identifier reference: " + key, { word : key });
                     }
 
-                    classes[meta] = options.files[source].classes[key];
+                    classes[meta] = details.compositions[key];
                     graph.addNode(meta);
                     
                     selectors.forEach(function(selector) {
