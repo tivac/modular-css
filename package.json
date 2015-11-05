@@ -9,6 +9,7 @@
   },
   "scripts": {
     "test": "npm run lint && mocha",
+    "mocha": "mocha",
     "cover": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
     "lint": "eslint . && jscs ."
   },
@@ -18,6 +19,7 @@
     "browserify": "^12.0.1",
     "eslint": "^1.7.3",
     "eslint-config-arenanet": "^1.0.1",
+    "factor-bundle": "^2.5.0",
     "istanbul": "^0.4.0",
     "jscs": "^2.5.0",
     "jscs-preset-arenanet": "^1.0.0",
@@ -27,6 +29,10 @@
     "dependency-graph": "^0.4.1",
     "hasha": "^2.0.2",
     "lodash.assign": "^3.2.0",
+    "lodash.difference": "^3.2.2",
+    "lodash.filter": "^3.1.1",
+    "lodash.flatten": "^3.0.2",
+    "lodash.foreach": "^3.0.3",
     "lodash.get": "^3.7.0",
     "lodash.invert": "^3.0.1",
     "lodash.mapvalues": "^3.0.1",

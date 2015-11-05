@@ -1,7 +1,6 @@
 "use strict";
 
 var fs   = require("fs"),
-    path = require("path"),
 
     postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
@@ -12,10 +11,14 @@ var fs   = require("fs"),
         require("./plugins/composition.js")
     ]),
     
-    imports = require("./imports");
+    imports  = require("./imports"),
+    relative = require("./relative");
 
 function Processor() {
-    this._queue = [];
+    if(!(this instanceof Processor)) {
+        return new Processor();
+    }
+
     this._files = {};
     this._all   = new Graph();
 }
@@ -27,7 +30,7 @@ Processor.prototype = {
 
     string : function(name, text) {
         var self  = this,
-            start = path.relative(process.cwd(), name).replace(/\\/g, "/");
+            start = relative(name);
 
         this._local = new Graph();
 
@@ -64,14 +67,18 @@ Processor.prototype = {
         };
     },
 
-    get css() {
+    dependencies : function(file) {
+        return file ? this._all.dependenciesOf(file) : this._all.overallOrder();
+    },
+
+    css : function(files) {
         var self = this,
             css  = [];
         
-        this._all.overallOrder().forEach(function(file) {
+        (files || this._all.overallOrder()).forEach(function(dep) {
             css.push(
-                "/* " + file + " */",
-                self._files[file].parsed
+                "/* " + dep + " */",
+                self._files[dep].parsed
             );
         });
 
