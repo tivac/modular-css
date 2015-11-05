@@ -93,7 +93,7 @@ Selector scoping is **only** done on simple classes/ids, any selectors containin
 
 ### Composition
 
-Selector limitations mean that it's difficult to use complicated selectors, so to enable building anything of complexity you can compose selectors.
+Selector limitations mean that it's difficult to use complicated selectors, so to enable building anything of complexity you can compose selectors. These compositions can be within a file or even pull in classes defined in other files.
 
 ```css
 /* styles.css */
@@ -108,6 +108,10 @@ Selector limitations mean that it's difficult to use complicated selectors, so t
     Since .multiple doesn't declare any rules other than composes
     aggregate styles from other rules it will be stripped from the output
     */
+}
+
+.local {
+    composes: single;
 }
 ```
 
@@ -129,6 +133,10 @@ var css = require("./styles.css");
         "aeacf0c6fbb2445f549ddc0fcfc1747b_one"
         // Since .multiple is only a singular composes: declaration there's no need
         // for it to be rewritten, it's left out of the output
+    ],
+    local : [
+        "dafdfcc7dc876084d352519086f9e6e9_other",
+        "aeacf0c6fbb2445f549ddc0fcfc1747b_single"
     ]
 }
 */
