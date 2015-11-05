@@ -1,9 +1,6 @@
 "use strict";
 
-var path = require("path"),
-    
-    resolve = require("resolve"),
-    postcss = require("postcss"),
+var postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
     
     imports = require("../imports"),
@@ -21,16 +18,16 @@ function parseBase(rule) {
 }
 
 function resolveImports(options, rule) {
-    var parsed = imports.parse(rule.params),
+    var parsed = imports.parse(options.from, rule.params),
         out    = {},
         source;
     
-    if(!options.files) {
-        throw rule.error("Invalid @value reference: " + rule.params, { word : rule.params });
+    if(!options.files || !options.files[parsed.source]) {
+        throw rule.error("Invalid file reference: " + rule.params, { word : rule.params });
     }
     
-    source = options.files[resolve.sync(parsed.source, { basedir : path.dirname(options.from) })];
-    
+    source = options.files[parsed.source];
+
     parsed.keys.forEach(function(key) {
         if(!(key in source.values)) {
             throw rule.error("Invalid @value reference: " + key, { word : key });
