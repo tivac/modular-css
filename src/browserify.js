@@ -17,9 +17,11 @@ var fs   = require("fs"),
 
 module.exports = function(browserify, opts) {
     var options = assign({
-            ext  : ".css",
-            css  : false,
-            json : false
+            ext    : ".css",
+            css    : false,
+            json   : false,
+            prefix : false,
+            namer  : false
         }, opts),
         
         processor = new Processor(),

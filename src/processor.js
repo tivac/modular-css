@@ -4,7 +4,8 @@ var fs   = require("fs"),
 
     postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
-    
+    assign  = require("lodash.assign"),
+
     parser = postcss([
         require("./plugins/values.js"),
         require("./plugins/scoping.js"),
@@ -14,11 +15,12 @@ var fs   = require("fs"),
     imports  = require("./imports"),
     relative = require("./relative");
 
-function Processor() {
+function Processor(opts) {
     if(!(this instanceof Processor)) {
-        return new Processor();
+        return new Processor(opts);
     }
 
+    this._opts  = opts;
     this._files = {};
     this._all   = new Graph();
 }
@@ -39,10 +41,10 @@ Processor.prototype = {
 
         this._local.overallOrder().forEach(function(file) {
             var details = self._files[file],
-                parsed  = parser.process(details.text, {
+                parsed  = parser.process(details.text, assign({}, self._opts, {
                     from  : file,
                     files : self._files
-                });
+                }));
             
             details.parsed = parsed.css;
             
