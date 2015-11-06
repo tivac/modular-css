@@ -15,7 +15,7 @@ module.exports = postcss.plugin(plugin, function(opts) {
             namer   = options.namer,
             prefix  = options.prefix,
             
-            parser;
+            parser, current;
             
         if(!prefix && !namer) {
             prefix = hasha(css.toString(), { algorithm : "md5" });
@@ -26,24 +26,29 @@ module.exports = postcss.plugin(plugin, function(opts) {
                 return prefix + "_" + selector;
             };
         }
-        
+
         parser = createParser(function(selectors) {
             // Walk top-level selectors
             selectors.each(function(child) {
                 // Walk the parts of each
                 child.each(function(selector) {
-                    var inner, name;
+                    var children, name;
                     
                     if(selector.type === "pseudo" && selector.value === ":global") {
-                        // Only support a single child, because simplicity
-                        inner = selector.nodes[0].nodes[0];
-                        
-                        // Replace :global() with its contents
-                        selector.replaceWith(inner);
-                        
-                        if(inner.type === "class" || inner.type === "id") {
-                            lookup[inner.value] = inner.value;
+                        if(!selector.nodes[0] || !selector.nodes[0].nodes.length) {
+                            throw current.error(":global(...) requires a child selector", { word : ":global" });
                         }
+
+                        // Store ref to the children & replace :global(...) with them
+                        children = selector.nodes[0];
+                        selector.replaceWith(children);
+                        
+                        // Walk the nodes we just shoved in and make sure they're in the output
+                        children.nodes.forEach(function(inner) {
+                            if(inner.type === "class" || inner.type === "id") {
+                                lookup[inner.value] = inner.value;
+                            }
+                        });
                         
                         return;
                     }
@@ -63,6 +68,9 @@ module.exports = postcss.plugin(plugin, function(opts) {
         
         // Walk all classes and save off rewritten selectors
         css.walkRules(function(rule) {
+            // Save closure ref to this for throwing errors from selector parser
+            current = rule;
+
             rule.selector = parser.process(rule.selector).result;
         });
         
