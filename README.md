@@ -3,7 +3,7 @@ modular-css
 [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https://www.npmjs.com/package/modular-css)
 [![NPM License](https://img.shields.io/npm/l/modular-css.svg)](https://www.npmjs.com/package/modular-css)
 [![NPM Downloads](https://img.shields.io/npm/dm/modular-css.svg)](https://www.npmjs.com/package/modular-css)
-[![Build Status](https://img.shields.io/travis/tivac/modular-css.svg)](https://travis-ci.org/tivac/modular-css)
+[![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
 [![Dependency Status](https://img.shields.io/david/tivac/modular-css.svg)](https://david-dm.org/tivac/modular-css)
 [![devDependency Status](https://img.shields.io/david/dev/tivac/modular-css.svg)](https://david-dm.org/tivac/modular-css#info=devDependencies)
 
