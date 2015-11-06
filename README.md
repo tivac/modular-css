@@ -9,6 +9,8 @@ modular-css
 
 Provides a subset of [css-modules](https://github.com/css-modules/css-modules) via CLI/API/Browserify transform.
 
+Like efficient bundling? Great! Modular CSS supports the [`factor-bundle`](https://github.com/substack/factor-bundle) plugin as well to enable bundling up shared dependencies.
+
 ## Why?
 
 CSS Modules is an amazing idea but mostly non-functional for our needs as of November 2015.
@@ -205,6 +207,8 @@ output.css;
 
 ### Browserify
 
+Modular CSS can be used as a browserify plugin, it can also be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
+
 #### CLI
 
 ```
@@ -224,6 +228,46 @@ build.plugin("modular-css", {
     // You can also define a json property to get a dump
     // of all the walked CSS files and their exports for
     // use in server-side rendering
+});
+
+build.bundle(function(err, output) {
+    ...
+});
+```
+
+#### factor-bundle
+
+If `./home.js` and `./account.js` both reference some CSS files via composition the Modular CSS plugin will write out any shared requirements to `./common.css`, while any page-specific css will be written to either `./gen/home.css` or `./gen/account.css`.
+
+**WARNING**: Due to how `factor-bundle` works the Modular CSS plugin must be applied to the Browserify object **before** `factor-bundle`.
+
+##### CLI
+
+```
+$ browserify home.js account.js \
+    -p [ modular-css --css gen/common.css ] \
+    -p [ factor-bundle -o gen/home.js -o gen/account.js ] \
+    -o bundle/common.js
+```
+
+##### API
+
+```js
+var build = browserify([
+        "./home.js",
+        "./account.js"
+    ]);
+
+// NOTE modular-css applied before factor-bundle, it won't work otherwise!
+build.plugin("modular-css", {
+    css : "./gen/common.css"
+});
+
+build.plugin("factor-bundle", {
+    outputs : [
+        "./gen/home.js",
+        "./get/account.js"
+    ]
 });
 
 build.bundle(function(err, output) {
