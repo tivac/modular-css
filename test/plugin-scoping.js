@@ -28,22 +28,30 @@ describe("postcss-modular-css", function() {
             );
         });
 
-        it("should remove :global() from non-class/non-id selectors", function() {
+        it("should only transform class/id selectors", function() {
             assert.equal(
-                css(":global(p) { color: red; }"),
-                "p { color: red; }"
+                css(".wooga p { color: red; }"),
+                ".7b944dc32d3d3f9ee2567de2101b5988_wooga p { color: red; }"
             );
-        });
-        
-        it("should ignore deep selectors", function() {
+
             assert.equal(
                 css("#wooga p { color: red; }"),
-                "#wooga p { color: red; }"
+                "#b350f25893cfee96ec24f2e48e73349e_wooga p { color: red; }"
             );
             
             assert.equal(
                 css("#wooga .booga { color: red; }"),
-                "#wooga .booga { color: red; }"
+                "#bf6193cc71ecb94fb202e8fea1df388a_wooga .bf6193cc71ecb94fb202e8fea1df388a_booga { color: red; }"
+            );
+
+            assert.equal(
+                css("#wooga { color: red; } #wooga:hover { color: blue; }"),
+                "#134c0871e7c8220eca018a7499dc4bc4_wooga { color: red; } #134c0871e7c8220eca018a7499dc4bc4_wooga:hover { color: blue; }"
+            );
+
+            assert.equal(
+                css(".wooga { color: red; } .wooga:hover { color: black; }"),
+                ".b788f7606cd25b7137bda6ab728d76a7_wooga { color: red; } .b788f7606cd25b7137bda6ab728d76a7_wooga:hover { color: black; }"
             );
         });
         
@@ -51,30 +59,6 @@ describe("postcss-modular-css", function() {
             assert.equal(
                 css("@media (max-width: 100px) { .booga { color: red; } }"),
                 "@media (max-width: 100px) { .1c058ba8c40ce27eb8eef0ed1d5ef09a_booga { color: red; } }"
-            );
-        });
-        
-        it("shouldn't transform global selectors", function() {
-            assert.equal(
-                css(":global(.wooga) { color: red; }"),
-                ".wooga { color: red; }"
-            );
-            
-            assert.equal(
-                css(":global(#wooga) { color: red; }"),
-                "#wooga { color: red; }"
-            );
-            
-            assert.equal(
-                css("@media (max-width: 100px) { :global(.booga) { color: red; } }"),
-                "@media (max-width: 100px) { .booga { color: red; } }"
-            );
-        });
-        
-        it("should support mixed local & global selectors", function() {
-            assert.equal(
-                css(":global(#wooga), .wooga { color: red; }"),
-                "#wooga, .0161606ae727b8d0466e905957eca53c_wooga { color: red; }"
             );
         });
         
@@ -97,13 +81,82 @@ describe("postcss-modular-css", function() {
         });
         
         it("should expose original classname in a message", function() {
-            var messages = plugin.process(".wooga { color: red; }").messages;
+            var result = plugin.process(".wooga { color: red; }");
             
-            assert.equal(messages.length, 1);
-            assert.equal(messages[0].type, "modularcss");
-            assert.equal(messages[0].plugin, "postcss-modular-css-scoping");
+            assert.deepEqual(result.messages, [ {
+                type    : "modularcss",
+                plugin  : "postcss-modular-css-scoping",
+                classes : {
+                    wooga : "83fe1a59eebdf17220df583a8e9048da_wooga"
+                }
+            } ]);
+        });
+
+        describe(":global()", function() {
+            it("should remove :global() from non-class/non-id selectors", function() {
+                assert.equal(
+                    css(":global(p) { color: red; }"),
+                    "p { color: red; }"
+                );
+            });
+
+            it("should throw if :global is used without a child selector", function() {
+                assert.throws(function() {
+                    css(":global p { color: red; }");
+                }, /:global\(\.\.\.\) requires a child selector/);
+
+                assert.throws(function() {
+                    css(":global() p { color: red; }");
+                }, /:global\(\.\.\.\) requires a child selector/);
+            });
+
+            it("shouldn't transform global selectors", function() {
+                assert.equal(
+                    css(":global(.wooga) { color: red; }"),
+                    ".wooga { color: red; }"
+                );
+                
+                assert.equal(
+                    css(":global(#wooga) { color: red; }"),
+                    "#wooga { color: red; }"
+                );
+                
+                assert.equal(
+                    css("@media (max-width: 100px) { :global(.booga) { color: red; } }"),
+                    "@media (max-width: 100px) { .booga { color: red; } }"
+                );
+            });
             
-            assert.deepEqual(messages[0].classes, { wooga : "83fe1a59eebdf17220df583a8e9048da_wooga" });
+            it("should support mixed local & global selectors", function() {
+                assert.equal(
+                    css(":global(#wooga), .wooga { color: red; }"),
+                    "#wooga, .0161606ae727b8d0466e905957eca53c_wooga { color: red; }"
+                );
+            });
+
+            it("should support multiple selectors", function() {
+                assert.equal(
+                    css(":global(.wooga .booga) { color: red; }"),
+                    ".wooga .booga { color: red; }"
+                );
+            });
+
+            it("should include :global(...) identifiers in a message", function() {
+                var result = plugin.process(
+                        ":global(.wooga) { color: red; } :global(#fooga) { color: red; } :global(.googa .tooga) { color: red; }"
+                    );
+                
+                assert.deepEqual(result.messages, [ {
+                    type    : "modularcss",
+                    plugin  : "postcss-modular-css-scoping",
+                    classes : {
+                        fooga : "fooga",
+                        googa : "googa",
+                        tooga : "tooga",
+                        wooga : "wooga"
+                    }
+                } ]);
+            });
         });
     });
 });
