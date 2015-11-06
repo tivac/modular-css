@@ -90,10 +90,49 @@ describe("postcss-modular-css", function() {
                 setImmediate(function() {
                     assert.equal(
                         fs.readFileSync("./test/output/browserify-avoid-duplicates.css", "utf8"),
-                        fs.readFileSync("./test/output/browserify-avoid-duplicates.css", "utf8")
+                        fs.readFileSync("./test/results/browserify-avoid-duplicates.css", "utf8")
                     );
                     
                     done();
+                });
+            });
+        });
+
+        describe("factor-bundle support", function() {
+            it("should support factor-bundle", function(done) {
+                var build = browserify([
+                        "./test/specimens/factor-bundle-a.js",
+                        "./test/specimens/factor-bundle-b.js"
+                    ]);
+                
+                build.plugin(plugin, {
+                    css : "./test/output/browserify-factor-bundle.css"
+                });
+
+                build.plugin("factor-bundle", {
+                    outputs : [
+                        "./test/output/factor-bundle-a.js",
+                        "./test/output/factor-bundle-b.js"
+                    ]
+                });
+                
+                build.bundle(function(err) {
+                    assert.ifError(err);
+                    
+                    // Wrapped because browserify event lifecycle is... odd
+                    setImmediate(function() {
+                        assert.equal(
+                            fs.readFileSync("./test/output/browserify-factor-bundle.css", "utf8"),
+                            fs.readFileSync("./test/results/browserify-factor-bundle.css", "utf8")
+                        );
+                        
+                        assert.equal(
+                            fs.readFileSync("./test/output/factor-bundle-a.css", "utf8"),
+                            fs.readFileSync("./test/results/browserify-factor-bundle-a.css", "utf8")
+                        );
+                        
+                        done();
+                    });
                 });
             });
         });

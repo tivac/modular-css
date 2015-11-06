@@ -4,6 +4,8 @@ var path = require("path"),
     
     resolve = require("resolve-from"),
     
+    relative = require("./relative"),
+    
     format = /(.+) from ["']([^'"]+?)["']$/i;
 
 exports.format = format;
@@ -28,6 +30,6 @@ exports.parse = function(file, text) {
             return value.trim();
         }),
         
-        source : path.relative(process.cwd(), resolve(path.dirname(file), source)).replace(/\\/g, "/")
+        source : relative(resolve(path.dirname(file), source))
     };
 };

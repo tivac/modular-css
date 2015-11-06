@@ -15,31 +15,60 @@ describe("postcss-modular-css", function() {
             assert.equal(typeof Processor, "function");
         });
         
-        it("should process a string", function() {
-            var result = this.processor.string("./test/specimens/simple.css", ".wooga { color: red; }");
-            
-            assert.deepEqual(result, {
-                files : {
-                    "test/specimens/simple.css" : {
-                        text   : ".wooga { color: red; }",
-                        parsed : ".83fe1a59eebdf17220df583a8e9048da_wooga { color: red; }",
-                        
-                        compositions : {
-                            wooga : [ "83fe1a59eebdf17220df583a8e9048da_wooga" ]
+        it("should auto-instantiate if called without new", function() {
+            /* eslint new-cap:0 */
+            assert(Processor() instanceof Processor);
+        });
+        
+        describe(".string", function() {
+            it("should process a string", function() {
+                var result = this.processor.string("./test/specimens/simple.css", ".wooga { color: red; }");
+                
+                assert.deepEqual(result, {
+                    files : {
+                        "test/specimens/simple.css" : {
+                            text   : ".wooga { color: red; }",
+                            parsed : ".83fe1a59eebdf17220df583a8e9048da_wooga { color: red; }",
+                            
+                            compositions : {
+                                wooga : [ "83fe1a59eebdf17220df583a8e9048da_wooga" ]
+                            }
                         }
+                    },
+                    exports : {
+                        wooga : [ "83fe1a59eebdf17220df583a8e9048da_wooga" ]
                     }
-                },
-                exports : {
-                    wooga : [ "83fe1a59eebdf17220df583a8e9048da_wooga" ]
-                }
+                });
             });
         });
 
-        it("should process a file", function() {
-            var result = this.processor.file("./test/specimens/simple.css");
-            
-            assert.deepEqual(result, {
-                files : {
+        describe(".file", function() {
+            it("should process a file", function() {
+                var result = this.processor.file("./test/specimens/simple.css");
+                
+                assert.deepEqual(result, {
+                    files : {
+                        "test/specimens/simple.css" : {
+                            text   : fs.readFileSync("./test/specimens/simple.css", "utf8"),
+                            parsed : ".1bc1718879cff9694b0f5cc8ad7b7537_wooga { color: red; }\n",
+                            
+                            compositions : {
+                                wooga : [ "1bc1718879cff9694b0f5cc8ad7b7537_wooga" ]
+                            }
+                        }
+                    },
+                    exports : {
+                        wooga : [ "1bc1718879cff9694b0f5cc8ad7b7537_wooga" ]
+                    }
+                });
+            });
+        });
+        
+        describe(".files", function() {
+            it("should return the parsed files object", function() {
+                this.processor.file("./test/specimens/simple.css");
+                
+                assert.deepEqual(this.processor.files, {
                     "test/specimens/simple.css" : {
                         text   : fs.readFileSync("./test/specimens/simple.css", "utf8"),
                         parsed : ".1bc1718879cff9694b0f5cc8ad7b7537_wooga { color: red; }\n",
@@ -48,10 +77,28 @@ describe("postcss-modular-css", function() {
                             wooga : [ "1bc1718879cff9694b0f5cc8ad7b7537_wooga" ]
                         }
                     }
-                },
-                exports : {
-                    wooga : [ "1bc1718879cff9694b0f5cc8ad7b7537_wooga" ]
-                }
+                });
+            });
+        });
+        
+        describe("dependencies", function() {
+            it("should return the dependencies of the specified file", function() {
+                this.processor.file("./test/specimens/start.css");
+                
+                assert.deepEqual(this.processor.dependencies("test/specimens/start.css"), [
+                    "test/specimens/folder/folder.css",
+                    "test/specimens/local.css"
+                ]);
+            });
+            
+            it("should return the overall order of dependencies if no file is specified", function() {
+                this.processor.file("./test/specimens/start.css");
+                
+                assert.deepEqual(this.processor.dependencies(), [
+                    "test/specimens/folder/folder.css",
+                    "test/specimens/local.css",
+                    "test/specimens/start.css"
+                ]);
             });
         });
         
@@ -147,7 +194,7 @@ describe("postcss-modular-css", function() {
             this.processor.file("./test/specimens/node_modules.css");
             
             assert.equal(
-                this.processor.css,
+                this.processor.css(),
                 fs.readFileSync("./test/results/processor-output-all.css", "utf8")
             );
         });
@@ -157,7 +204,7 @@ describe("postcss-modular-css", function() {
             this.processor.file("./test/specimens/local.css");
             
             assert.equal(
-                this.processor.css,
+                this.processor.css(),
                 fs.readFileSync("./test/results/processor-avoid-duplicates.css", "utf8")
             );
         });
