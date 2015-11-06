@@ -34,11 +34,6 @@ module.exports = postcss.plugin(plugin, function(opts) {
                 child.each(function(selector) {
                     var inner, name;
                     
-                    // We only support simple selectors
-                    if(selector.parent.nodes.length > 1) {
-                        return;
-                    }
-                    
                     if(selector.type === "pseudo" && selector.value === ":global") {
                         // Only support a single child, because simplicity
                         inner = selector.nodes[0].nodes[0];

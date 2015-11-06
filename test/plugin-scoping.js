@@ -35,15 +35,20 @@ describe("postcss-modular-css", function() {
             );
         });
         
-        it("should ignore deep selectors", function() {
+        it("should only transform class/id selectors", function() {
             assert.equal(
                 css("#wooga p { color: red; }"),
-                "#wooga p { color: red; }"
+                "#b350f25893cfee96ec24f2e48e73349e_wooga p { color: red; }"
             );
             
             assert.equal(
                 css("#wooga .booga { color: red; }"),
-                "#wooga .booga { color: red; }"
+                "#bf6193cc71ecb94fb202e8fea1df388a_wooga .bf6193cc71ecb94fb202e8fea1df388a_booga { color: red; }"
+            );
+
+            assert.equal(
+                css("#wooga { color: red; } #wooga:hover { color: blue; }"),
+                "#134c0871e7c8220eca018a7499dc4bc4_wooga { color: red; } #134c0871e7c8220eca018a7499dc4bc4_wooga:hover { color: blue; }"
             );
         });
         
