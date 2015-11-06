@@ -1,2 +1,2 @@
 # Always \n to make tests easier to deal w/
-* text=lf
+* text eol=lf
