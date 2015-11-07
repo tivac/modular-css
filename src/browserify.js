@@ -24,7 +24,7 @@ module.exports = function(browserify, opts) {
             namer  : false
         }, opts),
         
-        processor = new Processor(),
+        processor = new Processor(options),
         bundles   = {},
         common    = [];
 

@@ -72,7 +72,7 @@ describe("postcss-modular-css", function() {
         it("should call a naming function for class names", function() {
             assert.equal(
                 css(".wooga { color: red; }", {
-                    namer : function(selector) {
+                    namer : function(file, selector) {
                         return "googa_" + selector;
                     }
                 }),

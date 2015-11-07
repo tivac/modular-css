@@ -12,8 +12,8 @@ module.exports = postcss.plugin(plugin, function(opts) {
     
     return function(css, result) {
         var lookup  = {},
-            namer   = options.namer,
-            prefix  = options.prefix,
+            namer   = options.namer  || result.opts.namer,
+            prefix  = options.prefix || result.opts.prefix,
             
             parser, current;
             
@@ -22,15 +22,13 @@ module.exports = postcss.plugin(plugin, function(opts) {
         }
         
         if(typeof namer !== "function") {
-            namer = function(selector) {
+            namer = function(file, selector) {
                 return prefix + "_" + selector;
             };
         }
 
         parser = createParser(function(selectors) {
-            // Walk top-level selectors
             selectors.each(function(child) {
-                // Walk the parts of each
                 child.each(function(selector) {
                     var children, name;
                     
@@ -54,7 +52,7 @@ module.exports = postcss.plugin(plugin, function(opts) {
                     }
                     
                     if(selector.type === "class" || selector.type === "id") {
-                        name = namer(selector.value);
+                        name = namer(result.opts.from, selector.value);
                         
                         lookup[selector.value] = name;
                         
