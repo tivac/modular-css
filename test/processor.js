@@ -19,7 +19,53 @@ describe("postcss-modular-css", function() {
             /* eslint new-cap:0 */
             assert(Processor() instanceof Processor);
         });
-        
+
+        it("should pass prefix through to the plugins", function() {
+            var processor = new Processor({ prefix : "googa" }),
+                result    = processor.string("./test/specimens/simple.css", ".wooga { color: red; }");
+
+            assert.deepEqual(result, {
+                    files : {
+                        "test/specimens/simple.css" : {
+                            text   : ".wooga { color: red; }",
+                            parsed : ".googa_wooga { color: red; }",
+                            
+                            compositions : {
+                                wooga : [ "googa_wooga" ]
+                            }
+                        }
+                    },
+                    exports : {
+                        wooga : [ "googa_wooga" ]
+                    }
+                });
+        });
+
+        it("should pass a namer function through to the plugins", function() {
+            var processor = new Processor({
+                    namer : function(filename, selector) {
+                        return filename + selector;
+                    }
+                }),
+                result = processor.string("./test/specimens/simple.css", ".wooga { color: red; }");
+
+            assert.deepEqual(result, {
+                    files : {
+                        "test/specimens/simple.css" : {
+                            text   : ".wooga { color: red; }",
+                            parsed : ".test/specimens/simple.csswooga { color: red; }",
+                            
+                            compositions : {
+                                wooga : [ "test/specimens/simple.csswooga" ]
+                            }
+                        }
+                    },
+                    exports : {
+                        wooga : [ "test/specimens/simple.csswooga" ]
+                    }
+                });
+        });
+
         describe(".string", function() {
             it("should process a string", function() {
                 var result = this.processor.string("./test/specimens/simple.css", ".wooga { color: red; }");

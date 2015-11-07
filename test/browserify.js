@@ -1,6 +1,7 @@
 "use strict";
 
 var fs     = require("fs"),
+    path   = require("path"),
     assert = require("assert"),
     
     browserify = require("browserify"),
@@ -31,6 +32,54 @@ describe("postcss-modular-css", function() {
                 assert(out.toString().indexOf(fs.readFileSync("./test/results/browserify-export-identifiers.js", "utf8")) > -1);
 
                 done();
+            });
+        });
+
+        it("should use the specified prefix", function(done) {
+            var build = browserify("./test/specimens/simple.js");
+            
+            build.plugin(plugin, {
+                css    : "./test/output/browserify-prefix.css",
+                prefix : "prefix"
+            });
+            
+            build.bundle(function(err) {
+                assert.ifError(err);
+                
+                // Wrapped because browserify event lifecycle is... odd
+                setImmediate(function() {
+                    assert.equal(
+                        fs.readFileSync("./test/output/browserify-prefix.css", "utf8"),
+                        fs.readFileSync("./test/results/browserify-prefix.css", "utf8")
+                    );
+                    
+                    done();
+                });
+            });
+        });
+
+        it("should use the specified namer function", function(done) {
+            var build = browserify("./test/specimens/simple.js");
+            
+            build.plugin(plugin, {
+                css   : "./test/output/browserify-namer-fn.css",
+                namer : function(file, selector) {
+                    return path.basename(file, path.extname(file)) + "-" + selector;
+                }
+            });
+            
+            build.bundle(function(err) {
+                assert.ifError(err);
+                
+                // Wrapped because browserify event lifecycle is... odd
+                setImmediate(function() {
+                    assert.equal(
+                        fs.readFileSync("./test/output/browserify-namer-fn.css", "utf8"),
+                        fs.readFileSync("./test/results/browserify-namer-fn.css", "utf8")
+                    );
+                    
+                    done();
+                });
             });
         });
 
