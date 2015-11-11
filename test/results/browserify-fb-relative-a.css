@@ -1,0 +1,13 @@
+/* test/specimens/start.css */
+.aeacf0c6fbb2445f549ddc0fcfc1747b_booga {
+    color: red;
+    background: blue
+}
+.aeacf0c6fbb2445f549ddc0fcfc1747b_tooga {
+    border: 1px solid white
+}
+/* test/specimens/relative.css */
+.b561b6ffa8d1684699785a5ab2357f1a_wooga {
+    color: red;
+    background: url("../specimens/folder/to.png")
+}

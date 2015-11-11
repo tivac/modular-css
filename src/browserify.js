@@ -33,14 +33,15 @@ module.exports = function(browserify, opts) {
     }
 
     browserify.transform(function(file) {
-        var buffer;
+        var id, buffer;
 
         if(path.extname(file) !== options.ext) {
             return through();
         }
         
-        common.push(relative(file));
+        id     = relative(file);
         buffer = "";
+        common.push(id);
         
         return through(
             function(chunk, enc, done) {
@@ -65,7 +66,7 @@ module.exports = function(browserify, opts) {
         bundles[identifier] = [];
 
         // Keep track of the files in each bundle so we can determine commonalities
-        // later and output CSS bundles
+        // Doesn't actually modify the file though, just records it
         pipeline.unshift(through.obj(function(obj, enc, done) {
             if(path.extname(obj.file) === options.ext) {
                 bundles[identifier].push(relative(obj.file));
@@ -117,27 +118,33 @@ module.exports = function(browserify, opts) {
                 
                 // Write out each bundle's CSS files (if they have any)
                 each(bundles, function(contents, bundle) {
-                    var css = [];
+                    var files = [],
+                        dest;
                     
                     contents.forEach(function(file) {
-                        css = css.concat(processor.dependencies(file), file);
+                        files = files.concat(processor.dependencies(file), file);
                     });
                     
-                    css = diff(css, common);
+                    files = diff(files, common);
                     
-                    if(!css.length) {
+                    if(!files.length) {
                         return;
                     }
+
+                    dest = path.join(path.dirname(options.css), path.basename(bundle).replace(path.extname(bundle), options.ext));
                     
-                    fs.writeFileSync(
-                        path.join(path.dirname(options.css), path.basename(bundle).replace(path.extname(bundle), options.ext)),
-                        processor.css(css)
-                    );
+                    fs.writeFileSync(dest, processor.css({
+                        files : files,
+                        to    : dest
+                    }));
                 });
             }
             
             // Write out common/all css depending on bundling status
-            fs.writeFileSync(options.css, processor.css(bundling ? common : false));
+            fs.writeFileSync(options.css, processor.css({
+                files : bundling && common,
+                to    : options.css
+            }));
         });
     });
 };

@@ -1,2 +1,4 @@
 /* test/specimens/simple.css */
-.prefix_wooga { color: red; }
+.prefix_wooga {
+    color: red
+}

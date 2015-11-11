@@ -6,7 +6,14 @@ var fs     = require("fs"),
     
     browserify = require("browserify"),
     
-    plugin = require("../src/browserify");
+    plugin  = require("../src/browserify");
+
+function compare(name1, name2) {
+    assert.equal(
+        fs.readFileSync(path.join("./test/output", name1), "utf8") + "\n",
+        fs.readFileSync(path.join("./test/results", (name2 || name1)), "utf8")
+    );
+}
 
 describe("postcss-modular-css", function() {
     describe("browserify plugin", function() {
@@ -34,6 +41,25 @@ describe("postcss-modular-css", function() {
                 done();
             });
         });
+        
+        it("should correctly rewrite urls based on the destination file", function(done) {
+            var build = browserify("./test/specimens/relative.js");
+            
+            build.plugin(plugin, {
+                css : "./test/output/browserify-relative.css"
+            });
+            
+            build.bundle(function(err) {
+                assert.ifError(err);
+                
+                // Wrapped because browserify event lifecycle is... odd
+                setImmediate(function() {
+                    compare("browserify-relative.css");
+                    
+                    done();
+                });
+            });
+        });
 
         it("should use the specified prefix", function(done) {
             var build = browserify("./test/specimens/simple.js");
@@ -48,10 +74,7 @@ describe("postcss-modular-css", function() {
                 
                 // Wrapped because browserify event lifecycle is... odd
                 setImmediate(function() {
-                    assert.equal(
-                        fs.readFileSync("./test/output/browserify-prefix.css", "utf8"),
-                        fs.readFileSync("./test/results/browserify-prefix.css", "utf8")
-                    );
+                    compare("browserify-prefix.css");
                     
                     done();
                 });
@@ -73,10 +96,7 @@ describe("postcss-modular-css", function() {
                 
                 // Wrapped because browserify event lifecycle is... odd
                 setImmediate(function() {
-                    assert.equal(
-                        fs.readFileSync("./test/output/browserify-namer-fn.css", "utf8"),
-                        fs.readFileSync("./test/results/browserify-namer-fn.css", "utf8")
-                    );
+                    compare("browserify-namer-fn.css");
                     
                     done();
                 });
@@ -95,10 +115,7 @@ describe("postcss-modular-css", function() {
 
                 // Wrapped because browserify event lifecycle is... odd
                 setImmediate(function() {
-                    assert.equal(
-                        fs.readFileSync("./test/output/browserify-include-css-deps.css", "utf8"),
-                        fs.readFileSync("./test/results/browserify-include-css-deps.css", "utf8")
-                    );
+                    compare("browserify-include-css-deps.css");
                     
                     done();
                 });
@@ -137,31 +154,28 @@ describe("postcss-modular-css", function() {
 
                 // Wrapped because browserify event lifecycle is... odd
                 setImmediate(function() {
-                    assert.equal(
-                        fs.readFileSync("./test/output/browserify-avoid-duplicates.css", "utf8"),
-                        fs.readFileSync("./test/results/browserify-avoid-duplicates.css", "utf8")
-                    );
+                    compare("browserify-avoid-duplicates.css");
                     
                     done();
                 });
             });
         });
-
+        
         describe("factor-bundle support", function() {
             it("should support factor-bundle", function(done) {
                 var build = browserify([
-                        "./test/specimens/factor-bundle-a.js",
-                        "./test/specimens/factor-bundle-b.js"
+                        "./test/specimens/browserify-fb-basic-a.js",
+                        "./test/specimens/browserify-fb-basic-b.js"
                     ]);
                 
                 build.plugin(plugin, {
-                    css : "./test/output/browserify-factor-bundle.css"
+                    css : "./test/output/browserify-fb-basic.css"
                 });
 
                 build.plugin("factor-bundle", {
                     outputs : [
-                        "./test/output/factor-bundle-a.js",
-                        "./test/output/factor-bundle-b.js"
+                        "./test/output/browserify-fb-basic-a.js",
+                        "./test/output/browserify-fb-basic-b.js"
                     ]
                 });
                 
@@ -170,15 +184,37 @@ describe("postcss-modular-css", function() {
                     
                     // Wrapped because browserify event lifecycle is... odd
                     setImmediate(function() {
-                        assert.equal(
-                            fs.readFileSync("./test/output/browserify-factor-bundle.css", "utf8"),
-                            fs.readFileSync("./test/results/browserify-factor-bundle.css", "utf8")
-                        );
+                        compare("browserify-fb-basic.css");
+                        compare("browserify-fb-basic-a.css");
                         
-                        assert.equal(
-                            fs.readFileSync("./test/output/factor-bundle-a.css", "utf8"),
-                            fs.readFileSync("./test/results/browserify-factor-bundle-a.css", "utf8")
-                        );
+                        done();
+                    });
+                });
+            });
+
+            it("should support relative paths within factor-bundle files", function(done) {
+                var build = browserify([
+                        "./test/specimens/browserify-fb-relative-a.js",
+                        "./test/specimens/browserify-fb-relative-b.js"
+                    ]);
+                
+                build.plugin(plugin, {
+                    css : "./test/output/browserify-fb-relative.css"
+                });
+
+                build.plugin("factor-bundle", {
+                    outputs : [
+                        "./test/output/browserify-fb-relative-a.js",
+                        "./test/output/browserify-fb-relative-b.js"
+                    ]
+                });
+                
+                build.bundle(function(err) {
+                    assert.ifError(err);
+                    
+                    // Wrapped because browserify event lifecycle is... odd
+                    setImmediate(function() {
+                        compare("browserify-fb-relative-a.css");
                         
                         done();
                     });
