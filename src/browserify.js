@@ -21,7 +21,8 @@ module.exports = function(browserify, opts) {
             css    : false,
             json   : false,
             prefix : false,
-            namer  : false
+            namer  : false,
+            empty  : false
         }, opts),
         
         processor = new Processor(options),
@@ -127,7 +128,7 @@ module.exports = function(browserify, opts) {
                     
                     files = diff(files, common);
                     
-                    if(!files.length) {
+                    if(!files.length && !options.empty) {
                         return;
                     }
 
@@ -138,6 +139,11 @@ module.exports = function(browserify, opts) {
                         to    : dest
                     }));
                 });
+                
+                // No common CSS files to write out, so don't (unless they asked nicely)
+                if(!common.length && !options.empty) {
+                    return;
+                }
             }
             
             // Write out common/all css depending on bundling status

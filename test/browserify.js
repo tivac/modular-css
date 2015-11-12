@@ -220,6 +220,74 @@ describe("postcss-modular-css", function() {
                     });
                 });
             });
+
+            it("should avoid outputting empty css files by default", function(done) {
+                var build = browserify([
+                        "./test/specimens/browserify-fb-noempty-a.js",
+                        "./test/specimens/browserify-fb-noempty-b.js"
+                    ]);
+                
+                build.plugin(plugin, {
+                    css : "./test/output/browserify-fb-noempty.css"
+                });
+
+                build.plugin("factor-bundle", {
+                    outputs : [
+                        "./test/output/browserify-fb-noempty-a.js",
+                        "./test/output/browserify-fb-noempty-b.js"
+                    ]
+                });
+                
+                build.bundle(function(err) {
+                    assert.ifError(err);
+                    
+                    // Wrapped because browserify event lifecycle is... odd
+                    setImmediate(function() {
+                        assert.throws(function() {
+                            fs.statSync("./test/output/browserify-fb-noempty-b.css");
+                        });
+                        
+                        assert.throws(function() {
+                            fs.statSync("./test/output/browserify-fb-noempty-common.css");
+                        });
+                        
+                        compare("browserify-fb-noempty-a.css");
+                        
+                        done();
+                    });
+                });
+            });
+
+            it("should output empty css files when asked", function(done) {
+                var build = browserify([
+                        "./test/specimens/browserify-fb-empty-a.js",
+                        "./test/specimens/browserify-fb-empty-b.js"
+                    ]);
+                
+                build.plugin(plugin, {
+                    css   : "./test/output/browserify-fb-empty.css",
+                    empty : true
+                });
+
+                build.plugin("factor-bundle", {
+                    outputs : [
+                        "./test/output/browserify-fb-empty-a.js",
+                        "./test/output/browserify-fb-empty-b.js"
+                    ]
+                });
+                
+                build.bundle(function(err) {
+                    assert.ifError(err);
+                    
+                    // Wrapped because browserify event lifecycle is... odd
+                    setImmediate(function() {
+                        compare("browserify-fb-empty.css");
+                        compare("browserify-fb-empty-b.css");
+                        
+                        done();
+                    });
+                });
+            });
         });
     });
 });

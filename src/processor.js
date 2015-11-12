@@ -78,11 +78,12 @@ Processor.prototype = {
     },
 
     css : function(args) {
-        var self = this,
-            root = postcss.root(),
-            opts = args || false;
+        var self  = this,
+            root  = postcss.root(),
+            opts  = args || false,
+            files = opts.files || this._all.overallOrder();
         
-        (opts.files || this._all.overallOrder()).forEach(function(dep) {
+        files.forEach(function(dep) {
             var css;
             
             // Insert a comment w/ the file we're doing
