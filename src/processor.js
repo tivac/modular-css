@@ -2,14 +2,18 @@
 
 var fs   = require("fs"),
 
-    postcss = require("postcss"),
-    Graph   = require("dependency-graph").DepGraph,
-    assign  = require("lodash.assign"),
+    assign   = require("lodash.assign"),
+    Graph    = require("dependency-graph").DepGraph,
+    postcss  = require("postcss"),
 
     parser = postcss([
         require("./plugins/values.js"),
         require("./plugins/scoping.js"),
         require("./plugins/composition.js")
+    ]),
+    
+    urls = postcss([
+        require("postcss-url")
     ]),
     
     imports  = require("./imports"),
@@ -46,7 +50,7 @@ Processor.prototype = {
                     files : self._files
                 }));
             
-            details.parsed = parsed.css;
+            details.parsed = parsed;
             
             parsed.messages.forEach(function(msg) {
                 if(msg.values) {
@@ -73,18 +77,28 @@ Processor.prototype = {
         return file ? this._all.dependenciesOf(file) : this._all.overallOrder();
     },
 
-    css : function(files) {
+    css : function(args) {
         var self = this,
-            css  = [];
+            root = postcss.root(),
+            opts = args || false;
         
-        (files || this._all.overallOrder()).forEach(function(dep) {
-            css.push(
-                "/* " + dep + " */",
-                self._files[dep].parsed
-            );
+        (opts.files || this._all.overallOrder()).forEach(function(dep) {
+            var css;
+            
+            // Insert a comment w/ the file we're doing
+            root.append(postcss.comment({ text : dep }));
+            
+            // Rewrite relative URLs before adding
+            // Have to do this every time because target file might be different!
+            css = urls.process(self._files[dep].parsed.root, {
+                from : dep,
+                to   : opts.to
+            });
+            
+            root.append(css.root);
         });
 
-        return css.join("\n");
+        return root.toResult().css;
     },
 
     get files() {

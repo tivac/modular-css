@@ -19,6 +19,9 @@ coverage
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
+# Profiling output
+*.cpuprofile
+
 # Dependency directory
 node_modules
 !test/specimens/node_modules
