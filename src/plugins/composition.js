@@ -14,7 +14,8 @@ var postcss      = require("postcss"),
     references  = require("../_references"),
     identifiers = require("../_identifiers"),
     
-    plugin = "postcss-modular-css-composition";
+    plugin = "postcss-modular-css-composition",
+    global = /global\((.*?)\)/;
 
 module.exports = postcss.plugin(plugin, function() {
     return function(css, result) {
@@ -78,9 +79,22 @@ module.exports = postcss.plugin(plugin, function() {
                     });
                 });
             } else {
-                // composes: fooga wooga
-                decl.value.split(" ").forEach(function(key) {
-                    if(!(key in refs)) {
+                // composes: fooga global(wooga)
+                decl.value.split(" ").forEach(function(part) {
+                    var key = part.trim();
+
+                    if(key.search(global) > -1) {
+                        key = key.match(global)[1];
+                        
+                        if(!key) {
+                            throw decl.error("Invalid identifier passed to global()", { word : part });
+                        }
+
+                        // Add this to the graph w/o checking it, because we assume
+                        // that you did your homework and it'll be fiiiiiiiiiiiiiiine
+                        graph.addNode(key);
+                        refs[key] = [ key ];
+                    } else if(!(key in refs)) {
                         throw decl.error("Unable to find " + key, { word : key });
                     }
                     

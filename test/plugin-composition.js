@@ -7,6 +7,15 @@ var assert = require("assert"),
     scoping     = require("../src/plugins/scoping"),
     composition = require("../src/plugins/composition");
 
+function msg(compositions) {
+    return {
+        type   : "modularcss",
+        plugin : "postcss-modular-css-composition",
+        
+        compositions : compositions
+    };
+}
+
 describe("postcss-modular-css", function() {
     describe("composition", function() {
         it("should fail if attempting to compose a class that doesn't exist", function() {
@@ -68,7 +77,7 @@ describe("postcss-modular-css", function() {
             }, /Invalid identifier reference: googa/);
         });
 
-        it("should remove classes that only contain a composes rule", function() {
+        it("should remove classes that only contain a composes rule from the output CSS", function() {
             assert.equal(
                 composition.process(".wooga { color: red; } .fooga { composes: wooga; }").css,
                 ".wooga { color: red; }"
@@ -96,33 +105,67 @@ describe("postcss-modular-css", function() {
                     ".wooga { color: red; } .booga { background: blue; } #tooga { composes: booga wooga; }"
                 );
             
-            assert.deepEqual(out.messages, [ {
-                type   : "modularcss",
-                plugin : "postcss-modular-css-composition",
-                
-                compositions : {
-                    wooga : [ "wooga" ],
-                    booga : [ "booga" ],
-                    tooga : [
-                        "booga",
-                        "wooga"
-                    ]
-                }
-            } ]);
+            assert.deepEqual(out.messages, [ msg({
+                wooga : [ "wooga" ],
+                booga : [ "booga" ],
+                tooga : [
+                    "booga",
+                    "wooga"
+                ]
+            }) ]);
         });
         
         it("should support composing against later classes", function() {
             var out = composition.process(".wooga { composes: booga; } .booga { color: red; }");
             
-            assert.deepEqual(out.messages, [ {
-                type   : "modularcss",
-                plugin : "postcss-modular-css-composition",
-                
-                compositions : {
-                    wooga : [ "booga" ],
-                    booga : [ "booga" ]
-                }
-            } ]);
+            assert.deepEqual(out.messages, [ msg({
+                wooga : [ "booga" ],
+                booga : [ "booga" ]
+            }) ]);
+        });
+        
+        it("should support composing against global identifiers", function() {
+            var out;
+
+            out = composition.process(".wooga { composes: global(booga); }");
+            
+            assert.deepEqual(out.messages, [ msg({
+                wooga : [ "booga" ]
+            }) ]);
+
+            out = composition.process(".wooga { composes: global(booga) global(tooga); }");
+            
+            assert.deepEqual(out.messages, [ msg({
+                wooga : [ "booga", "tooga" ]
+            }) ]);
+
+            out = composition.process(".wooga { composes: global(booga); color: red; }");
+            
+            assert.deepEqual(out.messages, [ msg({
+                wooga : [ "booga", "wooga" ]
+            }) ]);
+
+            out = composition.process(".tooga { } .wooga { composes: global(booga) tooga; }");
+            
+            assert.deepEqual(out.messages, [ msg({
+                tooga : [ "tooga" ],
+                wooga : [ "booga", "tooga" ]
+            }) ]);
+
+            out = composition.process(".tooga { } .wooga { composes: global(booga) tooga; color: red; }");
+            
+            assert.deepEqual(out.messages, [ msg({
+                tooga : [ "tooga" ],
+                wooga : [ "booga", "tooga", "wooga" ]
+            }) ]);
+        });
+
+        it("should fail when passed an empty global()", function() {
+            var out = composition.process(".wooga { composes: global(); }");
+            
+            assert.throws(function() {
+                out.css;
+            }, /Invalid identifier passed to global()/);
         });
         
         it("should dedupe repeated dependencies", function() {
@@ -130,16 +173,11 @@ describe("postcss-modular-css", function() {
                     ".wooga { color: red; } .booga { composes: wooga; } .tooga { composes: booga; }"
                 );
             
-            assert.deepEqual(out.messages, [ {
-                type   : "modularcss",
-                plugin : "postcss-modular-css-composition",
-                
-                compositions : {
-                    wooga : [ "wooga" ],
-                    booga : [ "wooga" ],
-                    tooga : [ "wooga" ]
-                }
-            } ]);
+            assert.deepEqual(out.messages, [ msg({
+                wooga : [ "wooga" ],
+                booga : [ "wooga" ],
+                tooga : [ "wooga" ]
+            }) ]);
         });
         
         it("should handle multi-level dependencies", function() {
@@ -147,23 +185,18 @@ describe("postcss-modular-css", function() {
                     ".wooga { color: red; } .booga { composes: wooga; background: blue; } .tooga { composes: booga; display: block; }"
                 );
             
-            assert.deepEqual(out.messages, [ {
-                type   : "modularcss",
-                plugin : "postcss-modular-css-composition",
-                
-                compositions : {
-                    wooga : [ "wooga" ],
-                    booga : [
-                        "wooga",
-                        "booga"
-                    ],
-                    tooga : [
-                        "wooga",
-                        "booga",
-                        "tooga"
-                    ]
-                }
-            } ]);
+            assert.deepEqual(out.messages, [ msg({
+                wooga : [ "wooga" ],
+                booga : [
+                    "wooga",
+                    "booga"
+                ],
+                tooga : [
+                    "wooga",
+                    "booga",
+                    "tooga"
+                ]
+            }) ]);
         });
         
         it("should handle multi-level dependencies with empty elements", function() {
@@ -171,16 +204,11 @@ describe("postcss-modular-css", function() {
                     ".wooga { color: red; } .booga { composes: wooga; } .tooga { composes: booga; }"
                 );
             
-            assert.deepEqual(out.messages, [ {
-                type   : "modularcss",
-                plugin : "postcss-modular-css-composition",
-                
-                compositions : {
-                    wooga : [ "wooga" ],
-                    booga : [ "wooga" ],
-                    tooga : [ "wooga" ]
-                }
-            } ]);
+            assert.deepEqual(out.messages, [ msg({
+                wooga : [ "wooga" ],
+                booga : [ "wooga" ],
+                tooga : [ "wooga" ]
+            }) ]);
         });
         
         it("should find scoped identifiers from the scoping plugin's message", function() {
@@ -193,15 +221,10 @@ describe("postcss-modular-css", function() {
                     googa : "7277eb6cdd9ca80332ddd1cd83af7935_googa",
                     wooga : "7277eb6cdd9ca80332ddd1cd83af7935_wooga"
                 }
-            }, {
-                type   : "modularcss",
-                plugin : "postcss-modular-css-composition",
-                
-                compositions : {
-                    googa : [ "7277eb6cdd9ca80332ddd1cd83af7935_wooga" ],
-                    wooga : [ "7277eb6cdd9ca80332ddd1cd83af7935_wooga" ]
-                }
-            } ]);
+            }, msg({
+                googa : [ "7277eb6cdd9ca80332ddd1cd83af7935_wooga" ],
+                wooga : [ "7277eb6cdd9ca80332ddd1cd83af7935_wooga" ]
+            }) ]);
         });
         
         it("should ignore messages that aren't from the scoping plugin", function() {
@@ -219,15 +242,10 @@ describe("postcss-modular-css", function() {
             assert.deepEqual(out.messages, [ {
                 type   : "modularcss",
                 plugin : "fake-plugin"
-            }, {
-                type   : "modularcss",
-                plugin : "postcss-modular-css-composition",
-                
-                compositions : {
-                    googa : [ "wooga" ],
-                    wooga : [ "wooga" ]
-                }
-            } ]);
+            }, msg({
+                googa : [ "wooga" ],
+                wooga : [ "wooga" ]
+            }) ]);
         });
 
         it("should expose imported heirachy details in the messages", function() {
@@ -242,14 +260,9 @@ describe("postcss-modular-css", function() {
                     }
                 });
 
-            assert.deepEqual(out.messages, [ {
-                type   : "modularcss",
-                plugin : "postcss-modular-css-composition",
-
-                compositions : {
-                    wooga : [ "googa" ]
-                }
-            } ]);
+            assert.deepEqual(out.messages, [ msg({
+                wooga : [ "googa" ]
+            }) ]);
         });
     });
 });
