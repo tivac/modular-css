@@ -13,7 +13,7 @@ var fs   = require("fs"),
     unique  = require("lodash.uniq"),
     
     Processor = require("./processor"),
-    relative  = require("./relative");
+    relative  = require("./_relative");
 
 module.exports = function(browserify, opts) {
     var options = assign({

@@ -3,7 +3,7 @@
 var postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
     
-    imports = require("../imports"),
+    imports = require("../_imports"),
     
     format = /^(.+?):(.*)$/i,
     plugin = "postcss-modular-css-values";

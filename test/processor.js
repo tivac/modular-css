@@ -25,21 +25,21 @@ describe("postcss-modular-css", function() {
 
             describe(".string", function() {
                 it("should process a string", function() {
-                    var result = this.processor.string("./test/specimens/simple.css", ".wooga { color: red; }"),
+                    var result = this.processor.string("./test/specimens/simple.css", ".wooga { }"),
                         file   = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        wooga : [ "83fe1a59eebdf17220df583a8e9048da_wooga" ]
+                        wooga : [ "361c6a593917072a0083c6531865077d_wooga" ]
                     });
 
                     assert.equal(typeof file, "object");
 
                     assert.deepEqual(file.compositions, {
-                        wooga : [ "83fe1a59eebdf17220df583a8e9048da_wooga" ]
+                        wooga : [ "361c6a593917072a0083c6531865077d_wooga" ]
                     });
 
-                    assert.equal(file.text, ".wooga { color: red; }");
-                    assert.equal(file.parsed.root.toResult().css, ".83fe1a59eebdf17220df583a8e9048da_wooga { color: red; }");
+                    assert.equal(file.text, ".wooga { }");
+                    assert.equal(file.parsed.root.toResult().css, ".361c6a593917072a0083c6531865077d_wooga { }");
                 });
             });
 
@@ -66,7 +66,7 @@ describe("postcss-modular-css", function() {
             describe("Naming", function() {
                 it("should pass prefix through to the plugins", function() {
                     var processor = new Processor({ prefix : "googa" }),
-                        result    = processor.string("./test/specimens/simple.css", ".wooga { color: red; }"),
+                        result    = processor.string("./test/specimens/simple.css", ".wooga { }"),
                         file      = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
@@ -79,8 +79,8 @@ describe("postcss-modular-css", function() {
                         wooga : [ "googa_wooga" ]
                     });
 
-                    assert.equal(file.text, ".wooga { color: red; }");
-                    assert.equal(file.parsed.root.toResult().css, ".googa_wooga { color: red; }");
+                    assert.equal(file.text, ".wooga { }");
+                    assert.equal(file.parsed.root.toResult().css, ".googa_wooga { }");
                 });
 
                 it("should pass a namer function through to the plugins", function() {
@@ -89,7 +89,7 @@ describe("postcss-modular-css", function() {
                                 return filename + selector;
                             }
                         }),
-                        result = processor.string("./test/specimens/simple.css", ".wooga { color: red; }"),
+                        result = processor.string("./test/specimens/simple.css", ".wooga { }"),
                         file      = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
@@ -102,8 +102,8 @@ describe("postcss-modular-css", function() {
                         wooga : [ "test/specimens/simple.csswooga" ]
                     });
 
-                    assert.equal(file.text, ".wooga { color: red; }");
-                    assert.equal(file.parsed.root.toResult().css, ".test/specimens/simple.csswooga { color: red; }");
+                    assert.equal(file.text, ".wooga { }");
+                    assert.equal(file.parsed.root.toResult().css, ".test/specimens/simple.csswooga { }");
                 });
             });
 
@@ -128,6 +128,33 @@ describe("postcss-modular-css", function() {
                 });
             });
             
+            it("should scope classes, ids, and keyframes", function() {
+                    var result = this.processor.string("./test/specimens/simple.css", "@keyframes kooga { } #fooga { } .wooga { }"),
+                        file   = result.files["test/specimens/simple.css"];
+                    
+                    assert.deepEqual(result.exports, {
+                        fooga : [ "433a1e5568b4a09c50491d8f1ff70725_fooga" ],
+                        kooga : [ "433a1e5568b4a09c50491d8f1ff70725_kooga" ],
+                        wooga : [ "433a1e5568b4a09c50491d8f1ff70725_wooga" ]
+                    });
+
+                    assert.equal(typeof file, "object");
+
+                    assert.deepEqual(file.compositions, {
+                        fooga : [ "433a1e5568b4a09c50491d8f1ff70725_fooga" ],
+                        kooga : [ "433a1e5568b4a09c50491d8f1ff70725_kooga" ],
+                        wooga : [ "433a1e5568b4a09c50491d8f1ff70725_wooga" ]
+                    });
+
+                    assert.equal(file.text, "@keyframes kooga { } #fooga { } .wooga { }");
+                    assert.equal(
+                        file.parsed.root.toResult().css,
+                        "@keyframes 433a1e5568b4a09c50491d8f1ff70725_kooga { } " +
+                        "#433a1e5568b4a09c50491d8f1ff70725_fooga { } " +
+                        ".433a1e5568b4a09c50491d8f1ff70725_wooga { }"
+                    );
+                });
+
             it("should walk dependencies into node_modules", function() {
                 var result = this.processor.file("./test/specimens/node_modules.css"),
                     file;

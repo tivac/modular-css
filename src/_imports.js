@@ -4,7 +4,7 @@ var path = require("path"),
     
     resolve = require("resolve-from"),
     
-    relative = require("./relative"),
+    relative = require("./_relative"),
     
     format = /(.+) from ["']([^'"]+?)["']$/i;
 
@@ -15,7 +15,7 @@ exports.match = function(text) {
 };
 
 exports.parse = function(file, text) {
-    var parts  = text.match(format),
+    var parts = text.match(format),
         keys, source;
     
     if(!parts) {

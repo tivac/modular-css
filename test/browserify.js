@@ -41,7 +41,7 @@ describe("postcss-modular-css", function() {
                 done();
             });
         });
-        
+
         it("should correctly rewrite urls based on the destination file", function(done) {
             var build = browserify("./test/specimens/relative.js");
             
@@ -82,7 +82,7 @@ describe("postcss-modular-css", function() {
         });
 
         it("should use the specified namer function", function(done) {
-            var build = browserify("./test/specimens/simple.js");
+            var build = browserify("./test/specimens/keyframes.js");
             
             build.plugin(plugin, {
                 css   : "./test/output/browserify-namer-fn.css",

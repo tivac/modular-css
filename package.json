@@ -22,7 +22,7 @@
     "factor-bundle": "^2.5.0",
     "istanbul": "^0.4.0",
     "jscs": "^2.5.0",
-    "jscs-preset-arenanet": "^1.0.0",
+    "jscs-preset-arenanet": "^1.0.1",
     "mocha": "^2.3.3"
   },
   "dependencies": {
