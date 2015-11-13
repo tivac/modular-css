@@ -4,6 +4,8 @@ var postcss      = require("postcss"),
     createParser = require("postcss-selector-parser"),
     
     hasha = require("hasha"),
+
+    identifiers = require("../_identifiers"),
     
     plugin = "postcss-modular-css-scoping";
 
@@ -27,6 +29,15 @@ module.exports = postcss.plugin(plugin, function(opts) {
             };
         }
 
+        // Validate whether a selector should be renamed
+        function rename(thing) {
+            return (
+                thing.type === "class" ||
+                thing.type === "id" ||
+                (current.name && current.name.search(identifiers.keyframes) > -1)
+            );
+        }
+
         parser = createParser(function(selectors) {
             selectors.each(function(child) {
                 child.each(function(selector) {
@@ -43,15 +54,15 @@ module.exports = postcss.plugin(plugin, function(opts) {
                         
                         // Walk the nodes we just shoved in and make sure they're in the output
                         children.nodes.forEach(function(inner) {
-                            if(inner.type === "class" || inner.type === "id") {
+                            if(rename(inner)) {
                                 lookup[inner.value] = inner.value;
                             }
                         });
-                        
+
                         return;
                     }
                     
-                    if(selector.type === "class" || selector.type === "id") {
+                    if(rename(selector)) {
                         name = namer(result.opts.from, selector.value);
                         
                         lookup[selector.value] = name;
@@ -64,12 +75,20 @@ module.exports = postcss.plugin(plugin, function(opts) {
             });
         });
         
-        // Walk all classes and save off rewritten selectors
+        // Walk all rules and save off rewritten selectors
         css.walkRules(function(rule) {
             // Save closure ref to this for throwing errors from selector parser
             current = rule;
 
             rule.selector = parser.process(rule.selector).result;
+        });
+
+        // Also scope @keyframes rules so they don't leak globally
+        css.walkAtRules(identifiers.keyframes, function(rule) {
+            // Save closure ref to this for throwing errors from selector parser
+            current = rule;
+
+            rule.params = parser.process(rule.params).result;
         });
         
         result.messages.push({

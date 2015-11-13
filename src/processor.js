@@ -9,15 +9,16 @@ var fs   = require("fs"),
     parser = postcss([
         require("./plugins/values.js"),
         require("./plugins/scoping.js"),
-        require("./plugins/composition.js")
+        require("./plugins/composition.js"),
+        require("./plugins/keyframes.js")
     ]),
     
     urls = postcss([
         require("postcss-url")
     ]),
     
-    imports  = require("./imports"),
-    relative = require("./relative");
+    imports  = require("./_imports"),
+    relative = require("./_relative");
 
 function Processor(opts) {
     if(!(this instanceof Processor)) {

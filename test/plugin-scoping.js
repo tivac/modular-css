@@ -28,7 +28,7 @@ describe("postcss-modular-css", function() {
             );
         });
 
-        it("should only transform class/id selectors", function() {
+        it("should transform class/id selectors", function() {
             assert.equal(
                 css(".wooga p { color: red; }"),
                 ".7b944dc32d3d3f9ee2567de2101b5988_wooga p { color: red; }"
@@ -61,15 +61,32 @@ describe("postcss-modular-css", function() {
                 "@media (max-width: 100px) { .1c058ba8c40ce27eb8eef0ed1d5ef09a_booga { color: red; } }"
             );
         });
+
+        it("should transform the names of @keyframes rules", function() {
+            assert.equal(
+                css("@keyframes fooga { }"),
+                "@keyframes 1e94ad5ed57bec6e30ca29b42f68dcc6_fooga { }"
+            );
+
+            assert.equal(
+                css("@-webkit-keyframes fooga { }"),
+                "@-webkit-keyframes 4f812711fa10a3203c5aecebdeb3e540_fooga { }"
+            );
+
+            assert.equal(
+                css("@-moz-keyframes fooga { }"),
+                "@-moz-keyframes b061bc99d952e01429c8456dd506aca9_fooga { }"
+            );
+        });
         
-        it("should use a supplied string prefix for class names", function() {
+        it("should use a supplied string prefix for names", function() {
             assert.equal(
                 css(".wooga { color: red; }", { prefix : "tooga" }),
                 ".tooga_wooga { color: red; }"
             );
         });
         
-        it("should call a naming function for class names", function() {
+        it("should call a naming function for names", function() {
             assert.equal(
                 css(".wooga { color: red; }", {
                     namer : function(file, selector) {
@@ -80,14 +97,18 @@ describe("postcss-modular-css", function() {
             );
         });
         
-        it("should expose original classname in a message", function() {
-            var result = plugin.process(".wooga { color: red; }");
+        it("should expose original names in a message", function() {
+            var result = plugin.process(
+                ".wooga { color: red; } #booga { color: black; } @keyframes fooga { 0% { color: red; } 100% { color: black; } }"
+            );
             
             assert.deepEqual(result.messages, [ {
                 type    : "modularcss",
                 plugin  : "postcss-modular-css-scoping",
                 classes : {
-                    wooga : "83fe1a59eebdf17220df583a8e9048da_wooga"
+                    booga : "e71f0a57b16849313577efa7f45d31e2_booga",
+                    fooga : "e71f0a57b16849313577efa7f45d31e2_fooga",
+                    wooga : "e71f0a57b16849313577efa7f45d31e2_wooga"
                 }
             } ]);
         });
@@ -125,6 +146,11 @@ describe("postcss-modular-css", function() {
                     css("@media (max-width: 100px) { :global(.booga) { color: red; } }"),
                     "@media (max-width: 100px) { .booga { color: red; } }"
                 );
+
+                assert.equal(
+                    css("@keyframes :global(fooga) { 0% { color: red; } 100% { color: black; } }"),
+                    "@keyframes fooga { 0% { color: red; } 100% { color: black; } }"
+                );
             });
             
             it("should support mixed local & global selectors", function() {
@@ -143,7 +169,10 @@ describe("postcss-modular-css", function() {
 
             it("should include :global(...) identifiers in a message", function() {
                 var result = plugin.process(
-                        ":global(.wooga) { color: red; } :global(#fooga) { color: red; } :global(.googa .tooga) { color: red; }"
+                        ":global(.wooga) { color: red; } " +
+                        ":global(#fooga) { color: red; } " +
+                        ":global(.googa .tooga) { color: red; } " +
+                        "@keyframes :global(yooga) { 0% { color: red; } 100% { color: black; } }"
                     );
                 
                 assert.deepEqual(result.messages, [ {
@@ -153,7 +182,8 @@ describe("postcss-modular-css", function() {
                         fooga : "fooga",
                         googa : "googa",
                         tooga : "tooga",
-                        wooga : "wooga"
+                        wooga : "wooga",
+                        yooga : "yooga"
                     }
                 } ]);
             });
