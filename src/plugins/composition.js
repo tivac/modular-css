@@ -45,7 +45,7 @@ module.exports = postcss.plugin(plugin, function() {
         css.walkDecls("composes", function(decl) {
             var selectors;
             
-            if(decl.prev()) {
+            if(decl.prev() && decl.prev().prop !== "composes") {
                 throw decl.error("composes must be the first declaration in the rule", { word : "composes" });
             }
             
@@ -122,17 +122,19 @@ module.exports = postcss.plugin(plugin, function() {
             // Update out by walking dep graph and updating classes
             graph.overallOrder().forEach(function(selector) {
                 graph.dependenciesOf(selector).reverse().forEach(function(dep) {
-                    out[selector] = _.unique(refs[dep].concat(out[selector]));
+                    out[selector] = refs[dep].concat(out[selector]);
                 });
             });
         } catch(e) {
             throw css.error(e.toString());
         }
-        
+
         result.messages.push({
             type         : "modularcss",
             plugin       : plugin,
-            compositions : out
+            compositions : _.map(out, function(val) {
+                return _.unique(val);
+            })
         });
     };
 });

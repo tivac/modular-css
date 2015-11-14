@@ -123,6 +123,16 @@ describe("postcss-modular-css", function() {
                 booga : [ "booga" ]
             }) ]);
         });
+
+        it("should allow multiple composes declarations", function() {
+            var out = composition.process(".wooga { } .booga { } .tooga { composes: wooga; composes: booga; }");
+
+            assert.deepEqual(out.messages, [ msg({
+                wooga : [ "wooga" ],
+                booga : [ "booga" ],
+                tooga : [ "wooga", "booga" ]
+            }) ]);
+        });
         
         it("should support composing against global identifiers", function() {
             var out;
@@ -153,6 +163,20 @@ describe("postcss-modular-css", function() {
             }) ]);
 
             out = composition.process(".tooga { } .wooga { composes: global(booga) tooga; color: red; }");
+            
+            assert.deepEqual(out.messages, [ msg({
+                tooga : [ "tooga" ],
+                wooga : [ "booga", "tooga", "wooga" ]
+            }) ]);
+
+            out = composition.process(".tooga { } .wooga { composes: global(booga); composes: tooga; }");
+            
+            assert.deepEqual(out.messages, [ msg({
+                tooga : [ "tooga" ],
+                wooga : [ "booga", "tooga" ]
+            }) ]);
+
+            out = composition.process(".tooga { } .wooga { composes: global(booga); composes: tooga; color: red; }");
             
             assert.deepEqual(out.messages, [ msg({
                 tooga : [ "tooga" ],
