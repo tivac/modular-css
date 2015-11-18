@@ -27,7 +27,7 @@ function Processor(opts) {
 
     this._opts  = opts;
     this._files = {};
-    this._all   = new Graph();
+    this._graph = new Graph();
 }
 
 Processor.prototype = {
@@ -39,12 +39,9 @@ Processor.prototype = {
         var self  = this,
             start = relative(name);
 
-        this._local = new Graph();
-
-        this._addNode(start);
         this._walk(start, text);
 
-        this._local.overallOrder().forEach(function(file) {
+        this._graph.dependenciesOf(start).concat(start).forEach(function(file) {
             var details = self._files[file],
                 parsed  = parser.process(details.text, assign({}, self._opts, {
                     from  : file,
@@ -75,14 +72,14 @@ Processor.prototype = {
     },
 
     dependencies : function(file) {
-        return file ? this._all.dependenciesOf(file) : this._all.overallOrder();
+        return file ? this._graph.dependenciesOf(file) : this._graph.overallOrder();
     },
 
     css : function(args) {
         var self  = this,
             root  = postcss.root(),
             opts  = args || false,
-            files = opts.files || this._all.overallOrder();
+            files = opts.files || this._graph.overallOrder();
         
         files.forEach(function(dep) {
             var css;
@@ -107,31 +104,12 @@ Processor.prototype = {
         return this._files;
     },
 
-    _addNode : function(name) {
-        this._local.addNode(name);
-        this._all.addNode(name);
-    },
-
-    _addDependency : function(from, to) {
-        this._local.addDependency(from, to);
-        this._all.addDependency(from, to);
-    },
-
     _walk : function(name, text) {
         var self = this,
             css;
 
-        function parse(field, rule) {
-            var parsed = imports.parse(name, rule[field]);
-            
-            if(!parsed) {
-                return;
-            }
-            
-            this._addNode(parsed.source);
-            this._addDependency(name, parsed.source);
-        }
-    
+        this._graph.addNode(name);
+
         // Avoid re-parsing
         if(!this._files[name]) {
             this._files[name] = {
@@ -139,23 +117,28 @@ Processor.prototype = {
             };
             
             css = postcss.parse(text, { from : name });
-            css.walkAtRules("value", parse.bind(this, "params"));
-            css.walkDecls("composes", parse.bind(this, "value"));
-        } else {
-            // File already parsed so go figure out dep tree and copy it to the local graph
-            this._all.dependenciesOf(name).forEach(function(dependency) {
-                self._local.addNode(dependency);
-                self._local.addDependency(name, dependency);
-            });
+            css.walkAtRules("value", this._parse.bind(this, name, "params"));
+            css.walkDecls("composes", this._parse.bind(this, name, "value"));
         }
         
-        this._local.dependenciesOf(name).forEach(function(dependency) {
+        this._graph.dependenciesOf(name).forEach(function(dependency) {
             // Walk, but don't re-read files that've already been handled
             self._walk(
                 dependency,
                 self._files[dependency] ? null : fs.readFileSync(dependency, "utf8")
             );
         });
+    },
+
+    _parse : function(origin, field, rule) {
+        var parsed = imports.parse(origin, rule[field]);
+        
+        if(!parsed) {
+            return;
+        }
+        
+        this._graph.addNode(parsed.source);
+        this._graph.addDependency(origin, parsed.source);
     }
 };
 
