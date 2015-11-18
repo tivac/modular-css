@@ -4,6 +4,7 @@ var fs   = require("fs"),
     path = require("path"),
 
     through = require("through2"),
+    sink    = require("sink-transform"),
     
     assign  = require("lodash.assign"),
     diff    = require("lodash.difference"),
@@ -34,31 +35,22 @@ module.exports = function(browserify, opts) {
     }
 
     browserify.transform(function(file) {
-        var id, buffer;
+        var id;
 
         if(path.extname(file) !== options.ext) {
             return through();
         }
         
-        id     = relative(file);
-        buffer = "";
+        id = relative(file);
         common.push(id);
         
-        return through(
-            function(chunk, enc, done) {
-                buffer += chunk.toString("utf8");
-                
-                done();
-            },
+        return sink.str(function(buffer, done) {
+            var result = processor.string(file, buffer);
             
-            function(done) {
-                var result = processor.string(file, buffer);
-                
-                this.push("module.exports = " + JSON.stringify(result.exports) + ";");
-                
-                done();
-            }
-        );
+            this.push("module.exports = " + JSON.stringify(result.exports) + ";");
+            
+            done();
+        });
     }, { global : true });
 
     browserify.on("factor.pipeline", function(file, pipeline) {
