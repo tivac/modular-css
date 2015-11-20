@@ -6,7 +6,7 @@ function css(src, options) {
 }
 
 describe("postcss-modular-css", function() {
-    describe("values", function() {
+    describe("values plugin", function() {
         it("should fail to parse invalid declarations", function() {
             assert.throws(function() {
                 css("@value green");
