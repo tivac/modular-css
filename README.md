@@ -9,13 +9,17 @@ modular-css [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https
 
 Provides a subset of [css-modules](https://github.com/css-modules/css-modules) via CLI/API/Browserify transform.
 
-Like efficient bundling? Great! Modular CSS supports the [`factor-bundle`](https://github.com/substack/factor-bundle) plugin as well to enable bundling up shared dependencies.
+Like efficient bundling? Great! `modular-css` supports the [`factor-bundle`](https://github.com/substack/factor-bundle) plugin as well to enable bundling up shared dependencies.
 
 ## Why?
 
-CSS Modules is an amazing idea but mostly non-functional for our needs as of November 2015.
+CSS Modules is an amazing idea. Unfortunately it is incredibly difficult to get working in our projects right now. So to prove out the idea we built `modular-css`. In general `modular-css` is a stricter implementation of the most useful parts of the CSS Modules spec.
 
-This seemed like an interesting problem and a chance to pick & choose the most attractive parts of the CSS Modules spec while leaving out parts that we found to be confusing in practice. I also wanted more experience with PostCSS and this seemed like a great way to accomplish that.
+<p align="center">
+    <a href="https://twitter.com/iamdevloper/status/636455478093029376">
+        <img src="https://i.imgur.com/dRVweC6.png" alt="Green pills look gross" />
+    </a>
+</p>
 
 ## Features
 
@@ -41,7 +45,7 @@ Values are useful in CSS, they're coming to the spec soon. Use them now because 
 
 ### Scoped CSS
 
-By default all CSS selectors live in the global scope of the page and are chosen based on specificity rules. This has proven to be a model that makes it difficult to succeed and incredibly easy to blow off your own foot. Modular CSS scopes all selectors to the local file by default, ensuring that your CSS is always exactly as specific as it should be.
+By default all CSS selectors live in the global scope of the page and are chosen based on specificity rules. This has proven to be a model that makes it difficult to succeed and incredibly easy to blow off your own foot. `modular-css` scopes all selectors to the local file by default, ensuring that your CSS is always exactly as specific as it should be.
 
 ```css
 .wooga { color: red; }
@@ -53,7 +57,7 @@ By default all CSS selectors live in the global scope of the page and are chosen
 
 By default the selector scoping is based off hashing the contents of the file but you can also provide your own custom function.
 
-Using these now-mangled selectors would be problematic, if Modular CSS didn't give you the tools required to use them easily. When using the browserify transform any `require()` calls for CSS files will instead return an object where the keys match the classes/ids defined in the requested CSS file.
+Using these now-mangled selectors would be problematic, if `modular-css` didn't give you the tools required to use them easily. When using the browserify transform any `require()` calls for CSS files will instead return an object where the keys match the classes/ids defined in the requested CSS file.
 
 ```js
 var css = require("./styles.css");
@@ -207,7 +211,7 @@ output.css;
 
 ### Browserify
 
-Modular CSS can be used as a browserify plugin, it can also be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
+`modular-css` can be used as a browserify plugin, it can also be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
 
 #### CLI
 
@@ -237,9 +241,9 @@ build.bundle(function(err, output) {
 
 #### factor-bundle
 
-If `./home.js` and `./account.js` both reference some CSS files via composition the Modular CSS plugin will write out any shared requirements to `./common.css`, while any page-specific css will be written to either `./gen/home.css` or `./gen/account.css`.
+If `./home.js` and `./account.js` both reference some CSS files via composition the `modular-css` plugin will write out any shared requirements to `./common.css`, while any page-specific css will be written to either `./gen/home.css` or `./gen/account.css`.
 
-**WARNING**: Due to how `factor-bundle` works the Modular CSS plugin must be applied to the Browserify object **before** `factor-bundle`.
+**WARNING**: Due to how `factor-bundle` works the `modular-css` plugin must be applied to the Browserify object **before** `factor-bundle`.
 
 ##### CLI
 
