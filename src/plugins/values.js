@@ -2,23 +2,26 @@
 
 var postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
+    parser  = require("postcss-value-parser"),
     
-    imports = require("../_imports"),
-    
-    format = /^(.+?):(.*)$/i,
+    composition = require("../_composition"),
+
     plugin = "postcss-modular-css-values";
 
-function parseBase(rule) {
-    var parts = rule.params.match(format),
-        out   = {};
+function parseBase(parts) {
+    var out = {};
     
-    out[parts[1].trim()] = parts[2].trim();
-    
-    return out;
+    if(parts[0].type === "word" && parts[1].type === "div" && parts[1].value === ":") {
+        out[parts[0].value] = parser.stringify(parts.slice(2));
+
+        return out;
+    }
+
+    return false;
 }
 
-function resolveImports(options, rule) {
-    var parsed = imports.parse(options.from, rule.params),
+function resolveImports(options, rule, parts) {
+    var parsed = composition(options.from, parts),
         out    = {},
         source;
     
@@ -28,7 +31,7 @@ function resolveImports(options, rule) {
     
     source = options.files[parsed.source];
 
-    parsed.keys.forEach(function(key) {
+    parsed.rules.forEach(function(key) {
         if(!(key in source.values)) {
             throw rule.error("Invalid @value reference: " + key, { word : key });
         }
@@ -53,16 +56,15 @@ module.exports = postcss.plugin(plugin, function() {
 
         // Find all defined values, catalog them, and remove them
         css.walkAtRules("value", function(rule) {
-            var locals;
-            
-            if(rule.params.search(format) > -1) {
-                locals = parseBase(rule);
-            } else if(imports.match(rule.params)) {
-                locals = resolveImports(result.opts, rule);
-            } else {
-                throw rule.error("Invalid @value declaration", { word : rule.params });
+            var parsed = parser(rule.params).nodes,
+                locals = parseBase(parsed);
+
+            // If we couldn't parse as a simple key: value rule it's either broken
+            // or a composition rule, so try that way
+            if(!locals) {
+                locals = resolveImports(result.opts, rule, parsed);
             }
-            
+
             Object.keys(locals).forEach(function(key) {
                 values[key] = locals[key];
                 graph.addNode(key);

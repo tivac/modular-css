@@ -17,8 +17,8 @@ var fs   = require("fs"),
         require("postcss-url")
     ]),
     
-    imports  = require("./_imports"),
-    relative = require("./_relative");
+    composition = require("./_composition"),
+    relative    = require("./_relative");
 
 function Processor(opts) {
     if(!(this instanceof Processor)) {
@@ -131,12 +131,12 @@ Processor.prototype = {
     },
 
     _parse : function(origin, field, rule) {
-        var parsed = imports.parse(origin, rule[field]);
+        var parsed = composition(origin, rule[field]);
         
-        if(!parsed) {
+        if(!parsed || !parsed.source) {
             return;
         }
-        
+
         this._graph.addNode(parsed.source);
         this._graph.addDependency(origin, parsed.source);
     }
