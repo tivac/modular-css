@@ -1,4 +1,3 @@
-// TODO: rename to _composes.js
 "use strict";
 
 var path = require("path"),
