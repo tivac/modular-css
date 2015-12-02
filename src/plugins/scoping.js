@@ -20,7 +20,7 @@ module.exports = postcss.plugin(plugin, function(opts) {
             parser, current;
             
         if(!prefix && !namer) {
-            prefix = hasha(css.toString(), { algorithm : "md5" });
+            prefix = "mc" + hasha(css.toString(), { algorithm : "md5" });
         }
         
         if(typeof namer !== "function") {

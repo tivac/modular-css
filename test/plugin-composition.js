@@ -262,12 +262,12 @@ describe("postcss-modular-css", function() {
                 type    : "modularcss",
                 plugin  : "postcss-modular-css-scoping",
                 classes : {
-                    googa : "7277eb6cdd9ca80332ddd1cd83af7935_googa",
-                    wooga : "7277eb6cdd9ca80332ddd1cd83af7935_wooga"
+                    googa : "mc7277eb6cdd9ca80332ddd1cd83af7935_googa",
+                    wooga : "mc7277eb6cdd9ca80332ddd1cd83af7935_wooga"
                 }
             }, msg({
-                googa : [ "7277eb6cdd9ca80332ddd1cd83af7935_wooga" ],
-                wooga : [ "7277eb6cdd9ca80332ddd1cd83af7935_wooga" ]
+                googa : [ "mc7277eb6cdd9ca80332ddd1cd83af7935_wooga" ],
+                wooga : [ "mc7277eb6cdd9ca80332ddd1cd83af7935_wooga" ]
             }) ]);
         });
         
