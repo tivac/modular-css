@@ -216,7 +216,7 @@ output.css;
 #### CLI
 
 ```
-$ browserify -t [ modular-css --css "./style.css" ] client.js
+$ browserify -p [ modular-css --css "./style.css" ] client.js
 ```
 
 #### API
