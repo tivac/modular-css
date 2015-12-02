@@ -29,17 +29,17 @@ describe("postcss-modular-css", function() {
                         file   = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        wooga : [ "361c6a593917072a0083c6531865077d_wooga" ]
+                        wooga : [ "mc361c6a593917072a0083c6531865077d_wooga" ]
                     });
 
                     assert.equal(typeof file, "object");
 
                     assert.deepEqual(file.compositions, {
-                        wooga : [ "361c6a593917072a0083c6531865077d_wooga" ]
+                        wooga : [ "mc361c6a593917072a0083c6531865077d_wooga" ]
                     });
 
                     assert.equal(file.text, ".wooga { }");
-                    assert.equal(file.parsed.root.toResult().css, ".361c6a593917072a0083c6531865077d_wooga { }");
+                    assert.equal(file.parsed.root.toResult().css, ".mc361c6a593917072a0083c6531865077d_wooga { }");
                 });
             });
 
@@ -49,17 +49,17 @@ describe("postcss-modular-css", function() {
                         file   = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        wooga : [ "1bc1718879cff9694b0f5cc8ad7b7537_wooga" ]
+                        wooga : [ "mc1bc1718879cff9694b0f5cc8ad7b7537_wooga" ]
                     });
 
                     assert.equal(typeof file, "object");
 
                     assert.deepEqual(file.compositions, {
-                        wooga : [ "1bc1718879cff9694b0f5cc8ad7b7537_wooga" ]
+                        wooga : [ "mc1bc1718879cff9694b0f5cc8ad7b7537_wooga" ]
                     });
 
                     assert.equal(file.text, ".wooga { color: red; }\n");
-                    assert.equal(file.parsed.root.toResult().css, ".1bc1718879cff9694b0f5cc8ad7b7537_wooga { color: red; }\n");
+                    assert.equal(file.parsed.root.toResult().css, ".mc1bc1718879cff9694b0f5cc8ad7b7537_wooga { color: red; }\n");
                 });
             });
             
@@ -133,25 +133,25 @@ describe("postcss-modular-css", function() {
                         file   = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        fooga : [ "433a1e5568b4a09c50491d8f1ff70725_fooga" ],
-                        kooga : [ "433a1e5568b4a09c50491d8f1ff70725_kooga" ],
-                        wooga : [ "433a1e5568b4a09c50491d8f1ff70725_wooga" ]
+                        fooga : [ "mc433a1e5568b4a09c50491d8f1ff70725_fooga" ],
+                        kooga : [ "mc433a1e5568b4a09c50491d8f1ff70725_kooga" ],
+                        wooga : [ "mc433a1e5568b4a09c50491d8f1ff70725_wooga" ]
                     });
 
                     assert.equal(typeof file, "object");
 
                     assert.deepEqual(file.compositions, {
-                        fooga : [ "433a1e5568b4a09c50491d8f1ff70725_fooga" ],
-                        kooga : [ "433a1e5568b4a09c50491d8f1ff70725_kooga" ],
-                        wooga : [ "433a1e5568b4a09c50491d8f1ff70725_wooga" ]
+                        fooga : [ "mc433a1e5568b4a09c50491d8f1ff70725_fooga" ],
+                        kooga : [ "mc433a1e5568b4a09c50491d8f1ff70725_kooga" ],
+                        wooga : [ "mc433a1e5568b4a09c50491d8f1ff70725_wooga" ]
                     });
 
                     assert.equal(file.text, "@keyframes kooga { } #fooga { } .wooga { }");
                     assert.equal(
                         file.parsed.root.toResult().css,
-                        "@keyframes 433a1e5568b4a09c50491d8f1ff70725_kooga { } " +
-                        "#433a1e5568b4a09c50491d8f1ff70725_fooga { } " +
-                        ".433a1e5568b4a09c50491d8f1ff70725_wooga { }"
+                        "@keyframes mc433a1e5568b4a09c50491d8f1ff70725_kooga { } " +
+                        "#mc433a1e5568b4a09c50491d8f1ff70725_fooga { } " +
+                        ".mc433a1e5568b4a09c50491d8f1ff70725_wooga { }"
                     );
                 });
 
@@ -160,8 +160,8 @@ describe("postcss-modular-css", function() {
                     file;
                 
                 assert.deepEqual(result.exports, {
-                    booga : [ "669ffa9d9ce988eb34ed75f927156773_wooga" ],
-                    wooga : [ "669ffa9d9ce988eb34ed75f927156773_wooga" ]
+                    booga : [ "mc669ffa9d9ce988eb34ed75f927156773_wooga" ],
+                    wooga : [ "mc669ffa9d9ce988eb34ed75f927156773_wooga" ]
                 });
 
                 file = result.files["test/specimens/node_modules.css"];
@@ -170,17 +170,17 @@ describe("postcss-modular-css", function() {
                 assert.equal(file.parsed.root.toResult().css, "\n");
 
                 assert.deepEqual(file.compositions, {
-                    booga : [ "669ffa9d9ce988eb34ed75f927156773_wooga" ],
-                    wooga : [ "669ffa9d9ce988eb34ed75f927156773_wooga" ]
+                    booga : [ "mc669ffa9d9ce988eb34ed75f927156773_wooga" ],
+                    wooga : [ "mc669ffa9d9ce988eb34ed75f927156773_wooga" ]
                 });
 
                 file = result.files["test/specimens/node_modules/styles/styles.css"];
 
                 assert.equal(file.text, fs.readFileSync("./test/specimens/node_modules/styles/styles.css", "utf8"));
-                assert.equal(file.parsed.root.toResult().css, ".669ffa9d9ce988eb34ed75f927156773_wooga { color: white; }\n");
+                assert.equal(file.parsed.root.toResult().css, ".mc669ffa9d9ce988eb34ed75f927156773_wooga { color: white; }\n");
 
                 assert.deepEqual(file.compositions, {
-                    wooga : [ "669ffa9d9ce988eb34ed75f927156773_wooga" ]
+                    wooga : [ "mc669ffa9d9ce988eb34ed75f927156773_wooga" ]
                 });
             });
 
@@ -189,9 +189,9 @@ describe("postcss-modular-css", function() {
                     file;
                 
                 assert.deepEqual(result.exports, {
-                    wooga : [ "f5507abd3eea0987714c5d92c3230347_booga" ],
-                    booga : [ "aeacf0c6fbb2445f549ddc0fcfc1747b_booga" ],
-                    tooga : [ "aeacf0c6fbb2445f549ddc0fcfc1747b_tooga" ]
+                    wooga : [ "mcf5507abd3eea0987714c5d92c3230347_booga" ],
+                    booga : [ "mcaeacf0c6fbb2445f549ddc0fcfc1747b_booga" ],
+                    tooga : [ "mcaeacf0c6fbb2445f549ddc0fcfc1747b_tooga" ]
                 });
 
                 file = result.files["test/specimens/start.css"];
@@ -199,8 +199,8 @@ describe("postcss-modular-css", function() {
                 assert.equal(file.text, fs.readFileSync("./test/specimens/start.css", "utf8"));
                 assert.equal(
                     file.parsed.root.toResult().css,
-                    ".aeacf0c6fbb2445f549ddc0fcfc1747b_booga { color: red; background: blue; }\n" +
-                    ".aeacf0c6fbb2445f549ddc0fcfc1747b_tooga { border: 1px solid white; }\n"
+                    ".mcaeacf0c6fbb2445f549ddc0fcfc1747b_booga { color: red; background: blue; }\n" +
+                    ".mcaeacf0c6fbb2445f549ddc0fcfc1747b_tooga { border: 1px solid white; }\n"
                 );
 
                 assert.deepEqual(file.values, {
@@ -210,15 +210,15 @@ describe("postcss-modular-css", function() {
                 });
 
                 assert.deepEqual(file.compositions, {
-                    wooga : [ "f5507abd3eea0987714c5d92c3230347_booga" ],
-                    booga : [ "aeacf0c6fbb2445f549ddc0fcfc1747b_booga" ],
-                    tooga : [ "aeacf0c6fbb2445f549ddc0fcfc1747b_tooga" ]
+                    wooga : [ "mcf5507abd3eea0987714c5d92c3230347_booga" ],
+                    booga : [ "mcaeacf0c6fbb2445f549ddc0fcfc1747b_booga" ],
+                    tooga : [ "mcaeacf0c6fbb2445f549ddc0fcfc1747b_tooga" ]
                 });
 
                 file = result.files["test/specimens/local.css"];
 
                 assert.equal(file.text, fs.readFileSync("./test/specimens/local.css", "utf8"));
-                assert.equal(file.parsed.root.toResult().css, ".f5507abd3eea0987714c5d92c3230347_booga { background: green; }\n");
+                assert.equal(file.parsed.root.toResult().css, ".mcf5507abd3eea0987714c5d92c3230347_booga { background: green; }\n");
 
                 assert.deepEqual(file.values, {
                     folder : "white",
@@ -227,21 +227,21 @@ describe("postcss-modular-css", function() {
                 });
 
                 assert.deepEqual(file.compositions, {
-                    booga : [ "f5507abd3eea0987714c5d92c3230347_booga" ],
-                    looga : [ "f5507abd3eea0987714c5d92c3230347_booga" ]
+                    booga : [ "mcf5507abd3eea0987714c5d92c3230347_booga" ],
+                    looga : [ "mcf5507abd3eea0987714c5d92c3230347_booga" ]
                 });
 
                 file = result.files["test/specimens/folder/folder.css"];
 
                 assert.equal(file.text, fs.readFileSync("./test/specimens/folder/folder.css", "utf8"));
-                assert.equal(file.parsed.root.toResult().css, ".dafdfcc7dc876084d352519086f9e6e9_folder { margin: 2px; }\n");
+                assert.equal(file.parsed.root.toResult().css, ".mcdafdfcc7dc876084d352519086f9e6e9_folder { margin: 2px; }\n");
 
                 assert.deepEqual(file.values, {
                     folder : "white"
                 });
                 
                 assert.deepEqual(file.compositions, {
-                    folder : [ "dafdfcc7dc876084d352519086f9e6e9_folder" ]
+                    folder : [ "mcdafdfcc7dc876084d352519086f9e6e9_folder" ]
                 });
             });
 

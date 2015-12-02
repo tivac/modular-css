@@ -16,8 +16,8 @@ describe("postcss-modular-css", function() {
             
             assert.equal(
                 out.css,
-                "@keyframes b4af99404319798e981c4177a3a110fc_kooga { } " +
-                ".b4af99404319798e981c4177a3a110fc_wooga { animation: b4af99404319798e981c4177a3a110fc_kooga; }"
+                "@keyframes mcb4af99404319798e981c4177a3a110fc_kooga { } " +
+                ".mcb4af99404319798e981c4177a3a110fc_wooga { animation: mcb4af99404319798e981c4177a3a110fc_kooga; }"
             );
         });
 
@@ -28,8 +28,8 @@ describe("postcss-modular-css", function() {
             
             assert.equal(
                 out.css,
-                "@-webkit-keyframes da556213f48c595171cbc3ab40b8b727_kooga { } " +
-                ".da556213f48c595171cbc3ab40b8b727_wooga { animation: da556213f48c595171cbc3ab40b8b727_kooga; }"
+                "@-webkit-keyframes mcda556213f48c595171cbc3ab40b8b727_kooga { } " +
+                ".mcda556213f48c595171cbc3ab40b8b727_wooga { animation: mcda556213f48c595171cbc3ab40b8b727_kooga; }"
             );
         });
     });
