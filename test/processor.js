@@ -29,17 +29,17 @@ describe("postcss-modular-css", function() {
                         file   = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        wooga : [ "mc361c6a593917072a0083c6531865077d_wooga" ]
+                        wooga : [ "08e91a5b_wooga" ]
                     });
 
                     assert.equal(typeof file, "object");
 
                     assert.deepEqual(file.compositions, {
-                        wooga : [ "mc361c6a593917072a0083c6531865077d_wooga" ]
+                        wooga : [ "08e91a5b_wooga" ]
                     });
 
                     assert.equal(file.text, ".wooga { }");
-                    assert.equal(file.parsed.root.toResult().css, ".mc361c6a593917072a0083c6531865077d_wooga { }");
+                    assert.equal(file.parsed.root.toResult().css, ".08e91a5b_wooga { }");
                 });
             });
 
@@ -49,17 +49,17 @@ describe("postcss-modular-css", function() {
                         file   = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        wooga : [ "mc1bc1718879cff9694b0f5cc8ad7b7537_wooga" ]
+                        wooga : [ "08e91a5b_wooga" ]
                     });
 
                     assert.equal(typeof file, "object");
 
                     assert.deepEqual(file.compositions, {
-                        wooga : [ "mc1bc1718879cff9694b0f5cc8ad7b7537_wooga" ]
+                        wooga : [ "08e91a5b_wooga" ]
                     });
 
                     assert.equal(file.text, ".wooga { color: red; }\n");
-                    assert.equal(file.parsed.root.toResult().css, ".mc1bc1718879cff9694b0f5cc8ad7b7537_wooga { color: red; }\n");
+                    assert.equal(file.parsed.root.toResult().css, ".08e91a5b_wooga { color: red; }\n");
                 });
             });
             
@@ -133,25 +133,25 @@ describe("postcss-modular-css", function() {
                         file   = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        fooga : [ "mc433a1e5568b4a09c50491d8f1ff70725_fooga" ],
-                        kooga : [ "mc433a1e5568b4a09c50491d8f1ff70725_kooga" ],
-                        wooga : [ "mc433a1e5568b4a09c50491d8f1ff70725_wooga" ]
+                        fooga : [ "08e91a5b_fooga" ],
+                        kooga : [ "08e91a5b_kooga" ],
+                        wooga : [ "08e91a5b_wooga" ]
                     });
 
                     assert.equal(typeof file, "object");
 
                     assert.deepEqual(file.compositions, {
-                        fooga : [ "mc433a1e5568b4a09c50491d8f1ff70725_fooga" ],
-                        kooga : [ "mc433a1e5568b4a09c50491d8f1ff70725_kooga" ],
-                        wooga : [ "mc433a1e5568b4a09c50491d8f1ff70725_wooga" ]
+                        fooga : [ "08e91a5b_fooga" ],
+                        kooga : [ "08e91a5b_kooga" ],
+                        wooga : [ "08e91a5b_wooga" ]
                     });
 
                     assert.equal(file.text, "@keyframes kooga { } #fooga { } .wooga { }");
                     assert.equal(
                         file.parsed.root.toResult().css,
-                        "@keyframes mc433a1e5568b4a09c50491d8f1ff70725_kooga { } " +
-                        "#mc433a1e5568b4a09c50491d8f1ff70725_fooga { } " +
-                        ".mc433a1e5568b4a09c50491d8f1ff70725_wooga { }"
+                        "@keyframes 08e91a5b_kooga { } " +
+                        "#08e91a5b_fooga { } " +
+                        ".08e91a5b_wooga { }"
                     );
                 });
 
