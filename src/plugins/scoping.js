@@ -3,7 +3,7 @@
 var postcss      = require("postcss"),
     createParser = require("postcss-selector-parser"),
     
-    hasha = require("hasha"),
+    unique = require("unique-slug"),
 
     identifiers = require("../_identifiers"),
     
@@ -20,7 +20,9 @@ module.exports = postcss.plugin(plugin, function(opts) {
             parser, current;
             
         if(!prefix && !namer) {
-            prefix = "mc" + hasha(css.toString(), { algorithm : "md5" });
+            namer = function(file, selector) {
+                return "mc" + unique(file) + "_" + selector;
+            };
         }
         
         if(typeof namer !== "function") {
