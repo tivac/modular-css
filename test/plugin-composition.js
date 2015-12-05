@@ -5,7 +5,9 @@ var assert = require("assert"),
     postcss = require("postcss"),
     
     scoping     = require("../src/plugins/scoping"),
-    composition = require("../src/plugins/composition");
+    composition = require("../src/plugins/composition"),
+    
+    from = { from : "test/specimens/simple.css" };
 
 function msg(compositions) {
     return {
@@ -256,18 +258,18 @@ describe("postcss-modular-css", function() {
         });
         
         it("should find scoped identifiers from the scoping plugin's message", function() {
-            var out = postcss([ scoping, composition ]).process(".wooga { color: red; } .googa { composes: wooga; }");
+            var out = postcss([ scoping, composition ]).process(".wooga { color: red; } .googa { composes: wooga; }", from);
             
             assert.deepEqual(out.messages, [ {
                 type    : "modularcss",
                 plugin  : "postcss-modular-css-scoping",
                 classes : {
-                    googa : "mc7277eb6cdd9ca80332ddd1cd83af7935_googa",
-                    wooga : "mc7277eb6cdd9ca80332ddd1cd83af7935_wooga"
+                    googa : "mc08e91a5b_googa",
+                    wooga : "mc08e91a5b_wooga"
                 }
             }, msg({
-                googa : [ "mc7277eb6cdd9ca80332ddd1cd83af7935_wooga" ],
-                wooga : [ "mc7277eb6cdd9ca80332ddd1cd83af7935_wooga" ]
+                googa : [ "mc08e91a5b_wooga" ],
+                wooga : [ "mc08e91a5b_wooga" ]
             }) ]);
         });
         

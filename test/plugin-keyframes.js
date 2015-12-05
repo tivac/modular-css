@@ -11,25 +11,27 @@ describe("postcss-modular-css", function() {
     describe("plugin-keyframes", function() {
         it("should update scoped animations from the scoping plugin's message", function() {
             var out = postcss([ scoping, keyframes ]).process(
-                    "@keyframes kooga { } .wooga { animation: kooga; }"
+                    "@keyframes kooga { } .wooga { animation: kooga; }",
+                    { from : "test/specimens/simple.css" }
                 );
             
             assert.equal(
                 out.css,
-                "@keyframes mcb4af99404319798e981c4177a3a110fc_kooga { } " +
-                ".mcb4af99404319798e981c4177a3a110fc_wooga { animation: mcb4af99404319798e981c4177a3a110fc_kooga; }"
+                "@keyframes mc08e91a5b_kooga { } " +
+                ".mc08e91a5b_wooga { animation: mc08e91a5b_kooga; }"
             );
         });
 
         it("should update scoped prefixed animations from the scoping plugin's message", function() {
             var out = postcss([ scoping, keyframes ]).process(
-                    "@-webkit-keyframes kooga { } .wooga { animation: kooga; }"
+                    "@-webkit-keyframes kooga { } .wooga { animation: kooga; }",
+                    { from : "test/specimens/simple.css" }
                 );
             
             assert.equal(
                 out.css,
-                "@-webkit-keyframes mcda556213f48c595171cbc3ab40b8b727_kooga { } " +
-                ".mcda556213f48c595171cbc3ab40b8b727_wooga { animation: mcda556213f48c595171cbc3ab40b8b727_kooga; }"
+                "@-webkit-keyframes mc08e91a5b_kooga { } " +
+                ".mc08e91a5b_wooga { animation: mc08e91a5b_kooga; }"
             );
         });
     });

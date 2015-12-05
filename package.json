@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "dependency-graph": "^0.4.1",
-    "hasha": "^2.0.2",
     "lodash.assign": "^3.2.0",
     "lodash.difference": "^3.2.2",
     "lodash.filter": "^3.1.1",
@@ -44,6 +43,7 @@
     "resolve-from": "^1.0.1",
     "sink-transform": "^1.0.0",
     "through2": "^2.0.0",
+    "unique-slug": "^2.0.0",
     "update-notifier": "^0.5.0"
   },
   "eslintConfig": {
