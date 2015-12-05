@@ -11,14 +11,14 @@ describe("postcss-modular-css", function() {
         it("should generate a prefix for class names", function() {
             assert.equal(
                 css(".wooga { color: red; }"),
-                ".08e91a5b_wooga { color: red; }"
+                ".mc08e91a5b_wooga { color: red; }"
             );
         });
         
         it("should generate a prefix for ids", function() {
             assert.equal(
                 css("#wooga { color: red; }"),
-                "#08e91a5b_wooga { color: red; }"
+                "#mc08e91a5b_wooga { color: red; }"
             );
         });
         
@@ -32,51 +32,51 @@ describe("postcss-modular-css", function() {
         it("should transform class/id selectors", function() {
             assert.equal(
                 css(".wooga p { color: red; }"),
-                ".08e91a5b_wooga p { color: red; }"
+                ".mc08e91a5b_wooga p { color: red; }"
             );
 
             assert.equal(
                 css("#wooga p { color: red; }"),
-                "#08e91a5b_wooga p { color: red; }"
+                "#mc08e91a5b_wooga p { color: red; }"
             );
             
             assert.equal(
                 css("#wooga .booga { color: red; }"),
-                "#08e91a5b_wooga .08e91a5b_booga { color: red; }"
+                "#mc08e91a5b_wooga .mc08e91a5b_booga { color: red; }"
             );
 
             assert.equal(
                 css("#wooga { color: red; } #wooga:hover { color: blue; }"),
-                "#08e91a5b_wooga { color: red; } #08e91a5b_wooga:hover { color: blue; }"
+                "#mc08e91a5b_wooga { color: red; } #mc08e91a5b_wooga:hover { color: blue; }"
             );
 
             assert.equal(
                 css(".wooga { color: red; } .wooga:hover { color: black; }"),
-                ".08e91a5b_wooga { color: red; } .08e91a5b_wooga:hover { color: black; }"
+                ".mc08e91a5b_wooga { color: red; } .mc08e91a5b_wooga:hover { color: black; }"
             );
         });
         
         it("should transform selectors within media queries", function() {
             assert.equal(
                 css("@media (max-width: 100px) { .booga { color: red; } }"),
-                "@media (max-width: 100px) { .08e91a5b_booga { color: red; } }"
+                "@media (max-width: 100px) { .mc08e91a5b_booga { color: red; } }"
             );
         });
 
         it("should transform the names of @keyframes rules", function() {
             assert.equal(
                 css("@keyframes fooga { }"),
-                "@keyframes 08e91a5b_fooga { }"
+                "@keyframes mc08e91a5b_fooga { }"
             );
 
             assert.equal(
                 css("@-webkit-keyframes fooga { }"),
-                "@-webkit-keyframes 08e91a5b_fooga { }"
+                "@-webkit-keyframes mc08e91a5b_fooga { }"
             );
 
             assert.equal(
                 css("@-moz-keyframes fooga { }"),
-                "@-moz-keyframes 08e91a5b_fooga { }"
+                "@-moz-keyframes mc08e91a5b_fooga { }"
             );
         });
         
@@ -108,9 +108,9 @@ describe("postcss-modular-css", function() {
                 type    : "modularcss",
                 plugin  : "postcss-modular-css-scoping",
                 classes : {
-                    booga : "08e91a5b_booga",
-                    fooga : "08e91a5b_fooga",
-                    wooga : "08e91a5b_wooga"
+                    booga : "mc08e91a5b_booga",
+                    fooga : "mc08e91a5b_fooga",
+                    wooga : "mc08e91a5b_wooga"
                 }
             } ]);
         });
@@ -158,7 +158,7 @@ describe("postcss-modular-css", function() {
             it("should support mixed local & global selectors", function() {
                 assert.equal(
                     css(":global(#wooga), .wooga { color: red; }"),
-                    "#wooga, .08e91a5b_wooga { color: red; }"
+                    "#wooga, .mc08e91a5b_wooga { color: red; }"
                 );
             });
 

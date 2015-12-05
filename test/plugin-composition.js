@@ -264,12 +264,12 @@ describe("postcss-modular-css", function() {
                 type    : "modularcss",
                 plugin  : "postcss-modular-css-scoping",
                 classes : {
-                    googa : "08e91a5b_googa",
-                    wooga : "08e91a5b_wooga"
+                    googa : "mc08e91a5b_googa",
+                    wooga : "mc08e91a5b_wooga"
                 }
             }, msg({
-                googa : [ "08e91a5b_wooga" ],
-                wooga : [ "08e91a5b_wooga" ]
+                googa : [ "mc08e91a5b_wooga" ],
+                wooga : [ "mc08e91a5b_wooga" ]
             }) ]);
         });
         

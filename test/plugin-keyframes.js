@@ -17,8 +17,8 @@ describe("postcss-modular-css", function() {
             
             assert.equal(
                 out.css,
-                "@keyframes 08e91a5b_kooga { } " +
-                ".08e91a5b_wooga { animation: 08e91a5b_kooga; }"
+                "@keyframes mc08e91a5b_kooga { } " +
+                ".mc08e91a5b_wooga { animation: mc08e91a5b_kooga; }"
             );
         });
 
@@ -30,8 +30,8 @@ describe("postcss-modular-css", function() {
             
             assert.equal(
                 out.css,
-                "@-webkit-keyframes 08e91a5b_kooga { } " +
-                ".08e91a5b_wooga { animation: 08e91a5b_kooga; }"
+                "@-webkit-keyframes mc08e91a5b_kooga { } " +
+                ".mc08e91a5b_wooga { animation: mc08e91a5b_kooga; }"
             );
         });
     });

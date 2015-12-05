@@ -1,1 +1,1 @@
-module.exports = {"booga":["04cb4cb2_booga"],"looga":["04cb4cb2_booga"]};
+module.exports = {"booga":["mc04cb4cb2_booga"],"looga":["mc04cb4cb2_booga"]};

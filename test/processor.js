@@ -29,17 +29,17 @@ describe("postcss-modular-css", function() {
                         file   = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        wooga : [ "08e91a5b_wooga" ]
+                        wooga : [ "mc08e91a5b_wooga" ]
                     });
 
                     assert.equal(typeof file, "object");
 
                     assert.deepEqual(file.compositions, {
-                        wooga : [ "08e91a5b_wooga" ]
+                        wooga : [ "mc08e91a5b_wooga" ]
                     });
 
                     assert.equal(file.text, ".wooga { }");
-                    assert.equal(file.parsed.root.toResult().css, ".08e91a5b_wooga { }");
+                    assert.equal(file.parsed.root.toResult().css, ".mc08e91a5b_wooga { }");
                 });
             });
 
@@ -49,17 +49,17 @@ describe("postcss-modular-css", function() {
                         file   = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        wooga : [ "08e91a5b_wooga" ]
+                        wooga : [ "mc08e91a5b_wooga" ]
                     });
 
                     assert.equal(typeof file, "object");
 
                     assert.deepEqual(file.compositions, {
-                        wooga : [ "08e91a5b_wooga" ]
+                        wooga : [ "mc08e91a5b_wooga" ]
                     });
 
                     assert.equal(file.text, ".wooga { color: red; }\n");
-                    assert.equal(file.parsed.root.toResult().css, ".08e91a5b_wooga { color: red; }\n");
+                    assert.equal(file.parsed.root.toResult().css, ".mc08e91a5b_wooga { color: red; }\n");
                 });
             });
             
@@ -133,25 +133,25 @@ describe("postcss-modular-css", function() {
                         file   = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        fooga : [ "08e91a5b_fooga" ],
-                        kooga : [ "08e91a5b_kooga" ],
-                        wooga : [ "08e91a5b_wooga" ]
+                        fooga : [ "mc08e91a5b_fooga" ],
+                        kooga : [ "mc08e91a5b_kooga" ],
+                        wooga : [ "mc08e91a5b_wooga" ]
                     });
 
                     assert.equal(typeof file, "object");
 
                     assert.deepEqual(file.compositions, {
-                        fooga : [ "08e91a5b_fooga" ],
-                        kooga : [ "08e91a5b_kooga" ],
-                        wooga : [ "08e91a5b_wooga" ]
+                        fooga : [ "mc08e91a5b_fooga" ],
+                        kooga : [ "mc08e91a5b_kooga" ],
+                        wooga : [ "mc08e91a5b_wooga" ]
                     });
 
                     assert.equal(file.text, "@keyframes kooga { } #fooga { } .wooga { }");
                     assert.equal(
                         file.parsed.root.toResult().css,
-                        "@keyframes 08e91a5b_kooga { } " +
-                        "#08e91a5b_fooga { } " +
-                        ".08e91a5b_wooga { }"
+                        "@keyframes mc08e91a5b_kooga { } " +
+                        "#mc08e91a5b_fooga { } " +
+                        ".mc08e91a5b_wooga { }"
                     );
                 });
 
@@ -160,8 +160,8 @@ describe("postcss-modular-css", function() {
                     file;
                 
                 assert.deepEqual(result.exports, {
-                    booga : [ "1fad4cc3_wooga" ],
-                    wooga : [ "1fad4cc3_wooga" ]
+                    booga : [ "mc1fad4cc3_wooga" ],
+                    wooga : [ "mc1fad4cc3_wooga" ]
                 });
 
                 file = result.files["test/specimens/node_modules.css"];
@@ -170,17 +170,17 @@ describe("postcss-modular-css", function() {
                 assert.equal(file.parsed.root.toResult().css, "\n");
 
                 assert.deepEqual(file.compositions, {
-                    booga : [ "1fad4cc3_wooga" ],
-                    wooga : [ "1fad4cc3_wooga" ]
+                    booga : [ "mc1fad4cc3_wooga" ],
+                    wooga : [ "mc1fad4cc3_wooga" ]
                 });
 
                 file = result.files["test/specimens/node_modules/styles/styles.css"];
 
                 assert.equal(file.text, fs.readFileSync("./test/specimens/node_modules/styles/styles.css", "utf8"));
-                assert.equal(file.parsed.root.toResult().css, ".1fad4cc3_wooga { color: white; }\n");
+                assert.equal(file.parsed.root.toResult().css, ".mc1fad4cc3_wooga { color: white; }\n");
 
                 assert.deepEqual(file.compositions, {
-                    wooga : [ "1fad4cc3_wooga" ]
+                    wooga : [ "mc1fad4cc3_wooga" ]
                 });
             });
 
@@ -189,9 +189,9 @@ describe("postcss-modular-css", function() {
                     file;
                 
                 assert.deepEqual(result.exports, {
-                    wooga : [ "04cb4cb2_booga" ],
-                    booga : [ "61f0515a_booga" ],
-                    tooga : [ "61f0515a_tooga" ]
+                    wooga : [ "mc04cb4cb2_booga" ],
+                    booga : [ "mc61f0515a_booga" ],
+                    tooga : [ "mc61f0515a_tooga" ]
                 });
 
                 file = result.files["test/specimens/start.css"];
@@ -199,8 +199,8 @@ describe("postcss-modular-css", function() {
                 assert.equal(file.text, fs.readFileSync("./test/specimens/start.css", "utf8"));
                 assert.equal(
                     file.parsed.root.toResult().css,
-                    ".61f0515a_booga { color: red; background: blue; }\n" +
-                    ".61f0515a_tooga { border: 1px solid white; }\n"
+                    ".mc61f0515a_booga { color: red; background: blue; }\n" +
+                    ".mc61f0515a_tooga { border: 1px solid white; }\n"
                 );
 
                 assert.deepEqual(file.values, {
@@ -210,15 +210,15 @@ describe("postcss-modular-css", function() {
                 });
 
                 assert.deepEqual(file.compositions, {
-                    wooga : [ "04cb4cb2_booga" ],
-                    booga : [ "61f0515a_booga" ],
-                    tooga : [ "61f0515a_tooga" ]
+                    wooga : [ "mc04cb4cb2_booga" ],
+                    booga : [ "mc61f0515a_booga" ],
+                    tooga : [ "mc61f0515a_tooga" ]
                 });
 
                 file = result.files["test/specimens/local.css"];
 
                 assert.equal(file.text, fs.readFileSync("./test/specimens/local.css", "utf8"));
-                assert.equal(file.parsed.root.toResult().css, ".04cb4cb2_booga { background: green; }\n");
+                assert.equal(file.parsed.root.toResult().css, ".mc04cb4cb2_booga { background: green; }\n");
 
                 assert.deepEqual(file.values, {
                     folder : "white",
@@ -227,21 +227,21 @@ describe("postcss-modular-css", function() {
                 });
 
                 assert.deepEqual(file.compositions, {
-                    booga : [ "04cb4cb2_booga" ],
-                    looga : [ "04cb4cb2_booga" ]
+                    booga : [ "mc04cb4cb2_booga" ],
+                    looga : [ "mc04cb4cb2_booga" ]
                 });
 
                 file = result.files["test/specimens/folder/folder.css"];
 
                 assert.equal(file.text, fs.readFileSync("./test/specimens/folder/folder.css", "utf8"));
-                assert.equal(file.parsed.root.toResult().css, ".04bb002b_folder { margin: 2px; }\n");
+                assert.equal(file.parsed.root.toResult().css, ".mc04bb002b_folder { margin: 2px; }\n");
 
                 assert.deepEqual(file.values, {
                     folder : "white"
                 });
                 
                 assert.deepEqual(file.compositions, {
-                    folder : [ "04bb002b_folder" ]
+                    folder : [ "mc04bb002b_folder" ]
                 });
             });
 
