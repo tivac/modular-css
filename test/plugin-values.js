@@ -33,7 +33,7 @@ describe("postcss-modular-css", function() {
                         }
                     }
                 });
-            }, /Cannot find module '\.\/no\.css'/);
+            }, /Unable to resolve/);
         });
 
         it("should fail if non-existant imports are referenced", function() {

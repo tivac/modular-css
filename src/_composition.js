@@ -1,6 +1,7 @@
 "use strict";
 
 var path = require("path"),
+    util = require("util"),
     
     resolve  = require("resolve-from"),
     values   = require("postcss-value-parser"),
@@ -47,6 +48,16 @@ var path = require("path"),
         }
     },
     types = Object.keys(check);
+
+function resolver(dir, ref) {
+    var file = resolve(dir, ref);
+
+    if(!file) {
+        throw new Error(util.format("Unable to resolve \"%s\" from \"%s\"", ref, dir));
+    }
+
+    return file;
+}
 
 module.exports = function parse(file, input) {
     /* eslint complexity:[2, 16], no-loop-func:0 */
@@ -119,7 +130,7 @@ module.exports = function parse(file, input) {
         }
 
         if(state.type === "source" && state.prev === "space") {
-            out.source = relative(resolve(path.dirname(file), node.value));
+            out.source = relative(resolver(path.dirname(file), node.value));
             continue;
         }
 
