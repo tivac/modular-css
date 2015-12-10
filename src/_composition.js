@@ -49,7 +49,7 @@ var path = require("path"),
     types = Object.keys(check);
 
 module.exports = function parse(file, input) {
-    /* eslint complexity:[2, 16], no-loop-func:0 */
+    /* eslint complexity:[2, 17], no-loop-func:0 */
     var out = {
             rules  : [],
             types  : {},
@@ -67,7 +67,7 @@ module.exports = function parse(file, input) {
         },
         nodes, node;
 
-    nodes = typeof input === "string" ? values(input.trim()).nodes : input;
+    nodes = values(input.trim()).nodes;
 
     for(state.pos = 0; state.pos < nodes.length; state.pos++) {
         node = nodes[state.pos];
@@ -119,7 +119,13 @@ module.exports = function parse(file, input) {
         }
 
         if(state.type === "source" && state.prev === "space") {
-            out.source = relative(resolve(path.dirname(file), node.value));
+            out.source = resolve(path.dirname(file), node.value);
+
+            if(!out.source) {
+                throw new Error("Unable to locate \"" + node.value + "\" from \"" + path.dirname(file) + "\"");
+            }
+
+            out.source = relative(out.source);
             continue;
         }
 

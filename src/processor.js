@@ -6,19 +6,23 @@ var fs   = require("fs"),
     Graph    = require("dependency-graph").DepGraph,
     postcss  = require("postcss"),
 
-    parser = postcss([
-        require("./plugins/values.js"),
+    preprocess = postcss([
+        require("./plugins/values-local"),
+        require("./plugins/graph-nodes")
+    ]),
+
+    postprocess = postcss([
+        require("./plugins/values-composed.js"),
         require("./plugins/scoping.js"),
         require("./plugins/composition.js"),
         require("./plugins/keyframes.js")
     ]),
-    
+
     urls = postcss([
         require("postcss-url")
     ]),
-    
-    composition = require("./_composition"),
-    relative    = require("./_relative");
+
+    relative = require("./_relative");
 
 function Processor(opts) {
     if(!(this instanceof Processor)) {
@@ -40,29 +44,37 @@ Processor.prototype = {
             start = relative(name);
 
         this._walk(start, text);
-
+        
         this._graph.dependenciesOf(start).concat(start).forEach(function(file) {
             var details = self._files[file],
-                parsed  = parser.process(details.text, assign({}, self._opts, {
-                    from  : file,
-                    files : self._files
-                }));
+                parsed;
+                
+            if(details.complete) {
+                return;
+            }
+                
+            parsed = postprocess.process(details.parsed, assign({}, self._opts, {
+                from  : file,
+                files : self._files
+            }));
             
-            details.parsed = parsed;
-            
-            parsed.messages.forEach(function(msg) {
+            // Combine messages from both postcss passes before pulling out relevant info
+            details.parsed.messages.concat(parsed.messages).forEach(function(msg) {
                 if(msg.values) {
-                    details.values = msg.values;
+                    details.values = assign(details.values || {}, msg.values);
                     
                     return;
                 }
                 
                 if(msg.compositions) {
-                    details.compositions = msg.compositions;
+                    details.compositions = assign(details.compositions || {}, msg.compositions);
                     
                     return;
                 }
             });
+            
+            details.complete = true;
+            details.parsed = parsed;
         });
         
         return {
@@ -106,39 +118,32 @@ Processor.prototype = {
 
     _walk : function(name, text) {
         var self = this,
-            css;
+            parsed;
 
         this._graph.addNode(name);
 
-        // Avoid re-parsing
-        if(!this._files[name]) {
-            this._files[name] = {
-                text : text
-            };
+        // Avoid re-processing files we've already seen
+        if(!(name in this._files)) {
+            parsed = preprocess.process(text, { from : name, graph : this._graph });
             
-            css = postcss.parse(text, { from : name });
-            css.walkAtRules("value", this._parse.bind(this, name, "params"));
-            css.walkDecls("composes", this._parse.bind(this, name, "value"));
+            // This is super-weird, but we need to trigger processing
+            // so that the graph is updated
+            /* eslint no-unused-expressions:0 */
+            parsed.css;
+
+            this._files[name] = {
+                parsed : parsed,
+                text   : text
+            };
         }
         
+        // Walk this node's dependencies, reading new files from disk as necessary
         this._graph.dependenciesOf(name).forEach(function(dependency) {
-            // Walk, but don't re-read files that've already been handled
             self._walk(
                 dependency,
                 self._files[dependency] ? null : fs.readFileSync(dependency, "utf8")
             );
         });
-    },
-
-    _parse : function(origin, field, rule) {
-        var parsed = composition(origin, rule[field]);
-        
-        if(!parsed || !parsed.source) {
-            return;
-        }
-
-        this._graph.addNode(parsed.source);
-        this._graph.addDependency(origin, parsed.source);
     }
 };
 

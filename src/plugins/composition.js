@@ -44,14 +44,14 @@ module.exports = postcss.plugin(plugin, function() {
             if(decl.prev() && decl.prev().prop !== "composes") {
                 throw decl.error("composes must be the first declaration in the rule", { word : "composes" });
             }
-            
+
             selectors = identifiers.parse(decl.parent.selector);
             details   = composition(opts.from, decl.value);
 
             if(!details) {
                 throw decl.error("Unable to parse rule", { word : decl.value });
             }
-
+            
             if(details.source && (!opts.files || !opts.files[details.source])) {
                 throw decl.error("Invalid file reference", { word : decl.value });
             }
