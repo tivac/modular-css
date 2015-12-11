@@ -3,6 +3,7 @@
 var fs   = require("fs"),
 
     assign   = require("lodash.assign"),
+    map      = require("lodash.mapvalues"),
     Graph    = require("dependency-graph").DepGraph,
     postcss  = require("postcss"),
 
@@ -79,7 +80,9 @@ Processor.prototype = {
         
         return {
             files   : this._files,
-            exports : this._files[start].compositions
+            exports : map(this._files[start].compositions, function(exports) {
+                return exports.join(" ");
+            })
         };
     },
 
