@@ -52,7 +52,7 @@ By default all CSS selectors live in the global scope of the page and are chosen
 
 /* Becomes */
 
-.f5507abd3eea0987714c5d92c3230347_wooga { color: red; }
+.f5507abd_wooga { color: red; }
 ```
 
 By default the selector scoping is based off hashing the contents of the file but you can also provide your own custom function.
@@ -65,15 +65,15 @@ var css = require("./styles.css");
 // css is:
 /*
 {
-    wooga : [ "f5507abd3eea0987714c5d92c3230347_wooga" ],
+    wooga : "f5507abd3_wooga",
     ...
 }
 */
 
 // so mithril code (or any templating code!) can do the following
-m("div", { class : css.wooga.join(" ") });
+m("div", { class : css.wooga });
 // which would output
-// <div class="f5507abd3eea0987714c5d92c3230347_wooga"></div>
+// <div class="f5507abd_wooga"></div>
 ```
 
 These arrays of selectors can then be applied to elements using the much more nicely-named object keys and you're off to the races.
@@ -90,7 +90,7 @@ var css = require("./styles.css");
 // css is:
 /*
 {
-    global : [ "global" ]
+    global : "global"
 }
 */
 ```
@@ -129,21 +129,11 @@ var css = require("./styles.css");
 // css is:
 /*
 {
-    single : [
-        "dafdfcc7dc876084d352519086f9e6e9_other",
-        "aeacf0c6fbb2445f549ddc0fcfc1747b_single"
-    ],
-    multiple : [
-        "dafdfcc7dc876084d352519086f9e6e9_more",
-        "f5507abd3eea0987714c5d92c3230347_than",
-        "aeacf0c6fbb2445f549ddc0fcfc1747b_one"
-        // Since .multiple is only a singular composes: declaration there's no need
-        // for it to be rewritten, it's left out of the output
-    ],
-    local : [
-        "dafdfcc7dc876084d352519086f9e6e9_other",
-        "aeacf0c6fbb2445f549ddc0fcfc1747b_single"
-    ]
+    single   : "dafdfcc_other aeacf0c_single",
+    // Since .multiple is only a singular composes: declaration there's no need
+    // for it to be rewritten, it's left out of the output
+    multiple : "dafdfcc_more f5507abd_than aeacf0c_one",
+    local    : "dafdfcc_other aeacf0c_single"
 }
 */
 ```
