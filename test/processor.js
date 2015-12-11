@@ -29,7 +29,7 @@ describe("postcss-modular-css", function() {
                         file   = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        wooga : [ "mc08e91a5b_wooga" ]
+                        wooga : "mc08e91a5b_wooga"
                     });
 
                     assert.equal(typeof file, "object");
@@ -49,7 +49,7 @@ describe("postcss-modular-css", function() {
                         file   = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        wooga : [ "mc08e91a5b_wooga" ]
+                        wooga : "mc08e91a5b_wooga"
                     });
 
                     assert.equal(typeof file, "object");
@@ -70,7 +70,7 @@ describe("postcss-modular-css", function() {
                         file      = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        wooga : [ "googa_wooga" ]
+                        wooga : "googa_wooga"
                     });
 
                     assert.equal(typeof file, "object");
@@ -93,7 +93,7 @@ describe("postcss-modular-css", function() {
                         file      = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        wooga : [ "test/specimens/simple.csswooga" ]
+                        wooga : "test/specimens/simple.csswooga"
                     });
 
                     assert.equal(typeof file, "object");
@@ -128,14 +128,27 @@ describe("postcss-modular-css", function() {
                 });
             });
             
+            it("should export an object of space-separated strings", function() {
+                var result = this.processor.string(
+                        "./test/specimens/simple.css",
+                        ".fooga { color: red; } .booga { background: #000; } .tooga { composes: fooga, booga; }"
+                    );
+
+                assert.deepEqual(result.exports, {
+                    fooga : "mc08e91a5b_fooga",
+                    booga : "mc08e91a5b_booga",
+                    tooga : "mc08e91a5b_fooga mc08e91a5b_booga"
+                });
+            });
+
             it("should scope classes, ids, and keyframes", function() {
                     var result = this.processor.string("./test/specimens/simple.css", "@keyframes kooga { } #fooga { } .wooga { }"),
                         file   = result.files["test/specimens/simple.css"];
                     
                     assert.deepEqual(result.exports, {
-                        fooga : [ "mc08e91a5b_fooga" ],
-                        kooga : [ "mc08e91a5b_kooga" ],
-                        wooga : [ "mc08e91a5b_wooga" ]
+                        fooga : "mc08e91a5b_fooga",
+                        kooga : "mc08e91a5b_kooga",
+                        wooga : "mc08e91a5b_wooga"
                     });
 
                     assert.equal(typeof file, "object");
@@ -160,8 +173,8 @@ describe("postcss-modular-css", function() {
                     file;
                 
                 assert.deepEqual(result.exports, {
-                    booga : [ "mc1fad4cc3_wooga" ],
-                    wooga : [ "mc1fad4cc3_wooga" ]
+                    booga : "mc1fad4cc3_wooga",
+                    wooga : "mc1fad4cc3_wooga"
                 });
 
                 file = result.files["test/specimens/node_modules.css"];
@@ -189,9 +202,9 @@ describe("postcss-modular-css", function() {
                     file;
                 
                 assert.deepEqual(result.exports, {
-                    wooga : [ "mc04cb4cb2_booga" ],
-                    booga : [ "mc61f0515a_booga" ],
-                    tooga : [ "mc61f0515a_tooga" ]
+                    wooga : "mc04cb4cb2_booga",
+                    booga : "mc61f0515a_booga",
+                    tooga : "mc61f0515a_tooga"
                 });
 
                 file = result.files["test/specimens/start.css"];
