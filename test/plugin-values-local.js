@@ -1,52 +1,16 @@
 var assert = require("assert"),
-    plugin = require("../src/plugins/values");
+    plugin = require("../src/plugins/values-local");
 
 function css(src, options) {
     return plugin.process(src, options).css;
 }
 
 describe("postcss-modular-css", function() {
-    describe("values plugin", function() {
-        it("should fail to parse invalid declarations", function() {
-            assert.throws(function() {
+    describe("values-local plugin", function() {
+        it("should silently ignore invalid declarations", function() {
+            assert.doesNotThrow(function() {
                 css("@value green");
             });
-            
-            assert.throws(function() {
-                css("@value red from './local.css");
-            }, /Unclosed quote/);
-        });
-
-        it("should fail if imports are referenced without having been parsed", function() {
-            assert.throws(function() {
-                css("@value booga from \"./local.css\";", { from : "./test/specimens/no.css" });
-            }, /Invalid file reference: booga from "\.\/local\.css"/);
-        });
-
-        it("should fail if importing from a file that doesn't exist", function() {
-            assert.throws(function() {
-                css("@value booga from \"./no.css\";", {
-                    from  : "./test/specimens/start.css",
-                    files : {
-                        "test/specimens/local.css" : {
-                            values : {}
-                        }
-                    }
-                });
-            }, /Cannot find module '\.\/no\.css'/);
-        });
-
-        it("should fail if non-existant imports are referenced", function() {
-            assert.throws(function() {
-                css("@value googa from \"./local.css\";", {
-                    from  : "./test/specimens/wooga.css",
-                    files : {
-                        "test/specimens/local.css" : {
-                            values : {}
-                        }
-                    }
-                });
-            }, /Invalid @value reference: googa/);
         });
 
         it("should early-out if no @value rules are defined", function() {
@@ -114,22 +78,6 @@ describe("postcss-modular-css", function() {
                 color    : "red",
                 other    : "20px"
             });
-        });
-
-        it("should support importing values from other files", function() {
-            assert.equal(
-                css("@value googa from \"./local.css\"; .wooga { color: googa; }", {
-                    from  : "./test/specimens/wooga.css",
-                    files : {
-                        "test/specimens/local.css" : {
-                            values : {
-                                googa : "red"
-                            }
-                        }
-                    }
-                }),
-                ".wooga { color: red; }"
-            );
         });
     });
 });

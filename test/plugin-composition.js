@@ -64,7 +64,7 @@ describe("postcss-modular-css", function() {
             
             assert.throws(function() {
                 out.css;
-            }, /Cannot find module/);
+            }, /Unable to locate/);
         });
 
         it("should fail if non-existant imports are referenced", function() {
