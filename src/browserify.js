@@ -28,7 +28,7 @@ module.exports = function(browserify, opts) {
         
         processor = new Processor(options),
         bundles   = {},
-        common    = [];
+        found     = [];
 
     if(!options.ext || options.ext.charAt(0) !== ".") {
         return browserify.emit("error", "Missing or invalid \"ext\" option: " + options.ext);
@@ -42,7 +42,7 @@ module.exports = function(browserify, opts) {
         }
         
         id = relative(file);
-        common.push(id);
+        found.push(id);
         
         return sink.str(function(buffer, done) {
             var result = processor.string(file, buffer);
@@ -73,8 +73,8 @@ module.exports = function(browserify, opts) {
     
     browserify.on("bundle", function(bundler) {
         bundler.on("end", function() {
-            var usage    = {},
-                bundling = Object.keys(bundles).length > 0;
+            var bundling = Object.keys(bundles).length > 0,
+                usage, common;
             
             if(options.json) {
                 fs.writeFileSync(options.json, JSON.stringify(map(processor.files, function(file) {
@@ -87,28 +87,33 @@ module.exports = function(browserify, opts) {
             }
             
             if(bundling) {
-                // Calculate usages of each CSS file across all bundles
-                processor.dependencies().forEach(function(file) {
+                usage = {};
+
+                // Some files are used in multiple bundles, so those should be
+                // promoted up to the common bundle (browserify handles this for JS)
+                // TODO: see if there's a way to hook into browserify's dep tracking for this
+                found.forEach(function(file) {
                     usage[file] = 0;
                 });
-                
+
                 each(bundles, function(contents) {
                     contents.forEach(function(file) {
                         usage[file]++;
-                        
+
                         processor.dependencies(file).forEach(function(dep) {
                             usage[dep]++;
                         });
                     });
                 });
                 
-                // only include files used more than once
+                // Filter out all files that were just used in one bundle
+                // (Or not used in any bundles, those belong in common as well)
                 common = unique(flatten(
-                    common.map(function(file) {
-                        return usage[file] > 1 ? processor.dependencies(file).concat(file) : [];
+                    found.map(function(file) {
+                        return usage[file] !== 1 ? processor.dependencies(file).concat(file) : [];
                     })
                 ));
-                
+
                 // Write out each bundle's CSS files (if they have any)
                 each(bundles, function(contents, bundle) {
                     var files = [],
