@@ -205,6 +205,29 @@ describe("postcss-modular-css", function() {
                     done();
                 });
             });
+
+            it("should properly handle files w/o dependencies", function(done) {
+                var build = browserify([
+                        "./test/specimens/browserify-fb-deps-a.js",
+                        "./test/specimens/browserify-fb-deps-b.js"
+                    ]);
+                
+                build.plugin(plugin, {
+                    css : "./test/output/browserify-fb-deps.css"
+                });
+
+                build.plugin("factor-bundle", {
+                    outputs : [
+                        "./test/output/browserify-fb-deps-a.js",
+                        "./test/output/browserify-fb-deps-b.js"
+                    ]
+                });
+                
+                bundle(build, function() {
+                    compare("browserify-fb-deps.css");
+                    compare("browserify-fb-deps-a.css");
+                    
+                    done();
                 });
             });
 
