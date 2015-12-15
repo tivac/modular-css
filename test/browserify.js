@@ -9,10 +9,25 @@ var fs     = require("fs"),
     plugin  = require("../src/browserify");
 
 function compare(name1, name2) {
+    var path1 = path.join("./test/output", name1),
+        path2 = path.join("./test/results", name2 || name1);
+
     assert.equal(
-        fs.readFileSync(path.join("./test/output", name1), "utf8") + "\n",
-        fs.readFileSync(path.join("./test/results", (name2 || name1)), "utf8")
+        fs.readFileSync(path1, "utf8") + "\n",
+        fs.readFileSync(path2, "utf8"),
+        "Expected " + path1 + " to be the same as " + path2
     );
+}
+
+function bundle(build, done) {
+    build.bundle(function(err, out) {
+        assert.ifError(err);
+
+        // Wrapped because browserify event lifecycle is... odd
+        setImmediate(function() {
+            done(out);
+        });
+    });
 }
 
 describe("postcss-modular-css", function() {
@@ -183,16 +198,13 @@ describe("postcss-modular-css", function() {
                     ]
                 });
                 
-                build.bundle(function(err) {
-                    assert.ifError(err);
+                bundle(build, function() {
+                    compare("browserify-fb-basic.css");
+                    compare("browserify-fb-basic-a.css");
                     
-                    // Wrapped because browserify event lifecycle is... odd
-                    setImmediate(function() {
-                        compare("browserify-fb-basic.css");
-                        compare("browserify-fb-basic-a.css");
-                        
-                        done();
-                    });
+                    done();
+                });
+            });
                 });
             });
 
@@ -213,15 +225,10 @@ describe("postcss-modular-css", function() {
                     ]
                 });
                 
-                build.bundle(function(err) {
-                    assert.ifError(err);
+                bundle(build, function() {
+                    compare("browserify-fb-relative-a.css");
                     
-                    // Wrapped because browserify event lifecycle is... odd
-                    setImmediate(function() {
-                        compare("browserify-fb-relative-a.css");
-                        
-                        done();
-                    });
+                    done();
                 });
             });
 
@@ -242,23 +249,18 @@ describe("postcss-modular-css", function() {
                     ]
                 });
                 
-                build.bundle(function(err) {
-                    assert.ifError(err);
-                    
-                    // Wrapped because browserify event lifecycle is... odd
-                    setImmediate(function() {
-                        assert.throws(function() {
-                            fs.statSync("./test/output/browserify-fb-noempty-b.css");
-                        });
-                        
-                        assert.throws(function() {
-                            fs.statSync("./test/output/browserify-fb-noempty-common.css");
-                        });
-                        
-                        compare("browserify-fb-noempty-a.css");
-                        
-                        done();
+                bundle(build, function() {
+                    assert.throws(function() {
+                        fs.statSync("./test/output/browserify-fb-noempty-b.css");
                     });
+                    
+                    assert.throws(function() {
+                        fs.statSync("./test/output/browserify-fb-noempty-common.css");
+                    });
+                    
+                    compare("browserify-fb-noempty-a.css");
+                    
+                    done();
                 });
             });
 
@@ -280,16 +282,11 @@ describe("postcss-modular-css", function() {
                     ]
                 });
                 
-                build.bundle(function(err) {
-                    assert.ifError(err);
+                bundle(build, function() {
+                    compare("browserify-fb-empty.css");
+                    compare("browserify-fb-empty-b.css");
                     
-                    // Wrapped because browserify event lifecycle is... odd
-                    setImmediate(function() {
-                        compare("browserify-fb-empty.css");
-                        compare("browserify-fb-empty-b.css");
-                        
-                        done();
-                    });
+                    done();
                 });
             });
         });
