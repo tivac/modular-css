@@ -17,6 +17,10 @@ function compare(name1, name2) {
 
 describe("postcss-modular-css", function() {
     describe("browserify plugin", function() {
+        before(function() {
+            require("shelljs").rm("-rf", "./test/output/*.*");
+        });
+        
         it("should error if an invalid extension is applied", function(done) {
             var build = browserify("./test/specimens/simple.js");
             

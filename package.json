@@ -23,7 +23,8 @@
     "istanbul": "^0.4.1",
     "jscs": "^2.7.0",
     "jscs-preset-arenanet": "^1.0.1",
-    "mocha": "^2.3.4"
+    "mocha": "^2.3.4",
+    "shelljs": "^0.5.3"
   },
   "dependencies": {
     "dependency-graph": "^0.4.1",
