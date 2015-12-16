@@ -1,6 +1,2 @@
-"use strict";
-
-var common = require("./browserify-fb-basic-common")
-    css    = require("./local.css");
-
-console.log(common);
+require("./browserify-fb-basic-common");
+require("./local.css");
