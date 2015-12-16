@@ -1,3 +1,8 @@
+/* test/specimens/relative.css */
+.mc592b2d8f_wooga {
+    color: red;
+    background: url("../specimens/folder/to.png")
+}
 /* test/specimens/start.css */
 .mc61f0515a_booga {
     color: red;
@@ -5,9 +10,4 @@
 }
 .mc61f0515a_tooga {
     border: 1px solid white
-}
-/* test/specimens/relative.css */
-.mc592b2d8f_wooga {
-    color: red;
-    background: url("../specimens/folder/to.png")
 }

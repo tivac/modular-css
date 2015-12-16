@@ -25,7 +25,7 @@ function bundle(build, done) {
 
         // Wrapped because browserify event lifecycle is... odd
         setImmediate(function() {
-            done(out);
+            done(out.toString());
         });
     });
 }
@@ -53,9 +53,8 @@ describe("postcss-modular-css", function() {
             
             build.plugin(plugin);
             
-            build.bundle(function(err, out) {
-                assert.ifError(err);
-                assert(out.toString().indexOf(fs.readFileSync("./test/results/browserify-export-identifiers.js", "utf8")) > -1);
+            bundle(build, function(out) {
+                assert(out.indexOf(fs.readFileSync("./test/results/browserify-export-identifiers.js", "utf8")) > -1);
 
                 done();
             });
@@ -68,15 +67,10 @@ describe("postcss-modular-css", function() {
                 css : "./test/output/browserify-relative.css"
             });
             
-            build.bundle(function(err) {
-                assert.ifError(err);
+            bundle(build, function() {
+                compare("browserify-relative.css");
                 
-                // Wrapped because browserify event lifecycle is... odd
-                setImmediate(function() {
-                    compare("browserify-relative.css");
-                    
-                    done();
-                });
+                done();
             });
         });
 
@@ -88,15 +82,10 @@ describe("postcss-modular-css", function() {
                 prefix : "prefix"
             });
             
-            build.bundle(function(err) {
-                assert.ifError(err);
+            bundle(build, function() {
+                compare("browserify-prefix.css");
                 
-                // Wrapped because browserify event lifecycle is... odd
-                setImmediate(function() {
-                    compare("browserify-prefix.css");
-                    
-                    done();
-                });
+                done();
             });
         });
 
@@ -110,15 +99,10 @@ describe("postcss-modular-css", function() {
                 }
             });
             
-            build.bundle(function(err) {
-                assert.ifError(err);
+            bundle(build, function() {
+                compare("browserify-namer-fn.css");
                 
-                // Wrapped because browserify event lifecycle is... odd
-                setImmediate(function() {
-                    compare("browserify-namer-fn.css");
-                    
-                    done();
-                });
+                done();
             });
         });
 
@@ -127,17 +111,12 @@ describe("postcss-modular-css", function() {
             
             build.plugin(plugin, { css : "./test/output/browserify-include-css-deps.css" });
             
-            build.bundle(function(err, out) {
-                assert.ifError(err);
+            bundle(build, function(out) {
+                assert(out.indexOf(fs.readFileSync("./test/results/browserify-include-css-deps.js", "utf8")) > -1);
 
-                assert(out.toString().indexOf(fs.readFileSync("./test/results/browserify-include-css-deps.js", "utf8")) > -1);
-
-                // Wrapped because browserify event lifecycle is... odd
-                setImmediate(function() {
-                    compare("browserify-include-css-deps.css");
-                    
-                    done();
-                });
+                compare("browserify-include-css-deps.css");
+                
+                done();
             });
         });
 
@@ -146,18 +125,10 @@ describe("postcss-modular-css", function() {
             
             build.plugin(plugin, { json : "./test/output/browserify-export-all-identifiers.json" });
             
-            build.bundle(function(err) {
-                assert.ifError(err);
+            bundle(build, function() {
+                compare("browserify-export-all-identifiers.json");
 
-                // Wrapped because browserify event lifecycle is... odd
-                setImmediate(function() {
-                    assert.equal(
-                        fs.readFileSync("./test/output/browserify-export-all-identifiers.json", "utf8"),
-                        fs.readFileSync("./test/results/browserify-export-all-identifiers.json", "utf8")
-                    );
-
-                    done();
-                });
+                done();
             });
         });
 
@@ -166,17 +137,13 @@ describe("postcss-modular-css", function() {
             
             build.plugin(plugin, { css : "./test/output/browserify-avoid-duplicates.css" });
             
-            build.bundle(function(err, out) {
-                assert.ifError(err);
-                assert(out.toString().indexOf(fs.readFileSync("./test/results/browserify-avoid-duplicates-local.js", "utf8")) > -1);
-                assert(out.toString().indexOf(fs.readFileSync("./test/results/browserify-avoid-duplicates-start.js", "utf8")) > -1);
+            bundle(build, function(out) {
+                assert(out.indexOf(fs.readFileSync("./test/results/browserify-avoid-duplicates-local.js", "utf8")) > -1);
+                assert(out.indexOf(fs.readFileSync("./test/results/browserify-avoid-duplicates-start.js", "utf8")) > -1);
 
-                // Wrapped because browserify event lifecycle is... odd
-                setImmediate(function() {
-                    compare("browserify-avoid-duplicates.css");
-                    
-                    done();
-                });
+                compare("browserify-avoid-duplicates.css");
+                
+                done();
             });
         });
         
@@ -198,7 +165,9 @@ describe("postcss-modular-css", function() {
                     ]
                 });
                 
-                bundle(build, function() {
+                bundle(build, function(out) {
+                    fs.writeFileSync("./test/output/browserify-fb-basic-common.js", out);
+
                     compare("browserify-fb-basic.css");
                     compare("browserify-fb-basic-a.css");
                     
@@ -249,7 +218,9 @@ describe("postcss-modular-css", function() {
                 });
                 
                 bundle(build, function() {
+                    compare("browserify-fb-relative.css");
                     compare("browserify-fb-relative-a.css");
+                    compare("browserify-fb-relative-b.css");
                     
                     done();
                 });
@@ -277,10 +248,7 @@ describe("postcss-modular-css", function() {
                         fs.statSync("./test/output/browserify-fb-noempty-b.css");
                     });
                     
-                    assert.throws(function() {
-                        fs.statSync("./test/output/browserify-fb-noempty-common.css");
-                    });
-                    
+                    compare("browserify-fb-noempty.css");
                     compare("browserify-fb-noempty-a.css");
                     
                     done();
@@ -307,6 +275,7 @@ describe("postcss-modular-css", function() {
                 
                 bundle(build, function() {
                     compare("browserify-fb-empty.css");
+                    compare("browserify-fb-empty-a.css");
                     compare("browserify-fb-empty-b.css");
                     
                     done();

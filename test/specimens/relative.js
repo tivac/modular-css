@@ -1,3 +1,1 @@
-"use strict";
-
-var css = require("./relative.css");
+require("./relative.css");

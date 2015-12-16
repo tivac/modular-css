@@ -1,3 +1,1 @@
-"use strict";
-
-var css = require("./start.css");
+require("./start.css");

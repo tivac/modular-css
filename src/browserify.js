@@ -7,11 +7,8 @@ var fs   = require("fs"),
     sink    = require("sink-transform"),
     
     assign  = require("lodash.assign"),
-    diff    = require("lodash.difference"),
     each    = require("lodash.foreach"),
-    flatten = require("lodash.flatten"),
     map     = require("lodash.mapvalues"),
-    unique  = require("lodash.uniq"),
     
     Processor = require("./processor"),
     relative  = require("./_relative");
@@ -27,27 +24,35 @@ module.exports = function(browserify, opts) {
         }, opts),
         
         processor = new Processor(options),
-        bundles   = {},
-        found     = [];
+        bundles   = {};
 
     if(!options.ext || options.ext.charAt(0) !== ".") {
         return browserify.emit("error", "Missing or invalid \"ext\" option: " + options.ext);
     }
 
     browserify.transform(function(file) {
-        var id;
+        var identifier;
 
         if(path.extname(file) !== options.ext) {
             return through();
         }
         
-        id = relative(file);
-        found.push(id);
+        identifier = relative(file);
         
         return sink.str(function(buffer, done) {
-            var result = processor.string(file, buffer);
+            var result = processor.string(file, buffer),
+                output;
             
-            this.push("module.exports = " + JSON.stringify(result.exports) + ";");
+            output = processor.dependencies(identifier).map(function(short) {
+                var long = path.resolve(process.cwd(), short);
+                
+                // I hate you, path.
+                return "require(\"" + long.replace(/\\/g, "/") + "\");";
+            });
+            
+            output = output.concat("module.exports = " + JSON.stringify(result.exports, null, 4) + ";");
+            
+            this.push(output.join("\n"));
             
             done();
         });
@@ -61,8 +66,12 @@ module.exports = function(browserify, opts) {
         // Keep track of the files in each bundle so we can determine commonalities
         // Doesn't actually modify the file though, just records it
         pipeline.unshift(through.obj(function(obj, enc, done) {
+            var child;
+            
             if(path.extname(obj.file) === options.ext) {
-                bundles[identifier].push(relative(obj.file));
+                child = relative(obj.file);
+                
+                bundles[identifier].unshift(child);
             }
 
             this.push(obj);
@@ -74,8 +83,8 @@ module.exports = function(browserify, opts) {
     browserify.on("bundle", function(bundler) {
         bundler.on("end", function() {
             var bundling = Object.keys(bundles).length > 0,
-                usage, common;
-            
+                common;
+
             if(options.json) {
                 fs.writeFileSync(options.json, JSON.stringify(map(processor.files, function(file) {
                     return file.compositions;
@@ -86,50 +95,26 @@ module.exports = function(browserify, opts) {
                 return;
             }
             
+            common = processor.dependencies();
+            
             if(bundling) {
-                usage = {};
-
-                // Some files are used in multiple bundles, so those should be
-                // promoted up to the common bundle (browserify handles this for JS)
-                // TODO: see if there's a way to hook into browserify's dep tracking for this
-                found.forEach(function(file) {
-                    usage[file] = 0;
-                });
-
-                each(bundles, function(contents) {
-                    contents.forEach(function(file) {
-                        usage[file]++;
-
-                        processor.dependencies(file).forEach(function(dep) {
-                            usage[dep]++;
-                        });
-                    });
-                });
-                
-                // Filter out all files that were just used in one bundle
-                // (Or not used in any bundles, those belong in common as well)
-                common = unique(flatten(
-                    found.map(function(file) {
-                        return usage[file] !== 1 ? processor.dependencies(file).concat(file) : [];
-                    })
-                ));
-
                 // Write out each bundle's CSS files (if they have any)
-                each(bundles, function(contents, bundle) {
-                    var files = [],
-                        dest;
-                    
-                    contents.forEach(function(file) {
-                        files = files.concat(processor.dependencies(file), file);
-                    });
-                    
-                    files = diff(files, common);
+                each(bundles, function(files, bundle) {
+                    var dest;
                     
                     if(!files.length && !options.empty) {
                         return;
                     }
 
-                    dest = path.join(path.dirname(options.css), path.basename(bundle).replace(path.extname(bundle), options.ext));
+                    // This file was part of a bundle, so remove from the common file
+                    files.forEach(function(file) {
+                        common.splice(common.indexOf(file), 1);
+                    });
+
+                    dest = path.join(
+                        path.dirname(options.css),
+                        path.basename(bundle).replace(path.extname(bundle), options.ext)
+                    );
                     
                     fs.writeFileSync(dest, processor.css({
                         files : files,
