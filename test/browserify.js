@@ -3,8 +3,10 @@
 var fs     = require("fs"),
     path   = require("path"),
     assert = require("assert"),
+    shell  = require("shelljs"),
     
     browserify = require("browserify"),
+    watchify   = require("watchify"),
     
     plugin  = require("../src/browserify");
 
@@ -147,8 +149,8 @@ describe("postcss-modular-css", function() {
             });
         });
         
-        describe("factor-bundle support", function() {
-            it("should support factor-bundle", function(done) {
+        describe("factor-bundle", function() {
+            it("should be supported", function(done) {
                 var build = browserify([
                         "./test/specimens/browserify-fb-basic-a.js",
                         "./test/specimens/browserify-fb-basic-b.js"
@@ -279,6 +281,41 @@ describe("postcss-modular-css", function() {
                     compare("browserify-fb-empty-b.css");
                     
                     done();
+                });
+            });
+        });
+
+        describe("watchify", function() {
+            beforeEach(function() {
+                shell.cp("-f", "./test/specimens/simple.css", "./test/specimens/watchify.css");
+            });
+
+            after(function() {
+                shell.rm("./test/specimens/watchify.css");
+            });
+
+            it("shouldn't cache file contents between watchify runs", function(done) {
+                var build = browserify("./test/specimens/watchify.js");
+
+                build.plugin(watchify);
+                build.plugin(plugin, {
+                    css : "./test/output/watchify.css"
+                });
+
+                // File changed
+                build.on("update", function() {
+                    bundle(build, function() {
+                        compare("watchify.css", "watchify-2.css");
+
+                        done();
+                    });
+                });
+
+                // Run first bundle, start watching
+                bundle(build, function() {
+                    compare("watchify.css", "watchify-1.css");
+
+                    shell.cp("-f", "./test/specimens/blue.css", "./test/specimens/watchify.css");
                 });
             });
         });
