@@ -23,7 +23,9 @@ module.exports = function(browserify, opts) {
             empty  : false
         }, opts),
         
-        bundles, processor;
+        processor = new Processor(options),
+
+        bundles;
 
     if(!options.ext || options.ext.charAt(0) !== ".") {
         return browserify.emit("error", "Missing or invalid \"ext\" option: " + options.ext);
@@ -78,11 +80,16 @@ module.exports = function(browserify, opts) {
             done();
         }));
     });
+
+    // Watchify fires update events when files change, this tells the processor
+    // to remove the changed files from its cache so they will be re-processed
+    browserify.on("update", function(files) {
+        processor.remove(files);
+    });
     
     browserify.on("bundle", function(bundler) {
-        // Set up a new processor each time bundling starts
-        processor = new Processor(options);
-        bundles   = {};
+        // We will recreate all bundle definitions
+        bundles = {};
 
         bundler.on("end", function() {
             var bundling = Object.keys(bundles).length > 0,
