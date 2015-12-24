@@ -23,8 +23,7 @@ module.exports = function(browserify, opts) {
             empty  : false
         }, opts),
         
-        processor = new Processor(options),
-        bundles   = {};
+        bundles, processor;
 
     if(!options.ext || options.ext.charAt(0) !== ".") {
         return browserify.emit("error", "Missing or invalid \"ext\" option: " + options.ext);
@@ -36,7 +35,7 @@ module.exports = function(browserify, opts) {
         if(path.extname(file) !== options.ext) {
             return through();
         }
-        
+
         identifier = relative(file);
         
         return sink.str(function(buffer, done) {
@@ -81,6 +80,10 @@ module.exports = function(browserify, opts) {
     });
     
     browserify.on("bundle", function(bundler) {
+        // Set up a new processor each time bundling starts
+        processor = new Processor(options);
+        bundles   = {};
+
         bundler.on("end", function() {
             var bundling = Object.keys(bundles).length > 0,
                 common;
