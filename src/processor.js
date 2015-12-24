@@ -86,6 +86,20 @@ Processor.prototype = {
         };
     },
 
+    remove : function(files) {
+        var self = this;
+
+        if(!Array.isArray(files)) {
+            files = [ files ];
+        }
+
+        files.forEach(function(file) {
+            var key = relative(file);
+
+            delete self._files[key];
+        });
+    },
+
     dependencies : function(file) {
         return file ? this._graph.dependenciesOf(file) : this._graph.overallOrder();
     },
