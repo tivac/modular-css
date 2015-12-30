@@ -86,8 +86,9 @@ Processor.prototype = {
         };
     },
 
-    remove : function(files) {
-        var self = this;
+    remove : function(input) {
+        var self  = this,
+            files = input;
 
         if(!Array.isArray(files)) {
             files = [ files ];
@@ -97,6 +98,8 @@ Processor.prototype = {
             var key = relative(file);
 
             delete self._files[key];
+            
+            self._graph.removeNode(key);
         });
     },
 

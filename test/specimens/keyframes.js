@@ -1,3 +1,1 @@
-"use strict";
-
-var keyframes = require("./keyframes.css");
+require("./keyframes.css");

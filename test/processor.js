@@ -63,6 +63,31 @@ describe("postcss-modular-css", function() {
                 });
             });
             
+            describe(".remove", function() {
+                it("should remove a file", function() {
+                    this.processor.string("./test/specimens/simple.css", ".wooga { }");
+                    
+                    this.processor.remove("./test/specimens/simple.css");
+                    
+                    assert.deepEqual(this.processor.dependencies(), []);
+                });
+                
+                it("should remove multiple files", function() {
+                    this.processor.string("./test/specimens/a.css", ".aooga { }");
+                    this.processor.string("./test/specimens/b.css", ".booga { }");
+                    this.processor.string("./test/specimens/c.css", ".cooga { }");
+                    
+                    this.processor.remove([
+                        "./test/specimens/a.css",
+                        "./test/specimens/b.css"
+                    ]);
+                    
+                    assert.deepEqual(this.processor.dependencies(), [
+                        "test/specimens/c.css"
+                    ]);
+                });
+            });
+            
             describe("Naming", function() {
                 it("should pass prefix through to the plugins", function() {
                     var processor = new Processor({ prefix : "googa" }),

@@ -78,7 +78,7 @@ module.exports = postcss.plugin(plugin, function() {
                 }
 
                 if(!refs[scoped]) {
-                    throw decl.error("Invalid rule reference", { word : rule });
+                    throw decl.error("Invalid composes reference", { word : rule });
                 }
             });
 

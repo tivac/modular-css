@@ -176,7 +176,32 @@ describe("postcss-modular-css", function() {
                     done();
                 });
             });
+            
+            it("should support files w/o commonalities", function(done) {
+                var build = browserify([
+                        "./test/specimens/browserify-fb-nocommon-a.js",
+                        "./test/specimens/browserify-fb-nocommon-b.js"
+                    ]);
+                
+                build.plugin(plugin, {
+                    css : "./test/output/browserify-fb-nocommon.css"
+                });
 
+                build.plugin("factor-bundle", {
+                    outputs : [
+                        "./test/output/browserify-fb-nocommon-a.js",
+                        "./test/output/browserify-fb-nocommon-b.js"
+                    ]
+                });
+                
+                bundle(build, function() {
+                    compare("browserify-fb-nocommon-a.css");
+                    compare("browserify-fb-nocommon-b.css");
+                    
+                    done();
+                });
+            });
+            
             it("should properly handle files w/o dependencies", function(done) {
                 var build = browserify([
                         "./test/specimens/browserify-fb-deps-a.js",
@@ -286,36 +311,88 @@ describe("postcss-modular-css", function() {
         });
 
         describe("watchify", function() {
-            beforeEach(function() {
-                shell.cp("-f", "./test/specimens/simple.css", "./test/specimens/watchify.css");
-            });
-
-            after(function() {
-                shell.rm("./test/specimens/watchify.css");
-            });
-
-            it("shouldn't cache file contents between watchify runs", function(done) {
-                var build = browserify("./test/specimens/watchify.js");
-
-                build.plugin(watchify);
-                build.plugin(plugin, {
-                    css : "./test/output/watchify.css"
+            describe("caching", function() {
+                beforeEach(function() {
+                    shell.cp("-f", "./test/specimens/simple.css", "./test/specimens/watchify.css");
                 });
 
-                // File changed
-                build.on("update", function() {
-                    bundle(build, function() {
-                        compare("watchify.css", "watchify-2.css");
+                after(function() {
+                    shell.rm("./test/specimens/watchify.css");
+                });
 
-                        done();
+                it("shouldn't cache file contents between watchify runs", function(done) {
+                    var build = browserify("./test/specimens/watchify.js");
+
+                    build.plugin(watchify);
+                    build.plugin(plugin, {
+                        css : "./test/output/watchify.css"
+                    });
+
+                    // File changed
+                    build.on("update", function() {
+                        bundle(build, function() {
+                            compare("watchify.css", "watchify-2.css");
+                            
+                            build.close();
+                            
+                            done();
+                        });
+                    });
+
+                    // Run first bundle, start watching
+                    bundle(build, function() {
+                        compare("watchify.css", "watchify-1.css");
+
+                        shell.cp("-f", "./test/specimens/blue.css", "./test/specimens/watchify.css");
                     });
                 });
+            });
+            
+            describe("error handling", function() {
+                beforeEach(function() {
+                    shell.cp("-f", "./test/specimens/invalid.css", "./test/specimens/watchify.css");
+                });
 
-                // Run first bundle, start watching
-                bundle(build, function() {
-                    compare("watchify.css", "watchify-1.css");
+                after(function() {
+                    shell.rm("./test/specimens/watchify.css");
+                });
+            
+                it("shouldn't explode on invalid CSS", function(done) {
+                    var build = browserify("./test/specimens/watchify.js"),
+                        wait;
 
-                    shell.cp("-f", "./test/specimens/blue.css", "./test/specimens/watchify.css");
+                    build.plugin(watchify);
+                    build.plugin(plugin, {
+                        css : "./test/output/watchify.css"
+                    });
+
+                    // File changed
+                    build.on("update", function() {
+                        // Attempt to bundle again
+                        bundle(build, function() {
+                            compare("watchify.css", "watchify-2.css");
+                            
+                            build.close();
+                            
+                            done();
+                        });
+                    });
+
+                    // Run first bundle to start watching
+                    build.bundle(function(err) {
+                        // This one should fail, but not stop watchify from running
+                        assert(err);
+                        assert(err.name === "SyntaxError" || err.name === "CssSyntaxError");
+                        
+                        if(wait) {
+                            return;
+                        }
+                        
+                        // Wrapped because browserify event lifecycle is... odd
+                        wait = setImmediate(function() {
+                            shell.cp("-f", "./test/specimens/blue.css", "./test/specimens/watchify.css");
+                        });
+                    });
                 });
             });
         });
