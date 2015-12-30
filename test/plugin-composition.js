@@ -26,7 +26,7 @@ describe("postcss-modular-css", function() {
             
             assert.throws(function() {
                 out.css;
-            }, /Invalid rule reference/);
+            }, /Invalid composes reference/);
         });
         
         it("should fail if composes isn't the first rule", function() {
@@ -79,7 +79,7 @@ describe("postcss-modular-css", function() {
             
             assert.throws(function() {
                 out.css;
-            }, /Invalid rule reference/);
+            }, /Invalid composes reference/);
         });
         
         it("should fail when parsing an invalid value", function() {

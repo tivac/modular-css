@@ -24,8 +24,8 @@ module.exports = function(browserify, opts) {
         }, opts),
         
         processor = new Processor(options),
-
-        bundles;
+        
+        bundler, bundles;
 
     if(!options.ext || options.ext.charAt(0) !== ".") {
         return browserify.emit("error", "Missing or invalid \"ext\" option: " + options.ext);
@@ -41,8 +41,20 @@ module.exports = function(browserify, opts) {
         identifier = relative(file);
         
         return sink.str(function(buffer, done) {
-            var result = processor.string(file, buffer),
-                output;
+            var result, output;
+            
+            // This can fail on bad input, so needs to be wrapped
+            try {
+                result = processor.string(file, buffer);
+            } catch(e) {
+                // Thrown from the current bundler instance, NOT the main browserify
+                // instance. This is so that watchify won't explode.
+                bundler.emit("error", e);
+                
+                this.push(buffer);
+                
+                return done();
+            }
             
             output = processor.dependencies(identifier).map(function(short) {
                 var long = path.resolve(process.cwd(), short);
@@ -86,11 +98,14 @@ module.exports = function(browserify, opts) {
     browserify.on("update", function(files) {
         processor.remove(files);
     });
-    
-    browserify.on("bundle", function(bundler) {
-        // We will recreate all bundle definitions
-        bundles = {};
 
+    browserify.on("bundle", function(current) {
+        // Every call to .bundle() means we should recreate all our bundle definitions
+        // (in case things have changed out from under us, like when using watchify)
+        bundles = {};
+        
+        bundler = current;
+        
         bundler.on("end", function() {
             var bundling = Object.keys(bundles).length > 0,
                 common;
