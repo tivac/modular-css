@@ -154,7 +154,7 @@ describe("postcss-modular-css", function() {
         });
         
         describe("factor-bundle", function() {
-            it.only("should be supported", function(done) {
+            it("should be supported", function(done) {
                 var build = browserify([
                         "./test/specimens/browserify-fb-basic-a.js",
                         "./test/specimens/browserify-fb-basic-b.js"
