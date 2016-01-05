@@ -121,7 +121,10 @@ Processor.prototype = {
             
             // Rewrite relative URLs before adding
             // Have to do this every time because target file might be different!
-            css = urls.process(self._files[dep].parsed.root, {
+            // NOTE: the call to .clone() is really important here, otherwise this call
+            // modifies the .parsed root itself and you can process URLs multiple times
+            // See https://github.com/tivac/modular-css/issues/35
+            css = urls.process(self._files[dep].parsed.root.clone(), {
                 from : dep,
                 to   : opts.to
             });

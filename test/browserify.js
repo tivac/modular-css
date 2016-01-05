@@ -10,15 +10,19 @@ var fs     = require("fs"),
     
     plugin  = require("../src/browserify");
 
-function compare(name1, name2) {
-    var path1 = path.join("./test/output", name1),
-        path2 = path.join("./test/results", name2 || name1);
-
+function equal(path1, path2) {
     assert.equal(
         fs.readFileSync(path1, "utf8") + "\n",
         fs.readFileSync(path2, "utf8"),
         "Expected " + path1 + " to be the same as " + path2
     );
+}
+
+function compare(name1, name2) {
+    var path1 = path.join("./test/output", name1),
+        path2 = path.join("./test/results", name2 || name1);
+
+    return equal(path1, path2);
 }
 
 function bundle(build, done) {
@@ -150,7 +154,7 @@ describe("postcss-modular-css", function() {
         });
         
         describe("factor-bundle", function() {
-            it("should be supported", function(done) {
+            it.only("should be supported", function(done) {
                 var build = browserify([
                         "./test/specimens/browserify-fb-basic-a.js",
                         "./test/specimens/browserify-fb-basic-b.js"
@@ -392,6 +396,44 @@ describe("postcss-modular-css", function() {
                         wait = setImmediate(function() {
                             shell.cp("-f", "./test/specimens/blue.css", "./test/specimens/watchify.css");
                         });
+                    });
+                });
+            });
+
+            describe("postcss-urls", function() {
+                var out = path.resolve("./test/__output.css"),
+                    rel = path.resolve("./test/results/watchify-relative.css");
+                
+                after(function() {
+                    shell.rm(out);
+                });
+                
+                it("shouldn't cache file contents between watchify runs", function(done) {
+                    var build = browserify("./test/specimens/watchify-relative.js");
+
+                    build.plugin(watchify);
+                    build.plugin(plugin, {
+                        // Generating to a weird spot to get bug to repro
+                        css : out
+                    });
+
+                    // File changed
+                    build.on("update", function() {
+                        bundle(build, function() {
+                            equal(out, rel);
+                            
+                            build.close();
+                            
+                            done();
+                        });
+                    });
+
+                    // Run first bundle, start watching
+                    bundle(build, function() {
+                        equal(out, rel);
+                        
+                        // Trigger a rebuild
+                        fs.utimesSync("./test/specimens/watchify-relative.css", new Date(), new Date());
                     });
                 });
             });
