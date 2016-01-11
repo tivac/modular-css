@@ -7,18 +7,6 @@ var fs   = require("fs"),
     Graph    = require("dependency-graph").DepGraph,
     postcss  = require("postcss"),
 
-    preprocess = postcss([
-        require("./plugins/values-local"),
-        require("./plugins/graph-nodes")
-    ]),
-
-    postprocess = postcss([
-        require("./plugins/values-composed.js"),
-        require("./plugins/scoping.js"),
-        require("./plugins/composition.js"),
-        require("./plugins/keyframes.js")
-    ]),
-
     urls = postcss([
         require("postcss-url")
     ]),
@@ -26,13 +14,31 @@ var fs   = require("fs"),
     relative = require("./_relative");
 
 function Processor(opts) {
+    var options = opts;
+    
     if(!(this instanceof Processor)) {
         return new Processor(opts);
     }
+    
+    if(!options) {
+        options = false;
+    }
 
-    this._opts  = opts;
-    this._files = {};
-    this._graph = new Graph();
+    this._options = options;
+    this._files   = {};
+    this._graph   = new Graph();
+    
+    this._before = postcss((options.before || []).concat(
+        require("./plugins/values-local"),
+        require("./plugins/graph-nodes")
+    ));
+
+    this._after = postcss([
+        require("./plugins/values-composed.js"),
+        require("./plugins/scoping.js"),
+        require("./plugins/composition.js"),
+        require("./plugins/keyframes.js")
+    ].concat(options.after || []));
 }
 
 Processor.prototype = {
@@ -54,7 +60,7 @@ Processor.prototype = {
                 return;
             }
                 
-            parsed = postprocess.process(details.parsed, assign({}, self._opts, {
+            parsed = self._after.process(details.parsed, assign({}, self._options, {
                 from  : file,
                 files : self._files
             }));
@@ -147,7 +153,7 @@ Processor.prototype = {
 
         // Avoid re-processing files we've already seen
         if(!(name in this._files)) {
-            parsed = preprocess.process(text, { from : name, graph : this._graph });
+            parsed = self._before.process(text, { from : name, graph : this._graph });
             
             // This is super-weird, but we need to trigger processing
             // so that the graph is updated
