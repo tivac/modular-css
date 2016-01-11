@@ -11,7 +11,8 @@
     "test": "npm run lint && mocha",
     "mocha": "mocha",
     "cover": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
-    "lint": "eslint . && jscs ."
+    "lint": "eslint . && jscs .",
+    "preversion": "npm test"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
