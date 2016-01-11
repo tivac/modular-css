@@ -22,6 +22,87 @@ describe("postcss-modular-css", function() {
             beforeEach(function() {
                 this.processor = new Processor();
             });
+            
+            describe("options", function() {
+                describe("prefix", function() {
+                    it("should pass prefix through to the plugins", function() {
+                        var processor = new Processor({ prefix : "googa" }),
+                            result    = processor.string("./test/specimens/simple.css", ".wooga { }"),
+                            file      = result.files["test/specimens/simple.css"];
+                        
+                        assert.deepEqual(result.exports, {
+                            wooga : "googa_wooga"
+                        });
+
+                        assert.equal(typeof file, "object");
+
+                        assert.deepEqual(file.compositions, {
+                            wooga : [ "googa_wooga" ]
+                        });
+
+                        assert.equal(file.text, ".wooga { }");
+                        assert.equal(file.parsed.root.toResult().css, ".googa_wooga { }");
+                    });
+                });
+                
+                describe("namer", function() {
+                    it("should pass a namer function through to the plugins", function() {
+                        var processor = new Processor({
+                                namer : function(filename, selector) {
+                                    return filename + selector;
+                                }
+                            }),
+                            result = processor.string("./test/specimens/simple.css", ".wooga { }"),
+                            file      = result.files["test/specimens/simple.css"];
+                        
+                        assert.deepEqual(result.exports, {
+                            wooga : "test/specimens/simple.csswooga"
+                        });
+
+                        assert.equal(typeof file, "object");
+
+                        assert.deepEqual(file.compositions, {
+                            wooga : [ "test/specimens/simple.csswooga" ]
+                        });
+
+                        assert.equal(file.text, ".wooga { }");
+                        assert.equal(file.parsed.root.toResult().css, ".test/specimens/simple.csswooga { }");
+                    });
+                });
+
+                describe("before", function() {
+                    it("should run postcss plugins before processing further", function() {
+                        var processor = new Processor({
+                                before : [ require("postcss-color-rebeccapurple") ]
+                            });
+                        
+                        processor._walk("test/specimens/rebeccapurple.css", ".wooga { color: rebeccapurple }");
+                        
+                        assert.equal(
+                            processor._files["test/specimens/rebeccapurple.css"].parsed.css,
+                            ".wooga { color: rgb(102, 51, 153) }"
+                        );
+                    });
+                });
+                
+                describe("after", function() {
+                    it("should run postcss plugins after processing", function() {
+                        var processor = new Processor({
+                                after : [ require("postcss-color-rebeccapurple") ]
+                            });
+                        
+                        processor.string("test/specimens/rebeccapurple.css", ".wooga { color: rebeccapurple }");
+                        
+                        assert.equal(
+                            processor.css(),
+                            "/* test/specimens/rebeccapurple.css */\n" +
+                            ".mc8a0b0c62_wooga {\n" +
+                            "    color: rgb(102, 51, 153)\n" +
+                            "}"
+                        );
+                    });
+                });
+            });
 
             describe(".string", function() {
                 it("should process a string", function() {
@@ -88,50 +169,6 @@ describe("postcss-modular-css", function() {
                 });
             });
             
-            describe("Naming", function() {
-                it("should pass prefix through to the plugins", function() {
-                    var processor = new Processor({ prefix : "googa" }),
-                        result    = processor.string("./test/specimens/simple.css", ".wooga { }"),
-                        file      = result.files["test/specimens/simple.css"];
-                    
-                    assert.deepEqual(result.exports, {
-                        wooga : "googa_wooga"
-                    });
-
-                    assert.equal(typeof file, "object");
-
-                    assert.deepEqual(file.compositions, {
-                        wooga : [ "googa_wooga" ]
-                    });
-
-                    assert.equal(file.text, ".wooga { }");
-                    assert.equal(file.parsed.root.toResult().css, ".googa_wooga { }");
-                });
-
-                it("should pass a namer function through to the plugins", function() {
-                    var processor = new Processor({
-                            namer : function(filename, selector) {
-                                return filename + selector;
-                            }
-                        }),
-                        result = processor.string("./test/specimens/simple.css", ".wooga { }"),
-                        file      = result.files["test/specimens/simple.css"];
-                    
-                    assert.deepEqual(result.exports, {
-                        wooga : "test/specimens/simple.csswooga"
-                    });
-
-                    assert.equal(typeof file, "object");
-
-                    assert.deepEqual(file.compositions, {
-                        wooga : [ "test/specimens/simple.csswooga" ]
-                    });
-
-                    assert.equal(file.text, ".wooga { }");
-                    assert.equal(file.parsed.root.toResult().css, ".test/specimens/simple.csswooga { }");
-                });
-            });
-
             describe("dependencies", function() {
                 it("should return the dependencies of the specified file", function() {
                     this.processor.file("./test/specimens/start.css");
