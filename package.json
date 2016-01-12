@@ -26,7 +26,7 @@
     "postcss"
   ],
   "devDependencies": {
-    "browserify": "^12.0.1",
+    "browserify": "^12.0.2",
     "eslint": "^1.10.3",
     "eslint-config-arenanet": "^1.0.2",
     "factor-bundle": "^2.5.0",
