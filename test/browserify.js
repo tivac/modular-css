@@ -54,6 +54,23 @@ describe("postcss-modular-css", function() {
             build.plugin(plugin, { ext : false });
         });
 
+        it("should error on invalid CSS", function(done) {
+            var build  = browserify("./test/specimens/invalid.js"),
+                errors = 0;
+            
+            build.plugin(plugin);
+
+            build.bundle(function(err) {
+                if(++errors === 2) {
+                    return done();
+                }
+
+                assert(err);
+                assert.equal(err.name, "CssSyntaxError");
+                assert.equal(err.reason, "Invalid composes reference");
+            });
+        });
+
         it("should replace require() calls with the exported identifiers", function(done) {
             var build = browserify("./test/specimens/simple.js");
             
@@ -138,7 +155,7 @@ describe("postcss-modular-css", function() {
             });
         });
 
-        it("should not include duplicate files in the output multiple times via browserify", function(done) {
+        it("should not include duplicate files in the output multiple times", function(done) {
             var build = browserify("./test/specimens/duplication.js");
             
             build.plugin(plugin, { css : "./test/output/browserify-avoid-duplicates.css" });
