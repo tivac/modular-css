@@ -41,33 +41,36 @@ module.exports = function(browserify, opts) {
         identifier = relative(file);
         
         return sink.str(function(buffer, done) {
-            var result, output;
+            var push = this.push.bind(this);
             
-            // This can fail on bad input, so needs to be wrapped
-            try {
-                result = processor.string(file, buffer);
-            } catch(e) {
-                // Thrown from the current bundler instance, NOT the main browserify
-                // instance. This is so that watchify won't explode.
-                bundler.emit("error", e);
-                
-                this.push(buffer);
-                
-                return done();
-            }
-            
-            output = processor.dependencies(identifier).map(function(short) {
-                var long = path.resolve(process.cwd(), short);
-                
-                // I hate you, path.
-                return "require(\"" + long.replace(/\\/g, "/") + "\");";
-            });
-            
-            output = output.concat("module.exports = " + JSON.stringify(result.exports, null, 4) + ";");
-            
-            this.push(output.join("\n"));
-            
-            done();
+            processor.string(file, buffer).then(
+                function(result) {
+                    // Teach browserify about dependencies by injecting require() statements
+                    // There is probably a cleaner way to do this :(
+                    var output = processor.dependencies(identifier).map(function(short) {
+                        var long = path.resolve(process.cwd(), short);
+                        
+                        // I hate you, path.
+                        return "require(\"" + long.replace(/\\/g, "/") + "\");";
+                    });
+                    
+                    output = output.concat("module.exports = " + JSON.stringify(result.exports, null, 4) + ";");
+                    
+                    push(output.join("\n"));
+                    
+                    done();
+                },
+
+                function(error) {
+                    // Thrown from the current bundler instance, NOT the main browserify
+                    // instance. This is so that watchify won't explode.
+                    bundler.emit("error", error);
+                    
+                    push(buffer);
+                    
+                    done();
+                }
+            );
         });
     }, { global : true });
 

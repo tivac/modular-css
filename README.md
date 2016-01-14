@@ -182,21 +182,27 @@ Will process `./entry.css` and output the processed CSS to `./gen/entry.css` as 
 
 ```js
 var Processor = require("modular-css").Processor,
-    mcss = new Processor(),
-    output;
+    processor = new Processor();
 
-output = mcss.file("./entry.css");
+mcss.file("./entry.css").then(function(output) {
+    // output now contains
+    //  .exports - Scoped selector mappings
+    //  .files - metadata about the file hierarchy
+    
+    // Transformed CSS is available from the css method    
+    mcss.css();
+});
 
 // or
 
-output = mcss.string("./entry.css", ".fooga { ... } ...");
-
-// output now contains
-//  .exports - Scoped selector mappings
-//  .files - metadata about the file hierarchy
-
-// The transformed css is available on the css property
-output.css;
+mcss.string("./entry.css", ".fooga { ... } ...").then(function(output) {
+    // output now contains
+    //  .exports - Scoped selector mappings
+    //  .files - metadata about the file hierarchy
+    
+    // Transformed CSS is available from the css method    
+    mcss.css();
+});
 ```
 
 ### Browserify

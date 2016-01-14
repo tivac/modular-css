@@ -1,17 +1,27 @@
 "use strict";
 
 var fs   = require("fs"),
-
+    
     assign   = require("lodash.assign"),
     map      = require("lodash.mapvalues"),
     Graph    = require("dependency-graph").DepGraph,
     postcss  = require("postcss"),
+
+    Promise = require("./_promise"),
 
     urls = postcss([
         require("postcss-url")
     ]),
 
     relative = require("./_relative");
+
+function sequential(promises) {
+    return new Promise(function(resolve, reject) {
+        promises.reduce(function(curr, next) {
+            return curr.then(next);
+        }, Promise.resolve()).then(resolve, reject);
+    });
+}
 
 function Processor(opts) {
     var options = opts;
@@ -50,46 +60,47 @@ Processor.prototype = {
         var self  = this,
             start = relative(name);
 
-        this._walk(start, text);
-        
-        this._graph.dependenciesOf(start).concat(start).forEach(function(file) {
-            var details = self._files[file],
-                parsed;
-                
-            if(details.complete) {
-                return;
-            }
-                
-            parsed = self._after.process(details.parsed, assign({}, self._options, {
-                from  : file,
-                files : self._files
+        return this._walk(start, text).then(function() {
+            return sequential(self._graph.dependenciesOf(start).concat(start).map(function(file) {
+                return function() {
+                    var details = self._files[file];
+                    
+                    if(!details.after) {
+                        details.after = self._after.process(details.result, assign({}, self._options, {
+                            from  : file,
+                            files : self._files
+                        }));
+                    }
+                    
+                    return details.after.then(function(result) {
+                        details.result = result;
+                        
+                        // Combine messages from both postcss passes before pulling out relevant info
+                        details.before.messages.concat(result.messages).forEach(function(msg) {
+                            if(msg.values) {
+                                details.values = assign(details.values || {}, msg.values);
+                                
+                                return;
+                            }
+                            
+                            if(msg.compositions) {
+                                details.compositions = assign(details.compositions || {}, msg.compositions);
+                                
+                                return;
+                            }
+                        });
+                    });
+                };
             }));
-            
-            // Combine messages from both postcss passes before pulling out relevant info
-            details.parsed.messages.concat(parsed.messages).forEach(function(msg) {
-                if(msg.values) {
-                    details.values = assign(details.values || {}, msg.values);
-                    
-                    return;
-                }
-                
-                if(msg.compositions) {
-                    details.compositions = assign(details.compositions || {}, msg.compositions);
-                    
-                    return;
-                }
-            });
-            
-            details.complete = true;
-            details.parsed = parsed;
+        })
+        .then(function() {
+            return {
+                files   : self._files,
+                exports : map(self._files[start].compositions, function(exports) {
+                    return exports.join(" ");
+                })
+            };
         });
-        
-        return {
-            files   : this._files,
-            exports : map(this._files[start].compositions, function(exports) {
-                return exports.join(" ");
-            })
-        };
     },
 
     remove : function(input) {
@@ -117,7 +128,7 @@ Processor.prototype = {
         var self  = this,
             root  = postcss.root(),
             opts  = args || false,
-            files = opts.files || this._graph.overallOrder();
+            files = opts.files || this.dependencies();
         
         files.forEach(function(dep) {
             var css;
@@ -128,9 +139,9 @@ Processor.prototype = {
             // Rewrite relative URLs before adding
             // Have to do this every time because target file might be different!
             // NOTE: the call to .clone() is really important here, otherwise this call
-            // modifies the .parsed root itself and you can process URLs multiple times
+            // modifies the .result root itself and you process URLs multiple times
             // See https://github.com/tivac/modular-css/issues/35
-            css = urls.process(self._files[dep].parsed.root.clone(), {
+            css = urls.process(self._files[dep].result.root.clone(), {
                 from : dep,
                 to   : opts.to
             });
@@ -146,31 +157,29 @@ Processor.prototype = {
     },
 
     _walk : function(name, text) {
-        var self = this,
-            parsed;
-
+        var self = this;
+        
         this._graph.addNode(name);
 
         // Avoid re-processing files we've already seen
         if(!(name in this._files)) {
-            parsed = self._before.process(text, { from : name, graph : this._graph });
-            
-            // This is super-weird, but we need to trigger processing
-            // so that the graph is updated
-            /* eslint no-unused-expressions:0 */
-            parsed.css;
-
             this._files[name] = {
-                parsed : parsed,
+                before : self._before.process(text, { from : name, graph : this._graph }),
                 text   : text
             };
         }
         
-        // Walk this node's dependencies, reading new files from disk as necessary
-        this._graph.dependenciesOf(name).forEach(function(dependency) {
-            self._walk(
-                dependency,
-                self._files[dependency] ? null : fs.readFileSync(dependency, "utf8")
+        return this._files[name].before.then(function(result) {
+            self._files[name].result = result;
+            
+            // Walk this node's dependencies, reading new files from disk as necessary
+            return Promise.all(
+                self._graph.dependenciesOf(name).map(function(dependency) {
+                    return self._walk(
+                        dependency,
+                        self._files[dependency] ? null : fs.readFileSync(dependency, "utf8")
+                    );
+                })
             );
         });
     }

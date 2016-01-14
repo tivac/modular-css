@@ -48,7 +48,6 @@ module.exports = function(name, process) {
                 return;
             }
             
-            // TODO: add graph dependencies for values
             keys.forEach(function(key) {
                 var parts = parser(values[key]);
 
