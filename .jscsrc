@@ -1,5 +1,5 @@
 {
-    "preset" : "preset-arenanet",
+    "preset" : "arenanet",
     "excludeFiles" : [
         "coverage/**",
         "test/specimens/**",
