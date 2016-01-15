@@ -7,7 +7,7 @@ var createParser = require("postcss-selector-parser"),
 exports.keyframes = keyframes;
 
 // TODO: this is probably inefficient, but oh well for now
-exports.parse = function identifiers(selector) {
+exports.parse = function parse(selector) {
     var values = [];
     
     createParser(function(selectors) {
