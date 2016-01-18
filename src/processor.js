@@ -95,6 +95,8 @@ Processor.prototype = {
         })
         .then(function() {
             return {
+                id      : start,
+                file    : name,
                 files   : self._files,
                 exports : map(self._files[start].compositions, function(exports) {
                     return exports.join(" ");
@@ -113,7 +115,11 @@ Processor.prototype = {
 
         files.forEach(function(file) {
             var key = relative(file);
-
+            
+            // Remove everything that depends on this too, it'll all need
+            // to be recalculated
+            self.remove(self._graph.dependantsOf(key));
+            
             delete self._files[key];
             
             self._graph.removeNode(key);
@@ -160,9 +166,8 @@ Processor.prototype = {
         var self = this;
         
         self._graph.addNode(name);
-
-        // Avoid re-processing files we've already seen
-        if(!(name in self._files)) {
+        
+        if(!self._files[name]) {
             self._files[name] = {
                 text   : text,
                 before : self._before.process(text, assign({}, self._options, {
@@ -182,7 +187,7 @@ Processor.prototype = {
                         dependency,
                         self._files[dependency] ?
                             null :
-                            self.file(dependency)
+                            fs.readFileSync(dependency, "utf8")
                     );
                 })
             );
