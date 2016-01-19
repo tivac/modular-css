@@ -7,7 +7,6 @@ var fs     = require("fs"),
     from       = require("from2-string"),
     mkdirp     = require("mkdirp"),
     factor     = require("factor-bundle"),
-    shell      = require("shelljs"), 
     
     plugin = require("../src/browserify"),
     
