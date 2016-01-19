@@ -14,8 +14,8 @@ var fs     = require("fs"),
 
 describe("modular-css", function() {
     describe("browserify plugin", function() {
-        before(function() {
-            require("shelljs").rm("-rf", "./test/output/*.*");
+        after(function(done) {
+            require("rimraf")("./test/output/browserify", done);
         });
         
         it("should error if an invalid extension is applied", function(done) {
