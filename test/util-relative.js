@@ -4,7 +4,7 @@ var assert = require("assert"),
 
     relative = require("../src/_relative");
 
-describe("postcss-modular-css", function() {
+describe("modular-css", function() {
     describe("util-relative", function() {
         it("should export a function", function() {
             assert.equal(typeof relative, "function");

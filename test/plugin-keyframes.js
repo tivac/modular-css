@@ -7,7 +7,7 @@ var assert = require("assert"),
     scoping   = require("../src/plugins/scoping"),
     keyframes = require("../src/plugins/keyframes");
 
-describe("postcss-modular-css", function() {
+describe("modular-css", function() {
     describe("plugin-keyframes", function() {
         it("should update scoped animations from the scoping plugin's message", function() {
             var out = postcss([ scoping, keyframes ]).process(

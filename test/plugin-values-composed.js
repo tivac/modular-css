@@ -5,7 +5,7 @@ function css(src, options) {
     return plugin.process(src, options).css;
 }
 
-describe("postcss-modular-css", function() {
+describe("modular-css", function() {
     describe("values-composed plugin", function() {
         it("should fail to parse invalid declarations", function() {
             assert.throws(function() {

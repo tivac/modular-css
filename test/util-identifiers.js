@@ -4,7 +4,7 @@ var assert = require("assert"),
 
     identifiers = require("../src/_identifiers");
 
-describe("postcss-modular-css", function() {
+describe("modular-css", function() {
     describe("util-identifiers", function() {
         it("should export a parse function", function() {
             assert.equal(typeof identifiers.parse, "function");

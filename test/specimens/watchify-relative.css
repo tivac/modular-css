@@ -1,7 +1,0 @@
-.booga {
-    background: url("./to.png");
-}
-
-.wooga {
-    composes: wooga from "./relative.css";
-}

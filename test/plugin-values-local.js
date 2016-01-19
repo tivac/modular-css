@@ -5,7 +5,7 @@ function css(src, options) {
     return plugin.process(src, options).css;
 }
 
-describe("postcss-modular-css", function() {
+describe("modular-css", function() {
     describe("values-local plugin", function() {
         it("should silently ignore invalid declarations", function() {
             assert.doesNotThrow(function() {

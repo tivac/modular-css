@@ -1,12 +1,12 @@
 "use strict";
 
-var assert = require("assert"),
-    
-    Processor = require("../src/processor");
+var assert = require("assert");
 
-describe("postcss-modular-css", function() {
+describe("modular-css", function() {
     describe("issues", function() {
         describe("issue 24", function() {
+            var Processor = require("../src/processor");
+            
             beforeEach(function() {
                 this.processor = new Processor();
             });

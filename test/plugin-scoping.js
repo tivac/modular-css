@@ -6,7 +6,7 @@ function css(src, options) {
     return plugin.process(src, assign({ from : "test/specimens/simple.css" }, options || {})).css;
 }
 
-describe("postcss-modular-css", function() {
+describe("modular-css", function() {
     describe("scoping", function() {
         it("should generate a prefix for class names", function() {
             assert.equal(

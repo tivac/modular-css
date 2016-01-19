@@ -26,7 +26,7 @@ function async(css) {
     });
 }
 
-describe("postcss-modular-css", function() {
+describe("modular-css", function() {
     describe("processor", function() {
         describe("Basic functionality", function() {
             it("should be a function", function() {
@@ -448,7 +448,7 @@ describe("postcss-modular-css", function() {
                     .then(function() {
                         assert.equal(
                             processor.css() + "\n",
-                            fs.readFileSync("./test/results/processor-output-all.css", "utf8")
+                            fs.readFileSync("./test/results/processor/output-all.css", "utf8")
                         );
 
                         done();
@@ -466,7 +466,7 @@ describe("postcss-modular-css", function() {
                     .then(function() {
                         assert.equal(
                             processor.css() + "\n",
-                            fs.readFileSync("./test/results/processor-avoid-duplicates.css", "utf8")
+                            fs.readFileSync("./test/results/processor/avoid-duplicates.css", "utf8")
                         );
 
                         done();
@@ -481,7 +481,7 @@ describe("postcss-modular-css", function() {
                     .then(function() {
                         assert.equal(
                             processor.css({ to : "./test/output/relative.css" }) + "\n",
-                            fs.readFileSync("./test/results/processor-relative.css", "utf8")
+                            fs.readFileSync("./test/results/processor/relative.css", "utf8")
                         );
 
                         done();
