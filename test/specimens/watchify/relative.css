@@ -3,5 +3,5 @@
 }
 
 .wooga {
-    composes: wooga from "./relative.css";
+    composes: wooga from "../relative.css";
 }

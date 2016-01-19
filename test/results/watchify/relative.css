@@ -1,9 +1,9 @@
 /* test/specimens/relative.css */
 .mc592b2d8f_wooga {
     color: red;
-    background: url("specimens/folder/to.png")
+    background: url("../../specimens/folder/to.png")
 }
-/* test/specimens/watchify-relative.css */
-.mc0893bc0d_booga {
-    background: url("specimens/to.png")
+/* test/specimens/watchify/relative.css */
+.mc3810717d_booga {
+    background: url("../../specimens/watchify/to.png")
 }

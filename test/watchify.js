@@ -1,10 +1,10 @@
 "use strict";
 
 var fs     = require("fs"),
-    path   = require("path"),
     assert = require("assert"),
     
     browserify = require("browserify"),
+    watchify   = require("watchify"),
     shell      = require("shelljs"),
     from       = require("from2-string"),
     
@@ -16,29 +16,29 @@ var fs     = require("fs"),
 describe("modular-css", function() {
     describe("watchify", function() {
         describe("caching", function() {
-            beforeEach(function() {
-                shell.cp("-f", "./test/specimens/simple.css", "./test/specimens/watchify.css");
-            });
-
             after(function() {
-                shell.rm("./test/specimens/watchify.css");
+                shell.rm("./test/specimens/watchify/caching.css");
             });
 
             it("shouldn't cache file contents between watchify runs", function(done) {
-                var build = browserify({
-                        entries : from("require('./watchify.css');"),
-                        basedir : "./test/specimens"
-                    });
+                var build = browserify();
+                
+                shell.cp("-f",
+                    "./test/specimens/simple.css",
+                    "./test/specimens/watchify/caching.css"
+                );
+                
+                build.add(from("require('./test/specimens/watchify/caching.css');"));
 
-                build.plugin("watchify");
+                build.plugin(watchify);
                 build.plugin(plugin, {
-                    css : "./test/output/watchify.css"
+                    css : "./test/output/watchify/caching.css"
                 });
 
                 // File changed
                 build.on("update", function() {
                     bundle(build, function() {
-                        compare.result("watchify.css", "watchify-2.css");
+                        compare.results("/watchify/caching.css", "/watchify/caching-2.css");
                         
                         build.close();
                         
@@ -48,39 +48,42 @@ describe("modular-css", function() {
 
                 // Run first bundle, start watching
                 bundle(build, function() {
-                    compare.result("watchify.css", "watchify-1.css");
+                    compare.results("/watchify/caching.css", "/watchify/caching-1.css");
 
-                    shell.cp("-f", "./test/specimens/blue.css", "./test/specimens/watchify.css");
+                    shell.cp("-f",
+                        "./test/specimens/blue.css",
+                        "./test/specimens/watchify/caching.css"
+                    );
                 });
             });
         });
         
         describe("error handling", function() {
-            beforeEach(function() {
-                shell.cp("-f", "./test/specimens/invalid.css", "./test/specimens/watchify.css");
-            });
-
             after(function() {
-                shell.rm("./test/specimens/watchify.css");
+                shell.rm("./test/specimens/watchify/errors.css");
             });
         
             it("shouldn't explode on invalid CSS", function(done) {
-                var build = browserify({
-                        entries : from("require('./watchify.css');"),
-                        basedir : "./test/specimens"
-                    }),
+                var build = browserify(),
                     wait;
+                
+                shell.cp("-f",
+                    "./test/specimens/invalid.css",
+                    "./test/specimens/watchify/errors.css"
+                );
+                
+                build.add(from("require('./test/specimens/watchify/errors.css');"));
 
-                build.plugin("watchify");
+                build.plugin(watchify);
                 build.plugin(plugin, {
-                    css : "./test/output/watchify.css"
+                    css : "./test/output/watchify/errors.css"
                 });
 
                 // File changed
                 build.on("update", function() {
                     // Attempt to bundle again
                     bundle(build, function() {
-                        compare.result("watchify.css", "watchify-2.css");
+                        compare.results("/watchify/errors.css", "/watchify/errors.css");
                         
                         build.close();
                         
@@ -100,33 +103,28 @@ describe("modular-css", function() {
                     
                     // Wrapped because browserify event lifecycle is... odd
                     wait = setImmediate(function() {
-                        shell.cp("-f", "./test/specimens/blue.css", "./test/specimens/watchify.css");
+                        shell.cp("-f",
+                            "./test/specimens/blue.css",
+                            "./test/specimens/watchify/errors.css"
+                        );
                     });
                 });
             });
         });
         
         describe("caching", function() {
-            var out = path.resolve("./test/__output.css"),
-                rel = path.resolve("./test/results/watchify-relative.css");
-            
-            after(function() {
-                shell.rm(out);
-            });
-            
             it("shouldn't cache file contents between watchify runs", function(done) {
-                var build = browserify("./test/specimens/watchify-relative.js");
+                var build = browserify(from("require('./test/specimens/watchify/relative.css');"));
 
-                build.plugin("watchify");
+                build.plugin(watchify);
                 build.plugin(plugin, {
-                    // Generating to a weird spot to get bug to repro
-                    css : out
+                    css : "./test/output/watchify/relative.css"
                 });
 
                 // File changed
                 build.on("update", function() {
                     bundle(build, function() {
-                        compare.paths(out, rel);
+                        compare.results("/watchify/relative.css");
                         
                         build.close();
                         
@@ -136,10 +134,10 @@ describe("modular-css", function() {
 
                 // Run first bundle, start watching
                 bundle(build, function() {
-                    compare.paths(out, rel);
+                    compare.results("/watchify/relative.css");
                     
                     // Trigger a rebuild
-                    fs.utimesSync("./test/specimens/watchify-relative.css", new Date(), new Date());
+                    fs.utimesSync("./test/specimens/watchify/relative.css", new Date(), new Date());
                 });
             });
         });
