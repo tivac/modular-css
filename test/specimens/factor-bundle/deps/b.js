@@ -1,2 +1,2 @@
-require("./browserify-fb-deps-common");
-require("./local.css");
+require("./common");
+require("../../local.css");

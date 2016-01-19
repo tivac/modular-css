@@ -6,7 +6,8 @@ var fs     = require("fs"),
     browserify = require("browserify"),
     from       = require("from2-string"),
     mkdirp     = require("mkdirp"),
-    factor     = require("factor-bundle"), 
+    factor     = require("factor-bundle"),
+    shell      = require("shelljs"), 
     
     plugin = require("../src/browserify"),
     
@@ -15,28 +16,21 @@ var fs     = require("fs"),
 
 describe("modular-css", function() {
     describe("factor-bundle", function() {
-        before(function() {
-            mkdirp.sync("./test/output/factor-bundle/basic");
-            mkdirp.sync("./test/output/factor-bundle/nocommon");
-            mkdirp.sync("./test/output/factor-bundle/deps");
-            mkdirp.sync("./test/output/factor/bundle/relative");
-            mkdirp.sync("./test/output/factor/bundle/noempty");
-            mkdirp.sync("./test/output/factor/bundle/empty");
+        after(function(done) {
+            require("rimraf")("./test/output/factor-bundle", done);
         });
         
-        it.only("should be supported", function(done) {
-            this.timeout(0);
+        it("should be supported", function(done) {
+            var base  = "./test/specimens/factor-bundle/basic",
+                build = browserify([
+                    from("require('" + base + "/common.js'); require('./test/specimens/start.css');"),
+                    from("require('" + base + "/common.js'); require('./test/specimens/local.css');")
+                ]);
             
-            var build = browserify({
-                    basedir : "./test/specimens",
-                    entries : [
-                        from("require('./factor-bundle/basic/common.js'); require('./start.css');"),
-                        from("require('./factor-bundle/basic/common.js'); require('./local.css');")
-                    ]
-                });
+            mkdirp.sync("./test/output/factor-bundle/basic");
             
             build.plugin(plugin, {
-                css : "./test/output/factor-bundle/basic/css"
+                css : "./test/output/factor-bundle/basic/basic.css"
             });
 
             build.plugin(factor, {
@@ -49,8 +43,8 @@ describe("modular-css", function() {
             bundle(build, function(out) {
                 fs.writeFileSync("./test/output/factor-bundle/basic/common.js", out);
 
-                compare("factor-bundle/basic/css");
-                compare("factor-bundle/basic/a.css");
+                compare.results("/factor-bundle/basic/basic.css");
+                compare.results("/factor-bundle/basic/_stream_0.css");
                 
                 done();
             });
@@ -58,12 +52,14 @@ describe("modular-css", function() {
         
         it("should support files w/o commonalities", function(done) {
             var build = browserify([
-                    "./test/specimens/factor-bundle/nocommon/a.js",
-                    "./test/specimens/factor-bundle/nocommon/b.js"
+                    from("require('./test/specimens/simple.css');"),
+                    from("require('./test/specimens/blue.css');")
                 ]);
             
+            mkdirp.sync("./test/output/factor-bundle/nocommon");
+            
             build.plugin(plugin, {
-                css : "./test/output/factor-bundle/nocommon/css"
+                css : "./test/output/factor-bundle/nocommon/nocommon.css"
             });
 
             build.plugin(factor, {
@@ -74,8 +70,8 @@ describe("modular-css", function() {
             });
             
             bundle(build, function() {
-                compare("factor-bundle/nocommon/a.css");
-                compare("factor-bundle/nocommon/b.css");
+                compare.results("/factor-bundle/nocommon/_stream_0.css");
+                compare.results("/factor-bundle/nocommon/_stream_1.css");
                 
                 done();
             });
@@ -87,8 +83,10 @@ describe("modular-css", function() {
                     "./test/specimens/factor-bundle/deps/b.js"
                 ]);
             
+            mkdirp.sync("./test/output/factor-bundle/deps");
+            
             build.plugin(plugin, {
-                css : "./test/output/factor-bundle/deps/css"
+                css : "./test/output/factor-bundle/deps/deps.css"
             });
 
             build.plugin(factor, {
@@ -99,8 +97,8 @@ describe("modular-css", function() {
             });
             
             bundle(build, function() {
-                compare("factor-bundle/deps/css");
-                compare("factor-bundle/deps/a.css");
+                compare.results("/factor-bundle/deps/deps.css");
+                compare.results("/factor-bundle/deps/a.css");
                 
                 done();
             });
@@ -112,8 +110,10 @@ describe("modular-css", function() {
                     "./test/specimens/factor-bundle/relative/b.js"
                 ]);
             
+            mkdirp.sync("./test/output/factor-bundle/relative");
+            
             build.plugin(plugin, {
-                css : "./test/output/factor-bundle/relative/css"
+                css : "./test/output/factor-bundle/relative/relative.css"
             });
 
             build.plugin(factor, {
@@ -124,9 +124,9 @@ describe("modular-css", function() {
             });
             
             bundle(build, function() {
-                compare("factor-bundle/relative/css");
-                compare("factor-bundle/relative/a.css");
-                compare("factor-bundle/relative/b.css");
+                compare.results("/factor-bundle/relative/relative.css");
+                compare.results("/factor-bundle/relative/a.css");
+                compare.results("/factor-bundle/relative/b.css");
                 
                 done();
             });
@@ -138,8 +138,10 @@ describe("modular-css", function() {
                     "./test/specimens/factor-bundle/noempty/b.js"
                 ]);
             
+            mkdirp.sync("./test/output/factor-bundle/noempty");
+            
             build.plugin(plugin, {
-                css : "./test/output/factor-bundle/noempty/css"
+                css : "./test/output/factor-bundle/noempty/noempty.css"
             });
 
             build.plugin(factor, {
@@ -154,8 +156,8 @@ describe("modular-css", function() {
                     fs.statSync("./test/output/factor-bundle/noempty/b.css");
                 });
                 
-                compare("factor-bundle/noempty/css");
-                compare("factor-bundle/noempty/a.css");
+                compare.results("/factor-bundle/noempty/noempty.css");
+                compare.results("/factor-bundle/noempty/a.css");
                 
                 done();
             });
@@ -167,8 +169,10 @@ describe("modular-css", function() {
                     "./test/specimens/factor-bundle/empty/b.js"
                 ]);
             
+            mkdirp.sync("./test/output/factor-bundle/empty");
+            
             build.plugin(plugin, {
-                css   : "./test/output/factor-bundle/empty/css",
+                css   : "./test/output/factor-bundle/empty/empty.css",
                 empty : true
             });
 
@@ -180,9 +184,9 @@ describe("modular-css", function() {
             });
             
             bundle(build, function() {
-                compare("factor-bundle/empty/css");
-                compare("factor-bundle/empty/a.css");
-                compare("factor-bundle/empty/b.css");
+                compare.results("/factor-bundle/empty/empty.css");
+                compare.results("/factor-bundle/empty/a.css");
+                compare.results("/factor-bundle/empty/b.css");
                 
                 done();
             });

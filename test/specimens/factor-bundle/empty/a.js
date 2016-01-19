@@ -1,2 +1,2 @@
-require("./browserify-fb-basic-common");
-require("./start.css");
+require("./common");
+require("../../start.css");

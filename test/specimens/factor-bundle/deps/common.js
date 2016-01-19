@@ -1,1 +1,1 @@
-require("./folder/folder.css");
+require("../../folder/folder.css");

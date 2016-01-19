@@ -1,1 +1,1 @@
-require("./browserify-fb-basic-common");
+require("./common");
