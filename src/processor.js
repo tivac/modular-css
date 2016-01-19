@@ -159,17 +159,20 @@ Processor.prototype = {
     _walk : function(name, text) {
         var self = this;
         
-        this._graph.addNode(name);
+        self._graph.addNode(name);
 
         // Avoid re-processing files we've already seen
-        if(!(name in this._files)) {
-            this._files[name] = {
-                before : self._before.process(text, { from : name, graph : this._graph }),
-                text   : text
+        if(!(name in self._files)) {
+            self._files[name] = {
+                text   : text,
+                before : self._before.process(text, assign({}, self._options, {
+                    from  : name,
+                    graph : self._graph
+                }))
             };
         }
         
-        return this._files[name].before.then(function(result) {
+        return self._files[name].before.then(function(result) {
             self._files[name].result = result;
             
             // Walk this node's dependencies, reading new files from disk as necessary
@@ -177,7 +180,9 @@ Processor.prototype = {
                 self._graph.dependenciesOf(name).map(function(dependency) {
                     return self._walk(
                         dependency,
-                        self._files[dependency] ? null : fs.readFileSync(dependency, "utf8")
+                        self._files[dependency] ?
+                            null :
+                            self.file(dependency)
                     );
                 })
             );
