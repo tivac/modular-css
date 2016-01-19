@@ -6,7 +6,7 @@ var fs   = require("fs"),
     through = require("through2"),
     sink    = require("sink-transform"),
     mkdirp  = require("mkdirp"),
-    
+
     assign  = require("lodash.assign"),
     each    = require("lodash.foreach"),
     map     = require("lodash.mapvalues"),
@@ -142,7 +142,7 @@ module.exports = function(browserify, opts) {
 
                     dest = path.join(
                         path.dirname(options.css),
-                        path.basename(bundle).replace(path.extname(bundle), options.ext)
+                        path.basename(bundle, path.extname(bundle)) + options.ext
                     );
                     
                     mkdirp.sync(path.dirname(dest));
