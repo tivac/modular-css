@@ -30,6 +30,7 @@
     "eslint": "^1.10.3",
     "eslint-config-arenanet": "^1.0.2",
     "factor-bundle": "^2.5.0",
+    "from2-string": "^1.1.0",
     "istanbul": "^0.4.2",
     "jscs": "^2.8.0",
     "jscs-preset-arenanet": "^1.0.3",
