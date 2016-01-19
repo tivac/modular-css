@@ -5,6 +5,7 @@ var fs   = require("fs"),
 
     through = require("through2"),
     sink    = require("sink-transform"),
+    mkdirp  = require("mkdirp"),
     
     assign  = require("lodash.assign"),
     each    = require("lodash.foreach"),
@@ -144,6 +145,8 @@ module.exports = function(browserify, opts) {
                         path.basename(bundle).replace(path.extname(bundle), options.ext)
                     );
                     
+                    mkdirp.sync(path.dirname(dest));
+                    
                     fs.writeFileSync(dest, processor.css({
                         files : files,
                         to    : dest
@@ -155,6 +158,8 @@ module.exports = function(browserify, opts) {
                     return;
                 }
             }
+            
+            mkdirp.sync(path.dirname(options.css));
             
             // Write out common/all css depending on bundling status
             fs.writeFileSync(options.css, processor.css({
