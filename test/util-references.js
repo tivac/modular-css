@@ -6,7 +6,7 @@ var assert = require("assert"),
 
     references = require("../src/_references");
 
-describe("postcss-modular-css", function() {
+describe("modular-css", function() {
     describe("util-references", function() {
         it("should export a function", function() {
             assert.equal(typeof references, "function");

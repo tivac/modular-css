@@ -18,7 +18,7 @@ function msg(compositions) {
     };
 }
 
-describe("postcss-modular-css", function() {
+describe("modular-css", function() {
     describe("composition plugin", function() {
         it("should fail if attempting to compose a class that doesn't exist", function() {
             /* eslint no-unused-expressions:0 */

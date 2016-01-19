@@ -4,7 +4,7 @@ var assert = require("assert"),
 
     parse = require("../src/_composition");
 
-describe("postcss-modular-css", function() {
+describe("modular-css", function() {
     describe("util-composition", function() {
         describe("single identifier", function() {
             it("should fail to parse invalid identifiers", function() {

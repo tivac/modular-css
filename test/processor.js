@@ -26,7 +26,7 @@ function async(css) {
     });
 }
 
-describe("postcss-modular-css", function() {
+describe("modular-css", function() {
     describe("processor", function() {
         describe("Basic functionality", function() {
             it("should be a function", function() {
