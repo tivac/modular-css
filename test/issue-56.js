@@ -16,8 +16,6 @@ describe("modular-css", function() {
                     ".wooga { composes: booga }"
             )
             .then(function(result) {
-                var file = result.files["test/specimens/issues/56.css"];
-
                 assert.deepEqual(result.exports, {
                     booga : "mc13e7db14_booga",
                     fooga : "mc13e7db14_booga mc13e7db14_fooga",
