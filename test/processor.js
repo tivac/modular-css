@@ -343,37 +343,6 @@ describe("modular-css", function() {
                 .catch(done);
             });
 
-            it("should walk dependencies into node_modules", function(done) {
-                this.processor.file("./test/specimens/node_modules.css").then(function(result) {
-                    var file = result.files["test/specimens/node_modules.css"];
-                    
-                    assert.deepEqual(result.exports, {
-                        booga : "mc1fad4cc3_wooga",
-                        wooga : "mc1fad4cc3_wooga"
-                    });
-
-                    assert.equal(file.text, fs.readFileSync("./test/specimens/node_modules.css", "utf8"));
-                    assert.equal(file.after.root.toResult().css, "\n");
-
-                    assert.deepEqual(file.compositions, {
-                        booga : [ "mc1fad4cc3_wooga" ],
-                        wooga : [ "mc1fad4cc3_wooga" ]
-                    });
-
-                    file = result.files["test/specimens/node_modules/styles/styles.css"];
-
-                    assert.equal(file.text, fs.readFileSync("./test/specimens/node_modules/styles/styles.css", "utf8"));
-                    assert.equal(file.after.root.toResult().css, ".mc1fad4cc3_wooga { color: white; }\n");
-
-                    assert.deepEqual(file.compositions, {
-                        wooga : [ "mc1fad4cc3_wooga" ]
-                    });
-
-                    done();
-                })
-                .catch(done);
-            });
-
             it("should export identifiers and their classes", function(done) {
                 this.processor.file("./test/specimens/start.css").then(function(result) {
                     var file = result.files["test/specimens/start.css"];
@@ -443,7 +412,7 @@ describe("modular-css", function() {
 
                     processor.file("./test/specimens/start.css")
                     .then(function() {
-                        return processor.file("./test/specimens/node_modules.css");
+                        return processor.file("./test/specimens/simple.css");
                     })
                     .then(function() {
                         assert.equal(
