@@ -20,10 +20,9 @@ describe("modular-css", function() {
         });
         
         it("should be supported", function(done) {
-            var base  = "./test/specimens/factor-bundle/basic",
-                build = browserify([
-                    from("require('" + base + "/common.js'); require('./test/specimens/start.css');"),
-                    from("require('" + base + "/common.js'); require('./test/specimens/local.css');")
+            var build = browserify([
+                    from("require('./test/specimens/factor-bundle/basic/common.js'); require('./test/specimens/start.css');"),
+                    from("require('./test/specimens/factor-bundle/basic/common.js'); require('./test/specimens/local.css');")
                 ]);
             
             mkdirp.sync("./test/output/factor-bundle/basic");

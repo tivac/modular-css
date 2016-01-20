@@ -16,48 +16,35 @@ var fs   = require("fs"),
 
 module.exports = function(browserify, opts) {
     var options = assign({
-            ext    : ".css",
-            css    : false,
-            json   : false,
-            prefix : false,
-            namer  : false,
-            empty  : false
-        }, opts),
+            ext : ".css"
+        }, opts || {}),
         
         processor = new Processor(options),
         
-        bundler, bundles;
+        bundler, bundles, handled;
 
     if(!options.ext || options.ext.charAt(0) !== ".") {
         return browserify.emit("error", "Missing or invalid \"ext\" option: " + options.ext);
     }
 
     browserify.transform(function(file) {
-        var identifier;
-
         if(path.extname(file) !== options.ext) {
             return through();
         }
-
-        identifier = relative(file);
         
         return sink.str(function(buffer, done) {
             var push = this.push.bind(this);
             
             processor.string(file, buffer).then(
                 function(result) {
-                    // Teach browserify about dependencies by injecting require() statements
-                    // There is probably a cleaner way to do this :(
-                    var output = processor.dependencies(identifier).map(function(short) {
-                        var long = path.resolve(process.cwd(), short);
-                        
-                        // I hate you, path.
-                        return "require(\"" + long.replace(/\\/g, "/") + "\");";
+                    // Tell watchers about dependencies by emitting "file" events
+                    // AFAIK this is only useful to watchify, to ensure that it watches
+                    // everyone in the dependency graph
+                    processor.dependencies(result.id).forEach(function(id) {
+                        browserify.emit("file", path.resolve(process.cwd(), id), id);
                     });
                     
-                    output = output.concat("module.exports = " + JSON.stringify(result.exports, null, 4) + ";");
-                    
-                    push(output.join("\n"));
+                    push("module.exports = " + JSON.stringify(result.exports, null, 4) + ";");
                     
                     done();
                 },
@@ -74,14 +61,65 @@ module.exports = function(browserify, opts) {
             );
         });
     }, { global : true });
-
+    
+    // Splice ourselves as early as possible into the deps pipeline
+    browserify.pipeline.get("deps").splice(1, 0, through.obj(function(row, enc, done) {
+        // Ensure that browserify knows about the CSS dependency tree by updating
+        // any referenced entries w/ their dependencies
+        var id;
+        
+        if(path.extname(row.file) !== options.ext) {
+            return done(null, row);
+        }
+        
+        id = relative(row.file);
+        
+        handled.push(id);
+        
+        row.deps = processor.dependencies(id).reduce(function(curr, next) {
+            curr["./" + next] = path.resolve(next);
+            
+            return curr;
+        }, {});
+        
+        done(null, row);
+    }, function(done) {
+        // Ensure that any CSS dependencies not directly referenced are
+        // injected into the stream of files being managed
+        var push = this.push.bind(this);
+        
+        processor.dependencies().forEach(function(short) {
+            var id;
+                
+            if(handled.indexOf(short) > -1) {
+                return;
+            }
+            
+            id = path.resolve(short);
+            
+            push({
+                id     : id,
+                file   : id,
+                source : "module.exports = " + JSON.stringify(processor.files[short].exports, null, 4) + ";",
+                deps   : processor.dependencies(short).reduce(function(curr, next) {
+                    curr["./" + next] = path.resolve(next);
+                    
+                    return curr;
+                }, {})
+            });
+        });
+        
+        done();
+    }));
+    
+    // Keep tabs on factor-bundle organization
     browserify.on("factor.pipeline", function(file, pipeline) {
         var identifier = relative(file);
         
         bundles[identifier] = [];
 
-        // Keep track of the files in each bundle so we can determine commonalities
-        // Doesn't actually modify the file though, just records it
+        // Track the files in each bundle so we can determine commonalities
+        // Doesn't actually modify the file, just records it
         pipeline.unshift(through.obj(function(obj, enc, done) {
             var child;
             
@@ -91,9 +129,7 @@ module.exports = function(browserify, opts) {
                 bundles[identifier].unshift(child);
             }
 
-            this.push(obj);
-
-            done();
+            done(null, obj);
         }));
     });
 
@@ -102,18 +138,19 @@ module.exports = function(browserify, opts) {
     browserify.on("update", function(files) {
         processor.remove(files);
     });
-
+    
     browserify.on("bundle", function(current) {
-        // Every call to .bundle() means we should recreate all our bundle definitions
-        // (in case things have changed out from under us, like when using watchify)
+        // Calls to .bundle() means we should recreate anything tracking bundling progress
+        // in case things have changed out from under us, like when using watchify
         bundles = {};
+        handled = [];
         
         bundler = current;
         
         bundler.on("end", function() {
             var bundling = Object.keys(bundles).length > 0,
                 common;
-
+                
             if(options.json) {
                 fs.writeFileSync(options.json, JSON.stringify(map(processor.files, function(file) {
                     return file.compositions;

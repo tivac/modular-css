@@ -1,0 +1,10 @@
+.issue1 {
+    composes: other1 from "./other.css";
+    color: teal;
+}
+
+.issue2 {
+    composes: issue1;
+    composes: other3 from "./other.css";
+    color: aqua;
+}

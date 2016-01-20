@@ -15,6 +15,10 @@ var fs     = require("fs"),
 
 describe("modular-css", function() {
     describe("watchify", function() {
+        after(function(done) {
+            require("rimraf")("./test/output/watchify", done);
+        });
+        
         describe("caching", function() {
             after(function() {
                 shell.rm("./test/specimens/watchify/caching.css");
