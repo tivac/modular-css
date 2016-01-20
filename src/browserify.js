@@ -60,7 +60,7 @@ module.exports = function(browserify, opts) {
                 }
             );
         });
-    }, { global : true });
+    });
     
     // Splice ourselves as early as possible into the deps pipeline
     browserify.pipeline.get("deps").splice(1, 0, through.obj(function(row, enc, done) {

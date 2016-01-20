@@ -85,16 +85,6 @@ describe("modular-css", function() {
                     }
                 });
             });
-            
-            it("should parse single identifiers with a node_modules source", function() {
-                assert.deepEqual(parse("./test/specimens/simple.css", "fooga from \"styles\""), {
-                    rules  : [ "fooga" ],
-                    source : "test/specimens/node_modules/styles/styles.css",
-                    types  : {
-                        fooga : "local"
-                    }
-                });
-            });
         });
 
         describe("multiple identifiers", function() {

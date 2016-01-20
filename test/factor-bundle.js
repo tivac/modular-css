@@ -124,7 +124,6 @@ describe("modular-css", function() {
             bundle(build, function() {
                 compare.results("/factor-bundle/relative/relative.css");
                 compare.results("/factor-bundle/relative/a.css");
-                compare.results("/factor-bundle/relative/b.css");
                 
                 done();
             });
