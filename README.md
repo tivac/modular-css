@@ -154,11 +154,10 @@ If you're going to be doing a lot of composition with another file you can store
 }
 ```
 
-You can also get access to variables defined in other files via composition!
+You can also get access to variables defined in other files for simple sharing of useful information.
 
 ```css
 @value first, second from "./somewhere-else.css";
-@value npm from "some-node-module";
 ```
 
 ## Install
