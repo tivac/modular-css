@@ -5,6 +5,7 @@ var postcss      = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
     
     unique    = require("lodash.uniq"),
+    each      = require("lodash.foreach"),
     invert    = require("lodash.invert"),
     mapvalues = require("lodash.mapvalues"),
 
@@ -20,7 +21,8 @@ module.exports = postcss.plugin(plugin, function() {
             map   = invert(refs),
             graph = new Graph(),
             opts  = result.opts,
-            out   = {};
+            out   = {},
+            empty = {};
 
         // Have to do this down here because invert doesn't understand array values
         refs = mapvalues(refs, function(val, key) {
@@ -87,13 +89,35 @@ module.exports = postcss.plugin(plugin, function() {
                 return decl.remove();
             }
 
+            // Mark all selectors for this rule as potentially needing to be purged
+            selectors.forEach(function(selector) {
+                empty[selector] = {
+                    parent : decl.parent,
+                    count  : 0
+                };
+            });
+        });
+        
+        // Walk all rules pending emptying, remove any that appear > 1 time
+        css.walkRules(new RegExp(Object.keys(empty).join("|")), function(rule) {
+            identifiers.parse(rule.selector).forEach(function(selector) {
+                if(selector in empty) {
+                    empty[selector].count++;
+                }
+            });
+        });
+        
+        each(empty, function(obj, selector) {
+            if(obj.count > 1) {
+                return;
+            }
+            
             // If the parent rule only had the one declaration, clean up the rule
             // And blank out output for the now-empty class
-            decl.parent.remove();
-            selectors.forEach(function(selector) {
-                refs[map[selector]] = [];
-                out[map[selector]] = [];
-            });
+            obj.parent.remove();
+            
+            refs[map[selector]] = [];
+            out[map[selector]] = [];
         });
 
         // Update out by walking dep graph and updating classes
