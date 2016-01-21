@@ -1,26 +1,36 @@
-/* eslint no-console:0 */
 "use strict";
 
-var fs = require("fs"),
+var fs   = require("fs"),
+    path = require("path"),
+    
+    mkdirp = require("mkdirp"),
+    map    = require("lodash.mapValues"),
+    
+    Processor = require("../").Processor,
 
-    imports = require("../imports"),
-
-    result, out;
-
+    processor;
+    
 // Update checking
 require("update-notifier")({ pkg : require("../package.json" ) }).notify({ defer : true });
 
-result = imports.process(process.argv[2]);
+processor = new Processor();
 
-if(!process.argv[3]) {
-    return console.log(result.css);
-}
+processor.file(process.argv[2]).then(function(out) {
+    /* eslint no-console:0 */
+    var file = process.argv[3],
+        css  = processor.css();
+    
+    if(!file) {
+        return console.log(css);
+    }
 
-out = process.argv[3];
+    mkdirp.sync(path.dirname(file));
 
-fs.writeFileSync(out, result.css, "utf8");
-fs.writeFileSync(
-    result.css + ".json",
-    JSON.stringify(result.exports),
-    "utf8"
-);
+    fs.writeFileSync(file, css);
+    fs.writeFileSync(
+        path.basename(file, path.extname(file)) + ".json",
+        JSON.stringify(map(processor.files, function(part) {
+            return part.compositions;
+        }), null, 4)
+    );
+});
