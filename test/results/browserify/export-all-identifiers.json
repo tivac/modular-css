@@ -1,1 +1,6 @@
-{"test/specimens/simple.css":{"wooga":["mc08e91a5b_wooga"]}}
+{
+    "test/specimens/multiple.css": {
+        "fooga": "mcdc9e477f_fooga",
+        "wooga": "mcdc9e477f_fooga mcdc9e477f_wooga"
+    }
+}
