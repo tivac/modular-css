@@ -15,7 +15,7 @@ require("update-notifier")({ pkg : require("../package.json" ) }).notify({ defer
 
 processor = new Processor();
 
-processor.file(process.argv[2]).then(function(out) {
+processor.file(process.argv[2]).then(function() {
     /* eslint no-console:0 */
     var file = process.argv[3],
         css  = processor.css();
