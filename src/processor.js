@@ -113,7 +113,12 @@ Processor.prototype = {
             files = [ files ];
         }
 
-        files.forEach(function(file) {
+        files.filter(function(file) {
+            var key = relative(file);
+            
+            return self._graph.hasNode(key);
+        })
+        .forEach(function(file) {
             var key = relative(file);
             
             // Remove everything that depends on this too, it'll all need
