@@ -152,9 +152,16 @@ module.exports = function(browserify, opts) {
                 common;
                 
             if(options.json) {
-                fs.writeFileSync(options.json, JSON.stringify(map(processor.files, function(file) {
-                    return file.compositions;
-                })));
+                mkdirp.sync(path.dirname(options.json));
+                
+                fs.writeFileSync(
+                    options.json,
+                    JSON.stringify(map(processor.files, function(file) {
+                        return map(file.compositions, function(classes) {
+                            return classes.join(" ");
+                        });
+                    }), null, 4)
+                );
             }
             
             if(!options.css) {

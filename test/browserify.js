@@ -32,8 +32,7 @@ describe("modular-css", function() {
 
         it("should error on invalid CSS", function(done) {
             var build  = browserify({
-                    entries : from("require('./invalid.css');"),
-                    basedir : "./test/specimens"
+                    entries : from("require('./test/specimens/invalid.css');")
                 }),
                 errors = 0;
             
@@ -52,8 +51,7 @@ describe("modular-css", function() {
 
         it("should replace require() calls with the exported identifiers", function(done) {
             var build = browserify({
-                    entries : from("require('./simple.css');"),
-                    basedir : "./test/specimens"
+                    entries : from("require('./test/specimens/simple.css');")
                 });
             
             build.plugin(plugin);
@@ -69,8 +67,7 @@ describe("modular-css", function() {
 
         it("should correctly rewrite urls based on the destination file", function(done) {
             var build = browserify({
-                    entries : from("require('./relative.css');"),
-                    basedir : "./test/specimens"
+                    entries : from("require('./test/specimens/relative.css');")
                 });
             
             build.plugin(plugin, {
@@ -86,8 +83,7 @@ describe("modular-css", function() {
 
         it("should use the specified prefix", function(done) {
             var build = browserify({
-                    entries : from("require('./simple.css');"),
-                    basedir : "./test/specimens"
+                    entries : from("require('./test/specimens/simple.css');")
                 });
             
             build.plugin(plugin, {
@@ -104,8 +100,7 @@ describe("modular-css", function() {
 
         it("should use the specified namer function", function(done) {
             var build = browserify({
-                    entries : from("require('./keyframes.css');"),
-                    basedir : "./test/specimens"
+                    entries : from("require('./test/specimens/keyframes.css');")
                 });
             
             build.plugin(plugin, {
@@ -124,8 +119,7 @@ describe("modular-css", function() {
 
         it("should include all CSS dependencies in output css", function(done) {
             var build = browserify({
-                    entries : from("require('./start.css');"),
-                    basedir : "./test/specimens"
+                    entries : from("require('./test/specimens/start.css');")
                 });
             
             build.plugin(plugin, { css : "./test/output/browserify/include-css-deps.css" });
@@ -140,12 +134,11 @@ describe("modular-css", function() {
         });
 
         it("should write out the complete exported identifiers when `json` is specified", function(done) {
-            var build = browserify({
-                    entries : from("require('./simple.css');"),
-                    basedir : "./test/specimens"
-                });
+            var build = browserify(from("require('./test/specimens/multiple.css');"));
             
-            build.plugin(plugin, { json : "./test/output/browserify/export-all-identifiers.json" });
+            build.plugin(plugin, {
+                json : "./test/output/browserify/export-all-identifiers.json"
+            });
             
             bundle(build, function() {
                 compare.results("browserify/export-all-identifiers.json");
@@ -155,10 +148,9 @@ describe("modular-css", function() {
         });
 
         it("should not include duplicate files in the output multiple times", function(done) {
-            var build = browserify({
-                    entries : from("require('./start.css'); require('./local.css');"),
-                    basedir : "./test/specimens"
-                });
+            var build = browserify(
+                    from("require('./test/specimens/start.css'); require('./test/specimens/local.css');")
+                );
             
             build.plugin(plugin, { css : "./test/output/browserify/avoid-duplicates.css" });
             
