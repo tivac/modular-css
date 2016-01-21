@@ -13,7 +13,7 @@ Like efficient bundling? Great! `modular-css` supports the [`factor-bundle`](htt
 
 ## Why?
 
-CSS Modules is an amazing idea. Unfortunately it is incredibly difficult to get working in our projects right now. So to prove out the idea we built `modular-css`. In general `modular-css` is a stricter implementation of the most useful parts of the CSS Modules spec.
+CSS Modules is an amazing idea. Unfortunately it is incredibly difficult to get working in our projects right now. So to prove out the idea we built `modular-css`. In general `modular-css` is a implementation of the most useful parts of the CSS Modules spec. It unavoidably deviates in a few places to try and improve end-user consistency.
 
 <p align="center">
     <a href="https://twitter.com/iamdevloper/status/636455478093029376">
@@ -179,6 +179,8 @@ Will process `./entry.css` and output the processed CSS to `./gen/entry.css` as 
 
 ### API
 
+Instantiate a new `Processor` instance, call it's `.file(<path>)` or `.string(<name>, <contents>)` methods, and then use the returned Promise to get access to the results/output.
+
 ```js
 var Processor = require("modular-css").Processor,
     processor = new Processor();
@@ -190,25 +192,18 @@ var Processor = require("modular-css").Processor,
 //     after  : [ require("postcss-fooga") ]
 // });
 
-mcss.file("./entry.css").then(function(output) {
+processor.file("./entry.css").then(function(output) {
     // output now contains
     //  .exports - Scoped selector mappings
     //  .files - metadata about the file hierarchy
     
     // Transformed CSS is available from the css method    
-    mcss.css();
+    processor.css();
 });
 
 // or
 
-mcss.string("./entry.css", ".fooga { ... } ...").then(function(output) {
-    // output now contains
-    //  .exports - Scoped selector mappings
-    //  .files - metadata about the file hierarchy
-    
-    // Transformed CSS is available from the css method    
-    mcss.css();
-});
+processor.string("./entry.css", ".fooga { ... } ...").then(...);
 ```
 
 ### Browserify
