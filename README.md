@@ -183,6 +183,13 @@ Will process `./entry.css` and output the processed CSS to `./gen/entry.css` as 
 var Processor = require("modular-css").Processor,
     processor = new Processor();
 
+// Optionally you can instantiate w/ postcss plugins to
+// run before/after processing
+// processor = new Processor({
+//     before : [ require("postcss-import") ],
+//     after  : [ require("postcss-fooga") ]
+// });
+
 mcss.file("./entry.css").then(function(output) {
     // output now contains
     //  .exports - Scoped selector mappings
@@ -223,10 +230,19 @@ var browserify = require("browserify"),
 build = browserify("./entry.js");
 
 build.plugin("modular-css", {
-    css : "./output/css/here.css"
-    // You can also define a json property to get a dump
-    // of all the walked CSS files and their exports for
-    // use in server-side rendering
+    // REQUIRED
+    
+    // location to write combined CSS file to
+    css : "./output/css/here.css",
+    
+    // OPTIONAL
+    
+    // output JSON file containing all composes/scoped class names
+    json : "./output/classes.json",
+    
+    // PostCSS plugins to run before/after processing
+    before : [ require("postcss-import") ],
+    after  : [ require("postcss-fooga") ]
 });
 
 build.bundle(function(err, output) {
