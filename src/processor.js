@@ -43,12 +43,14 @@ function Processor(opts) {
         require("./plugins/graph-nodes")
     ));
 
-    this._after = postcss([
+    this._process = postcss([
         require("./plugins/values-composed.js"),
         require("./plugins/scoping.js"),
         require("./plugins/composition.js"),
         require("./plugins/keyframes.js")
-    ].concat(options.after || []));
+    ]);
+    
+    this._after = postcss(options.after || []);
 }
 
 Processor.prototype = {
@@ -65,14 +67,14 @@ Processor.prototype = {
                 return function() {
                     var details = self._files[file];
                     
-                    if(!details.after) {
-                        details.after = self._after.process(details.result, assign({}, self._options, {
+                    if(!details.processed) {
+                        details.processed = self._process.process(details.result, assign({}, self._options, {
                             from  : file,
                             files : self._files
                         }));
                     }
                     
-                    return details.after.then(function(result) {
+                    return details.processed.then(function(result) {
                         details.result = result;
                         
                         // Combine messages from both postcss passes before pulling out relevant info
@@ -159,8 +161,8 @@ Processor.prototype = {
             
             root.append(css.root);
         });
-
-        return root.toResult().css;
+        
+        return this._after.process(root);
     },
 
     get files() {
