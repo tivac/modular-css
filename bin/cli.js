@@ -8,29 +8,30 @@ var fs   = require("fs"),
     map    = require("lodash.mapValues"),
     
     Processor = require("../").Processor,
-
-    processor;
     
+    processor = new Processor(),
+    
+    src = process.argv[2],
+    out = process.argv[3];
+
 // Update checking
 require("update-notifier")({ pkg : require("../package.json" ) }).notify({ defer : true });
 
-processor = new Processor();
-
-processor.file(process.argv[2]).then(function() {
+processor.file(src).then(function() {
+    return processor.output({ to : out });
+})
+.then(function(result) {
     /* eslint no-console:0 */
-    var file = process.argv[3],
-        css  = processor.css();
-    
-    if(!file) {
-        return console.log(css);
+    if(!out) {
+        console.log(result.css);
     }
+    
+    mkdirp.sync(path.dirname(out));
 
-    mkdirp.sync(path.dirname(file));
-
-    fs.writeFileSync(file, css);
+    fs.writeFileSync(out, result.css);
     fs.writeFileSync(
-        path.basename(file, path.extname(file)) + ".json",
-        JSON.stringify(map(processor.files, function(part) {
+        path.basename(out, path.extname(out)) + ".json",
+        JSON.stringify(map(processor.out, function(part) {
             return part.compositions;
         }), null, 4)
     );

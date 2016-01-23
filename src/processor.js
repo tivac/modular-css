@@ -7,13 +7,12 @@ var fs   = require("fs"),
     Graph    = require("dependency-graph").DepGraph,
     postcss  = require("postcss"),
 
-    Promise = require("./_promise"),
-
+    Promise  = require("./_promise"),
+    relative = require("./_relative"),
+    
     urls = postcss([
         require("postcss-url")
-    ]),
-
-    relative = require("./_relative");
+    ]);
 
 function sequential(promises) {
     return new Promise(function(resolve, reject) {
@@ -137,7 +136,7 @@ Processor.prototype = {
         return file ? this._graph.dependenciesOf(file) : this._graph.overallOrder();
     },
 
-    css : function(args) {
+    output : function(args) {
         var self  = this,
             root  = postcss.root(),
             opts  = args || false,
@@ -162,7 +161,7 @@ Processor.prototype = {
             root.append(css.root);
         });
         
-        return this._after.process(root);
+        return this._after.process(root, args || {});
     },
 
     get files() {

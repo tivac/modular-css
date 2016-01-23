@@ -192,13 +192,13 @@ var Processor = require("modular-css").Processor,
 //     after  : [ require("postcss-fooga") ]
 // });
 
-processor.file("./entry.css").then(function(output) {
-    // output now contains
+processor.file("./entry.css").then(function(result) {
+    // result now contains
     //  .exports - Scoped selector mappings
     //  .files - metadata about the file hierarchy
     
-    // Transformed CSS is available from the css method    
-    processor.css();
+    // Transformed CSS is available from the .output() method    
+    return processor.output().css;
 });
 
 // or

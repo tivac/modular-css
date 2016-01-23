@@ -1,10 +1,10 @@
 "use strict";
 
-var fs     = require("fs"),
-    assert = require("assert"),
-
-    Promise = require("../src/_promise"),
-
+var fs      = require("fs"),
+    assert  = require("assert"),
+    postcss = require("postcss"),
+    
+    Promise   = require("../src/_promise"),
     Processor = require("../src/processor");
 
 // Catch unhandled promise rejections and fail the test
@@ -63,7 +63,7 @@ describe("modular-css", function() {
                             });
 
                             assert.equal(file.text, ".wooga { }");
-                            assert.equal(file.after.root.toResult().css, ".googa_wooga { }");
+                            assert.equal(file.processed.root.toResult().css, ".googa_wooga { }");
 
                             done();
                         })
@@ -93,7 +93,7 @@ describe("modular-css", function() {
                             });
 
                             assert.equal(file.text, ".wooga { }");
-                            assert.equal(file.after.root.toResult().css, ".test/specimens/simple.csswooga { }");
+                            assert.equal(file.processed.root.toResult().css, ".test/specimens/simple.csswooga { }");
 
                             done();
                         })
@@ -108,7 +108,7 @@ describe("modular-css", function() {
                             });
                         
                         processor.string("test/specimens/sync-before.css", "").then(function() {
-                            assert.equal(processor.css(),
+                            assert.equal(processor.output(),
                                 "/* test/specimens/sync-before.css */\n" +
                                 "a {}"
                             );
@@ -125,7 +125,7 @@ describe("modular-css", function() {
                         
                         processor.string("test/specimens/async-before.css", "").then(function() {
                             assert.equal(
-                                processor.css(),
+                                processor.output(),
                                 "/* test/specimens/async-before.css */\n" +
                                 "a {}"
                             );
@@ -143,7 +143,7 @@ describe("modular-css", function() {
                             });
                         
                         processor.string("test/specimens/sync-after.css", "").then(function() {
-                            assert.equal(processor.css(),
+                            assert.equal(processor.output(),
                                 "/* test/specimens/sync-after.css */\n" +
                                 "a {}"
                             );
@@ -159,8 +159,10 @@ describe("modular-css", function() {
                             });
                         
                         processor.string("test/specimens/async-after.css", "").then(function() {
+                            return processor.output();
+                        }).then(function(result) {
                             assert.equal(
-                                processor.css(),
+                                result.css,
                                 "/* test/specimens/async-after.css */\n" +
                                 "a {}"
                             );
@@ -188,7 +190,7 @@ describe("modular-css", function() {
                         });
 
                         assert.equal(file.text, ".wooga { }");
-                        assert.equal(file.after.root.toResult().css, ".mc08e91a5b_wooga { }");
+                        assert.equal(file.processed.root.toResult().css, ".mc08e91a5b_wooga { }");
 
                         done();
                     })
@@ -212,7 +214,7 @@ describe("modular-css", function() {
                         });
 
                         assert.equal(file.text, ".wooga { color: red; }\n");
-                        assert.equal(file.after.root.toResult().css, ".mc08e91a5b_wooga { color: red; }\n");
+                        assert.equal(file.processed.root.toResult().css, ".mc08e91a5b_wooga { color: red; }\n");
 
                         done();
                     })
@@ -332,7 +334,7 @@ describe("modular-css", function() {
 
                     assert.equal(file.text, "@keyframes kooga { } #fooga { } .wooga { }");
                     assert.equal(
-                        file.after.root.toResult().css,
+                        file.processed.root.toResult().css,
                         "@keyframes mc08e91a5b_kooga { } " +
                         "#mc08e91a5b_fooga { } " +
                         ".mc08e91a5b_wooga { }"
@@ -355,7 +357,7 @@ describe("modular-css", function() {
 
                     assert.equal(file.text, fs.readFileSync("./test/specimens/start.css", "utf8"));
                     assert.equal(
-                        file.after.root.toResult().css,
+                        file.processed.root.toResult().css,
                         ".mc61f0515a_booga { color: red; background: blue; }\n" +
                         ".mc61f0515a_tooga { border: 1px solid white; }\n"
                     );
@@ -375,7 +377,7 @@ describe("modular-css", function() {
                     file = result.files["test/specimens/local.css"];
 
                     assert.equal(file.text, fs.readFileSync("./test/specimens/local.css", "utf8"));
-                    assert.equal(file.after.root.toResult().css, ".mc04cb4cb2_booga { background: green; }\n");
+                    assert.equal(file.processed.root.toResult().css, ".mc04cb4cb2_booga { background: green; }\n");
 
                     assert.deepEqual(file.values, {
                         folder : "white",
@@ -391,7 +393,7 @@ describe("modular-css", function() {
                     file = result.files["test/specimens/folder/folder.css"];
 
                     assert.equal(file.text, fs.readFileSync("./test/specimens/folder/folder.css", "utf8"));
-                    assert.equal(file.after.root.toResult().css, ".mc04bb002b_folder { margin: 2px; }\n");
+                    assert.equal(file.processed.root.toResult().css, ".mc04bb002b_folder { margin: 2px; }\n");
 
                     assert.deepEqual(file.values, {
                         folder : "white"
@@ -406,17 +408,36 @@ describe("modular-css", function() {
                 .catch(done);
             });
 
-            describe(".css()", function() {
+            describe(".output()", function() {
+                it("should return a postcss result", function(done) {
+                    var processor = this.processor;
+
+                    processor.file("./test/specimens/start.css").then(function() {
+                        return processor.output();
+                    })
+                    .then(function(result) {
+                        assert.equal(
+                            result.css + "\n",
+                            fs.readFileSync("./test/results/processor/start.css", "utf8")
+                        );
+
+                        done();
+                    })
+                    .catch(done);
+                });
+                
                 it("should generate css representing the output from all added files", function(done) {
                     var processor = this.processor;
 
-                    processor.file("./test/specimens/start.css")
-                    .then(function() {
+                    processor.file("./test/specimens/start.css").then(function() {
                         return processor.file("./test/specimens/simple.css");
                     })
                     .then(function() {
+                        return processor.output();
+                    })
+                    .then(function(result) {
                         assert.equal(
-                            processor.css() + "\n",
+                            result.css + "\n",
                             fs.readFileSync("./test/results/processor/output-all.css", "utf8")
                         );
 
@@ -428,13 +449,15 @@ describe("modular-css", function() {
                 it("should avoid duplicating files in the output", function(done) {
                     var processor = this.processor;
 
-                    processor.file("./test/specimens/start.css")
-                    .then(function() {
+                    processor.file("./test/specimens/start.css").then(function() {
                         return processor.file("./test/specimens/local.css");
                     })
                     .then(function() {
+                        return processor.output();
+                    })
+                    .then(function(result) {
                         assert.equal(
-                            processor.css() + "\n",
+                            result.css + "\n",
                             fs.readFileSync("./test/results/processor/avoid-duplicates.css", "utf8")
                         );
 
@@ -446,10 +469,12 @@ describe("modular-css", function() {
                 it("should have rewritten relative URLs based on the `to` option", function(done) {
                     var processor = this.processor;
 
-                    processor.file("./test/specimens/relative.css")
-                    .then(function() {
+                    processor.file("./test/specimens/relative.css").then(function() {
+                        return processor.output({ to : "./test/output/relative.css" });
+                    })
+                    .then(function(result) {
                         assert.equal(
-                            processor.css({ to : "./test/output/relative.css" }) + "\n",
+                            result.css + "\n",
                             fs.readFileSync("./test/results/processor/relative.css", "utf8")
                         );
 

@@ -147,6 +147,7 @@ module.exports = function(browserify, opts) {
         
         bundler = current;
         
+        // Listen for bundling to finish
         bundler.on("end", function() {
             var bundling = Object.keys(bundles).length > 0,
                 common;
@@ -186,15 +187,17 @@ module.exports = function(browserify, opts) {
 
                     dest = path.join(
                         path.dirname(options.css),
-                        path.basename(bundle, path.extname(bundle)) + options.ext
+                        path.basename(bundle, path.extname(bundle)) + ".css"
                     );
                     
                     mkdirp.sync(path.dirname(dest));
                     
-                    fs.writeFileSync(dest, processor.css({
+                    processor.output({
                         files : files,
                         to    : dest
-                    }));
+                    }).then(function(result) {
+                        fs.writeFileSync(dest, result.css);
+                    });
                 });
                 
                 // No common CSS files to write out, so don't (unless they asked nicely)
@@ -206,10 +209,12 @@ module.exports = function(browserify, opts) {
             mkdirp.sync(path.dirname(options.css));
             
             // Write out common/all css depending on bundling status
-            fs.writeFileSync(options.css, processor.css({
+            processor.output({
                 files : bundling && common,
                 to    : options.css
-            }));
+            }).then(function(result) {
+                fs.writeFileSync(options.css, result.css);
+            });
         });
     });
 };
