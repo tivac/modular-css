@@ -17,7 +17,7 @@ describe("modular-css", function() {
                 var file = result.files["test/specimens/composition.css"];
 
                 assert.equal(
-                    file.after.root.toResult().css,
+                    file.processed.root.toResult().css,
                     ".mc29d531c6_wooga { background: #000; }"
                 );
 
