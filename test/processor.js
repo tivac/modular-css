@@ -2,7 +2,6 @@
 
 var fs      = require("fs"),
     assert  = require("assert"),
-    postcss = require("postcss"),
     
     Promise   = require("../src/_promise"),
     Processor = require("../src/processor");
