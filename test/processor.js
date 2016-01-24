@@ -506,6 +506,25 @@ describe("modular-css", function() {
                     });
                 });
             });
+            
+            describe("source maps", function() {
+                it("should respect the `map` config and output source maps", function(done) {
+                    var processor = new Processor({ map : true });
+
+                    processor.file("./test/specimens/start.css").then(function() {
+                        return processor.output();
+                    })
+                    .then(function(result) {
+                        assert.equal(
+                            result.css + "\n",
+                            fs.readFileSync("./test/results/processor/source-map.css", "utf8")
+                        );
+
+                        done();
+                    })
+                    .catch(done);
+                });
+            });
         });
     });
 });
