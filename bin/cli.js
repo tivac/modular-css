@@ -9,7 +9,7 @@ var fs   = require("fs"),
     
     Processor = require("../").Processor,
     
-    processor = new Processor(),
+    processor = new Processor({ map : true }),
     
     src = process.argv[2],
     out = process.argv[3];

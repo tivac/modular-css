@@ -153,15 +153,15 @@ Processor.prototype = {
             // NOTE: the call to .clone() is really important here, otherwise this call
             // modifies the .result root itself and you process URLs multiple times
             // See https://github.com/tivac/modular-css/issues/35
-            css = urls.process(self._files[dep].result.root.clone(), {
+            css = urls.process(self._files[dep].result.root.clone(), assign({}, self._options, {
                 from : dep,
                 to   : opts.to
-            });
+            }));
             
             root.append(css.root);
         });
         
-        return this._after.process(root, args || {});
+        return this._after.process(root, assign({}, self._options, args || {}));
     },
 
     get files() {
