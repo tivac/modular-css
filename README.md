@@ -192,6 +192,14 @@ var Processor = require("modular-css").Processor,
 //     after  : [ require("postcss-fooga") ]
 // });
 
+// Enable source maps by passing `map : true` as an option when instantiating
+// the Processor or when calling `.output()`
+// processor = new processor({ map : true })
+//
+// OR
+//
+// processor.output({ map : true }).map
+
 processor.file("./entry.css").then(function(result) {
     // result now contains
     //  .exports - Scoped selector mappings
@@ -237,7 +245,10 @@ build.plugin("modular-css", {
     
     // PostCSS plugins to run before/after processing
     before : [ require("postcss-import") ],
-    after  : [ require("postcss-fooga") ]
+    after  : [ require("postcss-fooga") ],
+    
+    // Source maps in the output
+    map : true
 });
 
 build.bundle(function(err, output) {
