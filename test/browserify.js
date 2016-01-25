@@ -18,6 +18,16 @@ describe("modular-css", function() {
             require("rimraf")("./test/output/browserify", done);
         });
         
+        it("should not error if no options are supplied", function() {
+            var build = browserify();
+            
+            build.on("error", function() {
+                assert.fail();
+            });
+
+            build.plugin(plugin);
+        });
+        
         it("should error if an invalid extension is applied", function(done) {
             var build = browserify();
             
@@ -160,6 +170,21 @@ describe("modular-css", function() {
 
                 compare.results("browserify/avoid-duplicates.css");
                 
+                done();
+            });
+        });
+        
+        it("should output an inline source map when the debug option is specified", function(done) {
+            var build = browserify({
+                    debug   : true,
+                    entries : from("require('./test/specimens/start.css');")
+                });
+            
+            build.plugin(plugin, { css : "./test/output/browserify/source-maps.css" });
+            
+            bundle(build, function() {
+                compare.results("browserify/source-maps.css");
+
                 done();
             });
         });

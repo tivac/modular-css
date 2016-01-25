@@ -18,7 +18,7 @@ module.exports = function(browserify, opts) {
     var options = assign({
             ext : ".css",
             map : browserify._options.debug
-        }, opts || {}),
+        }, opts),
         
         processor = new Processor(options),
         
