@@ -1,6 +1,6 @@
 {
   "name": "modular-css",
-  "version": "0.11.1",
+  "version": "0.11.2",
   "description": "A curated subset of css-modules available as CLI, API, or Browserify transform",
   "main": "./index.js",
   "repository": "tivac/modular-css",
