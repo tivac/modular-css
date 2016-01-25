@@ -16,13 +16,14 @@ var fs   = require("fs"),
 
 module.exports = function(browserify, opts) {
     var options = assign({
-            ext : ".css"
-        }, opts || {}),
+            ext : ".css",
+            map : browserify._options.debug
+        }, opts),
         
         processor = new Processor(options),
         
         bundler, bundles, handled;
-
+        
     if(!options.ext || options.ext.charAt(0) !== ".") {
         return browserify.emit("error", "Missing or invalid \"ext\" option: " + options.ext);
     }
