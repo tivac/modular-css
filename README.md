@@ -23,6 +23,8 @@ CSS Modules is an amazing idea. Unfortunately it is incredibly difficult to get 
 
 ## Features
 
+CSS Modules defines a bunch of great features, and `modular-css` supports the best of them in a straightforward and consistent way.
+
 ### Values
 
 Values are useful in CSS, they're coming to the spec soon. Use them now because it'll make your life easier!
@@ -205,7 +207,7 @@ processor.file("./entry.css").then(function(result) {
     //  .exports - Scoped selector mappings
     //  .files - metadata about the file hierarchy
     
-    // Transformed CSS is available from the .output() method    
+    // Transformed CSS is available from the .output() method
     return processor.output().css;
 });
 
