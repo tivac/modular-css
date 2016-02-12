@@ -28,8 +28,8 @@
   ],
   "devDependencies": {
     "browserify": "^13.0.0",
-    "eslint": "^1.10.3",
-    "eslint-config-arenanet": "^1.0.2",
+    "eslint": "^2.0.0",
+    "eslint-config-arenanet": "^2.0.0",
     "factor-bundle": "^2.5.0",
     "from2-string": "^1.1.0",
     "istanbul": "^0.4.2",

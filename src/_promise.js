@@ -4,4 +4,4 @@ if(!global.Promise) {
     global.Promise = require("promiscuous");
 }
 
-module.exports = Promise;
+module.exports = global.Promise;

@@ -23,6 +23,7 @@ function sequential(promises) {
 }
 
 function Processor(opts) {
+    /* eslint consistent-return:0 */
     var options = opts;
     
     if(!(this instanceof Processor)) {

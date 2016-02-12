@@ -90,7 +90,7 @@ module.exports = postcss.plugin(plugin, function() {
             }
 
             // Mark all selectors for this rule as potentially needing to be purged
-            selectors.forEach(function(selector) {
+            return selectors.forEach(function(selector) {
                 empty[selector] = {
                     parent : decl.parent,
                     count  : 0

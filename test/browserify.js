@@ -47,15 +47,20 @@ describe("modular-css", function() {
                 errors = 0;
             
             build.plugin(plugin);
-
+            
             build.bundle(function(err) {
-                if(++errors === 2) {
-                    return done();
-                }
-
+                ++errors;
+                
                 assert(err);
-                assert.equal(err.name, "CssSyntaxError");
-                assert.equal(err.reason, "Invalid composes reference");
+                
+                if(errors === 1) {
+                    assert.equal(err.name, "CssSyntaxError");
+                    assert.equal(err.reason, "Invalid composes reference");
+                    
+                    return false;
+                }
+                
+                return done();
             });
         });
 
