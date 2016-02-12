@@ -83,7 +83,7 @@ module.exports = function(browserify, opts) {
             return curr;
         }, {});
         
-        done(null, row);
+        return done(null, row);
     }, function(done) {
         // Ensure that any CSS dependencies not directly referenced are
         // injected into the stream of files being managed
@@ -140,7 +140,7 @@ module.exports = function(browserify, opts) {
         processor.remove(files);
     });
     
-    browserify.on("bundle", function(current) {
+    return browserify.on("bundle", function(current) {
         // Calls to .bundle() means we should recreate anything tracking bundling progress
         // in case things have changed out from under us, like when using watchify
         bundles = {};
