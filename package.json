@@ -33,7 +33,7 @@
     "factor-bundle": "^2.5.0",
     "from2-string": "^1.1.0",
     "istanbul": "^0.4.2",
-    "jscs": "^2.10.0",
+    "jscs": "^2.10.1",
     "jscs-preset-arenanet": "^1.0.3",
     "mocha": "^2.3.4",
     "postcss-color-rebeccapurple": "^2.0.0",
