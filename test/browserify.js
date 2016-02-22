@@ -140,7 +140,7 @@ describe("modular-css", function() {
             build.plugin(plugin, { css : "./test/output/browserify/include-css-deps.css" });
             
             bundle(build, function(out) {
-                assert(out.indexOf(fs.readFileSync("./test/results/browserify/include-css-deps.js", "utf8")) > -1);
+                compare.contains(out, "browserify/include-css-deps.js");
 
                 compare.results("browserify/include-css-deps.css");
                 
@@ -170,8 +170,8 @@ describe("modular-css", function() {
             build.plugin(plugin, { css : "./test/output/browserify/avoid-duplicates.css" });
             
             bundle(build, function(out) {
-                assert(out.indexOf(fs.readFileSync("./test/results/browserify/avoid-duplicates-local.js", "utf8")) > -1);
-                assert(out.indexOf(fs.readFileSync("./test/results/browserify/avoid-duplicates-start.js", "utf8")) > -1);
+                compare.contains(out, "browserify/avoid-duplicates-local.js");
+                compare.contains(out, "browserify/avoid-duplicates-start.js");
 
                 compare.results("browserify/avoid-duplicates.css");
                 
@@ -188,7 +188,10 @@ describe("modular-css", function() {
             build.plugin(plugin, { css : "./test/output/browserify/source-maps.css" });
             
             bundle(build, function() {
-                compare.results("browserify/source-maps.css");
+                compare.contains(
+                    fs.readFileSync("./test/output/browserify/source-maps.css", "utf8"),
+                    "browserify/source-maps.css"
+                );
 
                 done();
             });

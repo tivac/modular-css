@@ -18,3 +18,9 @@ exports.results = function results(name1, name2) {
 
     return exports.paths(path1, path2);
 };
+
+exports.contains = function(haystack, name) {
+    var needle = fs.readFileSync(path.join("./test/results", name), "utf8");
+    
+    assert(haystack.indexOf(needle) > -1, "Unable to find " + needle + " in " + haystack);
+};

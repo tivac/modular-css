@@ -26,8 +26,8 @@ function async(css) {
 }
 
 describe("modular-css", function() {
-    describe("processor", function() {
-        describe("Basic functionality", function() {
+    describe("Processor Class", function() {
+        describe("Basics", function() {
             it("should be a function", function() {
                 assert.equal(typeof Processor, "function");
             });
@@ -38,7 +38,7 @@ describe("modular-css", function() {
             });
         });
 
-        describe("Functionality", function() {
+        describe("functionality", function() {
             beforeEach(function() {
                 this.processor = new Processor();
             });
@@ -107,7 +107,10 @@ describe("modular-css", function() {
                             });
                         
                         processor.string("test/specimens/sync-before.css", "").then(function() {
-                            assert.equal(processor.output(),
+                            return processor.output();
+                        }).then(function(result) {
+                            assert.equal(
+                                result.css,
                                 "/* test/specimens/sync-before.css */\n" +
                                 "a {}"
                             );
@@ -123,8 +126,10 @@ describe("modular-css", function() {
                             });
                         
                         processor.string("test/specimens/async-before.css", "").then(function() {
+                            return processor.output();
+                        }).then(function(result) {
                             assert.equal(
-                                processor.output(),
+                                result.css,
                                 "/* test/specimens/async-before.css */\n" +
                                 "a {}"
                             );
@@ -136,14 +141,82 @@ describe("modular-css", function() {
                 });
                 
                 describe("after", function() {
-                    it("should run sync postcss plugins after processing", function(done) {
+                    var css =
+                            "/* test/specimens/relative.css */\n" +
+                            ".mc592b2d8f_wooga {\n" +
+                            "    color: red;\n" +
+                            "    background: url(\"./folder/to.png\")\n" +
+                            "}\n" +
+                            "a {}";
+                    
+                    it("should use postcss-url by default", function(done) {
+                        var processor = this.processor;
+
+                        processor.file("./test/specimens/relative.css").then(function() {
+                            return processor.output({ to : "./test/output/relative.css" });
+                        })
+                        .then(function(result) {
+                            assert.equal(
+                                result.css + "\n",
+                                fs.readFileSync("./test/results/processor/relative.css", "utf8")
+                            );
+
+                            done();
+                        })
+                        .catch(done);
+                    });
+                    
+                    it("should run sync postcss plugins", function(done) {
                         var processor = new Processor({
                                 after : [ sync ]
                             });
+
+                        processor.file("./test/specimens/relative.css").then(function() {
+                            return processor.output({ to : "./test/output/relative.css" });
+                        })
+                        .then(function(result) {
+                            assert.equal(
+                                result.css,
+                                css
+                            );
+
+                            done();
+                        })
+                        .catch(done);
+                    });
+                    
+                    it("should run async postcss plugins", function(done) {
+                        var processor = new Processor({
+                                after : [ async ]
+                            });
+
+                        processor.file("./test/specimens/relative.css").then(function() {
+                            return processor.output({ to : "./test/output/relative.css" });
+                        })
+                        .then(function(result) {
+                            assert.equal(
+                                result.css,
+                                css
+                            );
+
+                            done();
+                        })
+                        .catch(done);
+                    });
+                });
+                
+                describe("done", function() {
+                    it("should run sync postcss plugins done processing", function(done) {
+                        var processor = new Processor({
+                                done : [ sync ]
+                            });
                         
-                        processor.string("test/specimens/sync-after.css", "").then(function() {
-                            assert.equal(processor.output(),
-                                "/* test/specimens/sync-after.css */\n" +
+                        processor.string("test/specimens/sync-done.css", "").then(function() {
+                            return processor.output();
+                        }).then(function(result) {
+                            assert.equal(
+                                result.css,
+                                "/* test/specimens/sync-done.css */\n" +
                                 "a {}"
                             );
                             
@@ -152,17 +225,17 @@ describe("modular-css", function() {
                         .catch(done);
                     });
 
-                    it("should run async postcss plugins after processing", function(done) {
+                    it("should run async postcss plugins done processing", function(done) {
                         var processor = new Processor({
-                                after : [ async ]
+                                done : [ async ]
                             });
                         
-                        processor.string("test/specimens/async-after.css", "").then(function() {
+                        processor.string("test/specimens/async-done.css", "").then(function() {
                             return processor.output();
                         }).then(function(result) {
                             assert.equal(
                                 result.css,
-                                "/* test/specimens/async-after.css */\n" +
+                                "/* test/specimens/async-done.css */\n" +
                                 "a {}"
                             );
                             
@@ -458,23 +531,6 @@ describe("modular-css", function() {
                         assert.equal(
                             result.css + "\n",
                             fs.readFileSync("./test/results/processor/avoid-duplicates.css", "utf8")
-                        );
-
-                        done();
-                    })
-                    .catch(done);
-                });
-
-                it("should have rewritten relative URLs based on the `to` option", function(done) {
-                    var processor = this.processor;
-
-                    processor.file("./test/specimens/relative.css").then(function() {
-                        return processor.output({ to : "./test/output/relative.css" });
-                    })
-                    .then(function(result) {
-                        assert.equal(
-                            result.css + "\n",
-                            fs.readFileSync("./test/results/processor/relative.css", "utf8")
                         );
 
                         done();

@@ -7,7 +7,7 @@ var fs   = require("fs"),
     mkdirp = require("mkdirp"),
     map    = require("lodash.mapValues"),
     
-    Processor = require("../").Processor,
+    Processor = require("../src/processor"),
     
     processor = new Processor({ map : true }),
     
