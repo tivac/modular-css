@@ -187,33 +187,65 @@ Instantiate a new `Processor` instance, call it's `.file(<path>)` or `.string(<n
 var Processor = require("modular-css").Processor,
     processor = new Processor();
 
-// Optionally you can instantiate w/ postcss plugins to
-// run before/after processing
-// processor = new Processor({
-//     before : [ require("postcss-import") ],
-//     after  : [ require("postcss-fooga") ]
-// });
-
-// Enable source maps by passing `map : true` as an option when instantiating
-// the Processor or when calling `.output()`
-// processor = new processor({ map : true })
-//
-// OR
-//
-// processor.output({ map : true }).map
-
 processor.file("./entry.css").then(function(result) {
     // result now contains
     //  .exports - Scoped selector mappings
     //  .files - metadata about the file hierarchy
-    
-    // Transformed CSS is available from the .output() method
-    return processor.output().css;
 });
 
-// or
+// Once all files are added, use .output() to get at the rewritten CSS
+processor.output().then(function(result) {
+    // Output CSS lives on the .css property
+    result.css;
+    
+    // Source map (if requested) lives on the .map property
+    result.map;
+});
+```
 
-processor.string("./entry.css", ".fooga { ... } ...").then(...);
+#### Options
+
+All options should be passed to the `Processor` constructor.
+
+##### `before`
+
+Specify an array of PostCSS plugins to be run against each file before it is processed.
+
+```js
+new Processor({
+    before : [ require("postcss-import") ]
+});    
+```
+##### `after`
+
+Specify an array of PostCSS plugins to be run after files are processed, but before they are combined. Plugin will be passed a `to` and `from` option.
+
+**By default** [`postcss-url`](https://www.npmjs.com/package/postcss-url) is used in `after` mode.
+
+```js
+new Processor({
+    after : [ require("postcss-someplugin") ]
+});
+```
+
+##### `done`
+
+Specify an array of PostCSS plugins to be run against the complete combined CSS.
+
+```js
+new Processor({
+    done : [ require("cssnano")()]
+});    
+```
+
+##### `map`
+
+Enable source map generation. Can also be passed to `.output()`.
+
+```js
+new processor({
+    map : true
+});
 ```
 
 ### Browserify
@@ -245,9 +277,10 @@ build.plugin("modular-css", {
     // output JSON file containing all composes/scoped class names
     json : "./output/classes.json",
     
-    // PostCSS plugins to run before/after processing
+    // PostCSS plugins to run before/after processing, and after combining
     before : [ require("postcss-import") ],
-    after  : [ require("postcss-fooga") ],
+    after  : [ require("postcss-someplugin") ],
+    done   : [ require("cssnano")() ],
     
     // Source maps in the output
     map : true

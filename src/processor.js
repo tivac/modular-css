@@ -10,9 +10,7 @@ var fs   = require("fs"),
     Promise  = require("./_promise"),
     relative = require("./_relative"),
     
-    urls = postcss([
-        require("postcss-url")
-    ]);
+    urls = require("postcss-url");
 
 function sequential(promises) {
     return new Promise(function(resolve, reject) {
@@ -50,7 +48,11 @@ function Processor(opts) {
         require("./plugins/keyframes.js")
     ]);
     
-    this._after = postcss(options.after || []);
+    this._after = postcss(options.after || [
+        urls
+    ]);
+    
+    this._done = postcss(options.done || []);
 }
 
 Processor.prototype = {
@@ -139,30 +141,36 @@ Processor.prototype = {
 
     output : function(args) {
         var self  = this,
-            root  = postcss.root(),
             opts  = args || false,
             files = opts.files || this.dependencies();
         
-        files.forEach(function(dep) {
-            var css;
-            
-            // Insert a comment w/ the file we're doing
-            root.append(postcss.comment({ text : dep }));
-            
+        return Promise.all(files.map(function(dep) {
             // Rewrite relative URLs before adding
             // Have to do this every time because target file might be different!
             // NOTE: the call to .clone() is really important here, otherwise this call
             // modifies the .result root itself and you process URLs multiple times
             // See https://github.com/tivac/modular-css/issues/35
-            css = urls.process(self._files[dep].result.root.clone(), assign({}, self._options, {
-                from : dep,
-                to   : opts.to
-            }));
+            return self._after.process(
+                self._files[dep].result.root.clone(),
+                assign({}, self._options, {
+                    from : dep,
+                    to   : opts.to
+                })
+            );
+        }))
+        .then(function(results) {
+            var root = postcss.root();
+
+            results.forEach(function(result) {
+                root.append(postcss.comment({ text : result.opts.from }));
+                root.append(result.css);
+            });
             
-            root.append(css.root);
+            return self._done.process(
+                root,
+                assign({}, self._options, args || {})
+            );
         });
-        
-        return this._after.process(root, assign({}, self._options, args || {}));
     },
 
     get files() {
