@@ -144,7 +144,7 @@ Processor.prototype = {
             opts  = args || false,
             files = opts.files || this.dependencies();
         
-        return Promise.all(files.map(function(dep) {
+        return Promise.all(files.sort().map(function(dep) {
             // Rewrite relative URLs before adding
             // Have to do this every time because target file might be different!
             // NOTE: the call to .clone() is really important here, otherwise this call
