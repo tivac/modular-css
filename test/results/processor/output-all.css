@@ -6,6 +6,10 @@
 .mc04cb4cb2_booga {
     background: green
 }
+/* test/specimens/simple.css */
+.mc08e91a5b_wooga {
+    color: red
+}
 /* test/specimens/start.css */
 .mc61f0515a_booga {
     color: red;
@@ -13,8 +17,4 @@
 }
 .mc61f0515a_tooga {
     border: 1px solid white
-}
-/* test/specimens/simple.css */
-.mc08e91a5b_wooga {
-    color: red
 }
