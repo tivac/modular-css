@@ -151,18 +151,22 @@ module.exports = function(browserify, opts) {
         // Listen for bundling to finish
         bundler.on("end", function() {
             var bundling = Object.keys(bundles).length > 0,
-                common;
+                common, json;
                 
             if(options.json) {
                 mkdirp.sync(path.dirname(options.json));
                 
+                json = {};
+                
+                Object.keys(processor.files).sort().forEach(function(file) {
+                    json[file] = map(processor.files[file].compositions, function(classes) {
+                        return classes.join(" ");
+                    });
+                });
+                
                 fs.writeFileSync(
                     options.json,
-                    JSON.stringify(map(processor.files, function(file) {
-                        return map(file.compositions, function(classes) {
-                            return classes.join(" ");
-                        });
-                    }), null, 4)
+                    JSON.stringify(json, null, 4)
                 );
             }
             
