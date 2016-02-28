@@ -255,7 +255,7 @@ new processor({
 #### CLI
 
 ```
-$ browserify -p [ modular-css --css "./style.css" ] client.js
+$ browserify -p [ modular-css/browserify --css "./style.css" ] client.js
 ```
 
 #### API
@@ -266,7 +266,7 @@ var browserify = require("browserify"),
 
 build = browserify("./entry.js");
 
-build.plugin("modular-css", {
+build.plugin("modular-css/browserify", {
     // REQUIRED
     
     // location to write combined CSS file to
@@ -295,13 +295,13 @@ build.bundle(function(err, output) {
 
 If `./home.js` and `./account.js` both reference some CSS files via composition the `modular-css` plugin will write out any shared requirements to `./common.css`, while any page-specific css will be written to either `./gen/home.css` or `./gen/account.css`.
 
-**WARNING**: Due to how `factor-bundle` works the `modular-css` plugin must be applied to the Browserify object **before** `factor-bundle`.
+**WARNING**: Due to how `factor-bundle` works the `modular-css/browserify` plugin must be applied to the Browserify object **before** `factor-bundle`.
 
 ##### CLI
 
 ```
 $ browserify home.js account.js \
-    -p [ modular-css --css gen/common.css ] \
+    -p [ modular-css/browserify --css gen/common.css ] \
     -p [ factor-bundle -o gen/home.js -o gen/account.js ] \
     -o bundle/common.js
 ```
@@ -315,7 +315,7 @@ var build = browserify([
     ]);
 
 // NOTE modular-css applied before factor-bundle, it won't work otherwise!
-build.plugin("modular-css", {
+build.plugin("modular-css/browserify", {
     css : "./gen/common.css"
 });
 
