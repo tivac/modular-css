@@ -7,9 +7,13 @@ modular-css [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https
     <a href="https://david-dm.org/tivac/modular-css#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/modular-css.svg" /></a>
 </p>
 
-Provides a subset of [css-modules](https://github.com/css-modules/css-modules) via CLI/API/Browserify transform.
+Provides a subset of [css-modules](https://github.com/css-modules/css-modules) via:
 
-Like efficient bundling? Great! `modular-css` supports the [`factor-bundle`](https://github.com/substack/factor-bundle) plugin as well to enable bundling up shared dependencies.
+- [CLI](#cli)
+- [JS API](#api)
+- [Browserify](#browserify) Plugin
+    - [factor-bundle](#factor-bundle) is supported for splitting up bundles as well
+- [Rollup](#rollup) Plugin
 
 ## Why?
 
@@ -329,6 +333,42 @@ build.plugin("factor-bundle", {
 build.bundle(function(err, output) {
     ...
 });
+```
+
+### Rollup
+
+`modular-css/rollup` provides a rollup build plugin you can use to transform imported `.css` files into lookup objects.
+
+#### API
+
+```js
+rollup({
+    entry   : "./index.js",
+    plugins : [
+        require("modular-css/rollup")({
+            css : "./gen/index.css"
+        })
+    ]
+}).then(function(bundle) {
+    ...
+});
+```
+
+#### Config file
+
+```js
+import css from "modular-css/rollup";
+
+export default {
+    entry   : "./index.js",
+    dest    : "./gen/bundle.js",
+    format  : "umd",
+    plugins : [
+        css({
+            css : "./gen/index.css"
+        })
+    ]
+};
 ```
 
 ## Thanks
