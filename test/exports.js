@@ -21,5 +21,14 @@ describe("modular-css", function() {
                 assert.equal(browserify, require("../src/browserify"));
             });
         });
+        
+        describe("/rollup", function() {
+            it("should be the rollup plugin", function() {
+                var rollup = require("../rollup");
+                
+                assert.equal(typeof rollup, "function");
+                assert.equal(rollup, require("../src/rollup"));
+            });
+        });
     });
 });
