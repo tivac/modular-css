@@ -1,13 +1,12 @@
 "use strict";
 
-var assert = require("assert"),
+var path   = require("path"),
+    assert = require("assert"),
 
     postcss = require("postcss"),
     
     scoping     = require("../src/plugins/scoping"),
-    composition = require("../src/plugins/composition"),
-    
-    from = { from : "test/specimens/simple.css" };
+    composition = require("../src/plugins/composition");
 
 function msg(compositions) {
     return {
@@ -18,8 +17,8 @@ function msg(compositions) {
     };
 }
 
-describe("modular-css", function() {
-    describe("composition plugin", function() {
+describe("/plugins", function() {
+    describe("/composition.js", function() {
         it("should fail if attempting to compose a class that doesn't exist", function() {
             /* eslint no-unused-expressions:0 */
             var out = composition.process(".wooga { composes: googa; }");
@@ -68,14 +67,17 @@ describe("modular-css", function() {
         });
 
         it("should fail if non-existant imports are referenced", function() {
-            var out = composition.process(".wooga { composes: googa from \"./local.css\"; }", {
-                    from  : "test/specimens/wooga.css",
-                    files : {
-                        "test/specimens/local.css" : {
-                            compositions : {}
-                        }
-                    }
-                });
+            var files = {},
+                out;
+                
+            files[path.resolve("./test/specimens/local.css")] = {
+                compositions : {}
+            };
+            
+            out = composition.process(".wooga { composes: googa from \"./local.css\"; }", {
+                from  : path.resolve("./test/specimens/wooga.css"),
+                files : files
+            });
             
             assert.throws(function() {
                 out.css;
@@ -258,18 +260,26 @@ describe("modular-css", function() {
         });
         
         it("should find scoped identifiers from the scoping plugin's message", function() {
-            var out = postcss([ scoping, composition ]).process(".wooga { color: red; } .googa { composes: wooga; }", from);
+            var out = postcss([ scoping, composition ]).process(
+                    ".wooga { color: red; } .googa { composes: wooga; }",
+                    {
+                        from  : "test/specimens/simple.css",
+                        namer : function(file, selector) {
+                            return path.basename(file, path.extname(file)) + "_" + selector;
+                        }
+                    }
+                );
             
             assert.deepEqual(out.messages, [ {
                 type    : "modularcss",
                 plugin  : "postcss-modular-css-scoping",
                 classes : {
-                    googa : "mc08e91a5b_googa",
-                    wooga : "mc08e91a5b_wooga"
+                    googa : "simple_googa",
+                    wooga : "simple_wooga"
                 }
             }, msg({
-                googa : [ "mc08e91a5b_wooga" ],
-                wooga : [ "mc08e91a5b_wooga" ]
+                googa : [ "simple_wooga" ],
+                wooga : [ "simple_wooga" ]
             }) ]);
         });
         
@@ -295,17 +305,20 @@ describe("modular-css", function() {
         });
 
         it("should compose multiple classes from imports", function() {
-            var out = composition.process(".wooga { composes: googa, tooga from \"./local.css\"; }", {
-                    from  : "test/specimens/wooga.css",
-                    files : {
-                        "test/specimens/local.css" : {
-                            compositions : {
-                                googa : [ "googa" ],
-                                tooga : [ "tooga" ]
-                            }
-                        }
-                    }
-                });
+            var files = {},
+                out;
+                
+            files[path.resolve("./test/specimens/local.css")] = {
+                compositions : {
+                    googa : [ "googa" ],
+                    tooga : [ "tooga" ]
+                }
+            };
+            
+            out = composition.process(".wooga { composes: googa, tooga from \"./local.css\"; }", {
+                from  : path.resolve("./test/specimens/wooga.css"),
+                files : files
+            });
 
             assert.deepEqual(out.messages, [ msg({
                 wooga : [ "googa", "tooga" ]
@@ -313,16 +326,20 @@ describe("modular-css", function() {
         });
 
         it("should expose imported heirachy details in the messages", function() {
-            var out = composition.process(".wooga { composes: googa from \"./local.css\"; }", {
-                    from  : "test/specimens/wooga.css",
-                    files : {
-                        "test/specimens/local.css" : {
-                            compositions : {
-                                googa : [ "googa" ]
-                            }
-                        }
-                    }
-                });
+            var files = {},
+                out;
+                
+            files[path.resolve("./test/specimens/local.css")] = {
+                compositions : {
+                    googa : [ "googa" ],
+                    tooga : [ "tooga" ]
+                }
+            };
+            
+            out = composition.process(".wooga { composes: googa from \"./local.css\"; }", {
+                from  : path.resolve("./test/specimens/wooga.css"),
+                files : files
+            });
 
             assert.deepEqual(out.messages, [ msg({
                 wooga : [ "googa" ]

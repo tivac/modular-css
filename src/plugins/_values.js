@@ -21,8 +21,8 @@ function replacer(values, text) {
 module.exports = function(name, process) {
     return postcss.plugin(name, function() {
         return function(css, result) {
-            var values  = {},
-                graph   = new Graph(),
+            var values = {},
+                graph  = new Graph(),
                 keys;
             
             // Find all defined values, catalog them, and remove them

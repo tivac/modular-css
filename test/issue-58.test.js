@@ -1,21 +1,24 @@
 "use strict";
 
-var assert = require("assert"),
+var fs     = require("fs"),
+    assert = require("assert"),
     
     from       = require("from2-string"),
     shell      = require("shelljs"),
     browserify = require("browserify"),
     watchify   = require("watchify"),
+    rimraf     = require("rimraf"),
     
     plugin = require("../src/browserify"),
     
     bundle  = require("./lib/bundle"),
     compare = require("./lib/compare-files");
 
-describe("modular-css", function() {
-    describe("issue 58", function() {
-        after(function(done) {
-            require("rimraf")("./test/output/issues", done);
+describe("/issues", function() {
+    describe("/58", function() {
+        after(function() {
+            rimraf.sync("./test/output/issues");
+            rimraf.sync("./test/specimens/issues/58/other.css");
         });
         
         it("should update when CSS dependencies change", function(done) {
@@ -35,10 +38,7 @@ describe("modular-css", function() {
 
             build.on("update", function() {
                 bundle(build, function(out) {
-                    assert(out.indexOf(JSON.stringify({
-                        issue1 : "mc8fe42003_other1 mc0c6149b1_issue1",
-                        issue2 : "mc8fe42003_other1 mc0c6149b1_issue1 mc8fe42003_other2 mc8fe42003_other3 mc0c6149b1_issue2"
-                    }, null, 4)) > -1);
+                    assert.equal(out, fs.readFileSync("./test/results/issues/58-2.js", "utf8"));
                     
                     compare.results("issues/58.css");
                     
@@ -49,10 +49,7 @@ describe("modular-css", function() {
             });
 
             bundle(build, function(out) {
-                assert(out.indexOf(JSON.stringify({
-                    issue1 : "mc8fe42003_other1 mc0c6149b1_issue1",
-                    issue2 : "mc8fe42003_other1 mc0c6149b1_issue1 mc8fe42003_other3 mc0c6149b1_issue2"
-                }, null, 4)) > -1);
+                assert.equal(out, fs.readFileSync("./test/results/issues/58-1.js", "utf8"));
                 
                 shell.cp("-f",
                     "./test/specimens/issues/58/2.css",

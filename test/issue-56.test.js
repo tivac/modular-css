@@ -3,8 +3,8 @@
 var assert    = require("assert"),
     Processor = require("../src/processor");
 
-describe("modular-css", function() {
-    describe("issue 56", function() {
+describe("/issues", function() {
+    describe("/56", function() {
         it("shouldn't prune classes that have pseudo-classed variants", function(done) {
             var processor = new Processor();
             

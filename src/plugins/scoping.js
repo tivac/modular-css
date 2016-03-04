@@ -3,34 +3,15 @@
 var postcss      = require("postcss"),
     createParser = require("postcss-selector-parser"),
     
-    unique = require("unique-slug"),
-
     identifiers = require("../_identifiers"),
     
     plugin = "postcss-modular-css-scoping";
 
-module.exports = postcss.plugin(plugin, function(opts) {
-    var options = opts || {};
-    
+module.exports = postcss.plugin(plugin, function() {
     return function(css, result) {
-        var lookup  = {},
-            namer   = options.namer  || result.opts.namer,
-            prefix  = options.prefix || result.opts.prefix,
-            
+        var lookup = {},
             parser, current;
             
-        if(!prefix && !namer) {
-            namer = function(file, selector) {
-                return "mc" + unique(file) + "_" + selector;
-            };
-        }
-        
-        if(typeof namer !== "function") {
-            namer = function(file, selector) {
-                return prefix + "_" + selector;
-            };
-        }
-
         // Validate whether a selector should be renamed
         function rename(thing) {
             return (
@@ -65,7 +46,7 @@ module.exports = postcss.plugin(plugin, function(opts) {
                     }
                     
                     if(rename(selector)) {
-                        name = namer(result.opts.from, selector.value);
+                        name = result.opts.namer(result.opts.from, selector.value);
                         
                         lookup[selector.value] = name;
                         

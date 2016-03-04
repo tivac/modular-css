@@ -6,8 +6,6 @@ var path = require("path"),
     values   = require("postcss-value-parser"),
     selector = require("postcss-selector-parser"),
     
-    relative = require("./_relative"),
-
     check = {
         comma : function(node) {
             return node.type === "div" && node.value === ",";
@@ -70,7 +68,7 @@ module.exports = function parse(file, input) {
     nodes = values(input.trim()).nodes;
 
     for(state.pos = 0; state.pos < nodes.length; state.pos++) {
-        node = nodes[state.pos];
+        node       = nodes[state.pos];
         state.prev = state.type;
         state.type = false;
 
@@ -85,13 +83,13 @@ module.exports = function parse(file, input) {
         if(state.rules) {
             if(state.type === "identifier") {
                 out.types[node.value] = "local";
-                out.rules .push(node.value);
+                out.rules.push(node.value);
                 continue;
             }
 
             if(state.type === "global") {
                 out.types[node.nodes[0].value] = "global";
-                out.rules .push(node.nodes[0].value);
+                out.rules.push(node.nodes[0].value);
                 continue;
             }
 
@@ -100,7 +98,7 @@ module.exports = function parse(file, input) {
             }
 
             if(state.type === "space" && (state.prev === "identifier" || state.prev === "global")) {
-                state.rules = false;
+                state.rules  = false;
                 state.source = true;
                 continue;
             }
@@ -124,8 +122,7 @@ module.exports = function parse(file, input) {
             if(!out.source) {
                 throw new Error("Unable to locate \"" + node.value + "\" from \"" + path.dirname(file) + "\"");
             }
-
-            out.source = relative(out.source);
+            
             continue;
         }
 
