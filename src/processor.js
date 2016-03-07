@@ -1,16 +1,18 @@
 "use strict";
 
 var fs   = require("fs"),
+    path = require("path"),
     
     assign   = require("lodash.assign"),
+    defaults = require("lodash.defaults"),
     map      = require("lodash.mapvalues"),
     Graph    = require("dependency-graph").DepGraph,
     postcss  = require("postcss"),
+    urls     = require("postcss-url"),
+    slug     = require("unique-slug"),
 
     Promise  = require("./_promise"),
-    relative = require("./_relative"),
-    
-    urls = require("postcss-url");
+    relative = require("./_relative");
 
 function sequential(promises) {
     return new Promise(function(resolve, reject) {
@@ -28,15 +30,16 @@ function Processor(opts) {
         return new Processor(opts);
     }
     
-    if(!options) {
-        options = false;
-    }
-
-    this._options = options;
-    this._files   = {};
-    this._graph   = new Graph();
+    this._options = defaults({}, options || {}, {
+        cwd   : process.cwd(),
+        map   : false,
+        namer : this._namer.bind(this)
+    });
     
-    this._before = postcss((options.before || []).concat(
+    this._files = {};
+    this._graph = new Graph();
+    
+    this._before = postcss((this._options.before || []).concat(
         require("./plugins/values-local"),
         require("./plugins/graph-nodes")
     ));
@@ -48,32 +51,40 @@ function Processor(opts) {
         require("./plugins/keyframes.js")
     ]);
     
-    this._after = postcss(options.after || [
+    this._after = postcss(this._options.after || [
         urls
     ]);
     
-    this._done = postcss(options.done || []);
+    this._done = postcss(this._options.done || []);
 }
 
 Processor.prototype = {
+    // Add a file on disk to the dependency graph
     file : function(file) {
         return this.string(file, fs.readFileSync(file, "utf8"));
     },
-
-    string : function(name, text) {
+    
+    // Add a file by file + contents to the dependency graph
+    string : function(file, text) {
         var self  = this,
-            start = relative(name);
-
+            start = path.resolve(file);
+        
         return this._walk(start, text).then(function() {
-            return sequential(self._graph.dependenciesOf(start).concat(start).map(function(file) {
+            var deps = self._graph.dependenciesOf(start).concat(start);
+            
+            return sequential(deps.map(function(dep) {
                 return function() {
-                    var details = self._files[file];
+                    var details = self._files[dep];
                     
                     if(!details.processed) {
-                        details.processed = self._process.process(details.result, assign({}, self._options, {
-                            from  : file,
-                            files : self._files
-                        }));
+                        details.processed = self._process.process(
+                            details.result,
+                            assign({}, self._options, {
+                                from  : dep,
+                                files : self._files,
+                                namer : self._options.namer
+                            })
+                        );
                     }
                     
                     return details.processed.then(function(result) {
@@ -88,7 +99,10 @@ Processor.prototype = {
                             }
                             
                             if(msg.compositions) {
-                                details.compositions = assign(details.compositions || {}, msg.compositions);
+                                details.compositions = assign(
+                                    details.compositions || {},
+                                    msg.compositions
+                                );
                                 
                                 return;
                             }
@@ -100,7 +114,7 @@ Processor.prototype = {
         .then(function() {
             return {
                 id      : start,
-                file    : name,
+                file    : start,
                 files   : self._files,
                 exports : map(self._files[start].compositions, function(exports) {
                     return exports.join(" ");
@@ -108,7 +122,8 @@ Processor.prototype = {
             };
         });
     },
-
+    
+    // Remove a file from the dependency graph
     remove : function(input) {
         var self  = this,
             files = input;
@@ -117,14 +132,10 @@ Processor.prototype = {
             files = [ files ];
         }
 
-        files.filter(function(file) {
-            var key = relative(file);
-            
+        files.filter(function(key) {
             return self._graph.hasNode(key);
         })
-        .forEach(function(file) {
-            var key = relative(file);
-            
+        .forEach(function(key) {
             // Remove everything that depends on this too, it'll all need
             // to be recalculated
             self.remove(self._graph.dependantsOf(key));
@@ -134,11 +145,13 @@ Processor.prototype = {
             self._graph.removeNode(key);
         });
     },
-
+    
+    // Get the dependency order for a file or the entire tree
     dependencies : function(file) {
         return file ? this._graph.dependenciesOf(file) : this._graph.overallOrder();
     },
-
+    
+    // Get the ultimate output for specific files or the entire tree
     output : function(args) {
         var self  = this,
             opts  = args || false,
@@ -147,10 +160,11 @@ Processor.prototype = {
         return Promise.all(files.sort().map(function(dep) {
             // Rewrite relative URLs before adding
             // Have to do this every time because target file might be different!
-            // NOTE: the call to .clone() is really important here, otherwise this call
-            // modifies the .result root itself and you process URLs multiple times
-            // See https://github.com/tivac/modular-css/issues/35
             return self._after.process(
+                
+                // NOTE: the call to .clone() is really important here, otherwise this call
+                // modifies the .result root itself and you process URLs multiple times
+                // See https://github.com/tivac/modular-css/issues/35
                 self._files[dep].result.root.clone(),
                 assign({}, self._options, {
                     from : dep,
@@ -162,7 +176,10 @@ Processor.prototype = {
             var root = postcss.root();
 
             results.forEach(function(result) {
-                root.append(postcss.comment({ text : result.opts.from }));
+                root.append(postcss.comment({
+                    text : relative(self._options.cwd, result.opts.from)
+                }));
+                
                 root.append(result.css);
             });
             
@@ -172,11 +189,14 @@ Processor.prototype = {
             );
         });
     },
-
+    
+    // Expose our file list
     get files() {
         return this._files;
     },
-
+    
+    // Process files and walk their composition/value dependency tree to find
+    // new files we need to process
     _walk : function(name, text) {
         var self = this;
         
@@ -207,6 +227,10 @@ Processor.prototype = {
                 })
             );
         });
+    },
+    
+    _namer : function(file, selector) {
+        return "mc" + slug(relative(this._options.cwd, file)) + "_" + selector;
     }
 };
 

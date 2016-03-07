@@ -17,13 +17,14 @@ var fs   = require("fs"),
 module.exports = function(browserify, opts) {
     var options = assign({
             ext : ".css",
-            map : browserify._options.debug
+            map : browserify._options.debug,
+            cwd : browserify._options.basedir || process.cwd()
         }, opts),
         
         processor = new Processor(options),
         
         bundler, bundles, handled;
-        
+    
     if(!options.ext || options.ext.charAt(0) !== ".") {
         return browserify.emit("error", "Missing or invalid \"ext\" option: " + options.ext);
     }
@@ -65,20 +66,16 @@ module.exports = function(browserify, opts) {
     
     // Splice ourselves as early as possible into the deps pipeline
     browserify.pipeline.get("deps").splice(1, 0, through.obj(function(row, enc, done) {
-        // Ensure that browserify knows about the CSS dependency tree by updating
-        // any referenced entries w/ their dependencies
-        var id;
-        
         if(path.extname(row.file) !== options.ext) {
             return done(null, row);
         }
         
-        id = relative(row.file);
+        handled[row.id] = true;
         
-        handled.push(id);
-        
-        row.deps = processor.dependencies(id).reduce(function(curr, next) {
-            curr["./" + next] = path.resolve(next);
+        // Ensure that browserify knows about the CSS dependency tree by updating
+        // any referenced entries w/ their dependencies
+        row.deps = processor.dependencies(row.file).reduce(function(curr, next) {
+            curr["./" + relative(options.cwd, next)] = next;
             
             return curr;
         }, {});
@@ -89,21 +86,17 @@ module.exports = function(browserify, opts) {
         // injected into the stream of files being managed
         var push = this.push.bind(this);
         
-        processor.dependencies().forEach(function(short) {
-            var id;
-                
-            if(handled.indexOf(short) > -1) {
+        processor.dependencies().forEach(function(dep) {
+            if(dep in handled) {
                 return;
             }
             
-            id = path.resolve(short);
-            
             push({
-                id     : id,
-                file   : id,
-                source : "module.exports = " + JSON.stringify(processor.files[short].exports, null, 4) + ";",
-                deps   : processor.dependencies(short).reduce(function(curr, next) {
-                    curr["./" + next] = path.resolve(next);
+                id     : dep,
+                file   : dep,
+                source : "module.exports = " + JSON.stringify(processor.files[dep].exports, null, 4) + ";",
+                deps   : processor.dependencies(dep).reduce(function(curr, next) {
+                    curr["./" + relative(options.cwd, next)] = next;
                     
                     return curr;
                 }, {})
@@ -115,19 +108,13 @@ module.exports = function(browserify, opts) {
     
     // Keep tabs on factor-bundle organization
     browserify.on("factor.pipeline", function(file, pipeline) {
-        var identifier = relative(file);
-        
-        bundles[identifier] = [];
+        bundles[file] = [];
 
         // Track the files in each bundle so we can determine commonalities
         // Doesn't actually modify the file, just records it
         pipeline.unshift(through.obj(function(obj, enc, done) {
-            var child;
-            
             if(path.extname(obj.file) === options.ext) {
-                child = relative(obj.file);
-                
-                bundles[identifier].unshift(child);
+                bundles[file].unshift(obj.file);
             }
 
             done(null, obj);
@@ -144,7 +131,7 @@ module.exports = function(browserify, opts) {
         // Calls to .bundle() means we should recreate anything tracking bundling progress
         // in case things have changed out from under us, like when using watchify
         bundles = {};
-        handled = [];
+        handled = {};
         
         bundler = current;
         
@@ -159,9 +146,12 @@ module.exports = function(browserify, opts) {
                 json = {};
                 
                 Object.keys(processor.files).sort().forEach(function(file) {
-                    json[file] = map(processor.files[file].compositions, function(classes) {
-                        return classes.join(" ");
-                    });
+                    json[relative(options.cwd, file)] = map(
+                        processor.files[file].compositions,
+                        function(classes) {
+                            return classes.join(" ");
+                        }
+                    );
                 });
                 
                 fs.writeFileSync(

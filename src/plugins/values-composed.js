@@ -10,6 +10,10 @@ module.exports = values(
             out    = {},
             source;
         
+        if(!parsed) {
+            throw rule.error("Invalid value composition", { word : rule.params });
+        }
+        
         if(!options.files || !options.files[parsed.source]) {
             throw rule.error("Invalid file reference: " + rule.params, { word : rule.params });
         }

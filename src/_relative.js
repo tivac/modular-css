@@ -2,9 +2,10 @@
 
 var path = require("path"),
 
-    regex = /\\/g,
-    cwd   = process.cwd();
+    regex = /\\/g;
 
-module.exports = function(file) {
+// Get a relative version of an absolute path w/ cross-platform/URL-friendly
+// directory separators
+module.exports = function(cwd, file) {
     return path.relative(cwd, file).replace(regex, "/");
 };

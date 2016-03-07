@@ -1,15 +1,26 @@
+"use strict";
+
 var assert = require("assert"),
+
     plugin = require("../src/plugins/values-local");
 
 function css(src, options) {
     return plugin.process(src, options).css;
 }
 
-describe("modular-css", function() {
-    describe("values-local plugin", function() {
+describe("/plugins", function() {
+    describe("/values-local.js", function() {
         it("should silently ignore invalid declarations", function() {
             assert.doesNotThrow(function() {
                 css("@value green");
+            });
+            
+            assert.doesNotThrow(function() {
+                css("@value red:");
+            });
+            
+            assert.doesNotThrow(function() {
+                css("@value blue red");
             });
         });
 
