@@ -243,11 +243,9 @@ new Processor({
 });
 ```
 
----
-
 ## Why?
 
-CSS Modules is an amazing idea. Unfortunately it is incredibly difficult to get working in our projects right now. So to prove out the idea we built `modular-css`. In general `modular-css` is a implementation of the most useful parts of the CSS Modules spec. It unavoidably deviates in a few places to try and improve end-user consistency.
+CSS Modules is a great idea but has been to slow to fix issues blocking me from being able to use it. To prove out the idea I built `modular-css`. In general `modular-css` is a implementation of the most useful parts of the CSS Modules spec. It unavoidably deviates in a few places to try and improve end-user consistency.
 
 <p align="center">
     <a href="https://twitter.com/iamdevloper/status/636455478093029376">
@@ -258,6 +256,10 @@ CSS Modules is an amazing idea. Unfortunately it is incredibly difficult to get 
 ## Features
 
 CSS Modules defines a bunch of great features, and `modular-css` supports the best of them in a straightforward and consistent way.
+
+- [Values](#values)
+- [Scoped Selectors](#scoped-selectors)
+- [Composition](#composition)
 
 ### Values
 
@@ -279,7 +281,7 @@ Values are useful in CSS, they're coming to the spec soon. Use them now because 
 }
 ```
 
-### Scoped CSS
+### Scoped Selectors
 
 By default all CSS selectors live in the global scope of the page and are chosen based on specificity rules. This has proven to be a model that makes it difficult to succeed and incredibly easy to blow off your own foot. `modular-css` scopes all selectors to the local file by default, ensuring that your CSS is always exactly as specific as it should be.
 
