@@ -15,6 +15,236 @@ Provides a subset of [css-modules](https://github.com/css-modules/css-modules) v
 - [CLI](#cli)
 - [JS API](#api)
 
+## Install
+
+`$ npm i modular-css`
+
+## Browserify
+
+`modular-css` can be used as a browserify plugin, it can also be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
+
+The `modular-css` plugin will use the `basedir` passed to browserify as it's `cwd` parameter.
+
+#### Options
+
+##### `css`
+
+Location to write the generated CSS file to.
+
+##### Shared Options
+
+All other options are passed to the underlying `Processor` instance, see [Options](#options-2).
+
+#### CLI
+
+```
+$ browserify -p [ modular-css/browserify --css "./style.css" ] entry.js
+```
+
+#### API
+
+```js
+var browserify = require("browserify"),
+    build;
+
+build = browserify("./entry.js");
+
+build.plugin("modular-css/browserify", {
+    css : "./style.css",
+});
+```
+
+#### factor-bundle
+
+The `modular-css` browserify plugin is fully factor-bundle aware and will output correctly-partitioned CSS bundles to match the JS bundles created by factor-bundle.
+
+**WARNING**: Due to how `factor-bundle` works the `modular-css/browserify` plugin must be applied to the Browserify object **before** `factor-bundle`.
+
+##### CLI
+
+```
+$ browserify home.js account.js \
+    -p [ modular-css/browserify --css gen/common.css ] \
+    -p [ factor-bundle -o gen/home.js -o gen/account.js ] \
+    -o bundle/common.js
+```
+
+##### API
+
+```js
+var build = browserify([
+        "./home.js",
+        "./account.js"
+    ]);
+
+// NOTE modular-css applied before factor-bundle, it won't work otherwise!
+build.plugin("modular-css/browserify", {
+    css : "./gen/common.css"
+});
+
+build.plugin("factor-bundle", {
+    outputs : [
+        "./gen/home.js",
+        "./get/account.js"
+    ]
+});
+```
+
+## Rollup
+
+`modular-css/rollup` provides a rollup build plugin you can use to transform imported `.css` files into lookup objects.
+
+#### Options
+
+##### `css`
+
+Location to write the generated CSS file to.
+
+##### Shared Options
+
+All other options are passed to the underlying `Processor` instance, see [Options](#options-2).
+
+#### API
+
+```js
+rollup({
+    entry   : "./index.js",
+    plugins : [
+        require("modular-css/rollup")({
+            css : "./gen/index.css"
+        })
+    ]
+}).then(function(bundle) {
+    ...
+});
+```
+
+#### Config file
+
+```js
+import css from "modular-css/rollup";
+
+export default {
+    entry   : "./index.js",
+    dest    : "./gen/bundle.js",
+    format  : "umd",
+    plugins : [
+        css({
+            css : "./gen/index.css"
+        })
+    ]
+};
+```
+
+## CLI
+
+`$ modular-css ./entry.css`
+
+Will process `./entry.css` and output the processed CSS to stdout
+
+`$ modular-css ./entry.css ./gen/entry.css`
+
+Will process `./entry.css` and output the processed CSS to `./gen/entry.css` as well as a JSON file containing the scoped mapping to `./gen/entry.css.json`.
+
+## API
+
+Instantiate a new `Processor` instance, call it's `.file(<path>)` or `.string(<name>, <contents>)` methods, and then use the returned Promise to get access to the results/output.
+
+```js
+var Processor = require("modular-css").Processor,
+    processor = new Processor();
+
+processor.file("./entry.css").then(function(result) {
+    // result now contains
+    //  .exports - Scoped selector mappings
+    //  .files - metadata about the file hierarchy
+});
+
+// Once all files are added, use .output() to get at the rewritten CSS
+processor.output().then(function(result) {
+    // Output CSS lives on the .css property
+    result.css;
+    
+    // Source map (if requested) lives on the .map property
+    result.map;
+});
+```
+
+#### Options
+
+All options should be passed to the `Processor` constructor.
+
+##### `before`
+
+Specify an array of PostCSS plugins to be run against each file before it is processed.
+
+```js
+new Processor({
+    before : [ require("postcss-import") ]
+});    
+```
+##### `after`
+
+Specify an array of PostCSS plugins to be run after files are processed, but before they are combined. Plugin will be passed a `to` and `from` option.
+
+**By default** [`postcss-url`](https://www.npmjs.com/package/postcss-url) is used in `after` mode.
+
+```js
+new Processor({
+    after : [ require("postcss-someplugin") ]
+});
+```
+
+##### `done`
+
+Specify an array of PostCSS plugins to be run against the complete combined CSS.
+
+```js
+new Processor({
+    done : [ require("cssnano")()]
+});    
+```
+
+##### `map`
+
+Enable source map generation. Can also be passed to `.output()`.
+
+**Default**: `false`
+
+```js
+new Processor({
+    map : true
+});
+```
+
+##### `cwd`
+
+Specify the current working directory for this Processor instance, used when resolving `composes`/`@value` rules that reference other files.
+
+**Default**: `process.cwd()`
+
+```js
+new Processor({
+    cwd : path.join(process.cwd(), "/sub/dir")
+})
+```
+
+##### `namer`
+
+Specify a function (that takes `filename` & `selector` as arguments to produce scoped selectors.
+
+**Default**: Function that returns `"mc" + unique-slug(<file>) + "_" + selector`
+
+```js
+new Processor({
+    namer : function(file, selector) {
+        return file.replace(/:\/\\ /g, "") + "_" + selector;
+    }
+});
+```
+
+---
+
 ## Why?
 
 CSS Modules is an amazing idea. Unfortunately it is incredibly difficult to get working in our projects right now. So to prove out the idea we built `modular-css`. In general `modular-css` is a implementation of the most useful parts of the CSS Modules spec. It unavoidably deviates in a few places to try and improve end-user consistency.
@@ -164,238 +394,6 @@ You can also get access to variables defined in other files for simple sharing o
 
 ```css
 @value first, second from "./somewhere-else.css";
-```
-
-## Install
-
-`$ npm i modular-css`
-
-## Usage
-
-### Browserify
-
-`modular-css` can be used as a browserify plugin, it can also be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
-
-The `modular-css` plugin will use the `basedir` passed to browserify as it's `cwd` parameter.
-
-#### Options
-
-##### `css`
-
-Location to write the generated CSS file to.
-
-##### Shared Options
-
-All other options are passed to the underlying `Processor` instance, see [Options](#options).
-
-#### CLI
-
-```
-$ browserify -p [ modular-css/browserify --css "./style.css" ] entry.js
-```
-
-#### API
-
-```js
-var browserify = require("browserify"),
-    build;
-
-build = browserify("./entry.js");
-
-build.plugin("modular-css/browserify", {
-    css : "./style.css",
-});
-```
-
-#### factor-bundle
-
-The `modular-css` browserify plugin is fully factor-bundle aware and will output correctly-partitioned CSS bundles to match the JS bundles created by factor-bundle.
-
-**WARNING**: Due to how `factor-bundle` works the `modular-css/browserify` plugin must be applied to the Browserify object **before** `factor-bundle`.
-
-##### CLI
-
-```
-$ browserify home.js account.js \
-    -p [ modular-css/browserify --css gen/common.css ] \
-    -p [ factor-bundle -o gen/home.js -o gen/account.js ] \
-    -o bundle/common.js
-```
-
-##### API
-
-```js
-var build = browserify([
-        "./home.js",
-        "./account.js"
-    ]);
-
-// NOTE modular-css applied before factor-bundle, it won't work otherwise!
-build.plugin("modular-css/browserify", {
-    css : "./gen/common.css"
-});
-
-build.plugin("factor-bundle", {
-    outputs : [
-        "./gen/home.js",
-        "./get/account.js"
-    ]
-});
-```
-
-### Rollup
-
-`modular-css/rollup` provides a rollup build plugin you can use to transform imported `.css` files into lookup objects.
-
-#### Options
-
-##### `css`
-
-Location to write the generated CSS file to.
-
-##### Shared Options
-
-All other options are passed to the underlying `Processor` instance, see [Options](#options).
-
-#### API
-
-```js
-rollup({
-    entry   : "./index.js",
-    plugins : [
-        require("modular-css/rollup")({
-            css : "./gen/index.css"
-        })
-    ]
-}).then(function(bundle) {
-    ...
-});
-```
-
-#### Config file
-
-```js
-import css from "modular-css/rollup";
-
-export default {
-    entry   : "./index.js",
-    dest    : "./gen/bundle.js",
-    format  : "umd",
-    plugins : [
-        css({
-            css : "./gen/index.css"
-        })
-    ]
-};
-```
-
-
-### CLI
-
-`$ modular-css ./entry.css`
-
-Will process `./entry.css` and output the processed CSS to stdout
-
-`$ modular-css ./entry.css ./gen/entry.css`
-
-Will process `./entry.css` and output the processed CSS to `./gen/entry.css` as well as a JSON file containing the scoped mapping to `./gen/entry.css.json`.
-
-
-### API
-
-Instantiate a new `Processor` instance, call it's `.file(<path>)` or `.string(<name>, <contents>)` methods, and then use the returned Promise to get access to the results/output.
-
-```js
-var Processor = require("modular-css").Processor,
-    processor = new Processor();
-
-processor.file("./entry.css").then(function(result) {
-    // result now contains
-    //  .exports - Scoped selector mappings
-    //  .files - metadata about the file hierarchy
-});
-
-// Once all files are added, use .output() to get at the rewritten CSS
-processor.output().then(function(result) {
-    // Output CSS lives on the .css property
-    result.css;
-    
-    // Source map (if requested) lives on the .map property
-    result.map;
-});
-```
-
-#### Options
-
-All options should be passed to the `Processor` constructor.
-
-##### `before`
-
-Specify an array of PostCSS plugins to be run against each file before it is processed.
-
-```js
-new Processor({
-    before : [ require("postcss-import") ]
-});    
-```
-##### `after`
-
-Specify an array of PostCSS plugins to be run after files are processed, but before they are combined. Plugin will be passed a `to` and `from` option.
-
-**By default** [`postcss-url`](https://www.npmjs.com/package/postcss-url) is used in `after` mode.
-
-```js
-new Processor({
-    after : [ require("postcss-someplugin") ]
-});
-```
-
-##### `done`
-
-Specify an array of PostCSS plugins to be run against the complete combined CSS.
-
-```js
-new Processor({
-    done : [ require("cssnano")()]
-});    
-```
-
-##### `map`
-
-Enable source map generation. Can also be passed to `.output()`.
-
-**Default**: `false`
-
-```js
-new Processor({
-    map : true
-});
-```
-
-##### `cwd`
-
-Specify the current working directory for this Processor instance, used when resolving `composes`/`@value` rules that reference other files.
-
-**Default**: `process.cwd()`
-
-```js
-new Processor({
-    cwd : path.join(process.cwd(), "/sub/dir")
-})
-```
-
-##### `namer`
-
-Specify a function (that takes `filename` & `selector` as arguments to produce scoped selectors.
-
-**Default**: Function that returns `"mc" + unique-slug(<file>) + "_" + selector`
-
-```js
-new Processor({
-    namer : function(file, selector) {
-        return file.replace(/:\/\\ /g, "") + "_" + selector;
-    }
-});
 ```
 
 ## Thanks
