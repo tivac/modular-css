@@ -9,11 +9,11 @@ modular-css [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https
 
 Provides a subset of [css-modules](https://github.com/css-modules/css-modules) via:
 
-- [CLI](#cli)
-- [JS API](#api)
 - [Browserify](#browserify) Plugin
     - [factor-bundle](#factor-bundle) is supported for splitting up bundles as well
 - [Rollup](#rollup) Plugin
+- [CLI](#cli)
+- [JS API](#api)
 
 ## Why?
 
@@ -172,6 +172,124 @@ You can also get access to variables defined in other files for simple sharing o
 
 ## Usage
 
+### Browserify
+
+`modular-css` can be used as a browserify plugin, it can also be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
+
+The `modular-css` plugin will use the `basedir` passed to browserify as it's `cwd` parameter.
+
+#### Options
+
+##### `css`
+
+Location to write the generated CSS file to.
+
+##### Shared Options
+
+All other options are passed to the underlying `Processor` instance, see [Options](#options).
+
+#### CLI
+
+```
+$ browserify -p [ modular-css/browserify --css "./style.css" ] entry.js
+```
+
+#### API
+
+```js
+var browserify = require("browserify"),
+    build;
+
+build = browserify("./entry.js");
+
+build.plugin("modular-css/browserify", {
+    css : "./style.css",
+});
+```
+
+#### factor-bundle
+
+The `modular-css` browserify plugin is fully factor-bundle aware and will output correctly-partitioned CSS bundles to match the JS bundles created by factor-bundle.
+
+**WARNING**: Due to how `factor-bundle` works the `modular-css/browserify` plugin must be applied to the Browserify object **before** `factor-bundle`.
+
+##### CLI
+
+```
+$ browserify home.js account.js \
+    -p [ modular-css/browserify --css gen/common.css ] \
+    -p [ factor-bundle -o gen/home.js -o gen/account.js ] \
+    -o bundle/common.js
+```
+
+##### API
+
+```js
+var build = browserify([
+        "./home.js",
+        "./account.js"
+    ]);
+
+// NOTE modular-css applied before factor-bundle, it won't work otherwise!
+build.plugin("modular-css/browserify", {
+    css : "./gen/common.css"
+});
+
+build.plugin("factor-bundle", {
+    outputs : [
+        "./gen/home.js",
+        "./get/account.js"
+    ]
+});
+```
+
+### Rollup
+
+`modular-css/rollup` provides a rollup build plugin you can use to transform imported `.css` files into lookup objects.
+
+#### Options
+
+##### `css`
+
+Location to write the generated CSS file to.
+
+##### Shared Options
+
+All other options are passed to the underlying `Processor` instance, see [Options](#options).
+
+#### API
+
+```js
+rollup({
+    entry   : "./index.js",
+    plugins : [
+        require("modular-css/rollup")({
+            css : "./gen/index.css"
+        })
+    ]
+}).then(function(bundle) {
+    ...
+});
+```
+
+#### Config file
+
+```js
+import css from "modular-css/rollup";
+
+export default {
+    entry   : "./index.js",
+    dest    : "./gen/bundle.js",
+    format  : "umd",
+    plugins : [
+        css({
+            css : "./gen/index.css"
+        })
+    ]
+};
+```
+
+
 ### CLI
 
 `$ modular-css ./entry.css`
@@ -246,129 +364,38 @@ new Processor({
 
 Enable source map generation. Can also be passed to `.output()`.
 
+**Default**: `false`
+
 ```js
-new processor({
+new Processor({
     map : true
 });
 ```
 
-### Browserify
+##### `cwd`
 
-`modular-css` can be used as a browserify plugin, it can also be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
+Specify the current working directory for this Processor instance, used when resolving `composes`/`@value` rules that reference other files.
 
-#### CLI
-
-```
-$ browserify -p [ modular-css/browserify --css "./style.css" ] client.js
-```
-
-#### API
+**Default**: `process.cwd()`
 
 ```js
-var browserify = require("browserify"),
-    build;
-
-build = browserify("./entry.js");
-
-build.plugin("modular-css/browserify", {
-    // REQUIRED
-    
-    // location to write combined CSS file to
-    css : "./output/css/here.css",
-    
-    // OPTIONAL
-    
-    // output JSON file containing all composes/scoped class names
-    json : "./output/classes.json",
-    
-    // PostCSS plugins to run before/after processing, and after combining
-    before : [ require("postcss-import") ],
-    after  : [ require("postcss-someplugin") ],
-    done   : [ require("cssnano")() ],
-    
-    // Source maps in the output
-    map : true
-});
-
-build.bundle(function(err, output) {
-    ...
-});
+new Processor({
+    cwd : path.join(process.cwd(), "/sub/dir")
+})
 ```
 
-#### factor-bundle
+##### `namer`
 
-If `./home.js` and `./account.js` both reference some CSS files via composition the `modular-css` plugin will write out any shared requirements to `./common.css`, while any page-specific css will be written to either `./gen/home.css` or `./gen/account.css`.
+Specify a function (that takes `filename` & `selector` as arguments to produce scoped selectors.
 
-**WARNING**: Due to how `factor-bundle` works the `modular-css/browserify` plugin must be applied to the Browserify object **before** `factor-bundle`.
-
-##### CLI
-
-```
-$ browserify home.js account.js \
-    -p [ modular-css/browserify --css gen/common.css ] \
-    -p [ factor-bundle -o gen/home.js -o gen/account.js ] \
-    -o bundle/common.js
-```
-
-##### API
+**Default**: Function that returns `"mc" + unique-slug(<file>) + "_" + selector`
 
 ```js
-var build = browserify([
-        "./home.js",
-        "./account.js"
-    ]);
-
-// NOTE modular-css applied before factor-bundle, it won't work otherwise!
-build.plugin("modular-css/browserify", {
-    css : "./gen/common.css"
+new Processor({
+    namer : function(file, selector) {
+        return file.replace(/:\/\\ /g, "") + "_" + selector;
+    }
 });
-
-build.plugin("factor-bundle", {
-    outputs : [
-        "./gen/home.js",
-        "./get/account.js"
-    ]
-});
-
-build.bundle(function(err, output) {
-    ...
-});
-```
-
-### Rollup
-
-`modular-css/rollup` provides a rollup build plugin you can use to transform imported `.css` files into lookup objects.
-
-#### API
-
-```js
-rollup({
-    entry   : "./index.js",
-    plugins : [
-        require("modular-css/rollup")({
-            css : "./gen/index.css"
-        })
-    ]
-}).then(function(bundle) {
-    ...
-});
-```
-
-#### Config file
-
-```js
-import css from "modular-css/rollup";
-
-export default {
-    entry   : "./index.js",
-    dest    : "./gen/bundle.js",
-    format  : "umd",
-    plugins : [
-        css({
-            css : "./gen/index.css"
-        })
-    ]
-};
 ```
 
 ## Thanks
@@ -377,13 +404,12 @@ export default {
 
 The CSS modules team for inspiration!
 
-[@geelen](https://github.com/geelen)
-[@joshgillies](https://github.com/joshgillies)
-[@joshwnj](https://github.com/joshwnj)
-[@markdalgleish](https://github.com/markdalgleish)
-[@sokra](https://github.com/sokra)
-[@sullenor](https://github.com/sullenor)
-
+- [@geelen](https://github.com/geelen)
+- [@joshgillies](https://github.com/joshgillies)
+- [@joshwnj](https://github.com/joshwnj)
+- [@markdalgleish](https://github.com/markdalgleish)
+- [@sokra](https://github.com/sokra)
+- [@sullenor](https://github.com/sullenor)
 
 ## A Note on Versioning ##
 
