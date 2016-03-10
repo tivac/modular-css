@@ -5,7 +5,6 @@ var postcss      = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
     
     unique    = require("lodash.uniq"),
-    each      = require("lodash.foreach"),
     invert    = require("lodash.invert"),
     mapvalues = require("lodash.mapvalues"),
 
@@ -21,8 +20,7 @@ module.exports = postcss.plugin(plugin, function() {
             map   = invert(refs),
             graph = new Graph(),
             opts  = result.opts,
-            out   = {},
-            empty = {};
+            out   = {};
 
         // Have to do this down here because invert doesn't understand array values
         refs = mapvalues(refs, function(val, key) {
@@ -84,42 +82,15 @@ module.exports = postcss.plugin(plugin, function() {
                 }
             });
 
-            // Remove the composes rule itself
+            // Remove the just the composes statement if there were others
             if(decl.parent.nodes.length > 1) {
                 return decl.remove();
             }
-
-            // Mark all selectors for this rule as potentially needing to be purged
-            return selectors.forEach(function(selector) {
-                empty[selector] = {
-                    parent : decl.parent,
-                    count  : 0
-                };
-            });
+            
+            // Remove the entire rule because it only contained the composes decl
+            return decl.parent.remove();
         });
         
-        // Walk all rules pending emptying, remove any that appear > 1 time
-        css.walkRules(new RegExp(Object.keys(empty).join("|")), function(rule) {
-            identifiers.parse(rule.selector).forEach(function(selector) {
-                if(selector in empty) {
-                    empty[selector].count++;
-                }
-            });
-        });
-        
-        each(empty, function(obj, selector) {
-            if(obj.count > 1) {
-                return;
-            }
-            
-            // If the parent rule only had the one declaration, clean up the rule
-            // And blank out output for the now-empty class
-            obj.parent.remove();
-            
-            refs[map[selector]] = [];
-            out[map[selector]] = [];
-        });
-
         // Update out by walking dep graph and updating classes
         graph.overallOrder().forEach(function(selector) {
             graph.dependenciesOf(selector).reverse().forEach(function(dep) {

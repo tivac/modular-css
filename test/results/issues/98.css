@@ -1,0 +1,7 @@
+/* test/specimens/issues/98.css */
+.mc2a6c9ee9_booga {
+    color: red
+}
+.mc2a6c9ee9_fooga + .mc2a6c9ee9_fooga {
+    color: blue
+}

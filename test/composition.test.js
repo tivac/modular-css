@@ -105,7 +105,7 @@ describe("/plugins", function() {
             
             assert.deepEqual(messages, [ msg({
                 wooga : [ "wooga" ],
-                fooga : [ "wooga" ]
+                fooga : [ "wooga", "fooga" ]
             }) ]);
         });
 
@@ -140,10 +140,7 @@ describe("/plugins", function() {
             assert.deepEqual(out.messages, [ msg({
                 wooga : [ "wooga" ],
                 booga : [ "booga" ],
-                tooga : [
-                    "booga",
-                    "wooga"
-                ]
+                tooga : [ "booga", "wooga", "tooga" ]
             }) ]);
         });
         
@@ -151,7 +148,7 @@ describe("/plugins", function() {
             var out = composition.process(".wooga { composes: booga; } .booga { color: red; }");
             
             assert.deepEqual(out.messages, [ msg({
-                wooga : [ "booga" ],
+                wooga : [ "booga", "wooga" ],
                 booga : [ "booga" ]
             }) ]);
         });
@@ -162,7 +159,7 @@ describe("/plugins", function() {
             assert.deepEqual(out.messages, [ msg({
                 wooga : [ "wooga" ],
                 booga : [ "booga" ],
-                tooga : [ "wooga", "booga" ]
+                tooga : [ "wooga", "booga", "tooga" ]
             }) ]);
         });
         
@@ -172,13 +169,13 @@ describe("/plugins", function() {
             out = composition.process(".wooga { composes: global(booga); }");
             
             assert.deepEqual(out.messages, [ msg({
-                wooga : [ "booga" ]
+                wooga : [ "booga", "wooga" ]
             }) ]);
 
             out = composition.process(".wooga { composes: global(booga), global(tooga); }");
             
             assert.deepEqual(out.messages, [ msg({
-                wooga : [ "booga", "tooga" ]
+                wooga : [ "booga", "tooga", "wooga" ]
             }) ]);
 
             out = composition.process(".wooga { composes: global(booga); color: red; }");
@@ -191,7 +188,7 @@ describe("/plugins", function() {
             
             assert.deepEqual(out.messages, [ msg({
                 tooga : [ "tooga" ],
-                wooga : [ "booga", "tooga" ]
+                wooga : [ "booga", "tooga", "wooga" ]
             }) ]);
 
             out = composition.process(".tooga { } .wooga { composes: global(booga), tooga; color: red; }");
@@ -205,7 +202,7 @@ describe("/plugins", function() {
             
             assert.deepEqual(out.messages, [ msg({
                 tooga : [ "tooga" ],
-                wooga : [ "booga", "tooga" ]
+                wooga : [ "booga", "tooga", "wooga" ]
             }) ]);
 
             out = composition.process(".tooga { } .wooga { composes: global(booga); composes: tooga; color: red; }");
@@ -216,18 +213,6 @@ describe("/plugins", function() {
             }) ]);
         });
         
-        it("should dedupe repeated dependencies", function() {
-            var out = composition.process(
-                    ".wooga { color: red; } .booga { composes: wooga; } .tooga { composes: booga; }"
-                );
-            
-            assert.deepEqual(out.messages, [ msg({
-                wooga : [ "wooga" ],
-                booga : [ "wooga" ],
-                tooga : [ "wooga" ]
-            }) ]);
-        });
-        
         it("should handle multi-level dependencies", function() {
             var out = composition.process(
                     ".wooga { color: red; } .booga { composes: wooga; background: blue; } .tooga { composes: booga; display: block; }"
@@ -235,27 +220,8 @@ describe("/plugins", function() {
             
             assert.deepEqual(out.messages, [ msg({
                 wooga : [ "wooga" ],
-                booga : [
-                    "wooga",
-                    "booga"
-                ],
-                tooga : [
-                    "wooga",
-                    "booga",
-                    "tooga"
-                ]
-            }) ]);
-        });
-        
-        it("should handle multi-level dependencies with empty elements", function() {
-            var out = composition.process(
-                    ".wooga { color: red; } .booga { composes: wooga; } .tooga { composes: booga; }"
-                );
-            
-            assert.deepEqual(out.messages, [ msg({
-                wooga : [ "wooga" ],
-                booga : [ "wooga" ],
-                tooga : [ "wooga" ]
+                booga : [ "wooga", "booga" ],
+                tooga : [ "wooga", "booga", "tooga" ]
             }) ]);
         });
         
@@ -278,7 +244,7 @@ describe("/plugins", function() {
                     wooga : "simple_wooga"
                 }
             }, msg({
-                googa : [ "simple_wooga" ],
+                googa : [ "simple_wooga", "simple_googa" ],
                 wooga : [ "simple_wooga" ]
             }) ]);
         });
@@ -299,7 +265,7 @@ describe("/plugins", function() {
                 type   : "modularcss",
                 plugin : "fake-plugin"
             }, msg({
-                googa : [ "wooga" ],
+                googa : [ "wooga", "googa" ],
                 wooga : [ "wooga" ]
             }) ]);
         });
@@ -321,7 +287,7 @@ describe("/plugins", function() {
             });
 
             assert.deepEqual(out.messages, [ msg({
-                wooga : [ "googa", "tooga" ]
+                wooga : [ "googa", "tooga", "wooga" ]
             }) ]);
         });
 
@@ -342,7 +308,7 @@ describe("/plugins", function() {
             });
 
             assert.deepEqual(out.messages, [ msg({
-                wooga : [ "googa" ]
+                wooga : [ "googa", "wooga" ]
             }) ]);
         });
     });
