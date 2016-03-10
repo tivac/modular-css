@@ -17,9 +17,9 @@ var fs     = require("fs"),
 
 describe("/browserify.js", function() {
     describe("basic functionality", function() {
-        // after(function(done) {
-        //     rimraf("./test/output/browserify", done);
-        // });
+        after(function(done) {
+            rimraf("./test/output/browserify", done);
+        });
         
         it("should not error if no options are supplied", function() {
             var build = browserify();
