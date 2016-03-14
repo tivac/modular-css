@@ -65,6 +65,13 @@ describe("/plugins", function() {
                 ".wooga { margin: calc(10px * 2); }"
             );
         });
+        
+        it("should support values containing commas", function() {
+            assert.equal(
+                css("@value fonts: -apple-system, '.SFNSText-Regular', 'San Francisco', 'Oxygen', 'Ubuntu', 'Roboto', 'Segoe UI', 'Helvetica Neue', 'Lucida Grande', sans-serif; .wooga { font-family: fonts; }"),
+                ".wooga { font-family: -apple-system, '.SFNSText-Regular', 'San Francisco', 'Oxygen', 'Ubuntu', 'Roboto', 'Segoe UI', 'Helvetica Neue', 'Lucida Grande', sans-serif; }"
+            );
+        });
 
         it("should support value heirarchies", function() {
             assert.equal(
