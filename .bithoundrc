@@ -1,0 +1,11 @@
+{
+  "ignore": [
+    "**/node_modules/**"
+  ],
+  "test": [
+    "**/test/**"
+  ],
+  "critics": {
+    "lint": {"engine": "eslint"}
+  }
+}

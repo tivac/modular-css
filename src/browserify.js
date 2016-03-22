@@ -28,6 +28,12 @@ module.exports = function(browserify, opts) {
     if(!options.ext || options.ext.charAt(0) !== ".") {
         return browserify.emit("error", "Missing or invalid \"ext\" option: " + options.ext);
     }
+    
+    function depReducer(curr, next) {
+        curr["./" + relative(options.cwd, next)] = next;
+        
+        return curr;
+    }
 
     browserify.transform(function(file) {
         if(path.extname(file) !== options.ext) {
@@ -74,11 +80,7 @@ module.exports = function(browserify, opts) {
         
         // Ensure that browserify knows about the CSS dependency tree by updating
         // any referenced entries w/ their dependencies
-        row.deps = processor.dependencies(row.file).reduce(function(curr, next) {
-            curr["./" + relative(options.cwd, next)] = next;
-            
-            return curr;
-        }, {});
+        row.deps = processor.dependencies(row.file).reduce(depReducer, {});
         
         return done(null, row);
     }, function(done) {
@@ -95,11 +97,7 @@ module.exports = function(browserify, opts) {
                 id     : dep,
                 file   : dep,
                 source : "module.exports = " + JSON.stringify(processor.files[dep].exports, null, 4) + ";",
-                deps   : processor.dependencies(dep).reduce(function(curr, next) {
-                    curr["./" + relative(options.cwd, next)] = next;
-                    
-                    return curr;
-                }, {})
+                deps   : processor.dependencies(dep).reduce(depReducer, {})
             });
         });
         
