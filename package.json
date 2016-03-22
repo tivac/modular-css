@@ -38,7 +38,7 @@
     "mocha": "^2.3.4",
     "postcss-color-rebeccapurple": "^2.0.0",
     "rimraf": "^2.5.0",
-    "rollup": "^0.25.4",
+    "rollup": "^0.25.5",
     "shelljs": "^0.6.0",
     "watchify": "^3.7.0"
   },
