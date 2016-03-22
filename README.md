@@ -14,6 +14,7 @@ Provides a subset of [css-modules](https://github.com/css-modules/css-modules) v
 - [Rollup](#rollup) Plugin
 - [CLI](#cli)
 - [JS API](#api)
+- [require() hook](#require-hook)
 
 ## Install
 
@@ -241,6 +242,18 @@ new Processor({
         return file.replace(/:\/\\ /g, "") + "_" + selector;
     }
 });
+```
+
+## require() hook
+
+Modular CSS can be used within node.js by using the `require()` hook. Requiring `modular-css/register` will return a function that accepts the standard [options](#options) and will let you call `require()` on any `.css` files. The return value of requiring a CSS file is the usual object of exported classnames.
+
+```js
+require("modular-css/register")({
+    css : "./output/out.css"
+});
+
+var css = require("./file.css");
 ```
 
 ## Why?
