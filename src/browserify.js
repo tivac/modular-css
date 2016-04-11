@@ -41,9 +41,10 @@ module.exports = function(browserify, opts) {
         }
         
         return sink.str(function(buffer, done) {
-            var push = this.push.bind(this);
+            var push = this.push.bind(this),
+                real = fs.realpathSync(file);
             
-            processor.string(file, buffer).then(
+            processor.string(real, buffer).then(
                 function(result) {
                     // Tell watchers about dependencies by emitting "file" events
                     // AFAIK this is only useful to watchify, to ensure that it watches
