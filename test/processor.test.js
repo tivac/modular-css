@@ -45,7 +45,7 @@ describe("/processor.js", function() {
         
         describe("options", function() {
             describe("namer", function() {
-                it("should use a custom naming function", function(done) {
+                it("should use a custom naming function", function() {
                     var id        = path.resolve("./test/specimens/simple.css"),
                         processor = new Processor({
                             namer : function(filename, selector) {
@@ -53,7 +53,7 @@ describe("/processor.js", function() {
                             }
                         });
                         
-                    processor.string("./test/specimens/simple.css", ".wooga { }").then(function(result) {
+                    return processor.string("./test/specimens/simple.css", ".wooga { }").then(function(result) {
                         var file = result.files[id];
                     
                         assert.deepEqual(result.exports, {
@@ -68,20 +68,17 @@ describe("/processor.js", function() {
 
                         assert.equal(file.text, ".wooga { }");
                         assert.equal(file.processed.root.toResult().css, "." + id + "wooga { }");
-
-                        done();
-                    })
-                    .catch(done);
+                    });
                 });
             });
 
             describe("before", function() {
-                it("should run sync postcss plugins before processing", function(done) {
+                it("should run sync postcss plugins before processing", function() {
                     var processor = new Processor({
                             before : [ sync ]
                         });
                     
-                    processor.string("test/specimens/sync-before.css", "").then(function() {
+                    return processor.string("test/specimens/sync-before.css", "").then(function() {
                         return processor.output();
                     }).then(function(result) {
                         assert.equal(
@@ -89,29 +86,24 @@ describe("/processor.js", function() {
                             "/* test/specimens/sync-before.css */\n" +
                             "a {}"
                         );
-                        
-                        done();
-                    })
-                    .catch(done);
+                    });
                 });
 
-                it("should run async postcss plugins before processing", function(done) {
+                it("should run async postcss plugins before processing", function() {
                     var processor = new Processor({
                             before : [ async ]
                         });
                     
-                    processor.string("test/specimens/async-before.css", "").then(function() {
+                    return processor.string("test/specimens/async-before.css", "").then(function() {
                         return processor.output();
-                    }).then(function(result) {
+                    })
+                    .then(function(result) {
                         assert.equal(
                             result.css,
                             "/* test/specimens/async-before.css */\n" +
                             "a {}"
                         );
-                        
-                        done();
-                    })
-                    .catch(done);
+                    });
                 });
             });
             
@@ -124,10 +116,10 @@ describe("/processor.js", function() {
                         "}\n" +
                         "a {}";
                 
-                it("should use postcss-url by default", function(done) {
+                it("should use postcss-url by default", function() {
                     var processor = this.processor;
 
-                    processor.file("./test/specimens/relative.css").then(function() {
+                    return processor.file("./test/specimens/relative.css").then(function() {
                         return processor.output({ to : "./test/output/relative.css" });
                     })
                     .then(function(result) {
@@ -135,18 +127,15 @@ describe("/processor.js", function() {
                             result.css + "\n",
                             fs.readFileSync("./test/results/processor/relative.css", "utf8")
                         );
-
-                        done();
-                    })
-                    .catch(done);
+                    });
                 });
                 
-                it("should run sync postcss plugins", function(done) {
+                it("should run sync postcss plugins", function() {
                     var processor = new Processor({
                             after : [ sync ]
                         });
 
-                    processor.file("./test/specimens/relative.css").then(function() {
+                    return processor.file("./test/specimens/relative.css").then(function() {
                         return processor.output({ to : "./test/output/relative.css" });
                     })
                     .then(function(result) {
@@ -154,18 +143,15 @@ describe("/processor.js", function() {
                             result.css,
                             css
                         );
-
-                        done();
-                    })
-                    .catch(done);
+                    });
                 });
                 
-                it("should run async postcss plugins", function(done) {
+                it("should run async postcss plugins", function() {
                     var processor = new Processor({
                             after : [ async ]
                         });
 
-                    processor.file("./test/specimens/relative.css").then(function() {
+                    return processor.file("./test/specimens/relative.css").then(function() {
                         return processor.output({ to : "./test/output/relative.css" });
                     })
                     .then(function(result) {
@@ -173,10 +159,7 @@ describe("/processor.js", function() {
                             result.css,
                             css
                         );
-
-                        done();
-                    })
-                    .catch(done);
+                    });
                 });
             });
             
