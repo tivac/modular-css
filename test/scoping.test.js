@@ -160,6 +160,27 @@ describe("/plugins", function() {
                     "#wooga, .simple_wooga { color: red; }"
                 );
             });
+            
+            it("should support mixing local & global selectors in a single string", function() {
+                var processed = process(".fooga :global(.wooga) { color: red; }");
+                
+                assert.equal(
+                    processed.css,
+                    ".simple_fooga .wooga { color: red; }"
+                );
+                
+                assert.deepEqual(
+                    processed.messages,
+                    [ {
+                        type    : "modularcss",
+                        plugin  : "postcss-modular-css-scoping",
+                        classes : {
+                            fooga : "simple_fooga",
+                            wooga : "wooga"
+                        }
+                    } ]
+                );
+            });
 
             it("should support multiple selectors", function() {
                 assert.equal(
