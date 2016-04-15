@@ -9,10 +9,10 @@ var fs   = require("fs"),
 
     assign  = require("lodash.assign"),
     each    = require("lodash.foreach"),
-    map     = require("lodash.mapvalues"),
     
     Processor = require("./processor"),
-    relative  = require("./_relative");
+    relative  = require("./_relative"),
+    output    = require("./_output");
 
 module.exports = function(browserify, opts) {
     var options = assign({
@@ -137,25 +137,14 @@ module.exports = function(browserify, opts) {
         // Listen for bundling to finish
         bundler.on("end", function() {
             var bundling = Object.keys(bundles).length > 0,
-                common, json;
+                common;
                 
             if(options.json) {
                 mkdirp.sync(path.dirname(options.json));
                 
-                json = {};
-                
-                Object.keys(processor.files).sort().forEach(function(file) {
-                    json[relative(options.cwd, file)] = map(
-                        processor.files[file].compositions,
-                        function(classes) {
-                            return classes.join(" ");
-                        }
-                    );
-                });
-                
                 fs.writeFileSync(
                     options.json,
-                    JSON.stringify(json, null, 4)
+                    JSON.stringify(output.compositions(options.cwd, processor), null, 4)
                 );
             }
             

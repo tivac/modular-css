@@ -5,9 +5,9 @@ var fs   = require("fs"),
     path = require("path"),
     
     mkdirp = require("mkdirp"),
-    map    = require("lodash.mapValues"),
     
     Processor = require("../src/processor"),
+    output    = require("../src/_output"),
     
     processor = new Processor({ map : true }),
     
@@ -27,12 +27,13 @@ processor.file(src).then(function() {
     }
     
     mkdirp.sync(path.dirname(out));
-
+    
     fs.writeFileSync(out, result.css);
     fs.writeFileSync(
         path.basename(out, path.extname(out)) + ".json",
-        JSON.stringify(map(processor.out, function(part) {
-            return part.compositions;
-        }), null, 4)
+        JSON.stringify(output.compositions(process.cwd(), processor), null, 4)
     );
+})
+.catch(function(error) {
+    console.log("Error!", error.stack);
 });
