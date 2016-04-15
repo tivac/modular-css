@@ -27,9 +27,11 @@ module.exports = function(opts) {
             }
             
             return processor.string(id, code).then(function(result) {
-                return {
-                    code : "export default " + JSON.stringify(result.exports, null, 4)
-                };
+                var es6ModuleString = Object.keys(result.exports).reduceRight( function(res, key) {
+                    return "export var " + key + " = '" + result.exports[key] + "';\n" + res;
+                }, "export default " + JSON.stringify(result.exports, null, 4));
+
+                return { code : es6ModuleString };
             });
         },
         
