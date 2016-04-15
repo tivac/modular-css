@@ -236,7 +236,7 @@ describe("/processor.js", function() {
                 });
             });
             
-            describe(".file()", function(done) {
+            describe(".file()", function() {
                 it("should process a file", function() {
                     return this.processor.file("./test/specimens/simple.css").then(function(result) {
                         var file = result.files[path.resolve("./test/specimens/simple.css")];
