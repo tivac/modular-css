@@ -16,22 +16,24 @@ module.exports = function(opts) {
             json : false
         }, opts || {}),
         
+        slice = -1 * options.ext.length,
+        
         filter = utils.createFilter(options.include, options.exclude),
         
         processor = new Processor(options);
         
     return {
         transform : function(code, id) {
-            if(!filter(id) || id.slice(-1 * options.ext.length) !== options.ext) {
+            if(!filter(id) || id.slice(slice) !== options.ext) {
                 return null;
             }
             
             return processor.string(id, code).then(function(result) {
-                var es6ModuleString = Object.keys(result.exports).reduceRight( function(res, key) {
-                    return "export var " + key + " = '" + result.exports[key] + "';\n" + res;
-                }, "export default " + JSON.stringify(result.exports, null, 4));
-
-                return { code : es6ModuleString };
+                var generated = Object.keys(result.exports).reduceRight(function(prev, curr) {
+                    return "export var " + curr + " = \"" + result.exports[curr] + "\";\n" + prev;
+                }, "export default " + JSON.stringify(result.exports, null, 4) + ";\n");
+                
+                return { code : generated };
             });
         },
         

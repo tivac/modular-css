@@ -36,6 +36,24 @@ describe("/rollup.js", function() {
         );
     });
     
+    it("should be able to tree-shake results", function() {
+        return rollup({
+            entry   : "./test/specimens/rollup/tree-shaking.js",
+            plugins : [
+                plugin()
+            ]
+        }).then(
+            function(bundle) {
+                var out = bundle.generate();
+                
+                assert.equal(
+                    out.code + "\n",
+                    fs.readFileSync("./test/results/rollup/tree-shaking.js", "utf8")
+                );
+            }
+        );
+    });
+    
     it("should generate CSS", function(done) {
         rollup({
             entry   : "./test/specimens/rollup/simple.js",
