@@ -23,13 +23,14 @@ processor.file(src).then(function() {
 .then(function(result) {
     /* eslint no-console:0 */
     if(!out) {
-        console.log(result.css);
+        return console.log(result.css);
     }
     
     mkdirp.sync(path.dirname(out));
     
     fs.writeFileSync(out, result.css);
-    fs.writeFileSync(
+    
+    return fs.writeFileSync(
         path.basename(out, path.extname(out)) + ".json",
         JSON.stringify(output.compositions(process.cwd(), processor), null, 4)
     );
