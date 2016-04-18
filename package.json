@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "dependency-graph": "^0.4.1",
+    "esutils": "^2.0.2",
     "lodash.assign": "^4.0.0",
     "lodash.defaults": "^4.0.1",
     "lodash.difference": "^4.0.0",

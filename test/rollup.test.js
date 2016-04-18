@@ -24,16 +24,15 @@ describe("/rollup.js", function() {
             plugins : [
                 plugin()
             ]
-        }).then(
-            function(bundle) {
-                var out = bundle.generate();
-                
-                assert.equal(
-                    out.code + "\n",
-                    fs.readFileSync("./test/results/rollup/simple.js", "utf8")
-                );
-            }
-        );
+        })
+        .then(function(bundle) {
+            var out = bundle.generate();
+            
+            assert.equal(
+                out.code + "\n",
+                fs.readFileSync("./test/results/rollup/simple.js", "utf8")
+            );
+        });
     });
     
     it("should be able to tree-shake results", function() {
@@ -42,16 +41,15 @@ describe("/rollup.js", function() {
             plugins : [
                 plugin()
             ]
-        }).then(
-            function(bundle) {
-                var out = bundle.generate();
-                
-                assert.equal(
-                    out.code + "\n",
-                    fs.readFileSync("./test/results/rollup/tree-shaking.js", "utf8")
-                );
-            }
-        );
+        })
+        .then(function(bundle) {
+            var out = bundle.generate();
+            
+            assert.equal(
+                out.code + "\n",
+                fs.readFileSync("./test/results/rollup/tree-shaking.js", "utf8")
+            );
+        });
     });
     
     it("should generate CSS", function(done) {
@@ -101,5 +99,26 @@ describe("/rollup.js", function() {
             }, 100);
         })
         .catch(done);
+    });
+    
+    it("should warn & not export individual keys when they are not valid identifiers", function() {
+        return rollup({
+            entry   : "./test/specimens/rollup/invalid-name.js",
+            plugins : [
+                plugin({
+                    onwarn : function(msg) {
+                        assert(msg === "Invalid JS identifier \"fooga-wooga\", unable to export");
+                    }
+                })
+            ]
+        })
+        .then(function(bundle) {
+            var out = bundle.generate();
+            
+            assert.equal(
+                out.code + "\n",
+                fs.readFileSync("./test/results/rollup/invalid-name.js", "utf8")
+            );
+        });
     });
 });
