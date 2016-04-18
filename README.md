@@ -12,8 +12,8 @@ Provides a subset of [css-modules](https://github.com/css-modules/css-modules) v
 - [Browserify](#browserify) Plugin
     - [factor-bundle](#factor-bundle) is supported for splitting up bundles as well
 - [Rollup](#rollup) Plugin
-- [CLI](#cli)
-- [JS API](#api)
+- [CLI](#cli-2)
+- [JS API](#api-3)
 - [require() hook](#require-hook)
 
 ## Install
