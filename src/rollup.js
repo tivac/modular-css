@@ -2,10 +2,11 @@
 
 var fs   = require("fs"),
     path = require("path"),
-
-    utils  = require("rollup-pluginutils"),
-    assign = require("lodash.assign"),
-    mkdirp = require("mkdirp"),
+    
+    keyword = require("esutils").keyword,
+    utils   = require("rollup-pluginutils"),
+    assign  = require("lodash.assign"),
+    mkdirp  = require("mkdirp"),
     
     Processor = require("./processor"),
     output    = require("./_output");
@@ -22,6 +23,10 @@ module.exports = function(opts) {
         
         processor = new Processor(options);
         
+    if(!options.onwarn) {
+        options.onwarn = console.warn.bind(console); // eslint-disable-line
+    }
+        
     return {
         transform : function(code, id) {
             if(!filter(id) || id.slice(slice) !== options.ext) {
@@ -29,11 +34,18 @@ module.exports = function(opts) {
             }
             
             return processor.string(id, code).then(function(result) {
-                var generated = Object.keys(result.exports).reduceRight(function(prev, curr) {
-                    return "export var " + curr + " = \"" + result.exports[curr] + "\";\n" + prev;
-                }, "export default " + JSON.stringify(result.exports, null, 4) + ";\n");
-                
-                return { code : generated };
+                return {
+                    code : Object.keys(result.exports).reduce(function(prev, curr) {
+                        // Warn if any of the exported CSS wasn't able to be used as a valid JS identifier
+                        if(keyword.isReservedWordES6(curr) || !keyword.isIdentifierNameES6(curr)) {
+                            options.onwarn("Invalid JS identifier \"" + curr + "\", unable to export");
+                            
+                            return prev;
+                        }
+                        
+                        return "export var " + curr + " = \"" + result.exports[curr] + "\";\n" + prev;
+                    }, "export default " + JSON.stringify(result.exports, null, 4) + ";\n")
+                };
             });
         },
         
@@ -45,7 +57,8 @@ module.exports = function(opts) {
             // Write out common/all css depending on bundling status
             processor.output({
                 to : options.css
-            }).then(function(result) {
+            })
+            .then(function(result) {
                 fs.writeFileSync(options.css, result.css);
             });
             
