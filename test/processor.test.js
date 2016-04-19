@@ -367,6 +367,38 @@ describe("/processor.js", function() {
                         );
                     });
                 });
+                
+                it("should generate a JSON structure of all the compositions", function() {
+                    var processor = this.processor;
+
+                    return processor.file("./test/specimens/start.css").then(function() {
+                        return processor.output();
+                    })
+                    .then(function(result) {
+                        assert("compositions" in result);
+                        assert.equal(typeof result.compositions, "object");
+                        
+                        assert.deepEqual(
+                            result.compositions,
+                            {
+                                "test/specimens/folder/folder.css" : {
+                                    folder : "mc04bb002b_folder"
+                                },
+                             
+                                "test/specimens/local.css" : {
+                                    booga : "mc04cb4cb2_booga",
+                                    looga : "mc04cb4cb2_booga mc04cb4cb2_looga"
+                                },
+                             
+                                "test/specimens/start.css" : {
+                                    booga : "mc61f0515a_booga",
+                                    tooga : "mc61f0515a_tooga",
+                                    wooga : "mc04cb4cb2_booga mc61f0515a_wooga"
+                                }
+                            }
+                        );
+                    });
+                });
             });
         });
         
