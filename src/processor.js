@@ -12,7 +12,8 @@ var fs   = require("fs"),
     slug     = require("unique-slug"),
 
     Promise  = require("./_promise"),
-    relative = require("./_relative");
+    relative = require("./_relative"),
+    output   = require("./_output");
 
 function sequential(promises) {
     return new Promise(function(resolve, reject) {
@@ -187,6 +188,11 @@ Processor.prototype = {
                 root,
                 assign({}, self._options, args || {})
             );
+        })
+        .then(function(results) {
+            results.compositions = output.compositions(self._options.cwd, self);
+            
+            return results;
         });
     },
     

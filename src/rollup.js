@@ -8,8 +8,7 @@ var fs   = require("fs"),
     assign  = require("lodash.assign"),
     mkdirp  = require("mkdirp"),
     
-    Processor = require("./processor"),
-    output    = require("./_output");
+    Processor = require("./processor");
 
 module.exports = function(opts) {
     var options = assign({
@@ -60,16 +59,16 @@ module.exports = function(opts) {
             })
             .then(function(result) {
                 fs.writeFileSync(options.css, result.css);
-            });
-            
-            if(options.json) {
-                mkdirp.sync(path.dirname(options.json));
                 
-                fs.writeFileSync(
-                    options.json,
-                    JSON.stringify(output.compositions(process.cwd(), processor), null, 4)
-                );
-            }
+                if(options.json) {
+                    mkdirp.sync(path.dirname(options.json));
+                    
+                    fs.writeFileSync(
+                        options.json,
+                        JSON.stringify(result.compositions, null, 4)
+                    );
+                }
+            });
         }
     };
 };
