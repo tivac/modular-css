@@ -13,7 +13,7 @@ Provides a subset of [css-modules](https://github.com/css-modules/css-modules) v
     - [factor-bundle](#factor-bundle) is supported for splitting up bundles as well
 - [Rollup](#rollup) Plugin
 - [CLI](#cli-2)
-- [JS API](#api-3)
+- [JS API](#js-api)
 - [require() hook](#require-hook)
 
 ## Install
@@ -147,12 +147,12 @@ Will process `./entry.css` and output the processed CSS to stdout
 
 Will process `./entry.css` and output the processed CSS to `./gen/entry.css` as well as a JSON file containing the scoped mapping to `./gen/entry.css.json`.
 
-## API
+## JS API
 
 Instantiate a new `Processor` instance, call it's `.file(<path>)` or `.string(<name>, <contents>)` methods, and then use the returned Promise to get access to the results/output.
 
 ```js
-var Processor = require("modular-css").Processor,
+var Processor = require("modular-css"),
     processor = new Processor();
 
 processor.file("./entry.css").then(function(result) {
