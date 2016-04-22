@@ -399,6 +399,26 @@ describe("/processor.js", function() {
                         );
                     });
                 });
+                
+                it.only("should order output by dependencies, then alphabetically", function() {
+                    var processor = this.processor;
+
+                    return processor.file("./test/specimens/start.css").then(function() {
+                        return processor.file("./test/specimens/local.css");
+                    })
+                    .then(function() {
+                        return processor.file("./test/specimens/composes.css");
+                    })
+                    .then(function() {
+                        return processor.output();
+                    })
+                    .then(function(result) {
+                        assert.equal(
+                            result.css + "\n",
+                            fs.readFileSync("./test/results/processor/avoid-duplicates.css", "utf8")
+                        );
+                    });
+                });
             });
         });
         

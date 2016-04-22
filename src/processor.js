@@ -5,6 +5,7 @@ var fs   = require("fs"),
     
     assign   = require("lodash.assign"),
     defaults = require("lodash.defaults"),
+    flatten  = require("lodash.flatten"),
     map      = require("lodash.mapvalues"),
     Graph    = require("dependency-graph").DepGraph,
     postcss  = require("postcss"),
@@ -21,6 +22,20 @@ function sequential(promises) {
             return curr.then(next);
         }, Promise.resolve()).then(resolve, reject);
     });
+}
+
+function cloneGraph(graph) {
+    var clone = new Graph();
+    
+    graph.overallOrder().forEach(function(node) {
+        clone.addNode(node);
+        
+        graph.dependenciesOf(node).forEach(function(dep) {
+            clone.addDependency(node, dep);
+        });
+    });
+    
+    return clone;
 }
 
 function Processor(opts) {
@@ -156,9 +171,27 @@ Processor.prototype = {
     output : function(args) {
         var self  = this,
             opts  = args || false,
-            files = opts.files || this.dependencies();
+            files = opts.files || this.dependencies(),
+            clone = cloneGraph(this._graph),
+            order = [],
+            tier;
         
-        return Promise.all(files.sort().map(function(dep) {
+        // TODO: doesn't handle files case at all
+        while(Object.keys(clone.nodes).length) {
+            tier = clone.overallOrder(true);
+            
+            tier.forEach(function(node) {
+                clone.dependantsOf(node).forEach(function(dep) {
+                    clone.removeDependency(dep, node);
+                });
+                
+                clone.removeNode(node);
+            });
+            
+            order.push(tier.sort());
+        }
+        
+        return Promise.all(flatten(order).map(function(dep) {
             // Rewrite relative URLs before adding
             // Have to do this every time because target file might be different!
             return self._after.process(
