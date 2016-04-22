@@ -270,14 +270,12 @@ describe("/processor.js", function() {
                 
                 it("should remove multiple files", function() {
                     var processor = this.processor;
-
-                    processor.string("./test/specimens/a.css", ".aooga { }")
-                    .then(function() {
-                        return processor.string("./test/specimens/b.css", ".booga { }");
-                    })
-                    .then(function() {
-                        return processor.string("./test/specimens/c.css", ".cooga { }");
-                    })
+                    
+                    return Promise.all([
+                        processor.string("./test/specimens/a.css", ".aooga { }"),
+                        processor.string("./test/specimens/b.css", ".booga { }"),
+                        processor.string("./test/specimens/c.css", ".cooga { }")
+                    ])
                     .then(function() {
                         processor.remove([
                             path.resolve("./test/specimens/a.css"),
@@ -337,9 +335,10 @@ describe("/processor.js", function() {
                 it("should generate css representing the output from all added files", function() {
                     var processor = this.processor;
 
-                    return processor.file("./test/specimens/start.css").then(function() {
-                        return processor.file("./test/specimens/simple.css");
-                    })
+                    return Promise.all([
+                        processor.file("./test/specimens/start.css"),
+                        processor.file("./test/specimens/simple.css")
+                    ])
                     .then(function() {
                         return processor.output();
                     })
@@ -354,9 +353,10 @@ describe("/processor.js", function() {
                 it("should avoid duplicating files in the output", function() {
                     var processor = this.processor;
 
-                    return processor.file("./test/specimens/start.css").then(function() {
-                        return processor.file("./test/specimens/local.css");
-                    })
+                    return Promise.all([
+                        processor.file("./test/specimens/start.css"),
+                        processor.file("./test/specimens/local.css")
+                    ])
                     .then(function() {
                         return processor.output();
                     })
@@ -384,18 +384,38 @@ describe("/processor.js", function() {
                                 "test/specimens/folder/folder.css" : {
                                     folder : "mc04bb002b_folder"
                                 },
-                             
+                                
                                 "test/specimens/local.css" : {
                                     booga : "mc04cb4cb2_booga",
                                     looga : "mc04cb4cb2_booga mc04cb4cb2_looga"
                                 },
-                             
+                                
                                 "test/specimens/start.css" : {
                                     booga : "mc61f0515a_booga",
                                     tooga : "mc61f0515a_tooga",
                                     wooga : "mc04cb4cb2_booga mc61f0515a_wooga"
                                 }
                             }
+                        );
+                    });
+                });
+                
+                it("should order output by dependencies, then alphabetically", function() {
+                    var processor = this.processor;
+                    
+                    return Promise.all([
+                        processor.file("./test/specimens/start.css"),
+                        processor.file("./test/specimens/local.css"),
+                        processor.file("./test/specimens/composes.css"),
+                        processor.file("./test/specimens/deep.css")
+                    ])
+                    .then(function() {
+                        return processor.output();
+                    })
+                    .then(function(result) {
+                        assert.equal(
+                            result.css + "\n",
+                            fs.readFileSync("./test/results/processor/sorting.css", "utf8")
                         );
                     });
                 });

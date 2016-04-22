@@ -11,17 +11,11 @@ var fs   = require("fs"),
     urls     = require("postcss-url"),
     slug     = require("unique-slug"),
 
-    Promise  = require("./_promise"),
-    relative = require("./_relative"),
-    output   = require("./_output");
-
-function sequential(promises) {
-    return new Promise(function(resolve, reject) {
-        promises.reduce(function(curr, next) {
-            return curr.then(next);
-        }, Promise.resolve()).then(resolve, reject);
-    });
-}
+    Promise    = require("./_promise"),
+    relative   = require("./_relative"),
+    output     = require("./_output"),
+    cloneGraph = require("./_clone-graph"),
+    sequential = require("./_sequential");
 
 function Processor(opts) {
     /* eslint consistent-return:0 */
@@ -156,9 +150,29 @@ Processor.prototype = {
     output : function(args) {
         var self  = this,
             opts  = args || false,
-            files = opts.files || this.dependencies();
+            files = opts.files,
+            clone = cloneGraph(this._graph),
+            tier;
         
-        return Promise.all(files.sort().map(function(dep) {
+        if(!files) {
+            files = [];
+            
+            while(Object.keys(clone.nodes).length) {
+                tier = clone.overallOrder(true);
+                
+                tier.forEach(function(node) {
+                    clone.dependantsOf(node).forEach(function(dep) {
+                        clone.removeDependency(dep, node);
+                    });
+                    
+                    clone.removeNode(node);
+                });
+                
+                files = files.concat(tier.sort());
+            }
+        }
+        
+        return Promise.all(files.map(function(dep) {
             // Rewrite relative URLs before adding
             // Have to do this every time because target file might be different!
             return self._after.process(
