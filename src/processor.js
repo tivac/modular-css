@@ -11,31 +11,11 @@ var fs   = require("fs"),
     urls     = require("postcss-url"),
     slug     = require("unique-slug"),
 
-    Promise  = require("./_promise"),
-    relative = require("./_relative"),
-    output   = require("./_output");
-
-function sequential(promises) {
-    return new Promise(function(resolve, reject) {
-        promises.reduce(function(curr, next) {
-            return curr.then(next);
-        }, Promise.resolve()).then(resolve, reject);
-    });
-}
-
-function cloneGraph(graph) {
-    var clone = new Graph();
-    
-    graph.overallOrder().forEach(function(node) {
-        clone.addNode(node);
-        
-        graph.dependenciesOf(node).forEach(function(dep) {
-            clone.addDependency(node, dep);
-        });
-    });
-    
-    return clone;
-}
+    Promise    = require("./_promise"),
+    relative   = require("./_relative"),
+    output     = require("./_output"),
+    cloneGraph = require("./_clone-graph"),
+    sequential = require("./_sequential");
 
 function Processor(opts) {
     /* eslint consistent-return:0 */
