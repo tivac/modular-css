@@ -5,7 +5,6 @@ var fs   = require("fs"),
     
     assign   = require("lodash.assign"),
     defaults = require("lodash.defaults"),
-    flatten  = require("lodash.flatten"),
     map      = require("lodash.mapvalues"),
     Graph    = require("dependency-graph").DepGraph,
     postcss  = require("postcss"),
@@ -171,27 +170,29 @@ Processor.prototype = {
     output : function(args) {
         var self  = this,
             opts  = args || false,
-            files = opts.files || this.dependencies(),
+            files = opts.files,
             clone = cloneGraph(this._graph),
-            order = [],
             tier;
         
-        // TODO: doesn't handle files case at all
-        while(Object.keys(clone.nodes).length) {
-            tier = clone.overallOrder(true);
+        if(!files) {
+            files = [];
             
-            tier.forEach(function(node) {
-                clone.dependantsOf(node).forEach(function(dep) {
-                    clone.removeDependency(dep, node);
+            while(Object.keys(clone.nodes).length) {
+                tier = clone.overallOrder(true);
+                
+                tier.forEach(function(node) {
+                    clone.dependantsOf(node).forEach(function(dep) {
+                        clone.removeDependency(dep, node);
+                    });
+                    
+                    clone.removeNode(node);
                 });
                 
-                clone.removeNode(node);
-            });
-            
-            order.push(tier.sort());
+                files = files.concat(tier.sort());
+            }
         }
         
-        return Promise.all(flatten(order).map(function(dep) {
+        return Promise.all(files.map(function(dep) {
             // Rewrite relative URLs before adding
             // Have to do this every time because target file might be different!
             return self._after.process(

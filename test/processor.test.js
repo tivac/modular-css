@@ -384,12 +384,12 @@ describe("/processor.js", function() {
                                 "test/specimens/folder/folder.css" : {
                                     folder : "mc04bb002b_folder"
                                 },
-                             
+                                
                                 "test/specimens/local.css" : {
                                     booga : "mc04cb4cb2_booga",
                                     looga : "mc04cb4cb2_booga mc04cb4cb2_looga"
                                 },
-                             
+                                
                                 "test/specimens/start.css" : {
                                     booga : "mc61f0515a_booga",
                                     tooga : "mc61f0515a_tooga",
@@ -400,22 +400,22 @@ describe("/processor.js", function() {
                     });
                 });
                 
-                it.only("should order output by dependencies, then alphabetically", function() {
+                it("should order output by dependencies, then alphabetically", function() {
                     var processor = this.processor;
-
-                    return processor.file("./test/specimens/start.css").then(function() {
-                        return processor.file("./test/specimens/local.css");
-                    })
-                    .then(function() {
-                        return processor.file("./test/specimens/composes.css");
-                    })
+                    
+                    return Promise.all([
+                        processor.file("./test/specimens/start.css"),
+                        processor.file("./test/specimens/local.css"),
+                        processor.file("./test/specimens/composes.css"),
+                        processor.file("./test/specimens/deep.css")
+                    ])
                     .then(function() {
                         return processor.output();
                     })
                     .then(function(result) {
                         assert.equal(
                             result.css + "\n",
-                            fs.readFileSync("./test/results/processor/avoid-duplicates.css", "utf8")
+                            fs.readFileSync("./test/results/processor/sorting.css", "utf8")
                         );
                     });
                 });

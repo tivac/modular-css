@@ -2,9 +2,18 @@
 .mc04bb002b_folder {
     margin: 2px
 }
-/* test/specimens/simple.css */
-.mc08e91a5b_wooga {
-    color: red
+/* test/specimens/folder/folder2.css */
+.mc0a0b0aff_folder2 {
+    color: green
+}
+/* test/specimens/folder/subfolder/subfolder.css */
+.mc85c09a4a_subfolder {
+    color: yellow
+}
+/* test/specimens/composes.css */
+/* test/specimens/deep.css */
+.mc25934484_deep {
+    color: black
 }
 /* test/specimens/local.css */
 .mc04cb4cb2_booga {

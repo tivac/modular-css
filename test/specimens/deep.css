@@ -1,0 +1,5 @@
+.deep {
+    composes: subfolder from "./folder/subfolder/subfolder.css";
+    
+    color: black;
+}
