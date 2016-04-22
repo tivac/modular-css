@@ -270,14 +270,12 @@ describe("/processor.js", function() {
                 
                 it("should remove multiple files", function() {
                     var processor = this.processor;
-
-                    processor.string("./test/specimens/a.css", ".aooga { }")
-                    .then(function() {
-                        return processor.string("./test/specimens/b.css", ".booga { }");
-                    })
-                    .then(function() {
-                        return processor.string("./test/specimens/c.css", ".cooga { }");
-                    })
+                    
+                    return Promise.all([
+                        processor.string("./test/specimens/a.css", ".aooga { }"),
+                        processor.string("./test/specimens/b.css", ".booga { }"),
+                        processor.string("./test/specimens/c.css", ".cooga { }")
+                    ])
                     .then(function() {
                         processor.remove([
                             path.resolve("./test/specimens/a.css"),
@@ -337,9 +335,10 @@ describe("/processor.js", function() {
                 it("should generate css representing the output from all added files", function() {
                     var processor = this.processor;
 
-                    return processor.file("./test/specimens/start.css").then(function() {
-                        return processor.file("./test/specimens/simple.css");
-                    })
+                    return Promise.all([
+                        processor.file("./test/specimens/start.css"),
+                        processor.file("./test/specimens/simple.css")
+                    ])
                     .then(function() {
                         return processor.output();
                     })
@@ -354,9 +353,10 @@ describe("/processor.js", function() {
                 it("should avoid duplicating files in the output", function() {
                     var processor = this.processor;
 
-                    return processor.file("./test/specimens/start.css").then(function() {
-                        return processor.file("./test/specimens/local.css");
-                    })
+                    return Promise.all([
+                        processor.file("./test/specimens/start.css"),
+                        processor.file("./test/specimens/local.css")
+                    ])
                     .then(function() {
                         return processor.output();
                     })
