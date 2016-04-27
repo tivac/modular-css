@@ -41,7 +41,7 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
-    "dependency-graph": "^0.4.1",
+    "dependency-graph": "^0.5.0",
     "esutils": "^2.0.2",
     "lodash.assign": "^4.0.0",
     "lodash.defaults": "^4.0.1",
