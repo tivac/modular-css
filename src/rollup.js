@@ -25,7 +25,7 @@ module.exports = function(opts) {
     if(!options.onwarn) {
         options.onwarn = console.warn.bind(console); // eslint-disable-line
     }
-        
+    
     return {
         transform : function(code, id) {
             if(!filter(id) || id.slice(slice) !== options.ext) {
@@ -51,14 +51,14 @@ module.exports = function(opts) {
         // This is a bit of a hack, see this rollup PR for details
         // https://github.com/rollup/rollup/pull/353#issuecomment-164358181
         footer : function() {
-            mkdirp.sync(path.dirname(options.css));
-            
-            // Write out common/all css depending on bundling status
             processor.output({
                 to : options.css
             })
             .then(function(result) {
-                fs.writeFileSync(options.css, result.css);
+                if(options.css) {
+                    mkdirp.sync(path.dirname(options.css));
+                    fs.writeFileSync(options.css, result.css);
+                }
                 
                 if(options.json) {
                     mkdirp.sync(path.dirname(options.json));
