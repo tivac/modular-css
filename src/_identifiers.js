@@ -12,17 +12,17 @@ exports.parse = function parse(selector) {
     
     createParser(function(selectors) {
         // Walk classes
-        selectors.eachClass(function(part) {
+        selectors.walkClasses(function(part) {
             values.push(part.value);
         });
         
         // Walk IDs
-        selectors.eachId(function(part) {
+        selectors.walkIds(function(part) {
             values.push(part.value);
         });
         
         // Walk @keyframes definitions
-        selectors.eachTag(function(part) {
+        selectors.walkTags(function(part) {
             // This is a slightly ridiculous conditional, but postcss-selector-parser
             // spits out @keyframes <name> as [ @keyframes, <name> ] so we have to do
             // this flopping around to find the real value. Blech.
