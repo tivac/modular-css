@@ -1,0 +1,21 @@
+sudo: false
+language: node_js
+node_js:
+- node
+- '5'
+- '4.4'
+- '0.12'
+- '0.10'
+cache:
+  directories:
+  - node_modules
+deploy:
+  provider: npm
+  email: npm@patcavit.com
+  api_key:
+    secure: xhsYuN3ifuNfaWm/8FAVVpkBOYUmjkVb5QsUGXqvx9XZOdgg2UtP5Kk2v1pFGhaq0KzMakTP0O4Wd+EY5LrRla35FCr1yorP/+2UP2o32hJnLxBEx8nsjZeZbe7g7PdUt72czUPUt7GX0L9BDtXlHVz8DYN6Ood185z1nCzUBpJaI7XT+lLXDzzv8fYKhnkicq2jifou3B8w2WijHztbrVSfTzOXjzDJoDwkHDLsI+CgphZn3Blw/w4QEd1KhDffUT4oq0Bq6cBHaG8suL3UABHpXYtJEsUNwso9NDfAAEjonKaEyGFzrvxb+AT9kOZlIV0wGSvP7luJJqJWal5SEpw/LZ4Vo/QUSAez9YPK6bhZzdJxh7CKJdyqiSHfnMIFvsYaIX6z9u0oaQnWe+wtVyIOuvnBGkqmhrVTlpk6A0p0II5CtPmCollhj405fw08s1JkW2g5M07xlDJHEIIPUR9rRaLJk4Bsn0TKbYLOwWzX7bw4Yd6Ti3U1c6kCXCXTwdTw6w9iHbZyt9JoEw5grZ+hzVjkZtOqf4/RguFkAYu9HKJ0k1Jw1oO+Pqv88rsIoNK6yDzk4OBu7J4m9r1RnyplieQtp9QtYgNcyZ9EMh8L5wzNDnskE51MJoTktYrtMT6/OwIPQdu7J5hiIt5HxOFvfnFE8mr339XB3URLoZs=
+  on:
+    tags: true
+    repo: tivac/modular-css-namer
+    branch: master
+    node: node
