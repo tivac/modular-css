@@ -9,6 +9,10 @@
     "preversion": "npm test",
     "test": "npm run lint && mocha"
   },
+  "repository": "tivac/modular-css-namer",
+  "bugs": {
+    "url": "https://github.com/tivac/modular-css-namer/issues"
+  },
   "keywords": [
     "modular-css",
     "optimizing",
