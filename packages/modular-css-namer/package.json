@@ -1,6 +1,6 @@
 {
   "name": "modular-css-namer",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Helper function to make tiny classnames for modular-css",
   "main": "index.js",
   "scripts": {
