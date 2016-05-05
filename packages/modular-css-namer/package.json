@@ -1,0 +1,34 @@
+{
+  "name": "modular-css-namer",
+  "version": "1.0.0",
+  "description": "Helper function to make tiny classnames for modular-css",
+  "main": "index.js",
+  "scripts": {
+    "cover": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
+    "lint": "eslint .",
+    "preversion": "npm test",
+    "test": "npm run lint && mocha"
+  },
+  "keywords": [
+    "modular-css",
+    "optimizing",
+    "css",
+    "build"
+  ],
+  "author": "Pat Cavit <pcavit@arena.net>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^2.9.0",
+    "eslint-config-arenanet": "^2.0.3",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.4.5",
+    "modular-css": "^0.19.0"
+  },
+  "eslintConfig": {
+    "extends": "arenanet",
+    "env": {
+      "node": true,
+      "mocha": true
+    }
+  }
+}
