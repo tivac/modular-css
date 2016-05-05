@@ -63,7 +63,7 @@
     "sink-transform": "^2.0.0",
     "through2": "^2.0.0",
     "unique-slug": "^2.0.0",
-    "update-notifier": "^0.6.0"
+    "update-notifier": "^0.7.0"
   },
   "eslintConfig": {
     "extends": "arenanet",
