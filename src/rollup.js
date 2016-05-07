@@ -13,7 +13,8 @@ var fs   = require("fs"),
 module.exports = function(opts) {
     var options = assign({
             ext  : ".css",
-            json : false
+            json : false,
+            map  : opts.sourcemap || true
         }, opts || {}),
         
         slice = -1 * options.ext.length,
@@ -43,7 +44,12 @@ module.exports = function(opts) {
                         }
                         
                         return "export var " + curr + " = \"" + result.exports[curr] + "\";\n" + prev;
-                    }, "export default " + JSON.stringify(result.exports, null, 4) + ";\n")
+                    }, "export default " + JSON.stringify(result.exports, null, 4) + ";\n"),
+                    
+                    // sourcemap doesn't make a ton of sense here, so ignore it I guess
+                    map : {
+                        mappings : ""
+                    }
                 };
             });
         },
