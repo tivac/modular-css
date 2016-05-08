@@ -43,7 +43,13 @@ module.exports = function(opts) {
                         }
                         
                         return "export var " + curr + " = \"" + result.exports[curr] + "\";\n" + prev;
-                    }, "export default " + JSON.stringify(result.exports, null, 4) + ";\n")
+                    }, "export default " + JSON.stringify(result.exports, null, 4) + ";\n"),
+                    
+                    // sourcemap doesn't make a ton of sense here, so always return nothing
+                    // https://github.com/rollup/rollup/wiki/Plugins#conventions
+                    map : {
+                        mappings : ""
+                    }
                 };
             });
         },
@@ -52,17 +58,20 @@ module.exports = function(opts) {
         // https://github.com/rollup/rollup/pull/353#issuecomment-164358181
         footer : function() {
             processor.output({
-                to : options.css
+                to  : options.css,
+                map : ("sourceMap" in options) ? options.sourceMap : true
             })
             .then(function(result) {
                 if(options.css) {
                     mkdirp.sync(path.dirname(options.css));
-                    fs.writeFileSync(options.css, result.css);
+                    fs.writeFileSync(
+                        options.css,
+                        result.css
+                    );
                 }
                 
                 if(options.json) {
                     mkdirp.sync(path.dirname(options.json));
-                    
                     fs.writeFileSync(
                         options.json,
                         JSON.stringify(result.compositions, null, 4)

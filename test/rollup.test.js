@@ -1,13 +1,15 @@
 "use strict";
 
 var fs     = require("fs"),
+    path   = require("path"),
     assert = require("assert"),
     
-    rollup = require("rollup").rollup,
+    rollup   = require("rollup").rollup,
     
     plugin = require("../src/rollup"),
     
-    compare = require("./lib/compare-files");
+    compare = require("./lib/compare-files"),
+    wait    = require("./lib/wait");
 
 describe("/rollup.js", function() {
     after(function(done) {
@@ -52,8 +54,8 @@ describe("/rollup.js", function() {
         });
     });
     
-    it("should generate CSS", function(done) {
-        rollup({
+    it("should generate CSS", function() {
+        return rollup({
             entry   : "./test/specimens/rollup/simple.js",
             plugins : [
                 plugin({
@@ -64,24 +66,19 @@ describe("/rollup.js", function() {
         .then(function(bundle) {
             // Have to call this so the output fn is invoked
             bundle.generate();
-          
+            
             // And since that's sync, but generation isn't, this is necessary...
-            // UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH
-            setTimeout(function() {
+            return wait("./test/output/rollup/simple.css").then(function() {
                 compare.results("rollup/simple.css");
-                    
-                done();
-            }, 100);
-        })
-        .catch(done);
+            });
+        });
     });
     
-    it("should generate JSON", function(done) {
-        rollup({
+    it("should generate JSON", function() {
+        return rollup({
             entry   : "./test/specimens/rollup/simple.js",
             plugins : [
                 plugin({
-                    css  : "./test/output/rollup/simple.css",
                     json : "./test/output/rollup/simple.json"
                 })
             ]
@@ -89,16 +86,12 @@ describe("/rollup.js", function() {
         .then(function(bundle) {
             // Have to call this so the output fn is invoked
             bundle.generate();
-          
+            
             // And since that's sync, but generation isn't, this is necessary...
-            // UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH UGH
-            setTimeout(function() {
+            return wait("./test/output/rollup/simple.json").then(function() {
                 compare.results("rollup/simple.json");
-                    
-                done();
-            }, 100);
-        })
-        .catch(done);
+            });
+        });
     });
     
     it("should warn & not export individual keys when they are not valid identifiers", function() {
@@ -119,6 +112,59 @@ describe("/rollup.js", function() {
                 out.code + "\n",
                 fs.readFileSync("./test/results/rollup/invalid-name.js", "utf8")
             );
+        });
+    });
+    
+    it("shouldn't disable sourcemap generation", function() {
+        return rollup({
+            entry   : "./test/specimens/rollup/simple.js",
+            plugins : [
+                plugin({ sourceMap : true })
+            ]
+        })
+        .then(function(bundle) {
+            var out = bundle.generate({ sourceMap : true });
+            
+            assert.deepEqual(
+                out.map,
+                {
+                    version  : 3,
+                    file     : null,
+                    mappings : ";;;;;ACEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC;AACjB,OAAO,CAAC,GAAG,CAAC,KAAK,CAAC,CAAC",
+                    names    : [],
+                    sources  : [
+                        path.resolve(__dirname, "./specimens/rollup/simple.css").replace(/\\/g, "/"),
+                        path.resolve(__dirname, "./specimens/rollup/simple.js").replace(/\\/g, "/")
+                    ],
+                    
+                    sourcesContent : [
+                        ".fooga {\n    color: red;\n}\n",
+                        "import css, {fooga} from \"./simple.css\";\n\nconsole.log(css);\nconsole.log(fooga);\n"
+                    ]
+                }
+            );
+        });
+    });
+    
+    it("should not output sourcemaps when they are disabled", function() {
+        return rollup({
+            entry   : "./test/specimens/rollup/simple.js",
+            plugins : [
+                plugin({
+                    sourceMap : false,
+                    css       : "./test/output/rollup/no-maps.css"
+                })
+            ]
+        })
+        .then(function(bundle) {
+            var out = bundle.generate({ sourceMap : false });
+            
+            assert.equal(out.map, null);
+            
+            // And since that's sync, but generation isn't, this is necessary...
+            return wait("./test/output/rollup/no-maps.css").then(function() {
+                compare.results("rollup/no-maps.css");
+            });
         });
     });
 });
