@@ -55,7 +55,7 @@ describe("/rollup.js", function() {
     });
     
     it("should generate CSS", function() {
-        rollup({
+        return rollup({
             entry   : "./test/specimens/rollup/simple.js",
             plugins : [
                 plugin({
@@ -75,7 +75,7 @@ describe("/rollup.js", function() {
     });
     
     it("should generate JSON", function() {
-        rollup({
+        return rollup({
             entry   : "./test/specimens/rollup/simple.js",
             plugins : [
                 plugin({

@@ -1,21 +1,22 @@
 "use strict";
     
-var chokidar = require("chokidar"),
+var fs = require("fs"),
     
     Promise = require("../../src/_promise");
     
 module.exports = function(file) {
     return new Promise(function(resolve, reject) {
-        var watcher = chokidar.watch(file);
+        var interval;
         
-        function done() {
-            watcher.close();
+        // Just poll because watchers are dumb
+        interval = setInterval(function() {
+            if(fs.existsSync(file)) {
+                clearInterval(interval);
+                
+                return resolve(file);
+            }
             
-            return resolve(file);
-        }
-        
-        watcher.on("add", done);
-        watcher.on("change", done);
-        watcher.on("error", reject);
+            return false;
+        }, 50);
     });
 };

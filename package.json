@@ -28,7 +28,6 @@
   ],
   "devDependencies": {
     "browserify": "^13.0.0",
-    "chokidar": "^1.4.3",
     "eslint": "^2.8.0",
     "eslint-config-arenanet": "^2.0.2",
     "factor-bundle": "^2.5.0",
