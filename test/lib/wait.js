@@ -5,7 +5,7 @@ var fs = require("fs"),
     Promise = require("../../src/_promise");
     
 module.exports = function(file) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve) {
         var interval;
         
         // Just poll because watchers are dumb
