@@ -13,7 +13,8 @@ var fs   = require("fs"),
 module.exports = function(opts) {
     var options = assign({
             ext  : ".css",
-            json : false
+            json : false,
+            map  : true
         }, opts || {}),
         
         slice = -1 * options.ext.length,
@@ -58,8 +59,7 @@ module.exports = function(opts) {
         // https://github.com/rollup/rollup/pull/353#issuecomment-164358181
         footer : function() {
             processor.output({
-                to  : options.css,
-                map : ("sourceMap" in options) ? options.sourceMap : true
+                to : options.css
             })
             .then(function(result) {
                 if(options.css) {

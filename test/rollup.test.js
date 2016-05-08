@@ -151,8 +151,8 @@ describe("/rollup.js", function() {
             entry   : "./test/specimens/rollup/simple.js",
             plugins : [
                 plugin({
-                    sourceMap : false,
-                    css       : "./test/output/rollup/no-maps.css"
+                    map : false,
+                    css : "./test/output/rollup/no-maps.css"
                 })
             ]
         })
