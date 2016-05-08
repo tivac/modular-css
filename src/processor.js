@@ -195,7 +195,7 @@ Processor.prototype = {
                     text : relative(self._options.cwd, result.opts.from)
                 }));
                 
-                root.append(result.css);
+                root.append(result.root);
             });
             
             return self._done.process(
