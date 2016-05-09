@@ -5,7 +5,9 @@ var fs      = require("fs"),
     assert  = require("assert"),
     
     Promise   = require("../src/_promise"),
-    Processor = require("../src/processor");
+    Processor = require("../src/processor"),
+    
+    compare = require("./lib/compare-files");
 
 // Catch unhandled promise rejections and fail the test
 process.on("unhandledRejection", function(reason) {
@@ -123,10 +125,7 @@ describe("/processor.js", function() {
                         return processor.output({ to : "./test/output/relative.css" });
                     })
                     .then(function(result) {
-                        assert.equal(
-                            result.css + "\n",
-                            fs.readFileSync("./test/results/processor/relative.css", "utf8")
-                        );
+                        compare.stringToFile(result.css, "./test/results/processor/relative.css");
                     });
                 });
                 
@@ -205,10 +204,7 @@ describe("/processor.js", function() {
                         return processor.output();
                     })
                     .then(function(result) {
-                        assert.equal(
-                            result.css + "\n",
-                            fs.readFileSync("./test/results/processor/source-map.css", "utf8")
-                        );
+                        compare.stringToFile(result.css, "./test/results/processor/source-map.css");
                     });
                 });
             });
@@ -325,10 +321,7 @@ describe("/processor.js", function() {
                         return processor.output();
                     })
                     .then(function(result) {
-                        assert.equal(
-                            result.css + "\n",
-                            fs.readFileSync("./test/results/processor/start.css", "utf8")
-                        );
+                        compare.stringToFile(result.css, "./test/results/processor/start.css");
                     });
                 });
                 
@@ -343,10 +336,7 @@ describe("/processor.js", function() {
                         return processor.output();
                     })
                     .then(function(result) {
-                        assert.equal(
-                            result.css + "\n",
-                            fs.readFileSync("./test/results/processor/output-all.css", "utf8")
-                        );
+                        compare.stringToFile(result.css, "./test/results/processor/output-all.css");
                     });
                 });
 
@@ -361,10 +351,7 @@ describe("/processor.js", function() {
                         return processor.output();
                     })
                     .then(function(result) {
-                        assert.equal(
-                            result.css + "\n",
-                            fs.readFileSync("./test/results/processor/avoid-duplicates.css", "utf8")
-                        );
+                        compare.stringToFile(result.css, "./test/results/processor/avoid-duplicates.css");
                     });
                 });
                 
@@ -413,10 +400,7 @@ describe("/processor.js", function() {
                         return processor.output();
                     })
                     .then(function(result) {
-                        assert.equal(
-                            result.css + "\n",
-                            fs.readFileSync("./test/results/processor/sorting.css", "utf8")
-                        );
+                        compare.stringToFile(result.css, "./test/results/processor/sorting.css");
                     });
                 });
             });

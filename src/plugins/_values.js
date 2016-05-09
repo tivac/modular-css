@@ -4,25 +4,33 @@ var postcss = require("postcss"),
     parser  = require("postcss-value-parser"),
     Graph   = require("dependency-graph").DepGraph;
 
-function replacer(values, text) {
-    var parts = parser(text);
-
+function replacer(values, sources, text) {
+    var parts = parser(text),
+        source;
+    
     parts.walk(function(node) {
         if(node.type !== "word" || !(node.value in values)) {
             return;
         }
         
+        // Re-assign source first because we're changing the key (node.value) otherwise
+        // Only storing the last source that applied, we can only use one anyways
+        source     = sources[node.value];
         node.value = values[node.value];
     });
     
-    return parts.toString();
+    return {
+        value  : parts.toString(),
+        source : source
+    };
 }
 
 module.exports = function(name, process) {
     return postcss.plugin(name, function() {
         return function(css, result) {
-            var values = {},
-                graph  = new Graph(),
+            var values  = {},
+                sources = {},
+                graph   = new Graph(),
                 keys;
             
             // Find all defined values, catalog them, and remove them
@@ -34,7 +42,9 @@ module.exports = function(name, process) {
                 }
                 
                 Object.keys(locals).forEach(function(key) {
-                    values[key] = locals[key];
+                    values[key]  = locals[key];
+                    sources[key] = rule.source;
+                    
                     graph.addNode(key);
                 });
                 
@@ -62,22 +72,41 @@ module.exports = function(name, process) {
             
             // Ensure that any key references are updated
             graph.overallOrder().forEach(function(key) {
-                values[key] = replacer(values, values[key]);
+                var out = replacer(values, sources, values[key]);
+                
+                values[key] = out.value;
+                
+                if(out.source) {
+                    sources[key] = out.source;
+                }
             });
 
             // Replace all instances of @value keys w/ the value in declarations & @media rules
             css.walkDecls(function(decl) {
-                decl.value = replacer(values, decl.value);
+                var out = replacer(values, sources, decl.value);
+                
+                decl.value = out.value;
+                
+                if(out.source) {
+                    decl.source = out.source;
+                }
             });
 
             css.walkAtRules("media", function(rule) {
-                rule.params = replacer(values, rule.params);
+                var out = replacer(values, sources, rule.params);
+                
+                rule.params = out.value;
+                
+                if(out.source) {
+                    rule.source = out.source;
+                }
             });
 
             result.messages.push({
-                type   : "modularcss",
-                plugin : name,
-                values : values
+                type    : "modularcss",
+                plugin  : name,
+                values  : values,
+                sources : sources
             });
         };
     });
