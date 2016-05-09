@@ -201,7 +201,7 @@ describe("/processor.js", function() {
                     var processor = new Processor({ map : true });
                     
                     return processor.file("./test/specimens/start.css").then(function() {
-                        return processor.output();
+                        return processor.output({ to : "out.css" });
                     })
                     .then(function(result) {
                         compare.stringToFile(result.css, "./test/results/processor/source-map.css");

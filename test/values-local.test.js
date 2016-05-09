@@ -86,11 +86,14 @@ describe("/plugins", function() {
         });
         
         it("should output correct sourcemaps", function() {
-            var result = plugin.process("@value color: red; .wooga { color: color; }", { map : true });
-            
+            var result = plugin.process(
+                    "@value color: red; .wooga { color: color; }",
+                    { map : true, from : "in.css", to : "out.css" }
+                );
+                
             assert.equal(
                 result.css,
-                ".wooga { color: red; }\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIjxpbnB1dCBjc3MgMzg+Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFtQixTQUFuQixXQUFrQixFQUF5QiIsImZpbGUiOiJ0by5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJAdmFsdWUgY29sb3I6IHJlZDsgLndvb2dhIHsgY29sb3I6IGNvbG9yOyB9Il19 */");
+                ".wooga { color: red; }\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBbUIsU0FBbkIsV0FBa0IsRUFBeUIiLCJmaWxlIjoib3V0LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIkB2YWx1ZSBjb2xvcjogcmVkOyAud29vZ2EgeyBjb2xvcjogY29sb3I7IH0iXX0= */");
         });
 
         it("should output exported values in a message", function() {
