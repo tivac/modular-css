@@ -3,7 +3,8 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    plugin   = require("../src/plugins/values-composed");
+    plugin = require("../src/plugins/values-composed"),
+    local  = require("../src/plugins/values-local");
 
 function css(src, options) {
     return plugin.process(src, options).css;
@@ -58,12 +59,27 @@ describe("/plugins", function() {
         });
 
         it("should support importing values from other files", function() {
+            var imported = local.process("@value googa: red;");
+            
             assert.equal(
                 css("@value googa from \"./local.css\"; .wooga { color: googa; }", {
                     from  : path.resolve("./test/specimens/wooga.css"),
-                    files : files({ googa : "red" })
+                    files : files(imported.messages[0].values)
                 }),
                 ".wooga { color: red; }"
+            );
+        });
+        
+        it("should support source maps", function() {
+            var imported = local.process("@value googa: red;", { map : true });
+            
+            assert.equal(
+                css("@value googa from \"./local.css\"; .wooga { color: googa; }", {
+                    map   : true,
+                    from  : path.resolve("./test/specimens/wooga.css"),
+                    files : files(imported.messages[0].values)
+                }),
+                ".wooga { color: red; }\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRlc3Qvc3BlY2ltZW5zL3dvb2dhLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBaUMsU0FBakMsV0FBZ0MsRUFBeUIiLCJmaWxlIjoidGVzdC9zcGVjaW1lbnMvd29vZ2EuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiQHZhbHVlIGdvb2dhIGZyb20gXCIuL2xvY2FsLmNzc1wiOyAud29vZ2EgeyBjb2xvcjogZ29vZ2E7IH0iXX0= */"
             );
         });
     });

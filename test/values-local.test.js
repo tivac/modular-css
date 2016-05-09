@@ -24,7 +24,7 @@ describe("/plugins", function() {
             });
         });
 
-        it("should early-out if no @value rules are defined", function() {
+        it("should noop if no @value rules are defined", function() {
             assert.equal(
                 css(".wooga { color: red; }"),
                 ".wooga { color: red; }"
@@ -84,6 +84,17 @@ describe("/plugins", function() {
                 ".wooga { color: red; }"
             );
         });
+        
+        it("should output correct sourcemaps", function() {
+            var result = plugin.process(
+                    "@value color: red; .wooga { color: color; }",
+                    { map : true, from : "in.css", to : "out.css" }
+                );
+                
+            assert.equal(
+                result.css,
+                ".wooga { color: red; }\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBbUIsU0FBbkIsV0FBa0IsRUFBeUIiLCJmaWxlIjoib3V0LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIkB2YWx1ZSBjb2xvcjogcmVkOyAud29vZ2EgeyBjb2xvcjogY29sb3I7IH0iXX0= */");
+        });
 
         it("should output exported values in a message", function() {
             var messages = plugin.process(
@@ -96,6 +107,7 @@ describe("/plugins", function() {
                 color    : "red",
                 other    : "20px"
             });
+            assert.equal(typeof messages[0].sources, "object");
         });
     });
 });
