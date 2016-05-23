@@ -125,11 +125,11 @@ describe("/plugins", function() {
                 /* eslint no-unused-expressions:0 */
                 assert.throws(function() {
                     process(":global p { color: red; }").css;
-                }, /:global\(\.\.\.\) requires a child selector/);
-
+                }, /must not be empty/);
+                
                 assert.throws(function() {
                     process(":global() p { color: red; }").css;
-                }, /:global\(\.\.\.\) requires a child selector/);
+                }, /must not be empty/);
             });
 
             it("shouldn't transform global selectors", function() {
@@ -158,6 +158,21 @@ describe("/plugins", function() {
                 assert.equal(
                     process(":global(#wooga), .wooga { color: red; }").css,
                     "#wooga, .simple_wooga { color: red; }"
+                );
+                
+                assert.equal(
+                    process(":global(.wooga) .booga { color: red; }").css,
+                    ".wooga .simple_booga { color: red; }"
+                );
+                
+                assert.equal(
+                    process(".wooga :global(.booga) { color: red; }").css,
+                    ".simple_wooga .booga { color: red; }"
+                );
+                
+                assert.equal(
+                    process(".wooga :global(.booga) .fooga { color: red; }").css,
+                    ".simple_wooga .booga .simple_fooga { color: red; }"
                 );
             });
             

@@ -12,49 +12,59 @@ module.exports = postcss.plugin(plugin, function() {
         var lookup = {},
             parser, current;
             
-        // Validate whether a selector should be renamed
+        // Validate whether a selector should be renamed, returns the key to use
         function rename(thing) {
-            return (
-                thing.type === "class" ||
-                thing.type === "id" ||
-                (current.name && current.name.search(identifiers.keyframes) > -1)
-            );
+            if(thing.type === "class" || thing.type === "id") {
+                return thing.value;
+            }
+            
+            if(current.name && current.name.search(identifiers.keyframes) > -1) {
+                return thing.value;
+            }
+            
+            return false;
         }
 
         parser = createParser(function(selectors) {
-            selectors.each(function(child) {
-                child.each(function(selector) {
-                    var children, name;
+            selectors.walkPseudos(function(node) {
+                var replacement;
+                
+                if(node.value !== ":global") {
+                    return;
+                }
+                
+                if(!node.length || !node.first.length) {
+                    throw current.error(":global(...) must not be empty", { word : ":global" });
+                }
+                
+                // Replace the :global(...) with its contents
+                replacement = createParser.selector();
+                replacement.nodes = node.nodes;
+                
+                node.replaceWith(replacement);
+                
+                node.walk(function(child) {
+                    var key = rename(child);
                     
-                    if(selector.type === "pseudo" && selector.value === ":global") {
-                        if(!selector.nodes[0] || !selector.nodes[0].nodes.length) {
-                            throw current.error(":global(...) requires a child selector", { word : ":global" });
-                        }
-
-                        // Store ref to the children & replace :global(...) with them
-                        children = selector.nodes[0];
-                        selector.replaceWith(children);
-                        
-                        // Walk the nodes we just shoved in and make sure they're in the output
-                        children.nodes.forEach(function(inner) {
-                            if(rename(inner)) {
-                                lookup[inner.value] = inner.value;
-                            }
-                        });
-
+                    if(!key) {
                         return;
                     }
                     
-                    if(rename(selector)) {
-                        name = result.opts.namer(result.opts.from, selector.value);
-                        
-                        lookup[selector.value] = name;
-                        
-                        selector.value = name;
-                        
-                        return;
-                    }
+                    lookup[key] = child.value;
+                    child.ignore = true;
                 });
+            });
+            
+            selectors.walk(function(node) {
+                var key = rename(node);
+                
+                if(!key || node.ignore) {
+                    return;
+                }
+                
+                lookup[key] = node.value = result.opts.namer(result.opts.from, node.value);
+                
+                return;
             });
         });
         
