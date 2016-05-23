@@ -78,3 +78,6 @@ $RECYCLE.BIN/
 
 #VSCode Settings
 .vscode
+
+# Profiler Output
+profiling
