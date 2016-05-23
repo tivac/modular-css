@@ -19,9 +19,9 @@ describe("/issues", function() {
             )
             .then(function(result) {
                 assert.deepEqual(result.exports, {
-                    booga : "mc13e7db14_booga",
-                    fooga : "mc13e7db14_booga mc13e7db14_fooga",
-                    wooga : "mc13e7db14_booga mc13e7db14_wooga"
+                    booga : [ "mc13e7db14_booga" ],
+                    fooga : [ "mc13e7db14_booga", "mc13e7db14_fooga" ],
+                    wooga : [ "mc13e7db14_booga", "mc13e7db14_wooga" ]
                 });
 
                 return processor.output();

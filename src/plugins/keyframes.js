@@ -2,13 +2,13 @@
 
 var postcss = require("postcss"),
     
-    references  = require("../_references"),
+    message = require("../lib/message"),
     
     plugin = "postcss-modular-css-keyframes";
 
 module.exports = postcss.plugin(plugin, function() {
     return function(css, result) {
-        var refs  = references(css, result),
+        var refs  = message(result, "classes"),
             names = Object.keys(refs);
         
         // Go look up "animation" declarations and rewrite their names to scoped values

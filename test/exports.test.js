@@ -29,13 +29,4 @@ describe("module exports", function() {
             assert.equal(rollup, require("../src/rollup"));
         });
     });
-    
-    describe("/register", function() {
-        it("should be the function that registers the require hook", function() {
-            var register = require("../register");
-            
-            assert.equal(typeof register, "function");
-            assert.equal(register, require("../src/register"));
-        });
-    });
 });

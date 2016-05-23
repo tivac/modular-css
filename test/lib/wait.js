@@ -2,7 +2,7 @@
     
 var fs = require("fs"),
     
-    Promise = require("../../src/_promise");
+    Promise = require("../../src/lib/promise");
     
 module.exports = function(file) {
     return new Promise(function(resolve) {

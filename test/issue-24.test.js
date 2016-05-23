@@ -24,7 +24,7 @@ describe("/issues", function() {
                         ".mc29d531c6_wooga { background: #000; }"
                     );
 
-                    assert.deepEqual(file.compositions, {
+                    assert.deepEqual(file.exports, {
                         wooga : [
                             "mc08e91a5b_wooga",
                             "mc29d531c6_wooga"

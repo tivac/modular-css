@@ -18,8 +18,8 @@ describe("/issues", function() {
             )
             .then(function(result) {
                 assert.deepEqual(result.exports, {
-                    booga : "mc2a6c9ee9_booga",
-                    fooga : "mc2a6c9ee9_booga mc2a6c9ee9_fooga"
+                    booga : [ "mc2a6c9ee9_booga" ],
+                    fooga : [ "mc2a6c9ee9_booga", "mc2a6c9ee9_fooga" ]
                 });
 
                 return processor.output();

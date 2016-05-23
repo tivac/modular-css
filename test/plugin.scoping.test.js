@@ -7,6 +7,14 @@ var path   = require("path"),
     
     plugin = require("../src/plugins/scoping");
 
+function msg(classes) {
+    return {
+        type    : "modularcss",
+        plugin  : "postcss-modular-css-scoping",
+        classes : classes
+    };
+}
+
 function process(src, options) {
     return plugin.process(
         src,
@@ -101,15 +109,11 @@ describe("/plugins", function() {
                     "#booga { color: black; } " +
                     "@keyframes fooga { 0% { color: red; } 100% { color: black; } }"
                 ).messages,
-                [ {
-                    type    : "modularcss",
-                    plugin  : "postcss-modular-css-scoping",
-                    classes : {
-                        booga : "simple_booga",
-                        fooga : "simple_fooga",
-                        wooga : "simple_wooga"
-                    }
-                } ]
+                [ msg({
+                    booga : [ "simple_booga" ],
+                    fooga : [ "simple_fooga" ],
+                    wooga : [ "simple_wooga" ]
+                }) ]
             );
         });
 
@@ -191,17 +195,13 @@ describe("/plugins", function() {
                         ":global(.googa .tooga) { color: red; } " +
                         "@keyframes :global(yooga) { 0% { color: red; } 100% { color: black; } }"
                     ).messages,
-                    [ {
-                        type    : "modularcss",
-                        plugin  : "postcss-modular-css-scoping",
-                        classes : {
-                            fooga : "fooga",
-                            googa : "googa",
-                            tooga : "tooga",
-                            wooga : "wooga",
-                            yooga : "yooga"
-                        }
-                    } ]
+                    [ msg({
+                        fooga : [ "fooga" ],
+                        googa : [ "googa" ],
+                        tooga : [ "tooga" ],
+                        wooga : [ "wooga" ],
+                        yooga : [ "yooga" ]
+                    }) ]
                 );
             });
 
@@ -215,14 +215,10 @@ describe("/plugins", function() {
                 
                 assert.deepEqual(
                     processed.messages,
-                    [ {
-                        type    : "modularcss",
-                        plugin  : "postcss-modular-css-scoping",
-                        classes : {
-                            fooga : "simple_fooga",
-                            wooga : "wooga"
-                        }
-                    } ]
+                    [ msg({
+                        fooga : [ "simple_fooga" ],
+                        wooga : [ "wooga" ]
+                    }) ]
                 );
             });
         });

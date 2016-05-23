@@ -4,7 +4,7 @@ var fs      = require("fs"),
     path    = require("path"),
     assert  = require("assert"),
     
-    Promise   = require("../src/_promise"),
+    Promise   = require("../src/lib/promise"),
     Processor = require("../src/processor"),
     
     compare = require("./lib/compare-files");
@@ -59,12 +59,12 @@ describe("/processor.js", function() {
                         var file = result.files[id];
                     
                         assert.deepEqual(result.exports, {
-                            wooga : id + "wooga"
+                            wooga : [ id + "wooga" ]
                         });
 
                         assert.equal(typeof file, "object");
 
-                        assert.deepEqual(file.compositions, {
+                        assert.deepEqual(file.exports, {
                             wooga : [ id + "wooga" ]
                         });
 
@@ -217,12 +217,12 @@ describe("/processor.js", function() {
                         var file = result.files[path.resolve("./test/specimens/simple.css")];
                     
                         assert.deepEqual(result.exports, {
-                            wooga : "mc08e91a5b_wooga"
+                            wooga : [ "mc08e91a5b_wooga" ]
                         });
                         
                         assert.equal(typeof file, "object");
                         
-                        assert.deepEqual(file.compositions, {
+                        assert.deepEqual(file.exports, {
                             wooga : [ "mc08e91a5b_wooga" ]
                         });
                         
@@ -238,12 +238,12 @@ describe("/processor.js", function() {
                         var file = result.files[path.resolve("./test/specimens/simple.css")];
                         
                         assert.deepEqual(result.exports, {
-                            wooga : "mc08e91a5b_wooga"
+                            wooga : [ "mc08e91a5b_wooga" ]
                         });
                         
                         assert.equal(typeof file, "object");
                         
-                        assert.deepEqual(file.compositions, {
+                        assert.deepEqual(file.exports, {
                             wooga : [ "mc08e91a5b_wooga" ]
                         });
                         
@@ -431,15 +431,15 @@ describe("/processor.js", function() {
             });
         });
         
-        it("should export an object of space-separated strings", function() {
+        it("should export an object of arrays containing strings", function() {
             return this.processor.string(
                 "./test/specimens/simple.css",
                 ".fooga { color: red; } .booga { background: #000; } .tooga { composes: fooga, booga; }"
             ).then(function(result) {
                 assert.deepEqual(result.exports, {
-                    fooga : "mc08e91a5b_fooga",
-                    booga : "mc08e91a5b_booga",
-                    tooga : "mc08e91a5b_fooga mc08e91a5b_booga mc08e91a5b_tooga"
+                    fooga : [ "mc08e91a5b_fooga" ],
+                    booga : [ "mc08e91a5b_booga" ],
+                    tooga : [ "mc08e91a5b_fooga", "mc08e91a5b_booga", "mc08e91a5b_tooga" ]
                 });
             });
         });
@@ -452,14 +452,14 @@ describe("/processor.js", function() {
                 var file = result.files[path.resolve("./test/specimens/simple.css")];
                 
                 assert.deepEqual(result.exports, {
-                    fooga : "mc08e91a5b_fooga",
-                    kooga : "mc08e91a5b_kooga",
-                    wooga : "mc08e91a5b_wooga"
+                    fooga : [ "mc08e91a5b_fooga" ],
+                    kooga : [ "mc08e91a5b_kooga" ],
+                    wooga : [ "mc08e91a5b_wooga" ]
                 });
 
                 assert.equal(typeof file, "object");
 
-                assert.deepEqual(file.compositions, {
+                assert.deepEqual(file.exports, {
                     fooga : [ "mc08e91a5b_fooga" ],
                     kooga : [ "mc08e91a5b_kooga" ],
                     wooga : [ "mc08e91a5b_wooga" ]
@@ -480,9 +480,9 @@ describe("/processor.js", function() {
                 var file = result.files[path.resolve("./test/specimens/start.css")];
             
                 assert.deepEqual(result.exports, {
-                    wooga : "mc04cb4cb2_booga mc61f0515a_wooga",
-                    booga : "mc61f0515a_booga",
-                    tooga : "mc61f0515a_tooga"
+                    wooga : [ "mc04cb4cb2_booga", "mc61f0515a_wooga" ],
+                    booga : [ "mc61f0515a_booga" ],
+                    tooga : [ "mc61f0515a_tooga" ]
                 });
 
                 assert.equal(file.text, fs.readFileSync("./test/specimens/start.css", "utf8"));
@@ -498,7 +498,7 @@ describe("/processor.js", function() {
                     two    : "blue"
                 });
 
-                assert.deepEqual(file.compositions, {
+                assert.deepEqual(file.exports, {
                     wooga : [ "mc04cb4cb2_booga", "mc61f0515a_wooga" ],
                     booga : [ "mc61f0515a_booga" ],
                     tooga : [ "mc61f0515a_tooga" ]
@@ -515,7 +515,7 @@ describe("/processor.js", function() {
                     two    : "blue"
                 });
 
-                assert.deepEqual(file.compositions, {
+                assert.deepEqual(file.exports, {
                     booga : [ "mc04cb4cb2_booga" ],
                     looga : [ "mc04cb4cb2_booga", "mc04cb4cb2_looga" ]
                 });
@@ -529,7 +529,7 @@ describe("/processor.js", function() {
                     folder : "white"
                 });
                 
-                assert.deepEqual(file.compositions, {
+                assert.deepEqual(file.exports, {
                     folder : [ "mc04bb002b_folder" ]
                 });
             });

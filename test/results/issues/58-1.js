@@ -6,5 +6,9 @@ module.exports = {
     "issue2": "mc8fe42003_other1 mc0c6149b1_issue1 mc8fe42003_other3 mc0c6149b1_issue2"
 };
 },{"./test/specimens/issues/58/other.css":3}],3:[function(require,module,exports){
-module.exports = undefined;
+module.exports = {
+    "other1": "mc8fe42003_other1",
+    "other2": "mc8fe42003_other2",
+    "other3": "mc8fe42003_other3"
+};
 },{}]},{},[1]);

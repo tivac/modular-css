@@ -2,8 +2,8 @@
 
 var postcss      = require("postcss"),
     createParser = require("postcss-selector-parser"),
-    
-    identifiers = require("../_identifiers"),
+        
+    identifiers = require("../lib/identifiers"),
     
     plugin = "postcss-modular-css-scoping";
 
@@ -50,7 +50,7 @@ module.exports = postcss.plugin(plugin, function() {
                         return;
                     }
                     
-                    lookup[key] = child.value;
+                    lookup[key] = [ child.value ];
                     child.ignore = true;
                 });
             });
@@ -62,7 +62,9 @@ module.exports = postcss.plugin(plugin, function() {
                     return;
                 }
                 
-                lookup[key] = node.value = result.opts.namer(result.opts.from, node.value);
+                node.value = result.opts.namer(result.opts.from, node.value);
+                
+                lookup[key] = [ node.value ];
                 
                 return;
             });

@@ -2,22 +2,29 @@
 
 var postcss = require("postcss"),
 
-    composition = require("../_composition");
+    composition = require("../lib/composition"),
+    resolve     = require("../lib/resolve");
 
 function parse(options, field, rule) {
-    var parsed = composition(options.from, rule[field]);
+    var parsed = composition.parse(rule[field]),
+        file;
     
-    if(!parsed || !parsed.source) {
+    if(!parsed.source || parsed.source === "super") {
         return;
     }
     
-    options.graph.addNode(parsed.source);
-    options.graph.addDependency(options.from, parsed.source);
+    file = resolve(options.from, parsed.source);
+    
+    // Add any compositions to the dependency graph
+    options.graph.addNode(file);
+    options.graph.addDependency(options.from, file);
 }
 
 module.exports = postcss.plugin("postcss-modular-css-graph-nodes", function() {
     return function(css, result) {
-        css.walkAtRules("value", parse.bind(null, result.opts, "params"));
-        css.walkDecls("composes", parse.bind(null, result.opts, "value"));
+        var options = result.opts;
+        
+        css.walkAtRules("value", parse.bind(null, options, "params"));
+        css.walkDecls("composes", parse.bind(null, options, "value"));
     };
 });

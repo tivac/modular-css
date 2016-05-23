@@ -1,10 +1,9 @@
 "use strict";
 
-var path = require("path"),
-    
-    resolve  = require("resolve-from"),
-    values   = require("postcss-value-parser"),
+var values   = require("postcss-value-parser"),
     selector = require("postcss-selector-parser"),
+    
+    resolve = require("./resolve"),
     
     check = {
         comma : function(node) {
@@ -20,7 +19,9 @@ var path = require("path"),
         },
 
         source : function(node) {
-            return node.type === "string";
+            return node.type === "string" ||
+                   (node.type === "word" &&
+                   node.value === "super");
         },
 
         identifier : function(node) {
@@ -46,7 +47,7 @@ var path = require("path"),
     },
     types = Object.keys(check);
 
-module.exports = function parse(file, input) {
+function parse(input) {
     /* eslint complexity:[2, 17], no-loop-func:0 */
     var out = {
             rules  : [],
@@ -64,7 +65,7 @@ module.exports = function parse(file, input) {
             pos  : 0
         },
         nodes, node;
-
+    
     nodes = values(input.trim()).nodes;
 
     for(state.pos = 0; state.pos < nodes.length; state.pos++) {
@@ -117,11 +118,7 @@ module.exports = function parse(file, input) {
         }
 
         if(state.type === "source" && state.prev === "space") {
-            out.source = resolve(path.dirname(file), node.value);
-
-            if(!out.source) {
-                throw new Error("Unable to locate \"" + node.value + "\" from \"" + path.dirname(file) + "\"");
-            }
+            out.source = node.value;
             
             continue;
         }
@@ -129,7 +126,7 @@ module.exports = function parse(file, input) {
         // Unknown node for this state, abort
         break;
     }
-
+    
     // Ensure that we consumed all available nodes and that the last node
     // consumed was of an acceptable type
     if(nodes.length &&
@@ -141,4 +138,42 @@ module.exports = function parse(file, input) {
     }
 
     return false;
+}
+
+exports.parse = parse;
+
+exports.decl = function(file, decl) {
+    var parsed;
+    
+    if(decl.prev() && decl.prev().prop !== "composes") {
+        throw decl.error("composes must be the first declaration in the rule", { word : "composes" });
+    }
+    
+    parsed = parse(decl.value.trim());
+    
+    if(!parsed) {
+        throw decl.error("Unable to parse composition", { word : decl.value });
+    }
+    
+    if(parsed.source && parsed.source !== "super") {
+         parsed.source = resolve(file, parsed.source);
+    }
+    
+    return parsed;
+};
+
+exports.rule = function(file, rule) {
+    var parsed;
+    
+    parsed = parse(rule.params.trim());
+    
+    if(!parsed) {
+        throw rule.error("Unable to parse composition", { word : rule.params });
+    }
+    
+    if(parsed.source && parsed.source !== "super") {
+         parsed.source = resolve(file, parsed.source);
+    }
+    
+    return parsed;
 };

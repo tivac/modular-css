@@ -7,7 +7,7 @@ var fs   = require("fs"),
     mkdirp = require("mkdirp"),
     
     Processor = require("../src/processor"),
-    output    = require("../src/_output"),
+    output    = require("../src/lib/output"),
     
     processor = new Processor({ map : true }),
     
