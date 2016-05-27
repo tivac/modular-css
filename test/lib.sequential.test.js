@@ -1,7 +1,6 @@
 "use strict";
 
-var path   = require("path"),
-    assert = require("assert"),
+var assert = require("assert"),
     
     Promise    = require("../src/lib/promise"),
     sequential = require("../src/lib/sequential");
@@ -49,7 +48,7 @@ describe("/lib", function() {
                     }));
                 },
                 function() {
-                    return (new Promise(function(resolve) {
+                    return (new Promise(function() {
                         assert.fail();
                     }));
                 }
