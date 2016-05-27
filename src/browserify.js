@@ -11,8 +11,8 @@ var fs   = require("fs"),
     each    = require("lodash.foreach"),
     
     Processor = require("./processor"),
-    relative  = require("./_relative"),
-    output    = require("./_output");
+    relative  = require("./lib/relative"),
+    output    = require("./lib/output");
 
 module.exports = function(browserify, opts) {
     var options = assign({
@@ -53,7 +53,7 @@ module.exports = function(browserify, opts) {
                         browserify.emit("file", path.resolve(process.cwd(), id), id);
                     });
                     
-                    push("module.exports = " + JSON.stringify(result.exports, null, 4) + ";");
+                    push("module.exports = " + JSON.stringify(output.join(result.exports), null, 4) + ";");
                     
                     done();
                 },
@@ -97,7 +97,7 @@ module.exports = function(browserify, opts) {
             push({
                 id     : dep,
                 file   : dep,
-                source : "module.exports = " + JSON.stringify(processor.files[dep].exports, null, 4) + ";",
+                source : "module.exports = " + JSON.stringify(output.join(processor.files[dep].exports), null, 4) + ";",
                 deps   : processor.dependencies(dep).reduce(depReducer, {})
             });
         });

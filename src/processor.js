@@ -5,17 +5,17 @@ var fs   = require("fs"),
     
     assign   = require("lodash.assign"),
     defaults = require("lodash.defaults"),
-    map      = require("lodash.mapvalues"),
     Graph    = require("dependency-graph").DepGraph,
     postcss  = require("postcss"),
     urls     = require("postcss-url"),
     slug     = require("unique-slug"),
 
-    Promise    = require("./_promise"),
-    relative   = require("./_relative"),
-    output     = require("./_output"),
-    cloneGraph = require("./_clone-graph"),
-    sequential = require("./_sequential");
+    Promise    = require("./lib/promise"),
+    output     = require("./lib/output"),
+    message    = require("./lib/message"),
+    relative   = require("./lib/relative"),
+    cloneGraph = require("./lib/clone-graph"),
+    sequential = require("./lib/sequential");
 
 function Processor(opts) {
     /* eslint consistent-return:0 */
@@ -83,25 +83,8 @@ Processor.prototype = {
                     }
                     
                     return details.processed.then(function(result) {
-                        details.result = result;
-                        
-                        // Combine messages from both postcss passes before pulling out relevant info
-                        details.before.messages.concat(result.messages).forEach(function(msg) {
-                            if(msg.values) {
-                                details.values = assign(details.values || {}, msg.values);
-                                
-                                return;
-                            }
-                            
-                            if(msg.compositions) {
-                                details.compositions = assign(
-                                    details.compositions || {},
-                                    msg.compositions
-                                );
-                                
-                                return;
-                            }
-                        });
+                        details.exports = message(result, "classes");
+                        details.result  = result;
                     });
                 };
             }));
@@ -111,9 +94,7 @@ Processor.prototype = {
                 id      : start,
                 file    : start,
                 files   : self._files,
-                exports : map(self._files[start].compositions, function(exports) {
-                    return exports.join(" ");
-                })
+                exports : self._files[start].exports
             };
         });
     },
@@ -224,10 +205,13 @@ Processor.prototype = {
         
         if(!self._files[name]) {
             self._files[name] = {
-                text   : text,
-                before : self._before.process(text, assign({}, self._options, {
+                text    : text,
+                exports : {},
+                values  : {},
+                before  : self._before.process(text, assign({}, self._options, {
                     from  : name,
-                    graph : self._graph
+                    graph : self._graph,
+                    files : self._files
                 }))
             };
         }

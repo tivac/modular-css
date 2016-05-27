@@ -1,6 +1,8 @@
 "use strict";
 
-var postcss = require("postcss"),
+var assign = require("lodash.assign"),
+    
+    postcss = require("postcss"),
     parser  = require("postcss-value-parser"),
     Graph   = require("dependency-graph").DepGraph;
 
@@ -30,6 +32,7 @@ module.exports = function(name, process) {
         return function(css, result) {
             var values  = {},
                 sources = {},
+                details = result.opts.files[result.opts.from],
                 graph   = new Graph(),
                 keys;
             
@@ -72,42 +75,40 @@ module.exports = function(name, process) {
             
             // Ensure that any key references are updated
             graph.overallOrder().forEach(function(key) {
-                var out = replacer(values, sources, values[key]);
+                var replaced = replacer(values, sources, values[key]);
                 
-                values[key] = out.value;
+                values[key] = replaced.value;
                 
-                if(out.source) {
-                    sources[key] = out.source;
+                if(replaced.source) {
+                    sources[key] = replaced.source;
                 }
             });
 
             // Replace all instances of @value keys w/ the value in declarations & @media rules
             css.walkDecls(function(decl) {
-                var out = replacer(values, sources, decl.value);
+                var replaced = replacer(values, sources, decl.value);
                 
-                decl.value = out.value;
+                decl.value = replaced.value;
                 
-                if(out.source) {
-                    decl.source = out.source;
+                if(replaced.source) {
+                    decl.source = replaced.source;
                 }
             });
 
             css.walkAtRules("media", function(rule) {
-                var out = replacer(values, sources, rule.params);
+                var replaced = replacer(values, sources, rule.params);
                 
-                rule.params = out.value;
+                rule.params = replaced.value;
                 
-                if(out.source) {
-                    rule.source = out.source;
+                if(replaced.source) {
+                    rule.source = replaced.source;
                 }
             });
-
-            result.messages.push({
-                type    : "modularcss",
-                plugin  : name,
-                values  : values,
-                sources : sources
-            });
+            
+            // Can't use messages for values plugins, messages aren't persisted
+            // between .process calls, even if you pass in a raw result object
+            details.values  = assign(details.values || {}, values);
+            details.sources = assign(details.sources || {}, sources);
         };
     });
 };

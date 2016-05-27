@@ -1,22 +1,14 @@
 "use strict";
 
 var values      = require("./_values"),
-    composition = require("../_composition");
+    composition = require("../lib/composition");
 
 module.exports = values(
     "postcss-modular-css-values-composed",
     function resolveImports(options, rule) {
-        var parsed = composition(options.from, rule.params),
+        var parsed = composition.rule(options.from, rule),
             out    = {},
             source;
-        
-        if(!parsed) {
-            throw rule.error("Invalid value composition", { word : rule.params });
-        }
-        
-        if(!options.files || !options.files[parsed.source]) {
-            throw rule.error("Invalid file reference: " + rule.params, { word : rule.params });
-        }
         
         source = options.files[parsed.source];
 

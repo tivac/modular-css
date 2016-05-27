@@ -4,35 +4,25 @@ var postcss      = require("postcss"),
     
     Graph   = require("dependency-graph").DepGraph,
     
+    assign    = require("lodash.assign"),
     unique    = require("lodash.uniq"),
     invert    = require("lodash.invert"),
     mapvalues = require("lodash.mapvalues"),
 
-    composition = require("../_composition"),
-    references  = require("../_references"),
-    identifiers = require("../_identifiers"),
+    message     = require("../lib/message"),
+    composition = require("../lib/composition"),
+    identifiers = require("../lib/identifiers"),
     
     plugin = "postcss-modular-css-composition";
 
 module.exports = postcss.plugin(plugin, function() {
     return function(css, result) {
-        var refs  = references(css, result),
+        var refs  = message(result, "classes"),
             map   = invert(refs),
-            graph = new Graph(),
             opts  = result.opts,
-            out   = {};
-
-        // Have to do this down here because invert doesn't understand array values
-        refs = mapvalues(refs, function(val, key) {
-            var value = [ val ];
-
-            out[key] = value;
-
-            return value;
-        });
+            graph = new Graph(),
+            out   = assign({}, refs);
         
-        // Do node addition in a different pass since we can't be sure where the object
-        // came from (scoping msg, or local rules)
         Object.keys(refs).forEach(function(key) {
             graph.addNode(key);
         });
@@ -41,17 +31,9 @@ module.exports = postcss.plugin(plugin, function() {
         css.walkDecls("composes", function(decl) {
             var selectors, details;
             
-            if(decl.prev() && decl.prev().prop !== "composes") {
-                throw decl.error("composes must be the first declaration in the rule", { word : "composes" });
-            }
-
+            details   = composition.decl(opts.from, decl);
             selectors = identifiers.parse(decl.parent.selector);
-            details   = composition(opts.from, decl.value);
 
-            if(!details) {
-                throw decl.error("Unable to parse rule", { word : decl.value });
-            }
-            
             if(details.source && (!opts.files || !opts.files[details.source])) {
                 throw decl.error("Invalid file reference", { word : decl.value });
             }
@@ -74,7 +56,7 @@ module.exports = postcss.plugin(plugin, function() {
                 }
 
                 if(details.source) {
-                    refs[scoped] = opts.files[details.source].compositions[rule];
+                    refs[scoped] = opts.files[details.source].exports[rule];
                 }
 
                 if(!refs[scoped]) {
@@ -82,12 +64,12 @@ module.exports = postcss.plugin(plugin, function() {
                 }
             });
 
-            // Remove the just the composes statement if there were others
+            // Remove just the composes declaration if there are other declarations
             if(decl.parent.nodes.length > 1) {
                 return decl.remove();
             }
             
-            // Remove the entire rule because it only contained the composes decl
+            // Remove the entire rule because it only contained the composes declaration
             return decl.parent.remove();
         });
         
@@ -97,11 +79,11 @@ module.exports = postcss.plugin(plugin, function() {
                 out[selector] = refs[dep].concat(out[selector]);
             });
         });
-
+        
         result.messages.push({
-            type         : "modularcss",
-            plugin       : plugin,
-            compositions : mapvalues(out, function(val) {
+            type    : "modularcss",
+            plugin  : plugin,
+            classes : mapvalues(out, function(val) {
                 return unique(val);
             })
         });

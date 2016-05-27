@@ -1,3 +1,3 @@
 "use strict";
 
-module.exports = require("../../src/_relative").bind(null, process.cwd());
+module.exports = require("../../src/lib/relative").bind(null, process.cwd());

@@ -4,24 +4,38 @@ var path   = require("path"),
     assert = require("assert"),
 
     postcss = require("postcss"),
+    assign  = require("lodash.assign"),
     
     scoping     = require("../src/plugins/scoping"),
     composition = require("../src/plugins/composition");
 
-function msg(compositions) {
+function msg(classes) {
     return {
-        type   : "modularcss",
-        plugin : "postcss-modular-css-composition",
-        
-        compositions : compositions
+        type    : "modularcss",
+        plugin  : "postcss-modular-css-composition",
+        classes : classes
     };
 }
 
 describe("/plugins", function() {
     describe("/composition.js", function() {
+        var process;
+        
+        beforeEach(function() {
+            var processor = postcss([ scoping, composition ]);
+            
+            process = function(css, opts) {
+                return processor.process(css, assign({
+                    namer : function(file, selector) {
+                        return file ? path.basename(file, path.extname(file)) + "_" + selector : selector;
+                    }
+                }, opts));
+            };
+        });
+        
         it("should fail if attempting to compose a class that doesn't exist", function() {
             /* eslint no-unused-expressions:0 */
-            var out = composition.process(".wooga { composes: googa; }");
+            var out = process(".wooga { composes: googa; }");
             
             assert.throws(function() {
                 out.css;
@@ -29,7 +43,7 @@ describe("/plugins", function() {
         });
         
         it("should fail if composes isn't the first rule", function() {
-            var out = composition.process(".wooga { color: red; composes: googa; }");
+            var out = process(".wooga { color: red; composes: googa; }");
             
             assert.throws(function() {
                 out.css;
@@ -37,7 +51,7 @@ describe("/plugins", function() {
         });
         
         it("should fail if classes have a cyclic dependency", function() {
-            var out = composition.process(".wooga { composes: booga; } .booga { composes: wooga; }");
+            var out = process(".wooga { composes: booga; } .booga { composes: wooga; }");
             
             assert.throws(function() {
                 out.css;
@@ -45,7 +59,7 @@ describe("/plugins", function() {
         });
 
         it("should fail if imports are referenced without having been parsed", function() {
-            var out = composition.process(".wooga { composes: booga from \"./local.css\"; }", {
+            var out = process(".wooga { composes: booga from \"./local.css\"; }", {
                     from  : "test/specimens/wooga.css",
                     files : {}
                 });
@@ -56,7 +70,7 @@ describe("/plugins", function() {
         });
 
         it("should fail if composing from a file that doesn't exist", function() {
-            var out = composition.process(".wooga { composes: googa from \"./fooga.css\"; }", {
+            var out = process(".wooga { composes: googa from \"./fooga.css\"; }", {
                     from  : "test/specimens/wooga.css",
                     files : {}
                 });
@@ -71,10 +85,10 @@ describe("/plugins", function() {
                 out;
                 
             files[path.resolve("./test/specimens/local.css")] = {
-                compositions : {}
+                exports : {}
             };
             
-            out = composition.process(".wooga { composes: googa from \"./local.css\"; }", {
+            out = process(".wooga { composes: googa from \"./local.css\"; }", {
                 from  : path.resolve("./test/specimens/wooga.css"),
                 files : files
             });
@@ -87,146 +101,158 @@ describe("/plugins", function() {
         it("should fail when parsing an invalid value", function() {
             var out;
 
-            out = composition.process(".wooga { composes: global(); }");
+            out = process(".wooga { composes: global(); }");
             
             assert.throws(function() {
                 out.css;
-            }, /Unable to parse rule/);
+            }, /Unable to parse composition/);
 
-            out = composition.process(".wooga { composes: fooga wooga; }");
+            out = process(".wooga { composes: fooga wooga; }");
             
             assert.throws(function() {
                 out.css;
-            }, /Unable to parse rule/);
+            }, /Unable to parse composition/);
         });
 
         it("should output composition results as a message", function() {
-            var messages = composition.process(".wooga { color: red; } .fooga { composes: wooga; }").messages;
+            var messages = process(".wooga { color: red; } .fooga { composes: wooga; }").messages;
             
-            assert.deepEqual(messages, [ msg({
+            assert.equal(messages.length, 2);
+            assert.deepEqual(messages[1], msg({
                 wooga : [ "wooga" ],
                 fooga : [ "wooga", "fooga" ]
-            }) ]);
+            }));
         });
 
         it("should remove classes that only contain a composes rule from the output CSS", function() {
             assert.equal(
-                composition.process(".wooga { color: red; } .fooga { composes: wooga; }").css,
+                process(".wooga { color: red; } .fooga { composes: wooga; }").css,
                 ".wooga { color: red; }"
             );
         });
         
         it("should output removed classes as part of a message", function() {
-            var messages = composition.process(".wooga { color: red; } .fooga { composes: wooga; }").messages;
+            var messages = process(".wooga { color: red; } .fooga { composes: wooga; }").messages;
             
-            assert.equal(messages.length, 1);
-            assert("fooga" in messages[0].compositions);
-            assert.equal(messages[0].compositions.fooga[0], "wooga");
+            assert.equal(messages.length, 2);
+            assert("fooga" in messages[1].classes);
+            assert.equal(messages[1].classes.fooga[0], "wooga");
         });
 
         it("should support IDs instead of classes", function() {
-            var messages = composition.process("#wooga { color: red; } .fooga { composes: wooga; }").messages;
+            var messages = process("#wooga { color: red; } .fooga { composes: wooga; }").messages;
             
-            assert.equal(messages.length, 1);
-            assert("fooga" in messages[0].compositions);
-            assert.equal(messages[0].compositions.fooga[0], "wooga");
+            assert.equal(messages.length, 2);
+            assert("fooga" in messages[1].classes);
+            assert.equal(messages[1].classes.fooga[0], "wooga");
         });
         
         it("should output the class hierarchy in a message", function() {
-            var out = composition.process(
+            var out = process(
                     ".wooga { color: red; } .booga { background: blue; } #tooga { composes: booga, wooga; }"
                 );
             
-            assert.deepEqual(out.messages, [ msg({
+            assert.equal(out.messages.length, 2);
+            assert.deepEqual(out.messages[1], msg({
                 wooga : [ "wooga" ],
                 booga : [ "booga" ],
                 tooga : [ "booga", "wooga", "tooga" ]
-            }) ]);
+            }));
         });
         
         it("should support composing against later classes", function() {
-            var out = composition.process(".wooga { composes: booga; } .booga { color: red; }");
+            var out = process(".wooga { composes: booga; } .booga { color: red; }");
             
-            assert.deepEqual(out.messages, [ msg({
+            assert.equal(out.messages.length, 2);
+            assert.deepEqual(out.messages[1], msg({
                 wooga : [ "booga", "wooga" ],
                 booga : [ "booga" ]
-            }) ]);
+            }));
         });
 
         it("should allow multiple composes declarations", function() {
-            var out = composition.process(".wooga { } .booga { } .tooga { composes: wooga; composes: booga; }");
-
-            assert.deepEqual(out.messages, [ msg({
+            var out = process(".wooga { } .booga { } .tooga { composes: wooga; composes: booga; }");
+        
+            assert.equal(out.messages.length, 2);
+            assert.deepEqual(out.messages[1], msg({
                 wooga : [ "wooga" ],
                 booga : [ "booga" ],
                 tooga : [ "wooga", "booga", "tooga" ]
-            }) ]);
+            }));
         });
         
         it("should support composing against global identifiers", function() {
             var out;
 
-            out = composition.process(".wooga { composes: global(booga); }");
+            out = process(".wooga { composes: global(booga); }");
             
-            assert.deepEqual(out.messages, [ msg({
+            assert.equal(out.messages.length, 2);
+            assert.deepEqual(out.messages[1], msg({
                 wooga : [ "booga", "wooga" ]
-            }) ]);
+            }));
 
-            out = composition.process(".wooga { composes: global(booga), global(tooga); }");
+            out = process(".wooga { composes: global(booga), global(tooga); }");
             
-            assert.deepEqual(out.messages, [ msg({
+            assert.equal(out.messages.length, 2);
+            assert.deepEqual(out.messages[1], msg({
                 wooga : [ "booga", "tooga", "wooga" ]
-            }) ]);
+            }));
 
-            out = composition.process(".wooga { composes: global(booga); color: red; }");
+            out = process(".wooga { composes: global(booga); color: red; }");
             
-            assert.deepEqual(out.messages, [ msg({
+            assert.equal(out.messages.length, 2);
+            assert.deepEqual(out.messages[1], msg({
                 wooga : [ "booga", "wooga" ]
-            }) ]);
+            }));
 
-            out = composition.process(".tooga { } .wooga { composes: global(booga), tooga; }");
+            out = process(".tooga { } .wooga { composes: global(booga), tooga; }");
             
-            assert.deepEqual(out.messages, [ msg({
+            assert.equal(out.messages.length, 2);
+            assert.deepEqual(out.messages[1], msg({
                 tooga : [ "tooga" ],
                 wooga : [ "booga", "tooga", "wooga" ]
-            }) ]);
+            }));
 
-            out = composition.process(".tooga { } .wooga { composes: global(booga), tooga; color: red; }");
+            out = process(".tooga { } .wooga { composes: global(booga), tooga; color: red; }");
             
-            assert.deepEqual(out.messages, [ msg({
+            assert.equal(out.messages.length, 2);
+            assert.deepEqual(out.messages[1], msg({
                 tooga : [ "tooga" ],
                 wooga : [ "booga", "tooga", "wooga" ]
-            }) ]);
+            }));
 
-            out = composition.process(".tooga { } .wooga { composes: global(booga); composes: tooga; }");
+            out = process(".tooga { } .wooga { composes: global(booga); composes: tooga; }");
             
-            assert.deepEqual(out.messages, [ msg({
+            assert.equal(out.messages.length, 2);
+            assert.deepEqual(out.messages[1], msg({
                 tooga : [ "tooga" ],
                 wooga : [ "booga", "tooga", "wooga" ]
-            }) ]);
+            }));
 
-            out = composition.process(".tooga { } .wooga { composes: global(booga); composes: tooga; color: red; }");
+            out = process(".tooga { } .wooga { composes: global(booga); composes: tooga; color: red; }");
             
-            assert.deepEqual(out.messages, [ msg({
+            assert.equal(out.messages.length, 2);
+            assert.deepEqual(out.messages[1], msg({
                 tooga : [ "tooga" ],
                 wooga : [ "booga", "tooga", "wooga" ]
-            }) ]);
+            }));
         });
         
         it("should handle multi-level dependencies", function() {
-            var out = composition.process(
+            var out = process(
                     ".wooga { color: red; } .booga { composes: wooga; background: blue; } .tooga { composes: booga; display: block; }"
                 );
             
-            assert.deepEqual(out.messages, [ msg({
+            assert.equal(out.messages.length, 2);
+            assert.deepEqual(out.messages[1], msg({
                 wooga : [ "wooga" ],
                 booga : [ "wooga", "booga" ],
                 tooga : [ "wooga", "booga", "tooga" ]
-            }) ]);
+            }));
         });
         
         it("should find scoped identifiers from the scoping plugin's message", function() {
-            var out = postcss([ scoping, composition ]).process(
+            var out = process(
                     ".wooga { color: red; } .googa { composes: wooga; }",
                     {
                         from  : "test/specimens/simple.css",
@@ -240,8 +266,8 @@ describe("/plugins", function() {
                 type    : "modularcss",
                 plugin  : "postcss-modular-css-scoping",
                 classes : {
-                    googa : "simple_googa",
-                    wooga : "simple_wooga"
+                    googa : [ "simple_googa" ],
+                    wooga : [ "simple_wooga" ]
                 }
             }, msg({
                 googa : [ "simple_wooga", "simple_googa" ],
@@ -249,46 +275,30 @@ describe("/plugins", function() {
             }) ]);
         });
         
-        it("should ignore messages that aren't from the scoping plugin", function() {
-            var plugin = postcss.plugin("fake-plugin", function() {
-                    return function(css, result) {
-                        result.messages.push({
-                            type   : "modularcss",
-                            plugin : "fake-plugin"
-                        });
-                    };
-                }),
-            
-                out = postcss([ plugin, composition ]).process(".wooga { color: red; } .googa { composes: wooga; }");
-                
-            assert.deepEqual(out.messages, [ {
-                type   : "modularcss",
-                plugin : "fake-plugin"
-            }, msg({
-                googa : [ "wooga", "googa" ],
-                wooga : [ "wooga" ]
-            }) ]);
-        });
-
         it("should compose multiple classes from imports", function() {
             var files = {},
                 out;
                 
             files[path.resolve("./test/specimens/local.css")] = {
-                compositions : {
-                    googa : [ "googa" ],
-                    tooga : [ "tooga" ]
+                exports : {
+                    googa : [ "local_googa" ],
+                    tooga : [ "local_tooga" ]
                 }
             };
             
-            out = composition.process(".wooga { composes: googa, tooga from \"./local.css\"; }", {
+            out = process(".wooga { composes: googa, tooga from \"./local.css\"; }", {
                 from  : path.resolve("./test/specimens/wooga.css"),
                 files : files
             });
-
-            assert.deepEqual(out.messages, [ msg({
-                wooga : [ "googa", "tooga", "wooga" ]
-            }) ]);
+        
+            assert.equal(out.messages.length, 2);
+            assert.deepEqual(out.messages[1], msg({
+                wooga : [
+                    "local_googa",
+                    "local_tooga",
+                    "wooga_wooga"
+                ]
+            }));
         });
 
         it("should expose imported heirachy details in the messages", function() {
@@ -296,20 +306,24 @@ describe("/plugins", function() {
                 out;
                 
             files[path.resolve("./test/specimens/local.css")] = {
-                compositions : {
-                    googa : [ "googa" ],
-                    tooga : [ "tooga" ]
+                exports : {
+                    googa : [ "local_googa" ],
+                    tooga : [ "local_tooga" ]
                 }
             };
             
-            out = composition.process(".wooga { composes: googa from \"./local.css\"; }", {
+            out = process(".wooga { composes: googa from \"./local.css\"; }", {
                 from  : path.resolve("./test/specimens/wooga.css"),
                 files : files
             });
-
-            assert.deepEqual(out.messages, [ msg({
-                wooga : [ "googa", "wooga" ]
-            }) ]);
+        
+            assert.equal(out.messages.length, 2);
+            assert.deepEqual(out.messages[1], msg({
+                wooga : [
+                    "local_googa",
+                    "wooga_wooga"
+                ]
+            }));
         });
     });
 });
