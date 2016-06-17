@@ -74,128 +74,6 @@ describe("/processor.js", function() {
                 });
             });
 
-            describe("before", function() {
-                it("should run sync postcss plugins before processing", function() {
-                    var processor = new Processor({
-                            before : [ sync ]
-                        });
-                    
-                    return processor.string("test/specimens/sync-before.css", "").then(function() {
-                        return processor.output();
-                    }).then(function(result) {
-                        assert.equal(
-                            result.css,
-                            "/* test/specimens/sync-before.css */\n" +
-                            "a {}"
-                        );
-                    });
-                });
-
-                it("should run async postcss plugins before processing", function() {
-                    var processor = new Processor({
-                            before : [ async ]
-                        });
-                    
-                    return processor.string("test/specimens/async-before.css", "").then(function() {
-                        return processor.output();
-                    })
-                    .then(function(result) {
-                        assert.equal(
-                            result.css,
-                            "/* test/specimens/async-before.css */\n" +
-                            "a {}"
-                        );
-                    });
-                });
-            });
-            
-            describe("after", function() {
-                var css =
-                        "/* test/specimens/relative.css */\n" +
-                        ".mc592b2d8f_wooga {\n" +
-                        "    color: red;\n" +
-                        "    background: url(\"./folder/to.png\")\n" +
-                        "}\n" +
-                        "a {}";
-                
-                it("should use postcss-url by default", function() {
-                    var processor = this.processor;
-
-                    return processor.file("./test/specimens/relative.css").then(function() {
-                        return processor.output({ to : "./test/output/relative.css" });
-                    })
-                    .then(function(result) {
-                        compare.stringToFile(result.css, "./test/results/processor/relative.css");
-                    });
-                });
-                
-                it("should run sync postcss plugins", function() {
-                    var processor = new Processor({
-                            after : [ sync ]
-                        });
-
-                    return processor.file("./test/specimens/relative.css").then(function() {
-                        return processor.output({ to : "./test/output/relative.css" });
-                    })
-                    .then(function(result) {
-                        assert.equal(
-                            result.css,
-                            css
-                        );
-                    });
-                });
-                
-                it("should run async postcss plugins", function() {
-                    var processor = new Processor({
-                            after : [ async ]
-                        });
-
-                    return processor.file("./test/specimens/relative.css").then(function() {
-                        return processor.output({ to : "./test/output/relative.css" });
-                    })
-                    .then(function(result) {
-                        assert.equal(
-                            result.css,
-                            css
-                        );
-                    });
-                });
-            });
-            
-            describe("done", function() {
-                it("should run sync postcss plugins done processing", function() {
-                    var processor = new Processor({
-                            done : [ sync ]
-                        });
-                    
-                    return processor.string("test/specimens/sync-done.css", "").then(function() {
-                        return processor.output();
-                    }).then(function(result) {
-                        assert.equal(
-                            result.css,
-                            "/* test/specimens/sync-done.css */\n" +
-                            "a {}"
-                        );
-                    });
-                });
-                
-                it("should run async postcss plugins done processing", function() {
-                    var processor = new Processor({
-                            done : [ async ]
-                        });
-                    
-                    return processor.string("test/specimens/async-done.css", "").then(function() {
-                        return processor.output();
-                    }).then(function(result) {
-                        assert.equal(
-                            result.css,
-                            "/* test/specimens/async-done.css */\n" +
-                            "a {}"
-                        );
-                    });
-                });
-            });
-            
             describe("map", function() {
                 it("should generate source maps", function() {
                     var processor = new Processor({ map : true });
@@ -205,6 +83,163 @@ describe("/processor.js", function() {
                     })
                     .then(function(result) {
                         compare.stringToFile(result.css, "./test/results/processor/source-map.css");
+                    });
+                });
+            });
+
+            describe.only("strict", function() {
+                it("should treat plugin warnings as errors by default", function() {
+                    var processor = new Processor({
+                            after : [ require("postcss-import")() ]
+                        });
+                    
+                    return processor.file("./test/specimens/invalid-import.css")
+                    .then(function() {
+                        return processor.output();
+                    })
+                    .then(
+                        function() {
+                            assert.fail("Shouldn't have succeeded");
+                        },
+                        function(error) {
+                            assert(error);
+                        }
+                    );
+                });
+
+                it("should ignore warnings when disabled", function() {
+                    var processor = new Processor({
+                            after  : [ require("postcss-import")() ],
+                            strict : false
+                        });
+                    
+                    return processor.file("./test/specimens/invalid-import.css")
+                    .then(function() {
+                        return processor.output();
+                    });
+                });
+            });
+
+            describe("lifecycle options", function() {
+                describe("before", function() {
+                    it("should run sync postcss plugins before processing", function() {
+                        var processor = new Processor({
+                                before : [ sync ]
+                            });
+                        
+                        return processor.string("test/specimens/sync-before.css", "").then(function() {
+                            return processor.output();
+                        }).then(function(result) {
+                            assert.equal(
+                                result.css,
+                                "/* test/specimens/sync-before.css */\n" +
+                                "a {}"
+                            );
+                        });
+                    });
+
+                    it("should run async postcss plugins before processing", function() {
+                        var processor = new Processor({
+                                before : [ async ]
+                            });
+                        
+                        return processor.string("test/specimens/async-before.css", "").then(function() {
+                            return processor.output();
+                        })
+                        .then(function(result) {
+                            assert.equal(
+                                result.css,
+                                "/* test/specimens/async-before.css */\n" +
+                                "a {}"
+                            );
+                        });
+                    });
+                });
+                
+                describe("after", function() {
+                    var css =
+                            "/* test/specimens/relative.css */\n" +
+                            ".mc592b2d8f_wooga {\n" +
+                            "    color: red;\n" +
+                            "    background: url(\"./folder/to.png\")\n" +
+                            "}\n" +
+                            "a {}";
+                    
+                    it("should use postcss-url by default", function() {
+                        var processor = this.processor;
+
+                        return processor.file("./test/specimens/relative.css").then(function() {
+                            return processor.output({ to : "./test/output/relative.css" });
+                        })
+                        .then(function(result) {
+                            compare.stringToFile(result.css, "./test/results/processor/relative.css");
+                        });
+                    });
+                    
+                    it("should run sync postcss plugins", function() {
+                        var processor = new Processor({
+                                after : [ sync ]
+                            });
+
+                        return processor.file("./test/specimens/relative.css").then(function() {
+                            return processor.output({ to : "./test/output/relative.css" });
+                        })
+                        .then(function(result) {
+                            assert.equal(
+                                result.css,
+                                css
+                            );
+                        });
+                    });
+                    
+                    it("should run async postcss plugins", function() {
+                        var processor = new Processor({
+                                after : [ async ]
+                            });
+
+                        return processor.file("./test/specimens/relative.css").then(function() {
+                            return processor.output({ to : "./test/output/relative.css" });
+                        })
+                        .then(function(result) {
+                            assert.equal(
+                                result.css,
+                                css
+                            );
+                        });
+                    });
+                });
+                
+                describe("done", function() {
+                    it("should run sync postcss plugins done processing", function() {
+                        var processor = new Processor({
+                                done : [ sync ]
+                            });
+                        
+                        return processor.string("test/specimens/sync-done.css", "").then(function() {
+                            return processor.output();
+                        }).then(function(result) {
+                            assert.equal(
+                                result.css,
+                                "/* test/specimens/sync-done.css */\n" +
+                                "a {}"
+                            );
+                        });
+                    });
+                    
+                    it("should run async postcss plugins done processing", function() {
+                        var processor = new Processor({
+                                done : [ async ]
+                            });
+                        
+                        return processor.string("test/specimens/async-done.css", "").then(function() {
+                            return processor.output();
+                        }).then(function(result) {
+                            assert.equal(
+                                result.css,
+                                "/* test/specimens/async-done.css */\n" +
+                                "a {}"
+                            );
+                        });
                     });
                 });
             });

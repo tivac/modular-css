@@ -1,0 +1,3 @@
+.fooga { color: red; }
+
+@import "./blue.css";

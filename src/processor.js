@@ -26,9 +26,10 @@ function Processor(opts) {
     }
     
     this._options = defaults({}, options || {}, {
-        cwd   : process.cwd(),
-        map   : false,
-        namer : this._namer.bind(this)
+        cwd    : process.cwd(),
+        map    : false,
+        namer  : this._namer.bind(this),
+        strict : true
     });
     
     this._files = {};
@@ -172,6 +173,20 @@ Processor.prototype = {
             var root = postcss.root();
 
             results.forEach(function(result) {
+                var warnings;
+
+                // This structure is slightly awkward, but ensures the work only occurs
+                // when in strict mode
+                if(self._options.strict) {
+                    warnings = result.warnings();
+                    
+                    if(warnings.length) {
+                        throw new Error(warnings.map(function(warning) {
+                            return warning.toString();
+                        }).join("\n"));
+                    }
+                }
+
                 root.append(postcss.comment({
                     text : relative(self._options.cwd, result.opts.from)
                 }));
