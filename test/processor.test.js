@@ -87,10 +87,48 @@ describe("/processor.js", function() {
                 });
             });
 
-            describe.only("strict", function() {
-                it("should treat plugin warnings as errors by default", function() {
+            describe("strict", function() {
+                it("should treat plugin warnings as errors by default (before)", function() {
+                    var processor = new Processor({
+                            before : [ require("postcss-import")() ]
+                        });
+                    
+                    return processor.file("./test/specimens/invalid-import.css")
+                    .then(function() {
+                        return processor.output();
+                    })
+                    .then(
+                        function() {
+                            assert.fail("Shouldn't have succeeded");
+                        },
+                        function(error) {
+                            assert(error);
+                        }
+                    );
+                });
+                
+                it("should treat plugin warnings as errors by default (after)", function() {
                     var processor = new Processor({
                             after : [ require("postcss-import")() ]
+                        });
+                    
+                    return processor.file("./test/specimens/invalid-import.css")
+                    .then(function() {
+                        return processor.output();
+                    })
+                    .then(
+                        function() {
+                            assert.fail("Shouldn't have succeeded");
+                        },
+                        function(error) {
+                            assert(error);
+                        }
+                    );
+                });
+
+                it("should treat plugin warnings as errors by default (done)", function() {
+                    var processor = new Processor({
+                            done : [ require("postcss-import")() ]
                         });
                     
                     return processor.file("./test/specimens/invalid-import.css")

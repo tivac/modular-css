@@ -173,19 +173,7 @@ Processor.prototype = {
             var root = postcss.root();
 
             results.forEach(function(result) {
-                var warnings;
-
-                // This structure is slightly awkward, but ensures the work only occurs
-                // when in strict mode
-                if(self._options.strict) {
-                    warnings = result.warnings();
-                    
-                    if(warnings.length) {
-                        throw new Error(warnings.map(function(warning) {
-                            return warning.toString();
-                        }).join("\n"));
-                    }
-                }
+                self._warnings(result);
 
                 root.append(postcss.comment({
                     text : relative(self._options.cwd, result.opts.from)
@@ -199,10 +187,12 @@ Processor.prototype = {
                 assign({}, self._options, args || {})
             );
         })
-        .then(function(results) {
-            results.compositions = output.compositions(self._options.cwd, self);
+        .then(function(result) {
+            self._warnings(result);
+
+            result.compositions = output.compositions(self._options.cwd, self);
             
-            return results;
+            return result;
         });
     },
     
@@ -233,6 +223,8 @@ Processor.prototype = {
         
         return self._files[name].before.then(function(result) {
             self._files[name].result = result;
+
+            self._warnings(result);
             
             // Walk this node's dependencies, reading new files from disk as necessary
             return Promise.all(
@@ -246,6 +238,22 @@ Processor.prototype = {
                 })
             );
         });
+    },
+
+    _warnings : function(result) {
+        var warnings;
+        
+        if(!this._options.strict) {
+            return;
+        }
+
+        warnings = result.warnings();
+        
+        if(warnings.length) {
+            throw new Error(warnings.map(function(warning) {
+                return warning.toString();
+            }).join("\n"));
+        }
     },
     
     _namer : function(file, selector) {
