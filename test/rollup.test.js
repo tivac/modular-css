@@ -130,15 +130,13 @@ describe("/rollup.js", function() {
                 {
                     version  : 3,
                     file     : null,
-                    mappings : ";;;;;ACEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC;AACjB,OAAO,CAAC,GAAG,CAAC,KAAK,CAAC,CAAC",
+                    mappings : ";;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC;AACjB,OAAO,CAAC,GAAG,CAAC,KAAK,CAAC,CAAC",
                     names    : [],
                     sources  : [
-                        path.resolve(__dirname, "./specimens/rollup/simple.css").replace(/\\/g, "/"),
                         path.resolve(__dirname, "./specimens/rollup/simple.js").replace(/\\/g, "/")
                     ],
                     
                     sourcesContent : [
-                        ".fooga {\n    color: red;\n}\n",
                         "import css, {fooga} from \"./simple.css\";\n\nconsole.log(css);\nconsole.log(fooga);\n"
                     ]
                 }
