@@ -13,7 +13,9 @@
     "mocha": "mocha",
     "cover": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
     "lint": "eslint .",
-    "preversion": "npm test"
+    "preversion": "npm test",
+    "publish-please": "publish-please",
+    "prepublish": "publish-please guard"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
@@ -36,6 +38,7 @@
     "mocha": "^2.3.4",
     "postcss-color-rebeccapurple": "^2.0.0",
     "postcss-import": "^8.1.2",
+    "publish-please": "^2.1.4",
     "rimraf": "^2.5.0",
     "rollup": "^0.32.0",
     "shelljs": "^0.7.0",
