@@ -7,10 +7,10 @@ var assert    = require("assert"),
 
 describe("/issues", function() {
     describe("/98", function() {
-        it("should prune rules that only compose, but leave them in the exports", function(done) {
+        it("should prune rules that only compose, but leave them in the exports", function() {
             var processor = new Processor();
             
-            processor.string(
+            return processor.string(
                 "./test/specimens/issues/98.css",
                 ".booga { color: red } " +
                 ".fooga { composes: booga } " +
@@ -26,10 +26,7 @@ describe("/issues", function() {
             })
             .then(function(result) {
                 compare.stringToFile(result.css, "./test/results/issues/98.css");
-                
-                done();
-            })
-            .catch(done);
+            });
         });
     });
 });
