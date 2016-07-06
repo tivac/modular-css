@@ -30,7 +30,7 @@ module.exports = function(browserify, opts) {
     }
     
     function depReducer(curr, next) {
-        curr["./" + relative(options.cwd, next)] = next;
+        curr[relative.prefixed(options.cwd, next)] = next;
         
         return curr;
     }
