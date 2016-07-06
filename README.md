@@ -9,160 +9,41 @@ modular-css [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https
 
 Provides a subset of [css-modules](https://github.com/css-modules/css-modules) via:
 
+- [API](#api)
+- [CLI](#cli)
 - [Browserify](#browserify) Plugin
-    - [factor-bundle](#factor-bundle) is supported for splitting up bundles as well
 - [Rollup](#rollup) Plugin
-- [CLI](#cli-2)
-- [JS API](#js-api)
-- [require() hook](#require-hook)
 
 ## Install
 
 `$ npm i modular-css`
 
-## Browserify
+## Usage
 
-`modular-css` can be used as a browserify plugin, it can also be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
-
-The `modular-css` plugin will use the `basedir` passed to browserify as it's `cwd` parameter.
-
-#### Options
-
-##### `css`
-
-Location to write the generated CSS file to.
-
-##### Shared Options
-
-All other options are passed to the underlying `Processor` instance, see [Options](#options-2).
-
-#### CLI
-
-```
-$ browserify -p [ modular-css/browserify --css "./style.css" ] entry.js
-```
-
-#### API
-
-```js
-var browserify = require("browserify"),
-    build;
-
-build = browserify("./entry.js");
-
-build.plugin("modular-css/browserify", {
-    css : "./style.css",
-});
-```
-
-#### factor-bundle
-
-The `modular-css` browserify plugin is fully factor-bundle aware and will output correctly-partitioned CSS bundles to match the JS bundles created by factor-bundle.
-
-**WARNING**: Due to how `factor-bundle` works the `modular-css/browserify` plugin must be applied to the Browserify object **before** `factor-bundle`.
-
-##### CLI
-
-```
-$ browserify home.js account.js \
-    -p [ modular-css/browserify --css gen/common.css ] \
-    -p [ factor-bundle -o gen/home.js -o gen/account.js ] \
-    -o bundle/common.js
-```
-
-##### API
-
-```js
-var build = browserify([
-        "./home.js",
-        "./account.js"
-    ]);
-
-// NOTE modular-css applied before factor-bundle, it won't work otherwise!
-build.plugin("modular-css/browserify", {
-    css : "./gen/common.css"
-});
-
-build.plugin("factor-bundle", {
-    outputs : [
-        "./gen/home.js",
-        "./get/account.js"
-    ]
-});
-```
-
-## Rollup
-
-`modular-css/rollup` provides a rollup build plugin you can use to transform imported `.css` files into lookup objects.
-
-#### Options
-
-##### `css`
-
-Location to write the generated CSS file to.
-
-##### Shared Options
-
-All other options are passed to the underlying `Processor` instance, see [Options](#options-2).
-
-#### API
-
-```js
-rollup({
-    entry   : "./index.js",
-    plugins : [
-        require("modular-css/rollup")({
-            css : "./gen/index.css"
-        })
-    ]
-}).then(function(bundle) {
-    ...
-});
-```
-
-#### Config file
-
-```js
-import css from "modular-css/rollup";
-
-export default {
-    entry   : "./index.js",
-    dest    : "./gen/bundle.js",
-    format  : "umd",
-    plugins : [
-        css({
-            css : "./gen/index.css"
-        })
-    ]
-};
-```
-
-## CLI
-
-`$ modular-css ./entry.css`
-
-Will process `./entry.css` and output the processed CSS to stdout
-
-`$ modular-css ./entry.css ./gen/entry.css`
-
-Will process `./entry.css` and output the processed CSS to `./gen/entry.css` as well as a JSON file containing the scoped mapping to `./gen/entry.css.json`.
-
-## JS API
+### API
 
 Instantiate a new `Processor` instance, call it's `.file(<path>)` or `.string(<name>, <contents>)` methods, and then use the returned Promise to get access to the results/output.
 
 ```js
 var Processor = require("modular-css"),
-    processor = new Processor();
+    processor = new Processor({
+        // See "API Options" for valid options to pass to the Processor constructor
+    });
 
-processor.file("./entry.css").then(function(result) {
-    // result now contains
-    //  .exports - Scoped selector mappings
-    //  .files - metadata about the file hierarchy
-});
-
-// Once all files are added, use .output() to get at the rewritten CSS
-processor.output().then(function(result) {
+// Add entries, either from disk using .file() or as strings with .string()
+Promise.all([
+    processor.file("./entry.css".)then(function(result) {
+        // result now contains
+        //  .exports - Scoped selector mappings
+        //  .files - metadata about the file hierarchy
+    }),
+    processor.string("./fake-file.css", ".class { color: red; }")
+])
+.then(function() {
+    // Once all files are added, use .output() to get at the rewritten CSS
+    return processor.output();
+})
+.then(function(result) {
     // Output CSS lives on the .css property
     result.css;
     
@@ -171,9 +52,7 @@ processor.output().then(function(result) {
 });
 ```
 
-#### Options
-
-All options should be passed to the `Processor` constructor.
+#### API Options
 
 ##### `before`
 
@@ -244,16 +123,131 @@ new Processor({
 });
 ```
 
-## require() hook
+### CLI
 
-Modular CSS can be used within node.js by using the `require()` hook. Requiring `modular-css/register` will return a function that accepts the standard [options](#options) and will let you call `require()` on any `.css` files. The return value of requiring a CSS file is the usual object of exported classnames.
+`$ modular-css ./entry.css`
+
+Will process `./entry.css` and output the processed CSS to stdout
+
+`$ modular-css ./entry.css ./gen/entry.css`
+
+Will process `./entry.css` and output the processed CSS to `./gen/entry.css` as well as a JSON file containing the scoped mapping to `./gen/entry.css.json`.
+
+### Browserify
+
+`modular-css` can be used as a browserify plugin, it can also be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
+
+The `modular-css` plugin will use the `basedir` passed to browserify as it's `cwd` parameter.
+
+#### Options
+
+##### `css`
+
+Location to write the generated CSS file to.
+
+##### Shared Options
+
+All other options are passed to the underlying `Processor` instance, see [Options](#options-2).
+
+#### CLI
+
+```
+$ browserify -p [ modular-css/browserify --css "./style.css" ] entry.js
+```
+
+#### API
 
 ```js
-require("modular-css/register")({
-    css : "./output/out.css"
+var browserify = require("browserify"),
+    build;
+
+build = browserify("./entry.js");
+
+build.plugin("modular-css/browserify", {
+    css : "./style.css",
+});
+```
+
+#### factor-bundle
+
+The `modular-css` browserify plugin is fully factor-bundle aware and will output correctly-partitioned CSS bundles to match the JS bundles created by factor-bundle.
+
+**WARNING**: Due to how `factor-bundle` works the `modular-css/browserify` plugin must be applied to the Browserify object **before** `factor-bundle`.
+
+##### CLI
+
+```
+$ browserify home.js account.js \
+    -p [ modular-css/browserify --css gen/common.css ] \
+    -p [ factor-bundle -o gen/home.js -o gen/account.js ] \
+    -o bundle/common.js
+```
+
+##### API
+
+```js
+var build = browserify([
+        "./home.js",
+        "./account.js"
+    ]);
+
+// NOTE modular-css applied before factor-bundle, it won't work otherwise!
+build.plugin("modular-css/browserify", {
+    css : "./gen/common.css"
 });
 
-var css = require("./file.css");
+build.plugin("factor-bundle", {
+    outputs : [
+        "./gen/home.js",
+        "./get/account.js"
+    ]
+});
+```
+
+### Rollup
+
+`modular-css/rollup` provides a rollup build plugin you can use to transform imported `.css` files into lookup objects.
+
+#### Options
+
+##### `css`
+
+Location to write the generated CSS file to.
+
+##### Shared Options
+
+All other options are passed to the underlying `Processor` instance, see [Options](#options-2).
+
+#### API
+
+```js
+rollup({
+    entry   : "./index.js",
+    plugins : [
+        require("modular-css/rollup")({
+            css : "./gen/index.css"
+        })
+    ]
+}).then(function(bundle) {
+    ...
+});
+```
+
+#### Config file
+
+```js
+import css from "modular-css/rollup";
+
+export default {
+    entry   : "./index.js",
+    dest    : "./gen/bundle.js",
+    format  : "umd",
+    plugins : [
+        css({
+            css : "./gen/index.css"
+        })
+    ]
+};
 ```
 
 ## Why?
