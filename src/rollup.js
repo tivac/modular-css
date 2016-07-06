@@ -30,6 +30,8 @@ module.exports = function(opts) {
     }
     
     return {
+        name : "modular-css",
+
         transform : function(code, id) {
             if(!filter(id) || id.slice(slice) !== options.ext) {
                 return null;
@@ -61,10 +63,9 @@ module.exports = function(opts) {
                 };
             });
         },
-        
-        // This is a bit of a hack, see this rollup PR for details
-        // https://github.com/rollup/rollup/pull/353#issuecomment-164358181
-        footer : function() {
+
+        // Hook for when bundle.generate() is called
+        ongenerate : function() {
             processor.output({
                 to : options.css
             })
@@ -85,6 +86,9 @@ module.exports = function(opts) {
                     );
                 }
             });
+            
+            // TODO: Figure out if it's necessary to return a useful value
+            // https://github.com/rollup/rollup/pull/742#issuecomment-230836980
         }
     };
 };
