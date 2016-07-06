@@ -125,7 +125,13 @@ Processor.prototype = {
     
     // Get the dependency order for a file or the entire tree
     dependencies : function(file) {
-        return file ? this._graph.dependenciesOf(file) : this._graph.overallOrder();
+        if(file) {
+            return this._graph.dependenciesOf(
+                path.normalize(file)
+            );
+        }
+
+        return this._graph.overallOrder();
     },
     
     // Get the ultimate output for specific files or the entire tree
