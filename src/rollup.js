@@ -30,6 +30,8 @@ module.exports = function(opts) {
     }
     
     return {
+        name : "modular-css",
+
         transform : function(code, id) {
             if(!filter(id) || id.slice(slice) !== options.ext) {
                 return null;
@@ -61,19 +63,21 @@ module.exports = function(opts) {
                 };
             });
         },
-        
-        // This is a bit of a hack, see this rollup PR for details
-        // https://github.com/rollup/rollup/pull/353#issuecomment-164358181
-        footer : function() {
-            processor.output({
+
+        // Hook for when bundle.generate() is called
+        ongenerate : function(bundle, result) {
+            result.css = processor.output({
                 to : options.css
-            })
-            .then(function(result) {
+            });
+        },
+
+        onwrite : function(bundle, result) {
+            result.css.then(function(data) {
                 if(options.css) {
                     mkdirp.sync(path.dirname(options.css));
                     fs.writeFileSync(
                         options.css,
-                        result.css
+                        data.css
                     );
                 }
                 
@@ -81,7 +85,7 @@ module.exports = function(opts) {
                     mkdirp.sync(path.dirname(options.json));
                     fs.writeFileSync(
                         options.json,
-                        JSON.stringify(result.compositions, null, 4)
+                        JSON.stringify(data.compositions, null, 4)
                     );
                 }
             });

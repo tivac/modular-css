@@ -4,14 +4,12 @@ var fs     = require("fs"),
     path   = require("path"),
     assert = require("assert"),
     
-    rollup   = require("rollup").rollup,
+    rollup = require("rollup").rollup,
     
-    plugin = require("../src/rollup"),
-    
-    compare = require("./lib/compare-files"),
-    wait    = require("./lib/wait");
+    plugin  = require("../src/rollup"),
+    compare = require("./lib/compare-files");
 
-describe("/rollup.js", function() {
+describe.only("/rollup.js", function() {
     after(function(done) {
         require("rimraf")("./test/output/rollup", done);
     });
@@ -30,10 +28,7 @@ describe("/rollup.js", function() {
         .then(function(bundle) {
             var out = bundle.generate();
             
-            assert.equal(
-                out.code + "\n",
-                fs.readFileSync("./test/results/rollup/simple.js", "utf8")
-            );
+            compare.stringToFile(out.code, "./test/results/rollup/simple.js");
         });
     });
     
@@ -47,10 +42,23 @@ describe("/rollup.js", function() {
         .then(function(bundle) {
             var out = bundle.generate();
             
-            assert.equal(
-                out.code + "\n",
-                fs.readFileSync("./test/results/rollup/tree-shaking.js", "utf8")
-            );
+            compare.stringToFile(out.code, "./test/results/rollup/tree-shaking.js");
+        });
+    });
+
+    it("should attach a promise to the bundle.generate response", function() {
+          return rollup({
+            entry   : "./test/specimens/rollup/simple.js",
+            plugins : [
+                plugin({
+                    css : "./test/output/rollup/simple.css"
+                })
+            ]
+        })
+        .then(function(bundle) {
+            var out = bundle.generate();
+
+            assert.equal(typeof out.css.then, "function");
         });
     });
     
@@ -64,13 +72,12 @@ describe("/rollup.js", function() {
             ]
         })
         .then(function(bundle) {
-            // Have to call this so the output fn is invoked
-            bundle.generate();
-            
-            // And since that's sync, but generation isn't, this is necessary...
-            return wait("./test/output/rollup/simple.css").then(function() {
-                compare.results("rollup/simple.css");
+            return bundle.write({
+                dest : "./test/output/rollup/simple.js"
             });
+        })
+        .then(function() {
+            compare.results("rollup/simple.css");
         });
     });
     
@@ -84,13 +91,12 @@ describe("/rollup.js", function() {
             ]
         })
         .then(function(bundle) {
-            // Have to call this so the output fn is invoked
-            bundle.generate();
-            
-            // And since that's sync, but generation isn't, this is necessary...
-            return wait("./test/output/rollup/simple.json").then(function() {
-                compare.results("rollup/simple.json");
+            return bundle.write({
+                dest : "./test/output/rollup/simple.js"
             });
+        })
+        .then(function() {
+            compare.results("rollup/simple.json");
         });
     });
     
@@ -158,11 +164,14 @@ describe("/rollup.js", function() {
             var out = bundle.generate({ sourceMap : false });
             
             assert.equal(out.map, null);
-            
-            // And since that's sync, but generation isn't, this is necessary...
-            return wait("./test/output/rollup/no-maps.css").then(function() {
-                compare.results("rollup/no-maps.css");
+
+            return bundle.write({
+                dest      : "./test/output/rollup/no-maps.js",
+                sourceMap : false
             });
+        })
+        .then(function() {
+            compare.results("rollup/no-maps.css");
         });
     });
 });
