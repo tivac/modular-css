@@ -65,16 +65,19 @@ module.exports = function(opts) {
         },
 
         // Hook for when bundle.generate() is called
-        ongenerate : function() {
-            processor.output({
+        ongenerate : function(bundle, result) {
+            result.css = processor.output({
                 to : options.css
-            })
-            .then(function(result) {
+            });
+        },
+
+        onwrite : function(bundle, result) {
+            result.css.then(function(data) {
                 if(options.css) {
                     mkdirp.sync(path.dirname(options.css));
                     fs.writeFileSync(
                         options.css,
-                        result.css
+                        data.css
                     );
                 }
                 
@@ -82,13 +85,10 @@ module.exports = function(opts) {
                     mkdirp.sync(path.dirname(options.json));
                     fs.writeFileSync(
                         options.json,
-                        JSON.stringify(result.compositions, null, 4)
+                        JSON.stringify(data.compositions, null, 4)
                     );
                 }
             });
-            
-            // TODO: Figure out if it's necessary to return a useful value
-            // https://github.com/rollup/rollup/pull/742#issuecomment-230836980
         }
     };
 };
