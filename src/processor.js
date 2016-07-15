@@ -179,11 +179,24 @@ Processor.prototype = {
             var root = postcss.root();
 
             results.forEach(function(result) {
+                var comment;
+                
                 self._warnings(result);
 
-                root.append(postcss.comment({
+                comment = postcss.comment({
                     text : relative(self._options.cwd, result.opts.from)
-                }));
+                });
+
+                // Add a bogus-ish source property so postcss won't make weird-looking
+                // source-maps that break the visualizer
+                //
+                // https://github.com/postcss/postcss/releases/tag/5.1.0
+                // https://github.com/postcss/postcss/pull/761
+                //
+                comment.source = result.root.source;
+                comment.source.end = comment.source.start;
+
+                root.append(comment);
                 
                 root.append(result.root);
             });
