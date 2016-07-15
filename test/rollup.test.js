@@ -9,7 +9,7 @@ var fs     = require("fs"),
     plugin  = require("../src/rollup"),
     compare = require("./lib/compare-files");
 
-describe.only("/rollup.js", function() {
+describe("/rollup.js", function() {
     after(function(done) {
         require("rimraf")("./test/output/rollup", done);
     });
