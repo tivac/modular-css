@@ -56,7 +56,7 @@
     "lodash.get": "^4.2.1",
     "lodash.invert": "^4.0.0",
     "lodash.mapvalues": "^4.4.0",
-    "lodash.uniq": "^4.2.0",
+    "lodash.uniq": "^4.4.0",
     "mkdirp": "^0.5.1",
     "postcss": "^5.0.21",
     "postcss-selector-parser": "^2.0.0",
