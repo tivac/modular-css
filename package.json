@@ -49,7 +49,7 @@
     "esutils": "^2.0.2",
     "lodash.assign": "^4.0.0",
     "lodash.defaults": "^4.0.1",
-    "lodash.difference": "^4.0.0",
+    "lodash.difference": "^4.4.0",
     "lodash.filter": "^4.2.1",
     "lodash.findlast": "^4.4.0",
     "lodash.foreach": "^4.0.0",
