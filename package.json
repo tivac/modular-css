@@ -41,7 +41,7 @@
     "publish-please": "^2.1.4",
     "rimraf": "^2.5.0",
     "rollup": "^0.34.0",
-    "shelljs": "^0.7.0",
+    "shelljs": "^0.7.2",
     "watchify": "^3.7.0"
   },
   "dependencies": {
