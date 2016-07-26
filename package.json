@@ -58,7 +58,7 @@
     "lodash.mapvalues": "^4.4.0",
     "lodash.uniq": "^4.2.0",
     "mkdirp": "^0.5.1",
-    "postcss": "^5.0.21",
+    "postcss": "^5.1.1",
     "postcss-selector-parser": "^2.0.0",
     "postcss-url": "^5.1.0",
     "postcss-value-parser": "^3.2.3",
