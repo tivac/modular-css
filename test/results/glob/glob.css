@@ -1,16 +1,16 @@
-/* 1.css */
-.mceb37c9fc_one {
+/* test/specimens/glob/1.css */
+.mc7747055b_one {
     color: red
 }
-/* dir/3.css */
-.mcfd4d674b_three {
+/* test/specimens/glob/dir/3.css */
+.mcac0cd894_three {
     color: white
 }
-/* exclude/4.css */
-.mc2ec3d6d7_four {
+/* test/specimens/glob/exclude/4.css */
+.mcfb470b25_four {
     color: red
 }
-/* dir/2.css */
-.mc7426d22b_two {
+/* test/specimens/glob/dir/2.css */
+.mc650bdf6f_two {
     background: blue
 }

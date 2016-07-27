@@ -1,8 +1,6 @@
 "use strict";
 
-var fs      = require("fs"),
-    path    = require("path"),
-    assert  = require("assert"),
+var assert  = require("assert"),
     
     glob = require("../src/glob"),
     
@@ -18,12 +16,17 @@ describe.only("/glob.js", function() {
         assert.equal(typeof glob, "function");
     });
 
+
+
     it("should find files on disk & output css", function() {
         return glob({
-            cwd    : "./test/specimens/glob",
+            dir    : "./test/specimens/glob",
             search : [
                 "**/*.css"
             ]
+        })
+        .then(function(processor) {
+            return processor.output();
         })
         .then(function(output) {
             compare.stringToFile(output.css, "./test/results/glob/glob.css");
@@ -32,19 +35,17 @@ describe.only("/glob.js", function() {
 
     it("should support exclusion patterns", function() {
         return glob({
-            cwd    : "./test/specimens/glob",
+            dir    : "./test/specimens/glob",
             search : [
                 "**/*.css",
                 "!**/exclude/**"
             ]
+        })
+        .then(function(processor) {
+            return processor.output();
         })
         .then(function(output) {
             compare.stringToFile(output.css, "./test/results/glob/glob-excludes.css");
         });
     });
 });
-
-
-// var g = require("./src/glob");
-
-// g({ patterns : [ "**/*.css", "!**/node_modules/**" ], cwd : "./test/specimens/glob" });
