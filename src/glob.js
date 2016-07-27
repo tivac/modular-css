@@ -8,7 +8,7 @@ module.exports = function(opts) {
     var options   = opts || {},
         processor = new Processor(options),
         files     = globule.find(options.search, {
-            cwd        : options.cwd || process.cwd(),
+            cwd        : options.dir || process.cwd(),
             prefixBase : true
         });
         
@@ -18,6 +18,6 @@ module.exports = function(opts) {
         })
     )
     .then(function() {
-        return processor.output();
+        return processor;
     });
 };
