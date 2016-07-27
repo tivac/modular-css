@@ -1,0 +1,5 @@
+.two {
+    composes: three from "./3.css";
+    
+    background: blue;
+}

@@ -1,40 +1,45 @@
 #!/usr/bin/env node
 "use strict";
 
-var fs   = require("fs"),
-    path = require("path"),
+var fs = require("fs"),
     
-    mkdirp = require("mkdirp"),
-    
-    Processor = require("../src/processor"),
-    output    = require("../src/lib/output"),
-    
-    processor = new Processor({ map : true }),
-    
-    src = process.argv[2],
-    out = process.argv[3];
+    glob = require("../src/glob"),
 
-// Update checking
-require("update-notifier")({ pkg : require("../package.json" ) }).notify({ defer : true });
+    argv = require("minimist")(process.argv.slice(2), {
+        alias : {
+            map : "m",
+            out : "o",
+            dir : "d"
+        },
 
-processor.file(src).then(function() {
-    return processor.output({ to : out });
-})
-.then(function(result) {
-    /* eslint no-console:0 */
-    if(!out) {
-        return console.log(result.css);
+        string  : [ "dir", "out" ],
+        boolean : [ "map", "help" ],
+
+        default : {
+            map  : false,
+            out  : false,
+            help : false
+        }
+    });
+
+(function() {
+    if(argv.help) {
+        return fs.createReadStream("./bin/help.txt", "utf8").pipe(process.stdout);
     }
-    
-    mkdirp.sync(path.dirname(out));
-    
-    fs.writeFileSync(out, result.css);
-    
-    return fs.writeFileSync(
-        path.basename(out, path.extname(out)) + ".json",
-        JSON.stringify(output.compositions(process.cwd(), processor), null, 4)
-    );
-})
-.catch(function(error) {
-    console.log("Error!", error.stack);
-});
+
+    // aliasing this manually
+    argv.search = argv._;
+
+    return glob(argv).then(function(processor) {
+        return processor.output({
+            to : argv.out
+        });
+    })
+    .then(function(output) {
+        if(!argv.out) {
+            return process.stdout.write(output.css + "\n");
+        }
+
+        return fs.writeFileSync(argv.out, output.css, "utf8");
+    });
+}());
