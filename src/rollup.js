@@ -39,9 +39,11 @@ module.exports = function(opts) {
             
             return processor.string(id, code).then(function(result) {
                 var classes = output.join(result.exports),
-                    imports = processor.dependencies(id).map(function(file) {
-                        return "import \"" + relative.prefixed(path.dirname(id), file) + "\";";
-                    }).join("\n");
+                    imports = processor.dependencies(id)
+                        .map(function(file) {
+                            return "import \"" + relative.prefixed(path.dirname(id), file) + "\";";
+                        })
+                        .join("\n");
 
                 return {
                     code : (imports.length ? imports + "\n" : "") + Object.keys(classes).reduce(function(prev, curr) {
