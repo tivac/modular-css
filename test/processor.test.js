@@ -607,6 +607,21 @@ describe("/processor.js", function() {
                 });
             });
         });
+
+        it("should support unicode classes & ids", function() {
+            var processor = new Processor({
+                    namer : function(file, selector) {
+                        return selector;
+                    }
+                });
+            
+            return processor.file("./test/specimens/processor/unicode.css").then(function() {
+                return processor.output({ to : "./test/output/processor/unicode.css" });
+            })
+            .then(function(output) {
+                compare.stringToFile(output.css, "./test/results/processor/unicode.css");
+            });
+        });
         
         describe("bad imports", function() {
             var invalid = "Unable to locate \"../local.css\" from \"" + path.resolve("invalid") + "\"";
