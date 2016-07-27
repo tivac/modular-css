@@ -37,7 +37,6 @@
     "istanbul": "^0.4.2",
     "mocha": "^2.3.4",
     "postcss-color-rebeccapurple": "^2.0.0",
-    "postcss-import": "^8.1.2",
     "publish-please": "^2.1.4",
     "rimraf": "^2.5.0",
     "rollup": "^0.34.0",

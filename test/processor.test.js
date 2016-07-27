@@ -28,6 +28,10 @@ function async(css) {
     });
 }
 
+function warn(css, result) {
+    result.warn("warning");
+}
+
 describe("/processor.js", function() {
     describe("Basics", function() {
         it("should be a function", function() {
@@ -90,11 +94,10 @@ describe("/processor.js", function() {
             describe("strict", function() {
                 it("should treat plugin warnings as errors by default (before)", function() {
                     var processor = new Processor({
-                            before : [ require("postcss-import")() ]
+                            before : [ warn ]
                         });
                     
-                    return processor.file("./test/specimens/invalid-import.css")
-                    .then(function() {
+                    return processor.string("./test/specimens/simple.css", ".foo { color: red; }").then(function() {
                         return processor.output();
                     })
                     .then(
@@ -109,11 +112,10 @@ describe("/processor.js", function() {
                 
                 it("should treat plugin warnings as errors by default (after)", function() {
                     var processor = new Processor({
-                            after : [ require("postcss-import")() ]
+                            after : [ warn ]
                         });
                     
-                    return processor.file("./test/specimens/invalid-import.css")
-                    .then(function() {
+                    return processor.string("./test/specimens/simple.css", ".foo { color: red; }").then(function() {
                         return processor.output();
                     })
                     .then(
@@ -128,11 +130,10 @@ describe("/processor.js", function() {
 
                 it("should treat plugin warnings as errors by default (done)", function() {
                     var processor = new Processor({
-                            done : [ require("postcss-import")() ]
+                            done : [ warn ]
                         });
                     
-                    return processor.file("./test/specimens/invalid-import.css")
-                    .then(function() {
+                    return processor.string("./test/specimens/simple.css", ".foo { color: red; }").then(function() {
                         return processor.output();
                     })
                     .then(
@@ -147,12 +148,11 @@ describe("/processor.js", function() {
 
                 it("should ignore warnings when disabled", function() {
                     var processor = new Processor({
-                            after  : [ require("postcss-import")() ],
+                            after  : [ warn ],
                             strict : false
                         });
                     
-                    return processor.file("./test/specimens/invalid-import.css")
-                    .then(function() {
+                    return processor.string("./test/specimens/simple.css", ".foo { color: red; }").then(function() {
                         return processor.output();
                     });
                 });
