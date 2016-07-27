@@ -75,9 +75,11 @@ module.exports = postcss.plugin(plugin, function() {
         
         // Update out by walking dep graph and updating classes
         graph.overallOrder().forEach(function(selector) {
-            graph.dependenciesOf(selector).reverse().forEach(function(dep) {
-                out[selector] = refs[dep].concat(out[selector]);
-            });
+            graph.dependenciesOf(selector)
+                .reverse()
+                .forEach(function(dep) {
+                    out[selector] = refs[dep].concat(out[selector]);
+                });
         });
         
         result.messages.push({

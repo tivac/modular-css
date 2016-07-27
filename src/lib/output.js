@@ -16,9 +16,11 @@ exports.join = function(output) {
 exports.compositions = function(cwd, processor) {
     var json = {};
     
-    Object.keys(processor.files).sort().forEach(function(file) {
-        json[relative(cwd, file)] = exports.join(processor.files[file].exports);
-    });
+    Object.keys(processor.files)
+        .sort()
+        .forEach(function(file) {
+            json[relative(cwd, file)] = exports.join(processor.files[file].exports);
+        });
     
     return json;
 };

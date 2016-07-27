@@ -48,7 +48,7 @@ var values   = require("postcss-value-parser"),
     types = Object.keys(check);
 
 function parse(input) {
-    /* eslint complexity:[2, 17], no-loop-func:0 */
+    /* eslint max-statements:["error", 34], no-loop-func:0 */
     var out = {
             rules  : [],
             types  : {},

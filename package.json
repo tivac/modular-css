@@ -37,7 +37,6 @@
     "istanbul": "^0.4.2",
     "mocha": "^2.3.4",
     "postcss-color-rebeccapurple": "^2.0.0",
-    "postcss-import": "^8.1.2",
     "publish-please": "^2.1.4",
     "rimraf": "^2.5.0",
     "rollup": "^0.34.0",
@@ -60,7 +59,7 @@
     "lodash.uniq": "^4.2.0",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
-    "postcss": "5.0.21",
+    "postcss": "^5.1.0",
     "postcss-selector-parser": "^2.0.0",
     "postcss-url": "^5.1.0",
     "postcss-value-parser": "^3.2.3",
@@ -76,6 +75,9 @@
     "env": {
       "node": true,
       "mocha": true
+    },
+    "rules": {
+      "prefer-template": "off"
     }
   }
 }
