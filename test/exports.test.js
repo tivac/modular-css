@@ -29,4 +29,13 @@ describe("module exports", function() {
             assert.equal(rollup, require("../src/rollup"));
         });
     });
+
+    describe("/glob", function() {
+        it("should be the glob function", function() {
+            var glob = require("../glob");
+            
+            assert.equal(typeof glob, "function");
+            assert.equal(glob, require("../src/glob"));
+        });
+    });
 });

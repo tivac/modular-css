@@ -11,12 +11,10 @@ process.on("unhandledRejection", function(reason) {
     throw reason;
 });
 
-describe.only("/glob.js", function() {
+describe("/glob.js", function() {
     it("should be a function", function() {
         assert.equal(typeof glob, "function");
     });
-
-
 
     it("should find files on disk & output css", function() {
         return glob({
