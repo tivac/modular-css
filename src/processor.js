@@ -168,6 +168,7 @@ Processor.prototype = {
                 // NOTE: the call to .clone() is really important here, otherwise this call
                 // modifies the .result root itself and you process URLs multiple times
                 // See https://github.com/tivac/modular-css/issues/35
+                //
                 self._files[dep].result.root.clone(),
                 assign({}, self._options, {
                     from : dep,
@@ -192,6 +193,7 @@ Processor.prototype = {
                 //
                 // https://github.com/postcss/postcss/releases/tag/5.1.0
                 // https://github.com/postcss/postcss/pull/761
+                // https://github.com/tivac/modular-css/pull/157
                 //
                 comment.source = result.root.source;
                 comment.source.end = comment.source.start;
