@@ -2,26 +2,33 @@
 "use strict";
 
 var fs = require("fs"),
+    path = require("path"),
     
+    mkdirp = require("mkdirp"),
+
     glob = require("../src/glob"),
 
     argv = require("minimist")(process.argv.slice(2), {
         alias : {
-            map : "m",
-            out : "o",
-            dir : "d"
+            dir  : "d",
+            json : "j",
+            map  : "m",
+            out  : "o"
         },
 
-        string  : [ "dir", "out" ],
+        string  : [ "dir", "out", "json" ],
         boolean : [ "map", "help" ],
 
         default : {
+            dir  : false,
+            json : false,
             map  : false,
             out  : false,
             help : false
         }
     });
 
+// wrapped so I can early-return in the help case
 (function() {
     if(argv.help) {
         return fs.createReadStream("./bin/help.txt", "utf8").pipe(process.stdout);
@@ -36,10 +43,22 @@ var fs = require("fs"),
         });
     })
     .then(function(output) {
-        if(!argv.out) {
-            return process.stdout.write(output.css + "\n");
+        if(argv.json) {
+            mkdirp.sync(path.dirname(argv.json));
+            
+            fs.writeFileSync(
+                argv.json,
+                JSON.stringify(output.compositions, null, 4),
+                "utf8"
+            );
         }
 
-        return fs.writeFileSync(argv.out, output.css, "utf8");
+        if(argv.out) {
+            mkdirp.sync(path.dirname(argv.out));
+            
+            return fs.writeFileSync(argv.out, output.css, "utf8");
+        }
+
+        return process.stdout.write(output.css + "\n");
     });
 }());
