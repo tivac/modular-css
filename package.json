@@ -35,7 +35,7 @@
     "factor-bundle": "^2.5.0",
     "from2-string": "^1.1.0",
     "istanbul": "^0.4.2",
-    "mocha": "^2.3.4",
+    "mocha": "^3.0.0",
     "postcss-color-rebeccapurple": "^2.0.0",
     "publish-please": "^2.1.4",
     "rimraf": "^2.5.0",
