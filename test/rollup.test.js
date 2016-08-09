@@ -7,7 +7,8 @@ var fs     = require("fs"),
     rollup = require("rollup").rollup,
     
     plugin  = require("../src/rollup"),
-    compare = require("./lib/compare-files");
+    compare = require("./lib/compare-files"),
+    warn    = require("./lib/warn");
 
 describe("/rollup.js", function() {
     after(function(done) {
@@ -172,6 +173,67 @@ describe("/rollup.js", function() {
         })
         .then(function() {
             compare.results("rollup/no-maps.css");
+        });
+    });
+
+    describe("errors", function() {
+        function checkError(error) {
+            assert(error.toString().indexOf("Warning Plugin: warning") > -1);
+        }
+
+        it("should throw errors in in before plugins", function() {
+            return rollup({
+                entry   : "./test/specimens/rollup/simple.js",
+                plugins : [
+                    plugin({
+                        css    : "./test/output/rollup/errors.css",
+                        before : [ warn ]
+                    })
+                ]
+            })
+            .then(function(bundle) {
+                assert.fail("Shouldn't have succeeded")
+            })
+            .catch(checkError);
+        });
+
+        it("should throw errors in after plugins", function() {
+            return rollup({
+                entry   : "./test/specimens/rollup/simple.js",
+                plugins : [
+                    plugin({
+                        css   : "./test/output/rollup/errors.css",
+                        after : [ warn ]
+                    })
+                ]
+            })
+            .then(function(bundle) {
+                var out = bundle.generate({});
+
+                return out.css;
+            })
+            .then(function(result) {
+                assert.fail("Shouldn't have succeeded");
+            })
+            .catch(checkError);
+        });
+
+        it("should throw errors in done plugins", function() {
+            return rollup({
+                entry   : "./test/specimens/rollup/simple.js",
+                plugins : [
+                    plugin({
+                        css  : "./test/output/rollup/errors.css",
+                        done : [ warn ]
+                    })
+                ]
+            })
+            .then(function(bundle) {
+                return bundle.write({
+                    dest : "./test/output/rollup/done-error.js"
+                });
+            })
+            .catch(checkError);
         });
     });
 });
