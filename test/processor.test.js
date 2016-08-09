@@ -7,7 +7,8 @@ var fs      = require("fs"),
     Promise   = require("../src/lib/promise"),
     Processor = require("../src/processor"),
     
-    compare = require("./lib/compare-files");
+    compare = require("./lib/compare-files"),
+    warn    = require("./lib/warn");
 
 // Catch unhandled promise rejections and fail the test
 process.on("unhandledRejection", function(reason) {
@@ -26,10 +27,6 @@ function async(css) {
             resolve();
         }, 0);
     });
-}
-
-function warn(css, result) {
-    result.warn("warning");
 }
 
 describe("/processor.js", function() {
