@@ -10,11 +10,6 @@ var fs      = require("fs"),
     compare = require("./lib/compare-files"),
     warn    = require("./lib/warn");
 
-// Catch unhandled promise rejections and fail the test
-process.on("unhandledRejection", function(reason) {
-    throw reason;
-});
-
 function sync(css) {
     css.append({ selector : "a" });
 }

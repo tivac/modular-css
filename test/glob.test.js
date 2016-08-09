@@ -6,11 +6,6 @@ var assert  = require("assert"),
     
     compare = require("./lib/compare-files");
 
-// Catch unhandled promise rejections and fail the test
-process.on("unhandledRejection", function(reason) {
-    throw reason;
-});
-
 describe("/glob.js", function() {
     it("should be a function", function() {
         assert.equal(typeof glob, "function");
