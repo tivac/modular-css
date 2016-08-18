@@ -1,6 +1,6 @@
 {
   "name": "modular-css",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "description": "A curated subset of css-modules available as CLI, API, or Browserify transform",
   "main": "./index.js",
   "repository": "tivac/modular-css",
@@ -76,7 +76,7 @@
       "mocha": true
     },
     "globals": {
-        "Promise": true
+      "Promise": true
     },
     "rules": {
       "prefer-template": "off"
