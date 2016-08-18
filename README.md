@@ -10,6 +10,8 @@ modular-css [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https
 Provides a subset of [css-modules](https://github.com/css-modules/css-modules) via:
 
 - [API](#api)
+  - [Processor](#processor)
+  - [Globbing](#globbing)
 - [CLI](#cli)
 - [Browserify](#browserify) Plugin
 - [Rollup](#rollup) Plugin
@@ -21,6 +23,8 @@ Provides a subset of [css-modules](https://github.com/css-modules/css-modules) v
 ## Usage
 
 ### API
+
+#### Processor
 
 Instantiate a new `Processor` instance, call it's `.file(<path>)` or `.string(<name>, <contents>)` methods, and then use the returned Promise to get access to the results/output.
 
@@ -52,18 +56,18 @@ Promise.all([
 });
 ```
 
-#### API Options
+##### Processor Options
 
-##### `before`
+###### `before`
 
 Specify an array of PostCSS plugins to be run against each file before it is processed.
 
 ```js
 new Processor({
     before : [ require("postcss-import") ]
-});    
+});
 ```
-##### `after`
+###### `after`
 
 Specify an array of PostCSS plugins to be run after files are processed, but before they are combined. Plugin will be passed a `to` and `from` option.
 
@@ -75,17 +79,17 @@ new Processor({
 });
 ```
 
-##### `done`
+###### `done`
 
 Specify an array of PostCSS plugins to be run against the complete combined CSS.
 
 ```js
 new Processor({
     done : [ require("cssnano")()]
-});    
+});
 ```
 
-##### `map`
+###### `map`
 
 Enable source map generation. Can also be passed to `.output()`.
 
@@ -97,7 +101,7 @@ new Processor({
 });
 ```
 
-##### `cwd`
+###### `cwd`
 
 Specify the current working directory for this Processor instance, used when resolving `composes`/`@value` rules that reference other files.
 
@@ -109,7 +113,7 @@ new Processor({
 })
 ```
 
-##### `namer`
+###### `namer`
 
 Specify a function (that takes `filename` & `selector` as arguments to produce scoped selectors.
 
@@ -122,6 +126,31 @@ new Processor({
     }
 });
 ```
+
+#### Globbing
+
+If you don't care about the dependency tree from your code you can also use the globbing API to find files to process.
+
+```js
+var glob = require("modular-css/glob");
+
+glob({
+    search : [
+        "**/*.css"
+    ]
+})
+.then(function(processor) {
+    // returns a filled-out Processor instance you can use
+})
+```
+
+`glob()` accepts all of the same options as a [`Processor` instance](#processor-options) with the addition of the [`search`](#search) property.
+
+##### Glob Options
+
+###### `search`
+
+Array of glob patterns to pass to [`globule`](https://www.npmjs.com/package/globule) for searching.
 
 ### CLI
 

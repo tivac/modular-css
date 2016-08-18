@@ -13,7 +13,7 @@ describe("/glob.js", function() {
 
     it("should find files on disk & output css", function() {
         return glob({
-            dir    : "./test/specimens/glob",
+            cwd    : "./test/specimens/glob",
             search : [
                 "**/*.css"
             ]
@@ -28,7 +28,7 @@ describe("/glob.js", function() {
 
     it("should support exclusion patterns", function() {
         return glob({
-            dir    : "./test/specimens/glob",
+            cwd    : "./test/specimens/glob",
             search : [
                 "**/*.css",
                 "!**/exclude/**"
