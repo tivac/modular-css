@@ -1,8 +1,6 @@
 "use strict";
     
-var fs = require("fs"),
-    
-    Promise = require("../../src/lib/promise");
+var fs = require("fs");
     
 module.exports = function(file) {
     return new Promise(function(resolve) {
