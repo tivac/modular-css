@@ -2,7 +2,6 @@
 
 var assert = require("assert"),
     
-    Promise    = require("../src/lib/promise"),
     sequential = require("../src/lib/sequential");
 
 describe("/lib", function() {

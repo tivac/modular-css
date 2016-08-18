@@ -10,7 +10,6 @@ var fs   = require("fs"),
     urls     = require("postcss-url"),
     slug     = require("unique-slug"),
 
-    Promise    = require("./lib/promise"),
     output     = require("./lib/output"),
     message    = require("./lib/message"),
     relative   = require("./lib/relative"),

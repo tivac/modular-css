@@ -4,7 +4,6 @@ var fs      = require("fs"),
     path    = require("path"),
     assert  = require("assert"),
     
-    Promise   = require("../src/lib/promise"),
     Processor = require("../src/processor"),
     
     compare = require("./lib/compare-files"),
