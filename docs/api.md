@@ -12,7 +12,7 @@ var Processor = require("modular-css"),
 
 // Add entries, either from disk using .file() or as strings with .string()
 Promise.all([
-    processor.file("./entry.css".)then(function(result) {
+    processor.file("./entry.css").then(function(result) {
         // result now contains
         //  .exports - Scoped selector mappings
         //  .files - metadata about the file hierarchy
