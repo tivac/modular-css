@@ -140,40 +140,30 @@ function parse(input) {
     return false;
 }
 
+function process(file, input, thing, word) {
+    var parsed = parse(input);
+    
+    if(!parsed) {
+        throw thing.error("Unable to parse composition", { word : word });
+    }
+    
+    if(parsed.source && parsed.source !== "super") {
+         parsed.source = resolve(file, parsed.source);
+    }
+    
+    return parsed;
+}
+
 exports.parse = parse;
 
 exports.decl = function(file, decl) {
-    var parsed;
-    
     if(decl.prev() && decl.prev().prop !== "composes") {
         throw decl.error("composes must be the first declaration in the rule", { word : "composes" });
     }
     
-    parsed = parse(decl.value.trim());
-    
-    if(!parsed) {
-        throw decl.error("Unable to parse composition", { word : decl.value });
-    }
-    
-    if(parsed.source && parsed.source !== "super") {
-         parsed.source = resolve(file, parsed.source);
-    }
-    
-    return parsed;
+    return process(file, decl.value.trim(), decl, decl.value);
 };
 
 exports.rule = function(file, rule) {
-    var parsed;
-    
-    parsed = parse(rule.params.trim());
-    
-    if(!parsed) {
-        throw rule.error("Unable to parse composition", { word : rule.params });
-    }
-    
-    if(parsed.source && parsed.source !== "super") {
-         parsed.source = resolve(file, parsed.source);
-    }
-    
-    return parsed;
+    return process(file, rule.params.trim(), rule, rule.params);
 };

@@ -237,6 +237,17 @@ describe("/plugins", function() {
                 wooga : [ "booga", "tooga", "wooga" ]
             }));
         });
+
+        it("should support composing against global identifiers w/ the same name", () => {
+            var out = process(".wooga { composes: global(wooga); color: red; }", {
+                    from : "test/specimens/simple.css"
+                });
+            
+            assert.equal(out.messages.length, 2);
+            assert.deepEqual(out.messages[1], msg({
+                wooga : [ "wooga", "simple_wooga" ]
+            }));
+        });
         
         it("should handle multi-level dependencies", function() {
             var out = process(
