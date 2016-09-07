@@ -41,7 +41,13 @@ module.exports = postcss.plugin(plugin, function() {
             // Add references and update graph
             details.rules.forEach(function(rule) {
                 var global = details.types[rule] === "global",
-                    scoped = global ? rule : (details.source || "") + rule;
+                    scoped;
+                    
+                if(global) {
+                    scoped = "global-" + rule;
+                } else {
+                    scoped = (details.source ? details.source + "-" : "") + rule;
+                }
 
                 graph.addNode(scoped);
 
@@ -50,7 +56,7 @@ module.exports = postcss.plugin(plugin, function() {
                 });
 
                 if(global) {
-                    refs[rule] = [ rule ];
+                    refs[scoped] = [ rule ];
 
                     return;
                 }
@@ -72,7 +78,7 @@ module.exports = postcss.plugin(plugin, function() {
             // Remove the entire rule because it only contained the composes declaration
             return decl.parent.remove();
         });
-        
+
         // Update out by walking dep graph and updating classes
         graph.overallOrder().forEach(function(selector) {
             graph.dependenciesOf(selector)
@@ -81,7 +87,7 @@ module.exports = postcss.plugin(plugin, function() {
                     out[selector] = refs[dep].concat(out[selector]);
                 });
         });
-        
+
         result.messages.push({
             type    : "modularcss",
             plugin  : plugin,

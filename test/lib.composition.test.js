@@ -191,6 +191,19 @@ describe("/lib", function() {
                     }
                 );
             });
+
+            it("shouldn't mix local & global values", () => {
+                assert.deepEqual(
+                    composition.decl(from, parse(".a { composes: global(a); }").first),
+                    {
+                        rules  : [ "a" ],
+                        source : false,
+                        types  : {
+                            a : "global"
+                        }
+                    }
+                );
+            });
         });
         
         describe(".rule()", function() {
