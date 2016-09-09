@@ -23,7 +23,7 @@ module.exports = function(opts) {
         
         filter = utils.createFilter(options.include, options.exclude),
         
-        processor;
+        processor = new Processor(options);
         
     if(!options.onwarn) {
         options.onwarn = console.warn.bind(console); // eslint-disable-line
@@ -35,13 +35,6 @@ module.exports = function(opts) {
         transform : function(code, id) {
             if(!filter(id) || id.slice(slice) !== options.ext) {
                 return null;
-            }
-
-            // JIT processor creation to support dumping it at the end of each generation pass
-            // since rollup-watch doesn't notify us which files have changed
-            // https://github.com/tivac/modular-css/issues/158
-            if(!processor) {
-                 processor = new Processor(options);
             }
             
             return processor.string(id, code).then(function(result) {
@@ -77,12 +70,6 @@ module.exports = function(opts) {
         ongenerate : function(bundle, result) {
             result.css = processor.output({
                 to : options.css
-            })
-            .then(function(data) {
-                // Remove our reference to the processor so it'll be re-created on the next run
-                processor = null;
-
-                return data;
             });
         },
 
