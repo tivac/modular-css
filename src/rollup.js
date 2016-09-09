@@ -36,7 +36,13 @@ module.exports = function(opts) {
             if(!filter(id) || id.slice(slice) !== options.ext) {
                 return null;
             }
-            
+
+            // Remove this file if it's ever been processed before as a workaround
+            // since rollup-watch never tells us what file changed
+            // https://github.com/tivac/modular-css/issues/158
+            processor.remove(id, { shallow : true });
+
+            // Add the file & its dependencies
             return processor.string(id, code).then(function(result) {
                 var classes = output.join(result.exports),
                     imports = processor.dependencies(id)
@@ -44,7 +50,7 @@ module.exports = function(opts) {
                             return "import \"" + relative.prefixed(path.dirname(id), file) + "\";";
                         })
                         .join("\n");
-
+                
                 return {
                     code : (imports.length ? imports + "\n" : "") + Object.keys(classes).reduce(function(prev, curr) {
                         // Warn if any of the exported CSS wasn't able to be used as a valid JS identifier
