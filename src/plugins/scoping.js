@@ -9,7 +9,8 @@ var postcss   = require("postcss"),
 
 module.exports = postcss.plugin(plugin, function() {
     return function(css, result) {
-        var lookup = {},
+        var lookup  = {},
+            globals = {},
             parser, current;
             
         // Validate whether a selector should be renamed, returns the key to use
@@ -51,6 +52,7 @@ module.exports = postcss.plugin(plugin, function() {
                         throw current.error("Unable to re-use the same selector for global & local", { word : key });
                     }
                     
+                    globals[key] = true;
                     lookup[key] = [ child.value ];
                     child.ignore = true;
                 });
@@ -61,6 +63,10 @@ module.exports = postcss.plugin(plugin, function() {
                 
                 if(!key || node.ignore) {
                     return;
+                }
+
+                if(key in globals) {
+                    throw current.error("Unable to re-use the same selector for global & local", { word : key });
                 }
 
                 node.value = result.opts.namer(result.opts.from, node.value);
