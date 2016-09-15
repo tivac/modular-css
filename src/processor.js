@@ -100,22 +100,28 @@ Processor.prototype = {
     },
     
     // Remove a file from the dependency graph
-    remove : function(input) {
+    remove : function(input, options) {
         var self  = this,
             files = input;
 
         if(!Array.isArray(files)) {
             files = [ files ];
         }
+        
+        if(!options) {
+            options = false;
+        }
 
         files.filter(function(key) {
             return self._graph.hasNode(key);
         })
         .forEach(function(key) {
-            // Remove everything that depends on this too, it'll all need
-            // to be recalculated
-            self.remove(self._graph.dependantsOf(key));
-            
+            if(!options.shallow) {
+                // Remove everything that depends on this too, it'll all need
+                // to be recalculated
+                self.remove(self._graph.dependantsOf(key));
+            }
+
             delete self._files[key];
             
             self._graph.removeNode(key);
