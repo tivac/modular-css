@@ -173,6 +173,11 @@ describe("/plugins", function() {
                     process(".wooga :global(.booga) { color: red; }").css,
                     ".simple_wooga .booga { color: red; }"
                 );
+
+                assert.equal(
+                    process(".b { color: red; } :global(.b) { color: blue; }").css,
+                    ".simple_b { color: red; } .b { color: blue; }"
+                )
                 
                 assert.equal(
                     process(".wooga :global(.booga) .fooga { color: red; }").css,
