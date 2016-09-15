@@ -136,6 +136,13 @@ describe("/plugins", function() {
                 }, /must not be empty/);
             });
 
+            it("should throw if global & local selectors overlap (issue 192)", function() {
+                /* eslint no-unused-expressions:0 */
+                assert.throws(function() {
+                    process(".b { color: b; } :global(.b) { color: b; }").css;
+                }, /Unable to re-use the same selector for global & local/);
+            })
+
             it("shouldn't transform global selectors", function() {
                 assert.equal(
                     process(":global(.wooga) { color: red; }").css,
@@ -175,8 +182,8 @@ describe("/plugins", function() {
                 );
 
                 assert.equal(
-                    process(".b { color: red; } :global(.b) { color: blue; }").css,
-                    ".simple_b { color: red; } .b { color: blue; }"
+                    process(".b { color: red; } :global(.c) { color: blue; }").css,
+                    ".simple_b { color: red; } .c { color: blue; }"
                 )
                 
                 assert.equal(

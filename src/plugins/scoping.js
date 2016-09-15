@@ -46,6 +46,10 @@ module.exports = postcss.plugin(plugin, function() {
                     if(!key) {
                         return;
                     }
+
+                    if(key in lookup) {
+                        throw current.error("Unable to re-use the same selector for global & local", { word : key });
+                    }
                     
                     lookup[key] = [ child.value ];
                     child.ignore = true;
@@ -58,7 +62,7 @@ module.exports = postcss.plugin(plugin, function() {
                 if(!key || node.ignore) {
                     return;
                 }
-                
+
                 node.value = result.opts.namer(result.opts.from, node.value);
                 
                 lookup[key] = [ node.value ];
