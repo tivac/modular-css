@@ -141,6 +141,10 @@ describe("/plugins", function() {
                 assert.throws(function() {
                     process(".b { color: b; } :global(.b) { color: b; }").css;
                 }, /Unable to re-use the same selector for global & local/);
+
+                assert.throws(function() {
+                    process(":global(.b) { color: b; } .b { color: b; }").css;
+                }, /Unable to re-use the same selector for global & local/);
             })
 
             it("shouldn't transform global selectors", function() {
