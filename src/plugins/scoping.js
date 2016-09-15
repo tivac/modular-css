@@ -1,7 +1,7 @@
 "use strict";
 
-var postcss      = require("postcss"),
-    createParser = require("postcss-selector-parser"),
+var postcss   = require("postcss"),
+    processor = require("postcss-selector-parser"),
         
     identifiers = require("../lib/identifiers"),
     
@@ -9,7 +9,8 @@ var postcss      = require("postcss"),
 
 module.exports = postcss.plugin(plugin, function() {
     return function(css, result) {
-        var lookup = {},
+        var lookup  = {},
+            globals = {},
             parser, current;
             
         // Validate whether a selector should be renamed, returns the key to use
@@ -25,10 +26,8 @@ module.exports = postcss.plugin(plugin, function() {
             return false;
         }
 
-        parser = createParser(function(selectors) {
+        parser = processor(function(selectors) {
             selectors.walkPseudos(function(node) {
-                var replacement;
-                
                 if(node.value !== ":global") {
                     return;
                 }
@@ -38,10 +37,9 @@ module.exports = postcss.plugin(plugin, function() {
                 }
                 
                 // Replace the :global(...) with its contents
-                replacement = createParser.selector();
-                replacement.nodes = node.nodes;
-                
-                node.replaceWith(replacement);
+                node.replaceWith(processor.selector({
+                    nodes : node.nodes
+                }));
                 
                 node.walk(function(child) {
                     var key = rename(child);
@@ -49,7 +47,12 @@ module.exports = postcss.plugin(plugin, function() {
                     if(!key) {
                         return;
                     }
+
+                    if(key in lookup) {
+                        throw current.error("Unable to re-use the same selector for global & local", { word : key });
+                    }
                     
+                    globals[key] = true;
                     lookup[key] = [ child.value ];
                     child.ignore = true;
                 });
@@ -61,7 +64,11 @@ module.exports = postcss.plugin(plugin, function() {
                 if(!key || node.ignore) {
                     return;
                 }
-                
+
+                if(key in globals) {
+                    throw current.error("Unable to re-use the same selector for global & local", { word : key });
+                }
+
                 node.value = result.opts.namer(result.opts.from, node.value);
                 
                 lookup[key] = [ node.value ];
