@@ -1,7 +1,7 @@
 "use strict";
 
-var postcss      = require("postcss"),
-    createParser = require("postcss-selector-parser"),
+var postcss   = require("postcss"),
+    processor = require("postcss-selector-parser"),
         
     identifiers = require("../lib/identifiers"),
     
@@ -25,10 +25,8 @@ module.exports = postcss.plugin(plugin, function() {
             return false;
         }
 
-        parser = createParser(function(selectors) {
+        parser = processor(function(selectors) {
             selectors.walkPseudos(function(node) {
-                var replacement;
-                
                 if(node.value !== ":global") {
                     return;
                 }
@@ -38,10 +36,9 @@ module.exports = postcss.plugin(plugin, function() {
                 }
                 
                 // Replace the :global(...) with its contents
-                replacement = createParser.selector();
-                replacement.nodes = node.nodes;
-                
-                node.replaceWith(replacement);
+                node.replaceWith(processor.selector({
+                    nodes : node.nodes
+                }));
                 
                 node.walk(function(child) {
                     var key = rename(child);
