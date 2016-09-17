@@ -20,6 +20,10 @@ A curated subset of [css-modules](https://github.com/css-modules/css-modules)
 - [Browserify](docs/browserify.md) Plugin
 - [Rollup](docs/rollup.md) Plugin
 
+## Features
+
+See [docs/features.md](docs/features.md)
+
 ## Why?
 
 CSS Modules is a great idea but has been to slow to fix issues blocking me from being able to use it. To prove out the idea I built `modular-css`. In general `modular-css` is a implementation of the most useful parts of the CSS Modules spec. It unavoidably deviates in a few places to try and improve end-user consistency.
