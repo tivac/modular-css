@@ -1,4 +1,4 @@
-# CSS Modules
+# Features
 
 CSS Modules defines a bunch of great features, and `modular-css` supports the best of them in a straightforward and consistent way.
 
