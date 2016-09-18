@@ -115,10 +115,7 @@ describe("/rollup.js", function() {
         .then(function(bundle) {
             var out = bundle.generate();
             
-            assert.equal(
-                out.code + "\n",
-                fs.readFileSync("./test/results/rollup/invalid-name.js", "utf8")
-            );
+            compare.stringToFile(out.code, "./test/results/rollup/invalid-name.js");
         });
     });
     
