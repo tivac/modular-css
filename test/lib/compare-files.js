@@ -6,8 +6,8 @@ var fs     = require("fs"),
 
 exports.paths = function(path1, path2) {
     assert.equal(
-        fs.readFileSync(path1, "utf8") + "\n",
-        fs.readFileSync(path2, "utf8"),
+        fs.readFileSync(path1, "utf8").trim(),
+        fs.readFileSync(path2, "utf8").trim(),
         "Expected " + path1 + " to be the same as " + path2
     );
 };
@@ -21,8 +21,8 @@ exports.results = function(name1, name2) {
 
 exports.stringToFile = function(str, file) {
     assert.equal(
-        str + "\n",
-        fs.readFileSync(file, "utf8"),
+        str.trim(),
+        fs.readFileSync(file, "utf8").trim(),
         "Expected css to match " + file
     );
 };
