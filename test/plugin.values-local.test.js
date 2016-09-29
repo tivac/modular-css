@@ -2,8 +2,6 @@
 
 var assert = require("assert"),
     
-    assign = require("lodash.assign"),
-
     plugin = require("../src/plugins/values-local");
 
 describe("/plugins", function() {
@@ -12,7 +10,7 @@ describe("/plugins", function() {
         
         beforeEach(function() {
             process = function(css, options) {
-                return plugin.process(css, assign({
+                return plugin.process(css, Object.assign({
                     files : {
                         "test.css" : {}
                     },

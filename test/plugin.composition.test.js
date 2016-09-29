@@ -4,7 +4,6 @@ var path   = require("path"),
     assert = require("assert"),
 
     postcss = require("postcss"),
-    assign  = require("lodash.assign"),
     
     scoping     = require("../src/plugins/scoping"),
     composition = require("../src/plugins/composition");
@@ -25,7 +24,7 @@ describe("/plugins", function() {
             var processor = postcss([ scoping, composition ]);
             
             process = function(css, opts) {
-                return processor.process(css, assign({
+                return processor.process(css, Object.assign({
                     namer : function(file, selector) {
                         return file ? path.basename(file, path.extname(file)) + "_" + selector : selector;
                     }

@@ -7,7 +7,6 @@ var fs   = require("fs"),
     sink    = require("sink-transform"),
     mkdirp  = require("mkdirp"),
 
-    assign  = require("lodash.assign"),
     each    = require("lodash.foreach"),
     
     Processor = require("./processor"),
@@ -15,7 +14,7 @@ var fs   = require("fs"),
     output    = require("./lib/output");
 
 module.exports = function(browserify, opts) {
-    var options = assign({
+    var options = Object.assign({
             ext : ".css",
             map : browserify._options.debug,
             cwd : browserify._options.basedir || process.cwd()

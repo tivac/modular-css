@@ -3,8 +3,6 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    assign = require("lodash.assign"),
-    
     plugin = require("../src/plugins/scoping");
 
 function msg(classes) {
@@ -18,7 +16,7 @@ function msg(classes) {
 function process(src, options) {
     return plugin.process(
         src,
-        assign({
+        Object.assign({
             from  : "test/specimens/a.css",
             namer : function(file, selector) {
                 return `a_${selector}`;

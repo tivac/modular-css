@@ -1,8 +1,6 @@
 "use strict";
 
-var assign = require("lodash.assign"),
-    
-    postcss = require("postcss"),
+var postcss = require("postcss"),
     parser  = require("postcss-value-parser"),
     Graph   = require("dependency-graph").DepGraph;
 
@@ -107,8 +105,8 @@ module.exports = function(name, process) {
             
             // Can't use messages for values plugins, messages aren't persisted
             // between .process calls, even if you pass in a raw result object
-            details.values  = assign(details.values || {}, values);
-            details.sources = assign(details.sources || {}, sources);
+            details.values  = Object.assign(details.values || {}, values);
+            details.sources = Object.assign(details.sources || {}, sources);
         };
     });
 };
