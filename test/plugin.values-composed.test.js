@@ -3,8 +3,6 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    assign = require("lodash.assign"),
-    
     plugin = require("../src/plugins/values-composed");
 
 describe("/plugins", function() {
@@ -24,7 +22,7 @@ describe("/plugins", function() {
                 // Composition target
                 files[path.resolve("./test/specimens/start.css")] = {};
                 
-                return plugin.process(css, assign({
+                return plugin.process(css, Object.assign({
                     files : files,
                     from  : path.resolve("./test/specimens/start.css")
                 }, options || {}));

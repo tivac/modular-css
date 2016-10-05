@@ -4,7 +4,6 @@ var postcss      = require("postcss"),
     
     Graph   = require("dependency-graph").DepGraph,
     
-    assign    = require("lodash.assign"),
     unique    = require("lodash.uniq"),
     invert    = require("lodash.invert"),
     mapvalues = require("lodash.mapvalues"),
@@ -21,7 +20,7 @@ module.exports = postcss.plugin(plugin, function() {
             map   = invert(refs),
             opts  = result.opts,
             graph = new Graph(),
-            out   = assign({}, refs);
+            out   = Object.assign({}, refs);
         
         Object.keys(refs).forEach(function(key) {
             graph.addNode(key);

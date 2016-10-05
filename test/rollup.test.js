@@ -1,7 +1,6 @@
 "use strict";
 
-var fs     = require("fs"),
-    path   = require("path"),
+var path   = require("path"),
     assert = require("assert"),
     
     rollup = require("rollup").rollup,

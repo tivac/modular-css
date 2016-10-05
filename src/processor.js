@@ -3,7 +3,6 @@
 var fs   = require("fs"),
     path = require("path"),
     
-    assign   = require("lodash.assign"),
     defaults = require("lodash.defaults"),
     Graph    = require("dependency-graph").DepGraph,
     postcss  = require("postcss"),
@@ -74,7 +73,7 @@ Processor.prototype = {
                     if(!details.processed) {
                         details.processed = self._process.process(
                             details.result,
-                            assign({}, self._options, {
+                            Object.assign({}, self._options, {
                                 from  : dep,
                                 files : self._files,
                                 namer : self._options.namer
@@ -175,7 +174,7 @@ Processor.prototype = {
                 // See https://github.com/tivac/modular-css/issues/35
                 //
                 self._files[dep].result.root.clone(),
-                assign({}, self._options, {
+                Object.assign({}, self._options, {
                     from : dep,
                     to   : opts.to
                 })
@@ -210,7 +209,7 @@ Processor.prototype = {
             
             return self._done.process(
                 root,
-                assign({}, self._options, args || {})
+                Object.assign({}, self._options, args || {})
             );
         })
         .then(function(result) {
@@ -239,7 +238,7 @@ Processor.prototype = {
                 text    : text,
                 exports : {},
                 values  : {},
-                before  : self._before.process(text, assign({}, self._options, {
+                before  : self._before.process(text, Object.assign({}, self._options, {
                     from  : name,
                     graph : self._graph,
                     files : self._files

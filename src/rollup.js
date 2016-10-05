@@ -5,7 +5,6 @@ var fs   = require("fs"),
     
     keyword = require("esutils").keyword,
     utils   = require("rollup-pluginutils"),
-    assign  = require("lodash.assign"),
     mkdirp  = require("mkdirp"),
     
     Processor = require("./processor"),
@@ -13,7 +12,7 @@ var fs   = require("fs"),
     relative  = require("./lib/relative");
 
 module.exports = function(opts) {
-    var options = assign({
+    var options = Object.assign({
             ext  : ".css",
             json : false,
             map  : true
@@ -28,7 +27,7 @@ module.exports = function(opts) {
     if(!options.onwarn) {
         options.onwarn = console.warn.bind(console); // eslint-disable-line
     }
-    
+
     return {
         name : "modular-css",
 
