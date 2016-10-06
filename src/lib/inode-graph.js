@@ -1,58 +1,71 @@
 "use strict";
 
-var fs = require("fs"),
+var fs   = require("fs"),
+    path = require("path"),
 
     Graph = require("dependency-graph").DepGraph,
-    
+    proto = Graph.prototype,
+
     _lookup = new Map();
 
 function lookup(name) {
-    if(_lookup.has(name)) {
-        return _lookup.get(name);
+    var full = path.resolve(name),
+        stats;
+    
+    if(_lookup.has(full)) {
+        return _lookup.get(full);
     }
 
-    // TODO: take name & get inode, add mapping
+    stats = fs.lstatSync(full);
+
+    _lookup.set(full, stats.ino);
+
+    return stats.ino;
 }
 
 function InodeGraph() {
     Graph.call(this);
 }
 
-InodeGraph.prototype = Object.create(Graph.prototype);
+InodeGraph.prototype = Object.create(proto);
 InodeGraph.prototype.constructor = InodeGraph;
 
-InodeGraph.prototype.add = function(name, deps) {
-    var key = lookup(name);
-    
-    Graph.addNode.call(this, key, name);
-
-    if(Array.isArray(deps)) {
-        deps.forEach((d) => Graph.addDependency.call(this, key, lookup(d)));
-    }
+InodeGraph.prototype.addNode = function(name) {
+    proto.addNode.call(this, lookup(name), name);
 };
-    
+
 InodeGraph.prototype.remove = function(name) {
-    return Graph.removeNode.call(this, lookup(name));
+    return proto.removeNode.call(this, lookup(name));
 };
 
 InodeGraph.prototype.has = function(name) {
-    return Graph.hasNode.call(this, lookup(name));
+    return proto.hasNode.call(this, lookup(name));
 };
 
+InodeGraph.prototype.addDependency = function(a, b) {
+    proto.addDependency.call(this, lookup(a), lookup(b));
+};
+    
 InodeGraph.prototype.removeDependency = function(a, b) {
-    return Graph.removeDependency.call(this, lookup(a), lookup(b));
+    return proto.removeDependency.call(this, lookup(a), lookup(b));
 };
 
 InodeGraph.prototype.dependenciesOf = function(name, leaves) {
-    return Graph.dependenciesOf.call(this, lookup(name), leaves).map((n) => Graph.getNodeData.call(this, lookup(n)));
+    return proto.dependenciesOf.call(this, lookup(name), leaves).map((n) =>
+        proto.getNodeData.call(this, n)
+    );
 };
 
 InodeGraph.prototype.dependantsOf = function(name, leaves) {
-    return Graph.dependantsOf.call(this, lookup(name), leaves).map((n) => Graph.getNodeData.call(this, lookup(n)));
+    return proto.dependantsOf.call(this, lookup(name), leaves).map((n) =>
+        proto.getNodeData.call(this, n)
+    );
 };
 
 InodeGraph.prototype.overallOrder = function(leaves) {
-    return Graph.overallOrder.call(this, leaves).map((n) => Graph.getNodeData.call(this, lookup(n)));
+    return proto.overallOrder.call(this, leaves).map((n) =>
+        proto.getNodeData.call(this, n)
+    );
 };
 
 module.exports = InodeGraph;
