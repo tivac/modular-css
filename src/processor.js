@@ -76,7 +76,8 @@ Processor.prototype = {
                         Object.assign({}, self._options, {
                             from  : dep,
                             files : self._files,
-                            namer : self._options.namer
+                            namer : self._options.namer,
+                            graph : self._graph
                         })
                     );
                 }

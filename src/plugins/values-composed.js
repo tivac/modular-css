@@ -8,9 +8,14 @@ module.exports = values(
     function resolveImports(options, rule) {
         var parsed = composition.rule(options.from, rule),
             out    = {},
+            file   = options.graph.resolve(parsed.source),
             source;
         
-        source = options.files[parsed.source];
+        if(!options.files[file]) {
+            throw rule.error(`Unknown composition target ${parsed.source}`, { word : parsed.source });
+        }
+        
+        source = options.files[file];
 
         parsed.rules.forEach(function(key) {
             if(!(key in source.values)) {

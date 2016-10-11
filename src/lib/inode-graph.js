@@ -16,6 +16,7 @@ function lookup(name) {
         return _lookup.get(full);
     }
 
+    try {
     stats = fs.lstatSync(full);
 
     _lookup.set(full, stats.ino);
@@ -66,6 +67,12 @@ InodeGraph.prototype.overallOrder = function(leaves) {
     return proto.overallOrder.call(this, leaves).map((n) =>
         proto.getNodeData.call(this, n)
     );
+};
+
+InodeGraph.prototype.resolve = function(file) {
+    var inode = lookup(file);
+
+    return proto.getNodeData.call(this, inode);
 };
 
 module.exports = InodeGraph;

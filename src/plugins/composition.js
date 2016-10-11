@@ -16,11 +16,11 @@ var postcss      = require("postcss"),
 
 module.exports = postcss.plugin(plugin, function() {
     return function(css, result) {
-        var refs  = message(result, "classes"),
-            map   = invert(refs),
-            opts  = result.opts,
-            graph = new Graph(),
-            out   = Object.assign({}, refs);
+        var refs    = message(result, "classes"),
+            map     = invert(refs),
+            options = result.opts,
+            graph   = new Graph(),
+            out     = Object.assign({}, refs);
         
         Object.keys(refs).forEach(function(key) {
             graph.addNode(key);
@@ -28,24 +28,23 @@ module.exports = postcss.plugin(plugin, function() {
 
         // Go look up "composes" declarations and populate dependency graph
         css.walkDecls("composes", function(decl) {
-            var selectors, details;
-            
-            details   = composition.decl(opts.from, decl);
-            selectors = identifiers.parse(decl.parent.selector);
+            var parsed    = composition.decl(options.from, decl),
+                selectors = identifiers.parse(decl.parent.selector),
+                file      = options.graph.resolve(parsed.source);
 
-            if(details.source && (!opts.files || !opts.files[details.source])) {
+            if(parsed.source && (!options.files || !options.files[file])) {
                 throw decl.error("Invalid file reference", { word : decl.value });
             }
 
             // Add references and update graph
-            details.rules.forEach(function(rule) {
-                var global = details.types[rule] === "global",
+            parsed.rules.forEach(function(rule) {
+                var global = parsed.types[rule] === "global",
                     scoped;
                     
                 if(global) {
                     scoped = "global-" + rule;
                 } else {
-                    scoped = (details.source ? details.source + "-" : "") + rule;
+                    scoped = (parsed.source ? parsed.source + "-" : "") + rule;
                 }
 
                 graph.addNode(scoped);
@@ -60,8 +59,8 @@ module.exports = postcss.plugin(plugin, function() {
                     return;
                 }
 
-                if(details.source) {
-                    refs[scoped] = opts.files[details.source].exports[rule];
+                if(file) {
+                    refs[scoped] = options.files[file].exports[rule];
                 }
 
                 if(!refs[scoped]) {
