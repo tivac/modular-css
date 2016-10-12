@@ -5,7 +5,6 @@ var fs   = require("fs"),
     
     Graph    = require("dependency-graph").DepGraph,
     postcss  = require("postcss"),
-    urls     = require("postcss-url"),
     slug     = require("unique-slug"),
 
     output     = require("./lib/output"),
@@ -45,7 +44,7 @@ function Processor(opts) {
     ]);
     
     this._after = postcss(this._options.after || [
-        urls
+        require("postcss-url")
     ]);
     
     this._done = postcss(this._options.done || []);
