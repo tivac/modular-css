@@ -11,8 +11,7 @@ var fs   = require("fs"),
     message    = require("./lib/message.js"),
     relative   = require("./lib/relative.js"),
     cloneGraph = require("./lib/clone-graph.js"),
-    sequential = require("./lib/sequential.js"),
-    resolve    = require("./lib/resolve.js");
+    sequential = require("./lib/sequential.js");
 
 function Processor(opts) {
     /* eslint consistent-return:0 */
