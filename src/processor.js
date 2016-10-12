@@ -3,7 +3,6 @@
 var fs   = require("fs"),
     path = require("path"),
     
-    defaults = require("lodash.defaults"),
     Graph    = require("dependency-graph").DepGraph,
     postcss  = require("postcss"),
     urls     = require("postcss-url"),
@@ -23,12 +22,12 @@ function Processor(opts) {
         return new Processor(opts);
     }
     
-    this._options = defaults({}, options || {}, {
+    this._options = Object.assign({
         cwd    : process.cwd(),
         map    : false,
         namer  : this._namer.bind(this),
         strict : true
-    });
+    }, options || {});
     
     this._files = {};
     this._graph = new Graph();
