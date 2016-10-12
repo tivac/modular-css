@@ -7,11 +7,12 @@ var fs   = require("fs"),
     postcss  = require("postcss"),
     slug     = require("unique-slug"),
 
-    output     = require("./lib/output"),
-    message    = require("./lib/message"),
-    relative   = require("./lib/relative"),
-    cloneGraph = require("./lib/clone-graph"),
-    sequential = require("./lib/sequential");
+    output     = require("./lib/output.js"),
+    message    = require("./lib/message.js"),
+    relative   = require("./lib/relative.js"),
+    cloneGraph = require("./lib/clone-graph.js"),
+    sequential = require("./lib/sequential.js"),
+    resolve    = require("./lib/resolve.js");
 
 function Processor(opts) {
     /* eslint consistent-return:0 */
@@ -32,8 +33,8 @@ function Processor(opts) {
     this._graph = new Graph();
     
     this._before = postcss((this._options.before || []).concat(
-        require("./plugins/values-local"),
-        require("./plugins/graph-nodes")
+        require("./plugins/values-local.js"),
+        require("./plugins/graph-nodes.js")
     ));
 
     this._process = postcss([
