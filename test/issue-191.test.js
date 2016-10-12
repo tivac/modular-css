@@ -3,16 +3,20 @@
 var path   = require("path"),
     assert = require("assert"),
     
+    compare = require("./lib/compare-files.js"),
+
     Processor = require("../src/processor");
 
-describe("/issues", function() {
-    describe("/191", function() {
-        it.only("should ignore case differences in file paths", function() {
+describe("/issues", () => {
+    describe("/191", () => {
+        it("should ignore case differences in file paths", () => {
             var processor = new Processor();
             
-            return processor.file("./test/specimens/issues/191/start.css").then(function(result) {
-                assert.equal(Object.keys(result.files).length, 2);
-            });
+            return processor.file("./test/specimens/issues/191/start.css")
+                .then(() => processor.output())
+                .then((output) =>
+                    compare.stringToFile(output.css, "./test/results/issues/191.css")
+                );
         });
     });
 });
