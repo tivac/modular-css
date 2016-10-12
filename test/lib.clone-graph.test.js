@@ -6,19 +6,19 @@ var assert = require("assert"),
 
     clone = require("../src/lib/clone-graph");
 
-describe("/lib", function() {
-    describe("/clone-graph.js", function() {
-        it("should clone all nodes & relationships in the graph", function() {
+describe("/lib", () => {
+    describe("/clone-graph.js", () => {
+        it("should clone all nodes & relationships in the graph", () => {
             var graph = new Graph();
             
-            graph.addNode("fooga");
-            graph.addNode("booga");
-            graph.addNode("wooga");
-            graph.addNode("tooga");
+            graph.addNode("A");
+            graph.addNode("B");
+            graph.addNode("C");
+            graph.addNode("D");
             
-            graph.addDependency("fooga", "booga");
-            graph.addDependency("booga", "wooga");
-            graph.addDependency("fooga", "tooga");
+            graph.addDependency("A", "B");
+            graph.addDependency("B", "C");
+            graph.addDependency("A", "D");
             
             assert.deepEqual(
                 graph,

@@ -137,10 +137,10 @@ Processor.prototype = {
         var self  = this,
             opts  = args || false,
             files = opts.files,
-            clone = cloneGraph(this._graph),
-            tier;
+            clone, tier;
         
         if(!Array.isArray(files)) {
+            clone = cloneGraph(this._graph);
             files = [];
             
             while(Object.keys(clone.nodes).length) {
@@ -158,12 +158,14 @@ Processor.prototype = {
         
         // Rewrite relative URLs before adding
         // Have to do this every time because target file might be different!
+        //
         return Promise.all(files.map((dep) => self._after.process(
             // NOTE: the call to .clone() is really important here, otherwise this call
             // modifies the .result root itself and you process URLs multiple times
             // See https://github.com/tivac/modular-css/issues/35
             //
             self._files[dep].result.root.clone(),
+            
             Object.assign({}, self._options, {
                 from : dep,
                 to   : opts.to
@@ -210,7 +212,7 @@ Processor.prototype = {
         });
     },
     
-    // Expose our file list
+    // Expose files
     get files() {
         return this._files;
     },
