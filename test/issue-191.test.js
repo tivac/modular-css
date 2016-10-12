@@ -7,12 +7,13 @@ var fs     = require("fs"),
 
     Processor = require("../src/processor");
 
-describe("/issues", () => {
-    describe("/191", () => {
+describe("/issues", function() {
+    describe("/191", function() {
         after((done) => require("rimraf")("./test/output/sensitive.txt", done));
 
-        it("should ignore case differences in file paths", () => {
-            var processor;
+        it("should ignore case differences in file paths", function() {
+            var test = this,
+                processor;
             
             // Verify that filesystem is case-insensitive before bothering
             fs.writeFileSync("./test/output/sensitive.txt");
