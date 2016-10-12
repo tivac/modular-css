@@ -16,7 +16,6 @@ function lookup(name) {
         return _lookup.get(full);
     }
 
-    try {
     stats = fs.lstatSync(full);
 
     _lookup.set(full, stats.ino);
