@@ -65,25 +65,27 @@ Processor.prototype = {
         return this._walk(start, text).then(() => {
             var deps = self._graph.dependenciesOf(start).concat(start);
             
-            return sequential(deps.map((dep) => (() => {
-                var details = self._files[dep];
-                
-                if(!details.processed) {
-                    details.processed = self._process.process(
-                        details.result,
-                        Object.assign({}, self._options, {
-                            from  : dep,
-                            files : self._files,
-                            namer : self._options.namer
-                        })
-                    );
+            return sequential(deps.map((dep) =>
+                () => {
+                    var details = self._files[dep];
+                    
+                    if(!details.processed) {
+                        details.processed = self._process.process(
+                            details.result,
+                            Object.assign({}, self._options, {
+                                from  : dep,
+                                files : self._files,
+                                namer : self._options.namer
+                            })
+                        );
+                    }
+                    
+                    return details.processed.then((result) => {
+                        details.exports = message(result, "classes");
+                        details.result  = result;
+                    });
                 }
-                
-                return details.processed.then((result) => {
-                    details.exports = message(result, "classes");
-                    details.result  = result;
-                });
-            })));
+            ));
         })
         .then(() => ({
             id      : start,
@@ -138,7 +140,7 @@ Processor.prototype = {
             clone = cloneGraph(this._graph),
             tier;
         
-        if(!files) {
+        if(!Array.isArray(files)) {
             files = [];
             
             while(Object.keys(clone.nodes).length) {
