@@ -17,7 +17,9 @@ describe("/issues", () => {
             // Verify that filesystem is case-insensitive before bothering
             fs.writeFileSync("./test/output/sensitive.txt");
 
-            if(!fs.statSync("./test/output/SENSITIVE.txt")) {
+            try {
+                fs.statSync("./test/output/SENSITIVE.txt");
+            } catch(e) {
                 return this.skip();
             }
 
