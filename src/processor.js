@@ -4,11 +4,11 @@ var fs   = require("fs"),
     path = require("path"),
     
     defaults = require("lodash.defaults"),
+    Graph    = require("dependency-graph").DepGraph,
     postcss  = require("postcss"),
     urls     = require("postcss-url"),
     slug     = require("unique-slug"),
 
-    Graph      = require("./lib/inode-graph"),
     output     = require("./lib/output"),
     message    = require("./lib/message"),
     relative   = require("./lib/relative"),
@@ -64,7 +64,6 @@ Processor.prototype = {
             start = path.resolve(file);
         
         return this._walk(start, text).then(() => {
-            // TODO: Need to fix this somehow
             var deps = self._graph.dependenciesOf(start).concat(start);
             
             return sequential(deps.map((dep) => (() => {
@@ -76,8 +75,7 @@ Processor.prototype = {
                         Object.assign({}, self._options, {
                             from  : dep,
                             files : self._files,
-                            namer : self._options.namer,
-                            graph : self._graph
+                            namer : self._options.namer
                         })
                     );
                 }

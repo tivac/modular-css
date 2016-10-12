@@ -7,7 +7,7 @@ var path   = require("path"),
 
 describe("/issues", function() {
     describe("/191", function() {
-        it("should ignore case differences in file paths", function() {
+        it.only("should ignore case differences in file paths", function() {
             var processor = new Processor();
             
             return processor.file("./test/specimens/issues/191/start.css").then(function(result) {
