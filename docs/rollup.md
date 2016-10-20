@@ -4,9 +4,21 @@
 
 ## Options
 
+### `ext`
+
+Extension to match on. Defaults to `.css`. Can be used in place of `include`/`exclude`.
+
+### `include`/`exclude`
+
+A minimatch pattern, or an array of minimatch patterns, relative to `process.cwd()`. Can be used in place of `ext`.
+
 ### `css`
 
 Location to write the generated CSS file to.
+
+### `json`
+
+Location to write out the JSON mapping file for use in server rendering.
 
 ### Shared Options
 
