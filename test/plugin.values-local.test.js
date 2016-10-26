@@ -49,6 +49,13 @@ describe("/plugins", function() {
             );
         });
 
+        it("should replace value references in @value declarations", function() {
+            assert.equal(
+                process("@value color: red; @value value: color; .wooga { color: value; }").css,
+                ".wooga { color: red; }"
+            );
+        });
+
         it("should replace values in media queries", function() {
             assert.equal(
                 process(

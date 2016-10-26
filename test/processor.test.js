@@ -321,7 +321,11 @@ describe("/processor.js", function() {
                 it("should remove a file", function() {
                     var processor = this.processor;
 
-                    return processor.string("./test/specimens/simple.css", ".wooga { }").then(function() {
+                    return processor.string(
+                        "./test/specimens/simple.css",
+                        ".wooga { }"
+                    )
+                    .then(() => {
                         processor.remove(path.resolve("./test/specimens/simple.css"));
                         
                         assert.deepEqual(processor.dependencies(), []);
@@ -336,7 +340,7 @@ describe("/processor.js", function() {
                         processor.string("./test/specimens/b.css", ".booga { }"),
                         processor.string("./test/specimens/c.css", ".cooga { }")
                     ])
-                    .then(function() {
+                    .then(() => {
                         processor.remove([
                             path.resolve("./test/specimens/a.css"),
                             path.resolve("./test/specimens/b.css")
@@ -353,27 +357,29 @@ describe("/processor.js", function() {
                 it("should return the dependencies of the specified file", function() {
                     var processor = this.processor;
 
-                    return processor.file("./test/specimens/start.css").then(function() {
-                        assert.deepEqual(
-                            processor.dependencies(path.resolve("./test/specimens/start.css")),
-                            [
-                                path.resolve("./test/specimens/folder/folder.css"),
-                                path.resolve("./test/specimens/local.css")
-                            ]
-                        );
-                    });
+                    return processor.file(
+                        "./test/specimens/start.css"
+                    )
+                    .then(() => assert.deepEqual(
+                        processor.dependencies(path.resolve("./test/specimens/start.css")),
+                        [
+                            path.resolve("./test/specimens/folder/folder.css"),
+                            path.resolve("./test/specimens/local.css")
+                        ]
+                    ));
                 });
                 
                 it("should return the overall order of dependencies if no file is specified", function() {
                     var processor = this.processor;
 
-                    return processor.file("./test/specimens/start.css").then(function() {
-                        assert.deepEqual(processor.dependencies(), [
-                            path.resolve("./test/specimens/folder/folder.css"),
-                            path.resolve("./test/specimens/local.css"),
-                            path.resolve("./test/specimens/start.css")
-                        ]);
-                    });
+                    return processor.file(
+                        "./test/specimens/start.css"
+                    )
+                    .then(() => assert.deepEqual(processor.dependencies(), [
+                        path.resolve("./test/specimens/folder/folder.css"),
+                        path.resolve("./test/specimens/local.css"),
+                        path.resolve("./test/specimens/start.css")
+                    ]));
                 });
             });
             
@@ -396,12 +402,8 @@ describe("/processor.js", function() {
                         processor.file("./test/specimens/start.css"),
                         processor.file("./test/specimens/simple.css")
                     ])
-                    .then(function() {
-                        return processor.output();
-                    })
-                    .then(function(result) {
-                        compare.stringToFile(result.css, "./test/results/processor/output-all.css");
-                    });
+                    .then(() => processor.output())
+                    .then((result) => compare.stringToFile(result.css, "./test/results/processor/output-all.css"));
                 });
 
                 it("should avoid duplicating files in the output", function() {
@@ -411,21 +413,18 @@ describe("/processor.js", function() {
                         processor.file("./test/specimens/start.css"),
                         processor.file("./test/specimens/local.css")
                     ])
-                    .then(function() {
-                        return processor.output();
-                    })
-                    .then(function(result) {
-                        compare.stringToFile(result.css, "./test/results/processor/avoid-duplicates.css");
-                    });
+                    .then(() => processor.output())
+                    .then((result) => compare.stringToFile(result.css, "./test/results/processor/avoid-duplicates.css"));
                 });
                 
                 it("should generate a JSON structure of all the compositions", function() {
                     var processor = this.processor;
 
-                    return processor.file("./test/specimens/start.css").then(function() {
-                        return processor.output();
-                    })
-                    .then(function(result) {
+                    return processor.file(
+                        "./test/specimens/start.css"
+                    )
+                    .then(() => processor.output())
+                    .then((result) => {
                         assert("compositions" in result);
                         assert.equal(typeof result.compositions, "object");
                         
@@ -460,12 +459,8 @@ describe("/processor.js", function() {
                         processor.file("./test/specimens/composes.css"),
                         processor.file("./test/specimens/deep.css")
                     ])
-                    .then(function() {
-                        return processor.output();
-                    })
-                    .then(function(result) {
-                        compare.stringToFile(result.css, "./test/results/processor/sorting.css");
-                    });
+                    .then(() => processor.output())
+                    .then((result) => compare.stringToFile(result.css, "./test/results/processor/sorting.css"));
                 });
             });
         });
@@ -479,10 +474,11 @@ describe("/processor.js", function() {
                 it("should return all the files that have been added", function() {
                     var processor = this.processor;
                     
-                    return processor.file("./test/specimens/start.css").then(function() {
-                        return processor.file("./test/specimens/local.css");
-                    })
-                    .then(function() {
+                    return processor.file(
+                        "./test/specimens/start.css"
+                    )
+                    .then(() => processor.file("./test/specimens/local.css"))
+                    .then(() => {
                         assert.equal(typeof processor.files, "object");
                         
                         assert.equal(Object.keys(processor.files).length, 3);
@@ -495,106 +491,149 @@ describe("/processor.js", function() {
             });
         });
         
-        it("should export an object of arrays containing strings", function() {
-            return this.processor.string(
-                "./test/specimens/simple.css",
-                ".fooga { color: red; } .booga { background: #000; } .tooga { composes: fooga, booga; }"
-            ).then(function(result) {
-                assert.deepEqual(result.exports, {
-                    fooga : [ "mc08e91a5b_fooga" ],
-                    booga : [ "mc08e91a5b_booga" ],
-                    tooga : [ "mc08e91a5b_fooga", "mc08e91a5b_booga", "mc08e91a5b_tooga" ]
-                });
-            });
-        });
-
-        it("should scope classes, ids, and keyframes", function() {
-            return this.processor.string(
-                "./test/specimens/simple.css",
-                "@keyframes kooga { } #fooga { } .wooga { }"
-            ).then(function(result) {
-                var file = result.files[path.resolve("./test/specimens/simple.css")];
-                
-                assert.deepEqual(result.exports, {
-                    fooga : [ "mc08e91a5b_fooga" ],
-                    kooga : [ "mc08e91a5b_kooga" ],
-                    wooga : [ "mc08e91a5b_wooga" ]
-                });
-
-                assert.equal(typeof file, "object");
-
-                assert.deepEqual(file.exports, {
-                    fooga : [ "mc08e91a5b_fooga" ],
-                    kooga : [ "mc08e91a5b_kooga" ],
-                    wooga : [ "mc08e91a5b_wooga" ]
-                });
-
-                assert.equal(file.text, "@keyframes kooga { } #fooga { } .wooga { }");
-                assert.equal(
-                    file.processed.root.toResult().css,
-                    "@keyframes mc08e91a5b_kooga { } " +
-                    "#mc08e91a5b_fooga { } " +
-                    ".mc08e91a5b_wooga { }"
-                );
-            });
-        });
-
-        it("should export identifiers and their classes", function() {
-            return this.processor.file("./test/specimens/start.css").then(function(result) {
-                var file = result.files[path.resolve("./test/specimens/start.css")];
+        describe("bad imports", function() {
+            var invalid = "Unable to locate \"../local.css\" from \"" + path.resolve("invalid") + "\"";
             
-                assert.deepEqual(result.exports, {
-                    wooga : [ "mc04cb4cb2_booga", "mc61f0515a_wooga" ],
-                    booga : [ "mc61f0515a_booga" ],
-                    tooga : [ "mc61f0515a_tooga" ]
+            it("should fail if a value imports a non-existant reference", function() {
+                return this.processor.string(
+                    "./invalid/value.css",
+                    "@value not-real from \"../local.css\";"
+                )
+                .catch((error) => assert.equal(error.message, invalid));
+            });
+            
+            it("should fail if a composition imports a non-existant reference", function() {
+                return this.processor.string(
+                    "./invalid/composition.css",
+                    ".wooga { composes: fake from \"../local.css\"; }"
+                )
+                .catch((error) => assert.equal(error.message, invalid));
+            });
+        });
+
+        describe("scoping", function() {
+            it("should scope classes, ids, and keyframes", function() {
+                return this.processor.string(
+                    "./test/specimens/simple.css",
+                    "@keyframes kooga { } #fooga { } .wooga { }"
+                ).then((result) => {
+                    var file = result.files[path.resolve("./test/specimens/simple.css")];
+                    
+                    assert.deepEqual(result.exports, {
+                        fooga : [ "mc08e91a5b_fooga" ],
+                        kooga : [ "mc08e91a5b_kooga" ],
+                        wooga : [ "mc08e91a5b_wooga" ]
+                    });
+
+                    assert.equal(typeof file, "object");
+
+                    assert.deepEqual(file.exports, {
+                        fooga : [ "mc08e91a5b_fooga" ],
+                        kooga : [ "mc08e91a5b_kooga" ],
+                        wooga : [ "mc08e91a5b_wooga" ]
+                    });
+
+                    assert.equal(file.text, "@keyframes kooga { } #fooga { } .wooga { }");
+                    assert.equal(
+                        file.processed.root.toResult().css,
+                        "@keyframes mc08e91a5b_kooga { } " +
+                        "#mc08e91a5b_fooga { } " +
+                        ".mc08e91a5b_wooga { }"
+                    );
                 });
+            });
+        });
 
-                assert.equal(file.text, fs.readFileSync("./test/specimens/start.css", "utf8"));
-                assert.equal(
-                    file.processed.root.toResult().css,
-                    ".mc61f0515a_booga { color: red; background: blue; }\n" +
-                    ".mc61f0515a_tooga { border: 1px solid white; }\n"
-                );
+        describe("values", function() {
+            it("should support local values in value composition", function() {
+                return this.processor.string(
+                    "./test/specimens/simple.css",
+                    "@value local: './local.css'; @value one from local; .fooga { background: one; }"
+                )
+                .then((result) => assert.deepEqual(result.exports, {
+                    fooga : [ "mc08e91a5b_fooga" ]
+                }));
+            });
+        });
 
-                assert.deepEqual(file.values, {
-                    folder : "white",
-                    one    : "red",
-                    two    : "blue"
-                });
+        describe("exports", function() {
+            it("should export an object of arrays containing strings", function() {
+                return this.processor.string(
+                    "./test/specimens/simple.css",
+                    ".fooga { color: red; } .booga { background: #000; } .tooga { composes: fooga, booga; }"
+                )
+                .then((result) => {
+                    assert.deepEqual(result.exports, {
+                        fooga : [ "mc08e91a5b_fooga" ],
+                        booga : [ "mc08e91a5b_booga" ],
+                        tooga : [ "mc08e91a5b_fooga", "mc08e91a5b_booga", "mc08e91a5b_tooga" ]
+                    });
+                })
+                .catch((e) => {
+                    throw e;
+                })
+            });
 
-                assert.deepEqual(file.exports, {
-                    wooga : [ "mc04cb4cb2_booga", "mc61f0515a_wooga" ],
-                    booga : [ "mc61f0515a_booga" ],
-                    tooga : [ "mc61f0515a_tooga" ]
-                });
-
-                file = result.files[path.resolve("./test/specimens/local.css")];
-
-                assert.equal(file.text, fs.readFileSync("./test/specimens/local.css", "utf8"));
-                assert.equal(file.processed.root.toResult().css, ".mc04cb4cb2_booga { background: green; }\n");
-
-                assert.deepEqual(file.values, {
-                    folder : "white",
-                    one    : "red",
-                    two    : "blue"
-                });
-
-                assert.deepEqual(file.exports, {
-                    booga : [ "mc04cb4cb2_booga" ],
-                    looga : [ "mc04cb4cb2_booga", "mc04cb4cb2_looga" ]
-                });
-
-                file = result.files[path.resolve("./test/specimens/folder/folder.css")];
-
-                assert.equal(file.text, fs.readFileSync("./test/specimens/folder/folder.css", "utf8"));
-                assert.equal(file.processed.root.toResult().css, ".mc04bb002b_folder { margin: 2px; }\n");
-
-                assert.deepEqual(file.values, {
-                    folder : "white"
-                });
+            it("should export identifiers and their classes", function() {
+                return this.processor.file(
+                    "./test/specimens/start.css"
+                )
+                .then(function(result) {
+                    var file = result.files[path.resolve("./test/specimens/start.css")];
                 
-                assert.deepEqual(file.exports, {
-                    folder : [ "mc04bb002b_folder" ]
+                    assert.deepEqual(result.exports, {
+                        wooga : [ "mc04cb4cb2_booga", "mc61f0515a_wooga" ],
+                        booga : [ "mc61f0515a_booga" ],
+                        tooga : [ "mc61f0515a_tooga" ]
+                    });
+
+                    assert.equal(file.text, fs.readFileSync("./test/specimens/start.css", "utf8"));
+                    assert.equal(
+                        file.processed.root.toResult().css,
+                        ".mc61f0515a_booga { color: red; background: blue; }\n" +
+                        ".mc61f0515a_tooga { border: 1px solid white; }\n"
+                    );
+
+                    assert.deepEqual(file.values, {
+                        folder : "white",
+                        one    : "red",
+                        two    : "blue"
+                    });
+
+                    assert.deepEqual(file.exports, {
+                        wooga : [ "mc04cb4cb2_booga", "mc61f0515a_wooga" ],
+                        booga : [ "mc61f0515a_booga" ],
+                        tooga : [ "mc61f0515a_tooga" ]
+                    });
+
+                    file = result.files[path.resolve("./test/specimens/local.css")];
+
+                    assert.equal(file.text, fs.readFileSync("./test/specimens/local.css", "utf8"));
+                    assert.equal(file.processed.root.toResult().css, ".mc04cb4cb2_booga { background: green; }\n");
+
+                    assert.deepEqual(file.values, {
+                        folder : "white",
+                        one    : "red",
+                        two    : "blue"
+                    });
+
+                    assert.deepEqual(file.exports, {
+                        booga : [ "mc04cb4cb2_booga" ],
+                        looga : [ "mc04cb4cb2_booga", "mc04cb4cb2_looga" ]
+                    });
+
+                    file = result.files[path.resolve("./test/specimens/folder/folder.css")];
+
+                    assert.equal(file.text, fs.readFileSync("./test/specimens/folder/folder.css", "utf8"));
+                    assert.equal(file.processed.root.toResult().css, ".mc04bb002b_folder { margin: 2px; }\n");
+
+                    assert.deepEqual(file.values, {
+                        folder : "white"
+                    });
+                    
+                    assert.deepEqual(file.exports, {
+                        folder : [ "mc04bb002b_folder" ]
+                    });
                 });
             });
         });
@@ -611,28 +650,6 @@ describe("/processor.js", function() {
             })
             .then(function(output) {
                 compare.stringToFile(output.css, "./test/results/processor/unicode.css");
-            });
-        });
-        
-        describe("bad imports", function() {
-            var invalid = "Unable to locate \"../local.css\" from \"" + path.resolve("invalid") + "\"";
-            
-            it("should fail if a value imports a non-existant reference", function() {
-                return this.processor.string(
-                    "./invalid/value.css",
-                    "@value not-real from \"../local.css\";"
-                ).catch(function(error) {
-                    assert.equal(error.message, invalid);
-                });
-            });
-            
-            it("should fail if a composition imports a non-existant reference", function() {
-                return this.processor.string(
-                    "./invalid/composition.css",
-                    ".wooga { composes: fake from \"../local.css\"; }"
-                ).catch(function(error) {
-                    assert.equal(error.message, invalid);
-                });
             });
         });
     });

@@ -93,7 +93,7 @@ module.exports = function(name, process) {
                 }
             });
 
-            css.walkAtRules("media", function(rule) {
+            css.walkAtRules(/media|value/, function(rule) {
                 var replaced = replacer(values, sources, rule.params);
                 
                 rule.params = replaced.value;
