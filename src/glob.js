@@ -5,7 +5,12 @@ var globule = require("globule"),
     Processor = require("./processor.js");
 
 module.exports = function(opts) {
-    var options   = opts || false,
+    var options   = Object.assign({
+            search : [
+                "**/*.css"
+            ]
+        /* istanbul ignore next */
+        }, opts || {}),
         processor = new Processor(options);
         
     return Promise.all(

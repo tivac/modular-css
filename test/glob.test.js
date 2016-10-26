@@ -11,6 +11,16 @@ describe("/glob.js", function() {
         assert.equal(typeof glob, "function");
     });
 
+    it("should use a default search", function() {
+        return glob({
+            cwd : "./test/specimens/glob"
+        })
+        .then((processor) => processor.output())
+        .then((output) => {
+            compare.stringToFile(output.css, "./test/results/glob/glob.css");
+        });
+    });
+
     it("should find files on disk & output css", function() {
         return glob({
             cwd    : "./test/specimens/glob",
@@ -18,10 +28,8 @@ describe("/glob.js", function() {
                 "**/*.css"
             ]
         })
-        .then(function(processor) {
-            return processor.output();
-        })
-        .then(function(output) {
+        .then((processor) => processor.output())
+        .then((output) => {
             compare.stringToFile(output.css, "./test/results/glob/glob.css");
         });
     });
@@ -34,10 +42,8 @@ describe("/glob.js", function() {
                 "!**/exclude/**"
             ]
         })
-        .then(function(processor) {
-            return processor.output();
-        })
-        .then(function(output) {
+        .then((processor) => processor.output())
+        .then((output) => {
             compare.stringToFile(output.css, "./test/results/glob/glob-excludes.css");
         });
     });
