@@ -45,27 +45,44 @@ describe("/processor.js", function() {
                 it("should use a custom naming function", function() {
                     var id        = path.resolve("./test/specimens/simple.css"),
                         processor = new Processor({
-                            namer : function(filename, selector) {
-                                return filename + selector;
-                            }
+                            namer : (filename, selector) => `${filename}${selector}`
                         });
                         
-                    return processor.string("./test/specimens/simple.css", ".wooga { }").then(function(result) {
+                    return processor.string(
+                        "./test/specimens/simple.css",
+                        ".wooga { }"
+                    )
+                    .then((result) => {
                         var file = result.files[id];
                     
                         assert.deepEqual(result.exports, {
-                            wooga : [ id + "wooga" ]
+                            wooga : [ `${id}wooga` ]
                         });
 
                         assert.equal(typeof file, "object");
 
                         assert.deepEqual(file.exports, {
-                            wooga : [ id + "wooga" ]
+                            wooga : [ `${id}wooga` ]
                         });
 
                         assert.equal(file.text, ".wooga { }");
-                        assert.equal(file.processed.root.toResult().css, "." + id + "wooga { }");
+                        assert.equal(file.processed.root.toResult().css, `.${id}wooga { }`);
                     });
+                });
+
+                it("should use the default naming function if a non-function is passed", function() {
+                    var id        = path.resolve("./test/specimens/simple.css"),
+                        processor = new Processor({
+                            namer : false
+                        });
+                        
+                    return processor.string(
+                        "./test/specimens/simple.css",
+                        ".wooga { }"
+                    )
+                    .then((result) => assert.deepEqual(result.exports, {
+                        wooga : [ "mc08e91a5b_wooga" ]
+                    }));
                 });
             });
 
@@ -73,12 +90,11 @@ describe("/processor.js", function() {
                 it("should generate source maps", function() {
                     var processor = new Processor({ map : true });
                     
-                    return processor.file("./test/specimens/start.css").then(function() {
-                        return processor.output({ to : "out.css" });
-                    })
-                    .then(function(result) {
-                        compare.stringToFile(result.css, "./test/results/processor/source-map.css");
-                    });
+                    return processor.file(
+                        "./test/specimens/start.css"
+                    )
+                    .then(() => processor.output({ to : "out.css" }))
+                    .then((result) => compare.stringToFile(result.css, "./test/results/processor/source-map.css"));
                 });
             });
 
@@ -88,17 +104,13 @@ describe("/processor.js", function() {
                             before : [ warn ]
                         });
                     
-                    return processor.string("./test/specimens/simple.css", ".foo { color: red; }").then(function() {
-                        return processor.output();
-                    })
-                    .then(
-                        function() {
-                            assert.fail("Shouldn't have succeeded");
-                        },
-                        function(error) {
-                            assert(error);
-                        }
-                    );
+                    return processor.string(
+                        "./test/specimens/simple.css",
+                        ".foo { color: red; }"
+                    )
+                    .then(() => processor.output())
+                    .then(() => assert.fail("Shouldn't have succeeded"))
+                    .catch((error) => assert(error));
                 });
                 
                 it("should treat plugin warnings as errors by default (after)", function() {
@@ -106,17 +118,13 @@ describe("/processor.js", function() {
                             after : [ warn ]
                         });
                     
-                    return processor.string("./test/specimens/simple.css", ".foo { color: red; }").then(function() {
-                        return processor.output();
-                    })
-                    .then(
-                        function() {
-                            assert.fail("Shouldn't have succeeded");
-                        },
-                        function(error) {
-                            assert(error);
-                        }
-                    );
+                    return processor.string(
+                        "./test/specimens/simple.css",
+                        ".foo { color: red; }"
+                    )
+                    .then(() => processor.output())
+                    .then(() => assert.fail("Shouldn't have succeeded"))
+                    .catch((error) => assert(error));
                 });
 
                 it("should treat plugin warnings as errors by default (done)", function() {
@@ -124,17 +132,13 @@ describe("/processor.js", function() {
                             done : [ warn ]
                         });
                     
-                    return processor.string("./test/specimens/simple.css", ".foo { color: red; }").then(function() {
-                        return processor.output();
-                    })
-                    .then(
-                        function() {
-                            assert.fail("Shouldn't have succeeded");
-                        },
-                        function(error) {
-                            assert(error);
-                        }
-                    );
+                    return processor.string(
+                        "./test/specimens/simple.css",
+                        ".foo { color: red; }"
+                    )
+                    .then(() => processor.output())
+                    .then(() => assert.fail("Shouldn't have succeeded"))
+                    .catch((error) => assert(error));
                 });
 
                 it("should ignore warnings when disabled", function() {
@@ -143,9 +147,11 @@ describe("/processor.js", function() {
                             strict : false
                         });
                     
-                    return processor.string("./test/specimens/simple.css", ".foo { color: red; }").then(function() {
-                        return processor.output();
-                    });
+                    return processor.string(
+                        "./test/specimens/simple.css",
+                        ".foo { color: red; }"
+                    )
+                    .then(() => processor.output());
                 });
             });
 
@@ -156,9 +162,12 @@ describe("/processor.js", function() {
                                 before : [ sync ]
                             });
                         
-                        return processor.string("test/specimens/sync-before.css", "").then(function() {
-                            return processor.output();
-                        }).then(function(result) {
+                        return processor.string(
+                            "test/specimens/sync-before.css",
+                            ""
+                        )
+                        .then(() => processor.output())
+                        .then(function(result) {
                             assert.equal(
                                 result.css,
                                 "/* test/specimens/sync-before.css */\n" +
@@ -172,16 +181,16 @@ describe("/processor.js", function() {
                                 before : [ async ]
                             });
                         
-                        return processor.string("test/specimens/async-before.css", "").then(function() {
-                            return processor.output();
-                        })
-                        .then(function(result) {
-                            assert.equal(
-                                result.css,
-                                "/* test/specimens/async-before.css */\n" +
-                                "a {}"
-                            );
-                        });
+                        return processor.string(
+                            "test/specimens/async-before.css",
+                            ""
+                        )
+                        .then(() => processor.output())
+                        .then((result) => assert.equal(
+                            result.css,
+                            "/* test/specimens/async-before.css */\n" +
+                            "a {}"
+                        ));
                     });
                 });
                 
@@ -197,12 +206,11 @@ describe("/processor.js", function() {
                     it("should use postcss-url by default", function() {
                         var processor = this.processor;
 
-                        return processor.file("./test/specimens/relative.css").then(function() {
-                            return processor.output({ to : "./test/output/relative.css" });
-                        })
-                        .then(function(result) {
-                            compare.stringToFile(result.css, "./test/results/processor/relative.css");
-                        });
+                        return processor.file(
+                            "./test/specimens/relative.css"
+                        )
+                        .then(() => processor.output({ to : "./test/output/relative.css" }))
+                        .then((result) => compare.stringToFile(result.css, "./test/results/processor/relative.css"));
                     });
                     
                     it("should run sync postcss plugins", function() {
@@ -210,15 +218,14 @@ describe("/processor.js", function() {
                                 after : [ sync ]
                             });
 
-                        return processor.file("./test/specimens/relative.css").then(function() {
-                            return processor.output({ to : "./test/output/relative.css" });
-                        })
-                        .then(function(result) {
-                            assert.equal(
-                                result.css,
-                                css
-                            );
-                        });
+                        return processor.file(
+                            "./test/specimens/relative.css"
+                        )
+                        .then(() => processor.output({ to : "./test/output/relative.css" }))
+                        .then((result) => assert.equal(
+                            result.css,
+                            css
+                        ));
                     });
                     
                     it("should run async postcss plugins", function() {
@@ -226,15 +233,14 @@ describe("/processor.js", function() {
                                 after : [ async ]
                             });
 
-                        return processor.file("./test/specimens/relative.css").then(function() {
-                            return processor.output({ to : "./test/output/relative.css" });
-                        })
-                        .then(function(result) {
-                            assert.equal(
-                                result.css,
-                                css
-                            );
-                        });
+                        return processor.file(
+                            "./test/specimens/relative.css"
+                        )
+                        .then(() => processor.output({ to : "./test/output/relative.css" }))
+                        .then((result) => assert.equal(
+                            result.css,
+                            css
+                        ));
                     });
                 });
                 
@@ -244,15 +250,16 @@ describe("/processor.js", function() {
                                 done : [ sync ]
                             });
                         
-                        return processor.string("test/specimens/sync-done.css", "").then(function() {
-                            return processor.output();
-                        }).then(function(result) {
-                            assert.equal(
-                                result.css,
-                                "/* test/specimens/sync-done.css */\n" +
-                                "a {}"
-                            );
-                        });
+                        return processor.string(
+                            "test/specimens/sync-done.css",
+                            ""
+                        )
+                        .then(() => processor.output())
+                        .then((result) => assert.equal(
+                            result.css,
+                            "/* test/specimens/sync-done.css */\n" +
+                            "a {}"
+                        ));
                     });
                     
                     it("should run async postcss plugins done processing", function() {
@@ -260,15 +267,16 @@ describe("/processor.js", function() {
                                 done : [ async ]
                             });
                         
-                        return processor.string("test/specimens/async-done.css", "").then(function() {
-                            return processor.output();
-                        }).then(function(result) {
-                            assert.equal(
-                                result.css,
-                                "/* test/specimens/async-done.css */\n" +
-                                "a {}"
-                            );
-                        });
+                        return processor.string(
+                            "test/specimens/async-done.css",
+                            ""
+                        )
+                        .then(() => processor.output())
+                        .then((result) => assert.equal(
+                            result.css,
+                            "/* test/specimens/async-done.css */\n" +
+                            "a {}"
+                        ));
                     });
                 });
             });

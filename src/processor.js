@@ -13,6 +13,10 @@ var fs   = require("fs"),
     cloneGraph = require("./lib/clone-graph.js"),
     sequential = require("./lib/sequential.js");
 
+function namer(cwd, file, selector) {
+    return "mc" + slug(relative(cwd, file)) + "_" + selector;
+}
+
 function Processor(opts) {
     /* eslint consistent-return:0 */
     var options = opts;
@@ -24,9 +28,12 @@ function Processor(opts) {
     this._options = Object.assign({
         cwd    : process.cwd(),
         map    : false,
-        namer  : this._namer.bind(this),
         strict : true
     }, options || {});
+
+    if(typeof this._options.namer !== "function") {
+        this._options.namer = namer.bind(null, this._options.cwd);
+    }
     
     this._files = {};
     this._graph = new Graph();
@@ -265,10 +272,6 @@ Processor.prototype = {
         if(warnings.length) {
             throw new Error(warnings.map((warning) => warning.toString()).join("\n"));
         }
-    },
-    
-    _namer : function(file, selector) {
-        return "mc" + slug(relative(this._options.cwd, file)) + "_" + selector;
     }
 };
 
