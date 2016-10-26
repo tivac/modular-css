@@ -172,6 +172,21 @@ describe("/rollup.js", function() {
         });
     });
 
+    it("should respect the CSS dependency tree", function() {
+        return rollup({
+            entry   : "./test/specimens/rollup/dependencies.js",
+            plugins : [
+                plugin()
+            ]
+        })
+        .then(function(bundle) {
+            var out = bundle.generate();
+            
+            compare.stringToFile(out.code, "./test/results/rollup/dependencies.js");
+        });
+    });
+    
+
     describe("errors", function() {
         function checkError(error) {
             assert(error.toString().indexOf("Warning Plugin: warning") > -1);

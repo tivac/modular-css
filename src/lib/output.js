@@ -5,12 +5,7 @@ var map = require("lodash.mapvalues"),
     relative = require("./relative");
 
 exports.join = function(output) {
-     return map(
-        output,
-        function(classes) {
-            return classes.join(" ");
-        }
-    );
+    return map(output, (classes) => classes.join(" "));
 };
 
 exports.compositions = function(cwd, processor) {
@@ -18,9 +13,9 @@ exports.compositions = function(cwd, processor) {
     
     Object.keys(processor.files)
         .sort()
-        .forEach(function(file) {
-            json[relative(cwd, file)] = exports.join(processor.files[file].exports);
-        });
+        .forEach((file) =>
+            (json[relative(cwd, file)] = exports.join(processor.files[file].exports))
+        );
     
     return json;
 };

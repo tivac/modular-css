@@ -3,17 +3,15 @@
 var fs   = require("fs"),
     path = require("path"),
     
-    defaults = require("lodash.defaults"),
     Graph    = require("dependency-graph").DepGraph,
     postcss  = require("postcss"),
-    urls     = require("postcss-url"),
     slug     = require("unique-slug"),
 
-    output     = require("./lib/output"),
-    message    = require("./lib/message"),
-    relative   = require("./lib/relative"),
-    cloneGraph = require("./lib/clone-graph"),
-    sequential = require("./lib/sequential");
+    output     = require("./lib/output.js"),
+    message    = require("./lib/message.js"),
+    relative   = require("./lib/relative.js"),
+    cloneGraph = require("./lib/clone-graph.js"),
+    sequential = require("./lib/sequential.js");
 
 function Processor(opts) {
     /* eslint consistent-return:0 */
@@ -23,19 +21,19 @@ function Processor(opts) {
         return new Processor(opts);
     }
     
-    this._options = defaults({}, options || {}, {
+    this._options = Object.assign({
         cwd    : process.cwd(),
         map    : false,
         namer  : this._namer.bind(this),
         strict : true
-    });
+    }, options || {});
     
     this._files = {};
     this._graph = new Graph();
     
     this._before = postcss((this._options.before || []).concat(
-        require("./plugins/values-local"),
-        require("./plugins/graph-nodes")
+        require("./plugins/values-local.js"),
+        require("./plugins/graph-nodes.js")
     ));
 
     this._process = postcss([
@@ -46,7 +44,7 @@ function Processor(opts) {
     ]);
     
     this._after = postcss(this._options.after || [
-        urls
+        require("postcss-url")
     ]);
     
     this._done = postcss(this._options.done || []);
@@ -63,11 +61,11 @@ Processor.prototype = {
         var self  = this,
             start = path.resolve(file);
         
-        return this._walk(start, text).then(function() {
+        return this._walk(start, text).then(() => {
             var deps = self._graph.dependenciesOf(start).concat(start);
             
-            return sequential(deps.map(function(dep) {
-                return function() {
+            return sequential(deps.map((dep) =>
+                () => {
                     var details = self._files[dep];
                     
                     if(!details.processed) {
@@ -81,21 +79,19 @@ Processor.prototype = {
                         );
                     }
                     
-                    return details.processed.then(function(result) {
+                    return details.processed.then((result) => {
                         details.exports = message(result, "classes");
                         details.result  = result;
                     });
-                };
-            }));
+                }
+            ));
         })
-        .then(function() {
-            return {
-                id      : start,
-                file    : start,
-                files   : self._files,
-                exports : self._files[start].exports
-            };
-        });
+        .then(() => ({
+            id      : start,
+            file    : start,
+            files   : self._files,
+            exports : self._files[start].exports
+        }));
     },
     
     // Remove a file from the dependency graph
@@ -111,10 +107,7 @@ Processor.prototype = {
             options = false;
         }
 
-        files.filter(function(key) {
-            return self._graph.hasNode(key);
-        })
-        .forEach(function(key) {
+        files.filter((key) => self._graph.hasNode(key)).forEach((key) => {
             if(!options.shallow) {
                 // Remove everything that depends on this too, it'll all need
                 // to be recalculated
@@ -143,19 +136,17 @@ Processor.prototype = {
         var self  = this,
             opts  = args || false,
             files = opts.files,
-            clone = cloneGraph(this._graph),
-            tier;
+            clone, tier;
         
-        if(!files) {
+        if(!Array.isArray(files)) {
+            clone = cloneGraph(this._graph);
             files = [];
             
             while(Object.keys(clone.nodes).length) {
                 tier = clone.overallOrder(true);
                 
-                tier.forEach(function(node) {
-                    clone.dependantsOf(node).forEach(function(dep) {
-                        clone.removeDependency(dep, node);
-                    });
+                tier.forEach((node) => {
+                    clone.dependantsOf(node).forEach((dep) => clone.removeDependency(dep, node));
                     
                     clone.removeNode(node);
                 });
@@ -164,26 +155,25 @@ Processor.prototype = {
             }
         }
         
-        return Promise.all(files.map(function(dep) {
-            // Rewrite relative URLs before adding
-            // Have to do this every time because target file might be different!
-            return self._after.process(
-                
-                // NOTE: the call to .clone() is really important here, otherwise this call
-                // modifies the .result root itself and you process URLs multiple times
-                // See https://github.com/tivac/modular-css/issues/35
-                //
-                self._files[dep].result.root.clone(),
-                Object.assign({}, self._options, {
-                    from : dep,
-                    to   : opts.to
-                })
-            );
-        }))
-        .then(function(results) {
+        // Rewrite relative URLs before adding
+        // Have to do this every time because target file might be different!
+        //
+        return Promise.all(files.map((dep) => self._after.process(
+            // NOTE: the call to .clone() is really important here, otherwise this call
+            // modifies the .result root itself and you process URLs multiple times
+            // See https://github.com/tivac/modular-css/issues/35
+            //
+            self._files[dep].result.root.clone(),
+            
+            Object.assign({}, self._options, {
+                from : dep,
+                to   : opts.to
+            })
+        )))
+        .then((results) => {
             var root = postcss.root();
 
-            results.forEach(function(result) {
+            results.forEach((result) => {
                 var comment;
                 
                 self._warnings(result);
@@ -212,7 +202,7 @@ Processor.prototype = {
                 Object.assign({}, self._options, args || {})
             );
         })
-        .then(function(result) {
+        .then((result) => {
             self._warnings(result);
 
             result.compositions = output.compositions(self._options.cwd, self);
@@ -221,7 +211,7 @@ Processor.prototype = {
         });
     },
     
-    // Expose our file list
+    // Expose files
     get files() {
         return this._files;
     },
@@ -246,21 +236,19 @@ Processor.prototype = {
             };
         }
         
-        return self._files[name].before.then(function(result) {
+        return self._files[name].before.then((result) => {
             self._files[name].result = result;
 
             self._warnings(result);
             
             // Walk this node's dependencies, reading new files from disk as necessary
             return Promise.all(
-                self._graph.dependenciesOf(name).map(function(dependency) {
-                    return self._walk(
-                        dependency,
-                        self._files[dependency] ?
-                            null :
-                            fs.readFileSync(dependency, "utf8")
-                    );
-                })
+                self._graph.dependenciesOf(name).map((dependency) => self._walk(
+                    dependency,
+                    self._files[dependency] ?
+                        null :
+                        fs.readFileSync(dependency, "utf8")
+                ))
             );
         });
     },
@@ -275,9 +263,7 @@ Processor.prototype = {
         warnings = result.warnings();
         
         if(warnings.length) {
-            throw new Error(warnings.map(function(warning) {
-                return warning.toString();
-            }).join("\n"));
+            throw new Error(warnings.map((warning) => warning.toString()).join("\n"));
         }
     },
     
