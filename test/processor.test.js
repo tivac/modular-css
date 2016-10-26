@@ -550,22 +550,15 @@ describe("/processor.js", function() {
             });
         });
 
-        describe.only("values", function() {
+        describe("values", function() {
             it("should support local values in value composition", function() {
                 return this.processor.string(
                     "./test/specimens/simple.css",
                     "@value local: './local.css'; @value one from local; .fooga { background: one; }"
                 )
-                .then(function(result) {
-                    console.log(result.exports);
-                    
-                    assert.deepEqual(result.exports, {
-                        fooga : [ "mc08e91a5b_fooga" ],
-                        booga : [ "mc08e91a5b_booga" ],
-                        tooga : [ "mc08e91a5b_fooga", "mc08e91a5b_booga", "mc08e91a5b_tooga" ]
-                    });
-                })
-                .catch((err) => { console.log(err.toString()); });
+                .then((result) => assert.deepEqual(result.exports, {
+                    fooga : [ "mc08e91a5b_fooga" ]
+                }));
             });
         });
 
