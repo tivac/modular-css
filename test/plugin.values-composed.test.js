@@ -32,7 +32,7 @@ describe("/plugins", function() {
         it("should fail to parse invalid declarations", function() {
             assert.throws(function() {
                 process("@value red from './local.css").css;
-            }, /Unclosed quote/);
+            }, /Unclosed string/);
             
             assert.throws(function() {
                 process("@value blue from ").css;
