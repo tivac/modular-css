@@ -18,9 +18,7 @@ function process(src, options) {
         src,
         Object.assign({
             from  : "test/specimens/a.css",
-            namer : function(file, selector) {
-                return `a_${selector}`;
-            }
+            namer : (file, selector) => `a_${selector}`
         },
         options || {})
     );
@@ -136,14 +134,24 @@ describe("/plugins", function() {
 
             it("should throw if global & local selectors overlap (issue 192)", function() {
                 /* eslint no-unused-expressions:0 */
-                assert.throws(function() {
-                    process(".b { color: b; } :global(.b) { color: b; }").css;
-                }, /Unable to re-use the same selector for global & local/);
+                assert.throws(
+                    () => process(".b { color: b; } :global(.b) { color: b; }").css,
+                    /Unable to re-use the same selector for global & local/
+                );
 
-                assert.throws(function() {
-                    process(":global(.b) { color: b; } .b { color: b; }").css;
-                }, /Unable to re-use the same selector for global & local/);
-            })
+                assert.throws(
+                    () => process(":global(.b) { color: b; } .b { color: b; }").css,
+                    /Unable to re-use the same selector for global & local/
+                );
+
+                assert.doesNotThrow(
+                    () => process(":global(.b) { color: b; } :global(.a .b) { color: b; }").css
+                );
+
+                assert.doesNotThrow(
+                    () => process(":global(.b) { color: b; } .a :global(.b) { color: b; }").css
+                );
+            });
 
             it("shouldn't transform global selectors", function() {
                 assert.equal(

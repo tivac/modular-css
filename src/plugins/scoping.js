@@ -48,7 +48,8 @@ module.exports = postcss.plugin(plugin, function() {
                         return;
                     }
 
-                    if(key in lookup) {
+                    // Don't allow local/global overlap (but globals can overlap each other nbd)
+                    if(key in lookup && !globals[key]) {
                         throw current.error("Unable to re-use the same selector for global & local", { word : key });
                     }
                     
@@ -65,6 +66,7 @@ module.exports = postcss.plugin(plugin, function() {
                     return;
                 }
 
+                // Don't allow local/global overlap
                 if(key in globals) {
                     throw current.error("Unable to re-use the same selector for global & local", { word : key });
                 }
