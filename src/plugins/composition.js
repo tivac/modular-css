@@ -1,16 +1,17 @@
 "use strict";
 
-var postcss      = require("postcss"),
+var postcss = require("postcss"),
     
-    Graph   = require("dependency-graph").DepGraph,
+    Graph = require("dependency-graph").DepGraph,
     
     unique    = require("lodash.uniq"),
     invert    = require("lodash.invert"),
     mapvalues = require("lodash.mapvalues"),
 
-    message     = require("../lib/message"),
-    composition = require("../lib/composition"),
-    identifiers = require("../lib/identifiers"),
+    message     = require("../lib/message.js"),
+    identifiers = require("../lib/identifiers.js"),
+    
+    composition = require("../parsers/composition.js"),
     
     plugin = "postcss-modular-css-composition";
 
@@ -38,14 +39,13 @@ module.exports = postcss.plugin(plugin, function() {
             }
 
             // Add references and update graph
-            details.rules.forEach(function(rule) {
-                var global = details.types[rule] === "global",
-                    scoped;
+            details.refs.forEach((ref) => {
+                var scoped;
                     
-                if(global) {
-                    scoped = "global-" + rule;
+                if(ref.global) {
+                    scoped = "global-" + ref.name;
                 } else {
-                    scoped = (details.source ? details.source + "-" : "") + rule;
+                    scoped = (details.source ? details.source + "-" : "") + ref.name;
                 }
 
                 graph.addNode(scoped);
@@ -54,18 +54,18 @@ module.exports = postcss.plugin(plugin, function() {
                     graph.addDependency(map[selector], scoped);
                 });
 
-                if(global) {
-                    refs[scoped] = [ rule ];
+                if(ref.global) {
+                    refs[scoped] = [ ref.name ];
 
                     return;
                 }
 
                 if(details.source) {
-                    refs[scoped] = opts.files[details.source].exports[rule];
+                    refs[scoped] = opts.files[details.source].exports[ref.name];
                 }
 
                 if(!refs[scoped]) {
-                    throw decl.error("Invalid composes reference", { word : rule });
+                    throw decl.error("Invalid composes reference", { word : ref.name });
                 }
             });
 

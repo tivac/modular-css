@@ -1,7 +1,7 @@
 "use strict";
 
-var values      = require("./_values"),
-    composition = require("../lib/composition");
+var values      = require("./_values.js"),
+    composition = require("../parsers/composition.js");
 
 module.exports = values(
     "postcss-modular-css-values-composed",
@@ -12,12 +12,12 @@ module.exports = values(
         
         source = options.files[parsed.source];
 
-        parsed.rules.forEach(function(key) {
-            if(!(key in source.values)) {
-                throw rule.error("Invalid @value reference: " + key, { word : key });
+        parsed.refs.forEach((ref) => {
+            if(!(ref.name in source.values)) {
+                throw rule.error(`Invalid @value reference: ${ref.name}`, { word : ref.name });
             }
             
-            out[key] = source.values[key];
+            out[ref.name] = source.values[ref.name];
         });
         
         return out;
