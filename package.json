@@ -13,9 +13,12 @@
     "tests": "mocha",
     "cover": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
     "lint": "eslint .",
+    "parser": "pegjs -o ./src/parsers/composition.parser.js ./src/parsers/composition.pegjs",
+    "generate": "npm run parser",
     "preversion": "npm test",
     "publish-please": "publish-please",
-    "prepublish": "publish-please guard"
+    "prepublish": "publish-please guard",
+    "prepare": "npm run generate"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
@@ -36,6 +39,7 @@
     "from2-string": "^1.1.0",
     "istanbul": "^0.4.2",
     "mocha": "^3.0.0",
+    "pegjs": "^0.10.0",
     "postcss-color-rebeccapurple": "^2.0.0",
     "publish-please": "^2.1.4",
     "rimraf": "^2.5.0",
