@@ -9,42 +9,55 @@
 // * as wooga from "booga"
 
 start
-  =	namespaced
-  / composition
-  / bare_references
+    =	namespaced
+    / composition
+    / bare_references
 
 // Helpers
-s "string"
-  = "\"" chars:[^\"\r\n]* "\"" { return chars.join(""); }
-  / "\'" chars:[^\'\r\n]* "\'" { return chars.join(""); }
-  
-ws "whitespace"
-  = [ \t\n\r]*
-  
-q "quote"
-  = [\"\']
+_ "whitespace"
+    = [ \t\n\r]*
 
+s "string"
+    = "\"" chars:[^\"\r\n]* "\"" { return chars.join(""); }
+    / "\'" chars:[^\'\r\n]* "\'" { return chars.join(""); }
+  
+// Partials
 ref "reference"
-  = "global(" ws ref:reference ws ")" { return { name : ref, global : true }; }
-  / ref:reference { return { name : ref }; }
+    = "global(" _ ref:reference _ ")" { return { name : ref, global : true }; }
+    / ref:reference { return { name : ref }; }
   
 references "references"
-  = ws refs:(ref:ref ("," ws)? { return ref })+ ws { return refs; }
+    = _ refs:(ref:ref ("," _)? { return ref })+ _ { return refs; }
 
 reference "reference"
-  = chars:[a-z0-9-_]i+ { return chars.join(""); }
+    = chars:[a-z0-9-_]i+ { return chars.join(""); }
 
-// Parts
+source
+    = _ "from" _ source:s {
+        return {
+            source
+        };
+    }
+
+// Patterns
 namespaced
-  = ws "*" ws "as" ws ref:reference ws "from" ws source:s { return {
-    refs : [
-      { name : ref, namespace : true}
-    ],
-    source : source
-  }; }
+    = _ "*" _ "as" _ ref:reference source:source {
+      return Object.assign(source, {
+          refs : [
+              { name : ref, namespace : true}
+          ]
+      });
+    }
   
 composition
-  = refs:references ws "from" ws source:s { return { refs, source }; }
+    = refs:references source:source {
+        return Object.assign(source, { refs });
+    }
 
 bare_references
-  = refs:references { return { refs, source : false }; }
+    = refs:references {
+        return {
+            refs,
+            source : false
+        };
+    }
