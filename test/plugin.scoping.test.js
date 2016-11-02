@@ -5,11 +5,12 @@ var path   = require("path"),
     
     plugin = require("../src/plugins/scoping");
 
-function msg(classes) {
+function msg(things, name) {
     return {
-        type    : "modularcss",
-        plugin  : "postcss-modular-css-scoping",
-        classes : classes
+        type   : "modularcss",
+        plugin : "postcss-modular-css-scoping",
+
+        [ name || "classes" ] : things
     };
 }
 
@@ -105,11 +106,15 @@ describe("/plugins", function() {
                     "#booga { color: black; } " +
                     "@keyframes fooga { 0% { color: red; } 100% { color: black; } }"
                 ).messages,
-                [ msg({
-                    booga : [ "a_booga" ],
-                    fooga : [ "a_fooga" ],
-                    wooga : [ "a_wooga" ]
-                }) ]
+                [
+                    msg({
+                        fooga : [ "a_fooga" ]
+                    }, "keyframes"),
+                    msg({
+                        booga : [ "a_booga" ],
+                        wooga : [ "a_wooga" ]
+                    })
+                ]
             );
         });
 
@@ -217,13 +222,17 @@ describe("/plugins", function() {
                         ":global(.googa .tooga) { color: red; } " +
                         "@keyframes :global(yooga) { 0% { color: red; } 100% { color: black; } }"
                     ).messages,
-                    [ msg({
-                        fooga : [ "fooga" ],
-                        googa : [ "googa" ],
-                        tooga : [ "tooga" ],
-                        wooga : [ "wooga" ],
-                        yooga : [ "yooga" ]
-                    }) ]
+                    [
+                        msg({
+                            yooga : [ "yooga" ]
+                        }, "keyframes"),
+                        msg({
+                            fooga : [ "fooga" ],
+                            googa : [ "googa" ],
+                            tooga : [ "tooga" ],
+                            wooga : [ "wooga" ]
+                        })
+                    ]
                 );
             });
 

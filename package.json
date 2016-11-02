@@ -9,8 +9,8 @@
   },
   "bin": "./bin/cli.js",
   "scripts": {
-    "test": "npm run lint && mocha",
-    "mocha": "mocha",
+    "test": "npm run lint && npm run tests",
+    "tests": "mocha",
     "cover": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
     "lint": "eslint .",
     "preversion": "npm test",
@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "dependency-graph": "^0.5.0",
+    "escape-string-regexp": "^1.0.5",
     "esutils": "^2.0.2",
     "globule": "^1.0.0",
     "lodash.difference": "^4.0.0",

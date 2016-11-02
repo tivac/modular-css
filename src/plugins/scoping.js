@@ -7,25 +7,24 @@ var postcss   = require("postcss"),
     
     plugin = "postcss-modular-css-scoping";
 
+// Validate whether a selector should be renamed, returns the key to use
+function rename(current, thing) {
+    if(thing.type === "class" ||
+       thing.type === "id" ||
+       (current.name && current.name.search(identifiers.keyframes) > -1)) {
+        return thing.value;
+    }
+    
+    return false;
+}
+
 module.exports = postcss.plugin(plugin, function() {
     return function(css, result) {
-        var lookup  = {},
-            globals = {},
-            parser, current;
-            
-        // Validate whether a selector should be renamed, returns the key to use
-        function rename(thing) {
-            if(thing.type === "class" || thing.type === "id") {
-                return thing.value;
-            }
-            
-            if(current.name && current.name.search(identifiers.keyframes) > -1) {
-                return thing.value;
-            }
-            
-            return false;
-        }
-
+        var classes   = {},
+            keyframes = {},
+            globals   = {},
+            parser, current, lookup;
+        
         parser = processor(function(selectors) {
             selectors.walkPseudos(function(node) {
                 if(node.value !== ":global") {
@@ -42,7 +41,7 @@ module.exports = postcss.plugin(plugin, function() {
                 }));
                 
                 node.walk(function(child) {
-                    var key = rename(child);
+                    var key = rename(current, child);
                     
                     if(!key) {
                         return;
@@ -60,7 +59,7 @@ module.exports = postcss.plugin(plugin, function() {
             });
             
             selectors.walk(function(node) {
-                var key = rename(node);
+                var key = rename(current, node);
                 
                 if(!key || node.ignore) {
                     return;
@@ -81,24 +80,37 @@ module.exports = postcss.plugin(plugin, function() {
         
         // Walk all rules and save off rewritten selectors
         css.walkRules(function(rule) {
-            // Save closure ref to this for throwing errors from selector parser
+            // Save closure ref to this rule
             current = rule;
+            lookup = classes;
 
             rule.selector = parser.process(rule.selector).result;
         });
 
         // Also scope @keyframes rules so they don't leak globally
         css.walkAtRules(identifiers.keyframes, function(rule) {
-            // Save closure ref to this for throwing errors from selector parser
+            // Save closure ref to this rule
             current = rule;
+
+            lookup = keyframes;
 
             rule.params = parser.process(rule.params).result;
         });
         
-        result.messages.push({
-            type    : "modularcss",
-            plugin  : plugin,
-            classes : lookup
-        });
+        if(Object.keys(keyframes).length) {
+            result.messages.push({
+                type      : "modularcss",
+                plugin    : plugin,
+                keyframes : keyframes
+            });
+        }
+
+        if(Object.keys(classes).length) {
+            result.messages.push({
+                type    : "modularcss",
+                plugin  : plugin,
+                classes : classes
+            });
+        }
     };
 });

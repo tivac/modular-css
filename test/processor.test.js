@@ -529,7 +529,6 @@ describe("/processor.js", function() {
                     
                     assert.deepEqual(result.exports, {
                         fooga : [ "mc08e91a5b_fooga" ],
-                        kooga : [ "mc08e91a5b_kooga" ],
                         wooga : [ "mc08e91a5b_wooga" ]
                     });
 
@@ -537,7 +536,6 @@ describe("/processor.js", function() {
 
                     assert.deepEqual(file.exports, {
                         fooga : [ "mc08e91a5b_fooga" ],
-                        kooga : [ "mc08e91a5b_kooga" ],
                         wooga : [ "mc08e91a5b_wooga" ]
                     });
 
