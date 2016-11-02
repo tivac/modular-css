@@ -1,6 +1,6 @@
 "use strict";
 
-var find   = require("lodash.findlast");
+var find = require("lodash.findlast");
 
 module.exports = function(results, field) {
     var message = find(results.messages, field);

@@ -9,8 +9,8 @@
   },
   "bin": "./bin/cli.js",
   "scripts": {
-    "test": "npm run lint && mocha",
-    "mocha": "mocha",
+    "test": "npm run lint && npm run tests",
+    "tests": "node --no-warnings ./node_modules/mocha/bin/_mocha",
     "cover": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
     "lint": "eslint .",
     "preversion": "npm test",

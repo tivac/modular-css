@@ -25,11 +25,7 @@ describe("/rollup.js", function() {
                 plugin()
             ]
         })
-        .then(function(bundle) {
-            var out = bundle.generate();
-            
-            compare.stringToFile(out.code, "./test/results/rollup/simple.js");
-        });
+        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/simple.js"));
     });
     
     it("should be able to tree-shake results", function() {
@@ -39,11 +35,7 @@ describe("/rollup.js", function() {
                 plugin()
             ]
         })
-        .then(function(bundle) {
-            var out = bundle.generate();
-            
-            compare.stringToFile(out.code, "./test/results/rollup/tree-shaking.js");
-        });
+        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/tree-shaking.js"));
     });
 
     it("should attach a promise to the bundle.generate response", function() {
@@ -55,11 +47,7 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then(function(bundle) {
-            var out = bundle.generate();
-
-            assert.equal(typeof out.css.then, "function");
-        });
+        .then((bundle) => assert.equal(typeof bundle.generate().css.then, "function"));
     });
     
     it("should generate CSS", function() {
@@ -71,14 +59,10 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then(function(bundle) {
-            return bundle.write({
-                dest : "./test/output/rollup/simple.js"
-            });
-        })
-        .then(function() {
-            compare.results("rollup/simple.css");
-        });
+        .then((bundle) => bundle.write({
+            dest : "./test/output/rollup/simple.js"
+        }))
+        .then(() => compare.results("rollup/simple.css"));
     });
     
     it("should generate JSON", function() {
@@ -90,14 +74,10 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then(function(bundle) {
-            return bundle.write({
-                dest : "./test/output/rollup/simple.js"
-            });
-        })
-        .then(function() {
-            compare.results("rollup/simple.json");
-        });
+        .then((bundle) => bundle.write({
+            dest : "./test/output/rollup/simple.js"
+        }))
+        .then(() => compare.results("rollup/simple.json"));
     });
     
     it("should warn & not export individual keys when they are not valid identifiers", function() {
@@ -111,11 +91,7 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then(function(bundle) {
-            var out = bundle.generate();
-            
-            compare.stringToFile(out.code, "./test/results/rollup/invalid-name.js");
-        });
+        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/invalid-name.js"));
     });
     
     it("shouldn't disable sourcemap generation", function() {
@@ -125,26 +101,22 @@ describe("/rollup.js", function() {
                 plugin({ sourceMap : true })
             ]
         })
-        .then(function(bundle) {
-            var out = bundle.generate({ sourceMap : true });
-            
-            assert.deepEqual(
-                out.map,
-                {
-                    version  : 3,
-                    file     : null,
-                    mappings : ";;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC;AACjB,OAAO,CAAC,GAAG,CAAC,KAAK,CAAC,CAAC",
-                    names    : [],
-                    sources  : [
-                        path.resolve(__dirname, "./specimens/rollup/simple.js").replace(/\\/g, "/")
-                    ],
-                    
-                    sourcesContent : [
-                        "import css, {fooga} from \"./simple.css\";\n\nconsole.log(css);\nconsole.log(fooga);\n"
-                    ]
-                }
-            );
-        });
+        .then((bundle) => assert.deepEqual(
+            bundle.generate({ sourceMap : true }).map,
+            {
+                version  : 3,
+                file     : null,
+                mappings : ";;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC;AACjB,OAAO,CAAC,GAAG,CAAC,KAAK,CAAC,CAAC",
+                names    : [],
+                sources  : [
+                    path.resolve(__dirname, "./specimens/rollup/simple.js").replace(/\\/g, "/")
+                ],
+                
+                sourcesContent : [
+                    "import css, {fooga} from \"./simple.css\";\n\nconsole.log(css);\nconsole.log(fooga);\n"
+                ]
+            }
+        ));
     });
     
     it("should not output sourcemaps when they are disabled", function() {
@@ -157,7 +129,7 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then(function(bundle) {
+        .then((bundle) => {
             var out = bundle.generate({ sourceMap : false });
             
             assert.equal(out.map, null);
@@ -167,9 +139,7 @@ describe("/rollup.js", function() {
                 sourceMap : false
             });
         })
-        .then(function() {
-            compare.results("rollup/no-maps.css");
-        });
+        .then(() => compare.results("rollup/no-maps.css"));
     });
 
     it("should respect the CSS dependency tree", function() {
@@ -179,13 +149,8 @@ describe("/rollup.js", function() {
                 plugin()
             ]
         })
-        .then(function(bundle) {
-            var out = bundle.generate();
-            
-            compare.stringToFile(out.code, "./test/results/rollup/dependencies.js");
-        });
+        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/dependencies.js"));
     });
-    
 
     describe("errors", function() {
         function checkError(error) {
@@ -202,9 +167,6 @@ describe("/rollup.js", function() {
                     })
                 ]
             })
-            .then(function(bundle) {
-                assert.fail("Shouldn't have succeeded")
-            })
             .catch(checkError);
         });
 
@@ -217,14 +179,6 @@ describe("/rollup.js", function() {
                         after : [ warn ]
                     })
                 ]
-            })
-            .then(function(bundle) {
-                var out = bundle.generate({});
-
-                return out.css;
-            })
-            .then(function(result) {
-                assert.fail("Shouldn't have succeeded");
             })
             .catch(checkError);
         });
@@ -239,11 +193,9 @@ describe("/rollup.js", function() {
                     })
                 ]
             })
-            .then(function(bundle) {
-                return bundle.write({
-                    dest : "./test/output/rollup/done-error.js"
-                });
-            })
+            .then((bundle) => bundle.write({
+                dest : "./test/output/rollup/done-error.js"
+            }))
             .catch(checkError);
         });
     });
