@@ -1,15 +1,13 @@
+// * as wooga from "booga"
 // fooga from "./wooga"
 // fooga, wooga from "./tooga"
-// fooga
-// fooga-wooga
-// fooga_wooga
-// global(fooga)
-// fooga, wooga
-// fooga, global(wooga)
+// fooga, global(wooga) from "./tooga"
+// fooga: wooga
 
 start
-    = composition
-    / simple
+    = namespaced
+    / composition
+    / assignment
 
 // Helpers
 _ "whitespace"
@@ -31,22 +29,20 @@ references "references"
     = _ refs:(ref:reference ("," _)? { return ref })+ _ { return refs; }
 
 source
-    = _ "from" _ source:s {
-        return {
-            source
-        };
-    }
+    = _ "from" _ source:s { return { source }; }
 
 // Patterns
-composition
-    = refs:references source:source {
-        return Object.assign(source, { refs });
+namespaced
+    = _ "*" _ "as" _ ref:ident source:source { return Object.assign(
+        source, {
+            refs : [
+                { name : ref, namespace : true}
+            ]
+        });
     }
 
-simple
-    = refs:references {
-        return {
-            refs,
-            source : false
-        };
-    }
+composition
+    = refs:references source:source { return Object.assign(source, { refs }); }
+
+assignment
+    = name:reference _ ":" _ value:.+ { return { name, value : value.join("") }; }
