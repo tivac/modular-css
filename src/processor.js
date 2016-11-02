@@ -228,22 +228,25 @@ Processor.prototype = {
     _walk : function(name, text) {
         var self = this;
         
-        self._graph.addNode(name);
-        
-        if(!self._files[name]) {
-            self._files[name] = {
-                text    : text,
-                exports : {},
-                values  : {},
-                before  : self._before.process(text, Object.assign({}, self._options, {
-                    from  : name,
-                    graph : self._graph,
-                    files : self._files
-                }))
-            };
+        // No need to re-process files
+        if(self._files[name]) {
+            return Promise.resolve();
         }
         
-        return self._files[name].before.then((result) => {
+        self._graph.addNode(name);
+
+        self._files[name] = {
+            text    : text,
+            exports : {},
+            values  : {}
+        };
+        
+        return self._before.process(text, Object.assign({}, self._options, {
+            from  : name,
+            graph : self._graph,
+            files : self._files
+        }))
+        .then((result) => {
             self._files[name].result = result;
 
             self._warnings(result);

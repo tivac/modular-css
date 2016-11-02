@@ -93,16 +93,6 @@ describe("/parsers", function() {
                         source : "./local.css"
                     });
                 });
-
-                it("should parse wildcard identifiers with a source", function() {
-                    assert.deepEqual(parse(`* as fooga from "./local.css"`), {
-                        refs  : [ {
-                            name      : "fooga",
-                            namespace : true
-                        } ],
-                        source : "./local.css"
-                    });
-                });
             });
 
             describe("multiple identifiers", function() {
