@@ -171,7 +171,11 @@ function peg$parse(input, options) {
       peg$c27 = function(refs) { return refs; },
       peg$c28 = "from",
       peg$c29 = peg$literalExpectation("from", false),
-      peg$c30 = function(source) { return { source }; },
+      peg$c30 = function(source) {
+              return {
+                  source
+              };
+          },
       peg$c31 = "*",
       peg$c32 = peg$literalExpectation("*", false),
       peg$c33 = "as",
