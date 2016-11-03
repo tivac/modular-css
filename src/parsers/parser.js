@@ -215,7 +215,7 @@ function peg$parse(input, options) {
       peg$c45 = function(refs) {
               return {
                   type : "simple",
-                  refs : refs.map((ref) => ref.name)
+                  refs
               };
           },
 

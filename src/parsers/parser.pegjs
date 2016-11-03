@@ -95,6 +95,6 @@ simple
     = refs:references {
         return {
             type : "simple",
-            refs : refs.map((ref) => ref.name)
+            refs
         };
     }
