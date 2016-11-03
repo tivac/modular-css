@@ -30,12 +30,14 @@ reference "reference"
 references "references"
     = _ head:reference tail:(_ "," _ ref:reference { return ref; })* _ { return [ head ].concat(tail); }
 
+// "./wooga.css"
+source "source"
+    = s
+
 // from "./wooga"
-source
-    = _ "from" _ source:s {
-        return {
-            source
-        };
+from_source
+    = _ "from" _ source:source {
+        return source;
     }
 
 // Patterns
@@ -44,16 +46,12 @@ source
 
 // * as fooga from "./wooga"
 create_namespace
-    = _ "*" _ "as" _ ref:ident source:source {
-        return Object.assign(
-            { type : "namespace" },
+    = _ "*" _ "as" _ name:ident source:from_source {
+        return {
+            type   : "namespace",
             source,
-            {
-                refs : [
-                    { name : ref, namespace : true}
-                ]
-            }
-        );
+            name
+        };
     }
 
 // fooga: booga
@@ -71,12 +69,12 @@ assignment
 // fooga from "./wooga"
 // fooga, wooga from "./tooga"
 composition
-    = refs:references source:source {
-        return Object.assign(
-            { type : "composition" },
+    = refs:references source:from_source {
+        return {
+            type   : "composition",
             source,
-            { refs }
-        );
+            refs
+        };
     }
 
 // composes: only
