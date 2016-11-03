@@ -6,14 +6,19 @@ var assert = require("assert"),
 
 describe("/plugins", function() {
     describe("/values-local.js", function() {
-        it("should complain about invalid declarations", function() {
+        it("should ignore invalid declarations in normal mode", function() {
+            assert.doesNotThrow(() => plugin.process("@value red:").css);
+            assert.doesNotThrow(() => plugin.process("@value blue red").css);
+        });
+        
+        it("should complain about invalid declarations in strict mode", function() {
             assert.throws(
-                () => plugin.process("@value red:").css,
+                () => plugin.process("@value red:", { strict : true }).css,
                 /SyntaxError: /
             );
             
             assert.throws(
-                () => plugin.process("@value blue red").css,
+                () => plugin.process("@value blue red", { strict : true }).css,
                 /SyntaxError: /
             );
         });

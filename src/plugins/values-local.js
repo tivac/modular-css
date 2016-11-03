@@ -18,7 +18,11 @@ module.exports = postcss.plugin(plugin, function() {
             try {
                  parsed = parser.parse(rule.params);
             } catch(e) {
-                throw rule.error(e.toString(), { index : offset + e.location.start.column });
+                if(result.opts.strict) {
+                    throw rule.error(e.toString(), { index : offset + e.location.start.column });
+                } else {
+                    return;
+                }
             }
 
             if(parsed.type !== "assignment") {
