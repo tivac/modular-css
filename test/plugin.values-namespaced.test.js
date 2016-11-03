@@ -3,10 +3,10 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    plugin = require("../src/plugins/values-namespaces.js");
+    plugin = require("../src/plugins/values-namespaced.js");
 
 describe("/plugins", function() {
-    describe("/values-namespaces.js", function() {
+    describe("/values-namespaced.js", function() {
         // Helper to create environment where other files are already processed
         function process(css) {
             return plugin.process(css, {
@@ -63,7 +63,7 @@ describe("/plugins", function() {
                 process(`@value * as ns from "./local.css";`).messages,
                 [{
                     type   : "modularcss",
-                    plugin : "postcss-modular-css-values-namespaces",
+                    plugin : "postcss-modular-css-values-namespaced",
                     values : {
                         ns : {
                             fooga : {

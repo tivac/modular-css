@@ -5,7 +5,7 @@ var postcss = require("postcss"),
     parser  = require("../parsers/values.js"),
     resolve = require("../lib/resolve.js"),
     
-    plugin = "postcss-modular-css-values-namespaces",
+    plugin = "postcss-modular-css-values-namespaced",
     offset = "@value ".length;
 
 // Find @value fooga: wooga entries & catalog/remove them
