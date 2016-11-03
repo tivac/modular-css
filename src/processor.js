@@ -66,21 +66,21 @@ Processor.prototype = {
         return this.string(file, fs.readFileSync(file, "utf8"));
     },
     
-    // Add a file by file + contents to the dependency graph
-    string : function(file, text) {
+    // Add a file by name + contents to the dependency graph
+    string : function(name, text) {
         var self  = this,
-            start = path.resolve(file);
+            start = path.resolve(name);
         
         return this._walk(start, text).then(() => {
             var deps = self._graph.dependenciesOf(start).concat(start);
             
             return sequential(deps.map((dep) =>
                 () => {
-                    var details = self._files[dep];
+                    var file = self._files[dep];
                     
-                    if(!details.processed) {
-                        details.processed = self._process.process(
-                            details.result,
+                    if(!file.processed) {
+                        file.processed = self._process.process(
+                            file.result,
                             Object.assign({}, self._options, {
                                 from  : dep,
                                 files : self._files,
@@ -89,9 +89,9 @@ Processor.prototype = {
                         );
                     }
                     
-                    return details.processed.then((result) => {
-                        details.exports = message(result, "classes");
-                        details.result  = result;
+                    return file.processed.then((result) => {
+                        file.exports = message(result, "classes");
+                        file.result  = result;
                     });
                 }
             ));
@@ -240,18 +240,27 @@ Processor.prototype = {
 
         self._files[name] = {
             text    : text,
-            exports : Object.create(null),
-            values  : Object.create(null)
+            exports : false,
+            values  : false
         };
         
         return self._before.process(text, Object.assign(Object.create(null), self._options, {
             from  : name,
             graph : self._graph,
-            files : self._files
+            files : self._files,
+
+            // Run parsers in loose mode for this first pass
+            strict : false
         }))
         .then((result) => {
             self._files[name].result = result;
 
+            // pull out defined values & save w/ the file
+            self._files[name].values = result.messages
+                .filter((msg) => msg.plugin.indexOf("postcss-modular-css-values") > -1)
+                .reduce((prev, curr) => Object.assign(prev, curr.values), Object.create(null));
+            
+            // Check for plugin warnings
             self._warnings(result);
             
             // Walk this node's dependencies, reading new files from disk as necessary
