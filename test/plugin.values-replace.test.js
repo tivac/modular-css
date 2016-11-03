@@ -72,14 +72,14 @@ describe("/plugins", function() {
                             [ path.resolve("./test/specimens/local.css") ] : {
                                 values : {
                                     color : {
-                                        value  : "red",
+                                        value  : "#F00",
                                         source : {}
                                     }
                                 }
                             }
                         }
                     }).css,
-                    ".wooga { color: red; }"
+                    ".wooga { color: #F00; }"
                 );
             });
         });
