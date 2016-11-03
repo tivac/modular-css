@@ -23,7 +23,7 @@ module.exports = postcss.plugin(plugin, function() {
             }
 
             if(parsed.type !== "composition") {
-                return false;
+                return;
             }
 
             try {
@@ -44,7 +44,7 @@ module.exports = postcss.plugin(plugin, function() {
                 values[ref.name] = source.values[ref.name];
             });
 
-            return rule.remove();
+            rule.remove();
         });
         
         if(Object.keys(values).length > 0) {

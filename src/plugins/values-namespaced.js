@@ -23,7 +23,7 @@ module.exports = postcss.plugin(plugin, function() {
             }
 
             if(parsed.type !== "namespace") {
-                return false;
+                return;
             }
 
             try {
@@ -38,7 +38,7 @@ module.exports = postcss.plugin(plugin, function() {
 
             values[parsed.name] = source.values;
 
-            return rule.remove();
+            rule.remove();
         });
         
         if(Object.keys(values).length > 0) {

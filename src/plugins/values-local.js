@@ -22,7 +22,7 @@ module.exports = postcss.plugin(plugin, function() {
             }
 
             if(parsed.type !== "assignment") {
-                return false;
+                return;
             }
 
             values[parsed.name] = {
@@ -30,7 +30,7 @@ module.exports = postcss.plugin(plugin, function() {
                 source : rule.source
             };
 
-            return rule.remove();
+            rule.remove();
         });
         
         if(Object.keys(values).length > 0) {
