@@ -1,7 +1,7 @@
 "use strict";
 
 var resolve = require("../lib/resolve.js"),
-    parser  = require("./composition.parser.js");
+    parser  = require("./parser.js");
 
 function process(file, input, thing, word) {
     var parsed;

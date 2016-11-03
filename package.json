@@ -13,7 +13,7 @@
     "tests": "mocha",
     "cover": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
     "lint": "eslint .",
-    "parser": "node ./build/parsers.js",
+    "parser": "pegjs -o ./src/parsers/parser.js ./src/parsers/parser.pegjs",
     "generate": "npm run parser",
     "preversion": "npm test",
     "publish-please": "publish-please",

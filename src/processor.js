@@ -40,11 +40,13 @@ function Processor(opts) {
     
     this._before = postcss((this._options.before || []).concat(
         require("./plugins/values-local.js"),
+        require("./plugins/values-replace.js"),
         require("./plugins/graph-nodes.js")
     ));
 
     this._process = postcss([
         require("./plugins/values-composed.js"),
+        require("./plugins/values-replace.js"),
         require("./plugins/scoping.js"),
         require("./plugins/composition.js"),
         require("./plugins/keyframes.js")

@@ -1,25 +1,39 @@
 "use strict";
 
-var parser  = require("postcss-value-parser"),
+var postcss = require("postcss"),
 
-    values = require("./_values");
+    parser = require("../parsers/values.js"),
+    
+    plugin = "postcss-modular-css-values-local";
 
-module.exports = values(
-    "postcss-modular-css-values-local",
-    function parseBase(options, rule) {
-        var parts = parser(rule.params).nodes,
-            out   = {};
-            
-        if(parts.length < 2) {
-            return false;
+// Find @value fooga: wooga entries & catalog/remove them
+module.exports = postcss.plugin(plugin, function() {
+    return function(css, result) {
+        var values = Object.create(null);
+
+        css.walkAtRules("value", (rule) => {
+            var parsed = parser.parse(rule.params);
+
+            if(parsed.type !== "assignment") {
+                return false;
+            }
+
+            values[parsed.name] = {
+                value  : parsed.value,
+                source : rule.source
+            };
+
+            return rule.remove();
+        });
+        
+        if(Object.keys(values).length > 0) {
+            result.messages.push({
+                type : "modularcss",
+                plugin,
+                values
+            });
+
+            console.log(result.messages);
         }
-
-        if(parts[0].type === "word" && parts[1].type === "div" && parts[1].value === ":") {
-            out[parts[0].value] = parser.stringify(parts.slice(2));
-
-            return out;
-        }
-
-        return false;
-    }
-);
+    };
+});
