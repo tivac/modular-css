@@ -29,13 +29,13 @@ function Processor(opts) {
         cwd    : process.cwd(),
         map    : false,
         strict : true
-    }, options || {});
+    }, options || Object.create(null));
 
     if(typeof this._options.namer !== "function") {
         this._options.namer = namer.bind(null, this._options.cwd);
     }
     
-    this._files = {};
+    this._files = Object.create(null);
     this._graph = new Graph();
     
     this._before = postcss((this._options.before || []).concat(
@@ -209,7 +209,7 @@ Processor.prototype = {
             
             return self._done.process(
                 root,
-                Object.assign({}, self._options, args || {})
+                Object.assign(Object.create(null), self._options, args || Object.create(null))
             );
         })
         .then((result) => {
@@ -240,11 +240,11 @@ Processor.prototype = {
 
         self._files[name] = {
             text    : text,
-            exports : {},
-            values  : {}
+            exports : Object.create(null),
+            values  : Object.create(null)
         };
         
-        return self._before.process(text, Object.assign({}, self._options, {
+        return self._before.process(text, Object.assign(Object.create(null), self._options, {
             from  : name,
             graph : self._graph,
             files : self._files
