@@ -5,7 +5,7 @@ var assert = require("assert"),
     plugin = require("../src/plugins/values-local");
 
 describe("/plugins", function() {
-    describe.only("/values-local.js", function() {
+    describe("/values-local.js", function() {
         it("should complain about invalid declarations", function() {
             assert.throws(
                 () => plugin.process("@value red:").css,
