@@ -9,9 +9,10 @@ var postcss = require("postcss"),
     mapvalues = require("lodash.mapvalues"),
 
     message     = require("../lib/message.js"),
+    resolve     = require("../lib/resolve.js"),
     identifiers = require("../lib/identifiers.js"),
     
-    composition = require("../parsers/composition.js"),
+    parser = require("../parsers/parser.js"),
     
     plugin = "postcss-modular-css-composition";
 
@@ -30,12 +31,24 @@ module.exports = postcss.plugin(plugin, function() {
         // Go look up "composes" declarations and populate dependency graph
         css.walkDecls("composes", function(decl) {
             var selectors, details;
-            
-            details   = composition.decl(opts.from, decl);
-            selectors = identifiers.parse(decl.parent.selector);
 
-            if(details.source && (!opts.files || !opts.files[details.source])) {
-                throw decl.error("Invalid file reference", { word : decl.value });
+            if(decl.prev() && decl.prev().prop !== "composes") {
+                throw decl.error("composes must be the first declaration", { word : "composes" });
+            }
+            
+            try {
+                details   = parser.parse(decl.value);
+                selectors = identifiers.parse(decl.parent.selector);
+            } catch(e) {
+                throw decl.error(e.toString(), { word : decl.value });
+            }
+
+            if(details.source) {
+                details.source = resolve(opts.from, details.source);
+
+                if(!opts.files || !opts.files[details.source]) {
+                    throw decl.error("Invalid file reference", { word : decl.value });
+                }
             }
 
             // Add references and update graph

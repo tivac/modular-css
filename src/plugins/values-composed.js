@@ -2,7 +2,7 @@
 
 var postcss = require("postcss"),
 
-    parser  = require("../parsers/values.js"),
+    parser  = require("../parsers/parser.js"),
     resolve = require("../lib/resolve.js"),
     
     plugin = "postcss-modular-css-values-composed",
