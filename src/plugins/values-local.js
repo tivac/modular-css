@@ -4,7 +4,8 @@ var postcss = require("postcss"),
 
     parser = require("../parsers/values.js"),
     
-    plugin = "postcss-modular-css-values-local";
+    plugin = "postcss-modular-css-values-local",
+    offset = "@value ".length;
 
 // Find @value fooga: wooga entries & catalog/remove them
 module.exports = postcss.plugin(plugin, function() {
@@ -12,7 +13,13 @@ module.exports = postcss.plugin(plugin, function() {
         var values = Object.create(null);
 
         css.walkAtRules("value", (rule) => {
-            var parsed = parser.parse(rule.params);
+            var parsed;
+            
+            try {
+                 parsed = parser.parse(rule.params);
+            } catch(e) {
+                throw rule.error(e.toString(), { index : offset + e.location.start.column });
+            }
 
             if(parsed.type !== "assignment") {
                 return false;
@@ -32,8 +39,6 @@ module.exports = postcss.plugin(plugin, function() {
                 plugin,
                 values
             });
-
-            console.log(result.messages);
         }
     };
 });
