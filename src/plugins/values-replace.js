@@ -5,9 +5,7 @@ var postcss = require("postcss"),
     each    = require("lodash.foreach"),
     Graph   = require("dependency-graph").DepGraph,
 
-    plugin  = "postcss-modular-css-values-replace",
-    simple  = /values-local|values-composed/,
-    grouped = /values-namespaced/;
+    plugin  = "postcss-modular-css-values-replace";
 
 function replacer(values, prop) {
     return (thing) => {
@@ -29,13 +27,15 @@ function replacer(values, prop) {
 module.exports = postcss.plugin(plugin, function() {
     return function(css, result) {
         var graph  = new Graph(),
-            values = result.messages
-                .filter((msg) => msg.plugin.search(simple) > -1)
-                .reduce((prev, curr) => Object.assign(prev, curr.values), Object.create(null));
+            // Create local copy of values since we're going to merge in namespace stuff
+            values = Object.assign(
+                Object.create(null),
+                result.opts.files ? result.opts.files[result.opts.from].values : {}
+            );
             
         // Merge namespaced values in w/ prefixed names
         result.messages
-            .filter((msg) => msg.plugin.search(grouped) > -1)
+            .filter((msg) => msg.plugin === "postcss-modular-css-values-namespaced")
             .forEach((msg) =>
                 each(msg.values, (children, ns) =>
                     each(children, (details, child) => (values[`${ns}.${child}`] = details))

@@ -8,6 +8,7 @@ var path   = require("path"),
     plugin     = require("../src/plugins/values-replace.js"),
     local      = require("../src/plugins/values-local.js"),
     composed   = require("../src/plugins/values-composed.js"),
+    exported   = require("../src/plugins/values-export.js"),
     namespaced = require("../src/plugins/values-namespaced.js");
 
 describe("/plugins", function() {
@@ -20,44 +21,48 @@ describe("/plugins", function() {
         });
 
         describe("local values", function() {
-            var css = postcss([ local, plugin ]);
-            
-            it("should noop without values to replace", function() {
-                assert.equal(
-                    css.process("@value color: red; .wooga { color: color; }").css,
-                    ".wooga { color: red; }"
-                );
-            });
+            var processor = postcss([ local, exported, plugin ]);
 
+            function process(css) {
+                return processor.process(css, {
+                    from  : "file",
+                    files : {
+                        "file" : {
+                            values : false
+                        }
+                    }
+                });
+            }
+            
             it("should replace values in declarations", function() {
                 assert.equal(
-                    css.process("@value color: red; .wooga { color: color; }").css,
+                    process("@value color: red; .wooga { color: color; }").css,
                     ".wooga { color: red; }"
                 );
             });
 
             it("should replace value references in @value declarations", function() {
                 assert.equal(
-                    css.process("@value color: red; @value value: color; .wooga { color: value; }").css,
+                    process("@value color: red; @value value: color; .wooga { color: value; }").css,
                     ".wooga { color: red; }"
                 );
 
                 assert.equal(
-                    css.process("@value red: #F00; @value color: red; @value value: color; .wooga { color: value; }").css,
+                    process("@value red: #F00; @value color: red; @value value: color; .wooga { color: value; }").css,
                     ".wooga { color: #F00; }"
                 );
             });
 
             it("should replace values in media queries", function() {
                 assert.equal(
-                    css.process("@value small: (max-width: 599px); @media small { }").css,
+                    process("@value small: (max-width: 599px); @media small { }").css,
                     "@media (max-width: 599px) { }"
                 );
             });
         });
 
         describe("composed values", function() {
-            var css = postcss([ composed, plugin ]);
+            var css = postcss([ composed, exported, plugin ]);
             
             it("should replace values in declarations", function() {
                 assert.equal(
@@ -85,7 +90,7 @@ describe("/plugins", function() {
         });
 
         describe("namespaced values", function() {
-            var css = postcss([ namespaced, plugin ]);
+            var css = postcss([ namespaced, exported, plugin ]);
             
             it("should replace values in declarations", function() {
                 assert.equal(
@@ -113,7 +118,7 @@ describe("/plugins", function() {
         });
 
         describe("combined", function() {
-            var css = postcss([ local, namespaced, composed, plugin ]);
+            var css = postcss([ local, namespaced, composed, exported, plugin ]);
 
             it("should replace values in declarations", function() {
                 assert.equal(
