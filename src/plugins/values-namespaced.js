@@ -2,9 +2,10 @@
 
 var postcss = require("postcss"),
 
-    parser = require("../parsers/parser.js"),
+    parser  = require("../parsers/parser.js"),
+    resolve = require("../lib/resolve.js"),
     
-    plugin = "postcss-modular-css-values-local",
+    plugin = "postcss-modular-css-values-namespaced",
     offset = "@value ".length;
 
 // Find @value fooga: wooga entries & catalog/remove them
@@ -13,26 +14,29 @@ module.exports = postcss.plugin(plugin, function() {
         var values = Object.create(null);
 
         css.walkAtRules("value", (rule) => {
-            var parsed;
+            var parsed, source;
             
             try {
                  parsed = parser.parse(rule.params);
             } catch(e) {
-                if(result.opts.strict) {
-                    throw rule.error(e.toString(), { index : offset + e.location.start.column });
-                } else {
-                    return;
-                }
+                throw rule.error(e.toString(), { index : offset + e.location.start.column });
             }
 
-            if(parsed.type !== "assignment") {
+            if(parsed.type !== "namespace") {
                 return;
             }
 
-            values[parsed.name] = {
-                value  : parsed.value,
-                source : rule.source
-            };
+            try {
+                source = result.opts.files[resolve(result.opts.from, parsed.source)];
+            } catch(e) {
+                // NO-OP
+            }
+
+            if(!source) {
+                throw rule.error("Unknown composition source", { word : parsed.source });
+            }
+
+            values[parsed.name] = source.values;
 
             rule.remove();
         });

@@ -1,16 +1,18 @@
 "use strict";
 
-var postcss      = require("postcss"),
+var postcss = require("postcss"),
     
-    Graph   = require("dependency-graph").DepGraph,
+    Graph = require("dependency-graph").DepGraph,
     
     unique    = require("lodash.uniq"),
     invert    = require("lodash.invert"),
     mapvalues = require("lodash.mapvalues"),
 
-    message     = require("../lib/message"),
-    composition = require("../lib/composition"),
-    identifiers = require("../lib/identifiers"),
+    message     = require("../lib/message.js"),
+    resolve     = require("../lib/resolve.js"),
+    identifiers = require("../lib/identifiers.js"),
+    
+    parser = require("../parsers/parser.js"),
     
     plugin = "postcss-modular-css-composition";
 
@@ -29,23 +31,34 @@ module.exports = postcss.plugin(plugin, function() {
         // Go look up "composes" declarations and populate dependency graph
         css.walkDecls("composes", function(decl) {
             var selectors, details;
-            
-            details   = composition.decl(opts.from, decl);
-            selectors = identifiers.parse(decl.parent.selector);
 
-            if(details.source && (!opts.files || !opts.files[details.source])) {
-                throw decl.error("Invalid file reference", { word : decl.value });
+            if(decl.prev() && decl.prev().prop !== "composes") {
+                throw decl.error("composes must be the first declaration", { word : "composes" });
+            }
+            
+            try {
+                details   = parser.parse(decl.value);
+                selectors = identifiers.parse(decl.parent.selector);
+            } catch(e) {
+                throw decl.error(e.toString(), { word : decl.value });
+            }
+
+            if(details.source) {
+                details.source = resolve(opts.from, details.source);
+
+                if(!opts.files || !opts.files[details.source]) {
+                    throw decl.error("Invalid file reference", { word : decl.value });
+                }
             }
 
             // Add references and update graph
-            details.rules.forEach(function(rule) {
-                var global = details.types[rule] === "global",
-                    scoped;
+            details.refs.forEach((ref) => {
+                var scoped;
                     
-                if(global) {
-                    scoped = "global-" + rule;
+                if(ref.global) {
+                    scoped = "global-" + ref.name;
                 } else {
-                    scoped = (details.source ? details.source + "-" : "") + rule;
+                    scoped = (details.source ? details.source + "-" : "") + ref.name;
                 }
 
                 graph.addNode(scoped);
@@ -54,18 +67,18 @@ module.exports = postcss.plugin(plugin, function() {
                     graph.addDependency(map[selector], scoped);
                 });
 
-                if(global) {
-                    refs[scoped] = [ rule ];
+                if(ref.global) {
+                    refs[scoped] = [ ref.name ];
 
                     return;
                 }
 
                 if(details.source) {
-                    refs[scoped] = opts.files[details.source].exports[rule];
+                    refs[scoped] = opts.files[details.source].exports[ref.name];
                 }
 
                 if(!refs[scoped]) {
-                    throw decl.error("Invalid composes reference", { word : rule });
+                    throw decl.error("Invalid composes reference", { word : ref.name });
                 }
             });
 

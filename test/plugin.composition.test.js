@@ -46,7 +46,7 @@ describe("/plugins", function() {
             
             assert.throws(function() {
                 out.css;
-            }, /composes must be the first declaration in the rule/);
+            }, /composes must be the first declaration/);
         });
         
         it("should fail if classes have a cyclic dependency", function() {
@@ -104,13 +104,13 @@ describe("/plugins", function() {
             
             assert.throws(function() {
                 out.css;
-            }, /Unable to parse composition/);
+            }, /SyntaxError: Expected/);
 
             out = process(".wooga { composes: fooga wooga; }");
             
             assert.throws(function() {
                 out.css;
-            }, /Unable to parse composition/);
+            }, /SyntaxError: Expected/);
         });
 
         it("should output composition results as a message", function() {

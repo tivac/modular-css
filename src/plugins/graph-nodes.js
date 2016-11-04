@@ -2,14 +2,14 @@
 
 var postcss = require("postcss"),
 
-    composition = require("../lib/composition"),
-    resolve     = require("../lib/resolve");
+    parser  = require("../parsers/parser.js"),
+    resolve = require("../lib/resolve.js");
 
 function parse(options, field, rule) {
-    var parsed = composition.parse(rule[field]),
+    var parsed = parser.parse(rule[field]),
         file;
     
-    if(!parsed.source || parsed.source === "super") {
+    if(!parsed.source) {
         return;
     }
     

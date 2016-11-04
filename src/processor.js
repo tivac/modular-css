@@ -29,22 +29,27 @@ function Processor(opts) {
         cwd    : process.cwd(),
         map    : false,
         strict : true
-    }, options || {});
+    }, options || Object.create(null));
 
     if(typeof this._options.namer !== "function") {
         this._options.namer = namer.bind(null, this._options.cwd);
     }
     
-    this._files = {};
+    this._files = Object.create(null);
     this._graph = new Graph();
     
     this._before = postcss((this._options.before || []).concat(
         require("./plugins/values-local.js"),
+        require("./plugins/values-export.js"),
+        require("./plugins/values-replace.js"),
         require("./plugins/graph-nodes.js")
     ));
 
     this._process = postcss([
         require("./plugins/values-composed.js"),
+        require("./plugins/values-export.js"),
+        require("./plugins/values-namespaced.js"),
+        require("./plugins/values-replace.js"),
         require("./plugins/scoping.js"),
         require("./plugins/composition.js"),
         require("./plugins/keyframes.js")
@@ -63,32 +68,36 @@ Processor.prototype = {
         return this.string(file, fs.readFileSync(file, "utf8"));
     },
     
-    // Add a file by file + contents to the dependency graph
-    string : function(file, text) {
+    // Add a file by name + contents to the dependency graph
+    string : function(name, text) {
         var self  = this,
-            start = path.resolve(file);
+            start = path.resolve(name);
         
         return this._walk(start, text).then(() => {
             var deps = self._graph.dependenciesOf(start).concat(start);
             
             return sequential(deps.map((dep) =>
                 () => {
-                    var details = self._files[dep];
+                    var file = self._files[dep];
                     
-                    if(!details.processed) {
-                        details.processed = self._process.process(
-                            details.result,
-                            Object.assign({}, self._options, {
-                                from  : dep,
-                                files : self._files,
-                                namer : self._options.namer
-                            })
+                    if(!file.processed) {
+                        file.processed = self._process.process(
+                            file.result,
+                            Object.assign(
+                                Object.create(null),
+                                self._options,
+                                {
+                                    from  : dep,
+                                    files : self._files,
+                                    namer : self._options.namer
+                                }
+                            )
                         );
                     }
                     
-                    return details.processed.then((result) => {
-                        details.exports = message(result, "classes");
-                        details.result  = result;
+                    return file.processed.then((result) => {
+                        file.exports = message(result, "classes");
+                        file.result  = result;
                     });
                 }
             ));
@@ -153,7 +162,9 @@ Processor.prototype = {
                 tier = clone.overallOrder(true);
                 
                 tier.forEach((node) => {
-                    clone.dependantsOf(node).forEach((dep) => clone.removeDependency(dep, node));
+                    clone.dependantsOf(node).forEach(
+                        (dep) => clone.removeDependency(dep, node)
+                    );
                     
                     clone.removeNode(node);
                 });
@@ -172,10 +183,14 @@ Processor.prototype = {
             //
             self._files[dep].result.root.clone(),
             
-            Object.assign({}, self._options, {
-                from : dep,
-                to   : opts.to
-            })
+            Object.assign(
+                Object.create(null),
+                self._options,
+                {
+                    from : dep,
+                    to   : opts.to
+                }
+            )
         )))
         .then((results) => {
             var root = postcss.root();
@@ -206,7 +221,11 @@ Processor.prototype = {
             
             return self._done.process(
                 root,
-                Object.assign({}, self._options, args || {})
+                Object.assign(
+                    Object.create(null),
+                    self._options,
+                    args || Object.create(null)
+                )
             );
         })
         .then((result) => {
@@ -228,24 +247,35 @@ Processor.prototype = {
     _walk : function(name, text) {
         var self = this;
         
-        self._graph.addNode(name);
-        
-        if(!self._files[name]) {
-            self._files[name] = {
-                text    : text,
-                exports : {},
-                values  : {},
-                before  : self._before.process(text, Object.assign({}, self._options, {
-                    from  : name,
-                    graph : self._graph,
-                    files : self._files
-                }))
-            };
+        // No need to re-process files
+        if(self._files[name]) {
+            return Promise.resolve();
         }
         
-        return self._files[name].before.then((result) => {
+        self._graph.addNode(name);
+
+        self._files[name] = {
+            text    : text,
+            exports : false,
+            values  : false
+        };
+        
+        return self._before.process(text, Object.assign(
+            Object.create(null),
+            self._options,
+            {
+                from  : name,
+                graph : self._graph,
+                files : self._files,
+
+                // Run parsers in loose mode for this first pass
+                strict : false
+            }
+        ))
+        .then((result) => {
             self._files[name].result = result;
 
+            // Check for plugin warnings
             self._warnings(result);
             
             // Walk this node's dependencies, reading new files from disk as necessary
