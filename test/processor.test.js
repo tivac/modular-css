@@ -600,11 +600,9 @@ describe("/processor.js", function() {
                         ".mc61f0515a_tooga { border: 1px solid white; }\n"
                     );
 
-                    assert.deepEqual(file.values, {
-                        folder : "white",
-                        one    : "red",
-                        two    : "blue"
-                    });
+                    assert.equal(file.values.folder.value, "white");
+                    assert.equal(file.values.one.value, "red");
+                    assert.equal(file.values.two.value, "blue");
 
                     assert.deepEqual(file.exports, {
                         wooga : [ "mc04cb4cb2_booga", "mc61f0515a_wooga" ],
@@ -617,11 +615,9 @@ describe("/processor.js", function() {
                     assert.equal(file.text, fs.readFileSync("./test/specimens/local.css", "utf8"));
                     assert.equal(file.processed.root.toResult().css, ".mc04cb4cb2_booga { background: green; }\n");
 
-                    assert.deepEqual(file.values, {
-                        folder : "white",
-                        one    : "red",
-                        two    : "blue"
-                    });
+                    assert.equal(file.values.folder.value, "white");
+                    assert.equal(file.values.one.value, "red");
+                    assert.equal(file.values.two.value, "blue");
 
                     assert.deepEqual(file.exports, {
                         booga : [ "mc04cb4cb2_booga" ],
@@ -633,9 +629,7 @@ describe("/processor.js", function() {
                     assert.equal(file.text, fs.readFileSync("./test/specimens/folder/folder.css", "utf8"));
                     assert.equal(file.processed.root.toResult().css, ".mc04bb002b_folder { margin: 2px; }\n");
 
-                    assert.deepEqual(file.values, {
-                        folder : "white"
-                    });
+                    assert.equal(file.values.folder.value, "white");
                     
                     assert.deepEqual(file.exports, {
                         folder : [ "mc04bb002b_folder" ]
