@@ -83,19 +83,21 @@ Processor.prototype = {
                     if(!file.processed) {
                         file.processed = self._process.process(
                             file.result,
-                            Object.assign(Object.create(null), self._options, {
-                                from  : dep,
-                                files : self._files,
-                                namer : self._options.namer
-                            })
+                            Object.assign(
+                                Object.create(null),
+                                self._options,
+                                {
+                                    from  : dep,
+                                    files : self._files,
+                                    namer : self._options.namer
+                                }
+                            )
                         );
                     }
                     
                     return file.processed.then((result) => {
                         file.exports = message(result, "classes");
                         file.result  = result;
-
-                        // TODO: overwrite file.values w/ local/composed values
                     });
                 }
             ));
@@ -160,7 +162,9 @@ Processor.prototype = {
                 tier = clone.overallOrder(true);
                 
                 tier.forEach((node) => {
-                    clone.dependantsOf(node).forEach((dep) => clone.removeDependency(dep, node));
+                    clone.dependantsOf(node).forEach(
+                        (dep) => clone.removeDependency(dep, node)
+                    );
                     
                     clone.removeNode(node);
                 });
@@ -179,10 +183,14 @@ Processor.prototype = {
             //
             self._files[dep].result.root.clone(),
             
-            Object.assign(Object.create(null), self._options, {
-                from : dep,
-                to   : opts.to
-            })
+            Object.assign(
+                Object.create(null),
+                self._options,
+                {
+                    from : dep,
+                    to   : opts.to
+                }
+            )
         )))
         .then((results) => {
             var root = postcss.root();
@@ -213,7 +221,11 @@ Processor.prototype = {
             
             return self._done.process(
                 root,
-                Object.assign(Object.create(null), self._options, args || Object.create(null))
+                Object.assign(
+                    Object.create(null),
+                    self._options,
+                    args || Object.create(null)
+                )
             );
         })
         .then((result) => {
@@ -248,14 +260,18 @@ Processor.prototype = {
             values  : false
         };
         
-        return self._before.process(text, Object.assign(Object.create(null), self._options, {
-            from  : name,
-            graph : self._graph,
-            files : self._files,
+        return self._before.process(text, Object.assign(
+            Object.create(null),
+            self._options,
+            {
+                from  : name,
+                graph : self._graph,
+                files : self._files,
 
-            // Run parsers in loose mode for this first pass
-            strict : false
-        }))
+                // Run parsers in loose mode for this first pass
+                strict : false
+            }
+        ))
         .then((result) => {
             self._files[name].result = result;
 
