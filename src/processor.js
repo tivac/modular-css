@@ -92,6 +92,8 @@ Processor.prototype = {
                     return file.processed.then((result) => {
                         file.exports = message(result, "classes");
                         file.result  = result;
+
+                        // TODO: overwrite file.values w/ local/composed values
                     });
                 }
             ));
