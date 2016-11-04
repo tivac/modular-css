@@ -40,12 +40,14 @@ function Processor(opts) {
     
     this._before = postcss((this._options.before || []).concat(
         require("./plugins/values-local.js"),
+        require("./plugins/values-export.js"),
         require("./plugins/values-replace.js"),
         require("./plugins/graph-nodes.js")
     ));
 
     this._process = postcss([
         require("./plugins/values-composed.js"),
+        require("./plugins/values-export.js"),
         require("./plugins/values-namespaced.js"),
         require("./plugins/values-replace.js"),
         require("./plugins/scoping.js"),
@@ -81,7 +83,7 @@ Processor.prototype = {
                     if(!file.processed) {
                         file.processed = self._process.process(
                             file.result,
-                            Object.assign({}, self._options, {
+                            Object.assign(Object.create(null), self._options, {
                                 from  : dep,
                                 files : self._files,
                                 namer : self._options.namer
@@ -177,7 +179,7 @@ Processor.prototype = {
             //
             self._files[dep].result.root.clone(),
             
-            Object.assign({}, self._options, {
+            Object.assign(Object.create(null), self._options, {
                 from : dep,
                 to   : opts.to
             })
@@ -257,11 +259,6 @@ Processor.prototype = {
         .then((result) => {
             self._files[name].result = result;
 
-            // pull out defined values & save w/ the file
-            self._files[name].values = result.messages
-                .filter((msg) => msg.plugin.indexOf("postcss-modular-css-values") > -1)
-                .reduce((prev, curr) => Object.assign(prev, curr.values), Object.create(null));
-            
             // Check for plugin warnings
             self._warnings(result);
             
