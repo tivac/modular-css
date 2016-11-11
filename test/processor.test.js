@@ -73,7 +73,8 @@ describe("/processor.js", function() {
                 return this.processor.string(
                     "./test/specimens/simple.css",
                     "@keyframes kooga { } #fooga { } .wooga { }"
-                ).then((result) => {
+                )
+                .then((result) => {
                     var file = result.files[path.resolve("./test/specimens/simple.css")];
                     
                     assert.deepEqual(result.exports, {
@@ -111,6 +112,16 @@ describe("/processor.js", function() {
             });
         });
 
+        describe("externals", function() {
+            it("should support overriding external values", function() {
+                return this.processor.file(
+                    "./test/specimens/externals.css"
+                )
+                .then(() => this.processor.output())
+                .then((result) => compare.stringToFile(result.css, "./test/results/processor/externals.css"));
+            });
+        });
+
         describe("exports", function() {
             it("should export an object of arrays containing strings", function() {
                 return this.processor.string(
@@ -133,7 +144,7 @@ describe("/processor.js", function() {
                 return this.processor.file(
                     "./test/specimens/start.css"
                 )
-                .then(function(result) {
+                .then((result) => {
                     var file = result.files[path.resolve("./test/specimens/start.css")];
                 
                     assert.deepEqual(result.exports, {
@@ -189,17 +200,14 @@ describe("/processor.js", function() {
 
         it("should support unicode classes & ids", function() {
             var processor = new Processor({
-                    namer : function(file, selector) {
-                        return selector;
-                    }
+                    namer : (file, selector) => selector
                 });
             
-            return processor.file("./test/specimens/processor/unicode.css").then(function() {
-                return processor.output({ to : "./test/output/processor/unicode.css" });
-            })
-            .then(function(output) {
-                compare.stringToFile(output.css, "./test/results/processor/unicode.css");
-            });
+            return processor.file(
+                "./test/specimens/processor/unicode.css"
+            )
+            .then(() => processor.output({ to : "./test/output/processor/unicode.css" }))
+            .then((output) => compare.stringToFile(output.css, "./test/results/processor/unicode.css"));
         });
     });
 });

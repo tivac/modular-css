@@ -1,15 +1,16 @@
 "use strict";
 
-var postcss = require("postcss"),
-    parser  = require("postcss-value-parser"),
-    each    = require("lodash.foreach"),
-    Graph   = require("dependency-graph").DepGraph,
+var postcss  = require("postcss"),
+    selector = require("postcss-selector-parser"),
+    value    = require("postcss-value-parser"),
+    each     = require("lodash.foreach"),
+    Graph    = require("dependency-graph").DepGraph,
 
     plugin  = "postcss-modular-css-values-replace";
 
 function replacer(values, prop) {
     return (thing) => {
-        var parsed = parser(thing[prop]);
+        var parsed = value(thing[prop]);
         
         parsed.walk((node) => {
             if(node.type !== "word" || !values[node.value]) {
@@ -27,10 +28,21 @@ function replacer(values, prop) {
 module.exports = postcss.plugin(plugin, function() {
     return function(css, result) {
         var graph  = new Graph(),
+            
             // Create local copy of values since we're going to merge in namespace stuff
             values = Object.assign(
                 Object.create(null),
                 result.opts.files ? result.opts.files[result.opts.from].values : {}
+            ),
+
+            external = selector((selectors) =>
+                selectors.walkTags((tag) => {
+                    if(!values[tag.value]) {
+                        return;
+                    }
+
+                    tag.replaceWith(values[tag.value].value);
+                })
             );
             
         // Merge namespaced values in w/ prefixed names
@@ -51,7 +63,7 @@ module.exports = postcss.plugin(plugin, function() {
         each(values, (details, name) => {
             graph.addNode(name);
 
-            parser(details.value).walk((node) => {
+            value(details.value).walk((node) => {
                 if(node.type !== "word" || !values[node.value]) {
                     return;
                 }
@@ -63,7 +75,7 @@ module.exports = postcss.plugin(plugin, function() {
 
         // Walk through values in dependency order & update any inter-dependent values
         graph.overallOrder().forEach((name) => {
-            parser(values[name].value).walk((node) => {
+            value(values[name].value).walk((node) => {
                 if(node.type !== "word" || !values[node.value]) {
                     return;
                 }
@@ -72,8 +84,15 @@ module.exports = postcss.plugin(plugin, function() {
             });
         });
 
-        // Replace all values
+        // Replace values in property values
         css.walkDecls(replacer(values, "value"));
+
+        // Replace values in @media/@value
         css.walkAtRules(/media|value/, replacer(values, "params"));
+
+        // Replace values in :external() references
+        css.walkRules(/:external/, (rule) =>
+            (rule.selector = external.process(rule.selector).result)
+        );
     };
 });

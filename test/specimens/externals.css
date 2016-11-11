@@ -1,0 +1,9 @@
+@value localCss: "./local.css";
+
+.a :external(wooga from "./simple.css") {
+    color: green;
+}
+
+.b :external(booga from localCss) {
+    background: blue;
+}
