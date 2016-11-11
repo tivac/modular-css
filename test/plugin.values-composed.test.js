@@ -39,19 +39,13 @@ describe("/plugins", function() {
         });
 
         it("should fail if importing from a file that doesn't exist", function() {
-            assert.throws(function() {
-                process(`@value booga from "./no.css";`).css;
-            }, /Unknown composition source/);
+            assert.throws(() => process(`@value booga from "./no.css";`).css, /Unknown composition source/);
         });
 
         it("should fail if non-existant imports are referenced", function() {
-            assert.throws(function() {
-                process(`@value booga from "./local.css";`).css;
-            }, /Invalid @value reference: booga/);
+            assert.throws(() => process(`@value booga from "./local.css";`).css, /Invalid @value reference: booga/);
             
-            assert.throws(function() {
-                process(`@value tooga from "./local.css";`).css;
-            }, /Invalid @value reference: tooga/);
+            assert.throws(() => process(`@value tooga from "./local.css";`).css, /Invalid @value reference: tooga/);
         });
 
         it("should ignore other @value types", function() {

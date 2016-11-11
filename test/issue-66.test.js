@@ -9,11 +9,13 @@ describe("/issues", function() {
         it("should ignore remove calls for unknown files", function() {
             var processor = new Processor();
 
-            return processor.string("./test/specimens/a.css", ".aooga { }").then(function() {
-                assert.doesNotThrow(function() {
-                    processor.remove("./fooga.js");
-                });
-            });
+            return processor.string(
+                "./test/specimens/a.css",
+                ".aooga { }"
+            )
+            .then(() => assert.doesNotThrow(function() {
+                processor.remove("./fooga.js");
+            }));
         });
     });
 });

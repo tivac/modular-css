@@ -16,9 +16,7 @@ describe("/glob.js", function() {
             cwd : "./test/specimens/glob"
         })
         .then((processor) => processor.output())
-        .then((output) => {
-            compare.stringToFile(output.css, "./test/results/glob/glob.css");
-        });
+        .then((output) => compare.stringToFile(output.css, "./test/results/glob/glob.css"));
     });
 
     it("should find files on disk & output css", function() {
@@ -29,9 +27,7 @@ describe("/glob.js", function() {
             ]
         })
         .then((processor) => processor.output())
-        .then((output) => {
-            compare.stringToFile(output.css, "./test/results/glob/glob.css");
-        });
+        .then((output) => compare.stringToFile(output.css, "./test/results/glob/glob.css"));
     });
 
     it("should support exclusion patterns", function() {
@@ -43,8 +39,6 @@ describe("/glob.js", function() {
             ]
         })
         .then((processor) => processor.output())
-        .then((output) => {
-            compare.stringToFile(output.css, "./test/results/glob/glob-excludes.css");
-        });
+        .then((output) => compare.stringToFile(output.css, "./test/results/glob/glob-excludes.css"));
     });
 });

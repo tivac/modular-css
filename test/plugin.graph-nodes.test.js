@@ -18,10 +18,7 @@ describe("/plugins", function() {
             
             return plugin.process(
                 `@value one from "./local.css";`,
-                {
-                    from,
-                    graph
-                }
+                { from, graph }
             )
             .then(() => assert.deepEqual(graph.overallOrder(), [
                 path.resolve("./test/specimens/local.css"),
@@ -37,10 +34,7 @@ describe("/plugins", function() {
             
             return plugin.process(
                 `.a { composes: booga from "./local.css"; }`,
-                {
-                    from,
-                    graph
-                }
+                { from, graph }
             )
             .then(() => assert.deepEqual(graph.overallOrder(), [
                 path.resolve("./test/specimens/local.css"),
@@ -56,10 +50,7 @@ describe("/plugins", function() {
             
             return plugin.process(
                 `.a :external(booga from "./local.css") { color: red; }`,
-                {
-                    from,
-                    graph
-                }
+                { from, graph }
             )
             .then(() => assert.deepEqual(graph.overallOrder(), [
                 path.resolve("./test/specimens/local.css"),

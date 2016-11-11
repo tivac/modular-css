@@ -17,7 +17,7 @@ describe("/issues", function() {
                     ".fooga:hover { color: blue } " +
                     ".wooga { composes: booga }"
             )
-            .then(function(result) {
+            .then((result) => {
                 assert.deepEqual(result.exports, {
                     booga : [ "mc13e7db14_booga" ],
                     fooga : [ "mc13e7db14_booga", "mc13e7db14_fooga" ],
@@ -26,9 +26,7 @@ describe("/issues", function() {
 
                 return processor.output();
             })
-            .then(function(result) {
-                compare.stringToFile(result.css, "./test/results/issues/56.css");
-            });
+            .then((result) => compare.stringToFile(result.css, "./test/results/issues/56.css"));
         });
     });
 });

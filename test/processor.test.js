@@ -128,13 +128,11 @@ describe("/processor.js", function() {
                     "./test/specimens/simple.css",
                     ".fooga { color: red; } .booga { background: #000; } .tooga { composes: fooga, booga; }"
                 )
-                .then((result) => {
-                    assert.deepEqual(result.exports, {
-                        fooga : [ "mc08e91a5b_fooga" ],
-                        booga : [ "mc08e91a5b_booga" ],
-                        tooga : [ "mc08e91a5b_fooga", "mc08e91a5b_booga", "mc08e91a5b_tooga" ]
-                    });
-                })
+                .then((result) => assert.deepEqual(result.exports, {
+                    fooga : [ "mc08e91a5b_fooga" ],
+                    booga : [ "mc08e91a5b_booga" ],
+                    tooga : [ "mc08e91a5b_fooga", "mc08e91a5b_booga", "mc08e91a5b_tooga" ]
+                }))
                 .catch((e) => {
                     throw e;
                 })

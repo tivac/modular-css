@@ -10,55 +10,34 @@ describe("/lib", function() {
             var out = [];
             
             return sequential([
-                function() {
-                    return (new Promise(function(resolve) {
-                        out.push(1);
-                        return resolve();
-                    }));
-                },
-                function() {
-                    return (new Promise(function(resolve) {
-                        out.push(2);
-                        return resolve();
-                    }));
-                },
-                function() {
-                    return (new Promise(function(resolve) {
-                        out.push(3);
-                        return resolve();
-                    }));
-                }
+                () => (new Promise((resolve) => {
+                    out.push(1);
+                    
+                    return resolve();
+                })),
+                () => (new Promise((resolve) => {
+                    out.push(2);
+                    
+                    return resolve();
+                })),
+                () => (new Promise((resolve) => {
+                    out.push(3);
+
+                    return resolve();
+                }))
             ])
-            .then(function() {
-                assert.deepEqual(out, [ 1, 2, 3 ]);
-            });
+            .then(() => assert.deepEqual(out, [ 1, 2, 3 ]));
         });
         
         it("should stop execution if a promise rejects", function() {
             return sequential([
-                function() {
-                    return (new Promise(function(resolve) {
-                        resolve();
-                    }));
-                },
-                function() {
-                    return (new Promise(function(resolve, reject) {
-                        reject("rejected");
-                    }));
-                },
-                function() {
-                    return (new Promise(function() {
-                        assert.fail();
-                    }));
-                }
+                () => (new Promise((resolve) => resolve())),
+                () => (new Promise((resolve, reject) => reject("rejected"))),
+                () => (new Promise(() => assert.fail()))
             ])
             .then(
-                function() {
-                    assert.fail();
-                },
-                function(error) {
-                    assert.equal("rejected", error);
-                }
+                () => assert.fail(),
+                (error) => assert.equal("rejected", error)
             );
         });
     });

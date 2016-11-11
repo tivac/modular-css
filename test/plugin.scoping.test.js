@@ -17,7 +17,7 @@ function msg(things, name) {
 function process(src, options) {
     return plugin.process(
         src,
-        Object.assign({
+        Object.assign(Object.create(null), {
             from  : "test/specimens/a.css",
             namer : (file, selector) => `a_${selector}`
         },

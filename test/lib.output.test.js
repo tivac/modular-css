@@ -23,7 +23,10 @@ describe("/lib", function() {
             });
             
             it("should output an object containing compositions", function() {
-                return compositions(".wooga { }").then(function(out) {
+                return compositions(
+                    ".wooga { }"
+                )
+                .then((out) => {
                     assert(typeof out === "object");
                     
                     assert.deepEqual(out, {
@@ -35,7 +38,10 @@ describe("/lib", function() {
             });
             
             it("should output an object containing compositions for multiple classes", function() {
-                return compositions(".wooga .booga { }").then(function(out) {
+                return compositions(
+                    ".wooga .booga { }"
+                )
+                .then(function(out) {
                     assert.deepEqual(out, {
                         "test/specimens/simple.css" : {
                             booga : "mc08e91a5b_booga",
@@ -46,7 +52,10 @@ describe("/lib", function() {
             });
             
             it("should output an object containing compositions for inheritance", function() {
-                return compositions(".wooga { } .booga { composes: wooga; }").then(function(out) {
+                return compositions(
+                    ".wooga { } .booga { composes: wooga; }"
+                )
+                .then(function(out) {
                     assert.deepEqual(out, {
                         "test/specimens/simple.css" : {
                             booga : "mc08e91a5b_wooga mc08e91a5b_booga",

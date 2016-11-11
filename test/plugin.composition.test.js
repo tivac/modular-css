@@ -23,38 +23,29 @@ describe("/plugins", function() {
         beforeEach(function() {
             var processor = postcss([ scoping, composition ]);
             
-            process = function(css, opts) {
-                return processor.process(css, Object.assign({
-                    namer : function(file, selector) {
-                        return file ? path.basename(file, path.extname(file)) + "_" + selector : selector;
-                    }
-                }, opts));
-            };
+            process = (css, opts) => processor.process(css, Object.assign(Object.create(null), {
+                namer : (file, selector) =>
+                    file ? `${path.basename(file, path.extname(file))}_${selector}` : selector
+            }, opts));
         });
         
         it("should fail if attempting to compose a class that doesn't exist", function() {
             /* eslint no-unused-expressions:0 */
             var out = process(".wooga { composes: googa; }");
             
-            assert.throws(function() {
-                out.css;
-            }, /Invalid composes reference/);
+            assert.throws(() => out.css, /Invalid composes reference/);
         });
         
         it("should fail if composes isn't the first rule", function() {
             var out = process(".wooga { color: red; composes: googa; }");
             
-            assert.throws(function() {
-                out.css;
-            }, /composes must be the first declaration/);
+            assert.throws(() => out.css, /composes must be the first declaration/);
         });
         
         it("should fail if classes have a cyclic dependency", function() {
             var out = process(".wooga { composes: booga; } .booga { composes: wooga; }");
             
-            assert.throws(function() {
-                out.css;
-            }, /Dependency Cycle Found: wooga -> booga -> wooga/);
+            assert.throws(() => out.css, /Dependency Cycle Found: wooga -> booga -> wooga/);
         });
 
         it("should fail if imports are referenced without having been parsed", function() {
@@ -63,9 +54,7 @@ describe("/plugins", function() {
                     files : {}
                 });
             
-            assert.throws(function() {
-                out.css;
-            }, /Invalid file reference/);
+            assert.throws(() => out.css, /Invalid file reference/);
         });
 
         it("should fail if composing from a file that doesn't exist", function() {
@@ -74,9 +63,7 @@ describe("/plugins", function() {
                     files : {}
                 });
             
-            assert.throws(function() {
-                out.css;
-            }, /Unable to locate/);
+            assert.throws(() => out.css, /Unable to locate/);
         });
 
         it("should fail if non-existant imports are referenced", function() {
@@ -92,9 +79,7 @@ describe("/plugins", function() {
                 files : files
             });
             
-            assert.throws(function() {
-                out.css;
-            }, /Invalid composes reference/);
+            assert.throws(() => out.css, /Invalid composes reference/);
         });
         
         it("should fail when parsing an invalid value", function() {
@@ -102,15 +87,11 @@ describe("/plugins", function() {
 
             out = process(".wooga { composes: global(); }");
             
-            assert.throws(function() {
-                out.css;
-            }, /SyntaxError: Expected/);
+            assert.throws(() => out.css, /SyntaxError: Expected/);
 
             out = process(".wooga { composes: fooga wooga; }");
             
-            assert.throws(function() {
-                out.css;
-            }, /SyntaxError: Expected/);
+            assert.throws(() => out.css, /SyntaxError: Expected/);
         });
 
         it("should output composition results as a message", function() {
@@ -266,9 +247,8 @@ describe("/plugins", function() {
                     ".wooga { color: red; } .googa { composes: wooga; }",
                     {
                         from  : "test/specimens/simple.css",
-                        namer : function(file, selector) {
-                            return path.basename(file, path.extname(file)) + "_" + selector;
-                        }
+                        namer : (file, selector) =>
+                            path.basename(file, path.extname(file)) + "_" + selector
                     }
                 );
             
