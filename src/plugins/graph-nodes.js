@@ -1,12 +1,13 @@
 "use strict";
 
-var postcss = require("postcss"),
+var postcss  = require("postcss"),
+    selector = require("postcss-selector-parser"),
 
     parser  = require("../parsers/parser.js"),
     resolve = require("../lib/resolve.js");
 
-function parse(options, field, rule) {
-    var parsed = parser.parse(rule[field]),
+function parse(options, value) {
+    var parsed = parser.parse(value),
         file;
     
     if(!parsed.source) {
@@ -22,9 +23,18 @@ function parse(options, field, rule) {
 
 module.exports = postcss.plugin("postcss-modular-css-graph-nodes", function() {
     return function(css, result) {
-        var options = result.opts;
+        var options   = result.opts,
+            externals = selector((selectors) =>
+                selectors.walkPseudos((pseudo) => parse(options, pseudo.nodes.toString()))
+            );
         
-        css.walkAtRules("value", parse.bind(null, options, "params"));
-        css.walkDecls("composes", parse.bind(null, options, "value"));
+        // @value <value> from <file>
+        css.walkAtRules("value", (rule) => parse(options, rule.params));
+
+        // { composes: <rule> from <file> }
+        css.walkDecls("composes", (rule) => parse(options, rule.value));
+
+        // :external(<rule> from <file>) { ... }
+        css.walkRules(/:external/, (rule) => externals.process(rule.selector));
     };
 });
