@@ -51,6 +51,7 @@ function Processor(opts) {
         require("./plugins/values-namespaced.js"),
         require("./plugins/values-replace.js"),
         require("./plugins/scoping.js"),
+        require("./plugins/externals.js"),
         require("./plugins/composition.js"),
         require("./plugins/keyframes.js")
     ]);
