@@ -12,7 +12,7 @@ var fs   = require("fs"),
     relative  = require("./lib/relative");
 
 module.exports = function(opts) {
-    var options = Object.assign({
+    var options = Object.assign(Object.create(null), {
             ext  : ".css",
             json : false,
             map  : true

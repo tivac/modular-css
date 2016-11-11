@@ -14,7 +14,7 @@ var fs   = require("fs"),
     output    = require("./lib/output");
 
 module.exports = function(browserify, opts) {
-    var options = Object.assign({
+    var options = Object.assign(Object.create(null), {
             ext : ".css",
             map : browserify._options.debug,
             cwd : browserify._options.basedir || process.cwd()

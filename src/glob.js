@@ -5,7 +5,7 @@ var globule = require("globule"),
     Processor = require("./processor.js");
 
 module.exports = function(opts) {
-    var options   = Object.assign({
+    var options   = Object.assign(Object.create(null), {
             search : [
                 "**/*.css"
             ]

@@ -25,7 +25,7 @@ function Processor(opts) {
         return new Processor(opts);
     }
     
-    this._options = Object.assign({
+    this._options = Object.assign(Object.create(null), {
         cwd    : process.cwd(),
         map    : false,
         strict : true

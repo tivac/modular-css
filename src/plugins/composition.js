@@ -22,7 +22,7 @@ module.exports = postcss.plugin(plugin, function() {
             map   = invert(refs),
             opts  = result.opts,
             graph = new Graph(),
-            out   = Object.assign({}, refs);
+            out   = Object.assign(Object.create(null), refs);
         
         Object.keys(refs).forEach(function(key) {
             graph.addNode(key);
