@@ -11,7 +11,7 @@
   "scripts": {
     "test": "npm run lint && npm run tests",
     "tests": "mocha",
-    "cover": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
+    "cover": "istanbul cover --print both ./node_modules/mocha/bin/_mocha",
     "lint": "eslint .",
     "parser": "pegjs -o ./src/parsers/parser.js ./src/parsers/parser.pegjs",
     "generate": "npm run parser",
