@@ -3,8 +3,10 @@
 CSS Modules defines a bunch of great features, and `modular-css` supports the best of them in a straightforward and consistent way.
 
 - [Values](#values)
+  - [Namespaces](#namespaces)
 - [Scoped Selectors](#scoped-selectors)
 - [Composition](#composition)
+  - [Overriding Styles](#overriding-styles)
 
 ## Values
 
@@ -23,6 +25,26 @@ Values are useful in CSS, they're coming to the spec soon. Use them now because 
 
 @media (max-width: 600px) {
     .alert { color: #F00; }
+}
+```
+
+### Namespaces
+
+`modular-css` also supports value namespaces as a convenient shorthand way to access a bunch of shared values from a file.
+
+```css
+/* Specific values being imported */
+@value vbox, hbox, centered from "./layout.css";
+
+.content {
+    composes: vbox, centered;
+}
+
+/* Namespace to collect all imports */
+@value * as layout from "./layout.css";
+
+.content {
+    composes: layout.vbox, layout.centered;
 }
 ```
 
@@ -143,3 +165,20 @@ You can also get access to variables defined in other files for simple sharing o
 @value first, second from "./somewhere-else.css";
 ```
 
+### Overriding Styles
+
+Sometimes a component will some customization for use in a specific location/design, but you don't want to bake that customization into the component. That's where `:external(...)` comes in.
+
+In this case we've got an `input` component that is normally 100% of the width of its container, but when it's within the `fieldset` component it should only be half as wide.
+
+```css
+/* input.css */
+.input {
+    width: 100%;
+}
+
+/* fieldset.css */
+.fieldset :external(input from "./input.css") {
+    width: 50%;
+}
+```
