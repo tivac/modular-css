@@ -1,3 +1,3 @@
 "use strict";
 
-module.exports = require("./src/glob");
+module.exports = require("./src/glob.js");
