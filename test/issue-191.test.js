@@ -9,7 +9,7 @@ var fs     = require("fs"),
 
 describe("/issues", function() {
     describe("/191", function() {
-        after((done) => require("rimraf")("./test/output/sensitive.txt", done));
+        afterAll((done) => require("rimraf")("./test/output/sensitive.txt", done));
 
         it("should ignore case differences in file paths", function() {
             var test = this,

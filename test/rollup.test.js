@@ -10,7 +10,7 @@ var path   = require("path"),
     warn    = require("./lib/warn");
 
 describe("/rollup.js", function() {
-    after(function(done) {
+    afterAll(function(done) {
         require("rimraf")("./test/output/rollup", done);
     });
     
