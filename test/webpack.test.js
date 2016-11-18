@@ -2,9 +2,9 @@
 
 var path   = require("path"),
     assert = require("assert"),
-    
+
     webpack = require("webpack"),
-    
+
     loader  = require("../src/webpack.js"),
     compare = require("./lib/compare-files.js");
 
@@ -21,7 +21,7 @@ describe.only("/webpack.js", function() {
                 filename : "./simple.js"
             },
             module : {
-                loaders : [
+                rules : [
                     {
                         test   : /\.css$/,
                         loader : "css-loader" //path.resolve("./src/webpack.js")
