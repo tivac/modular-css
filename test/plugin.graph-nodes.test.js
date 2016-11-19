@@ -57,5 +57,18 @@ describe("/plugins", function() {
                 from
             ]));
         });
+
+        it("should return useful errors when parsing", () => {
+            var graph = new Graph(),
+                from  = path.resolve("./test/specimens/simple.css");
+
+            graph.addNode(from);
+            
+            return plugin.process(
+                `@value sm, md, lg "../../shared.css";`,
+                { from, graph }
+            )
+            .catch((e) => assert(e.message.indexOf(`SyntaxError: Expected "from"`) > -1));
+        });
     });
 });
