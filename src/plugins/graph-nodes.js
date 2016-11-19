@@ -6,9 +6,16 @@ var postcss  = require("postcss"),
     parser  = require("../parsers/parser.js"),
     resolve = require("../lib/resolve.js");
 
-function parse(options, value) {
-    var parsed = parser.parse(value),
-        file;
+function parse(options, rule, value) {
+    var parsed, file;
+    
+    try {
+        parsed = parser.parse(value);
+    } catch(e) {
+        throw rule.error(e.toString(), {
+            word : value.substring(e.location.start.offset, e.location.end.offset)
+        });
+    }
     
     if(!parsed.source) {
         return;
@@ -23,18 +30,25 @@ function parse(options, value) {
 
 module.exports = postcss.plugin("postcss-modular-css-graph-nodes", function() {
     return function(css, result) {
-        var options   = result.opts,
-            externals = selector((selectors) =>
-                selectors.walkPseudos((pseudo) => parse(options, pseudo.nodes.toString()))
-            );
+        var externals, current;
+        
+        externals = selector((selectors) =>
+            selectors.walkPseudos((pseudo) => parse(result.opts, current, pseudo.nodes.toString()))
+        );
         
         // @value <value> from <file>
-        css.walkAtRules("value", (rule) => parse(options, rule.params));
+        css.walkAtRules("value", (rule) => parse(result.opts, rule, rule.params));
 
         // { composes: <rule> from <file> }
-        css.walkDecls("composes", (rule) => parse(options, rule.value));
+        css.walkDecls("composes", (rule) => parse(result.opts, rule, rule.value));
 
         // :external(<rule> from <file>) { ... }
-        css.walkRules(/:external/, (rule) => externals.process(rule.selector));
+        // Have to assign to current so postcss-selector-parser can reference the right thing
+        // in errors
+        css.walkRules(/:external/, (rule) => {
+            current = rule;
+            
+            externals.process(rule.selector);
+        });
     };
 });
