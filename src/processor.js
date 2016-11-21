@@ -211,7 +211,7 @@ Processor.prototype = {
                     // https://github.com/tivac/modular-css/pull/157
                     //
                     source : Object.assign(
-                        Object.create(null),
+                        {},
                         result.root.source,
                         {
                             end : result.root.source.start
