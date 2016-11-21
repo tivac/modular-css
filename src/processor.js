@@ -197,25 +197,27 @@ Processor.prototype = {
             var root = postcss.root();
 
             results.forEach((result) => {
-                var comment;
-                
                 self._warnings(result);
 
-                comment = postcss.comment({
-                    text : relative(self._options.cwd, result.opts.from)
-                });
-
-                // Add a bogus-ish source property so postcss won't make weird-looking
-                // source-maps that break the visualizer
-                //
-                // https://github.com/postcss/postcss/releases/tag/5.1.0
-                // https://github.com/postcss/postcss/pull/761
-                // https://github.com/tivac/modular-css/pull/157
-                //
-                comment.source = result.root.source;
-                comment.source.end = comment.source.start;
-
-                root.append(comment);
+                // Add file path comment
+                root.append(postcss.comment({
+                    text : relative(self._options.cwd, result.opts.from),
+                    
+                    // Add a bogus-ish source property so postcss won't make weird-looking
+                    // source-maps that break the visualizer
+                    //
+                    // https://github.com/postcss/postcss/releases/tag/5.1.0
+                    // https://github.com/postcss/postcss/pull/761
+                    // https://github.com/tivac/modular-css/pull/157
+                    //
+                    source : Object.assign(
+                        Object.create(null),
+                        result.root.source,
+                        {
+                            end : result.root.source.start
+                        }
+                    )
+                }));
                 
                 root.append(result.root);
             });
