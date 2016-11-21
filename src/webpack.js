@@ -1,13 +1,14 @@
 "use strict";
 
 var Processor = require("./processor"),
-    output    = require("./lib/output");
+    output = require("./lib/output"),
+    processor = new Processor();
 
 // https://webpack.github.io/docs/loaders.html
-module.exports = function(source, map) {
-    var done = this.async();
+module.exports = function(source) {
+    var callback = this.async();
 
-    console.log(this.resourcePath);
-
-    done(null, source);
+    processor.string(this.resourcePath, source).then((result) => {
+        callback(null, "module.exports = " + JSON.stringify(output.join(result.exports), null, 4) + ";");
+    });
 };

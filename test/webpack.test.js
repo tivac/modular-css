@@ -24,7 +24,7 @@ describe.only("/webpack.js", function() {
                 rules : [
                     {
                         test   : /\.css$/,
-                        loader : "css-loader" //path.resolve("./src/webpack.js")
+                        loader : "./src/webpack"
                     }
                 ]
             }
