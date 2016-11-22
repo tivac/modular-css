@@ -6,7 +6,9 @@ var path   = require("path"),
     postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
     
-    plugin = require("../src/plugins/graph-nodes.js");
+    plugin = require("../src/plugins/graph-nodes.js"),
+    
+    processor = require("postcss")([ plugin ]);
 
 describe("/plugins", function() {
     describe("/graph-nodes.js", function() {
@@ -16,7 +18,7 @@ describe("/plugins", function() {
 
             graph.addNode(from);
             
-            return plugin.process(
+            return processor.process(
                 `@value one from "./local.css";`,
                 { from, graph }
             )
@@ -32,7 +34,7 @@ describe("/plugins", function() {
 
             graph.addNode(from);
             
-            return plugin.process(
+            return processor.process(
                 `.a { composes: booga from "./local.css"; }`,
                 { from, graph }
             )
@@ -48,7 +50,7 @@ describe("/plugins", function() {
 
             graph.addNode(from);
             
-            return plugin.process(
+            return processor.process(
                 `.a :external(booga from "./local.css") { color: red; }`,
                 { from, graph }
             )
@@ -64,7 +66,7 @@ describe("/plugins", function() {
 
             graph.addNode(from);
             
-            return plugin.process(
+            return processor.process(
                 `@value sm, md, lg "../../shared.css";`,
                 { from, graph }
             )

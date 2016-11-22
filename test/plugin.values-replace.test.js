@@ -15,7 +15,7 @@ describe("/plugins", function() {
     describe("/values-replace.js", function() {
         it("should noop without values to replace", function() {
             assert.equal(
-                plugin.process(".wooga { color: red; }").css,
+                postcss([ plugin ]).process(".wooga { color: red; }").css,
                 ".wooga { color: red; }"
             );
         });

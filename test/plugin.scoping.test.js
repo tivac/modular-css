@@ -3,7 +3,9 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    plugin = require("../src/plugins/scoping");
+    plugin = require("../src/plugins/scoping"),
+    
+    processor = require("postcss")([ plugin ]);
 
 function msg(things, name) {
     return {
@@ -15,7 +17,7 @@ function msg(things, name) {
 }
 
 function process(src, options) {
-    return plugin.process(
+    return processor.process(
         src,
         Object.assign(Object.create(null), {
             from  : "test/specimens/a.css",

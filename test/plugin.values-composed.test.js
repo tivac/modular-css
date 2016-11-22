@@ -3,13 +3,15 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    plugin = require("../src/plugins/values-composed.js");
+    plugin = require("../src/plugins/values-composed.js"),
+    
+    processor = require("postcss")([ plugin ]);
 
 describe("/plugins", function() {
     describe("/values-composed.js", function() {
         // Helper to create environment where other files are already processed
         function process(css) {
-            return plugin.process(css, {
+            return processor.process(css, {
                 from  : path.resolve("./test/specimens/start.css"),
                 files : {
                     // Composition source

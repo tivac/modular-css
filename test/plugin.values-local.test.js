@@ -2,46 +2,48 @@
 
 var assert = require("assert"),
     
-    plugin = require("../src/plugins/values-local");
+    plugin = require("../src/plugins/values-local"),
+    
+    processor = require("postcss")([ plugin ]);
 
 describe("/plugins", function() {
     describe("/values-local.js", function() {
         it("should ignore invalid declarations in normal mode", function() {
-            assert.doesNotThrow(() => plugin.process("@value red:").css);
-            assert.doesNotThrow(() => plugin.process("@value blue red").css);
+            assert.doesNotThrow(() => processor.process("@value red:").css);
+            assert.doesNotThrow(() => processor.process("@value blue red").css);
         });
         
         it("should complain about invalid declarations in strict mode", function() {
             assert.throws(
-                () => plugin.process("@value red:", { strict : true }).css,
+                () => processor.process("@value red:", { strict : true }).css,
                 /SyntaxError: /
             );
             
             assert.throws(
-                () => plugin.process("@value blue red", { strict : true }).css,
+                () => processor.process("@value blue red", { strict : true }).css,
                 /SyntaxError: /
             );
         });
 
         it("should remove value declarations from output", function() {
             assert.equal(
-                plugin.process("@value red: #F00").css,
+                processor.process("@value red: #F00").css,
                 ""
             );
 
             assert.equal(
-                plugin.process("@value red: #F00; @value blue: blue;").css,
+                processor.process("@value red: #F00; @value blue: blue;").css,
                 ""
             );
 
             assert.equal(
-                plugin.process("@value red: #F00; .wooga { color: red; }").css,
+                processor.process("@value red: #F00; .wooga { color: red; }").css,
                 ".wooga { color: red; }"
             );
         });
         
         it("should emit a message with details about values", function() {
-            var msg = plugin.process("@value red: #F00; @value blue: blue;").messages[0];
+            var msg = processor.process("@value red: #F00; @value blue: blue;").messages[0];
             
             assert.equal(msg.plugin, "postcss-modular-css-values-local");
             assert.equal(msg.type, "modularcss");
@@ -51,12 +53,12 @@ describe("/plugins", function() {
 
         it("should ignore non-local values", function() {
             assert.equal(
-                plugin.process(`@value red from "./fooga.css";`).css,
+                processor.process(`@value red from "./fooga.css";`).css,
                 `@value red from "./fooga.css";`
             );
 
             assert.equal(
-                plugin.process(`@value red from "./fooga.css"; .fooga { color: red; }`).css,
+                processor.process(`@value red from "./fooga.css"; .fooga { color: red; }`).css,
                 `@value red from "./fooga.css"; .fooga { color: red; }`
             );
         });

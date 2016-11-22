@@ -2,8 +2,12 @@
 
 var path   = require("path"),
     assert = require("assert"),
+
+    postcss = require("postcss"),
     
-    plugin = require("../src/plugins/externals.js");
+    plugin = require("../src/plugins/externals.js"),
+    
+    processor = postcss([ plugin ]);
 
 describe("/plugins", function() {
     describe("/externals.js", function() {
@@ -12,7 +16,7 @@ describe("/plugins", function() {
 
         // Helper to create environment where other files are already processed
         function process(css) {
-            return plugin.process(css, {
+            return processor.process(css, {
                 from  : start,
                 files : {
                     // Composition source

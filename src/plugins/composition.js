@@ -1,8 +1,6 @@
 "use strict";
 
-var postcss = require("postcss"),
-    
-    Graph = require("dependency-graph").DepGraph,
+var Graph = require("dependency-graph").DepGraph,
     
     unique    = require("lodash.uniq"),
     invert    = require("lodash.invert"),
@@ -16,96 +14,96 @@ var postcss = require("postcss"),
     
     plugin = "postcss-modular-css-composition";
 
-module.exports = postcss.plugin(plugin, function() {
-    return function(css, result) {
-        var refs  = message(result, "classes"),
-            map   = invert(refs),
-            opts  = result.opts,
-            graph = new Graph(),
-            out   = Object.assign(Object.create(null), refs);
+module.exports = (css, result) => {
+    var refs  = message(result, "classes"),
+        map   = invert(refs),
+        opts  = result.opts,
+        graph = new Graph(),
+        out   = Object.assign(Object.create(null), refs);
+    
+    Object.keys(refs).forEach(function(key) {
+        graph.addNode(key);
+    });
+
+    // Go look up "composes" declarations and populate dependency graph
+    css.walkDecls("composes", function(decl) {
+        var selectors, details;
+
+        if(decl.prev() && decl.prev().prop !== "composes") {
+            throw decl.error("composes must be the first declaration", { word : "composes" });
+        }
         
-        Object.keys(refs).forEach(function(key) {
-            graph.addNode(key);
-        });
+        try {
+            details   = parser.parse(decl.value);
+            selectors = identifiers.parse(decl.parent.selector);
+        } catch(e) {
+            throw decl.error(e.toString(), { word : decl.value });
+        }
 
-        // Go look up "composes" declarations and populate dependency graph
-        css.walkDecls("composes", function(decl) {
-            var selectors, details;
+        if(details.source) {
+            details.source = resolve(opts.from, details.source);
 
-            if(decl.prev() && decl.prev().prop !== "composes") {
-                throw decl.error("composes must be the first declaration", { word : "composes" });
+            if(!opts.files || !opts.files[details.source]) {
+                throw decl.error("Invalid file reference", { word : decl.value });
             }
-            
-            try {
-                details   = parser.parse(decl.value);
-                selectors = identifiers.parse(decl.parent.selector);
-            } catch(e) {
-                throw decl.error(e.toString(), { word : decl.value });
+        }
+
+        // Add references and update graph
+        details.refs.forEach((ref) => {
+            var scoped;
+                
+            if(ref.global) {
+                scoped = "global-" + ref.name;
+            } else {
+                scoped = (details.source ? details.source + "-" : "") + ref.name;
+            }
+
+            graph.addNode(scoped);
+
+            selectors.forEach(function(selector) {
+                graph.addDependency(map[selector], scoped);
+            });
+
+            if(ref.global) {
+                refs[scoped] = [ ref.name ];
+
+                return;
             }
 
             if(details.source) {
-                details.source = resolve(opts.from, details.source);
-
-                if(!opts.files || !opts.files[details.source]) {
-                    throw decl.error("Invalid file reference", { word : decl.value });
-                }
+                refs[scoped] = opts.files[details.source].exports[ref.name];
             }
 
-            // Add references and update graph
-            details.refs.forEach((ref) => {
-                var scoped;
-                    
-                if(ref.global) {
-                    scoped = "global-" + ref.name;
-                } else {
-                    scoped = (details.source ? details.source + "-" : "") + ref.name;
-                }
+            if(!refs[scoped]) {
+                throw decl.error("Invalid composes reference", { word : ref.name });
+            }
+        });
 
-                graph.addNode(scoped);
+        // Remove just the composes declaration if there are other declarations
+        if(decl.parent.nodes.length > 1) {
+            return decl.remove();
+        }
+        
+        // Remove the entire rule because it only contained the composes declaration
+        return decl.parent.remove();
+    });
 
-                selectors.forEach(function(selector) {
-                    graph.addDependency(map[selector], scoped);
-                });
-
-                if(ref.global) {
-                    refs[scoped] = [ ref.name ];
-
-                    return;
-                }
-
-                if(details.source) {
-                    refs[scoped] = opts.files[details.source].exports[ref.name];
-                }
-
-                if(!refs[scoped]) {
-                    throw decl.error("Invalid composes reference", { word : ref.name });
-                }
+    // Update out by walking dep graph and updating classes
+    graph.overallOrder().forEach(function(selector) {
+        graph.dependenciesOf(selector)
+            .reverse()
+            .forEach(function(dep) {
+                out[selector] = refs[dep].concat(out[selector]);
             });
+    });
 
-            // Remove just the composes declaration if there are other declarations
-            if(decl.parent.nodes.length > 1) {
-                return decl.remove();
-            }
-            
-            // Remove the entire rule because it only contained the composes declaration
-            return decl.parent.remove();
-        });
+    result.messages.push({
+        type    : "modularcss",
+        plugin  : plugin,
+        classes : mapvalues(out, function(val) {
+            return unique(val);
+        })
+    });
+};
 
-        // Update out by walking dep graph and updating classes
-        graph.overallOrder().forEach(function(selector) {
-            graph.dependenciesOf(selector)
-                .reverse()
-                .forEach(function(dep) {
-                    out[selector] = refs[dep].concat(out[selector]);
-                });
-        });
-
-        result.messages.push({
-            type    : "modularcss",
-            plugin  : plugin,
-            classes : mapvalues(out, function(val) {
-                return unique(val);
-            })
-        });
-    };
-});
+module.exports.postcssPlugin = plugin;
