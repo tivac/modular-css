@@ -188,8 +188,10 @@ Processor.prototype = {
                 Object.create(null),
                 self._options,
                 {
-                    from : dep,
-                    to   : opts.to
+                    from  : dep,
+                    to    : opts.to,
+                    graph : self._graph,
+                    files : self._files
                 }
             )
         )))
@@ -227,7 +229,11 @@ Processor.prototype = {
                 Object.assign(
                     Object.create(null),
                     self._options,
-                    args || Object.create(null)
+                    args || Object.create(null),
+                    {
+                        graph : self._graph,
+                        files : self._files
+                    }
                 )
             );
         })
