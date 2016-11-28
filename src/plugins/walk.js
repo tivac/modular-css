@@ -5,7 +5,7 @@ var fs = require("fs"),
     postcss = require("postcss");
 
 // Walk external references and process through "before" chain
-module.exports = postcss.plugin("modular-css-walk", () => (css, result) => {
+module.exports = postcss.plugin("modular-css-walk", () => (root, result) => {
     var files = result.opts.files,
         graph = result.opts.graph;
     
@@ -47,5 +47,6 @@ module.exports = postcss.plugin("modular-css-walk", () => (css, result) => {
         });
     }
 
-    return walk(result.opts.from, css);
+    // Pass a clone to avoid weird referential stuff later
+    return walk(result.opts.from, root.clone());
 });
