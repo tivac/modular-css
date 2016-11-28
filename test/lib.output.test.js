@@ -9,7 +9,7 @@ function compositions(css) {
     var processor = new Processor();
     
     return processor.string("./test/specimens/simple.css", css).then(function() {
-        var out = output.compositions(process.cwd(), processor);
+        var out = output.compositions(process.cwd(), processor.files);
         
         return out;
     });

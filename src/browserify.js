@@ -143,7 +143,7 @@ module.exports = function(browserify, opts) {
                 
                 fs.writeFileSync(
                     options.json,
-                    JSON.stringify(output.compositions(options.cwd, processor), null, 4)
+                    JSON.stringify(output.compositions(options.cwd, processor.files), null, 4)
                 );
             }
             

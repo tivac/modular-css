@@ -240,7 +240,7 @@ Processor.prototype = {
         .then((result) => {
             self._warnings(result);
 
-            result.compositions = output.compositions(self._options.cwd, self);
+            result.compositions = output.compositions(self._options.cwd, self._files);
             
             return result;
         });
