@@ -40,8 +40,8 @@ module.exports = postcss.plugin("modular-css", (opts) => {
                 ]),
 
                 // Naming function
-                namer : typeof result.opts.namer === "function" ?
-                    result.opts.namer.bind(null, cwd) :
+                namer : typeof opts.namer === "function" ?
+                    opts.namer :
                     namer.bind(null, cwd)
             }
         );
