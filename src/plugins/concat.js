@@ -6,7 +6,7 @@ var postcss    = require("postcss"),
     cloneGraph = require("../lib/clone-graph.js"),
     relative   = require("../lib/relative.js");
 
-module.exports = postcss.plugin("modular-css-concat", () => (css, result) => {
+module.exports = postcss.plugin("modular-css-concat", () => (root, result) => {
     var files = result.opts.files,
 
         clone = cloneGraph(result.opts.graph),
@@ -28,9 +28,8 @@ module.exports = postcss.plugin("modular-css-concat", () => (css, result) => {
         
         order = order.concat(tier.sort());
     }
-    
+
     // Run file results through after processor
-    //
     return sequential(
         order.map((file) =>
             () => result.opts.after.process(files[file].result, Object.assign(
@@ -42,12 +41,12 @@ module.exports = postcss.plugin("modular-css-concat", () => (css, result) => {
             ))
         )
     )
+    // Create a new CSS root & append all files to it in the right order
     .then((results) => {
-        var root = postcss.root();
+        root.removeAll();
 
         results.forEach((output) => {
             // self._warnings(result);
-            
 
             // Add file path comment
             root.append(postcss.comment({
@@ -69,10 +68,9 @@ module.exports = postcss.plugin("modular-css-concat", () => (css, result) => {
                     }
                 )
             }));
-            
+
+            // Add CSS
             root.append(output.root);
         });
-        
-        return root;
     });
 });
