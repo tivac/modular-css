@@ -23,6 +23,7 @@ function parse(options, rule, value) {
     file = resolve(options.from, parsed.source);
     
     // Add any compositions to the dependency graph
+    options.graph.addNode(options.from);
     options.graph.addNode(file);
     options.graph.addDependency(options.from, file);
 }
