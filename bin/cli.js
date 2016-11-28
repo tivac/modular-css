@@ -60,5 +60,6 @@ var fs = require("fs"),
         }
 
         return process.stdout.write(output.css + "\n");
-    });
+    })
+    .catch((err) => process.stderr.write(err.toString));
 }());
