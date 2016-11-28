@@ -1,37 +1,20 @@
 "use strict";
 
-var fs = require("fs"),
+var postcss = require("postcss"),
+    Graph   = require("dependency-graph").DepGraph,
+    slug    = require("unique-slug"),
     
-    postcss = require("postcss"),
-    Graph   = require("dependency-graph").DepGraph;
+    output   = require("./lib/output.js"),
+    relative = require("./lib/relative.js");
+
+function namer(cwd, file, selector) {
+    return "mc" + slug(relative(cwd, file)) + "_" + selector;
+}
 
 module.exports = postcss.plugin("modular-css", (opts) => {
     var processor = postcss(),
         
-        // Plugins to run before a file is fully-processed
-        before = postcss((opts.before || []).concat([
-            require("./plugins/values-local.js"),
-            require("./plugins/values-export.js"),
-            require("./plugins/values-replace.js"),
-            require("./plugins/graph-nodes.js")
-        ])),
-        
-        // Plugins run to transform a file
-        transform = postcss([
-            require("./plugins/values-composed.js"),
-            require("./plugins/values-export.js"),
-            require("./plugins/values-namespaced.js"),
-            require("./plugins/values-replace.js"),
-            require("./plugins/scoping.js"),
-            require("./plugins/externals.js"),
-            require("./plugins/composition.js"),
-            require("./plugins/keyframes.js")
-        ]),
-        
-        // Plugins run after a file has been transformed
-        after = postcss(opts.after || [
-            require("postcss-url")
-        ]);
+        cwd = opts.cwd || process.cwd();
 
     // Set up the main processor
     processor.use((css, result) => {
@@ -40,78 +23,48 @@ module.exports = postcss.plugin("modular-css", (opts) => {
             result.opts,
             {
                 graph : new Graph(),
-                files : Object.create(null)
+                files : Object.create(null),
+                cwd   : cwd,
+                
+                // Plugins to run before a file is processed
+                before : postcss((opts.before || []).concat([
+                    require("./plugins/values-local.js"),
+                    require("./plugins/values-export.js"),
+                    require("./plugins/values-replace.js"),
+                    require("./plugins/graph-nodes.js")
+                ])),
+
+                // Plugins to run after a file has been transformed
+                after : postcss(opts.after || [
+                    require("postcss-url")
+                ]),
+
+                // Naming function
+                namer : typeof result.opts.namer === "function" ?
+                    result.opts.namer.bind(null, cwd) :
+                    namer.bind(null, cwd)
             }
         );
     });
 
     // Walk external references and process through "before" chain
-    processor.use((css, result) => {
-        var files = result.opts.files,
-            graph = result.opts.graph;
-        
-        function walk(file) {
-            var text;
-            
-            // No need to re-process files
-            if(files[file]) {
-                return Promise.resolve();
-            }
-
-            text = fs.readFileSync(file, "utf8");
-
-            graph.addNode(file);
-
-            files[file] = {
-                exports : false,
-                values  : false
-            };
-
-            return before.process(text, Object.assign(
-                Object.create(null),
-                result.opts,
-                {
-                    from  : file,
-                    graph : graph,
-                    files : files,
-
-                    // Run parsers in loose mode for this first pass
-                    strict : false
-                }
-            ))
-            .then((result) => {
-                files[file].result = result;
-
-                // Check for plugin warnings
-                // warnings(result);
-                
-                // Walk this node's dependencies, reading new files from disk as necessary
-                return Promise.all(
-                    graph.dependenciesOf(file).map((dependency) => walk(
-                        dependency
-                    ))
-                );
-            });
-        }
-
-        return walk(result.opts.from);
-    });
+    processor.use(require("./plugins/walk.js"));
     
-    // TODO: Concatenate output ASTs together
-    // See processor.output
+    // Run each file through the transform plugins
+    processor.use(require("./plugins/transform.js"));
+
+    // Concat CSS together
+    processor.use(require("./plugins/concat.js"));
+
+    // Store output compositions
     processor.use((css, result) => {
-
+        result.messages.push({
+            type : "modularcss",
+            name : "modular-css-compositions",
+            
+            compositions : output.compositions(result.opts.cwd, result.opts.files)
+        });
     });
-
-    // TODO: Run combined output through the rest of the plugins?
-
-    if(opts.after) {
-        if(Array.isArray(opts.after)) {
-            opts.after.map(processor.use);
-        } else {
-            processor.use(opts.after);
-        }
-    }
 
     return processor;
 });
