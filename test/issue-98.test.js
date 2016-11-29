@@ -1,30 +1,32 @@
 "use strict";
 
-var assert    = require("assert"),
+var assert = require("assert"),
     
-    Processor = require("../src/processor"),
-    compare   = require("./lib/compare-files");
+    plugin = require("../src/plugin.js"),
+    
+    compositions = require("./lib/compositions.js"),
+    compare      = require("./lib/compare-files.js");
 
 describe("/issues", function() {
     describe("/98", function() {
         it("should prune rules that only compose, but leave them in the exports", function() {
-            var processor = new Processor();
-            
-            return processor.string(
-                "./test/specimens/issues/98.css",
-                ".booga { color: red } " +
-                ".fooga { composes: booga } " +
-                ".fooga + .fooga { color: blue }"
+            return plugin.process(
+                require("fs").readFileSync("./test/specimens/issues/98/1.css", "utf8"),
+                { from : "./test/specimens/issues/98/1.css" }
             )
             .then((result) => {
-                assert.deepEqual(result.exports, {
-                    booga : [ "mc2a6c9ee9_booga" ],
-                    fooga : [ "mc2a6c9ee9_booga", "mc2a6c9ee9_fooga" ]
-                });
+                assert.deepEqual(
+                    compositions(result),
+                    {
+                        "test/specimens/issues/98/1.css" : {
+                            booga : "mc8809d089_booga",
+                            fooga : "mc8809d089_booga mc8809d089_fooga"
+                        }
+                    }
+                );
 
-                return processor.output();
-            })
-            .then((result) => compare.stringToFile(result.css, "./test/results/issues/98.css"));
+                compare.stringToFile(result.css, "./test/results/issues/98.css");
+            });
         });
     });
 });

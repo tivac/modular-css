@@ -1,7 +1,7 @@
-/* test/specimens/issues/98.css */
-.mc2a6c9ee9_booga {
+/* test/specimens/issues/98/1.css */
+.mc8809d089_booga {
     color: red
 }
-.mc2a6c9ee9_fooga + .mc2a6c9ee9_fooga {
+.mc8809d089_fooga + .mc8809d089_fooga {
     color: blue
 }
