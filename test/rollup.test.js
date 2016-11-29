@@ -38,7 +38,7 @@ describe("/rollup.js", function() {
         .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/tree-shaking.js"));
     });
 
-    it("should attach a promise to the bundle.generate response", function() {
+    it("should attach css info to the bundle.generate response", function() {
           return rollup({
             entry   : "./test/specimens/rollup/simple.js",
             plugins : [
@@ -47,7 +47,17 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => assert.equal(typeof bundle.generate().css.then, "function"));
+        .then((bundle) => {
+            var result = bundle.generate();
+
+            compare.stringToFile(result.css.source, "./test/results/rollup/simple.css");
+
+            assert.deepEqual(result.css.exports, {
+                "test/specimens/rollup/simple.css" : {
+                    fooga : "mcad949cca_fooga"
+                }
+            });
+        });
     });
     
     it("should generate CSS", function() {
