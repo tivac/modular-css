@@ -6,9 +6,9 @@ var fs      = require("fs"),
     
     plugin = require("../src/plugin.js"),
     
-    compositions = require("./lib/compositions.js"),
-    compare      = require("./lib/compare-files.js"),
-    warn         = require("./lib/warn.js");
+    exported = require("./lib/exported.js"),
+    compare  = require("./lib/compare.js"),
+    warn     = require("./lib/warn.js");
 
 function sync(css) {
     css.append({ selector : "a" });
@@ -52,7 +52,7 @@ describe("/plugin.js", function() {
                     }
                 )
                 .then((result) => assert.deepEqual(
-                    compositions(result),
+                    exported(result).exports,
                     {
                         "test/specimens/simple.css" : {
                             wooga : "mc08e91a5b_wooga"

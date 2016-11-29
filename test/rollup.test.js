@@ -6,7 +6,7 @@ var path   = require("path"),
     rollup = require("rollup").rollup,
     
     plugin  = require("../src/rollup"),
-    compare = require("./lib/compare-files"),
+    compare = require("./lib/compare.js"),
     warn    = require("./lib/warn");
 
 describe("/rollup.js", function() {

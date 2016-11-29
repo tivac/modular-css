@@ -98,7 +98,7 @@ module.exports = (css, result) => {
     });
 
     result.messages.push({
-        type    : "modularcss",
+        type    : "modular-css",
         plugin  : plugin,
         classes : mapvalues(out, function(val) {
             return unique(val);

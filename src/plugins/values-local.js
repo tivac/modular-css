@@ -36,7 +36,7 @@ module.exports = (css, result) => {
     
     if(Object.keys(values).length > 0) {
         result.messages.push({
-            type : "modularcss",
+            type : "modular-css",
             plugin,
             values
         });

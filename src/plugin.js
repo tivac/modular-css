@@ -16,7 +16,7 @@ module.exports = postcss.plugin("modular-css", (opts) => {
         
         cwd = opts.cwd || process.cwd();
 
-    // Set up the main processor
+    // Add modular-css specific bits to result.opts
     processor.use((css, result) => {
         result.opts = Object.assign(
             Object.create(null),
@@ -56,13 +56,13 @@ module.exports = postcss.plugin("modular-css", (opts) => {
     // Concat CSS together
     processor.use(require("./plugins/concat.js"));
 
-    // Store output compositions
+    // Nice output information
     processor.use((css, result) => {
         result.messages.push({
-            type : "modularcss",
-            name : "modular-css-compositions",
+            type : "modular-css",
+            name : "modular-css",
             
-            compositions : output.compositions(result.opts.cwd, result.opts.files)
+            exports : output.compositions(result.opts.cwd, result.opts.files)
         });
     });
 

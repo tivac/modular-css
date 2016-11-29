@@ -6,9 +6,9 @@ var fs      = require("fs"),
     
     plugin = require("../src/plugin.js"),
     
-    compositions = require("./lib/compositions.js"),
-    compare      = require("./lib/compare-files.js"),
-    warn         = require("./lib/warn.js");
+    exported = require("./lib/exported.js"),
+    compare  = require("./lib/compare.js"),
+    warn     = require("./lib/warn.js");
 
 describe("/plugin.js", function() {
     it("should be a postcss plugin", function() {
@@ -38,7 +38,7 @@ describe("/plugin.js", function() {
             { from : "./test/specimens/simple.css" }
         )
         .then((result) => {
-            assert.deepEqual(compositions(result), {
+            assert.deepEqual(exported(result).exports, {
                 "test/specimens/simple.css" : {
                     fooga : "mc08e91a5b_fooga",
                     wooga : "mc08e91a5b_wooga"
@@ -54,7 +54,7 @@ describe("/plugin.js", function() {
             "@value local: './local.css'; @value one from local; .fooga { background: one; }",
             { from : "./test/specimens/values.css" }
         )
-        .then((result) => assert.deepEqual(compositions(result), {
+        .then((result) => assert.deepEqual(exported(result).exports, {
             "test/specimens/folder/folder.css": {
                 folder : "mc04bb002b_folder"
             },
@@ -73,7 +73,7 @@ describe("/plugin.js", function() {
             "@value simple: './simple.css'; .fooga { composes: wooga from simple; }",
             { from : "./test/specimens/values.css" }
         )
-        .then((result) => assert.deepEqual(compositions(result), {
+        .then((result) => assert.deepEqual(exported(result).exports, {
             "test/specimens/simple.css": {
                 wooga : "mc08e91a5b_wooga"
             },
@@ -96,7 +96,7 @@ describe("/plugin.js", function() {
             ".fooga { color: red; } .booga { background: #000; } .tooga { composes: fooga, booga; }",
             { from : "./test/specimens/simple.css" }
         )
-        .then((result) => assert.deepEqual(compositions(result), {
+        .then((result) => assert.deepEqual(exported(result).exports, {
             "test/specimens/simple.css" : {
                 fooga : "mc08e91a5b_fooga",
                 booga : "mc08e91a5b_booga",
@@ -114,7 +114,7 @@ describe("/plugin.js", function() {
             { from : "./test/specimens/start.css" }
         )
         .then((result) => {
-            assert.deepEqual(compositions(result), {
+            assert.deepEqual(exported(result).exports, {
                 "test/specimens/folder/folder.css" : {
                     folder : "mc04bb002b_folder"
                 },

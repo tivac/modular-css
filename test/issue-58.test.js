@@ -12,7 +12,7 @@ var fs     = require("fs"),
     plugin = require("../src/browserify"),
     
     bundle  = require("./lib/bundle"),
-    compare = require("./lib/compare-files");
+    compare = require("./lib/compare.js");
 
 describe("/issues", function() {
     describe("/58", function() {

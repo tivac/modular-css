@@ -4,8 +4,8 @@ var assert = require("assert"),
     
     plugin = require("../src/plugin.js"),
     
-    compositions = require("./lib/compositions.js"),
-    compare      = require("./lib/compare-files.js");
+    exported = require("./lib/exported.js"),
+    compare  = require("./lib/compare.js");
 
 describe("/issues", function() {
     describe("/98", function() {
@@ -16,7 +16,7 @@ describe("/issues", function() {
             )
             .then((result) => {
                 assert.deepEqual(
-                    compositions(result),
+                    exported(result).exports,
                     {
                         "test/specimens/issues/98.css" : {
                             booga : "mc2a6c9ee9_booga",

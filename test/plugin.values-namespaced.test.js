@@ -64,7 +64,7 @@ describe("/plugins", function() {
             assert.deepEqual(
                 process(`@value * as ns from "./local.css";`).messages,
                 [{
-                    type   : "modularcss",
+                    type   : "modular-css",
                     plugin : "postcss-modular-css-values-namespaced",
                     values : {
                         ns : {

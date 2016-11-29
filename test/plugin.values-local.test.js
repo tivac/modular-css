@@ -46,7 +46,7 @@ describe("/plugins", function() {
             var msg = processor.process("@value red: #F00; @value blue: blue;").messages[0];
             
             assert.equal(msg.plugin, "postcss-modular-css-values-local");
-            assert.equal(msg.type, "modularcss");
+            assert.equal(msg.type, "modular-css");
             assert.equal(msg.values.blue.value, "blue");
             assert.equal(msg.values.red.value, "#F00");
         });

@@ -10,7 +10,7 @@ var path   = require("path"),
     plugin    = require("../src/browserify"),
     
     bundle  = require("./lib/bundle"),
-    compare = require("./lib/compare-files");
+    compare = require("./lib/compare.js");
 
 describe("/issues", function() {
     // These tests can't be run until I can get onto a POSIX system and submit a symlink (ugh)

@@ -98,7 +98,7 @@ module.exports = (css, result) => {
     
     if(Object.keys(keyframes).length) {
         result.messages.push({
-            type      : "modularcss",
+            type      : "modular-css",
             plugin    : plugin,
             keyframes : keyframes
         });
@@ -106,7 +106,7 @@ module.exports = (css, result) => {
 
     if(Object.keys(classes).length) {
         result.messages.push({
-            type    : "modularcss",
+            type    : "modular-css",
             plugin  : plugin,
             classes : classes
         });

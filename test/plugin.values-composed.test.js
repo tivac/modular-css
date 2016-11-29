@@ -61,7 +61,7 @@ describe("/plugins", function() {
             assert.deepEqual(
                 process(`@value fooga from "./local.css";`).messages,
                 [{
-                    type   : "modularcss",
+                    type   : "modular-css",
                     plugin : "postcss-modular-css-values-composed",
                     values : {
                         fooga : {
@@ -77,7 +77,7 @@ describe("/plugins", function() {
             assert.deepEqual(
                 process(`@value googa, fooga from "./local.css";`).messages,
                 [{
-                    type   : "modularcss",
+                    type   : "modular-css",
                     plugin : "postcss-modular-css-values-composed",
                     values : {
                         fooga : {

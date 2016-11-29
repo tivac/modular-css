@@ -3,7 +3,7 @@
 var fs     = require("fs"),
     path   = require("path"),
     
-    compare = require("./lib/compare-files.js"),
+    compare = require("./lib/compare.js"),
 
     Processor = require("../src/processor");
 
