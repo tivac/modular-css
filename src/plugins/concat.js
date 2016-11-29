@@ -1,7 +1,7 @@
 "use strict";
 
 var postcss    = require("postcss"),
-    sequential = require("promise-sequential"),
+    sequential = require("sequence-as-promise"),
     
     cloneGraph = require("../lib/clone-graph.js"),
     relative   = require("../lib/relative.js");

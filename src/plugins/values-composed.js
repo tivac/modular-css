@@ -1,8 +1,6 @@
 "use strict";
 
-var postcss = require("postcss"),
-
-    parser  = require("../parsers/parser.js"),
+var parser  = require("../parsers/parser.js"),
     resolve = require("../lib/resolve.js"),
     
     plugin = "postcss-modular-css-values-composed",

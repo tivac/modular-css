@@ -1,7 +1,7 @@
 "use strict";
 
 var postcss    = require("postcss"),
-    sequential = require("promise-sequential"),
+    sequential = require("sequence-as-promise"),
 
     // Plugins run to transform a file
     transform = postcss([
