@@ -18,7 +18,8 @@ var postcss    = require("postcss"),
 module.exports = postcss.plugin("modular-css-transform", () => (css, result) => {
     var graph = result.opts.graph,
         files = result.opts.files;
-
+    
+    // FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK
     return sequential(graph.overallOrder()
         .filter((file) => !files[file].exports)
         .map((file) =>
