@@ -21,7 +21,7 @@ describe("/plugin.js", function() {
             "@value not-real from \"../local.css\";",
             { from : "./invalid/value.css" }
         )
-        .catch((error) => assert.equal(error.message, `Unable to locate "../local.css" from "./invalid"`));
+        .catch((error) => assert(error.message.indexOf(`Unable to locate "../local.css" from`) === 0));
     });
     
     it("should fail if a composition imports a non-existant reference", function() {
@@ -29,7 +29,7 @@ describe("/plugin.js", function() {
             ".wooga { composes: fake from \"../local.css\"; }",
             { from : "./invalid/composition.css" }
         )
-        .catch((error) => assert.equal(error.message, `Unable to locate "../local.css" from "./invalid"`));
+        .catch((error) => assert(error.message.indexOf(`Unable to locate "../local.css" from`) === 0));
     });
 
     it("should scope classes, ids, and keyframes", function() {

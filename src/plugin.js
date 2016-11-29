@@ -1,6 +1,8 @@
 "use strict";
 
-var postcss  = require("postcss"),
+var path = require("path"),
+    
+    postcss  = require("postcss"),
     Graph    = require("dependency-graph").DepGraph,
     slug     = require("unique-slug"),
     defaults = require("lodash.defaults"),
@@ -46,6 +48,8 @@ module.exports = postcss.plugin("modular-css", (opts) => {
         result.opts.after = postcss(opts.after || [
             require("postcss-url")
         ]);
+
+        result.opts.from = path.resolve(result.opts.from);
     });
 
     // Walk external references and process through "before" chain
