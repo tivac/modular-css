@@ -1,0 +1,6 @@
+@value simple: "../simple.css";
+
+.wooga {
+    composes: wooga from simple;
+    background: #000;
+}
