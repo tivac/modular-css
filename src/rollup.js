@@ -40,15 +40,18 @@ module.exports = function(opts) {
             // processor.remove(id, { shallow : true });
 
             // Process the file
-            return plugin.process(code, {
-                // PostCSS options
-                from : id,
-                map  : options.map,
+            return plugin.process(code, Object.assign(
+                Object.create(null),
+                options,
+                {
+                    // PostCSS options
+                    from : id,
 
-                // modular-css options
-                files : files,
-                graph : graph
-            })
+                    // modular-css options
+                    files : files,
+                    graph : graph
+                }
+            ))
             .then((result) => {
                 var key = relative(result.opts.cwd, id),
                     deps, exports;
