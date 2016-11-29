@@ -43,12 +43,11 @@ describe("/plugin.js", function() {
                 ));
             });
 
-            it("should use the default naming function if a non-function is passed", function() {
+            it("should use a default naming function", function() {
                 return plugin.process(
                     ".wooga { }",
                     {
-                        from  : "./test/specimens/simple.css",
-                        namer : false
+                        from  : "./test/specimens/simple.css"
                     }
                 )
                 .then((result) => assert.deepEqual(
@@ -79,7 +78,7 @@ describe("/plugin.js", function() {
             });
         });
 
-        describe("lifecycle options", function() {
+        describe("lifecycle hooks", function() {
             describe("before", function() {
                 it("should run sync postcss plugins before processing", function() {
                     return plugin.process(

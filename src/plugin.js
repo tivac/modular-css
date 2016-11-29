@@ -1,8 +1,9 @@
 "use strict";
 
-var postcss = require("postcss"),
-    Graph   = require("dependency-graph").DepGraph,
-    slug    = require("unique-slug"),
+var postcss  = require("postcss"),
+    Graph    = require("dependency-graph").DepGraph,
+    slug     = require("unique-slug"),
+    defaults = require("lodash.defaults"),
     
     output   = require("./lib/output.js"),
     relative = require("./lib/relative.js");
@@ -18,7 +19,7 @@ module.exports = postcss.plugin("modular-css", (opts) => {
 
     // Add modular-css specific bits to result.opts
     processor.use((css, result) => {
-        result.opts = Object.assign(
+        result.opts = defaults(
             Object.create(null),
             result.opts,
             {
@@ -26,25 +27,25 @@ module.exports = postcss.plugin("modular-css", (opts) => {
                 files : Object.create(null),
                 cwd   : cwd,
                 
-                // Plugins to run before a file is processed
-                before : postcss((opts.before || []).concat([
-                    require("./plugins/values-local.js"),
-                    require("./plugins/values-export.js"),
-                    require("./plugins/values-replace.js"),
-                    require("./plugins/graph-nodes.js")
-                ])),
-
-                // Plugins to run after a file has been transformed
-                after : postcss(opts.after || [
-                    require("postcss-url")
-                ]),
-
                 // Naming function
                 namer : typeof opts.namer === "function" ?
                     opts.namer :
                     namer.bind(null, cwd)
             }
         );
+                
+        // Plugins to run before a file is processed
+        result.opts.before = postcss((opts.before || []).concat([
+            require("./plugins/values-local.js"),
+            require("./plugins/values-export.js"),
+            require("./plugins/values-replace.js"),
+            require("./plugins/graph-nodes.js")
+        ]));
+
+        // Plugins to run after a file has been transformed
+        result.opts.after = postcss(opts.after || [
+            require("postcss-url")
+        ]);
     });
 
     // Walk external references and process through "before" chain

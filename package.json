@@ -52,6 +52,7 @@
     "escape-string-regexp": "^1.0.5",
     "esutils": "^2.0.2",
     "globule": "^1.0.0",
+    "lodash.defaults": "^4.2.0",
     "lodash.difference": "^4.0.0",
     "lodash.filter": "^4.2.1",
     "lodash.findlast": "^4.4.0",
