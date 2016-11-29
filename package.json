@@ -18,7 +18,8 @@
     "preversion": "npm test",
     "publish-please": "publish-please",
     "prepublish": "publish-please guard",
-    "prepare": "npm run generate"
+    "prepare": "npm run generate",
+    "watch": "npm run tests -- -w -R min"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
