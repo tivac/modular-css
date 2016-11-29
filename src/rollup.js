@@ -41,11 +41,13 @@ module.exports = function(opts) {
 
             // Process the file
             return plugin.process(code, {
-                from  : id,
-                files : files,
-                graph : graph,
+                // PostCSS options
+                from : id,
+                map  : options.map,
 
-                map : options.map
+                // modular-css options
+                files : files,
+                graph : graph
             })
             .then((result) => {
                 var key = relative(result.opts.cwd, id),
@@ -55,7 +57,8 @@ module.exports = function(opts) {
                 css  = result.css;
                 json = result.messages.find((msg) => (msg.name === "modular-css")).exports;
 
-                // Store for re-use on subsequent runs (to avoid duplicating effort)
+                // Store for re-use on subsequent runs
+                // (to avoid parsing multiple times, and to ensure that all found files are output)
                 graph = result.opts.graph;
                 files = Object.assign(
                     files,
