@@ -6,14 +6,9 @@ var fs      = require("fs"),
     
     plugin = require("../src/plugin.js"),
     
-    compare = require("./lib/compare-files"),
-    warn    = require("./lib/warn");
-
-function compositions(result) {
-    var msg = result.messages.find((msg) => (msg.name === "modular-css-compositions"));
-
-    return msg ? msg.compositions : false;
-}
+    compositions = require("./lib/compositions.js"),
+    compare      = require("./lib/compare-files.js"),
+    warn         = require("./lib/warn.js");
 
 describe("/plugin.js", function() {
     it("should be a postcss plugin", function() {
