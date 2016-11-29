@@ -19,8 +19,9 @@ module.exports = postcss.plugin("modular-css-transform", () => (css, result) => 
     var graph = result.opts.graph,
         files = result.opts.files;
 
-    return sequential(
-        graph.overallOrder().map((file) =>
+    return sequential(graph.overallOrder()
+        .filter((file) => !files[file].exports)
+        .map((file) =>
             () => transform.process(files[file].result, Object.assign(
                 Object.create(null),
                 result.opts,
