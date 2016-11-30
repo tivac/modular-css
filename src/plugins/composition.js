@@ -12,7 +12,7 @@ var Graph = require("dependency-graph").DepGraph,
     
     parser = require("../parsers/parser.js"),
     
-    plugin = "postcss-modular-css-composition";
+    plugin = "modular-css-composition";
 
 module.exports = (css, result) => {
     var refs  = message(result, "classes"),

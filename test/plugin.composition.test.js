@@ -11,7 +11,7 @@ var path   = require("path"),
 function msg(classes) {
     return {
         type    : "modular-css",
-        plugin  : "postcss-modular-css-composition",
+        plugin  : composition.postcssPlugin,
         classes : classes
     };
 }
