@@ -10,11 +10,10 @@ function copy(graph, clone, nodes, edges) {
     });
 }
 
-module.exports = function(graph) {
+function cloner(graph) {
     var clone   = new Graph(),
         missing = 0,
         nodes   = {};
-
 
     // Unique the list of nodes by using their inode value as a key in an object
     Object.keys(graph.nodes).forEach((node) => {
@@ -40,4 +39,34 @@ module.exports = function(graph) {
     copy(graph, clone, nodes, "outgoingEdges");
 
     return clone;
+}
+
+module.exports = (graph, options) => {
+    var clone = cloner(graph),
+        tiers = [],
+        tier;
+        
+    if(!options) {
+        options = false;
+    }
+
+    // Clone the graph and break the graph into tiers that can be sorted
+    // to help stabilize output
+    while(Object.keys(clone.nodes).length) {
+        tier = clone.overallOrder(true);
+        
+        tier.forEach((node) => {
+            clone.dependantsOf(node).forEach(
+                (dep) => clone.removeDependency(dep, node)
+            );
+            
+            clone.removeNode(node);
+        });
+        
+        tiers.push(options.sort ? tier.sort() : tier);
+    }
+
+    return options.flatten ?
+        tiers.reduce((a, b) => a.concat(b), []) :
+        tiers;
 };

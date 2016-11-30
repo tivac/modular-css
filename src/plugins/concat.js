@@ -3,32 +3,14 @@
 var postcss    = require("postcss"),
     sequential = require("sequence-as-promise"),
     
-    cloneGraph = require("../lib/clone-graph.js"),
-    relative   = require("../lib/relative.js");
+    tiered   = require("../lib/graph-tiers.js"),
+    relative = require("../lib/relative.js");
 
-module.exports = postcss.plugin("modular-css-concat", () => (root, result) => {
+module.exports = (root, result) => {
     var files = result.opts.files,
 
-        clone = cloneGraph(result.opts.graph),
-        order = [],
-        tier;
+        order = tiered(result.opts.graph, { flatten : true, sort : true });
         
-    // Clone the graph and break the graph into tiers that can be sorted
-    // to help stabilize output
-    while(Object.keys(clone.nodes).length) {
-        tier = clone.overallOrder(true);
-        
-        tier.forEach((node) => {
-            clone.dependantsOf(node).forEach(
-                (dep) => clone.removeDependency(dep, node)
-            );
-            
-            clone.removeNode(node);
-        });
-        
-        order = order.concat(tier.sort());
-    }
-
     // Run file results through after processor
     return sequential(
         order.map((file) =>
@@ -73,4 +55,6 @@ module.exports = postcss.plugin("modular-css-concat", () => (root, result) => {
             root.append(output.root);
         });
     });
-});
+};
+
+module.exports.postcssPlugin = "modular-css-concat";
