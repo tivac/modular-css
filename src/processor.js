@@ -10,8 +10,8 @@ var fs   = require("fs"),
     output     = require("./lib/output.js"),
     message    = require("./lib/message.js"),
     relative   = require("./lib/relative.js"),
-    cloneGraph = require("./lib/clone-graph.js"),
-    sequential = require("./lib/sequential.js");
+    sequential = require("./lib/sequential.js"),
+    tiered     = require("./lib/graph-tiers.js");
 
 function namer(cwd, file, selector) {
     return "mc" + slug(relative(cwd, file)) + "_" + selector;
@@ -152,26 +152,13 @@ Processor.prototype = {
     output : function(args) {
         var self  = this,
             opts  = args || false,
-            files = opts.files,
-            clone, tier;
+            files = opts.files;
         
         if(!Array.isArray(files)) {
-            clone = cloneGraph(this._graph);
-            files = [];
-            
-            while(Object.keys(clone.nodes).length) {
-                tier = clone.overallOrder(true);
-                
-                tier.forEach((node) => {
-                    clone.dependantsOf(node).forEach(
-                        (dep) => clone.removeDependency(dep, node)
-                    );
-                    
-                    clone.removeNode(node);
-                });
-                
-                files = files.concat(tier.sort());
-            }
+            files = tiered(this._graph, {
+                sort    : true,
+                flatten : true
+            });
         }
         
         // Rewrite relative URLs before adding
