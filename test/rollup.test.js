@@ -27,6 +27,16 @@ describe("/rollup.js", function() {
         })
         .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/simple.js"));
     });
+
+    it("should be fine w/ files that don't have exports", function() {
+        return rollup({
+            entry   : "./test/specimens/rollup/no-exports.js",
+            plugins : [
+                plugin()
+            ]
+        })
+        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/no-exports.js"));
+    });
     
     it("should be able to tree-shake results", function() {
         return rollup({
