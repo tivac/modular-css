@@ -65,7 +65,7 @@ describe("/plugins", function() {
                 process(`@value * as ns from "./local.css";`).messages,
                 [{
                     type   : "modular-css",
-                    plugin : "postcss-modular-css-values-namespaced",
+                    plugin : "modular-css-values-namespaced",
                     values : {
                         ns : {
                             fooga : {

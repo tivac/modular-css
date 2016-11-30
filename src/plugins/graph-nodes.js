@@ -51,4 +51,4 @@ module.exports = (css, result) => {
     });
 };
 
-module.exports.postcssPlugin = "postcss-modular-css-graph-nodes";
+module.exports.postcssPlugin = "modular-css-graph-nodes";

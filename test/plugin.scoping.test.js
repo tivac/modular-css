@@ -10,7 +10,7 @@ var path   = require("path"),
 function msg(things, name) {
     return {
         type   : "modular-css",
-        plugin : "postcss-modular-css-scoping",
+        plugin : "modular-css-scoping",
 
         [ name || "classes" ] : things
     };

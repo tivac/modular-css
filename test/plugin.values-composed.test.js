@@ -62,7 +62,7 @@ describe("/plugins", function() {
                 process(`@value fooga from "./local.css";`).messages,
                 [{
                     type   : "modular-css",
-                    plugin : "postcss-modular-css-values-composed",
+                    plugin : "modular-css-values-composed",
                     values : {
                         fooga : {
                             value  : "red",
@@ -78,7 +78,7 @@ describe("/plugins", function() {
                 process(`@value googa, fooga from "./local.css";`).messages,
                 [{
                     type   : "modular-css",
-                    plugin : "postcss-modular-css-values-composed",
+                    plugin : "modular-css-values-composed",
                     values : {
                         fooga : {
                             value  : "red",

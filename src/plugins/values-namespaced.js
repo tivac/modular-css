@@ -3,7 +3,7 @@
 var parser  = require("../parsers/parser.js"),
     resolve = require("../lib/resolve.js"),
     
-    plugin = "postcss-modular-css-values-namespaced",
+    plugin = "modular-css-values-namespaced",
     offset = "@value ".length;
 
 // Find @value fooga: wooga entries & catalog/remove them

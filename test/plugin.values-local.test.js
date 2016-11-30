@@ -45,7 +45,7 @@ describe("/plugins", function() {
         it("should emit a message with details about values", function() {
             var msg = processor.process("@value red: #F00; @value blue: blue;").messages[0];
             
-            assert.equal(msg.plugin, "postcss-modular-css-values-local");
+            assert.equal(msg.plugin, "modular-css-values-local");
             assert.equal(msg.type, "modular-css");
             assert.equal(msg.values.blue.value, "blue");
             assert.equal(msg.values.red.value, "#F00");

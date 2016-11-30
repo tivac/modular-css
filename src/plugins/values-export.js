@@ -12,4 +12,4 @@ module.exports = (css, result) => {
     file.values = Object.assign(file.values || Object.create(null), values);
 };
 
-module.exports.postcssPlugin = "postcss-modular-css-values-export";
+module.exports.postcssPlugin = "modular-css-values-export";

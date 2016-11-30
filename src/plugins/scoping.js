@@ -4,7 +4,7 @@ var processor = require("postcss-selector-parser"),
         
     identifiers = require("../lib/identifiers"),
     
-    plugin = "postcss-modular-css-scoping";
+    plugin = "modular-css-scoping";
 
 // Validate whether a selector should be renamed, returns the key to use
 function rename(current, thing) {

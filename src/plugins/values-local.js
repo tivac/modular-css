@@ -2,7 +2,7 @@
 
 var parser = require("../parsers/parser.js"),
     
-    plugin = "postcss-modular-css-values-local",
+    plugin = "modular-css-values-local",
     offset = "@value ".length;
 
 // Find @value fooga: wooga entries & catalog/remove them

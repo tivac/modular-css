@@ -254,7 +254,7 @@ describe("/plugins", function() {
             
             assert.deepEqual(out.messages, [ {
                 type    : "modular-css",
-                plugin  : "postcss-modular-css-scoping",
+                plugin  : "modular-css-scoping",
                 classes : {
                     googa : [ "simple_googa" ],
                     wooga : [ "simple_wooga" ]
