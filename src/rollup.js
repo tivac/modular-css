@@ -6,14 +6,17 @@ var fs   = require("fs"),
     keyword = require("esutils").keyword,
     utils   = require("rollup-pluginutils"),
     mkdirp  = require("mkdirp"),
+    postcss = require("postcss"),
     
-    plugin    = require("./plugin.js"),
-    relative  = require("./lib/relative.js");
+    relative  = require("./lib/relative.js"),
+    
+    processor = postcss([ require("./plugin.js") ]);
 
 module.exports = function(opts) {
     var options = Object.assign(Object.create(null), {
             json : false,
-            map  : true
+            map  : true,
+            done : false
         }, opts || {}),
         
         filter = utils.createFilter(options.include || "**/*.css", options.exclude),
@@ -22,6 +25,10 @@ module.exports = function(opts) {
         
     if(!options.onwarn) {
         options.onwarn = console.warn.bind(console); // eslint-disable-line
+    }
+
+    if(Array.isArray(options.done)) {
+        options.done.forEach((p) => processor.use(p));
     }
 
     return {
@@ -40,7 +47,7 @@ module.exports = function(opts) {
             // processor.remove(id, { shallow : true });
 
             // Process the file
-            return plugin.process(code, Object.assign(
+            return processor.process(code, Object.assign(
                 Object.create(null),
                 options,
                 {
@@ -58,7 +65,7 @@ module.exports = function(opts) {
                 
                 // Store output data for later
                 css  = result.css;
-                json = result.messages.find((msg) => (msg.name === "modular-css")).exports;
+                json = result.messages.find((msg) => (msg.name === "modular-css-exports")).exports;
 
                 // Store for re-use on subsequent runs
                 // (to avoid parsing multiple times, and to ensure that all found files are output)
@@ -86,7 +93,7 @@ module.exports = function(opts) {
                         return true;
                     })
                     .map((name) => `export var ${name} = "${json[key][name]}";`);
-
+                
                 return {
                     code :
                         (deps.length ? deps.join("\n") + "\n" : "") +
