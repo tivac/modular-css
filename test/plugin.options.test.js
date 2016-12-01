@@ -125,32 +125,24 @@ describe("/plugin.js", function() {
                 
                it("should run sync postcss plugins after processing", function() {
                     return plugin.process(
-                        "",
+                        ".a {}",
                         {
-                            from : "test/specimens/sync-after.css",
+                            from : "test/specimens/after.css",
                             after : [ sync ]
                         }
                     )
-                    .then((result) => assert.equal(
-                        result.css,
-                        "/* test/specimens/sync-after.css */\n" +
-                        "a {}"
-                    ));
+                    .then((result) => compare.stringToFile(result.css, "./test/results/plugin/options-after.css"));
                 });
 
                 it("should run async postcss plugins after processing", function() {
                     return plugin.process(
-                        "",
+                        ".a {}",
                         {
-                            from : "test/specimens/async-after.css",
+                            from : "test/specimens/after.css",
                             after : [ async ]
                         }
                     )
-                    .then((result) => assert.equal(
-                        result.css,
-                        "/* test/specimens/async-after.css */\n" +
-                        "a {}"
-                    ));
+                    .then((result) => compare.stringToFile(result.css, "./test/results/plugin/options-after.css"));
                 });
             });
         });

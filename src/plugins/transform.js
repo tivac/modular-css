@@ -8,7 +8,7 @@ var postcss    = require("postcss"),
     composition = require("./composition.js"),
 
     // Plugins run to transform a file
-    transforms = postcss([
+    plugins = postcss([
         require("./values-composed.js"),
         require("./values-export.js"),
         require("./values-namespaced.js"),
@@ -18,23 +18,6 @@ var postcss    = require("postcss"),
         require("./composition.js"),
         require("./keyframes.js")
     ]);
-
-function transformer(opts, files, file) {
-    return transforms.process(files[file].result, Object.assign(
-        Object.create(null),
-        opts,
-        {
-            from : file
-        }
-    ))
-    .then((output) => {
-        files[file].result = output;
-        
-        files[file].exports = output.messages.find((msg) =>
-            msg.plugin === composition.postcssPlugin
-        ).classes;
-    });
-}
 
 module.exports = (css, result) => {
     var graph = result.opts.graph,
@@ -48,7 +31,22 @@ module.exports = (css, result) => {
             () => Promise.all(
                 tier
                 .filter((file) => !files[file].exports)
-                .map((file) => transformer(result.opts, files, file))
+                .map((file) =>
+                    plugins.process(files[file].result, Object.assign(
+                        Object.create(null),
+                        result.opts,
+                        {
+                            from : file
+                        }
+                    ))
+                    .then((output) => {
+                        files[file].result = output;
+                        
+                        files[file].exports = output.messages.find((msg) =>
+                            msg.plugin === composition.postcssPlugin
+                        ).classes;
+                    })
+                )
             )
         )
     );

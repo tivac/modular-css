@@ -1,7 +1,6 @@
 "use strict";
 
 var postcss    = require("postcss"),
-    sequential = require("sequence-as-promise"),
     
     tiered   = require("../lib/graph-tiers.js"),
     relative = require("../lib/relative.js");
@@ -12,16 +11,15 @@ module.exports = (root, result) => {
         order = tiered(result.opts.graph, { flatten : true, sort : true });
         
     // Run file results through after processor
-    return sequential(
-        order.map((file) =>
-            () => result.opts.after.process(files[file].result, Object.assign(
+    return Promise.all(
+        order.map((file) => result.opts.after.process(
+            files[file].result,
+            Object.assign(
                 Object.create(null),
                 result.opts,
-                {
-                    from : file
-                }
-            ))
-        )
+                { from : file }
+            )
+        ))
     )
     // Create a new CSS root & append all files to it in the right order
     .then((results) => {
