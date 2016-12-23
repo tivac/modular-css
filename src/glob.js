@@ -1,29 +1,36 @@
 "use strict";
 
-var globule = require("globule"),
+var fs = require("fs"),
+
+    globule    = require("globule"),
+    sequential = require("sequence-as-promise"),
     
-    Processor = require("./processor.js");
+    plugin = require("./plugin.js");
 
 module.exports = function(opts) {
-    var options   = Object.assign(Object.create(null), {
-            search : [
-                "**/*.css"
-            ]
-        /* istanbul ignore next */
-        }, opts || {}),
-        processor = new Processor(options);
+    var options = Object.assign(
+            Object.create(null),
+            {
+                search : [
+                    "**/*.css"
+                ]
+            
+            },
+            /* istanbul ignore next */
+            opts || {}
+        );
         
-    return Promise.all(
+    return sequential(
         globule.find({
             src        : options.search,
-            cwd        : processor._options.cwd,
+            cwd        : options.cwd || process.cwd(),
             prefixBase : true
         })
-        .map(function(file) {
-            return processor.file(file);
-        })
+        .map((file) =>
+            (prev) => plugin.process(fs.readFileSync(file), options)
+        )
     )
-    .then(function() {
-        return processor;
+    .then((results) => {
+        console.log(results);
     });
 };
