@@ -12,9 +12,9 @@ module.exports = (css, result) => {
 
     css.walkAtRules("value", (rule) => {
         var parsed, source;
-        
+
         try {
-                parsed = parser.parse(rule.params);
+            parsed = parser.parse(rule.params);
         } catch(e) {
             throw rule.error(e.toString(), { index : offset + e.location.start.column });
         }
