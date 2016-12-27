@@ -76,8 +76,9 @@ module.exports = function(opts) {
                 );
 
                 // Create import statements to reflect CSS dependencies
-                deps = result.opts.graph.dependenciesOf(id)
-                    .map((file) => `import "${relative.prefixed(path.dirname(id), file)}";`);
+                deps = result.opts.graph.dependenciesOf(id).map((file) =>
+                    `import "${relative.prefixed(path.dirname(id), file)}";`
+                );
                 
                 // Filter out & warn if any of the exported CSS names aren't
                 // able to be used as a valid JS identifier. Turn the rest into
@@ -92,7 +93,9 @@ module.exports = function(opts) {
 
                         return true;
                     })
-                    .map((name) => `export var ${name} = "${json[key][name]}";`);
+                    .map((name) =>
+                        `export var ${name} = "${json[key][name]}";`
+                    );
                 
                 return {
                     code :
