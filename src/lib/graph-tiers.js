@@ -41,6 +41,14 @@ function cloner(graph) {
     return clone;
 }
 
+// Could ask for overall graph tiering, or just for the deps of a particular node
+function nodes(graph, options) {
+    return options.source ?
+        graph.dependenciesOf(options.source, true) :
+        graph.overallOrder(true);
+}
+
+// Clone the graph and break the graph into tiers for further processing
 module.exports = (graph, options) => {
     var clone = cloner(graph),
         tiers = [],
@@ -50,11 +58,9 @@ module.exports = (graph, options) => {
         options = false;
     }
 
-    // Clone the graph and break the graph into tiers that can be sorted
-    // to help stabilize output
-    while(Object.keys(clone.nodes).length) {
-        tier = clone.overallOrder(true);
-        
+    tier = nodes(clone, options);
+
+    while(tier.length) {
         tier.forEach((node) => {
             clone.dependantsOf(node).forEach(
                 (dep) => clone.removeDependency(dep, node)
@@ -64,6 +70,8 @@ module.exports = (graph, options) => {
         });
         
         tiers.push(options.sort ? tier.sort() : tier);
+
+        tier = nodes(clone, options);
     }
 
     return options.flatten ?
