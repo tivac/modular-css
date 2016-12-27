@@ -125,8 +125,7 @@ Processor.prototype = {
                         files : self._files
                     }
                 )
-            );
-        })
+        )
         .then((result) => {
             self._warnings(result);
 
