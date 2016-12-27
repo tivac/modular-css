@@ -9,17 +9,15 @@
   },
   "bin": "./bin/cli.js",
   "scripts": {
-    "test": "npm run lint && npm run tests",
-    "tests": "mocha",
     "cover": "istanbul cover --print both ./node_modules/mocha/bin/_mocha",
     "lint": "eslint .",
     "parser": "pegjs -o ./src/parsers/parser.js ./src/parsers/parser.pegjs",
-    "generate": "npm run parser",
-    "preversion": "npm test",
-    "publish-please": "publish-please",
     "prepublish": "publish-please guard",
-    "prepare": "npm run generate",
-    "watch": "npm run tests -- -w -R min"
+    "publish-please": "publish-please",
+    "test": "mocha",
+    "posttest": "npm run lint",
+    "preversion": "npm test",
+    "watch": "mocha -w -R min"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
