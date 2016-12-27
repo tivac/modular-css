@@ -10,13 +10,14 @@
   "bin": "./bin/cli.js",
   "scripts": {
     "cover": "istanbul cover --print both ./node_modules/mocha/bin/_mocha",
+    "commitmsg": "validate-commit-msg",
     "lint": "eslint .",
     "parser": "pegjs -o ./src/parsers/parser.js ./src/parsers/parser.pegjs",
-    "prepublish": "publish-please guard",
-    "publish-please": "publish-please",
     "test": "mocha",
     "posttest": "npm run lint",
     "preversion": "npm test",
+    "version": "changes",
+    "postversion": "git push --follow-tags",
     "watch": "mocha -w -R min"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
@@ -31,19 +32,21 @@
     "postcss"
   ],
   "devDependencies": {
+    "@studio/changes": "^1.0.5",
     "browserify": "^13.0.0",
     "eslint": "^3.12.0",
     "eslint-config-arenanet": "^3.0.0",
     "factor-bundle": "^2.5.0",
     "from2-string": "^1.1.0",
+    "husky": "^0.12.0",
     "istanbul": "^0.4.2",
     "mocha": "^3.0.0",
     "pegjs": "^0.10.0",
     "postcss-color-rebeccapurple": "^2.0.0",
-    "publish-please": "^2.1.4",
     "rimraf": "^2.5.0",
     "rollup": "^0.36.0",
     "shelljs": "^0.7.3",
+    "validate-commit-msg": "^2.8.2",
     "watchify": "^3.7.0"
   },
   "dependencies": {
