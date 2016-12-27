@@ -6,7 +6,7 @@ var assert  = require("assert"),
     
     compare = require("./lib/compare.js");
 
-describe("/glob.js", function() {
+describe.skip("/glob.js", function() {
     it("should be a function", function() {
         assert.equal(typeof glob, "function");
     });

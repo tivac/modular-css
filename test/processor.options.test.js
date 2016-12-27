@@ -23,7 +23,7 @@ function async(css) {
     });
 }
 
-describe("/processor.js", function() {
+describe.skip("/processor.js", function() {
     beforeEach(function() {
         this.processor = new Processor();
     });

@@ -15,7 +15,7 @@ var fs     = require("fs"),
     compare = require("./lib/compare.js");
 
 describe("/issues", function() {
-    describe("/58", function() {
+    describe.skip("/58", function() {
         after(function() {
             rimraf.sync("./test/output/issues");
             rimraf.sync("./test/specimens/issues/58/other.css");

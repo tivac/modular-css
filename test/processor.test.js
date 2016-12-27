@@ -9,7 +9,7 @@ var fs      = require("fs"),
     compare = require("./lib/compare.js"),
     warn    = require("./lib/warn");
 
-describe("/processor.js", function() {
+describe.skip("/processor.js", function() {
     describe("Basics", function() {
         it("should be a function", function() {
             assert.equal(typeof Processor, "function");

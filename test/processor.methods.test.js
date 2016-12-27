@@ -8,7 +8,7 @@ var fs      = require("fs"),
     
     compare = require("./lib/compare.js");
 
-describe("/processor.js", function() {
+describe.skip("/processor.js", function() {
     describe("Methods", function() {
         beforeEach(function() {
             this.processor = new Processor();

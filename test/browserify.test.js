@@ -15,7 +15,7 @@ var fs     = require("fs"),
     bundle  = require("./lib/bundle"),
     compare = require("./lib/compare.js");
 
-describe("/browserify.js", function() {
+describe.skip("/browserify.js", function() {
     describe("basic functionality", function() {
         after(function(done) {
             rimraf("./test/output/browserify", done);
