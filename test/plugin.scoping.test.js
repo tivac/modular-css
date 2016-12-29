@@ -5,7 +5,7 @@ var path   = require("path"),
     
     plugin = require("../src/plugins/scoping"),
     
-    processor = require("postcss")([ plugin ]);
+    processor = require("./lib/postcss.js")([ plugin ]);
 
 function msg(things, name) {
     return {

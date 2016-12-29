@@ -5,6 +5,8 @@ var selector = require("postcss-selector-parser"),
     each     = require("lodash.foreach"),
     Graph    = require("dependency-graph").DepGraph,
     
+    message = require("../lib/message.js"),
+    
     namespaced = require("./values-namespaced.js");
 
 function replacer(values, prop) {
@@ -25,12 +27,13 @@ function replacer(values, prop) {
 }
 
 module.exports = (css, result) => {
-    var graph  = new Graph(),
+    var options = message(result, "options"),
+        graph   = new Graph(),
         
         // Create local copy of values since we're going to merge in namespace stuff
         values = Object.assign(
             Object.create(null),
-            result.opts.files ? result.opts.files[result.opts.from].values : {}
+            options.files ? options.files[options.from].values : {}
         ),
 
         external = selector((selectors) =>

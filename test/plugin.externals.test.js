@@ -3,11 +3,9 @@
 var path   = require("path"),
     assert = require("assert"),
 
-    postcss = require("postcss"),
-    
     plugin = require("../src/plugins/externals.js"),
     
-    processor = postcss([ plugin ]);
+    processor = require("./lib/postcss.js")([ plugin ]);
 
 describe("/plugins", function() {
     describe("/externals.js", function() {

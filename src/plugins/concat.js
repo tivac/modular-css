@@ -3,20 +3,21 @@
 var postcss    = require("postcss"),
     
     tiered   = require("../lib/graph-tiers.js"),
-    relative = require("../lib/relative.js");
+    relative = require("../lib/relative.js"),
+    message  = require("../lib/message.js");
 
 module.exports = (root, result) => {
-    var files = result.opts.files,
+    var options = message(result, "options"),
 
-        order = tiered(result.opts.graph, { flatten : true, sort : true });
+        order = tiered(options.graph, { flatten : true, sort : true });
         
     // Run file results through after processor
     return Promise.all(
-        order.map((file) => result.opts.after.process(
-            files[file].result,
+        order.map((file) => options.after.process(
+            options.files[file].result,
             Object.assign(
                 Object.create(null),
-                result.opts,
+                options,
                 { from : file }
             )
         ))
@@ -30,7 +31,7 @@ module.exports = (root, result) => {
 
             // Add file path comment
             root.append(postcss.comment({
-                text : relative(result.opts.cwd, output.opts.from),
+                text : relative(options.cwd, output.opts.from),
                 
                 // Add a bogus-ish source property so postcss won't make weird-looking
                 // source-maps that break the visualizer

@@ -3,6 +3,7 @@
 var processor = require("postcss-selector-parser"),
         
     identifiers = require("../lib/identifiers"),
+    message     = require("../lib/message"),
     
     plugin = "modular-css-scoping";
 
@@ -18,7 +19,8 @@ function rename(current, thing) {
 }
 
 module.exports = (css, result) => {
-    var classes   = Object.create(null),
+    var options   = message(result, "options"),
+        classes   = Object.create(null),
         keyframes = Object.create(null),
         globals   = Object.create(null),
         parser, current, lookup;
@@ -69,7 +71,7 @@ module.exports = (css, result) => {
                 throw current.error("Unable to re-use the same selector for global & local", { word : key });
             }
 
-            node.value = result.opts.namer(result.opts.from, node.value);
+            node.value = options.namer(options.from, node.value);
             
             lookup[key] = [ node.value ];
             

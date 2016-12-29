@@ -1,11 +1,14 @@
 "use strict";
 
-var fs = require("fs");
+var fs = require("fs"),
+    
+    message = require("../lib/message.js");
 
 // Walk external references and process through "before" chain
 module.exports = (css, result) => {
-    var files = result.opts.files,
-        graph = result.opts.graph;
+    var options = message(result, "options"),
+        files   = options.files,
+        graph   = options.graph;
     
     function walk(file, root) {
         // No need to re-process files
@@ -20,9 +23,9 @@ module.exports = (css, result) => {
             values  : false
         };
 
-        return result.opts.before.process(root || fs.readFileSync(file, "utf8"), Object.assign(
+        return options.before.process(root || fs.readFileSync(file, "utf8"), Object.assign(
             Object.create(null),
-            result.opts,
+            options,
             {
                 from : file,
 
@@ -46,7 +49,7 @@ module.exports = (css, result) => {
     }
 
     // Pass a clone to avoid weird referential stuff later
-    return walk(result.opts.from, css.clone());
+    return walk(options.from, css.clone());
 };
 
 module.exports.postcssPlugin = "modular-css-walk";

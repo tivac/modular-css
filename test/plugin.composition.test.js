@@ -3,7 +3,7 @@
 var path   = require("path"),
     assert = require("assert"),
 
-    postcss = require("postcss"),
+    postcss = require("./lib/postcss.js"),
     
     scoping     = require("../src/plugins/scoping"),
     composition = require("../src/plugins/composition");
@@ -94,6 +94,7 @@ describe("/plugins", function() {
             assert.throws(() => out.css, /SyntaxError: Expected/);
         });
 
+        // TODO: Stop depending on messages.length for test and instead find what we need
         it("should output composition results as a message", function() {
             var messages = process(".wooga { color: red; } .fooga { composes: wooga; }").messages;
             

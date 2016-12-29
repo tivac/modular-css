@@ -3,12 +3,14 @@
 var postcss    = require("postcss"),
     sequential = require("sequence-as-promise"),
 
-    tiered = require("../lib/graph-tiers.js"),
+    tiered  = require("../lib/graph-tiers.js"),
+    message = require("../lib/message.js"),
 
     composition = require("./composition.js"),
 
     // Plugins run to transform a file
     plugins = postcss([
+        require("./options.js"),
         require("./values-composed.js"),
         require("./values-export.js"),
         require("./values-namespaced.js"),
@@ -20,8 +22,9 @@ var postcss    = require("postcss"),
     ]);
 
 module.exports = (css, result) => {
-    var graph = result.opts.graph,
-        files = result.opts.files,
+    var options = message(result, "options"),
+        graph   = options.graph,
+        files   = options.files,
         
         tiers = tiered(graph);
     
@@ -33,8 +36,7 @@ module.exports = (css, result) => {
                 .filter((file) => !files[file].exports)
                 .map((file) =>
                     plugins.process(files[file].result, Object.assign(
-                        Object.create(null),
-                        result.opts,
+                        options,
                         {
                             from : file
                         }

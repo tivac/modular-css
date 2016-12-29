@@ -3,7 +3,8 @@
 var selector = require("postcss-selector-parser"),
 
     parser  = require("../parsers/parser.js"),
-    resolve = require("../lib/resolve.js");
+    resolve = require("../lib/resolve.js"),
+    message = require("../lib/message.js");
 
 function parse(options, rule, value) {
     var parsed, file;
@@ -29,17 +30,18 @@ function parse(options, rule, value) {
 }
 
 module.exports = (css, result) => {
-    var externals, current;
+    var options = message(result, "options"),
+        externals, current;
     
     externals = selector((selectors) =>
-        selectors.walkPseudos((pseudo) => parse(result.opts, current, pseudo.nodes.toString()))
+        selectors.walkPseudos((pseudo) => parse(options, current, pseudo.nodes.toString()))
     );
     
     // @value <value> from <file>
-    css.walkAtRules("value", (rule) => parse(result.opts, rule, rule.params));
+    css.walkAtRules("value", (rule) => parse(options, rule, rule.params));
 
     // { composes: <rule> from <file> }
-    css.walkDecls("composes", (rule) => parse(result.opts, rule, rule.value));
+    css.walkDecls("composes", (rule) => parse(options, rule, rule.value));
 
     // :external(<rule> from <file>) { ... }
     // Have to assign to current so postcss-selector-parser can reference the right thing
