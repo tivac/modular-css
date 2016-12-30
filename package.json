@@ -43,7 +43,7 @@
     "postcss-color-rebeccapurple": "^2.0.0",
     "publish-please": "^2.1.4",
     "rimraf": "^2.5.0",
-    "rollup": "^0.38.0",
+    "rollup": "^0.39.2",
     "shelljs": "^0.7.3",
     "watchify": "^3.7.0"
   },
