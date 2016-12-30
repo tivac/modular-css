@@ -120,7 +120,7 @@ describe("/rollup.js", function() {
             plugins : [
                 plugin({
                     onwarn : function(msg) {
-                        assert(msg === "Invalid JS identifier \"fooga-wooga\", unable to export");
+                        assert(msg === `Invalid JS identifier "fooga-wooga", unable to export`);
                     }
                 })
             ]
