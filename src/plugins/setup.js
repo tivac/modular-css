@@ -22,19 +22,17 @@ module.exports = (css, result) => {
         options;
     
     // TODO: replace w/ lodash.defaults >:(
-    options = Object.assign(
+    options = defaults(
         Object.create(null),
+        opts,
         {
             cwd   : cwd,
-            namer : namer.bind(null, cwd)
-        },
-        opts
+            namer : namer.bind(null, cwd),
+            graph : new Graph(),
+            files : Object.create(null)
+        }
     );
     
-    if(!options.graph) {
-        options.graph = new Graph();
-    }
-
     // Plugins to run before a file is processed
     options.before = postcss((options.before || []).concat([
         require("./options.js"),

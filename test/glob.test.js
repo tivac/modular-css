@@ -11,11 +11,11 @@ describe("/glob.js", function() {
         assert.equal(typeof glob, "function");
     });
 
-    it.only("should use a default search", function() {
+    it("should use a default search", function() {
         return glob({
             cwd : "./test/specimens/glob"
         })
-        .then((result) => console.log(result.css) || compare.stringToFile(result.css, "./test/results/glob/glob.css"));
+        .then((result) => compare.stringToFile(result.css, "./test/results/glob/glob.css"));
     });
 
     it("should find files on disk & output css", function() {
