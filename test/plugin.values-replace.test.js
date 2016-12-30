@@ -2,8 +2,10 @@
 
 var path   = require("path"),
     assert = require("assert"),
+
+    leading = require("common-tags").stripIndent,
     
-    postcss = require("postcss"),
+    postcss = require("./lib/postcss.js"),
 
     plugin     = require("../src/plugins/values-replace.js"),
     local      = require("../src/plugins/values-local.js"),
@@ -25,9 +27,9 @@ describe("/plugins", function() {
 
             function process(css) {
                 return processor.process(css, {
-                    from  : "file",
+                    from  : path.resolve("./test/specimens/in.css"),
                     files : {
-                        "file" : {
+                        [ path.resolve("./test/specimens/in.css") ] : {
                             values : false
                         }
                     }
@@ -123,10 +125,12 @@ describe("/plugins", function() {
             it("should replace values in declarations", function() {
                 assert.equal(
                     css.process(
-                        `@value * as colors from "./local.css";` +
-                        `@value red from "./local.css";` +
-                        `@value r: colors.red;` +
-                        `.wooga { color: colors.red; background: red; border: 1px solid r; }`, {
+                        leading`
+                            @value * as colors from "./local.css";
+                            @value red from "./local.css";
+                            @value r: colors.red;
+                            .wooga { color: colors.red; background: red; border: 1px solid r; }
+                        `, {
                         map   : false,
                         from  : path.resolve("./test/specimens/in.css"),
                         files : {

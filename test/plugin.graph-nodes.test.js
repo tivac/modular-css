@@ -3,18 +3,18 @@
 var path   = require("path"),
     assert = require("assert"),
 
-    postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
     
     plugin = require("../src/plugins/graph-nodes.js"),
     
-    processor = require("postcss")([ plugin ]);
+    processor = require("./lib/postcss.js")([ plugin ]);
 
 describe("/plugins", function() {
     describe("/graph-nodes.js", function() {
-        it("should populate a graph with external @value references", () => {
-            var graph = new Graph(),
-                from  = path.resolve("./test/specimens/simple.css");
+        var from = path.resolve("./test/specimens/simple.css");
+
+        it("should populate a graph with external @value references", function() {
+            var graph = new Graph();
 
             graph.addNode(from);
             
@@ -28,9 +28,8 @@ describe("/plugins", function() {
             ]));
         });
 
-        it("should populate a graph with external composes references", () => {
-            var graph = new Graph(),
-                from  = path.resolve("./test/specimens/simple.css");
+        it("should populate a graph with external composes references", function() {
+            var graph = new Graph();
 
             graph.addNode(from);
             
@@ -44,9 +43,8 @@ describe("/plugins", function() {
             ]));
         });
 
-        it("should populate a graph with :external references", () => {
-            var graph = new Graph(),
-                from  = path.resolve("./test/specimens/simple.css");
+        it("should populate a graph with :external references", function() {
+            var graph = new Graph();
 
             graph.addNode(from);
             
@@ -60,9 +58,8 @@ describe("/plugins", function() {
             ]));
         });
 
-        it("should return useful errors when parsing", () => {
-            var graph = new Graph(),
-                from  = path.resolve("./test/specimens/simple.css");
+        it("should return useful errors when parsing", function() {
+            var graph = new Graph();
 
             graph.addNode(from);
             

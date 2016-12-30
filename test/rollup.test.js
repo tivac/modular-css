@@ -25,7 +25,12 @@ describe("/rollup.js", function() {
                 plugin()
             ]
         })
-        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/simple.js"));
+        .then((bundle) =>
+            compare.stringToFile(
+                bundle.generate().code,
+                "./test/results/rollup/simple.js"
+            )
+        );
     });
 
     it("should be fine w/ files that don't have exports", function() {
@@ -35,7 +40,12 @@ describe("/rollup.js", function() {
                 plugin()
             ]
         })
-        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/no-exports.js"));
+        .then((bundle) =>
+            compare.stringToFile(
+                bundle.generate().code,
+                "./test/results/rollup/no-exports.js"
+            )
+        );
     });
     
     it("should be able to tree-shake results", function() {
@@ -45,7 +55,12 @@ describe("/rollup.js", function() {
                 plugin()
             ]
         })
-        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/tree-shaking.js"));
+        .then((bundle) =>
+            compare.stringToFile(
+                bundle.generate().code,
+                "./test/results/rollup/tree-shaking.js"
+            )
+        );
     });
 
     it("should attach css info to the bundle.generate response", function() {
@@ -60,7 +75,10 @@ describe("/rollup.js", function() {
         .then((bundle) => {
             var result = bundle.generate();
 
-            compare.stringToFile(result.css.source, "./test/results/rollup/simple.css");
+            compare.stringToFile(
+                result.css.source,
+                "./test/results/rollup/simple.css"
+            );
 
             assert.deepEqual(result.css.exports, {
                 "test/specimens/rollup/simple.css" : {
@@ -79,9 +97,7 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => bundle.write({
-            dest : "./test/output/rollup/simple.js"
-        }))
+        .then((bundle) => bundle.write({ dest : "./test/output/rollup/simple.js" }))
         .then(() => compare.results("rollup/simple.css"));
     });
     
@@ -94,9 +110,7 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => bundle.write({
-            dest : "./test/output/rollup/simple.js"
-        }))
+        .then((bundle) => bundle.write({ dest : "./test/output/rollup/simple.js" }))
         .then(() => compare.results("rollup/simple.json"));
     });
     
@@ -111,7 +125,12 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/invalid-name.js"));
+        .then((bundle) =>
+            compare.stringToFile(
+                bundle.generate().code,
+                "./test/results/rollup/invalid-name.js"
+            )
+        );
     });
     
     it("shouldn't disable sourcemap generation", function() {
@@ -159,7 +178,9 @@ describe("/rollup.js", function() {
                 sourceMap : false
             });
         })
-        .then(() => compare.results("rollup/no-maps.css"));
+        .then(() =>
+            compare.results("rollup/no-maps.css")
+        );
     });
 
     it("should respect the CSS dependency tree", function() {
@@ -169,7 +190,12 @@ describe("/rollup.js", function() {
                 plugin()
             ]
         })
-        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/dependencies.js"));
+        .then((bundle) =>
+            compare.stringToFile(
+                bundle.generate().code,
+                "./test/results/rollup/dependencies.js"
+            )
+        );
     });
 
     describe("errors", function() {
@@ -213,9 +239,7 @@ describe("/rollup.js", function() {
                     })
                 ]
             })
-            .then((bundle) => bundle.write({
-                dest : "./test/output/rollup/done-error.js"
-            }))
+            .then((bundle) => bundle.write({ dest : "./test/output/rollup/done-error.js" }))
             .catch(checkError);
         });
     });

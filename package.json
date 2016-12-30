@@ -34,6 +34,7 @@
   "devDependencies": {
     "@studio/changes": "^1.0.5",
     "browserify": "^13.0.0",
+    "common-tags": "^1.4.0",
     "eslint": "^3.12.0",
     "eslint-config-arenanet": "^3.0.0",
     "factor-bundle": "^2.5.0",
@@ -59,7 +60,7 @@
     "lodash.filter": "^4.2.1",
     "lodash.findlast": "^4.4.0",
     "lodash.foreach": "^4.0.0",
-    "lodash.get": "^4.2.1",
+    "lodash.get": "^4.4.2",
     "lodash.invert": "^4.0.0",
     "lodash.mapvalues": "^4.4.0",
     "lodash.uniq": "^4.2.0",

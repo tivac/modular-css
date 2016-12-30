@@ -8,7 +8,8 @@ var fs   = require("fs"),
     mkdirp  = require("mkdirp"),
     postcss = require("postcss"),
     
-    relative  = require("./lib/relative.js"),
+    relative = require("./lib/relative.js"),
+    message  = require("./lib/message.js"),
     
     processor = postcss([ require("./plugin.js") ]);
 
@@ -60,23 +61,24 @@ module.exports = function(opts) {
                 }
             ))
             .then((result) => {
-                var key = relative(result.opts.cwd, id),
+                var config = message(result, "options"),
+                    key    = relative(config.cwd, id),
                     deps, exports;
                 
                 // Store output data for later
                 css  = result.css;
-                json = result.messages.find((msg) => (msg.name === "modular-css-exports")).exports;
+                json = message(result, "exports");
 
                 // Store for re-use on subsequent runs
                 // (to avoid parsing multiple times, and to ensure that all found files are output)
-                graph = result.opts.graph;
+                graph = config.graph;
                 files = Object.assign(
                     files,
-                    result.opts.files
+                    config.files
                 );
 
                 // Create import statements to reflect CSS dependencies
-                deps = result.opts.graph.dependenciesOf(id).map((file) =>
+                deps = config.graph.dependenciesOf(id).map((file) =>
                     `import "${relative.prefixed(path.dirname(id), file)}";`
                 );
                 

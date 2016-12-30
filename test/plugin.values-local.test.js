@@ -2,9 +2,10 @@
 
 var assert = require("assert"),
     
-    plugin = require("../src/plugins/values-local"),
+    plugin  = require("../src/plugins/values-local.js"),
+    message = require("../src/lib/message.js"),
     
-    processor = require("postcss")([ plugin ]);
+    processor = require("./lib/postcss.js")([ plugin ]);
 
 describe("/plugins", function() {
     describe("/values-local.js", function() {
@@ -43,12 +44,18 @@ describe("/plugins", function() {
         });
         
         it("should emit a message with details about values", function() {
-            var msg = processor.process("@value red: #F00; @value blue: blue;").messages[0];
-            
-            assert.equal(msg.plugin, "modular-css-values-local");
-            assert.equal(msg.type, "modular-css");
-            assert.equal(msg.values.blue.value, "blue");
-            assert.equal(msg.values.red.value, "#F00");
+            var result = processor.process("@value red: #F00; @value blue: blue;"),
+                msg    = message(result, "values");
+                
+            assert.equal(
+                msg.red.value,
+                "#F00"
+            );
+
+            assert.equal(
+                msg.blue.value,
+                "blue"
+            );
         });
 
         it("should ignore non-local values", function() {

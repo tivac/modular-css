@@ -2,19 +2,13 @@
 
 var path   = require("path"),
     assert = require("assert"),
-    
-    plugin = require("../src/plugins/scoping"),
+
+    leading = require("common-tags").stripIndent,
+
+    plugin  = require("../src/plugins/scoping.js"),
+    message = require("../src/lib/message.js"),
     
     processor = require("./lib/postcss.js")([ plugin ]);
-
-function msg(things, name) {
-    return {
-        type   : "modular-css",
-        plugin : "modular-css-scoping",
-
-        [ name || "classes" ] : things
-    };
-}
 
 function process(src, options) {
     return processor.process(
@@ -102,21 +96,28 @@ describe("/plugins", function() {
         });
         
         it("should expose original names in a message", function() {
+            var result = process(leading`
+                    .wooga { color: red; }
+                    #booga { color: black; }
+                    @keyframes fooga {
+                        0% { color: red; }
+                        100% { color: black; }
+                    }
+                `);
+            
             assert.deepEqual(
-                process(
-                    ".wooga { color: red; } " +
-                    "#booga { color: black; } " +
-                    "@keyframes fooga { 0% { color: red; } 100% { color: black; } }"
-                ).messages,
-                [
-                    msg({
-                        fooga : [ "a_fooga" ]
-                    }, "keyframes"),
-                    msg({
-                        booga : [ "a_booga" ],
-                        wooga : [ "a_wooga" ]
-                    })
-                ]
+                message(result, "keyframes"),
+                {
+                    fooga : [ "a_fooga" ]
+                }
+            );
+
+            assert.deepEqual(
+                message(result, "classes"),
+                {
+                    booga : [ "a_booga" ],
+                    wooga : [ "a_wooga" ]
+                }
             );
         });
 
@@ -217,41 +218,48 @@ describe("/plugins", function() {
             });
 
             it("should include :global(...) identifiers in a message", function() {
+                var result = process(leading`
+                        :global(.wooga) { color: red; }
+                        :global(#fooga) { color: red; }
+                        :global(.googa .tooga) { color: red; }
+                        @keyframes :global(yooga) {
+                            0% { color: red; }
+                            100% { color: black; }
+                        }
+                    `);
+                
                 assert.deepEqual(
-                    process(
-                        ":global(.wooga) { color: red; } " +
-                        ":global(#fooga) { color: red; } " +
-                        ":global(.googa .tooga) { color: red; } " +
-                        "@keyframes :global(yooga) { 0% { color: red; } 100% { color: black; } }"
-                    ).messages,
-                    [
-                        msg({
-                            yooga : [ "yooga" ]
-                        }, "keyframes"),
-                        msg({
-                            fooga : [ "fooga" ],
-                            googa : [ "googa" ],
-                            tooga : [ "tooga" ],
-                            wooga : [ "wooga" ]
-                        })
-                    ]
+                    message(result, "keyframes"),
+                    {
+                        yooga : [ "yooga" ]
+                    }
+                );
+                
+                assert.deepEqual(
+                    message(result, "classes"),
+                    {
+                        fooga : [ "fooga" ],
+                        googa : [ "googa" ],
+                        tooga : [ "tooga" ],
+                        wooga : [ "wooga" ]
+                    }
                 );
             });
 
             it("should support mixing local & global selectors in a single string", function() {
-                var processed = process(".fooga :global(.wooga) { color: red; }");
+                var result = process(".fooga :global(.wooga) { color: red; }");
                 
                 assert.equal(
-                    processed.css,
+                    result.css,
                     ".a_fooga .wooga { color: red; }"
                 );
                 
                 assert.deepEqual(
-                    processed.messages,
-                    [ msg({
+                    message(result, "classes"),
+                    {
                         fooga : [ "a_fooga" ],
                         wooga : [ "wooga" ]
-                    }) ]
+                    }
                 );
             });
         });
