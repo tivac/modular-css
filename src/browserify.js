@@ -3,29 +3,32 @@
 var fs   = require("fs"),
     path = require("path"),
 
+    postcss = require("postcss"),
     through = require("through2"),
     sink    = require("sink-transform"),
     mkdirp  = require("mkdirp"),
-
     each    = require("lodash.foreach"),
     
-    Processor = require("./processor"),
-    relative  = require("./lib/relative"),
-    output    = require("./lib/output");
+    plugin   = require("./plugin.js"),
+    relative = require("./lib/relative.js"),
+    message  = require("./lib/message.js"),
+    output   = require("./lib/output.js");
 
-module.exports = function(browserify, opts) {
-    var options = Object.assign(Object.create(null), {
-            ext : ".css",
-            map : browserify._options.debug,
-            cwd : browserify._options.basedir || process.cwd()
-        }, opts),
+module.exports = (browserify, opts) => {
+    var options = Object.assign(
+            Object.create(null),
+            {
+                ext : ".css",
+                map : browserify._options.debug,
+                cwd : browserify._options.basedir || process.cwd()
+            },
+            opts
+        ),
         
-        processor = new Processor(options),
-        
-        bundler, bundles, handled;
+        bundler, bundles, handled, details;
     
     if(!options.ext || options.ext.charAt(0) !== ".") {
-        return browserify.emit("error", "Missing or invalid \"ext\" option: " + options.ext);
+        return browserify.emit("error", `Missing or invalid "ext" option: ${options.ext}`);
     }
     
     function depReducer(curr, next) {
@@ -34,39 +37,45 @@ module.exports = function(browserify, opts) {
         return curr;
     }
 
-    browserify.transform(function(file) {
+    browserify.transform((file) => {
         if(path.extname(file) !== options.ext) {
             return through();
         }
         
-        return sink.str(function(buffer, done) {
+        return sink.str((buffer, done) => {
             var push = this.push.bind(this),
-                real = fs.realpathSync(file);
+                id   = fs.realpathSync(file),
+                key  = relative(options.cwd, id);
             
-            processor.string(real, buffer).then(
-                function(result) {
-                    // Tell watchers about dependencies by emitting "file" events
-                    // AFAIK this is only useful to watchify, to ensure that it watches
-                    // everyone in the dependency graph
-                    processor.dependencies(result.id).forEach(function(id) {
-                        browserify.emit("file", path.resolve(process.cwd(), id), id);
-                    });
-                    
-                    push("module.exports = " + JSON.stringify(output.join(result.exports), null, 4) + ";");
-                    
-                    done();
-                },
+            plugin.process(buffer, Object.assign(
+                Object.create(null),
+                opts,
+                { from : id },
+                details || {}
+            ))
+            .then((result) => {
+                var config = message(result, "options");
 
-                function(error) {
-                    // Thrown from the current bundler instance, NOT the main browserify
-                    // instance. This is so that watchify won't explode.
-                    bundler.emit("error", error);
-                    
-                    push(buffer);
-                    
-                    done();
-                }
-            );
+                // Tell watchers about dependencies by emitting "file" events
+                // AFAIK this is only useful to watchify, to ensure that it watches
+                // everyone in the dependency graph
+                config.graph.dependenciesOf(id).forEach((file) =>
+                    browserify.emit("file", path.resolve(process.cwd(), id), id)
+                );
+
+                push(`module.exports = ${JSON.stringify(message(result, "exports")[key], null, 4)};\n`);
+                
+                done();
+            })
+            .catch((error) => {
+                // Thrown from the current bundler instance, NOT the main browserify
+                // instance. This is so that watchify won't explode.
+                bundler.emit("error", error);
+                
+                push(buffer);
+                
+                done();
+            });
         });
     });
     
