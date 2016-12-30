@@ -107,12 +107,12 @@ Processor.prototype = {
             opts  = args || false,
             files = opts.files;
         
-        if(!Array.isArray(files)) {
-            files = tiered(this._graph, {
-                sort    : true,
-                flatten : true
-            });
-        }
+        // if(!Array.isArray(files)) {
+        //     files = tiered(this._graph, {
+        //         sort    : true,
+        //         flatten : true
+        //     });
+        // }
         
         return self._done.process(
                 root,
