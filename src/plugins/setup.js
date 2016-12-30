@@ -5,6 +5,7 @@ var path = require("path"),
     postcss  = require("postcss"),
     Graph    = require("dependency-graph").DepGraph,
     slug     = require("unique-slug"),
+    defaults = require("lodash.defaults"),
     
     relative = require("../lib/relative.js"),
     message  = require("../lib/message.js"),
@@ -19,12 +20,12 @@ module.exports = (css, result) => {
     var opts = message(result, "options"),
         cwd  = opts.cwd || process.cwd(),
         options;
-        
+    
+    // TODO: replace w/ lodash.defaults >:(
     options = Object.assign(
         Object.create(null),
         {
             cwd   : cwd,
-            files : Object.create(null),
             namer : namer.bind(null, cwd)
         },
         opts

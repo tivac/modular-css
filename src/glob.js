@@ -3,9 +3,10 @@
 var fs = require("fs"),
 
     globule    = require("globule"),
-    sequential = require("sequence-as-promise"),
+    sequential = require("promise-sequential"),
     
-    plugin = require("./plugin.js");
+    plugin  = require("./plugin.js"),
+    message = require("./lib/message.js");
 
 module.exports = function(opts) {
     var options = Object.assign(
@@ -27,10 +28,23 @@ module.exports = function(opts) {
             prefixBase : true
         })
         .map((file) =>
-            (prev) => plugin.process(fs.readFileSync(file), options)
+            (result) => {
+                var prev = message(result, "options");
+
+                return plugin.process(
+                    fs.readFileSync(file),
+                    Object.assign(
+                        Object.create(null),
+                        options,
+                        {
+                            from  : file,
+                            files : prev.files,
+                            graph : prev.graph
+                        }
+                    )
+                );
+            }
         )
     )
-    .then((results) => {
-        console.log(results);
-    });
+    .then((results) => results.pop());
 };

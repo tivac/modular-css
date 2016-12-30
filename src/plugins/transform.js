@@ -1,7 +1,7 @@
 "use strict";
 
 var postcss    = require("postcss"),
-    sequential = require("sequence-as-promise"),
+    sequential = require("promise-sequential"),
 
     tiered  = require("../lib/graph-tiers.js"),
     message = require("../lib/message.js"),
