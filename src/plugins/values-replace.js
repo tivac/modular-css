@@ -5,6 +5,8 @@ var selector = require("postcss-selector-parser"),
     each     = require("lodash.foreach"),
     get      = require("lodash.get"),
     Graph    = require("dependency-graph").DepGraph;
+    
+    namespaced = require("./values-namespaced.js");
 
 function replacer(values, prop) {
     return (thing) => {
@@ -44,7 +46,7 @@ module.exports = (css, result) => {
         
     // Merge namespaced values in w/ prefixed names
     result.messages
-        .filter((msg) => msg.plugin === "modular-css-values-namespaced")
+        .filter((msg) => msg.plugin === namespaced.postcssPlugin)
         .forEach((msg) =>
             each(msg.values, (children, ns) =>
                 each(children, (details, child) => (values[`${ns}.${child}`] = details))
