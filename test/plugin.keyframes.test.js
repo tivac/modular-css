@@ -3,7 +3,7 @@
 var path   = require("path"),
     assert = require("assert"),
 
-    postcss = require("postcss"),
+    postcss = require("./lib/postcss.js"),
     
     scoping   = require("../src/plugins/scoping"),
     keyframes = require("../src/plugins/keyframes");

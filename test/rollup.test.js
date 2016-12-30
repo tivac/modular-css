@@ -6,7 +6,7 @@ var path   = require("path"),
     rollup = require("rollup").rollup,
     
     plugin  = require("../src/rollup"),
-    compare = require("./lib/compare-files"),
+    compare = require("./lib/compare.js"),
     warn    = require("./lib/warn");
 
 describe("/rollup.js", function() {
@@ -25,7 +25,27 @@ describe("/rollup.js", function() {
                 plugin()
             ]
         })
-        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/simple.js"));
+        .then((bundle) =>
+            compare.stringToFile(
+                bundle.generate().code,
+                "./test/results/rollup/simple.js"
+            )
+        );
+    });
+
+    it("should be fine w/ files that don't have exports", function() {
+        return rollup({
+            entry   : "./test/specimens/rollup/no-exports.js",
+            plugins : [
+                plugin()
+            ]
+        })
+        .then((bundle) =>
+            compare.stringToFile(
+                bundle.generate().code,
+                "./test/results/rollup/no-exports.js"
+            )
+        );
     });
     
     it("should be able to tree-shake results", function() {
@@ -35,10 +55,15 @@ describe("/rollup.js", function() {
                 plugin()
             ]
         })
-        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/tree-shaking.js"));
+        .then((bundle) =>
+            compare.stringToFile(
+                bundle.generate().code,
+                "./test/results/rollup/tree-shaking.js"
+            )
+        );
     });
 
-    it("should attach a promise to the bundle.generate response", function() {
+    it("should attach css info to the bundle.generate response", function() {
           return rollup({
             entry   : "./test/specimens/rollup/simple.js",
             plugins : [
@@ -47,7 +72,20 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => assert.equal(typeof bundle.generate().css.then, "function"));
+        .then((bundle) => {
+            var result = bundle.generate();
+
+            compare.stringToFile(
+                result.css.source,
+                "./test/results/rollup/simple.css"
+            );
+
+            assert.deepEqual(result.css.exports, {
+                "test/specimens/rollup/simple.css" : {
+                    fooga : "mcad949cca_fooga"
+                }
+            });
+        });
     });
     
     it("should generate CSS", function() {
@@ -59,9 +97,7 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => bundle.write({
-            dest : "./test/output/rollup/simple.js"
-        }))
+        .then((bundle) => bundle.write({ dest : "./test/output/rollup/simple.js" }))
         .then(() => compare.results("rollup/simple.css"));
     });
     
@@ -74,9 +110,7 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => bundle.write({
-            dest : "./test/output/rollup/simple.js"
-        }))
+        .then((bundle) => bundle.write({ dest : "./test/output/rollup/simple.js" }))
         .then(() => compare.results("rollup/simple.json"));
     });
     
@@ -86,12 +120,17 @@ describe("/rollup.js", function() {
             plugins : [
                 plugin({
                     onwarn : function(msg) {
-                        assert(msg === "Invalid JS identifier \"fooga-wooga\", unable to export");
+                        assert(msg === `Invalid JS identifier "fooga-wooga", unable to export`);
                     }
                 })
             ]
         })
-        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/invalid-name.js"));
+        .then((bundle) =>
+            compare.stringToFile(
+                bundle.generate().code,
+                "./test/results/rollup/invalid-name.js"
+            )
+        );
     });
     
     it("shouldn't disable sourcemap generation", function() {
@@ -139,7 +178,9 @@ describe("/rollup.js", function() {
                 sourceMap : false
             });
         })
-        .then(() => compare.results("rollup/no-maps.css"));
+        .then(() =>
+            compare.results("rollup/no-maps.css")
+        );
     });
 
     it("should respect the CSS dependency tree", function() {
@@ -149,7 +190,12 @@ describe("/rollup.js", function() {
                 plugin()
             ]
         })
-        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/dependencies.js"));
+        .then((bundle) =>
+            compare.stringToFile(
+                bundle.generate().code,
+                "./test/results/rollup/dependencies.js"
+            )
+        );
     });
 
     describe("errors", function() {
@@ -193,9 +239,7 @@ describe("/rollup.js", function() {
                     })
                 ]
             })
-            .then((bundle) => bundle.write({
-                dest : "./test/output/rollup/done-error.js"
-            }))
+            .then((bundle) => bundle.write({ dest : "./test/output/rollup/done-error.js" }))
             .catch(checkError);
         });
     });

@@ -8,13 +8,13 @@ exports.join = function(output) {
     return map(output, (classes) => classes.join(" "));
 };
 
-exports.compositions = function(cwd, processor) {
+exports.compositions = function(cwd, files) {
     var json = {};
     
-    Object.keys(processor.files)
+    Object.keys(files)
         .sort()
         .forEach((file) =>
-            (json[relative(cwd, file)] = exports.join(processor.files[file].exports))
+            (json[relative(cwd, file)] = exports.join(files[file].exports))
         );
     
     return json;

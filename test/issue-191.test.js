@@ -3,12 +3,12 @@
 var fs     = require("fs"),
     path   = require("path"),
     
-    compare = require("./lib/compare-files.js"),
+    compare = require("./lib/compare.js"),
 
     Processor = require("../src/processor");
 
 describe("/issues", function() {
-    describe("/191", function() {
+    describe.skip("/191", function() {
         after((done) => require("rimraf")("./test/output/sensitive.txt", done));
 
         it("should ignore case differences in file paths", function() {

@@ -10,11 +10,10 @@ function copy(graph, clone, nodes, edges) {
     });
 }
 
-module.exports = function(graph) {
+function cloner(graph) {
     var clone   = new Graph(),
         missing = 0,
         nodes   = {};
-
 
     // Unique the list of nodes by using their inode value as a key in an object
     Object.keys(graph.nodes).forEach((node) => {
@@ -40,4 +39,42 @@ module.exports = function(graph) {
     copy(graph, clone, nodes, "outgoingEdges");
 
     return clone;
+}
+
+// Could ask for overall graph tiering, or just for the deps of a particular node
+function leaves(graph, options) {
+    return options.source ?
+        graph.dependenciesOf(options.source, true) :
+        graph.overallOrder(true);
+}
+
+// Clone the graph and break the graph into tiers for further processing
+module.exports = (graph, options) => {
+    var clone = cloner(graph),
+        tiers = [],
+        tier;
+        
+    if(!options) {
+        options = false;
+    }
+
+    tier = leaves(clone, options);
+
+    while(tier.length) {
+        tier.forEach((node) => {
+            clone.dependantsOf(node).forEach(
+                (dep) => clone.removeDependency(dep, node)
+            );
+            
+            clone.removeNode(node);
+        });
+        
+        tiers.push(options.sort ? tier.sort() : tier);
+
+        tier = leaves(clone, options);
+    }
+
+    return options.flatten ?
+        tiers.reduce((a, b) => a.concat(b), []) :
+        tiers;
 };

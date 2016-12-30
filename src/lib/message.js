@@ -2,9 +2,16 @@
 
 var find = require("lodash.findlast");
 
-module.exports = function(results, field) {
-    var message = find(results.messages, field);
+module.exports = (results, filter, field) => {
+    var message = find(results.messages, filter);
+
+    if(!field) {
+        field = filter;
+    }
     
     // Don't get to mess w/ other plugins objects
-    return Object.assign(Object.create(null), message ? message[field] : {});
+    return Object.assign(
+        Object.create(null),
+        message ? message[field] : {}
+    );
 };

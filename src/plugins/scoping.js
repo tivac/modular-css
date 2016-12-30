@@ -3,8 +3,9 @@
 var processor = require("postcss-selector-parser"),
         
     identifiers = require("../lib/identifiers"),
+    message     = require("../lib/message"),
     
-    plugin = "postcss-modular-css-scoping";
+    plugin = "modular-css-scoping";
 
 // Validate whether a selector should be renamed, returns the key to use
 function rename(current, thing) {
@@ -18,7 +19,8 @@ function rename(current, thing) {
 }
 
 module.exports = (css, result) => {
-    var classes   = Object.create(null),
+    var options   = message(result, "options"),
+        classes   = Object.create(null),
         keyframes = Object.create(null),
         globals   = Object.create(null),
         parser, current, lookup;
@@ -69,7 +71,7 @@ module.exports = (css, result) => {
                 throw current.error("Unable to re-use the same selector for global & local", { word : key });
             }
 
-            node.value = result.opts.namer(result.opts.from, node.value);
+            node.value = options.namer(options.from, node.value);
             
             lookup[key] = [ node.value ];
             
@@ -98,7 +100,7 @@ module.exports = (css, result) => {
     
     if(Object.keys(keyframes).length) {
         result.messages.push({
-            type      : "modularcss",
+            type      : "modular-css",
             plugin    : plugin,
             keyframes : keyframes
         });
@@ -106,7 +108,7 @@ module.exports = (css, result) => {
 
     if(Object.keys(classes).length) {
         result.messages.push({
-            type    : "modularcss",
+            type    : "modular-css",
             plugin  : plugin,
             classes : classes
         });

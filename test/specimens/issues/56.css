@@ -1,0 +1,4 @@
+.booga { color: red }
+.fooga { composes: booga }
+.fooga:hover { color: blue }
+.wooga { composes: booga }

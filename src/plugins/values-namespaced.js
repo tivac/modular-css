@@ -2,17 +2,19 @@
 
 var parser  = require("../parsers/parser.js"),
     resolve = require("../lib/resolve.js"),
+    message = require("../lib/message.js"),
     
-    plugin = "postcss-modular-css-values-namespaced",
+    plugin = "modular-css-values-namespaced",
     offset = "@value ".length;
 
 // Find @value fooga: wooga entries & catalog/remove them
 module.exports = (css, result) => {
-    var values = Object.create(null);
+    var options = message(result, "options"),
+        values  = Object.create(null);
 
     css.walkAtRules("value", (rule) => {
         var parsed, source;
-        
+
         try {
             parsed = parser.parse(rule.params);
         } catch(e) {
@@ -24,7 +26,7 @@ module.exports = (css, result) => {
         }
 
         try {
-            source = result.opts.files[resolve(result.opts.from, parsed.source)];
+            source = options.files[resolve(options.from, parsed.source)];
         } catch(e) {
             // NO-OP
         }
@@ -40,7 +42,7 @@ module.exports = (css, result) => {
     
     if(Object.keys(values).length > 0) {
         result.messages.push({
-            type : "modularcss",
+            type : "modular-css",
             plugin,
             values
         });

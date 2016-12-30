@@ -3,32 +3,29 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    Processor = require("../src/processor");
+    plugin = require("../src/plugin.js"),
+    
+    exported = require("./lib/exported.js"),
+    compare  = require("./lib/compare.js");
 
 describe("/issues", function() {
     describe("/24", function() {
         it("should be able to compose using a value", function() {
-            var processor = new Processor();
-            
-            return processor.string(
-                "./test/specimens/composition.css",
-                "@value simple: \"./simple.css\";\n" +
-                ".wooga { composes: wooga from simple; background: #000; }"
+            return plugin.process(
+                require("fs").readFileSync("./test/specimens/issues/24.css", "utf8"),
+                { from : "./test/specimens/issues/24.css" }
             )
-            .then(function(result) {
-                var file = result.files[path.resolve("./test/specimens/composition.css")];
-                
-                assert.equal(
-                    file.processed.root.toResult().css,
-                    ".mc29d531c6_wooga { background: #000; }"
-                );
-
-                assert.deepEqual(file.exports, {
-                    wooga : [
-                        "mc08e91a5b_wooga",
-                        "mc29d531c6_wooga"
-                    ]
+            .then((result) => {
+                assert.deepEqual(exported(result).exports, {
+                    "test/specimens/issues/24.css" : {
+                        wooga : "mc08e91a5b_wooga mcdd3d3520_wooga"
+                    },
+                    "test/specimens/simple.css" : {
+                        wooga : "mc08e91a5b_wooga"
+                    }
                 });
+
+                compare.stringToFile(result.css, "./test/results/issues/24.css");
             });
         });
     });

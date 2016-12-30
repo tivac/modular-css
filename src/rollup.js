@@ -6,62 +6,105 @@ var fs   = require("fs"),
     keyword = require("esutils").keyword,
     utils   = require("rollup-pluginutils"),
     mkdirp  = require("mkdirp"),
+    postcss = require("postcss"),
     
-    Processor = require("./processor"),
-    output    = require("./lib/output"),
-    relative  = require("./lib/relative");
+    relative = require("./lib/relative.js"),
+    message  = require("./lib/message.js"),
+    
+    processor = postcss([ require("./plugin.js") ]);
 
 module.exports = function(opts) {
     var options = Object.assign(Object.create(null), {
-            ext  : ".css",
             json : false,
-            map  : true
+            map  : true,
+            done : false
         }, opts || {}),
         
-        slice = -1 * options.ext.length,
-        
-        filter = utils.createFilter(options.include, options.exclude),
-        
-        processor = new Processor(options);
+        filter = utils.createFilter(options.include || "**/*.css", options.exclude),
+        files  = Object.create(null),
+        graph, css, json;
         
     if(!options.onwarn) {
         options.onwarn = console.warn.bind(console); // eslint-disable-line
+    }
+
+    if(Array.isArray(options.done)) {
+        options.done.forEach((p) => processor.use(p));
     }
 
     return {
         name : "modular-css",
 
         transform : function(code, id) {
-            if(!filter(id) || id.slice(slice) !== options.ext) {
+            if(!filter(id)) {
                 return null;
             }
 
+            // TODO: re-implement watch support!
+            //
             // Remove this file if it's ever been processed before as a workaround
             // since rollup-watch never tells us what file changed
             // https://github.com/tivac/modular-css/issues/158
-            processor.remove(id, { shallow : true });
+            // processor.remove(id, { shallow : true });
 
-            // Add the file & its dependencies
-            return processor.string(id, code).then(function(result) {
-                var classes = output.join(result.exports),
-                    imports = processor.dependencies(id)
-                        .map(function(file) {
-                            return "import \"" + relative.prefixed(path.dirname(id), file) + "\";";
-                        })
-                        .join("\n");
+            // Process the file
+            return processor.process(code, Object.assign(
+                Object.create(null),
+                options,
+                {
+                    // PostCSS options
+                    from : id,
+
+                    // modular-css options
+                    files : files,
+                    graph : graph
+                }
+            ))
+            .then((result) => {
+                var config = message(result, "options"),
+                    key    = relative(config.cwd, id),
+                    deps, exports;
+                
+                // Store output data for later
+                css  = result.css;
+                json = message(result, "exports");
+
+                // Store for re-use on subsequent runs
+                // (to avoid parsing multiple times, and to ensure that all found files are output)
+                graph = config.graph;
+                files = Object.assign(
+                    files,
+                    config.files
+                );
+
+                // Create import statements to reflect CSS dependencies
+                deps = config.graph.dependenciesOf(id).map((file) =>
+                    `import "${relative.prefixed(path.dirname(id), file)}";`
+                );
+                
+                // Filter out & warn if any of the exported CSS names aren't
+                // able to be used as a valid JS identifier. Turn the rest into
+                // named exports for better tree-shaking
+                exports = Object.keys(json[key])
+                    .filter((name) => {
+                        if(keyword.isReservedWordES6(name) || !keyword.isIdentifierNameES6(name)) {
+                            options.onwarn(`Invalid JS identifier "${name}", unable to export`);
+
+                            return false;
+                        }
+
+                        return true;
+                    })
+                    .map((name) =>
+                        `export var ${name} = "${json[key][name]}";`
+                    );
                 
                 return {
-                    code : (imports.length ? imports + "\n" : "") + Object.keys(classes).reduce(function(prev, curr) {
-                        // Warn if any of the exported CSS wasn't able to be used as a valid JS identifier
-                        if(keyword.isReservedWordES6(curr) || !keyword.isIdentifierNameES6(curr)) {
-                            options.onwarn("Invalid JS identifier \"" + curr + "\", unable to export");
-                            
-                            return prev;
-                        }
+                    code :
+                        (deps.length ? deps.join("\n") + "\n" : "") +
+                        (exports.length ? exports.join("\n") + "\n" : "") +
+                        `export default ${JSON.stringify(json[key], null, 4)};\n`,
                         
-                        return "export var " + curr + " = \"" + classes[curr] + "\";\n" + prev;
-                    }, "export default " + JSON.stringify(classes, null, 4) + ";\n"),
-                    
                     // sourcemap doesn't make a ton of sense here, so always return nothing
                     // https://github.com/rollup/rollup/wiki/Plugins#conventions
                     map : {
@@ -71,34 +114,31 @@ module.exports = function(opts) {
             });
         },
 
-        // Hook for when bundle.generate() is called
+        // Hook into bundle.generate()
         ongenerate : function(bundle, result) {
-            result.css = processor.output({
-                to : options.css
-            });
+            result.css = {
+                source  : css,
+                exports : json
+            };
         },
 
+        // Hook into bundle.write()
         onwrite : function(bundle, result) {
-            result.css.then(function(data) {
-                if(options.css) {
-                    mkdirp.sync(path.dirname(options.css));
-                    fs.writeFileSync(
-                        options.css,
-                        data.css
-                    );
-                }
-                
-                if(options.json) {
-                    mkdirp.sync(path.dirname(options.json));
-                    fs.writeFileSync(
-                        options.json,
-                        JSON.stringify(data.compositions, null, 4)
-                    );
-                }
-            })
-            .catch(function(error) {
-                throw error;
-            });
+            if(options.css) {
+                mkdirp.sync(path.dirname(options.css));
+                fs.writeFileSync(
+                    options.css,
+                    result.css.source
+                );
+            }
+            
+            if(options.json) {
+                mkdirp.sync(path.dirname(options.json));
+                fs.writeFileSync(
+                    options.json,
+                    JSON.stringify(result.css.exports, null, 4)
+                );
+            }
         }
     };
 };

@@ -12,14 +12,14 @@ var Graph = require("dependency-graph").DepGraph,
     
     parser = require("../parsers/parser.js"),
     
-    plugin = "postcss-modular-css-composition";
+    plugin = "modular-css-composition";
 
 module.exports = (css, result) => {
-    var refs  = message(result, "classes"),
-        map   = invert(refs),
-        opts  = result.opts,
-        graph = new Graph(),
-        out   = Object.assign(Object.create(null), refs);
+    var options = message(result, "options"),
+        refs    = message(result, "classes"),
+        map     = invert(refs),
+        graph   = new Graph(),
+        out     = Object.assign(Object.create(null), refs);
     
     Object.keys(refs).forEach(function(key) {
         graph.addNode(key);
@@ -41,9 +41,9 @@ module.exports = (css, result) => {
         }
 
         if(details.source) {
-            details.source = resolve(opts.from, details.source);
+            details.source = resolve(options.from, details.source);
 
-            if(!opts.files || !opts.files[details.source]) {
+            if(!options.files || !options.files[details.source]) {
                 throw decl.error("Invalid file reference", { word : decl.value });
             }
         }
@@ -71,7 +71,7 @@ module.exports = (css, result) => {
             }
 
             if(details.source) {
-                refs[scoped] = opts.files[details.source].exports[ref.name];
+                refs[scoped] = options.files[details.source].exports[ref.name];
             }
 
             if(!refs[scoped]) {
@@ -98,7 +98,7 @@ module.exports = (css, result) => {
     });
 
     result.messages.push({
-        type    : "modularcss",
+        type    : "modular-css",
         plugin  : plugin,
         classes : mapvalues(out, function(val) {
             return unique(val);

@@ -1,13 +1,15 @@
 "use strict";
 
 var parser = require("../parsers/parser.js"),
+    message = require("../lib/message.js"),
     
-    plugin = "postcss-modular-css-values-local",
+    plugin = "modular-css-values-local",
     offset = "@value ".length;
 
 // Find @value fooga: wooga entries & catalog/remove them
 module.exports = (css, result) => {
-    var values = Object.create(null);
+    var options = message(result, "options"),
+        values = Object.create(null);
 
     css.walkAtRules("value", (rule) => {
         var parsed;
@@ -15,7 +17,7 @@ module.exports = (css, result) => {
         try {
             parsed = parser.parse(rule.params);
         } catch(e) {
-            if(result.opts.strict) {
+            if(options.strict) {
                 throw rule.error(e.toString(), { index : offset + e.location.start.column });
             } else {
                 return;
@@ -36,7 +38,7 @@ module.exports = (css, result) => {
     
     if(Object.keys(values).length > 0) {
         result.messages.push({
-            type : "modularcss",
+            type : "modular-css",
             plugin,
             values
         });

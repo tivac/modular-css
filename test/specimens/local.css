@@ -2,5 +2,10 @@
 @value two: blue;
 @value folder from "./folder/folder.css";
 
-.booga { background: green; }
-.looga { composes: booga; }
+.booga {
+    background: green;
+}
+
+.looga {
+    composes: booga;
+}

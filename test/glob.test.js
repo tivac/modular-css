@@ -4,7 +4,7 @@ var assert  = require("assert"),
     
     glob = require("../src/glob"),
     
-    compare = require("./lib/compare-files");
+    compare = require("./lib/compare.js");
 
 describe("/glob.js", function() {
     it("should be a function", function() {
@@ -15,8 +15,7 @@ describe("/glob.js", function() {
         return glob({
             cwd : "./test/specimens/glob"
         })
-        .then((processor) => processor.output())
-        .then((output) => compare.stringToFile(output.css, "./test/results/glob/glob.css"));
+        .then((result) => compare.stringToFile(result.css, "./test/results/glob/glob.css"));
     });
 
     it("should find files on disk & output css", function() {
@@ -26,8 +25,7 @@ describe("/glob.js", function() {
                 "**/*.css"
             ]
         })
-        .then((processor) => processor.output())
-        .then((output) => compare.stringToFile(output.css, "./test/results/glob/glob.css"));
+        .then((result) => compare.stringToFile(result.css, "./test/results/glob/glob.css"));
     });
 
     it("should support exclusion patterns", function() {
@@ -38,7 +36,6 @@ describe("/glob.js", function() {
                 "!**/exclude/**"
             ]
         })
-        .then((processor) => processor.output())
-        .then((output) => compare.stringToFile(output.css, "./test/results/glob/glob-excludes.css"));
+        .then((result) => compare.stringToFile(result.css, "./test/results/glob/glob-excludes.css"));
     });
 });

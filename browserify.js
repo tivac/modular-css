@@ -1,3 +1,3 @@
 "use strict";
 
-module.exports = require("./src/browserify");
+module.exports = require("./src/browserify.js");

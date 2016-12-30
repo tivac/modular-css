@@ -3,9 +3,10 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    plugin = require("../src/plugins/values-namespaced.js"),
+    plugin  = require("../src/plugins/values-namespaced.js"),
+    message = require("../src/lib/message.js"),
 
-    processor = require("postcss")([ plugin ]);
+    processor = require("./lib/postcss.js")([ plugin ]);
 
 describe("/plugins", function() {
     describe("/values-namespaced.js", function() {
@@ -15,11 +16,11 @@ describe("/plugins", function() {
                 from  : path.resolve("./test/specimens/start.css"),
                 files : {
                     // Composition source
-                    [path.resolve("./test/specimens/start.css")] : {},
+                    [ path.resolve("./test/specimens/start.css") ] : {},
 
                     // Composition targets
-                    [path.resolve("./test/specimens/empty.css")] : {},
-                    [path.resolve("./test/specimens/local.css")] : {
+                    [ path.resolve("./test/specimens/empty.css") ] : {},
+                    [ path.resolve("./test/specimens/local.css") ] : {
                         values : {
                             fooga : {
                                 value  : "red",
@@ -37,8 +38,15 @@ describe("/plugins", function() {
         }
         
         it("should fail to parse invalid declarations", function() {
-            assert.throws(() => process(`@value * as fooga from "./local.css`).css, /: Unclosed string/);
-            assert.throws(() => process(`@value * as fooga`).css, /SyntaxError: Expected "from"/);
+            assert.throws(
+                () => process(`@value * as fooga from "./local.css`).css,
+                /: Unclosed string/
+            );
+            
+            assert.throws(
+                () => process(`@value * as fooga`).css,
+                /SyntaxError: Expected "from"/
+            );
         });
 
         it("should fail if importing from a file that doesn't exist", function() {
@@ -61,25 +69,23 @@ describe("/plugins", function() {
         });
 
         it("should support importing a value from another file", function() {
-            assert.deepEqual(
-                process(`@value * as ns from "./local.css";`).messages,
-                [{
-                    type   : "modularcss",
-                    plugin : "postcss-modular-css-values-namespaced",
-                    values : {
-                        ns : {
-                            fooga : {
-                                value  : "red",
-                                source : {}
-                            },
+            var result = process(`@value * as ns from "./local.css";`);
 
-                            googa : {
-                                value  : "blue",
-                                source : {}
-                            }
+            assert.deepEqual(
+                message(result, "values"),
+                {
+                    ns : {
+                        fooga : {
+                            value  : "red",
+                            source : {}
+                        },
+
+                        googa : {
+                            value  : "blue",
+                            source : {}
                         }
                     }
-                }]
+                }
             );
         });
     });
