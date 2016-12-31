@@ -71,26 +71,25 @@ Processor.prototype = {
     
     // Add a file by name + contents to the dependency graph
     string : function(name, text) {
-        var self  = this,
-            start = path.resolve(name);
+        var start = path.resolve(name);
         
         return this._walk(start, text).then(() => {
-            var deps = self._graph.dependenciesOf(start).concat(start);
+            var deps = this._graph.dependenciesOf(start).concat(start);
             
             return sequential(deps.map((dep) =>
                 () => {
-                    var file = self._files[dep];
+                    var file = this._files[dep];
                     
                     if(!file.processed) {
-                        file.processed = self._process.process(
+                        file.processed = this._process.process(
                             file.result,
                             Object.assign(
                                 Object.create(null),
-                                self._options,
+                                this._options,
                                 {
                                     from  : dep,
-                                    files : self._files,
-                                    namer : self._options.namer
+                                    files : this._files,
+                                    namer : this._options.namer
                                 }
                             )
                         );
@@ -106,15 +105,14 @@ Processor.prototype = {
         .then(() => ({
             id      : start,
             file    : start,
-            files   : self._files,
-            exports : self._files[start].exports
+            files   : this._files,
+            exports : this._files[start].exports
         }));
     },
     
     // Remove a file from the dependency graph
     remove : function(input, options) {
-        var self  = this,
-            files = input;
+        var files = input;
 
         if(!Array.isArray(files)) {
             files = [ files ];
@@ -124,16 +122,16 @@ Processor.prototype = {
             options = false;
         }
 
-        files.filter((key) => self._graph.hasNode(key)).forEach((key) => {
+        files.filter((key) => this._graph.hasNode(key)).forEach((key) => {
             if(!options.shallow) {
                 // Remove everything that depends on this too, it'll all need
                 // to be recalculated
-                self.remove(self._graph.dependantsOf(key));
+                this.remove(this._graph.dependantsOf(key));
             }
 
-            delete self._files[key];
+            delete this._files[key];
             
-            self._graph.removeNode(key);
+            this._graph.removeNode(key);
         });
     },
     
@@ -150,8 +148,7 @@ Processor.prototype = {
     
     // Get the ultimate output for specific files or the entire tree
     output : function(args) {
-        var self  = this,
-            opts  = args || false,
+        var opts  = args || false,
             files = opts.files;
         
         if(!Array.isArray(files)) {
@@ -164,21 +161,21 @@ Processor.prototype = {
         // Rewrite relative URLs before adding
         // Have to do this every time because target file might be different!
         //
-        return Promise.all(files.map((dep) => self._after.process(
+        return Promise.all(files.map((dep) => this._after.process(
             // NOTE: the call to .clone() is really important here, otherwise this call
             // modifies the .result root itself and you process URLs multiple times
             // See https://github.com/tivac/modular-css/issues/35
             //
-            self._files[dep].result.root.clone(),
+            this._files[dep].result.root.clone(),
             
             Object.assign(
                 Object.create(null),
-                self._options,
+                this._options,
                 {
                     from  : dep,
                     to    : opts.to,
-                    graph : self._graph,
-                    files : self._files
+                    graph : this._graph,
+                    files : this._files
                 }
             )
         )))
@@ -186,11 +183,11 @@ Processor.prototype = {
             var root = postcss.root();
 
             results.forEach((result) => {
-                self._warnings(result);
+                this._warnings(result);
 
                 // Add file path comment
                 root.append(postcss.comment({
-                    text : relative(self._options.cwd, result.opts.from),
+                    text : relative(this._options.cwd, result.opts.from),
                     
                     // Add a bogus-ish source property so postcss won't make weird-looking
                     // source-maps that break the visualizer
@@ -211,23 +208,23 @@ Processor.prototype = {
                 root.append(result.root);
             });
             
-            return self._done.process(
+            return this._done.process(
                 root,
                 Object.assign(
                     Object.create(null),
-                    self._options,
+                    this._options,
                     args || Object.create(null),
                     {
-                        graph : self._graph,
-                        files : self._files
+                        graph : this._graph,
+                        files : this._files
                     }
                 )
             );
         })
         .then((result) => {
-            self._warnings(result);
+            this._warnings(result);
 
-            result.compositions = output.compositions(self._options.cwd, self);
+            result.compositions = output.compositions(this._options.cwd, this);
             
             return result;
         });
@@ -241,44 +238,42 @@ Processor.prototype = {
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
     _walk : function(name, text) {
-        var self = this;
-        
         // No need to re-process files
-        if(self._files[name]) {
+        if(this._files[name]) {
             return Promise.resolve();
         }
         
-        self._graph.addNode(name);
+        this._graph.addNode(name);
 
-        self._files[name] = {
+        this._files[name] = {
             text    : text,
             exports : false,
             values  : false
         };
         
-        return self._before.process(text, Object.assign(
+        return this._before.process(text, Object.assign(
             Object.create(null),
-            self._options,
+            this._options,
             {
                 from  : name,
-                graph : self._graph,
-                files : self._files,
+                graph : this._graph,
+                files : this._files,
 
                 // Run parsers in loose mode for this first pass
                 strict : false
             }
         ))
         .then((result) => {
-            self._files[name].result = result;
+            this._files[name].result = result;
 
             // Check for plugin warnings
-            self._warnings(result);
+            this._warnings(result);
             
             // Walk this node's dependencies, reading new files from disk as necessary
             return Promise.all(
-                self._graph.dependenciesOf(name).map((dependency) => self._walk(
+                this._graph.dependenciesOf(name).map((dependency) => this._walk(
                     dependency,
-                    self._files[dependency] ?
+                    this._files[dependency] ?
                         null :
                         fs.readFileSync(dependency, "utf8")
                 ))
