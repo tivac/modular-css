@@ -3,10 +3,10 @@
 var fs   = require("fs"),
     path = require("path"),
     
-    Graph      = require("dependency-graph").DepGraph,
-    postcss    = require("postcss"),
-    slug       = require("unique-slug"),
-    sequential = require("promise-sequential"),
+    Graph   = require("dependency-graph").DepGraph,
+    postcss = require("postcss"),
+    slug    = require("unique-slug"),
+    series  = require("p-series"),
 
     output     = require("./lib/output.js"),
     message    = require("./lib/message.js"),
@@ -76,7 +76,7 @@ Processor.prototype = {
         return this._walk(start, text).then(() => {
             var deps = this._graph.dependenciesOf(start).concat(start);
             
-            return sequential(deps.map((dep) =>
+            return series(deps.map((dep) =>
                 () => {
                     var file = this._files[dep];
                     
