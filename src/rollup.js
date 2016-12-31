@@ -95,9 +95,6 @@ module.exports = function(opts) {
                         JSON.stringify(data.compositions, null, 4)
                     );
                 }
-            })
-            .catch(function(error) {
-                throw error;
             });
         }
     };

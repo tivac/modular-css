@@ -9,6 +9,12 @@ var path   = require("path"),
     compare = require("./lib/compare.js"),
     warn    = require("./lib/warn.js");
 
+function error(root, result) {
+    throw root.error("boom");
+};
+
+error.postcssPlugin = "error-plugin";
+
 describe("/rollup.js", function() {
     after(() => require("shelljs").rm("-rf", "./test/output/rollup"));
     
@@ -177,7 +183,7 @@ describe("/rollup.js", function() {
 
     describe("errors", function() {
         function checkError(error) {
-            assert(error.toString().indexOf("Warning Plugin: warning") > -1);
+            assert(error.toString().indexOf("error-plugin:") > -1);
         }
 
         it("should throw errors in in before plugins", function() {
@@ -186,7 +192,7 @@ describe("/rollup.js", function() {
                 plugins : [
                     plugin({
                         css    : "./test/output/rollup/errors.css",
-                        before : [ warn ]
+                        before : [ error ]
                     })
                 ]
             })
@@ -199,7 +205,7 @@ describe("/rollup.js", function() {
                 plugins : [
                     plugin({
                         css   : "./test/output/rollup/errors.css",
-                        after : [ warn ]
+                        after : [ error ]
                     })
                 ]
             })
@@ -212,7 +218,7 @@ describe("/rollup.js", function() {
                 plugins : [
                     plugin({
                         css  : "./test/output/rollup/errors.css",
-                        done : [ warn ]
+                        done : [ error ]
                     })
                 ]
             })

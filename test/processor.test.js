@@ -8,8 +8,7 @@ var fs      = require("fs"),
     
     Processor = require("../src/processor.js"),
     
-    compare = require("./lib/compare.js"),
-    warn    = require("./lib/warn.js");
+    compare = require("./lib/compare.js");
 
 describe("/processor.js", function() {
     describe("Basics", function() {
