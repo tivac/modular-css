@@ -95,4 +95,4 @@ module.exports = (css, result) => {
     );
 };
 
-module.exports.postcssplugin = "modular-css-values-replace";
+module.exports.postcssPlugin = "modular-css-values-replace";

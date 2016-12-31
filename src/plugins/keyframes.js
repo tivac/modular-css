@@ -17,4 +17,4 @@ module.exports = (css, result) => {
     });
 };
 
-module.exports.postcssplugin = "modular-css-keyframes";
+module.exports.postcssPlugin = "modular-css-keyframes";
