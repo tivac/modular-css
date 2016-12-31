@@ -1,0 +1,14 @@
+{
+  "bail": true,
+  "coverageDirectory": "<rootDir>/test/coverage",
+  "coverageReporters": ["json", "lcov", "text-summary", "text"],
+  "coveragePathIgnorePatterns": [ "/parsers/parser.js" ],
+  "coverageThreshold": {
+      "global": {
+        "branches": 99.49,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
+}

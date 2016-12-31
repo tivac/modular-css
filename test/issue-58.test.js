@@ -16,7 +16,7 @@ var fs     = require("fs"),
 
 describe("/issues", function() {
     describe("/58", function() {
-        after(function() {
+        afterAll(function() {
             rimraf.sync("./test/output/issues");
             rimraf.sync("./test/specimens/issues/58/other.css");
         });

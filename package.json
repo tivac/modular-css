@@ -10,8 +10,8 @@
   "bin": "./bin/cli.js",
   "scripts": {
     "test": "npm run lint && npm run tests",
-    "tests": "mocha",
-    "cover": "istanbul cover --print both ./node_modules/mocha/bin/_mocha",
+    "tests": "jest --config .jestrc",
+    "cover": "npm run tests -- --coverage",
     "lint": "eslint .",
     "parser": "pegjs -o ./src/parsers/parser.js ./src/parsers/parser.pegjs",
     "generate": "npm run parser",
@@ -37,8 +37,6 @@
     "eslint-config-arenanet": "^3.0.0",
     "factor-bundle": "^2.5.0",
     "from2-string": "^1.1.0",
-    "istanbul": "^0.4.2",
-    "mocha": "^3.0.0",
     "pegjs": "^0.10.0",
     "postcss-color-rebeccapurple": "^2.0.0",
     "publish-please": "^2.1.4",
@@ -52,6 +50,7 @@
     "escape-string-regexp": "^1.0.5",
     "esutils": "^2.0.2",
     "globule": "^1.0.0",
+    "jest": "^17.0.3",
     "lodash.difference": "^4.0.0",
     "lodash.filter": "^4.2.1",
     "lodash.findlast": "^4.4.0",
@@ -75,8 +74,7 @@
   "eslintConfig": {
     "extends": "arenanet",
     "env": {
-      "node": true,
-      "mocha": true
+      "node": true
     },
     "globals": {
       "Promise": true
