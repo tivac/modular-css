@@ -43,7 +43,7 @@ module.exports = (css, result) => {
         
     // Merge namespaced values in w/ prefixed names
     result.messages
-        .filter((msg) => msg.plugin === "postcss-modular-css-values-namespaced")
+        .filter((msg) => msg.plugin === "modular-css-values-namespaced")
         .forEach((msg) =>
             each(msg.values, (children, ns) =>
                 each(children, (details, child) => (values[`${ns}.${child}`] = details))
