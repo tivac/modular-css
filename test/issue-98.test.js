@@ -3,7 +3,7 @@
 var assert    = require("assert"),
     
     Processor = require("../src/processor"),
-    compare   = require("./lib/compare-files");
+    compare   = require("./lib/compare.js");
 
 describe("/issues", function() {
     describe("/98", function() {
