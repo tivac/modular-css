@@ -3,14 +3,14 @@
 var fs   = require("fs"),
     path = require("path"),
     
-    Graph    = require("dependency-graph").DepGraph,
-    postcss  = require("postcss"),
-    slug     = require("unique-slug"),
+    Graph      = require("dependency-graph").DepGraph,
+    postcss    = require("postcss"),
+    slug       = require("unique-slug"),
+    sequential = require("promise-sequential"),
 
     output     = require("./lib/output.js"),
     message    = require("./lib/message.js"),
     relative   = require("./lib/relative.js"),
-    sequential = require("./lib/sequential.js"),
     tiered     = require("./lib/graph-tiers.js");
 
 function namer(cwd, file, selector) {
