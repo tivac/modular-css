@@ -9,7 +9,7 @@ var path   = require("path"),
     keyframes = require("../src/plugins/keyframes");
 
 function namer(file, selector) {
-    return path.basename(file, path.extname(file)) + "_" + selector;
+    return `${path.basename(file, path.extname(file))}_${selector}`;
 }
 
 describe("/plugins", function() {

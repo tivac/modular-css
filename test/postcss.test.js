@@ -22,7 +22,7 @@ function process(file, opts) {
     );
 }
 
-describe.only("/postcss.js", function() {
+describe("/postcss.js", function() {
     after(function(done) {
         require("rimraf")("./test/output/postcss", done);
     });

@@ -8,7 +8,7 @@ exports.paths = function(path1, path2) {
     assert.equal(
         fs.readFileSync(path1, "utf8").trim(),
         fs.readFileSync(path2, "utf8").trim(),
-        "Expected " + path1 + " to be the same as " + path2
+        `Expected ${path1} to be the same as ${path2}`
     );
 };
 
@@ -23,12 +23,15 @@ exports.stringToFile = function(str, file) {
     assert.equal(
         str.trim(),
         fs.readFileSync(file, "utf8").trim(),
-        "Expected css to match " + file
+        `Expected css to match ${file}`
     );
 };
 
 exports.contains = function(haystack, name) {
     var needle = fs.readFileSync(path.join("./test/results", name), "utf8");
     
-    assert(haystack.indexOf(needle) > -1, "Unable to find " + needle + " in " + haystack);
+    assert(
+        haystack.indexOf(needle) > -1,
+        `Unable to find ${needle} in ${haystack}`
+    );
 };

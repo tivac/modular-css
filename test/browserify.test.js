@@ -106,9 +106,7 @@ describe("/browserify.js", function() {
             
             build.plugin(plugin, {
                 css   : "./test/output/browserify/namer-fn.css",
-                namer : function(file, selector) {
-                    return path.basename(file, path.extname(file)) + "-" + selector;
-                }
+                namer : (file, selector) => `${path.basename(file, path.extname(file))}-${selector}`
             });
             
             bundle(build, function() {

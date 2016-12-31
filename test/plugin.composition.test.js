@@ -248,7 +248,7 @@ describe("/plugins", function() {
                     {
                         from  : "test/specimens/simple.css",
                         namer : (file, selector) =>
-                            path.basename(file, path.extname(file)) + "_" + selector
+                            `${path.basename(file, path.extname(file))}_${selector}`
                     }
                 );
             

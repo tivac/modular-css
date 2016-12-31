@@ -3,6 +3,8 @@
 var path   = require("path"),
     assert = require("assert"),
     
+    leading = require("common-tags").stripIndent,
+
     plugin = require("../src/plugins/scoping"),
     
     processor = require("postcss")([ plugin ]);
@@ -103,10 +105,13 @@ describe("/plugins", function() {
         
         it("should expose original names in a message", function() {
             assert.deepEqual(
-                process(
-                    ".wooga { color: red; } " +
-                    "#booga { color: black; } " +
-                    "@keyframes fooga { 0% { color: red; } 100% { color: black; } }"
+                process(leading`
+                    .wooga { color: red; }
+                    #booga { color: black; }
+                    @keyframes fooga {
+                        0% { color: red; }
+                        100% { color: black; }
+                    }`
                 ).messages,
                 [
                     msg({
@@ -218,11 +223,19 @@ describe("/plugins", function() {
 
             it("should include :global(...) identifiers in a message", function() {
                 assert.deepEqual(
-                    process(
-                        ":global(.wooga) { color: red; } " +
-                        ":global(#fooga) { color: red; } " +
-                        ":global(.googa .tooga) { color: red; } " +
-                        "@keyframes :global(yooga) { 0% { color: red; } 100% { color: black; } }"
+                    process(leading`
+                        :global(.wooga) { color: red; }
+                        :global(#fooga) { color: red; }
+                        :global(.googa .tooga) { color: red; }
+                        @keyframes :global(yooga) {
+                            0% {
+                                color: red;
+                            }
+                            
+                            100% {
+                                color: black;
+                            }
+                        }`
                     ).messages,
                     [
                         msg({

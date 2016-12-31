@@ -4,6 +4,8 @@ var fs      = require("fs"),
     path    = require("path"),
     assert  = require("assert"),
     
+    leading = require("common-tags").stripIndent,
+
     Processor = require("../src/processor"),
     
     compare = require("./lib/compare.js"),
@@ -155,13 +157,13 @@ describe("/processor.js", function() {
                         ""
                     )
                     .then(() => processor.output())
-                    .then(function(result) {
-                        assert.equal(
-                            result.css,
-                            "/* test/specimens/sync-before.css */\n" +
-                            "a {}"
-                        );
-                    });
+                    .then((result) => assert.equal(
+                        result.css,
+                        leading`
+                            /* test/specimens/sync-before.css */
+                            a {}
+                        `
+                    ));
                 });
 
                 it("should run async postcss plugins before processing", function() {
@@ -176,21 +178,15 @@ describe("/processor.js", function() {
                     .then(() => processor.output())
                     .then((result) => assert.equal(
                         result.css,
-                        "/* test/specimens/async-before.css */\n" +
-                        "a {}"
+                        leading`
+                            /* test/specimens/async-before.css */
+                            a {}
+                        `
                     ));
                 });
             });
             
             describe("after", function() {
-                var css =
-                        "/* test/specimens/relative.css */\n" +
-                        ".mc592b2d8f_wooga {\n" +
-                        "    color: red;\n" +
-                        "    background: url(\"./folder/to.png\")\n" +
-                        "}\n" +
-                        "a {}";
-                
                 it("should use postcss-url by default", function() {
                     var processor = this.processor;
 
@@ -212,7 +208,14 @@ describe("/processor.js", function() {
                     .then(() => processor.output({ to : "./test/output/relative.css" }))
                     .then((result) => assert.equal(
                         result.css,
-                        css
+                        leading`
+                            /* test/specimens/relative.css */
+                            .mc592b2d8f_wooga {
+                                color: red;
+                                background: url("./folder/to.png")
+                            }
+                            a {}
+                        `
                     ));
                 });
                 
@@ -227,7 +230,14 @@ describe("/processor.js", function() {
                     .then(() => processor.output({ to : "./test/output/relative.css" }))
                     .then((result) => assert.equal(
                         result.css,
-                        css
+                        leading`
+                            /* test/specimens/relative.css */
+                            .mc592b2d8f_wooga {
+                                color: red;
+                                background: url("./folder/to.png")
+                            }
+                            a {}
+                        `
                     ));
                 });
             });
@@ -245,8 +255,10 @@ describe("/processor.js", function() {
                     .then(() => processor.output())
                     .then((result) => assert.equal(
                         result.css,
-                        "/* test/specimens/sync-done.css */\n" +
-                        "a {}"
+                        leading`
+                            /* test/specimens/sync-done.css */
+                            a {}
+                        `
                     ));
                 });
                 
@@ -262,8 +274,10 @@ describe("/processor.js", function() {
                     .then(() => processor.output())
                     .then((result) => assert.equal(
                         result.css,
-                        "/* test/specimens/async-done.css */\n" +
-                        "a {}"
+                        leading`
+                            /* test/specimens/async-done.css */
+                            a {}
+                        `
                     ));
                 });
             });
