@@ -8,8 +8,7 @@ var fs      = require("fs"),
 
     Processor = require("../src/processor.js"),
     
-    compare = require("./lib/compare.js"),
-    warn    = require("./lib/warn.js");
+    compare = require("./lib/compare.js");
 
 function sync(css) {
     css.append({ selector : "a" });
@@ -85,63 +84,6 @@ describe("/processor.js", function() {
                 )
                 .then(() => processor.output({ to : "out.css" }))
                 .then((result) => compare.stringToFile(result.css, "./test/results/processor/source-map.css"));
-            });
-        });
-
-        describe("strict", function() {
-            it("should treat plugin warnings as errors by default (before)", function() {
-                var processor = new Processor({
-                        before : [ warn ]
-                    });
-                
-                return processor.string(
-                    "./test/specimens/simple.css",
-                    ".foo { color: red; }"
-                )
-                .then(() => processor.output())
-                .then(() => assert.fail("Shouldn't have succeeded"))
-                .catch((error) => assert(error));
-            });
-            
-            it("should treat plugin warnings as errors by default (after)", function() {
-                var processor = new Processor({
-                        after : [ warn ]
-                    });
-                
-                return processor.string(
-                    "./test/specimens/simple.css",
-                    ".foo { color: red; }"
-                )
-                .then(() => processor.output())
-                .then(() => assert.fail("Shouldn't have succeeded"))
-                .catch((error) => assert(error));
-            });
-
-            it("should treat plugin warnings as errors by default (done)", function() {
-                var processor = new Processor({
-                        done : [ warn ]
-                    });
-                
-                return processor.string(
-                    "./test/specimens/simple.css",
-                    ".foo { color: red; }"
-                )
-                .then(() => processor.output())
-                .then(() => assert.fail("Shouldn't have succeeded"))
-                .catch((error) => assert(error));
-            });
-
-            it("should ignore warnings when disabled", function() {
-                var processor = new Processor({
-                        after  : [ warn ],
-                        strict : false
-                    });
-                
-                return processor.string(
-                    "./test/specimens/simple.css",
-                    ".foo { color: red; }"
-                )
-                .then(() => processor.output());
             });
         });
 
