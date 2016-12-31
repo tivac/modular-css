@@ -4,7 +4,7 @@ var selector = require("postcss-selector-parser"),
     value    = require("postcss-value-parser"),
     each     = require("lodash.foreach"),
     get      = require("lodash.get"),
-    Graph    = require("dependency-graph").DepGraph;
+    Graph    = require("dependency-graph").DepGraph,
     
     namespaced = require("./values-namespaced.js");
 
@@ -31,7 +31,7 @@ module.exports = (css, result) => {
         // Create local copy of values since we're going to merge in namespace stuff
         values = Object.assign(
             Object.create(null),
-            get(options, [ "files", options.from, "values" ]) || {}
+            get(result.opts, [ "files", result.opts.from, "values" ]) || {}
         ),
 
         external = selector((selectors) =>
