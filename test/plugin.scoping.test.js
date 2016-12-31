@@ -86,6 +86,13 @@ describe("/plugins", function() {
             );
         });
 
+        it("should transform multiple grouped selectors ", function() {
+            assert.equal(
+                process(".one, .two { color: red; }").css,
+                ".a_one, .a_two { color: red; }"
+            );
+        });
+
         it("should transform the names of @keyframes rules", function() {
             assert.equal(
                 process("@keyframes fooga { }").css,
