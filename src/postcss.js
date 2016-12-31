@@ -1,6 +1,10 @@
 "use strict";
 
-var postcss = require("postcss"),
+var fs   = require("fs"),
+    path = require("path"),
+    
+    postcss = require("postcss"),
+    mkdirp  = require("mkdirp"),
     
     Processor = require("./processor.js");
 
@@ -20,6 +24,14 @@ module.exports = postcss.plugin("modular-css", () =>
                     type    : "modular-css-exports",
                     exports : classes
                 });
+                
+                if(result.opts.json) {
+                    mkdirp.sync(path.dirname(result.opts.json));
+                    fs.writeFileSync(
+                        result.opts.json,
+                        JSON.stringify(output.compositions, null, 4)
+                    );
+                }
 
                 return output;
             });

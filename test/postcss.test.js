@@ -23,9 +23,7 @@ function process(file, opts) {
 }
 
 describe("/postcss.js", function() {
-    after(function(done) {
-        require("rimraf")("./test/output/postcss", done);
-    });
+    after(() => require("shelljs").rm("-rf", "./test/output/postcss"));
     
     it("should be a function", function() {
         assert.equal(typeof plugin, "function");
@@ -51,5 +49,8 @@ describe("/postcss.js", function() {
             ));
     });
 
-    it("Should accept a `json` property and write exports to that file");
+    it("Should accept a `json` property and write exports to that file", function() {
+        return process("./test/specimens/start.css", { json : "./test/output/postcss/classes.json" })
+            .then(() => compare.results("postcss/classes.json"));
+    });
 });
