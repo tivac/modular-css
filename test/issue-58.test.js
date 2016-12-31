@@ -7,7 +7,6 @@ var fs     = require("fs"),
     shell      = require("shelljs"),
     browserify = require("browserify"),
     watchify   = require("watchify"),
-    rimraf     = require("rimraf"),
     
     plugin = require("../src/browserify"),
     
@@ -16,9 +15,9 @@ var fs     = require("fs"),
 
 describe("/issues", function() {
     describe("/58", function() {
-        after(function() {
-            rimraf.sync("./test/output/issues");
-            rimraf.sync("./test/specimens/issues/58/other.css");
+        after(() => {
+            shell.rm("-rf", "./test/output/issues")
+            shell.rm("./test/specimens/issues/58/other.css");
         });
         
         it("should update when CSS dependencies change", function(done) {

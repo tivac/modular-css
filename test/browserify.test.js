@@ -7,7 +7,6 @@ var fs     = require("fs"),
     browserify = require("browserify"),
     from       = require("from2-string"),
     mkdirp     = require("mkdirp"),
-    rimraf     = require("rimraf"),
     shell      = require("shelljs"),
     
     plugin = require("../src/browserify"),
@@ -17,9 +16,7 @@ var fs     = require("fs"),
 
 describe("/browserify.js", function() {
     describe("basic functionality", function() {
-        after(function(done) {
-            rimraf("./test/output/browserify", done);
-        });
+        after(() => shell.rm("-rf", "./test/output/browserify"));
         
         it("should not error if no options are supplied", function() {
             var build = browserify();
@@ -192,9 +189,7 @@ describe("/browserify.js", function() {
     });
     
     describe("factor-bundle", function() {
-        after(function(done) {
-            rimraf("./test/output/factor-bundle", done);
-        });
+        after(() => shell.rm("-rf", "./test/output/factor-bundle"));
         
         it("should be supported", function(done) {
             var build = browserify([
@@ -368,9 +363,7 @@ describe("/browserify.js", function() {
     });
     
     describe("watchify", function() {
-        after(function(done) {
-            rimraf("./test/output/watchify", done);
-        });
+        after(() => shell.rm("-rf", "./test/output/watchify"));
         
         describe("caching", function() {
             after(function() {

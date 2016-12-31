@@ -10,9 +10,7 @@ var path   = require("path"),
     warn    = require("./lib/warn");
 
 describe("/rollup.js", function() {
-    after(function(done) {
-        require("rimraf")("./test/output/rollup", done);
-    });
+    after(() => require("shelljs").rm("-rf", "./test/output/rollup"));
     
     it("should be a function", function() {
         assert.equal(typeof plugin, "function");

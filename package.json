@@ -43,7 +43,6 @@
     "istanbul": "^0.4.2",
     "mocha": "^3.0.0",
     "pegjs": "^0.10.0",
-    "rimraf": "^2.5.0",
     "rollup": "^0.39.2",
     "shelljs": "^0.7.3",
     "validate-commit-msg": "^2.8.2",
