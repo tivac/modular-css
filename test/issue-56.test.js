@@ -1,9 +1,11 @@
 "use strict";
 
 var assert = require("assert"),
+
+    leading = require("common-tags").stripIndent,
     
-    Processor = require("../src/processor"),
-    compare   = require("./lib/compare-files");
+    Processor = require("../src/processor.js"),
+    compare   = require("./lib/compare.js");
 
 describe("/issues", function() {
     describe("/56", function() {
@@ -12,10 +14,12 @@ describe("/issues", function() {
             
             return processor.string(
                     "./test/specimens/issues/56.css",
-                    ".booga { color: red } " +
-                    ".fooga { composes: booga } " +
-                    ".fooga:hover { color: blue } " +
-                    ".wooga { composes: booga }"
+                    leading`
+                        .booga { color: red }
+                        .fooga { composes: booga }
+                        .fooga:hover { color: blue }
+                        .wooga { composes: booga }
+                    `
             )
             .then((result) => {
                 assert.deepEqual(result.exports, {

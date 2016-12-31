@@ -3,7 +3,7 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    relative = require("../src/lib/relative");
+    relative = require("../src/lib/relative.js");
 
 describe("/lib", function() {
     describe("/relative.js", function() {

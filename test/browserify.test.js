@@ -7,19 +7,16 @@ var fs     = require("fs"),
     browserify = require("browserify"),
     from       = require("from2-string"),
     mkdirp     = require("mkdirp"),
-    rimraf     = require("rimraf"),
     shell      = require("shelljs"),
     
-    plugin = require("../src/browserify"),
+    plugin = require("../src/browserify.js"),
     
-    bundle  = require("./lib/bundle"),
-    compare = require("./lib/compare-files");
+    bundle  = require("./lib/bundle.js"),
+    compare = require("./lib/compare.js");
 
 describe("/browserify.js", function() {
     describe("basic functionality", function() {
-        after(function(done) {
-            rimraf("./test/output/browserify", done);
-        });
+        after(() => shell.rm("-rf", "./test/output/browserify"));
         
         it("should not error if no options are supplied", function() {
             var build = browserify();
@@ -106,9 +103,7 @@ describe("/browserify.js", function() {
             
             build.plugin(plugin, {
                 css   : "./test/output/browserify/namer-fn.css",
-                namer : function(file, selector) {
-                    return path.basename(file, path.extname(file)) + "-" + selector;
-                }
+                namer : (file, selector) => `${path.basename(file, path.extname(file))}-${selector}`
             });
             
             bundle(build, function() {
@@ -194,9 +189,7 @@ describe("/browserify.js", function() {
     });
     
     describe("factor-bundle", function() {
-        after(function(done) {
-            rimraf("./test/output/factor-bundle", done);
-        });
+        after(() => shell.rm("-rf", "./test/output/factor-bundle"));
         
         it("should be supported", function(done) {
             var build = browserify([
@@ -370,9 +363,7 @@ describe("/browserify.js", function() {
     });
     
     describe("watchify", function() {
-        after(function(done) {
-            rimraf("./test/output/watchify", done);
-        });
+        after(() => shell.rm("-rf", "./test/output/watchify"));
         
         describe("caching", function() {
             after(function() {

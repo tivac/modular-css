@@ -2,9 +2,9 @@
 
 var processor = require("postcss-selector-parser"),
         
-    identifiers = require("../lib/identifiers"),
+    identifiers = require("../lib/identifiers.js"),
     
-    plugin = "postcss-modular-css-scoping";
+    plugin = "modular-css-scoping";
 
 // Validate whether a selector should be renamed, returns the key to use
 function rename(current, thing) {
@@ -98,7 +98,7 @@ module.exports = (css, result) => {
     
     if(Object.keys(keyframes).length) {
         result.messages.push({
-            type      : "modularcss",
+            type      : "modular-css",
             plugin    : plugin,
             keyframes : keyframes
         });
@@ -106,7 +106,7 @@ module.exports = (css, result) => {
 
     if(Object.keys(classes).length) {
         result.messages.push({
-            type    : "modularcss",
+            type    : "modular-css",
             plugin  : plugin,
             classes : classes
         });

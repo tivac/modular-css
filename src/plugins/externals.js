@@ -61,4 +61,4 @@ module.exports = (css, result) =>
         rule.selector = externals.process(rule.selector).result;
     });
 
-module.exports.postcssPlugin = "postcss-modular-css-externals";
+module.exports.postcssPlugin = "modular-css-externals";

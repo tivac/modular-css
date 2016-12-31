@@ -1,3 +1,3 @@
 "use strict";
 
-module.exports = require("./src/rollup");
+module.exports = require("./src/rollup.js");

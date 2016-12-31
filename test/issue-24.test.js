@@ -3,7 +3,9 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    Processor = require("../src/processor");
+    leading = require("common-tags").stripIndent,
+
+    Processor = require("../src/processor.js");
 
 describe("/issues", function() {
     describe("/24", function() {
@@ -12,24 +14,40 @@ describe("/issues", function() {
             
             return processor.string(
                 "./test/specimens/composition.css",
-                "@value simple: \"./simple.css\";\n" +
-                ".wooga { composes: wooga from simple; background: #000; }"
+                leading`
+                    @value simple: "./simple.css";
+                    
+                    .wooga {
+                        composes: wooga from simple;
+                        background: #000;
+                    }
+                `
             )
-            .then(function(result) {
-                var file = result.files[path.resolve("./test/specimens/composition.css")];
-                
-                assert.equal(
-                    file.processed.root.toResult().css,
-                    ".mc29d531c6_wooga { background: #000; }"
-                );
-
-                assert.deepEqual(file.exports, {
+            .then((result) => {
+                assert.deepEqual(result.exports, {
                     wooga : [
                         "mc08e91a5b_wooga",
                         "mc29d531c6_wooga"
                     ]
                 });
-            });
+
+                return processor.output();
+            })
+            .then((result) =>
+                assert.equal(
+                    result.css,
+                    leading`
+                        /* test/specimens/simple.css */
+                        .mc08e91a5b_wooga {
+                            color: red
+                        }
+                        /* test/specimens/composition.css */
+                        .mc29d531c6_wooga {
+                            background: #000
+                        }
+                    `
+                )
+            );
         });
     });
 });

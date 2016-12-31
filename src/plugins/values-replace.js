@@ -3,7 +3,10 @@
 var selector = require("postcss-selector-parser"),
     value    = require("postcss-value-parser"),
     each     = require("lodash.foreach"),
-    Graph    = require("dependency-graph").DepGraph;
+    get      = require("lodash.get"),
+    Graph    = require("dependency-graph").DepGraph,
+    
+    namespaced = require("./values-namespaced.js");
 
 function replacer(values, prop) {
     return (thing) => {
@@ -28,7 +31,7 @@ module.exports = (css, result) => {
         // Create local copy of values since we're going to merge in namespace stuff
         values = Object.assign(
             Object.create(null),
-            result.opts.files ? result.opts.files[result.opts.from].values : {}
+            get(result.opts, [ "files", result.opts.from, "values" ]) || {}
         ),
 
         external = selector((selectors) =>
@@ -43,7 +46,7 @@ module.exports = (css, result) => {
         
     // Merge namespaced values in w/ prefixed names
     result.messages
-        .filter((msg) => msg.plugin === "postcss-modular-css-values-namespaced")
+        .filter((msg) => msg.plugin === namespaced.postcssPlugin)
         .forEach((msg) =>
             each(msg.values, (children, ns) =>
                 each(children, (details, child) => (values[`${ns}.${child}`] = details))
@@ -92,4 +95,4 @@ module.exports = (css, result) => {
     );
 };
 
-module.exports.postcssPlugin = "postcss-modular-css-values-replace";
+module.exports.postcssPlugin = "modular-css-values-replace";

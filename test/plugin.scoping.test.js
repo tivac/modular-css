@@ -3,14 +3,16 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    plugin = require("../src/plugins/scoping"),
+    leading = require("common-tags").stripIndent,
+
+    plugin = require("../src/plugins/scoping.js"),
     
     processor = require("postcss")([ plugin ]);
 
 function msg(things, name) {
     return {
-        type   : "modularcss",
-        plugin : "postcss-modular-css-scoping",
+        type   : "modular-css",
+        plugin : "modular-css-scoping",
 
         [ name || "classes" ] : things
     };
@@ -84,6 +86,13 @@ describe("/plugins", function() {
             );
         });
 
+        it("should transform multiple grouped selectors ", function() {
+            assert.equal(
+                process(".one, .two { color: red; }").css,
+                ".a_one, .a_two { color: red; }"
+            );
+        });
+
         it("should transform the names of @keyframes rules", function() {
             assert.equal(
                 process("@keyframes fooga { }").css,
@@ -103,10 +112,13 @@ describe("/plugins", function() {
         
         it("should expose original names in a message", function() {
             assert.deepEqual(
-                process(
-                    ".wooga { color: red; } " +
-                    "#booga { color: black; } " +
-                    "@keyframes fooga { 0% { color: red; } 100% { color: black; } }"
+                process(leading`
+                    .wooga { color: red; }
+                    #booga { color: black; }
+                    @keyframes fooga {
+                        0% { color: red; }
+                        100% { color: black; }
+                    }`
                 ).messages,
                 [
                     msg({
@@ -218,11 +230,19 @@ describe("/plugins", function() {
 
             it("should include :global(...) identifiers in a message", function() {
                 assert.deepEqual(
-                    process(
-                        ":global(.wooga) { color: red; } " +
-                        ":global(#fooga) { color: red; } " +
-                        ":global(.googa .tooga) { color: red; } " +
-                        "@keyframes :global(yooga) { 0% { color: red; } 100% { color: black; } }"
+                    process(leading`
+                        :global(.wooga) { color: red; }
+                        :global(#fooga) { color: red; }
+                        :global(.googa .tooga) { color: red; }
+                        @keyframes :global(yooga) {
+                            0% {
+                                color: red;
+                            }
+                            
+                            100% {
+                                color: black;
+                            }
+                        }`
                     ).messages,
                     [
                         msg({

@@ -1,11 +1,9 @@
 "use strict";
 
-var postcss = require("postcss"),
-
-    parser  = require("../parsers/parser.js"),
+var parser  = require("../parsers/parser.js"),
     resolve = require("../lib/resolve.js"),
     
-    plugin = "postcss-modular-css-values-composed",
+    plugin = "modular-css-values-composed",
     offset = "@value ".length;
 
 // Find @value fooga: wooga entries & catalog/remove them
@@ -16,7 +14,7 @@ module.exports = (css, result) => {
         var parsed, source;
         
         try {
-                parsed = parser.parse(rule.params);
+            parsed = parser.parse(rule.params);
         } catch(e) {
             throw rule.error(e.toString(), { index : offset + e.location.start.column });
         }
@@ -48,7 +46,7 @@ module.exports = (css, result) => {
     
     if(Object.keys(values).length > 0) {
         result.messages.push({
-            type : "modularcss",
+            type : "modular-css",
             plugin,
             values
         });

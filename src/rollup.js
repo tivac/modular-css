@@ -7,9 +7,9 @@ var fs   = require("fs"),
     utils   = require("rollup-pluginutils"),
     mkdirp  = require("mkdirp"),
     
-    Processor = require("./processor"),
-    output    = require("./lib/output"),
-    relative  = require("./lib/relative");
+    Processor = require("./processor.js"),
+    output    = require("./lib/output.js"),
+    relative  = require("./lib/relative.js");
 
 module.exports = function(opts) {
     var options = Object.assign(Object.create(null), {
@@ -95,9 +95,6 @@ module.exports = function(opts) {
                         JSON.stringify(data.compositions, null, 4)
                     );
                 }
-            })
-            .catch(function(error) {
-                throw error;
             });
         }
     };

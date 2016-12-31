@@ -2,7 +2,7 @@
 
 var assert = require("assert"),
 
-    message   = require("../src/lib/message");
+    message   = require("../src/lib/message.js");
 
 describe("/lib", function() {
     describe("/message.js", function() {

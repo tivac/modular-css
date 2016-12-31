@@ -2,7 +2,7 @@
 
 var assert = require("assert"),
 
-    Processor = require("../src/processor"),
+    Processor = require("../src/processor.js"),
     output   = require("../src/lib/output.js");
 
 function compositions(css) {

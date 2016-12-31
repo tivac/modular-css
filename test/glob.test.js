@@ -2,9 +2,9 @@
 
 var assert  = require("assert"),
     
-    glob = require("../src/glob"),
+    glob = require("../src/glob.js"),
     
-    compare = require("./lib/compare-files");
+    compare = require("./lib/compare.js");
 
 describe("/glob.js", function() {
     it("should be a function", function() {

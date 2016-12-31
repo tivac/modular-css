@@ -7,18 +7,17 @@ var fs     = require("fs"),
     shell      = require("shelljs"),
     browserify = require("browserify"),
     watchify   = require("watchify"),
-    rimraf     = require("rimraf"),
     
-    plugin = require("../src/browserify"),
+    plugin = require("../src/browserify.js"),
     
-    bundle  = require("./lib/bundle"),
-    compare = require("./lib/compare-files");
+    bundle  = require("./lib/bundle.js"),
+    compare = require("./lib/compare.js");
 
 describe("/issues", function() {
     describe("/58", function() {
-        after(function() {
-            rimraf.sync("./test/output/issues");
-            rimraf.sync("./test/specimens/issues/58/other.css");
+        after(() => {
+            shell.rm("-rf", "./test/output/issues")
+            shell.rm("./test/specimens/issues/58/other.css");
         });
         
         it("should update when CSS dependencies change", function(done) {

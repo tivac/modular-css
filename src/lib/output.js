@@ -2,7 +2,7 @@
 
 var map = require("lodash.mapvalues"),
 
-    relative = require("./relative");
+    relative = require("./relative.js");
 
 exports.join = function(output) {
     return map(output, (classes) => classes.join(" "));

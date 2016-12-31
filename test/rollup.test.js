@@ -5,14 +5,18 @@ var path   = require("path"),
     
     rollup = require("rollup").rollup,
     
-    plugin  = require("../src/rollup"),
-    compare = require("./lib/compare-files"),
-    warn    = require("./lib/warn");
+    plugin  = require("../src/rollup.js"),
+    compare = require("./lib/compare.js"),
+    warn    = require("./lib/warn.js");
+
+function error(root, result) {
+    throw root.error("boom");
+};
+
+error.postcssPlugin = "error-plugin";
 
 describe("/rollup.js", function() {
-    after(function(done) {
-        require("rimraf")("./test/output/rollup", done);
-    });
+    after(() => require("shelljs").rm("-rf", "./test/output/rollup"));
     
     it("should be a function", function() {
         assert.equal(typeof plugin, "function");
@@ -25,7 +29,10 @@ describe("/rollup.js", function() {
                 plugin()
             ]
         })
-        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/simple.js"));
+        .then((bundle) => compare.stringToFile(
+            bundle.generate({ format : "es" }).code,
+            "./test/results/rollup/simple.js"
+        ));
     });
     
     it("should be able to tree-shake results", function() {
@@ -35,7 +42,10 @@ describe("/rollup.js", function() {
                 plugin()
             ]
         })
-        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/tree-shaking.js"));
+        .then((bundle) => compare.stringToFile(
+            bundle.generate({ format : "es" }).code,
+            "./test/results/rollup/tree-shaking.js"
+        ));
     });
 
     it("should attach a promise to the bundle.generate response", function() {
@@ -47,7 +57,10 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => assert.equal(typeof bundle.generate().css.then, "function"));
+        .then((bundle) => assert.equal(
+            typeof bundle.generate({ format : "es" }).css.then,
+            "function"
+        ));
     });
     
     it("should generate CSS", function() {
@@ -60,7 +73,8 @@ describe("/rollup.js", function() {
             ]
         })
         .then((bundle) => bundle.write({
-            dest : "./test/output/rollup/simple.js"
+            format : "es",
+            dest   : "./test/output/rollup/simple.js"
         }))
         .then(() => compare.results("rollup/simple.css"));
     });
@@ -75,7 +89,8 @@ describe("/rollup.js", function() {
             ]
         })
         .then((bundle) => bundle.write({
-            dest : "./test/output/rollup/simple.js"
+            format : "es",
+            dest   : "./test/output/rollup/simple.js"
         }))
         .then(() => compare.results("rollup/simple.json"));
     });
@@ -91,7 +106,10 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/invalid-name.js"));
+        .then((bundle) => compare.stringToFile(
+            bundle.generate({ format : "es" }).code,
+            "./test/results/rollup/invalid-name.js"
+        ));
     });
     
     it("shouldn't disable sourcemap generation", function() {
@@ -102,7 +120,10 @@ describe("/rollup.js", function() {
             ]
         })
         .then((bundle) => assert.deepEqual(
-            bundle.generate({ sourceMap : true }).map,
+            bundle.generate({
+                format    : "es",
+                sourceMap : true
+            }).map,
             {
                 version  : 3,
                 file     : null,
@@ -130,11 +151,16 @@ describe("/rollup.js", function() {
             ]
         })
         .then((bundle) => {
-            var out = bundle.generate({ sourceMap : false });
-            
-            assert.equal(out.map, null);
+            assert.equal(
+                bundle.generate({
+                    format    : "es",
+                    sourceMap : false
+                }).map,
+                null
+            );
 
             return bundle.write({
+                format    : "es",
                 dest      : "./test/output/rollup/no-maps.js",
                 sourceMap : false
             });
@@ -149,12 +175,15 @@ describe("/rollup.js", function() {
                 plugin()
             ]
         })
-        .then((bundle) => compare.stringToFile(bundle.generate().code, "./test/results/rollup/dependencies.js"));
+        .then((bundle) => compare.stringToFile(
+            bundle.generate({ format : "es" }).code,
+            "./test/results/rollup/dependencies.js"
+        ));
     });
 
     describe("errors", function() {
         function checkError(error) {
-            assert(error.toString().indexOf("Warning Plugin: warning") > -1);
+            assert(error.toString().indexOf("error-plugin:") > -1);
         }
 
         it("should throw errors in in before plugins", function() {
@@ -163,7 +192,7 @@ describe("/rollup.js", function() {
                 plugins : [
                     plugin({
                         css    : "./test/output/rollup/errors.css",
-                        before : [ warn ]
+                        before : [ error ]
                     })
                 ]
             })
@@ -176,7 +205,7 @@ describe("/rollup.js", function() {
                 plugins : [
                     plugin({
                         css   : "./test/output/rollup/errors.css",
-                        after : [ warn ]
+                        after : [ error ]
                     })
                 ]
             })
@@ -189,12 +218,13 @@ describe("/rollup.js", function() {
                 plugins : [
                     plugin({
                         css  : "./test/output/rollup/errors.css",
-                        done : [ warn ]
+                        done : [ error ]
                     })
                 ]
             })
             .then((bundle) => bundle.write({
-                dest : "./test/output/rollup/done-error.js"
+                format : "es",
+                dest   : "./test/output/rollup/done-error.js"
             }))
             .catch(checkError);
         });

@@ -5,13 +5,13 @@ var path   = require("path"),
 
     postcss = require("postcss"),
     
-    scoping     = require("../src/plugins/scoping"),
-    composition = require("../src/plugins/composition");
+    scoping     = require("../src/plugins/scoping.js"),
+    composition = require("../src/plugins/composition.js");
 
 function msg(classes) {
     return {
-        type    : "modularcss",
-        plugin  : "postcss-modular-css-composition",
+        type    : "modular-css",
+        plugin  : "modular-css-composition",
         classes : classes
     };
 }
@@ -248,13 +248,13 @@ describe("/plugins", function() {
                     {
                         from  : "test/specimens/simple.css",
                         namer : (file, selector) =>
-                            path.basename(file, path.extname(file)) + "_" + selector
+                            `${path.basename(file, path.extname(file))}_${selector}`
                     }
                 );
             
             assert.deepEqual(out.messages, [ {
-                type    : "modularcss",
-                plugin  : "postcss-modular-css-scoping",
+                type    : "modular-css",
+                plugin  : "modular-css-scoping",
                 classes : {
                     googa : [ "simple_googa" ],
                     wooga : [ "simple_wooga" ]
