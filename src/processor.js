@@ -183,8 +183,6 @@ Processor.prototype = {
             var root = postcss.root();
 
             results.forEach((result) => {
-                this._warnings(result);
-
                 // Add file path comment
                 root.append(postcss.comment({
                     text : relative(this._options.cwd, result.opts.from),
@@ -222,8 +220,6 @@ Processor.prototype = {
             );
         })
         .then((result) => {
-            this._warnings(result);
-
             result.compositions = output.compositions(this._options.cwd, this);
             
             return result;
@@ -266,9 +262,6 @@ Processor.prototype = {
         .then((result) => {
             this._files[name].result = result;
 
-            // Check for plugin warnings
-            this._warnings(result);
-            
             // Walk this node's dependencies, reading new files from disk as necessary
             return Promise.all(
                 this._graph.dependenciesOf(name).map((dependency) => this._walk(
@@ -279,20 +272,6 @@ Processor.prototype = {
                 ))
             );
         });
-    },
-
-    _warnings : function(result) {
-        var warnings;
-        
-        if(!this._options.strict) {
-            return;
-        }
-
-        warnings = result.warnings();
-        
-        if(warnings.length) {
-            throw new Error(warnings.map((warning) => warning.toString()).join("\n"));
-        }
     }
 };
 
