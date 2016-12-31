@@ -9,8 +9,8 @@ var path   = require("path"),
 
 function msg(things, name) {
     return {
-        type   : "modularcss",
-        plugin : "postcss-modular-css-scoping",
+        type   : "modular-css",
+        plugin : "modular-css-scoping",
 
         [ name || "classes" ] : things
     };

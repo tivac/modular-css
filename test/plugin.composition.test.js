@@ -10,8 +10,8 @@ var path   = require("path"),
 
 function msg(classes) {
     return {
-        type    : "modularcss",
-        plugin  : "postcss-modular-css-composition",
+        type    : "modular-css",
+        plugin  : "modular-css-composition",
         classes : classes
     };
 }
@@ -253,8 +253,8 @@ describe("/plugins", function() {
                 );
             
             assert.deepEqual(out.messages, [ {
-                type    : "modularcss",
-                plugin  : "postcss-modular-css-scoping",
+                type    : "modular-css",
+                plugin  : "modular-css-scoping",
                 classes : {
                     googa : [ "simple_googa" ],
                     wooga : [ "simple_wooga" ]
