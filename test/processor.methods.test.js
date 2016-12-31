@@ -4,7 +4,7 @@ var fs      = require("fs"),
     path    = require("path"),
     assert  = require("assert"),
     
-    Processor = require("../src/processor"),
+    Processor = require("../src/processor.js"),
     
     compare = require("./lib/compare.js");
 

@@ -5,8 +5,8 @@ var path   = require("path"),
 
     postcss = require("postcss"),
     
-    scoping   = require("../src/plugins/scoping"),
-    keyframes = require("../src/plugins/keyframes");
+    scoping   = require("../src/plugins/scoping.js"),
+    keyframes = require("../src/plugins/keyframes.js");
 
 function namer(file, selector) {
     return `${path.basename(file, path.extname(file))}_${selector}`;

@@ -5,9 +5,9 @@ var path   = require("path"),
     
     rollup = require("rollup").rollup,
     
-    plugin  = require("../src/rollup"),
+    plugin  = require("../src/rollup.js"),
     compare = require("./lib/compare.js"),
-    warn    = require("./lib/warn");
+    warn    = require("./lib/warn.js");
 
 describe("/rollup.js", function() {
     after(() => require("shelljs").rm("-rf", "./test/output/rollup"));

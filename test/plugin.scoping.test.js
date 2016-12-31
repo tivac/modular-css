@@ -5,7 +5,7 @@ var path   = require("path"),
     
     leading = require("common-tags").stripIndent,
 
-    plugin = require("../src/plugins/scoping"),
+    plugin = require("../src/plugins/scoping.js"),
     
     processor = require("postcss")([ plugin ]);
 

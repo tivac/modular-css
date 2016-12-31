@@ -2,7 +2,7 @@
 
 var assert = require("assert"),
     
-    plugin = require("../src/plugins/values-local"),
+    plugin = require("../src/plugins/values-local.js"),
     
     processor = require("postcss")([ plugin ]);
 

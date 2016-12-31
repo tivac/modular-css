@@ -2,7 +2,7 @@
 
 var escape  = require("escape-string-regexp"),
 
-    message = require("../lib/message");
+    message = require("../lib/message.js");
 
 module.exports = (css, result) => {
     var refs   = message(result, "keyframes"),

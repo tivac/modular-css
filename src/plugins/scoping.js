@@ -2,7 +2,7 @@
 
 var processor = require("postcss-selector-parser"),
         
-    identifiers = require("../lib/identifiers"),
+    identifiers = require("../lib/identifiers.js"),
     
     plugin = "modular-css-scoping";
 

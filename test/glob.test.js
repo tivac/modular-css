@@ -2,7 +2,7 @@
 
 var assert  = require("assert"),
     
-    glob = require("../src/glob"),
+    glob = require("../src/glob.js"),
     
     compare = require("./lib/compare.js");
 

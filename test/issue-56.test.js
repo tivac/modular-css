@@ -4,7 +4,7 @@ var assert = require("assert"),
 
     leading = require("common-tags").stripIndent,
     
-    Processor = require("../src/processor"),
+    Processor = require("../src/processor.js"),
     compare   = require("./lib/compare.js");
 
 describe("/issues", function() {

@@ -5,7 +5,7 @@ var path   = require("path"),
     
     leading = require("common-tags").stripIndent,
 
-    Processor = require("../src/processor");
+    Processor = require("../src/processor.js");
 
 describe("/issues", function() {
     describe("/24", function() {

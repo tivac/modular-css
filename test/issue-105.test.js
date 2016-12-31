@@ -6,10 +6,10 @@ var path   = require("path"),
     browserify = require("browserify"),
     from       = require("from2-string"),
     
-    Processor = require("../src/processor"),
-    plugin    = require("../src/browserify"),
+    Processor = require("../src/processor.js"),
+    plugin    = require("../src/browserify.js"),
     
-    bundle  = require("./lib/bundle"),
+    bundle  = require("./lib/bundle.js"),
     compare = require("./lib/compare.js");
 
 describe("/issues", function() {

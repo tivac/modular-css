@@ -6,10 +6,10 @@ var fs      = require("fs"),
     
     leading = require("common-tags").stripIndent,
 
-    Processor = require("../src/processor"),
+    Processor = require("../src/processor.js"),
     
     compare = require("./lib/compare.js"),
-    warn    = require("./lib/warn");
+    warn    = require("./lib/warn.js");
 
 function sync(css) {
     css.append({ selector : "a" });
