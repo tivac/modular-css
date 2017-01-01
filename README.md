@@ -19,6 +19,7 @@ A curated subset of [css-modules](https://github.com/css-modules/css-modules)
 - [CLI](docs/cli.md)
 - [Browserify](docs/browserify.md) Plugin
 - [Rollup](docs/rollup.md) Plugin
+- [PostCSS](docs/postcss.md) Plugin
 
 ## Features
 
