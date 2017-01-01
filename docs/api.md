@@ -98,7 +98,7 @@ Specify a function (that takes `filename` & `selector` as arguments to produce s
 ```js
 new Processor({
     namer : function(file, selector) {
-        return file.replace(/:\/\\ /g, "") + "_" + selector;
+        return file.replace(/[:\/\\ .]/g, "") + "_" + selector;
     }
 });
 ```
