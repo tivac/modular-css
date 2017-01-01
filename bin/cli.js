@@ -1,14 +1,24 @@
 #!/usr/bin/env node
 "use strict";
 
-var fs = require("fs"),
+var fs   = require("fs"),
     path = require("path"),
     
     mkdirp = require("mkdirp"),
 
     glob = require("../src/glob"),
 
-    argv = require("minimist")(process.argv.slice(2), {
+    cli = require("meow")(`
+        Usage
+        $ modular-css [options] <glob>...
+
+        Options
+        --dir,  -d <dir>    Directory to search from [process cwd]
+        --out,  -o <file>   File to write output CSS to [stdout]
+        --json, -j <file>   File to write output compositions JSON to
+        --map,  -m          Include inline source map in output
+        --help              Show this help
+    `, {
         alias : {
             dir  : "d",
             json : "j",
@@ -17,49 +27,42 @@ var fs = require("fs"),
         },
 
         string  : [ "dir", "out", "json" ],
-        boolean : [ "map", "help" ],
-
-        default : {
-            dir  : false,
-            json : false,
-            map  : false,
-            out  : false,
-            help : false
-        }
+        boolean : [ "map", "help" ]
     });
 
-// wrapped so I can early-return in the help case
-(function() {
-    if(argv.help) {
-        return fs.createReadStream("./bin/help.txt", "utf8").pipe(process.stdout);
+if(!cli.input.length) {
+    cli.showHelp();
+
+    return;
+}
+
+glob(Object.assign(
+    Object.create(null),
+    cli.flags,
+    { search : cli.input }
+))
+.then((processor) => processor.output({ to : cli.flags.out }))
+.then((output) => {
+    if(cli.flags.json) {
+        mkdirp.sync(path.dirname(cli.flags.json));
+        
+        fs.writeFileSync(
+            cli.flags.json,
+            JSON.stringify(output.compositions, null, 4),
+            "utf8"
+        );
     }
 
-    // aliasing this manually
-    argv.search = argv._;
+    if(cli.flags.out) {
+        mkdirp.sync(path.dirname(cli.flags.out));
+        
+        return fs.writeFileSync(cli.flags.out, output.css, "utf8");
+    }
 
-    return glob(argv).then(function(processor) {
-        return processor.output({
-            to : argv.out
-        });
-    })
-    .then(function(output) {
-        if(argv.json) {
-            mkdirp.sync(path.dirname(argv.json));
-            
-            fs.writeFileSync(
-                argv.json,
-                JSON.stringify(output.compositions, null, 4),
-                "utf8"
-            );
-        }
+    return process.stdout.write(output.css + "\n");
+})
+.catch((error) => {
+    process.stderr.write(error.toString());
 
-        if(argv.out) {
-            mkdirp.sync(path.dirname(argv.out));
-            
-            return fs.writeFileSync(argv.out, output.css, "utf8");
-        }
-
-        return process.stdout.write(output.css + "\n");
-    })
-    .catch((err) => process.stderr.write(err.toString));
-}());
+    process.exit(1);
+});

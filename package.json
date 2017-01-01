@@ -1,7 +1,7 @@
 {
   "name": "modular-css",
   "version": "0.29.1",
-  "description": "A curated subset of css-modules available as CLI, API, or Browserify transform",
+  "description": "A streamline reinterpretation of CSS Modules via CLI, API, Browserify, Rollup, or PostCSS",
   "main": "./index.js",
   "repository": "tivac/modular-css",
   "bugs": {
@@ -34,6 +34,7 @@
   "devDependencies": {
     "@studio/changes": "^1.0.5",
     "browserify": "^13.0.0",
+    "cli-tester": "^2.0.0",
     "common-tags": "^1.4.0",
     "eslint": "^3.12.0",
     "eslint-config-arenanet": "^3.0.0",
@@ -61,7 +62,7 @@
     "lodash.invert": "^4.0.0",
     "lodash.mapvalues": "^4.4.0",
     "lodash.uniq": "^4.2.0",
-    "minimist": "^1.2.0",
+    "meow": "^3.7.0",
     "mkdirp": "^0.5.1",
     "p-series": "^1.0.0",
     "postcss": "^5.2.5",
