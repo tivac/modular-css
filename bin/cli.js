@@ -30,10 +30,9 @@ var fs   = require("fs"),
         boolean : [ "map", "help" ]
     });
 
+// It's not immediately obvious, but this ends the program too...
 if(!cli.input.length) {
     cli.showHelp();
-
-    return;
 }
 
 glob(Object.assign(

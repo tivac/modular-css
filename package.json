@@ -9,7 +9,7 @@
   },
   "bin": "./bin/cli.js",
   "scripts": {
-    "cover": "istanbul cover --print both ./node_modules/mocha/bin/_mocha",
+    "cover": "nyc mocha",
     "commitmsg": "validate-commit-msg",
     "lint": "eslint .",
     "parser": "pegjs -o ./src/parsers/parser.js ./src/parsers/parser.pegjs",
@@ -43,6 +43,7 @@
     "husky": "^0.12.0",
     "istanbul": "^0.4.2",
     "mocha": "^3.0.0",
+    "nyc": "^10.0.0",
     "pegjs": "^0.10.0",
     "rollup": "^0.39.2",
     "shelljs": "^0.7.3",
@@ -87,5 +88,22 @@
     "rules": {
       "prefer-template": "off"
     }
+  },
+  "nyc": {
+    "lines": 100,
+    "statements": 100,
+    "functions": 100,
+    "branches": 100,
+    "check-coverage": true,
+    "cache": true,
+    "reporter": [
+      "lcov",
+      "text-summary",
+      "text"
+    ],
+    "exclude": [
+      "src/parsers/**",
+      "test/**"
+    ]
   }
 }
