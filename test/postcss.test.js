@@ -4,6 +4,8 @@ var fs     = require("fs"),
     path   = require("path"),
     assert = require("assert"),
     
+    postcss = require("postcss"),
+
     plugin  = require("../src/postcss.js"),
     message = require("../src/lib/message.js"),
 
@@ -49,8 +51,33 @@ describe("/postcss.js", function() {
             ));
     });
 
-    it("Should accept a `json` property and write exports to that file", function() {
+    it("should accept normal processor options", function() {
+        return process("./test/specimens/simple.css", {
+            map   : {
+                inline : true
+            },
+            namer : (f, s) => `fooga_${s}`
+        })
+        .then((result) => compare.stringToFile(result.css, "./test/results/postcss/simple-namer.css"));
+    });
+
+    it("should accept a `json` property and write exports to that file", function() {
         return process("./test/specimens/start.css", { json : "./test/output/postcss/classes.json" })
             .then(() => compare.results("postcss/classes.json"));
+    });
+
+    it("should be usable like a normal postcss plugin", function() {
+        var processor = postcss([
+                plugin({
+                    json  : "./test/output/postcss/classes.json",
+                    map   : {
+                        inline : true
+                    },
+                    namer : (f, s) => `fooga_${s}`
+                })
+            ]);
+        
+        processor.process(fs.readFileSync("./test/specimens/start.css"), { from : "./test/specimens/start.css" })
+            .then((result) => compare.stringToFile(resut.css, "./test/results/postcss/simple-namer.cs"));
     });
 });

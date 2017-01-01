@@ -8,9 +8,13 @@ var fs   = require("fs"),
     
     Processor = require("./processor.js");
 
-module.exports = postcss.plugin("modular-css", () =>
+module.exports = postcss.plugin("modular-css", (opts) =>
     (root, result) => {
-        var processor = new Processor(result.opts),
+        var processor = new Processor(Object.assign(
+                Object.create(null),
+                opts || /* istanbul ignore next */ {},
+                result.opts || /* istanbul ignore next */ {}
+            )),
             classes;
 
         return processor.string(result.opts.from, root)
