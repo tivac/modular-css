@@ -20,6 +20,7 @@ A curated subset of [css-modules](https://github.com/css-modules/css-modules)
 - [Browserify](docs/browserify.md) Plugin
 - [Rollup](docs/rollup.md) Plugin
 - [PostCSS](docs/postcss.md) Plugin
+- [Webpack 2](docs/webpack.md) Plugin
 
 ## Features
 
