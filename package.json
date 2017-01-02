@@ -36,7 +36,6 @@
     "browserify": "^13.0.0",
     "cli-tester": "^2.0.0",
     "common-tags": "^1.4.0",
-    "css-loader": "^0.26.0",
     "eslint": "^3.12.0",
     "eslint-config-arenanet": "^3.0.0",
     "factor-bundle": "^2.5.0",
@@ -93,10 +92,10 @@
     }
   },
   "nyc": {
-    "lines": 100,
-    "statements": 100,
-    "functions": 100,
-    "branches": 100,
+    "lines": 80,
+    "statements": 80,
+    "functions": 80,
+    "branches": 80,
     "check-coverage": true,
     "cache": true,
     "reporter": [
