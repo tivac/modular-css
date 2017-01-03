@@ -46,7 +46,7 @@
     "mocha": "^3.0.0",
     "nyc": "^10.0.0",
     "pegjs": "^0.10.0",
-    "rollup": "^0.39.2",
+    "rollup": "^0.40.0",
     "shelljs": "^0.7.3",
     "validate-commit-msg": "^2.8.2",
     "watchify": "^3.7.0",
