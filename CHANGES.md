@@ -1,5 +1,9 @@
 # Changes
 
+## 1.0.1
+
+- docs: updated description
+
 ## 1.0.0
 
 - feat: Webpack Plugin (#231)
