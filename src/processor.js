@@ -152,10 +152,7 @@ Processor.prototype = {
             files = opts.files;
         
         if(!Array.isArray(files)) {
-            files = tiered(this._graph, {
-                sort    : true,
-                flatten : true
-            });
+            files = tiered(this._graph);
         }
         
         // Rewrite relative URLs before adding

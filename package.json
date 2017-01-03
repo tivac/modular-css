@@ -48,13 +48,15 @@
     "rollup": "^0.39.2",
     "shelljs": "^0.7.3",
     "validate-commit-msg": "^2.8.2",
-    "watchify": "^3.7.0"
+    "watchify": "^3.7.0",
+    "webpack": "^2.2.0-rc.3"
   },
   "dependencies": {
     "dependency-graph": "^0.5.0",
     "escape-string-regexp": "^1.0.5",
     "esutils": "^2.0.2",
     "globule": "^1.0.0",
+    "loader-utils": "^0.2.16",
     "lodash.difference": "^4.0.0",
     "lodash.filter": "^4.2.1",
     "lodash.findlast": "^4.4.0",
@@ -90,10 +92,10 @@
     }
   },
   "nyc": {
-    "lines": 100,
-    "statements": 100,
-    "functions": 100,
-    "branches": 100,
+    "lines": 80,
+    "statements": 80,
+    "functions": 80,
+    "branches": 80,
     "check-coverage": true,
     "cache": true,
     "reporter": [
