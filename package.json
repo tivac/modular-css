@@ -13,9 +13,10 @@
     "commitmsg": "validate-commit-msg",
     "lint": "eslint .",
     "parser": "pegjs -o ./src/parsers/parser.js ./src/parsers/parser.pegjs",
+    "pretest": "npm run parser",
     "test": "mocha",
     "posttest": "npm run lint",
-    "preversion": "npm parser && npm test",
+    "preversion": "npm test",
     "version": "changes",
     "postversion": "git push --follow-tags",
     "watch": "mocha -w -R min"
