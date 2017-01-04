@@ -1,6 +1,10 @@
 # Webpack 2
 
-`modular-css/webpack` provides a webpack 2 plugin you can use to transform imported `.css` files into lookup objects.
+`modular-css/webpack/plugin` provides a webpack 2 plugin you can use to transform imported `.css` files into lookup objects while outputting CSS to disk.
+
+`modular-css/webpack/loader` provides the file loader that does the actual transformation on files.
+
+You will need to use **both** in tandem for things to work!
 
 ## Options
 
@@ -22,10 +26,7 @@ All other options are passed to the underlying `Processor` instance, see [Option
 // webpack.config.js
 var path = require("path"),
     
-    CSSPlugin = require("modular-css/webpack"),
-    cssplugin = new CSSPlugin({
-        css : path.resolve(__dirname, "dist/output.css")
-    });
+    CSSPlugin = require("modular-css/webpack/plugin");
 
 module.exports = {
     entry   : "./input.js",
@@ -35,13 +36,16 @@ module.exports = {
     },
     module : {
         rules : [
-            cssplugin.rule({
-                test : /\.css$/
-            })
+            {
+                test : /\.css$/,
+                use  : "modular-css/webpack/loader"
+            }
         ]
     },
     plugins : [
-        cssplugin
+        new CSSPlugin({
+            css : path.resolve(__dirname, "dist/output.css")
+        })
     ]
 });
 ```

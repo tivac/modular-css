@@ -1,13 +1,10 @@
 "use strict";
 
-var parse = require("loader-utils").parseQuery,
-    
-    output = require("./lib/output");
+var output = require("./lib/output");
 
 module.exports = function(source) {
     var done      = this.async(),
-        options   = parse(this.query),
-        processor = options.processor;
+        processor = this.options.processor;
 
     this.cacheable();
 

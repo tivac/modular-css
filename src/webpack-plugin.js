@@ -19,6 +19,9 @@ function Webpack(args) {
 
 Webpack.prototype.apply = function(compiler) {
     compiler.plugin("this-compilation", (compilation) => {
+        // Make our processor instance available to the loader
+        compilation.options.processor = this.processor;
+
         compilation.plugin("additional-assets", (callback) => {
             this.processor.output().then((data) => {
                 if(this.options.css) {
@@ -41,19 +44,6 @@ Webpack.prototype.apply = function(compiler) {
             });
         });
     });
-};
-
-Webpack.prototype.rule = function(args) {
-    return Object.assign(
-        {},
-        args,
-        {
-            loader  : require.resolve("./webpack-loader.js"),
-            options : {
-                processor : this.processor
-            }
-        }
-    );
 };
 
 module.exports = Webpack;

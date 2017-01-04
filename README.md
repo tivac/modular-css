@@ -9,6 +9,10 @@ modular-css [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https
 
 A curated subset of [css-modules](https://github.com/css-modules/css-modules)
 
+## Features
+
+See [docs/features.md](docs/features.md)
+
 ## Install
 
 `$ npm i modular-css`
@@ -21,10 +25,6 @@ A curated subset of [css-modules](https://github.com/css-modules/css-modules)
 - [Rollup](docs/rollup.md) Plugin
 - [PostCSS](docs/postcss.md) Plugin
 - [Webpack 2](docs/webpack.md) Plugin
-
-## Features
-
-See [docs/features.md](docs/features.md)
 
 ## Why?
 
@@ -41,20 +41,3 @@ CSS Modules is a great idea but has been to slow to fix issues blocking me from 
 [@JoshGalvin](https://github.com/JoshGalvin) for ideas/encouragement to do this silly thing.
 
 The CSS modules team for inspiration!
-
-- [@geelen](https://github.com/geelen)
-- [@joshgillies](https://github.com/joshgillies)
-- [@joshwnj](https://github.com/joshwnj)
-- [@markdalgleish](https://github.com/markdalgleish)
-- [@sokra](https://github.com/sokra)
-- [@sullenor](https://github.com/sullenor)
-
-## A Note on Versioning ##
-
-This project's version number currently has a "0.x" prefix, indicating that it's a young
-project under heavy development. **As long as the version number starts with
-"0.x", minor revisions may introduce breaking changes.**
-
-You've been warned!
-
-Once it reaches version 1.0.0, it will adhere strictly to [SemVer 2.0](http://semver.org/spec/v2.0.0.html).
