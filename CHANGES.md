@@ -1,5 +1,9 @@
 # Changes
 
+## 2.0.2
+
+- docs: Update readme wording & add feature examples
+
 ## 2.0.1
 
 - docs: formatting tweak
