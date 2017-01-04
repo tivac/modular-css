@@ -38,6 +38,5 @@ CSS Modules is a great idea but has been to slow to fix issues blocking me from 
 
 ## Thanks
 
-[@JoshGalvin](https://github.com/JoshGalvin) for ideas/encouragement to do this silly thing.
-
-The CSS modules team for inspiration!
+- [@JoshGalvin](https://github.com/JoshGalvin) for ideas/encouragement to do this silly thing.
+- The CSS modules team for inspiration!
