@@ -5,8 +5,12 @@ var path   = require("path"),
 
     webpack = require("webpack"),
 
-    Plugin  = require("../src/webpack.js"),
-    compare = require("./lib/compare.js");
+    Plugin  = require("../src/webpack-plugin.js"),
+    
+    compare = require("./lib/compare.js"),
+
+    use  = path.resolve("./src/webpack-loader.js"),
+    test = /\.css$/;
 
 describe("/webpack.js", function() {
     after(() => require("shelljs").rm("-rf", "./test/output/webpack"));
@@ -16,10 +20,6 @@ describe("/webpack.js", function() {
     });
 
     it("should output css to disk", function(done) {
-        var plugin = new Plugin({
-                css : "./test/output/webpack/simple.css"
-            });
-
         webpack({
             entry   : "./test/specimens/simple.js",
             output  : {
@@ -28,13 +28,16 @@ describe("/webpack.js", function() {
             },
             module : {
                 rules : [
-                    plugin.rule({
-                        test : /\.css$/
-                    })
+                    {
+                        test,
+                        use
+                    }
                 ]
             },
             plugins : [
-                plugin
+                new Plugin({
+                    css : "./test/output/webpack/simple.css"
+                })
             ]
         }, (err, stats) => {
             assert.ifError(err);
@@ -48,10 +51,6 @@ describe("/webpack.js", function() {
     });
 
     it("should output json to disk", function(done) {
-        var plugin = new Plugin({
-                json : "./test/output/webpack/simple.json"
-            });
-
         webpack({
             entry   : "./test/specimens/simple.js",
             output  : {
@@ -60,13 +59,16 @@ describe("/webpack.js", function() {
             },
             module : {
                 rules : [
-                    plugin.rule({
-                        test : /\.css$/
-                    })
+                    {
+                        test,
+                        use
+                    }
                 ]
             },
             plugins : [
-                plugin
+                new Plugin({
+                    json : "./test/output/webpack/simple.json"
+                })
             ]
         }, (err, stats) => {
             assert.ifError(err);
@@ -80,8 +82,6 @@ describe("/webpack.js", function() {
     });
 
     it("should report errors", function(done) {
-        var plugin = new Plugin();
-
         webpack({
             entry   : "./test/specimens/invalid.js",
             output  : {
@@ -90,13 +90,14 @@ describe("/webpack.js", function() {
             },
             module : {
                 rules : [
-                    plugin.rule({
-                        test : /\.css$/
-                    })
+                    {
+                        test,
+                        use
+                    }
                 ]
             },
             plugins : [
-                plugin
+                new Plugin()
             ]
         }, (err, stats) => {
             assert.ifError(err);
@@ -110,11 +111,6 @@ describe("/webpack.js", function() {
     });
 
     it("should handle dependencies", function(done) {
-        var plugin = new Plugin({
-                css  : "./test/output/webpack/start.css",
-                json : "./test/output/webpack/start.json"
-            });
-
         webpack({
             entry   : "./test/specimens/start.js",
             output  : {
@@ -123,13 +119,17 @@ describe("/webpack.js", function() {
             },
             module : {
                 rules : [
-                    plugin.rule({
-                        test : /\.css$/
-                    })
+                    {
+                        test,
+                        use
+                    }
                 ]
             },
             plugins : [
-                plugin
+                new Plugin({
+                    css  : "./test/output/webpack/start.css",
+                    json : "./test/output/webpack/start.json"
+                })
             ]
         }, (err, stats) => {
             assert.ifError(err);

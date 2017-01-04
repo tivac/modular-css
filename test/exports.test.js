@@ -38,4 +38,29 @@ describe("module exports", function() {
             assert.equal(glob, require("../src/glob.js"));
         });
     });
+
+    describe("/postcss", function() {
+        it("should be the postcss plugin", function() {
+            var postcss = require("../postcss.js");
+            
+            assert.equal(typeof postcss, "function");
+            assert.equal(postcss, require("../src/postcss.js"));
+        });
+    });
+
+    describe("/webpack", function() {
+        it("/plugin should be the webpack plugin", function() {
+            var plugin = require("../webpack/plugin.js");
+            
+            assert.equal(typeof plugin, "function");
+            assert.equal(plugin, require("../src/webpack-plugin.js"));
+        });
+
+        it("/loader should be the webpack loader", function() {
+            var loader = require("../webpack/loader.js");
+            
+            assert.equal(typeof loader, "function");
+            assert.equal(loader, require("../src/webpack-loader.js"));
+        });
+    });
 });
