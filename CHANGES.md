@@ -1,5 +1,10 @@
 # Changes
 
+## 2.0.0
+
+- refactor: Change how webpack works to make it less weird
+- docs: Remove pre-v1 warning
+
 ## 1.0.1
 
 - docs: updated description
