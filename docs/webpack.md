@@ -10,11 +10,11 @@ You will need to use **both** in tandem for things to work!
 
 ### `css`
 
-Location to write the generated CSS file to.
+Location to write the generated CSS file to, relative to `output.path` just like `output.filename`
 
 ### `json`
 
-Location to write out the JSON mapping file for use in server rendering.
+Location to write out the JSON mapping file to, relative to `output.path` just like `output.filename`
 
 ### Shared Options
 
@@ -44,7 +44,8 @@ module.exports = {
     },
     plugins : [
         new CSSPlugin({
-            css : path.resolve(__dirname, "dist/output.css")
+            css  : "./output.css",
+            json : "./output.json"
         })
     ]
 });
