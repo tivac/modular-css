@@ -16,6 +16,7 @@
     "pretest": "npm run parser",
     "test": "mocha",
     "posttest": "npm run lint",
+    "preview": "changes || true",
     "preversion": "npm test",
     "version": "changes",
     "postversion": "git push --follow-tags",
