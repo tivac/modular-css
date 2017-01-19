@@ -1,0 +1,47 @@
+"use strict";
+
+var fs   = require("fs"),
+    path = require("path"),
+
+    locater  = require("locater"),
+    pinpoint = require("pinpoint"),
+    outdent  = require("outdent"),
+    
+    jsfiles = danger.git.created_files
+        .concat(danger.git.modified_files)
+        .filter((file) => path.extname(file) === ".js");
+
+function link(file, anchor) {
+    var repo = danger.github.pr.head.repo.html_url,
+        ref  = danger.github.pr.head.ref;
+    
+    return `<a href='${repo}/blob/${ref}/${file}${anchor || ""}'>${file}</a>`;
+}
+
+// Every JS file should start with "use strict";
+jsfiles.forEach((file) => {
+    var loc = fs.readFileSync(file, "utf8").indexOf(`"use strict";`);
+
+    if(loc === 0) {
+        return;
+    }
+
+    fail(`${link(file, "#L1")} does not declare strict mode immediately`);
+});
+
+// Be careful of leaving testing shortcuts in the codebase
+jsfiles
+    .filter((file) => file.indexOf("test") > -1)
+    .forEach(file => {
+        var code = fs.readFileSync(file, "utf8"),
+            locs = locater.find(/it\.only|describe\.only/g, code);
+        
+        locs.forEach((loc) =>
+            fail(outdent`
+                ${link(file, `#L${loc.line}`)} is preventing tests from running.
+                <pre lang="javascript">
+                ${pinpoint(code, { line: loc.line, column : loc.cursor })}
+                </pre>
+            `)
+        )
+    });
