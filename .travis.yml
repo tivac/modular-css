@@ -1,12 +1,23 @@
 sudo: false
+
 language: node_js
 node_js:
 - node
 - '6'
 - '4'
+
+# Don't want danger everywhere, just on Travis
+install:
+  - npm install
+  - npm install danger
+
+after_script:
+  - npm run danger
+
 cache:
   directories:
   - node_modules
+
 deploy:
   provider: npm
   email: npm@patcavit.com
