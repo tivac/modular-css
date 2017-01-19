@@ -2,6 +2,10 @@
 
 var fs   = require("fs"),
     path = require("path"),
+
+    locater  = require("locater"),
+    pinpoint = require("pinpoint"),
+    outdent  = require("outdent"),
     
     jsfiles = danger.git.created_files
         .concat(danger.git.modified_files)
@@ -29,9 +33,15 @@ jsfiles.forEach((file) => {
 jsfiles
     .filter((file) => file.indexOf("test") > -1)
     .forEach(file => {
-        var txt = fs.readFileSync(file, "utf8");
-
-        if(txt.includes("it.only") || txt.includes("describe.only")) {
-            fail(`${link(file)} is preventing all tests from running using \`only\``);
-        }
-})
+        var code = fs.readFileSync(file, "utf8"),
+            locs = locater.find(/it\.only|describe\.only/g, code);
+        
+        locs.forEach((loc) =>
+            fail(outdent`
+                ${link(file, `#L${loc.line}`)} is preventing tests from running.
+                <pre lang="javascript">
+                ${pinpoint(code, { line: loc.line, column : loc.cursor })}
+                </pre>
+            `)
+        )
+    });
