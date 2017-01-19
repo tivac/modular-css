@@ -16,7 +16,7 @@ function link(file, anchor) {
 
 // Every JS file should start with "use strict";
 jsfiles.forEach((file) => {
-    var loc = fs.readFileSync(file).indexOf(`"use strict";`);
+    var loc = fs.readFileSync(file, "utf8").indexOf(`"use strict";`);
 
     if(loc === 0) {
         return;
@@ -24,3 +24,14 @@ jsfiles.forEach((file) => {
 
     fail(`${link(file, "#L1")} does not declare strict mode immediately`);
 });
+
+// Be careful of leaving testing shortcuts in the codebase
+jsfiles
+    .filter((file) => file.indexOf("test") > -1)
+    .forEach(file => {
+        var txt = fs.readFileSync(file, "utf8");
+
+        if(txt.includes("it.only") || txt.includes("describe.only")) {
+            fail(`${link(file)} is preventing all tests from running using \`only\``);
+        }
+})
