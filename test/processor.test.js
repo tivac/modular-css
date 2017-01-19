@@ -11,7 +11,7 @@ var fs      = require("fs"),
     compare = require("./lib/compare.js");
 
 describe("/processor.js", function() {
-    describe.only("Basics", function() {
+    describe("Basics", function() {
         it("should be a function", function() {
             assert.equal(typeof Processor, "function");
         });
