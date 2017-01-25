@@ -36,7 +36,7 @@
   ],
   "devDependencies": {
     "@studio/changes": "^1.0.5",
-    "browserify": "^13.0.0",
+    "browserify": "^14.0.0",
     "cli-tester": "^2.0.0",
     "common-tags": "^1.4.0",
     "eslint": "^3.12.0",
