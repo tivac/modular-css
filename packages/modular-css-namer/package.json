@@ -22,11 +22,11 @@
   "author": "Pat Cavit <pcavit@arena.net>",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^2.9.0",
-    "eslint-config-arenanet": "^2.0.3",
+    "eslint": "^3.12.2",
+    "eslint-config-arenanet": "^3.1.0",
     "istanbul": "^0.4.3",
-    "mocha": "^2.4.5",
-    "modular-css": "^0.19.0"
+    "mocha": "^3.2.0",
+    "modular-css": "^0.29.1"
   },
   "eslintConfig": {
     "extends": "arenanet",
