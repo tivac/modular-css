@@ -36,7 +36,7 @@ describe("/webpack.js", function() {
             },
             plugins : [
                 new Plugin({
-                    css : "./test/output/webpack/simple.css"
+                    css : "./simple.css"
                 })
             ]
         }, (err, stats) => {
@@ -67,7 +67,7 @@ describe("/webpack.js", function() {
             },
             plugins : [
                 new Plugin({
-                    json : "./test/output/webpack/simple.json"
+                    json : "./simple.json"
                 })
             ]
         }, (err, stats) => {
@@ -127,8 +127,8 @@ describe("/webpack.js", function() {
             },
             plugins : [
                 new Plugin({
-                    css  : "./test/output/webpack/start.css",
-                    json : "./test/output/webpack/start.json"
+                    css  : "./start.css",
+                    json : "./start.json"
                 })
             ]
         }, (err, stats) => {

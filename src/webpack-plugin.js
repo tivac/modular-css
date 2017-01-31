@@ -1,9 +1,6 @@
 "use strict";
 
-var fs   = require("fs"),
-    path = require("path"),
-    
-    mkdirp  = require("mkdirp"),
+var sources = require("webpack-sources"),
     
     Processor = require("./processor");
 
@@ -18,31 +15,23 @@ function Webpack(args) {
 }
 
 Webpack.prototype.apply = function(compiler) {
+    compiler.plugin("emit", (compilation, done) => {
+        this.processor.output().then((data) => {
+            if(this.options.css) {
+                compilation.assets[this.options.css] = new sources.RawSource(data.css);
+            }
+            
+            if(this.options.json) {
+                compilation.assets[this.options.json] = new sources.RawSource(JSON.stringify(data.compositions, null, 4));
+            }
+
+            done();
+        });
+    });
+    
     compiler.plugin("this-compilation", (compilation) => {
         // Make our processor instance available to the loader
         compilation.options.processor = this.processor;
-
-        compilation.plugin("additional-assets", (callback) => {
-            this.processor.output().then((data) => {
-                if(this.options.css) {
-                    mkdirp.sync(path.dirname(this.options.css));
-                    fs.writeFileSync(
-                        this.options.css,
-                        data.css
-                    );
-                }
-                
-                if(this.options.json) {
-                    mkdirp.sync(path.dirname(this.options.json));
-                    fs.writeFileSync(
-                        this.options.json,
-                        JSON.stringify(data.compositions, null, 4)
-                    );
-                }
-
-                callback();
-            });
-        });
     });
 };
 
