@@ -1,5 +1,10 @@
 # Changes
 
+## 3.0.0
+
+- feat: make multiple composition a crime (#241)
+- refactor: use webpack assets prop (#234)
+
 ## 2.0.2
 
 - docs: Update readme wording & add feature examples
