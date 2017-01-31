@@ -33,10 +33,13 @@ describe("/plugins", function() {
             var out = process(".red { color: red; } .one .two .three { composes: red; } ");
 
             assert.throws(() => out.css, /Only simple singular seletors may use composition/);
+
+            out = process(".red { color: red; } #id .class { composes: red; }");
+
+            assert.throws(() => out.css, /Only simple singular seletors may use composition/);
         });
         
         it("should fail if attempting to compose a class that doesn't exist", function() {
-            /* eslint no-unused-expressions:0 */
             var out = process(".wooga { composes: googa; }");
             
             assert.throws(() => out.css, /Invalid composes reference/);
