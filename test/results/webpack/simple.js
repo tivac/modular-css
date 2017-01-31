@@ -68,18 +68,18 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 module.exports = {
     "wooga": "mc08e91a5b_wooga"
 };
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(0);
 
 
-/***/ }
+/***/ })
 /******/ ]);
