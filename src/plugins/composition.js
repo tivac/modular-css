@@ -21,12 +21,11 @@ module.exports = (css, result) => {
         graph = new Graph(),
         out   = Object.assign(Object.create(null), refs);
     
-    Object.keys(refs).forEach(function(key) {
-        graph.addNode(key);
-    });
+    Object.keys(refs).forEach((key) => graph.addNode(key));
 
     // Go look up "composes" declarations and populate dependency graph
     css.walkDecls("composes", function(decl) {
+        /* eslint max-statements:[2, 17] */
         var selectors, details;
 
         if(decl.prev() && decl.prev().prop !== "composes") {
@@ -38,6 +37,11 @@ module.exports = (css, result) => {
             selectors = identifiers.parse(decl.parent.selector);
         } catch(e) {
             throw decl.error(e.toString(), { word : decl.value });
+        }
+
+        // https://github.com/tivac/modular-css/issues/238
+        if(selectors.length > 1) {
+            throw decl.error("Only simple singular seletors may use composition", { word : decl.parent.selector });
         }
 
         if(details.source) {
@@ -60,9 +64,7 @@ module.exports = (css, result) => {
 
             graph.addNode(scoped);
 
-            selectors.forEach(function(selector) {
-                graph.addDependency(map[selector], scoped);
-            });
+            selectors.forEach((selector) => graph.addDependency(map[selector], scoped));
 
             if(ref.global) {
                 refs[scoped] = [ ref.name ];
@@ -89,20 +91,18 @@ module.exports = (css, result) => {
     });
 
     // Update out by walking dep graph and updating classes
-    graph.overallOrder().forEach(function(selector) {
+    graph.overallOrder().forEach((selector) =>
         graph.dependenciesOf(selector)
             .reverse()
             .forEach(function(dep) {
                 out[selector] = refs[dep].concat(out[selector]);
-            });
-    });
+            })
+    );
 
     result.messages.push({
         type    : "modular-css",
         plugin  : plugin,
-        classes : mapvalues(out, function(val) {
-            return unique(val);
-        })
+        classes : mapvalues(out, (val) => unique(val))
     });
 };
 
