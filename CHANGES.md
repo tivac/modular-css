@@ -1,5 +1,10 @@
 # Changes
 
+## 3.0.2
+
+- fix: singular selector composition check was too strict, now it properly
+       supports CSS like `.one, .two { composes: red; }`
+
 ## 3.0.1
 
 - fix: Solve a mysterious pruning issue where files were being excluded. (#243)
