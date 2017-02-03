@@ -34,14 +34,17 @@ module.exports = (css, result) => {
         
         try {
             details   = parser.parse(decl.value);
-            selectors = identifiers.parse(decl.parent.selector);
+            selectors = decl.parent.selectors.map(identifiers.parse);
         } catch(e) {
             throw decl.error(e.toString(), { word : decl.value });
         }
 
         // https://github.com/tivac/modular-css/issues/238
-        if(selectors.length > 1) {
-            throw decl.error("Only simple singular seletors may use composition", { word : decl.parent.selector });
+        if(selectors.some((selector) => selector.length > 1)) {
+            throw decl.error(
+                "Only simple singular selectors may use composition",
+                { word : decl.parent.selector }
+            );
         }
 
         if(details.source) {
@@ -64,7 +67,11 @@ module.exports = (css, result) => {
 
             graph.addNode(scoped);
 
-            selectors.forEach((selector) => graph.addDependency(map[selector], scoped));
+            selectors.forEach((parts) =>
+                parts.forEach((part) =>
+                    graph.addDependency(map[part], scoped)
+                )
+            );
 
             if(ref.global) {
                 refs[scoped] = [ ref.name ];

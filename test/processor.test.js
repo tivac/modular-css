@@ -133,12 +133,13 @@ describe("/processor.js", function() {
             it("should export an object of arrays containing strings", function() {
                 return this.processor.string(
                     "./test/specimens/simple.css",
-                    ".fooga { color: red; } .booga { background: #000; } .tooga { composes: fooga, booga; }"
+                    ".red { color: red; } .black { background: #000; } .one, .two { composes: red, black; }"
                 )
                 .then((result) => assert.deepEqual(result.exports, {
-                    fooga : [ "mc08e91a5b_fooga" ],
-                    booga : [ "mc08e91a5b_booga" ],
-                    tooga : [ "mc08e91a5b_fooga", "mc08e91a5b_booga", "mc08e91a5b_tooga" ]
+                    red   : [ "mc08e91a5b_red" ],
+                    black : [ "mc08e91a5b_black" ],
+                    one   : [ "mc08e91a5b_red", "mc08e91a5b_black", "mc08e91a5b_one" ],
+                    two   : [ "mc08e91a5b_red", "mc08e91a5b_black", "mc08e91a5b_two" ]
                 }))
                 .catch((e) => {
                     throw e;

@@ -29,14 +29,16 @@ describe("/plugins", function() {
             }, opts));
         });
 
-        it("should fail if the selector is not a simple, singular selector (class or id)", function() {
-            var out = process(".red { color: red; } .one .two .three { composes: red; } ");
+        it("should fail if the selector is not a simple, singular selector", function() {
+            assert.throws(
+                () => process(".red { color: red; } .one .two .three { composes: red; } ").css,
+                /Only simple singular selectors may use composition/
+            );
 
-            assert.throws(() => out.css, /Only simple singular seletors may use composition/);
-
-            out = process(".red { color: red; } #id .class { composes: red; }");
-
-            assert.throws(() => out.css, /Only simple singular seletors may use composition/);
+            assert.throws(
+                () => process(".red { color: red; } #id .class { composes: red; }").css,
+                /Only simple singular selectors may use composition/
+            );
         });
         
         it("should fail if attempting to compose a class that doesn't exist", function() {
@@ -134,6 +136,11 @@ describe("/plugins", function() {
             assert.equal(messages.length, 2);
             assert("fooga" in messages[1].classes);
             assert.equal(messages[1].classes.fooga[0], "wooga");
+        });
+
+        it("should support multiple singular selectors", function() {
+            assert.doesNotThrow(() => process(".red { color: red; } .one, .two { composes: red; }").css);
+            assert.doesNotThrow(() => process(".red { color: red; } #one, .two { composes: red; }").css);
         });
         
         it("should output the class hierarchy in a message", function() {
