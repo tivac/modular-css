@@ -1,5 +1,9 @@
 # Changes
 
+## 3.0.1
+
+- fix: Solve a mysterious pruning issue where files were being excluded. (#243)
+
 ## 3.0.0
 
 - feat: make multiple composition a crime (#241)
