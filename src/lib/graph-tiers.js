@@ -17,16 +17,22 @@ function cloner(graph) {
 
     // Unique the list of nodes by using their inode value as a key in an object
     Object.keys(graph.nodes).forEach((node) => {
-        var inode;
+        var stat, key;
         
         try {
-            inode = fs.lstatSync(node).ino;
+            stat = fs.lstatSync(node);
+            
+            // Can't just use stat.ino, see https://github.com/tivac/modular-css/issues/242
+            key = Object.keys(stat)
+                .map((name) => (name !== "ctime" && name !== "mtime" ? stat[name] : false))
+                .filter(Boolean)
+                .join("-");
         } catch(e) {
-            inode = missing++;
+            key = `key-${missing++}`;
         }
 
-        if(!nodes[`inode-${inode}`]) {
-            nodes[`inode-${inode}`] = node;
+        if(!nodes[key]) {
+            nodes[key] = node;
         }
     });
 
