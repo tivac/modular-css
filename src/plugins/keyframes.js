@@ -6,10 +6,12 @@ var escape  = require("escape-string-regexp"),
 
 module.exports = (css, result) => {
     var refs   = message(result, "keyframes"),
-        inner  = Object.keys(refs)
-            .map(escape)
-            .join("\\b)|(\\b"),
-        search = new RegExp(`(\\b${inner}\\b)`, "g");
+        search = new RegExp(
+            Object.keys(refs)
+                .map((ref) => `(\\b${escape(ref)}\\b)`)
+                .join("|"),
+            "g"
+        );
     
     // Go look up "animation" declarations and rewrite their names to scoped values
     css.walkDecls(/animation$|animation-name$/, function(decl) {
