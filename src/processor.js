@@ -6,33 +6,53 @@ var fs   = require("fs"),
     Graph   = require("dependency-graph").DepGraph,
     postcss = require("postcss"),
     slug    = require("unique-slug"),
-    series  = require("p-series"),
+    series  = require("p-each-series"),
 
-    output     = require("./lib/output.js"),
-    message    = require("./lib/message.js"),
-    relative   = require("./lib/relative.js"),
-    tiered     = require("./lib/graph-tiers.js");
+    output   = require("./lib/output.js"),
+    message  = require("./lib/message.js"),
+    relative = require("./lib/relative.js"),
+    tiered   = require("./lib/graph-tiers.js"),
+    resolve  = require("./lib/resolve.js");
 
 function namer(cwd, file, selector) {
     return "mc" + slug(relative(cwd, file)) + "_" + selector;
 }
 
+function params(processor, args) {
+    return Object.assign(
+        Object.create(null),
+        processor._options,
+        {
+            files   : processor._files,
+            graph   : processor._graph,
+        },
+        args || Object.create(null)
+    );
+}
+
 function Processor(opts) {
     /* eslint consistent-return:0 */
-    var options = opts;
     
     if(!(this instanceof Processor)) {
         return new Processor(opts);
     }
     
-    this._options = Object.assign(Object.create(null), {
-        cwd    : process.cwd(),
-        map    : false,
-        strict : true
-    }, options || Object.create(null));
+    this._options = Object.assign(
+        Object.create(null),
+        {
+            cwd    : process.cwd(),
+            map    : false,
+            strict : true
+        },
+        opts || Object.create(null)
+    );
 
     if(typeof this._options.namer !== "function") {
         this._options.namer = namer.bind(null, this._options.cwd);
+    }
+
+    if(!Array.isArray(this._options.resolvers)) {
+        this._options.resolvers = [];
     }
     
     this._files = Object.create(null);
@@ -76,31 +96,24 @@ Processor.prototype = {
         return this._walk(start, text).then(() => {
             var deps = this._graph.dependenciesOf(start).concat(start);
             
-            return series(deps.map((dep) =>
-                () => {
-                    var file = this._files[dep];
-                    
-                    if(!file.processed) {
-                        file.processed = this._process.process(
-                            file.result,
-                            Object.assign(
-                                Object.create(null),
-                                this._options,
-                                {
-                                    from  : dep,
-                                    files : this._files,
-                                    namer : this._options.namer
-                                }
-                            )
-                        );
-                    }
-                    
-                    return file.processed.then((result) => {
-                        file.exports = message(result, "classes");
-                        file.result  = result;
-                    });
+            return series(deps, (dep) => {
+                var file = this._files[dep];
+                
+                if(!file.processed) {
+                    file.processed = this._process.process(
+                        file.result,
+                        params(this, {
+                            from  : dep,
+                            namer : this._options.namer,
+                        })
+                    );
                 }
-            ));
+                
+                return file.processed.then((result) => {
+                    file.exports = message(result, "classes");
+                    file.result  = result;
+                });
+            });
         })
         .then(() => ({
             id      : start,
@@ -165,16 +178,10 @@ Processor.prototype = {
             //
             this._files[dep].result.root.clone(),
             
-            Object.assign(
-                Object.create(null),
-                this._options,
-                {
-                    from  : dep,
-                    to    : opts.to,
-                    graph : this._graph,
-                    files : this._files
-                }
-            )
+            params(this, {
+                from : dep,
+                to   : opts.to
+            })
         )))
         .then((results) => {
             var root = postcss.root();
@@ -205,15 +212,7 @@ Processor.prototype = {
             
             return this._done.process(
                 root,
-                Object.assign(
-                    Object.create(null),
-                    this._options,
-                    args || Object.create(null),
-                    {
-                        graph : this._graph,
-                        files : this._files
-                    }
-                )
+                params(this, args)
             );
         })
         .then((result) => {
@@ -244,18 +243,15 @@ Processor.prototype = {
             values  : false
         };
         
-        return this._before.process(text, Object.assign(
-            Object.create(null),
-            this._options,
-            {
-                from  : name,
-                graph : this._graph,
-                files : this._files,
+        return this._before.process(
+            text,
+            params(this, {
+                from : name,
 
                 // Run parsers in loose mode for this first pass
                 strict : false
-            }
-        ))
+            })
+        )
         .then((result) => {
             this._files[name].result = result;
 

@@ -73,7 +73,7 @@
     "lodash.uniq": "^4.2.0",
     "meow": "^3.7.0",
     "mkdirp": "^0.5.1",
-    "p-series": "^1.0.0",
+    "p-each-series": "^1.0.0",
     "postcss": "^5.2.5",
     "postcss-selector-parser": "^2.0.0",
     "postcss-url": "^5.1.0",
