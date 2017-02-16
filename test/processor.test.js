@@ -4,7 +4,7 @@ var fs      = require("fs"),
     path    = require("path"),
     assert  = require("assert"),
 
-    leading = require("common-tags").stripIndent,
+    leading = require("dentist").dedent,
     
     Processor = require("../src/processor.js"),
     
@@ -73,13 +73,13 @@ describe("/processor.js", function() {
             it("should scope classes, ids, and keyframes", function() {
                 return this.processor.string(
                     "./test/specimens/simple.css",
-                    leading`
+                    leading(`
                         @keyframes kooga { }
                         #fooga { }
                         .wooga { }
                         .one,
                         .two { }
-                    `
+                    `)
                 )
                 .then((result) => {
                     assert.deepEqual(result.exports, {
@@ -94,14 +94,14 @@ describe("/processor.js", function() {
                 .then((output) =>
                     assert.equal(
                         output.css,
-                        leading`
+                        leading(`
                             /* test/specimens/simple.css */
                             @keyframes mc08e91a5b_kooga {}
                             #mc08e91a5b_fooga {}
                             .mc08e91a5b_wooga {}
                             .mc08e91a5b_one,
                             .mc08e91a5b_two {}
-                        `
+                        `)
                     )
                 );
             });

@@ -3,7 +3,7 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    leading = require("common-tags").stripIndent,
+    leading = require("dentist").dedent,
 
     plugin = require("../src/plugins/scoping.js"),
     
@@ -112,14 +112,14 @@ describe("/plugins", function() {
         
         it("should expose original names in a message", function() {
             assert.deepEqual(
-                process(leading`
+                process(leading(`
                     .wooga { color: red; }
                     #booga { color: black; }
                     @keyframes fooga {
                         0% { color: red; }
                         100% { color: black; }
-                    }`
-                ).messages,
+                    }
+                `)).messages,
                 [
                     msg({
                         fooga : [ "a_fooga" ]
@@ -230,7 +230,7 @@ describe("/plugins", function() {
 
             it("should include :global(...) identifiers in a message", function() {
                 assert.deepEqual(
-                    process(leading`
+                    process(leading(`
                         :global(.wooga) { color: red; }
                         :global(#fooga) { color: red; }
                         :global(.googa .tooga) { color: red; }
@@ -242,8 +242,8 @@ describe("/plugins", function() {
                             100% {
                                 color: black;
                             }
-                        }`
-                    ).messages,
+                        }
+                    `)).messages,
                     [
                         msg({
                             yooga : [ "yooga" ]

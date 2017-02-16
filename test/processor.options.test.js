@@ -4,7 +4,7 @@ var fs      = require("fs"),
     path    = require("path"),
     assert  = require("assert"),
     
-    leading = require("common-tags").stripIndent,
+    leading = require("dentist").dedent,
 
     Processor = require("../src/processor.js"),
     
@@ -101,10 +101,10 @@ describe("/processor.js", function() {
                     .then(() => processor.output())
                     .then((result) => assert.equal(
                         result.css,
-                        leading`
+                        leading(`
                             /* test/specimens/sync-before.css */
                             a {}
-                        `
+                        `)
                     ));
                 });
 
@@ -120,10 +120,10 @@ describe("/processor.js", function() {
                     .then(() => processor.output())
                     .then((result) => assert.equal(
                         result.css,
-                        leading`
+                        leading(`
                             /* test/specimens/async-before.css */
                             a {}
-                        `
+                        `)
                     ));
                 });
             });
@@ -150,14 +150,14 @@ describe("/processor.js", function() {
                     .then(() => processor.output({ to : "./test/output/relative.css" }))
                     .then((result) => assert.equal(
                         result.css,
-                        leading`
+                        leading(`
                             /* test/specimens/relative.css */
                             .mc592b2d8f_wooga {
                                 color: red;
                                 background: url("./folder/to.png")
                             }
                             a {}
-                        `
+                        `)
                     ));
                 });
                 
@@ -172,14 +172,14 @@ describe("/processor.js", function() {
                     .then(() => processor.output({ to : "./test/output/relative.css" }))
                     .then((result) => assert.equal(
                         result.css,
-                        leading`
+                        leading(`
                             /* test/specimens/relative.css */
                             .mc592b2d8f_wooga {
                                 color: red;
                                 background: url("./folder/to.png")
                             }
                             a {}
-                        `
+                        `)
                     ));
                 });
             });
@@ -197,10 +197,10 @@ describe("/processor.js", function() {
                     .then(() => processor.output())
                     .then((result) => assert.equal(
                         result.css,
-                        leading`
+                        leading(`
                             /* test/specimens/sync-done.css */
                             a {}
-                        `
+                        `)
                     ));
                 });
                 
@@ -216,10 +216,10 @@ describe("/processor.js", function() {
                     .then(() => processor.output())
                     .then((result) => assert.equal(
                         result.css,
-                        leading`
+                        leading(`
                             /* test/specimens/async-done.css */
                             a {}
-                        `
+                        `)
                     ));
                 });
             });

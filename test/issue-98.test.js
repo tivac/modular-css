@@ -2,7 +2,7 @@
 
 var assert    = require("assert"),
 
-    leading = require("common-tags").stripIndent,
+    leading = require("dentist").dedent,
     
     Processor = require("../src/processor.js"),
     compare   = require("./lib/compare.js");
@@ -14,11 +14,11 @@ describe("/issues", function() {
             
             return processor.string(
                 "./test/specimens/issues/98.css",
-                leading`
+                leading(`
                     .booga { color: red }
                     .fooga { composes: booga }
                     .fooga + .fooga { color: blue }
-                `
+                `)
             )
             .then((result) => {
                 assert.deepEqual(result.exports, {
