@@ -2,28 +2,12 @@
 
 var selector = require("postcss-selector-parser"),
     value    = require("postcss-value-parser"),
+    escape   = require("escape-string-regexp"),
     each     = require("lodash.foreach"),
     get      = require("lodash.get"),
     Graph    = require("dependency-graph").DepGraph,
     
     namespaced = require("./values-namespaced.js");
-
-function replacer(values, prop) {
-    return (thing) => {
-        var parsed = value(thing[prop]);
-        
-        parsed.walk((node) => {
-            if(node.type !== "word" || !values[node.value]) {
-                return;
-            }
-            
-            thing.source = values[node.value].source;
-            node.value   = values[node.value].value;
-        });
-
-        thing[prop] = parsed.toString();
-    };
-}
 
 module.exports = (css, result) => {
     var graph  = new Graph(),
@@ -42,7 +26,32 @@ module.exports = (css, result) => {
 
                 tag.replaceWith(values[tag.value].value);
             })
-        );
+        ),
+        
+        matchRegex;
+    
+    // Replace values inside specific values
+    function replacer(prop) {
+        return (thing) => {
+            var parsed = value(thing[prop]);
+            
+            parsed.walk((node) => {
+                if(node.type !== "word") {
+                    return;
+                }
+                
+                // Replace any value instances
+                node.value = node.value.replace(matchRegex, (match) => {
+                    // Source map support
+                    thing.source = values[match].source;
+                    
+                    return values[match].value;
+                });
+            });
+
+            thing[prop] = parsed.toString();
+        };
+    }
         
     // Merge namespaced values in w/ prefixed names
     result.messages
@@ -57,6 +66,13 @@ module.exports = (css, result) => {
     if(!Object.keys(values).length) {
         return;
     }
+
+    matchRegex = new RegExp(
+        Object.keys(values)
+            .map((v) => `\\b${escape(v)}\\b`)
+            .join("|"),
+        "g"
+    );
 
     // Walk through all values & build dependency graph
     each(values, (details, name) => {
@@ -74,20 +90,24 @@ module.exports = (css, result) => {
 
     // Walk through values in dependency order & update any inter-dependent values
     graph.overallOrder().forEach((name) => {
-        value(values[name].value).walk((node) => {
+        var parsed = value(values[name].value);
+        
+        parsed.walk((node) => {
             if(node.type !== "word" || !values[node.value]) {
                 return;
             }
 
-            values[name] = values[node.value];
+            node.value = values[node.value].value;
         });
+
+        values[name].value = parsed.toString();
     });
 
     // Replace values in property values
-    css.walkDecls(replacer(values, "value"));
+    css.walkDecls(replacer("value"));
 
     // Replace values in @media/@value
-    css.walkAtRules(/media|value/, replacer(values, "params"));
+    css.walkAtRules(/media|value/, replacer("params"));
 
     // Replace values in :external() references
     css.walkRules(/:external/, (rule) =>

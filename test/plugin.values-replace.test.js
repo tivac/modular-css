@@ -4,6 +4,7 @@ var path   = require("path"),
     assert = require("assert"),
     
     postcss = require("postcss"),
+    dedent  = require("dentist").dedent,
 
     plugin     = require("../src/plugins/values-replace.js"),
     local      = require("../src/plugins/values-local.js"),
@@ -57,6 +58,28 @@ describe("/plugins", function() {
                 assert.equal(
                     process("@value small: (max-width: 599px); @media small { }").css,
                     "@media (max-width: 599px) { }"
+                );
+            });
+
+            it("should replace values surrounded by non-word characters (#245)", function() {
+                assert.equal(
+                    process(dedent(`
+                        @value one: 10px;
+                        @value two: calc(one - 2px);
+                        
+                        .a {
+                            height: two;
+                            width: -one;
+                            color: twoodle;
+                        }
+                    `)).css,
+                    dedent(`
+                        .a {
+                            height: calc(10px - 2px);
+                            width: -10px;
+                            color: twoodle;
+                        }
+                    `)
                 );
             });
         });
