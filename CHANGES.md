@@ -1,5 +1,9 @@
 # Changes
 
+## 3.1.0
+
+- fix: smarter value matching (#247)
+
 ## 3.0.2
 
 - fix: singular selector composition check was too strict, now it properly
