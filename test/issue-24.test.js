@@ -3,7 +3,7 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    leading = require("common-tags").stripIndent,
+    leading = require("dentist").dedent,
 
     Processor = require("../src/processor.js");
 
@@ -14,14 +14,14 @@ describe("/issues", function() {
             
             return processor.string(
                 "./test/specimens/composition.css",
-                leading`
+                leading(`
                     @value simple: "./simple.css";
                     
                     .wooga {
                         composes: wooga from simple;
                         background: #000;
                     }
-                `
+                `)
             )
             .then((result) => {
                 assert.deepEqual(result.exports, {
@@ -36,7 +36,7 @@ describe("/issues", function() {
             .then((result) =>
                 assert.equal(
                     result.css,
-                    leading`
+                    leading(`
                         /* test/specimens/simple.css */
                         .mc08e91a5b_wooga {
                             color: red
@@ -45,7 +45,7 @@ describe("/issues", function() {
                         .mc29d531c6_wooga {
                             background: #000
                         }
-                    `
+                    `)
                 )
             );
         });
