@@ -5,9 +5,7 @@ var fs   = require("fs"),
     path = require("path"),
     
     mkdirp = require("mkdirp"),
-
-    glob = require("../src/glob"),
-
+    glob = require("modular-css-glob"),
     cli = require("meow")(`
         Usage
         $ modular-css [options] <glob>...

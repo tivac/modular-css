@@ -6,9 +6,9 @@ var fs     = require("fs"),
     
     tester = require("cli-tester/es5"),
 
-    compare = require("./lib/compare.js"),
+    compare = require("test-utils/compare.js"),
     
-    cli = require.resolve("../bin/cli.js");
+    cli = require.resolve("../cli.js");
 
 function success(out) {
     assert.equal(out.code, 0, out.stderr);
