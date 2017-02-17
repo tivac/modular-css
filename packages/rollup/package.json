@@ -1,6 +1,8 @@
 {
   "name": "modular-css",
-  "private": true,
+  "version": "3.2.0",
+  "description": "A streamlined reinterpretation of CSS Modules via CLI, API, Browserify, Rollup, Webpack, or PostCSS",
+  "main": "./index.js",
   "repository": "tivac/modular-css",
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
