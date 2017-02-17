@@ -1,5 +1,10 @@
 # Changes
 
+## 3.2.0
+
+- fix: barf in a nicer manner for webpack (#250)
+- feat: Add support for custom resolvers (#249)
+
 ## 3.1.0
 
 - fix: smarter value matching (#247)
