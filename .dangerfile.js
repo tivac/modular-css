@@ -18,16 +18,18 @@ function link(file, anchor) {
     return `<a href='${repo}/blob/${ref}/${file}${anchor || ""}'>${file}</a>`;
 }
 
-// Every JS file should start with "use strict";
-jsfiles.forEach((file) => {
-    var loc = fs.readFileSync(file, "utf8").indexOf(`"use strict";`);
+// Every non-specimen JS file should start with "use strict";
+jsfiles
+    .filter((file) => file.indexOf("test/specimens") === -1)
+    .forEach((file) => {
+        var loc = fs.readFileSync(file, "utf8").indexOf(`"use strict";`);
 
-    if(loc === 0) {
-        return;
-    }
+        if(loc === 0) {
+            return;
+        }
 
-    fail(`${link(file, "#L1")} does not declare strict mode immediately`);
-});
+        fail(`${link(file, "#L1")} does not declare strict mode immediately`);
+    });
 
 // Be careful of leaving testing shortcuts in the codebase
 jsfiles
