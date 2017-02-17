@@ -1,0 +1,3 @@
+.a {
+    composes: a from "./not-a-file.css";
+}

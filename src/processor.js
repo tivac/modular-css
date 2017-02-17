@@ -186,18 +186,22 @@ Processor.prototype = {
         // Rewrite relative URLs before adding
         // Have to do this every time because target file might be different!
         //
-        return Promise.all(files.map((dep) => this._after.process(
-            // NOTE: the call to .clone() is really important here, otherwise this call
-            // modifies the .result root itself and you process URLs multiple times
-            // See https://github.com/tivac/modular-css/issues/35
-            //
-            this._files[dep].result.root.clone(),
-            
-            params(this, {
-                from : dep,
-                to   : opts.to
-            })
-        )))
+        return Promise.all(files
+            // Protect from any files that errored out (#248)
+            .filter((dep) => dep in this._files && this._files[dep].result)
+            .map((dep) => this._after.process(
+                // NOTE: the call to .clone() is really important here, otherwise this call
+                // modifies the .result root itself and you process URLs multiple times
+                // See https://github.com/tivac/modular-css/issues/35
+                //
+                this._files[dep].result.root.clone(),
+                
+                params(this, {
+                    from : dep,
+                    to   : opts.to
+                })
+            ))
+        )
         .then((results) => {
             var root = postcss.root();
 
