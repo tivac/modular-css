@@ -5,9 +5,9 @@ var path   = require("path"),
 
     webpack = require("webpack"),
 
-    Plugin  = require("../src/webpack-plugin.js"),
+    Plugin  = require("../plugin.js"),
     
-    use  = path.resolve("./src/webpack-loader.js"),
+    use  = require.resolve("../loader.js"),
     test = /\.css$/;
 
 describe("/issues", function() {

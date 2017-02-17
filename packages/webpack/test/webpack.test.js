@@ -5,11 +5,11 @@ var path   = require("path"),
 
     webpack = require("webpack"),
 
-    Plugin  = require("../src/webpack-plugin.js"),
+    compare = require("test-utils/compare.js"),
     
-    compare = require("./lib/compare.js"),
+    Plugin  = require("../plugin.js"),
 
-    use  = path.resolve("./src/webpack-loader.js"),
+    use  = require.resolve("../loader.js"),
     test = /\.css$/;
 
 describe("/webpack.js", function() {

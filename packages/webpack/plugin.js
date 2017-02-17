@@ -1,8 +1,7 @@
 "use strict";
 
-var sources = require("webpack-sources"),
-    
-    Processor = require("./processor");
+var sources   = require("webpack-sources"),
+    Processor = require("modular-css-core");
 
 function Webpack(args) {
     var options = Object.assign(

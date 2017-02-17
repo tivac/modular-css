@@ -24,12 +24,14 @@
   ],
   "devDependencies": {
     "dentist": "^1.0.3",
-    "mocha": "^3.0.0",
-    "nyc": "^10.0.0",
+    "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
     "shelljs": "^0.7.3",
-    "webpack": "^2.2.1"
+    "webpack": "^2.2.1",
+    "test-utils": "^1.0.0"
   },
   "dependencies": {
+    "modular-css-core": "^3.2.0",
     "loader-utils": "^0.2.16",
     "webpack-sources": "^0.1.3"
   }

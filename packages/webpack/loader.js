@@ -1,6 +1,6 @@
 "use strict";
 
-var output = require("./lib/output");
+var output = require("modular-css-core/lib/output.js");
 
 module.exports = function(source) {
     var done      = this.async(),
