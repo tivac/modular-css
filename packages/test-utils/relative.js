@@ -1,3 +1,3 @@
 "use strict";
 
-module.exports = require("../../src/lib/relative.js").bind(null, process.cwd());
+module.exports = require("modular-css-core/lib/relative.js").bind(null, process.cwd());
