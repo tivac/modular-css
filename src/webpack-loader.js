@@ -8,14 +8,14 @@ module.exports = function(source) {
 
     this.cacheable();
 
-    processor.string(this.resourcePath, source)
+    return processor.string(this.resourcePath, source)
         .then((result) => {
             processor.dependencies(this.resourcePath).forEach((dep) => this.addDependency(dep));
             
-            done(
+            return done(
                 null,
                 `module.exports = ${JSON.stringify(output.join(result.exports), null, 4)};`
             );
         })
-        .catch((error) => done(error));
+        .catch(done);
 };
