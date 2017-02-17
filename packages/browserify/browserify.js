@@ -9,9 +9,9 @@ var fs   = require("fs"),
 
     each    = require("lodash.foreach"),
     
-    Processor = require("./processor.js"),
-    relative  = require("./lib/relative.js"),
-    output    = require("./lib/output.js");
+    Processor = require("modular-css-core"),
+    relative  = require("modular-css-core/lib/relative.js"),
+    output    = require("modular-css-core/lib/output.js");
 
 module.exports = function(browserify, opts) {
     var options = Object.assign(Object.create(null), {

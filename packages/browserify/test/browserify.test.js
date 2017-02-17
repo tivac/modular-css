@@ -9,10 +9,10 @@ var fs     = require("fs"),
     mkdirp     = require("mkdirp"),
     shell      = require("shelljs"),
     
-    plugin = require("../src/browserify.js"),
+    compare = require("test-utils/compare.js"),
     
     bundle  = require("./lib/bundle.js"),
-    compare = require("./lib/compare.js");
+    plugin = require("../browserify.js");
 
 describe("/browserify.js", function() {
     describe("basic functionality", function() {

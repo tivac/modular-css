@@ -8,10 +8,10 @@ var fs     = require("fs"),
     browserify = require("browserify"),
     watchify   = require("watchify"),
     
-    plugin = require("../src/browserify.js"),
+    compare = require("test-utils/compare.js"),
     
-    bundle  = require("./lib/bundle.js"),
-    compare = require("./lib/compare.js");
+    plugin = require("../browserify.js"),
+    bundle  = require("./lib/bundle.js");
 
 describe("/issues", function() {
     describe("/58", function() {

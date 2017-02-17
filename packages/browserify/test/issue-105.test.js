@@ -6,11 +6,11 @@ var path   = require("path"),
     browserify = require("browserify"),
     from       = require("from2-string"),
     
-    Processor = require("../src/processor.js"),
-    plugin    = require("../src/browserify.js"),
+    Processor = require("modular-css-core"),
+    compare   = require("test-utils/compare.js"),
     
-    bundle  = require("./lib/bundle.js"),
-    compare = require("./lib/compare.js");
+    plugin  = require("../browserify.js"),
+    bundle  = require("./lib/bundle.js");
 
 describe("/issues", function() {
     // These tests can't be run until I can get onto a POSIX system and submit a symlink (ugh)
