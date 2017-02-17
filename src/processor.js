@@ -25,9 +25,21 @@ function params(processor, args) {
         {
             files   : processor._files,
             graph   : processor._graph,
+            resolve : processor.resolve
         },
         args || Object.create(null)
     );
+}
+
+// Resolve a file using this._options.resolvers
+function resolver(processor, src, file) {
+    var result;
+    
+    processor._options.resolvers.some((fn) =>
+        (result = fn(src, file, resolve))
+    );
+    
+    return result || resolve(src, file);
 }
 
 function Processor(opts) {
@@ -54,6 +66,9 @@ function Processor(opts) {
     if(!Array.isArray(this._options.resolvers)) {
         this._options.resolvers = [];
     }
+
+    // Bind since it's being used from a different object
+    this.resolve = resolver.bind(null, this);
     
     this._files = Object.create(null);
     this._graph = new Graph();
@@ -226,7 +241,7 @@ Processor.prototype = {
     get files() {
         return this._files;
     },
-    
+
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
     _walk : function(name, text) {

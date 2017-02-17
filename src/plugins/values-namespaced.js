@@ -1,7 +1,6 @@
 "use strict";
 
 var parser  = require("../parsers/parser.js"),
-    resolve = require("../lib/resolve.js"),
     
     plugin = "modular-css-values-namespaced",
     offset = "@value ".length;
@@ -24,7 +23,7 @@ module.exports = (css, result) => {
         }
 
         try {
-            source = result.opts.files[resolve(result.opts.from, parsed.source)];
+            source = result.opts.files[result.opts.resolve(result.opts.from, parsed.source)];
         } catch(e) {
             // NO-OP
         }

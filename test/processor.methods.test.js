@@ -202,5 +202,48 @@ describe("/processor.js", function() {
                 .then((result) => compare.stringToFile(result.css, "./test/results/processor/sorting.css"));
             });
         });
+
+        describe(".resolve()", function() {
+            it("should run resolvers until a match is found", function() {
+                var ran = false,
+
+                    processor = new Processor({
+                        resolvers : [
+                            () => {
+                                ran = true;
+                            },
+                            (src, file) => {
+                                return path.resolve(path.dirname(src), file);
+                            }
+                        ]
+                    });
+                
+                assert.equal(
+                    processor.resolve(
+                        require.resolve("./specimens/simple.css"),
+                        "./local.css"
+                    ),
+                    require.resolve("./specimens/local.css")
+                );
+
+                assert(ran);
+            });
+
+            it("should fall back to a default resolver", function() {
+                var processor = new Processor({
+                        resolvers : [
+                            () => {}
+                        ]
+                    });
+                
+                assert.equal(
+                    processor.resolve(
+                        require.resolve("./specimens/simple.css"),
+                        "./local.css"
+                    ),
+                    require.resolve("./specimens/local.css")
+                );
+            });
+        });
     });
 });

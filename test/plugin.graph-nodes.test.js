@@ -6,7 +6,8 @@ var path   = require("path"),
     postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
     
-    plugin = require("../src/plugins/graph-nodes.js"),
+    plugin  = require("../src/plugins/graph-nodes.js"),
+    resolve = require("../src/lib/resolve.js"),
     
     processor = require("postcss")([ plugin ]);
 
@@ -20,7 +21,7 @@ describe("/plugins", function() {
             
             return processor.process(
                 `@value one from "./local.css";`,
-                { from, graph }
+                { from, graph, resolve }
             )
             .then(() => assert.deepEqual(graph.overallOrder(), [
                 path.resolve("./test/specimens/local.css"),
@@ -36,7 +37,7 @@ describe("/plugins", function() {
             
             return processor.process(
                 `.a { composes: booga from "./local.css"; }`,
-                { from, graph }
+                { from, graph, resolve }
             )
             .then(() => assert.deepEqual(graph.overallOrder(), [
                 path.resolve("./test/specimens/local.css"),
@@ -52,7 +53,7 @@ describe("/plugins", function() {
             
             return processor.process(
                 `.a :external(booga from "./local.css") { color: red; }`,
-                { from, graph }
+                { from, graph, resolve }
             )
             .then(() => assert.deepEqual(graph.overallOrder(), [
                 path.resolve("./test/specimens/local.css"),
@@ -68,7 +69,7 @@ describe("/plugins", function() {
             
             return processor.process(
                 `@value sm, md, lg "../../shared.css";`,
-                { from, graph }
+                { from, graph, resolve }
             )
             .catch((e) => assert(e.message.indexOf(`SyntaxError: Expected "from"`) > -1));
         });

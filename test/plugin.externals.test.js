@@ -5,7 +5,8 @@ var path   = require("path"),
 
     postcss = require("postcss"),
     
-    plugin = require("../src/plugins/externals.js"),
+    plugin  = require("../src/plugins/externals.js"),
+    resolve = require("../src/lib/resolve.js"),
     
     processor = postcss([ plugin ]);
 
@@ -17,6 +18,8 @@ describe("/plugins", function() {
         // Helper to create environment where other files are already processed
         function process(css) {
             return processor.process(css, {
+                resolve,
+
                 from  : start,
                 files : {
                     // Composition source
