@@ -25,11 +25,7 @@ module.exports = function(opts) {
             cwd        : processor._options.cwd,
             prefixBase : true
         })
-        .map(function(file) {
-            return processor.file(file);
-        })
+        .map((file) => processor.file(file))
     )
-    .then(function() {
-        return processor;
-    });
+    .then(() => processor);
 };
