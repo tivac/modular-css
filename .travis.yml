@@ -8,7 +8,7 @@ node_js:
 
 # Don't want danger everywhere, just on Travis
 install:
-  - npm install
+  - npm run bootstrap
   - npm install danger
 
 after_script:
