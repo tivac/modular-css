@@ -1,119 +1,33 @@
 {
-  "name": "modular-css",
+  "name": "modular-css-rollup",
   "version": "3.2.0",
-  "description": "A streamlined reinterpretation of CSS Modules via CLI, API, Browserify, Rollup, Webpack, or PostCSS",
-  "main": "./index.js",
+  "description": "Add modular-css support to rollup",
+  "main": "./rollup.js",
   "repository": "tivac/modular-css",
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
   },
-  "bin": "./bin/cli.js",
   "scripts": {
     "cover": "nyc mocha",
-    "commitmsg": "validate-commit-msg",
-    "danger": "danger run || true",
-    "lint": "eslint .",
-    "parser": "pegjs -o ./src/parsers/parser.js ./src/parsers/parser.pegjs",
-    "pretest": "npm run parser",
-    "test": "mocha",
-    "posttest": "npm run lint",
-    "preview": "changes || true",
-    "preversion": "npm test",
-    "version": "changes",
-    "postversion": "git push --follow-tags",
-    "watch": "mocha -w -R min"
+    "test": "mocha"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "keywords": [
-    "browserify",
-    "browserify-plugin",
-    "browserify-transform",
+    "rollup",
+    "rollup-plugin",
     "css",
     "css-modules",
     "modular-css",
     "postcss"
   ],
   "devDependencies": {
-    "@studio/changes": "^1.0.5",
-    "browserify": "^14.0.0",
-    "cli-tester": "^2.0.0",
-    "dentist": "^1.0.3",
-    "eslint": "^3.12.0",
-    "eslint-config-arenanet": "^3.0.0",
-    "factor-bundle": "^2.5.0",
-    "from2-string": "^1.1.0",
-    "husky": "^0.13.1",
-    "istanbul": "^0.4.2",
-    "locater": "^1.3.0",
     "mocha": "^3.0.0",
     "nyc": "^10.0.0",
-    "outdent": "^0.3.0",
-    "pegjs": "^0.10.0",
-    "pinpoint": "^1.1.0",
     "rollup": "^0.41.1",
-    "shelljs": "^0.7.3",
-    "validate-commit-msg": "^2.8.2",
-    "watchify": "^3.7.0",
-    "webpack": "^2.2.1",
-    "lerna": "2.0.0-beta.37"
+    "shelljs": "^0.7.3"
   },
   "dependencies": {
-    "dependency-graph": "^0.5.0",
-    "escape-string-regexp": "^1.0.5",
-    "esutils": "^2.0.2",
-    "globule": "^1.0.0",
-    "loader-utils": "^0.2.16",
-    "lodash.difference": "^4.0.0",
-    "lodash.filter": "^4.2.1",
-    "lodash.findlast": "^4.4.0",
-    "lodash.foreach": "^4.0.0",
-    "lodash.get": "^4.4.2",
-    "lodash.invert": "^4.0.0",
-    "lodash.mapvalues": "^4.4.0",
-    "lodash.uniq": "^4.2.0",
-    "meow": "^3.7.0",
-    "mkdirp": "^0.5.1",
-    "p-each-series": "^1.0.0",
-    "postcss": "^5.2.5",
-    "postcss-selector-parser": "^2.0.0",
-    "postcss-url": "^5.1.0",
-    "postcss-value-parser": "^3.2.3",
-    "resolve-from": "^2.0.0",
-    "rollup-pluginutils": "^2.0.0",
-    "sink-transform": "^2.0.0",
-    "through2": "^2.0.0",
-    "unique-slug": "^2.0.0",
-    "webpack-sources": "^0.1.3"
-  },
-  "eslintConfig": {
-    "extends": "arenanet",
-    "env": {
-      "node": true,
-      "mocha": true
-    },
-    "globals": {
-      "Promise": true
-    },
-    "rules": {
-      "prefer-template": "off"
-    }
-  },
-  "nyc": {
-    "lines": 80,
-    "statements": 80,
-    "functions": 80,
-    "branches": 80,
-    "check-coverage": true,
-    "cache": true,
-    "reporter": [
-      "lcov",
-      "text-summary",
-      "text"
-    ],
-    "exclude": [
-      "src/parsers/**",
-      "test/**"
-    ]
+    "rollup-pluginutils": "^2.0.0"
   }
 }

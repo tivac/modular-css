@@ -1,0 +1,9 @@
+{
+  "name": "test-utils",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Test utilities for modular-css",
+  "main": "compare.js",
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "license": "MIT"
+}
