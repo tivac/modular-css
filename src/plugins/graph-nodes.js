@@ -2,8 +2,7 @@
 
 var selector = require("postcss-selector-parser"),
 
-    parser  = require("../parsers/parser.js"),
-    resolve = require("../lib/resolve.js");
+    parser  = require("../parsers/parser.js");
 
 function parse(options, rule, value) {
     var parsed, file;
@@ -20,7 +19,7 @@ function parse(options, rule, value) {
         return;
     }
     
-    file = resolve(options.from, parsed.source);
+    file = options.resolve(options.from, parsed.source);
     
     // Add any compositions to the dependency graph
     options.graph.addNode(file);

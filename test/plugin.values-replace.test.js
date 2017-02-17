@@ -10,7 +10,9 @@ var path   = require("path"),
     local      = require("../src/plugins/values-local.js"),
     composed   = require("../src/plugins/values-composed.js"),
     exported   = require("../src/plugins/values-export.js"),
-    namespaced = require("../src/plugins/values-namespaced.js");
+    namespaced = require("../src/plugins/values-namespaced.js"),
+    
+    resolve = require("../src/lib/resolve.js");
 
 describe("/plugins", function() {
     describe("/values-replace.js", function() {
@@ -26,6 +28,8 @@ describe("/plugins", function() {
 
             function process(css) {
                 return processor.process(css, {
+                    resolve,
+                    
                     from  : "file",
                     files : {
                         "file" : {
@@ -134,6 +138,8 @@ describe("/plugins", function() {
                             color: color;
                         }
                     `), {
+                        resolve,
+                        
                         map   : false,
                         from  : path.resolve("./test/specimens/in.css"),
                         files : {
@@ -171,6 +177,8 @@ describe("/plugins", function() {
                             color: colors.red;
                         }
                     `), {
+                        resolve,
+
                         map   : false,
                         from  : path.resolve("./test/specimens/in.css"),
                         files : {
@@ -212,6 +220,8 @@ describe("/plugins", function() {
                             border: 1px solid r;
                         }
                     `), {
+                        resolve,
+                        
                         map   : false,
                         from  : path.resolve("./test/specimens/in.css"),
                         files : {

@@ -2,8 +2,7 @@
 
 var selector = require("postcss-selector-parser"),
 
-    parser  = require("../parsers/parser.js"),
-    resolve = require("../lib/resolve.js");
+    parser  = require("../parsers/parser.js");
 
 // Find :external(<rule> from <file>) references and update them to be
 // the namespaced selector instead
@@ -24,7 +23,7 @@ module.exports = (css, result) =>
                     }
 
                     try {
-                        source = result.opts.files[resolve(result.opts.from, parsed.source)];
+                        source = result.opts.files[result.opts.resolve(result.opts.from, parsed.source)];
                     } catch(e) {
                         // NO-OP
                     }

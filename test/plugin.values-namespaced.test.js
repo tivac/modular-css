@@ -3,7 +3,8 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    plugin = require("../src/plugins/values-namespaced.js"),
+    plugin  = require("../src/plugins/values-namespaced.js"),
+    resolve = require("../src/lib/resolve.js"),
 
     processor = require("postcss")([ plugin ]);
 
@@ -12,6 +13,8 @@ describe("/plugins", function() {
         // Helper to create environment where other files are already processed
         function process(css) {
             return processor.process(css, {
+                resolve,
+                
                 from  : path.resolve("./test/specimens/start.css"),
                 files : {
                     // Composition source
