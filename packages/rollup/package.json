@@ -22,8 +22,8 @@
     "postcss"
   ],
   "devDependencies": {
-    "mocha": "^3.0.0",
-    "nyc": "^10.0.0",
+    "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
     "rollup": "^0.41.1",
     "shelljs": "^0.7.3",
     "test-utils": "^1.0.0"
