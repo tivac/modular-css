@@ -7,11 +7,15 @@
   },
   "bin": "./bin/cli.js",
   "scripts": {
+    "bootstrap": "lerna bootstrap --hoist",
     "commitmsg": "validate-commit-msg",
+    "clean": "lerna clean",
     "danger": "danger run || true",
     "lint": "eslint .",
     "preview": "changes || true",
     "preversion": "npm test",
+    "test": "lerna run test",
+    "posttest": "npm run lint",
     "version": "changes",
     "postversion": "git push --follow-tags"
   },

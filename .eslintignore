@@ -1,4 +1,5 @@
 test/
 coverage/
 parsers/
+node_modules/
 dangerfile.js
