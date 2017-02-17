@@ -6,8 +6,8 @@ var path   = require("path"),
     postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
     
-    plugin  = require("../src/plugins/graph-nodes.js"),
-    resolve = require("../src/lib/resolve.js"),
+    plugin  = require("..//plugins/graph-nodes.js"),
+    resolve = require("..//lib/resolve.js"),
     
     processor = require("postcss")([ plugin ]);
 

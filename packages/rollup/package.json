@@ -25,9 +25,11 @@
     "mocha": "^3.0.0",
     "nyc": "^10.0.0",
     "rollup": "^0.41.1",
-    "shelljs": "^0.7.3"
+    "shelljs": "^0.7.3",
+    "test-utils": "^1.0.0"
   },
   "dependencies": {
-    "rollup-pluginutils": "^2.0.0"
+    "rollup-pluginutils": "^2.0.0",
+    "modular-css-core": "^3.2.0"
   }
 }

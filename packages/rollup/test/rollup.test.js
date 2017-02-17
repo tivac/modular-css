@@ -3,11 +3,11 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    rollup = require("rollup").rollup,
+    rollup  = require("rollup").rollup,
+    compare = require("test-utils/compare.js"),
+    warn    = require("test-utils/warn.js"),
     
-    plugin  = require("../src/rollup.js"),
-    compare = require("./lib/compare.js"),
-    warn    = require("./lib/warn.js");
+    plugin = require("../rollup.js");
 
 function error(root, result) {
     throw root.error("boom");

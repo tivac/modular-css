@@ -5,7 +5,7 @@ var path   = require("path"),
     
     leading = require("dentist").dedent,
 
-    plugin = require("../src/plugins/scoping.js"),
+    plugin = require("..//plugins/scoping.js"),
     
     processor = require("postcss")([ plugin ]);
 

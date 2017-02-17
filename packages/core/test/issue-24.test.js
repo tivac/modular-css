@@ -5,7 +5,7 @@ var path   = require("path"),
     
     leading = require("dentist").dedent,
 
-    Processor = require("../src/processor.js");
+    Processor = require("..//processor.js");
 
 describe("/issues", function() {
     describe("/24", function() {

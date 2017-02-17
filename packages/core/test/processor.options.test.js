@@ -6,7 +6,7 @@ var fs      = require("fs"),
     
     leading = require("dentist").dedent,
 
-    Processor = require("../src/processor.js"),
+    Processor = require("..//processor.js"),
     
     compare = require("./lib/compare.js");
 

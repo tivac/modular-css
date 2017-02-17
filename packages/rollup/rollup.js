@@ -7,9 +7,9 @@ var fs   = require("fs"),
     utils   = require("rollup-pluginutils"),
     mkdirp  = require("mkdirp"),
     
-    Processor = require("./processor.js"),
-    output    = require("./lib/output.js"),
-    relative  = require("./lib/relative.js");
+    Processor = require("modular-css-core"),
+    output    = require("modular-css-core/lib/output.js"),
+    relative  = require("modular-css-core/lib/relative.js");
 
 module.exports = function(opts) {
     var options = Object.assign(Object.create(null), {

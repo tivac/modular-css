@@ -2,14 +2,14 @@
   "name": "modular-css-core",
   "version": "3.2.0",
   "description": "A streamlined reinterpretation of CSS Modules",
-  "main": "./src/processor.js",
+  "main": "./processor.js",
   "repository": "tivac/modular-css",
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
   },
   "scripts": {
     "cover": "nyc mocha",
-    "parser": "pegjs -o ./src/parsers/parser.js ./src/parsers/parser.pegjs",
+    "parser": "pegjs -o ./parsers/parser.js ./parsers/parser.pegjs",
     "pretest": "npm run parser",
     "test": "mocha"
   },

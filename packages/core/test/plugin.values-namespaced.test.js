@@ -3,8 +3,8 @@
 var path   = require("path"),
     assert = require("assert"),
     
-    plugin  = require("../src/plugins/values-namespaced.js"),
-    resolve = require("../src/lib/resolve.js"),
+    plugin  = require("..//plugins/values-namespaced.js"),
+    resolve = require("..//lib/resolve.js"),
 
     processor = require("postcss")([ plugin ]);
 
