@@ -119,7 +119,7 @@ Processor.prototype = {
                         file.result,
                         params(this, {
                             from  : dep,
-                            namer : this._options.namer,
+                            namer : this._options.namer
                         })
                     );
                 }
