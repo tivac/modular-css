@@ -5,11 +5,10 @@ var fs     = require("fs"),
     assert = require("assert"),
     
     postcss = require("postcss"),
+    compare = require("test-utils/compare.js"),
+    message = require("modular-css-core/lib/message.js"),
 
-    plugin  = require("../src/postcss.js"),
-    message = require("../src/lib/message.js"),
-
-    compare = require("./lib/compare.js");
+    plugin  = require("../postcss.js");
 
 function process(file, opts) {
     return plugin.process(
