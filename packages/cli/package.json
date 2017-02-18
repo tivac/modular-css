@@ -1,6 +1,6 @@
 {
   "name": "modular-css-cli",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "description": "CLI for modular-css",
   "main": "./cli.js",
   "bin": "./cli.js",
@@ -28,12 +28,12 @@
     "nyc": "^10.1.2",
     "pegjs": "^0.10.0",
     "shelljs": "^0.7.3",
-    "test-utils": "^1.0.0"
+    "test-utils": "^4.0.0"
   },
   "dependencies": {
     "meow": "^3.7.0",
     "mkdirp": "^0.5.1",
-    "modular-css-core": "^3.2.0",
-    "modular-css-glob": "^3.2.0"
+    "modular-css-core": "^4.0.0",
+    "modular-css-glob": "^4.0.0"
   }
 }
