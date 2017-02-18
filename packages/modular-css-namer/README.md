@@ -8,7 +8,7 @@ Tiny classnames for [`modular-css`](https://github.com/tivac/modular-css) builds
 ### JS API
 
 ```js
-var Processor = require("modular-css"),
+var Processor = require("modular-css-core"),
     processor = new Processor({
         namer : require("modular-css-namer")()
     });
@@ -19,7 +19,7 @@ var Processor = require("modular-css"),
 ### Browserify
 
 ```js
-build.plugin("modular-css/browserify", {
+build.plugin("modular-cssify", {
     css   : "./style.css",
     namer : require("modular-css-namer")()
 });
@@ -33,12 +33,13 @@ build.plugin("modular-css/browserify", {
 rollup({
     entry   : "./index.js",
     plugins : [
-        require("modular-css/rollup")({
+        require("modular-css-rollup")({
             css   : "./gen/index.css",
             namer : require("modular-css-namer")()
         })
     ]
-}).then(function(bundle) {
+})
+.then(function(bundle) {
     // ...
 });
 ```
