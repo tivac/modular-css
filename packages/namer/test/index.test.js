@@ -51,5 +51,6 @@ describe("modular-css-namer", function() {
         assert.equal(this.namer("./fooga" + 15, ".fooga" + 5), "p5");
         assert.equal(this.namer("./fooga" + 1, ".fooga" + 5), "b5");
         assert.equal(this.namer("./fooga" + 49, ".fooga" + 33), "zx33");
+        assert.equal(this.namer("./fooga" + 26, ".fooga" + 0), "za0");
     });
 });

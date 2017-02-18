@@ -26,7 +26,7 @@ module.exports = function() {
         }
 
         // Keep adding letters until we're done
-        while(id > length) {
+        while(id >= length) {
             prefix += alphabet.lower[length - 1];
 
             id -= length;
