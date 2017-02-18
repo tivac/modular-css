@@ -3,8 +3,6 @@ postcss-modular-css [![NPM Version](https://img.shields.io/npm/v/postcss-modular
 <p align="center">
     <a href="https://www.npmjs.com/package/postcss-modular-css" alt="NPM License"><img src="https://img.shields.io/npm/l/postcss-modular-css.svg" /></a>
     <a href="https://www.npmjs.com/package/postcss-modular-css" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/postcss-modular-css.svg" /></a>
-    <a href="https://david-dm.org/tivac/postcss-modular-css" alt="Dependency Status"><img src="https://img.shields.io/david/tivac/postcss-modular-css.svg" /></a>
-    <a href="https://david-dm.org/tivac/postcss-modular-css#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/postcss-modular-css.svg" /></a>
 </p>
 
 Use `modular-css` as a PostCSS plugin.

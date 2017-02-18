@@ -3,8 +3,6 @@ modular-cssify [![NPM Version](https://img.shields.io/npm/v/modular-cssify.svg)]
 <p align="center">
     <a href="https://www.npmjs.com/package/modular-cssify" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-cssify.svg" /></a>
     <a href="https://www.npmjs.com/package/modular-cssify" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-cssify.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-cssify" alt="Dependency Status"><img src="https://img.shields.io/david/tivac/modular-cssify.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-cssify#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/modular-cssify.svg" /></a>
 </p>
 
 `modular-cssify` is a browserify plugin that enables `modular-css` within browserify bundles. It can also be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.

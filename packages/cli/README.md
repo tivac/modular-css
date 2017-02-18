@@ -3,8 +3,6 @@ modular-css-cli [![NPM Version](https://img.shields.io/npm/v/modular-css-cli.svg
 <p align="center">
     <a href="https://www.npmjs.com/package/modular-css-cli" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-css-cli.svg" /></a>
     <a href="https://www.npmjs.com/package/modular-css-cli" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-css-cli.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css-cli" alt="Dependency Status"><img src="https://img.shields.io/david/tivac/modular-css-cli.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css-cli#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/modular-css-cli.svg" /></a>
 </p>
 
 Use `modular-css` via the CLI!

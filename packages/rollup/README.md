@@ -3,8 +3,6 @@ modular-css-rollup [![NPM Version](https://img.shields.io/npm/v/modular-css-roll
 <p align="center">
     <a href="https://www.npmjs.com/package/modular-css-rollup" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-css-rollup.svg" /></a>
     <a href="https://www.npmjs.com/package/modular-css-rollup" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-css-rollup.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css-rollup" alt="Dependency Status"><img src="https://img.shields.io/david/tivac/modular-css-rollup.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css-rollup#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/modular-css-rollup.svg" /></a>
 </p>
 
 `modular-css-rollup` provides a rollup build plugin you can use to transform imported `.css` files into lookup objects.

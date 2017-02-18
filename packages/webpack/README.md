@@ -3,8 +3,6 @@ modular-css-webpack [![NPM Version](https://img.shields.io/npm/v/modular-css-web
 <p align="center">
     <a href="https://www.npmjs.com/package/modular-css-webpack" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-css-webpack.svg" /></a>
     <a href="https://www.npmjs.com/package/modular-css-webpack" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-css-webpack.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css-webpack" alt="Dependency Status"><img src="https://img.shields.io/david/tivac/modular-css-webpack.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css-webpack#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/modular-css-webpack.svg" /></a>
 </p>
 
 `modular-css-webpack/plugin` provides a webpack 2 plugin you can use to transform imported `.css` files into lookup objects while outputting CSS to disk.

@@ -3,8 +3,6 @@ modular-css-core [![NPM Version](https://img.shields.io/npm/v/modular-css-core.s
 <p align="center">
     <a href="https://www.npmjs.com/package/modular-css-core" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-css-core.svg" /></a>
     <a href="https://www.npmjs.com/package/modular-css-core" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-css-core.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css-core" alt="Dependency Status"><img src="https://img.shields.io/david/tivac/modular-css-core.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css-core#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/modular-css-core.svg" /></a>
 </p>
 
 The core functionality of [`modular-css`](https://npmjs.com/modular-css) exposed as a JS API.
