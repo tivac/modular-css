@@ -1,6 +1,4 @@
-coverage
-test
-.eslintignore
-.gitignore
-.gitattributes
-.travis.yml
+coverage/
+profiling/
+test/
+.*
