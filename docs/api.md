@@ -43,6 +43,7 @@ new Processor({
     before : [ require("postcss-import") ]
 });
 ```
+
 #### `after`
 
 Specify an array of PostCSS plugins to be run after files are processed, but before they are combined. Plugin will be passed a `to` and `from` option.
@@ -126,28 +127,3 @@ new Processor({
 })
 ```
 
-
-## Globbing
-
-If you don't care about the dependency tree from your code you can also use the globbing API to find files to process.
-
-```js
-var glob = require("modular-css/glob");
-
-glob({
-    search : [
-        "**/*.css"
-    ]
-})
-.then(function(processor) {
-    // returns a filled-out Processor instance you can use
-})
-```
-
-`glob()` accepts all of the same options as a [`Processor` instance](#processor-options) with the addition of the [`search`](#search) property.
-
-### Glob Options
-
-#### `search`
-
-Array of glob patterns to pass to [`globule`](https://www.npmjs.com/package/globule) for searching.

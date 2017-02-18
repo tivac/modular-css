@@ -1,113 +1,83 @@
-modular-css [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https://www.npmjs.com/package/modular-css) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
+modular-cssify [![NPM Version](https://img.shields.io/npm/v/modular-cssify.svg)](https://www.npmjs.com/package/modular-css) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
 ===========
 <p align="center">
-    <a href="https://www.npmjs.com/package/modular-css" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-css.svg" /></a>
-    <a href="https://www.npmjs.com/package/modular-css" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-css.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css" alt="Dependency Status"><img src="https://img.shields.io/david/tivac/modular-css.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/modular-css.svg" /></a>
+    <a href="https://www.npmjs.com/package/modular-cssify" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-cssify.svg" /></a>
+    <a href="https://www.npmjs.com/package/modular-cssify" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-cssify.svg" /></a>
+    <a href="https://david-dm.org/tivac/modular-cssify" alt="Dependency Status"><img src="https://img.shields.io/david/tivac/modular-cssify.svg" /></a>
+    <a href="https://david-dm.org/tivac/modular-cssify#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/modular-cssify.svg" /></a>
 </p>
 
-A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/css-modules)
+`modular-cssify` is a browserify plugin that enables `modular-css` within browserify bundles. It can also be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
 
-## Install
+`modular-cssify` will use the `basedir` passed to browserify as it's `cwd` parameter.
 
-`$ npm i modular-css`
+## Installation
 
-## Usage
-
-- [API](docs/api.md)
-- [CLI](docs/cli.md)
-- [Browserify](docs/browserify.md) Plugin
-- [Rollup](docs/rollup.md) Plugin
-- [PostCSS](docs/postcss.md) Plugin
-- [Webpack 2](docs/webpack.md) Plugin
-
-## Features
-
-### Composition
-```css
-.red {
-    color: red;
-}
-
-.blue {
-    composes: red;
-
-    background: blue;
-}
-
-/* in the output .blue will be combination of both styles */
+```bash
+$ npm i modular-cssify
 ```
 
-### Values
-```css
-@value alert: #F00;
+## Options
 
-.alert {
-    color: alert;
-}
+### `css`
 
-/* will output as */
+Location to write the generated CSS file to.
 
-.alert {
-    color: #F00;
-}
+### Shared Options
+
+All other options are passed to the underlying `Processor` instance, see [Options](api.md#processor-options).
+
+## CLI
+
+```
+$ browserify -p [ modular-cssify --css "./style.css" ] entry.js
 ```
 
-### Selector Scoping
+## API
 
-```css
-.style {
-    color: red;
-}
+```js
+var browserify = require("browserify"),
+    build;
 
-:global(.style2) {
-    color: blue;
-}
+build = browserify("./entry.js");
 
-/* Will output as */
-
-/* Scoped with unique file-based prefix */
-.f5507abd_style {
-    color: red;
-}
-
-/* Remains unstyled due to :global() pseudo */
-.style2 {
-    color: blue;
-}
+build.plugin("modular-cssify", {
+    css : "./style.css",
+});
 ```
 
-### Style Overrides
-```css
-/* input.css */
-.input {
-    width: 100%;
-}
+## factor-bundle
 
-/* fieldset.css */
-.fieldset :external(input from "./input.css") {
-    width: 50%;
-}
+`modular-cssify` is fully `factor-bundle` aware and will output correctly-partitioned CSS bundles to match the JS bundles created by `factor-bundle`.
+
+**WARNING**: Due to how `factor-bundle` works the `modular-cssify` must be applied to the Browserify object **before** `factor-bundle`.
+
+### CLI
+
+```
+$ browserify home.js account.js \
+    -p [ modular-cssify --css gen/common.css ] \
+    -p [ factor-bundle -o gen/home.js -o gen/account.js ] \
+    -o bundle/common.js
 ```
 
-More detailed descriptions are available in [docs/features.md](docs/features.md)
+### API
 
-## Why?
+```js
+var build = browserify([
+        "./home.js",
+        "./account.js"
+    ]);
 
-CSS Modules doesn't support the features we need & has bugs blocking our usage.
-Attempts to fix those bugs have been unsuccessful for a variety of reasons.
-Thus, a perfect storm of compelling reasons to learn [PostCSS](http://postcss.org/) was found.
+// NOTE modular-css applied before factor-bundle, it won't work otherwise!
+build.plugin("modular-cssify", {
+    css : "./gen/common.css"
+});
 
-Also because this:
-
-<p align="center">
-    <a href="https://twitter.com/iamdevloper/status/636455478093029376">
-        <img src="https://i.imgur.com/fcq3GsW.png" alt="Green pills look gross" />
-    </a>
-</p>
-
-## Thanks
-
-- [@JoshGalvin](https://github.com/JoshGalvin) for ideas/encouragement to do this silly thing.
-- The CSS modules team for inspiration!
+build.plugin("factor-bundle", {
+    outputs : [
+        "./gen/home.js",
+        "./get/account.js"
+    ]
+});
+```

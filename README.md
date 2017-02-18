@@ -1,26 +1,51 @@
 modular-css [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https://www.npmjs.com/package/modular-css) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
 ===========
-<p align="center">
-    <a href="https://www.npmjs.com/package/modular-css" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-css.svg" /></a>
-    <a href="https://www.npmjs.com/package/modular-css" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-css.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css" alt="Dependency Status"><img src="https://img.shields.io/david/tivac/modular-css.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/modular-css.svg" /></a>
-</p>
 
 A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/css-modules)
 
 ## Install
 
-`$ npm i modular-css`
+### [API](/packages/modular-css-core/README.md)
 
-## Usage
+```bash
+$ npm i modular-css-core
+```
 
-- [API](docs/api.md)
-- [CLI](docs/cli.md)
-- [Browserify](docs/browserify.md) Plugin
-- [Rollup](docs/rollup.md) Plugin
-- [PostCSS](docs/postcss.md) Plugin
-- [Webpack 2](docs/webpack.md) Plugin
+### [CLI](/packages/modular-css-cli/README.md)
+
+```bash
+$ npm i modular-css-cli
+```
+
+### [Browserify](/packages/modular-cssify/README.md)
+
+```bash
+$ npm i modular-cssify
+```
+
+### [Rollup](/packages/modular-css-rollup/README.md)
+
+```bash
+$ npm i modular-css-rollup
+```
+
+### [Webpack 2](/packages/modular-css-webpack/README.md)
+
+```bash
+$ npm i modular-css-webpack
+```
+
+### [PostCSS Plugin](/packages/postcss-modular-css/README.md)
+
+```bash
+$ npm i postcss-modular-css
+```
+
+### [Globbing API](/packages/modular-css-glob/README.md)
+
+```bash
+$ npm i modular-css-glob
+```
 
 ## Features
 

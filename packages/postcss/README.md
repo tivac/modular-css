@@ -1,113 +1,69 @@
-modular-css [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https://www.npmjs.com/package/modular-css) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
+postcss-modular-css [![NPM Version](https://img.shields.io/npm/v/postcss-modular-css.svg)](https://www.npmjs.com/package/postcss-modular-css) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
 ===========
 <p align="center">
-    <a href="https://www.npmjs.com/package/modular-css" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-css.svg" /></a>
-    <a href="https://www.npmjs.com/package/modular-css" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-css.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css" alt="Dependency Status"><img src="https://img.shields.io/david/tivac/modular-css.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/modular-css.svg" /></a>
+    <a href="https://www.npmjs.com/package/postcss-modular-css" alt="NPM License"><img src="https://img.shields.io/npm/l/postcss-modular-css.svg" /></a>
+    <a href="https://www.npmjs.com/package/postcss-modular-css" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/postcss-modular-css.svg" /></a>
+    <a href="https://david-dm.org/tivac/postcss-modular-css" alt="Dependency Status"><img src="https://img.shields.io/david/tivac/postcss-modular-css.svg" /></a>
+    <a href="https://david-dm.org/tivac/postcss-modular-css#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/postcss-modular-css.svg" /></a>
 </p>
 
-A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/css-modules)
+Use `modular-css` as a PostCSS plugin.
 
 ## Install
 
-`$ npm i modular-css`
+`$ npm i postcss-modular-css`
 
 ## Usage
 
-- [API](docs/api.md)
-- [CLI](docs/cli.md)
-- [Browserify](docs/browserify.md) Plugin
-- [Rollup](docs/rollup.md) Plugin
-- [PostCSS](docs/postcss.md) Plugin
-- [Webpack 2](docs/webpack.md) Plugin
+`modular-css` provides a PostCSS plugin that can be used like any other. It will output a message with a `type` of `modular-css-exports` containing all the exported class compositions.
 
-## Features
+## Options
 
-### Composition
-```css
-.red {
-    color: red;
-}
+### `json`
 
-.blue {
-    composes: red;
+Write the class composition data to this location on disk.
 
-    background: blue;
-}
+### Shared Options
 
-/* in the output .blue will be combination of both styles */
+All other options are passed to the underlying `Processor` instance, see [Options](api.md#processor-options).
+
+## CLI
+
+```
+$ postcss --use modular-css/postcss input.css
 ```
 
-### Values
-```css
-@value alert: #F00;
+## API
 
-.alert {
-    color: alert;
-}
+```js
+var postcss   = require("postcss"),
+    processor = postcss([
+        require("postcss-modular-css")({
+            json : "./path/to/output.json"
+        })
+    ]);
 
-/* will output as */
-
-.alert {
-    color: #F00;
-}
+processor.process("<css>")
+    .then((result) => {
+        // result.css
+        // result.map
+        // result.messages.find((msg) => msg.type === "modular-css-exports")
+        // etc
+    });
 ```
 
-### Selector Scoping
+## Config
 
-```css
-.style {
-    color: red;
-}
-
-:global(.style2) {
-    color: blue;
-}
-
-/* Will output as */
-
-/* Scoped with unique file-based prefix */
-.f5507abd_style {
-    color: red;
-}
-
-/* Remains unstyled due to :global() pseudo */
-.style2 {
-    color: blue;
-}
+```
+$ postcss --config postcss.json input.css
 ```
 
-### Style Overrides
-```css
-/* input.css */
-.input {
-    width: 100%;
-}
-
-/* fieldset.css */
-.fieldset :external(input from "./input.css") {
-    width: 50%;
+```json
+{
+    "output" : "out.css",
+    
+    "postcss-modular-css": {
+        "json" : "./path/to/output.json"
+    }
 }
 ```
-
-More detailed descriptions are available in [docs/features.md](docs/features.md)
-
-## Why?
-
-CSS Modules doesn't support the features we need & has bugs blocking our usage.
-Attempts to fix those bugs have been unsuccessful for a variety of reasons.
-Thus, a perfect storm of compelling reasons to learn [PostCSS](http://postcss.org/) was found.
-
-Also because this:
-
-<p align="center">
-    <a href="https://twitter.com/iamdevloper/status/636455478093029376">
-        <img src="https://i.imgur.com/fcq3GsW.png" alt="Green pills look gross" />
-    </a>
-</p>
-
-## Thanks
-
-- [@JoshGalvin](https://github.com/JoshGalvin) for ideas/encouragement to do this silly thing.
-- The CSS modules team for inspiration!

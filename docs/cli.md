@@ -1,4 +1,12 @@
-# CLI Usage
+# Modular CSS CLI
+
+## Installation
+
+```bash
+$ npm i modular-css-cli
+```
+
+## Usage
 
 ```
 usage: modular-css [options] <glob>...

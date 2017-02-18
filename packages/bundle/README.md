@@ -25,6 +25,7 @@ A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/
 ## Features
 
 ### Composition
+
 ```css
 .red {
     color: red;
@@ -40,6 +41,7 @@ A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/
 ```
 
 ### Values
+
 ```css
 @value alert: #F00;
 
@@ -92,22 +94,3 @@ A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/
 ```
 
 More detailed descriptions are available in [docs/features.md](docs/features.md)
-
-## Why?
-
-CSS Modules doesn't support the features we need & has bugs blocking our usage.
-Attempts to fix those bugs have been unsuccessful for a variety of reasons.
-Thus, a perfect storm of compelling reasons to learn [PostCSS](http://postcss.org/) was found.
-
-Also because this:
-
-<p align="center">
-    <a href="https://twitter.com/iamdevloper/status/636455478093029376">
-        <img src="https://i.imgur.com/fcq3GsW.png" alt="Green pills look gross" />
-    </a>
-</p>
-
-## Thanks
-
-- [@JoshGalvin](https://github.com/JoshGalvin) for ideas/encouragement to do this silly thing.
-- The CSS modules team for inspiration!

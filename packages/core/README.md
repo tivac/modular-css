@@ -1,113 +1,140 @@
-modular-css [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https://www.npmjs.com/package/modular-css) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
+modular-css-core [![NPM Version](https://img.shields.io/npm/v/modular-css-core.svg)](https://www.npmjs.com/package/modular-css-core) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
 ===========
 <p align="center">
-    <a href="https://www.npmjs.com/package/modular-css" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-css.svg" /></a>
-    <a href="https://www.npmjs.com/package/modular-css" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-css.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css" alt="Dependency Status"><img src="https://img.shields.io/david/tivac/modular-css.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/modular-css.svg" /></a>
+    <a href="https://www.npmjs.com/package/modular-css-core" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-css-core.svg" /></a>
+    <a href="https://www.npmjs.com/package/modular-css-core" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-css-core.svg" /></a>
+    <a href="https://david-dm.org/tivac/modular-css-core" alt="Dependency Status"><img src="https://img.shields.io/david/tivac/modular-css-core.svg" /></a>
+    <a href="https://david-dm.org/tivac/modular-css-core#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/modular-css-core.svg" /></a>
 </p>
 
-A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/css-modules)
+The core functionality of [`modular-css`](https://npmjs.com/modular-css) exposed as a JS API.
 
 ## Install
 
-`$ npm i modular-css`
+`$ npm i modular-css-core`
 
 ## Usage
 
-- [API](docs/api.md)
-- [CLI](docs/cli.md)
-- [Browserify](docs/browserify.md) Plugin
-- [Rollup](docs/rollup.md) Plugin
-- [PostCSS](docs/postcss.md) Plugin
-- [Webpack 2](docs/webpack.md) Plugin
+Instantiate a new `Processor` instance, call it's `.file(<path>)` or `.string(<name>, <contents>)` methods, and then use the returned Promise to get access to the results/output.
 
-## Features
+```js
+var Processor = require("modular-css-core"),
+    processor = new Processor({
+        // See "API Options" for valid options to pass to the Processor constructor
+    });
 
-### Composition
-```css
-.red {
-    color: red;
-}
-
-.blue {
-    composes: red;
-
-    background: blue;
-}
-
-/* in the output .blue will be combination of both styles */
+// Add entries, either from disk using .file() or as strings with .string()
+Promise.all([
+    processor.file("./entry.css").then(function(result) {
+        // result now contains
+        //  .exports - Scoped selector mappings
+        //  .files - metadata about the file hierarchy
+    }),
+    processor.string("./fake-file.css", ".class { color: red; }")
+])
+.then(function() {
+    // Once all files are added, use .output() to get at the rewritten CSS
+    return processor.output();
+})
+.then(function(result) {
+    // Output CSS lives on the .css property
+    result.css;
+    
+    // Source map (if requested) lives on the .map property
+    result.map;
+});
 ```
 
-### Values
-```css
-@value alert: #F00;
+### Processor Options
 
-.alert {
-    color: alert;
-}
+#### `before`
 
-/* will output as */
+Specify an array of PostCSS plugins to be run against each file before it is processed.
 
-.alert {
-    color: #F00;
-}
+```js
+new Processor({
+    before : [ require("postcss-import") ]
+});
+```
+#### `after`
+
+Specify an array of PostCSS plugins to be run after files are processed, but before they are combined. Plugin will be passed a `to` and `from` option.
+
+**By default** [`postcss-url`](https://www.npmjs.com/package/postcss-url) is used in `after` mode.
+
+```js
+new Processor({
+    after : [ require("postcss-someplugin") ]
+});
 ```
 
-### Selector Scoping
+#### `done`
 
-```css
-.style {
-    color: red;
-}
+Specify an array of PostCSS plugins to be run against the complete combined CSS.
 
-:global(.style2) {
-    color: blue;
-}
-
-/* Will output as */
-
-/* Scoped with unique file-based prefix */
-.f5507abd_style {
-    color: red;
-}
-
-/* Remains unstyled due to :global() pseudo */
-.style2 {
-    color: blue;
-}
+```js
+new Processor({
+    done : [ require("cssnano")()]
+});
 ```
 
-### Style Overrides
-```css
-/* input.css */
-.input {
-    width: 100%;
-}
+#### `map`
 
-/* fieldset.css */
-.fieldset :external(input from "./input.css") {
-    width: 50%;
-}
+Enable source map generation. Can also be passed to `.output()`.
+
+**Default**: `false`
+
+```js
+new Processor({
+    map : true
+});
 ```
 
-More detailed descriptions are available in [docs/features.md](docs/features.md)
+#### `cwd`
 
-## Why?
+Specify the current working directory for this Processor instance, used when resolving `composes`/`@value` rules that reference other files.
 
-CSS Modules doesn't support the features we need & has bugs blocking our usage.
-Attempts to fix those bugs have been unsuccessful for a variety of reasons.
-Thus, a perfect storm of compelling reasons to learn [PostCSS](http://postcss.org/) was found.
+**Default**: `process.cwd()`
 
-Also because this:
+```js
+new Processor({
+    cwd : path.join(process.cwd(), "/sub/dir")
+})
+```
 
-<p align="center">
-    <a href="https://twitter.com/iamdevloper/status/636455478093029376">
-        <img src="https://i.imgur.com/fcq3GsW.png" alt="Green pills look gross" />
-    </a>
-</p>
+#### `namer`
 
-## Thanks
+Specify a function (that takes `filename` & `selector` as arguments to produce scoped selectors.
 
-- [@JoshGalvin](https://github.com/JoshGalvin) for ideas/encouragement to do this silly thing.
-- The CSS modules team for inspiration!
+**Default**: Function that returns `"mc" + unique-slug(<file>) + "_" + selector`
+
+```js
+new Processor({
+    namer : function(file, selector) {
+        return file.replace(/[:\/\\ .]/g, "") + "_" + selector;
+    }
+});
+```
+
+#### `resolvers`
+
+If you want to provide your own file resolution logic you can pass an array of resolver functions. Each resolver function receives three arguments:
+
+- `src`, the file that included `file`
+- `file, the file path being included by `src`
+- `resolve`, the default resolver function
+
+Resolver functions should either return an absolute path or a falsey value. They must also be synchronous.
+
+**Default**: See [/src/lib/resolve.js](/src/lib/resolve.js) for the default implementation.
+
+```js
+new Processor({
+    resolvers : [
+        (src, file, resolve) => ...,
+        require("modular-css-resolvepaths")(
+            "./some/other/path"
+        )
+    ]
+})
+```
