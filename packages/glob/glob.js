@@ -1,5 +1,5 @@
-/* eslint indent:off */
 "use strict";
+/* eslint indent:off */
 
 var globule = require("globule"),
     

@@ -20,7 +20,14 @@ function link(file, anchor) {
 
 // Every non-specimen JS file should start with "use strict";
 jsfiles
-    .filter((file) => file.indexOf("test/specimens") === -1)
+    .filter((file) => [
+            "test/specimens",
+            "test/results",
+            // since it has the node header
+            "cli.js",
+            // generated
+            "parser.js"
+        ].every((filter) => file.indexOf(filter) === -1))
     .forEach((file) => {
         var loc = fs.readFileSync(file, "utf8").indexOf(`"use strict";`);
 
