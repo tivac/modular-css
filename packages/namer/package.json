@@ -4,15 +4,8 @@
   "description": "Helper function to make tiny classnames for modular-css",
   "main": "index.js",
   "scripts": {
-    "commitmsg": "validate-commit-msg",
     "cover": "nyc mocha",
-    "lint": "eslint .",
-    "preview": "changes || true",
-    "test": "mocha",
-    "posttest": "npm run lint",
-    "preversion": "npm test",
-    "version": "changes",
-    "postversion": "git push --follow-tags"
+    "test": "mocha"
   },
   "repository": "tivac/modular-css-namer",
   "bugs": {
@@ -27,13 +20,8 @@
   "author": "Pat Cavit <pcavit@arena.net>",
   "license": "MIT",
   "devDependencies": {
-    "@studio/changes": "^1.1.0",
-    "eslint": "^3.12.2",
-    "eslint-config-arenanet": "^3.1.0",
-    "husky": "^0.13.1",
     "mocha": "^3.2.0",
-    "nyc": "^10.1.2",
-    "validate-commit-msg": "^2.11.1"
+    "nyc": "^10.1.2"
   },
   "dependencies": {
     "alphabet": "^1.0.0"
