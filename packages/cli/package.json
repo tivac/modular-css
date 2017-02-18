@@ -3,7 +3,9 @@
   "version": "4.0.0",
   "description": "CLI for modular-css",
   "main": "./cli.js",
-  "bin": "./cli.js",
+  "bin": {
+    "modular-css": "./cli.js"
+  },
   "repository": "tivac/modular-css",
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
