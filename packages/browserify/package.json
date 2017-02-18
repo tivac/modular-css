@@ -9,8 +9,7 @@
   },
   "scripts": {
     "cover": "nyc mocha",
-    "test": "mocha",
-    "version": "changes"
+    "test": "mocha"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
