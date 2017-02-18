@@ -4,10 +4,15 @@
   "description": "Helper function to make tiny classnames for modular-css",
   "main": "index.js",
   "scripts": {
-    "cover": "istanbul test --print both ./node_modules/mocha/bin/_mocha",
+    "commitmsg": "validate-commit-msg",
+    "cover": "nyc mocha",
     "lint": "eslint .",
+    "preview": "changes || true",
+    "test": "mocha",
+    "posttest": "npm run lint",
     "preversion": "npm test",
-    "test": "npm run lint && mocha"
+    "version": "changes",
+    "postversion": "git push --follow-tags"
   },
   "repository": "tivac/modular-css-namer",
   "bugs": {
@@ -22,11 +27,16 @@
   "author": "Pat Cavit <pcavit@arena.net>",
   "license": "MIT",
   "devDependencies": {
+    "@studio/changes": "^1.1.0",
     "eslint": "^3.12.2",
     "eslint-config-arenanet": "^3.1.0",
-    "istanbul": "^0.4.3",
+    "husky": "^0.13.1",
     "mocha": "^3.2.0",
-    "modular-css": "^3.0.0"
+    "nyc": "^10.1.2",
+    "validate-commit-msg": "^2.11.1"
+  },
+  "dependencies": {
+    "alphabet": "^1.0.0"
   },
   "eslintConfig": {
     "extends": "arenanet",
@@ -34,5 +44,21 @@
       "node": true,
       "mocha": true
     }
+  },
+  "nyc": {
+    "lines": 100,
+    "statements": 100,
+    "functions": 100,
+    "branches": 100,
+    "check-coverage": true,
+    "cache": true,
+    "reporter": [
+      "lcov",
+      "text-summary",
+      "text"
+    ],
+    "exclude": [
+      "test/**"
+    ]
   }
 }
