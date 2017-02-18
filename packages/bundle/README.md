@@ -1,11 +1,5 @@
-modular-css [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https://www.npmjs.com/package/modular-css) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
+modular-css  [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https://www.npmjs.com/package/modular-css) [![NPM License](https://img.shields.io/npm/l/modular-css.svg)](https://www.npmjs.com/package/modular-css) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css.svg)](https://www.npmjs.com/package/modular-css) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
 ===========
-<p align="center">
-    <a href="https://www.npmjs.com/package/modular-css" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-css.svg" /></a>
-    <a href="https://www.npmjs.com/package/modular-css" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-css.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css" alt="Dependency Status"><img src="https://img.shields.io/david/tivac/modular-css.svg" /></a>
-    <a href="https://david-dm.org/tivac/modular-css#info=devDependencies" alt="devDependency Status"><img src="https://img.shields.io/david/dev/tivac/modular-css.svg" /></a>
-</p>
 
 A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/css-modules)
 

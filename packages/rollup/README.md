@@ -1,15 +1,11 @@
-modular-css-rollup [![NPM Version](https://img.shields.io/npm/v/modular-css-rollup.svg)](https://www.npmjs.com/package/modular-css-rollup) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
+modular-css-rollup  [![NPM Version](https://img.shields.io/npm/v/modular-css-rollup.svg)](https://www.npmjs.com/package/modular-css-rollup) [![NPM License](https://img.shields.io/npm/l/modular-css-rollup.svg)](https://www.npmjs.com/package/modular-css-rollup) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-rollup.svg)](https://www.npmjs.com/package/modular-css-rollup) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
 ===========
-<p align="center">
-    <a href="https://www.npmjs.com/package/modular-css-rollup" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-css-rollup.svg" /></a>
-    <a href="https://www.npmjs.com/package/modular-css-rollup" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-css-rollup.svg" /></a>
-</p>
 
 `modular-css-rollup` provides a rollup build plugin you can use to transform imported `.css` files into lookup objects.
 
 ## Install
 
-`$ npm i modular-css`
+`$ npm i modular-css-rollup`
 
 ## Usage
 

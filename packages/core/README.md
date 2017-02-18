@@ -1,9 +1,5 @@
-modular-css-core [![NPM Version](https://img.shields.io/npm/v/modular-css-core.svg)](https://www.npmjs.com/package/modular-css-core) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
+modular-css-core  [![NPM Version](https://img.shields.io/npm/v/modular-css-core.svg)](https://www.npmjs.com/package/modular-css-core) [![NPM License](https://img.shields.io/npm/l/modular-css-core.svg)](https://www.npmjs.com/package/modular-css-core) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-core.svg)](https://www.npmjs.com/package/modular-css-core) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
 ===========
-<p align="center">
-    <a href="https://www.npmjs.com/package/modular-css-core" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-css-core.svg" /></a>
-    <a href="https://www.npmjs.com/package/modular-css-core" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-css-core.svg" /></a>
-</p>
 
 The core functionality of [`modular-css`](https://npmjs.com/modular-css) exposed as a JS API.
 

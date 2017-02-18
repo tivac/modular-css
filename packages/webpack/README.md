@@ -1,9 +1,5 @@
-modular-css-webpack [![NPM Version](https://img.shields.io/npm/v/modular-css-webpack.svg)](https://www.npmjs.com/package/modular-css-webpack) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
+modular-css-webpack  [![NPM Version](https://img.shields.io/npm/v/modular-css-webpack.svg)](https://www.npmjs.com/package/modular-css-webpack) [![NPM License](https://img.shields.io/npm/l/modular-css-webpack.svg)](https://www.npmjs.com/package/modular-css-webpack) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-webpack.svg)](https://www.npmjs.com/package/modular-css-webpack) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
 ===========
-<p align="center">
-    <a href="https://www.npmjs.com/package/modular-css-webpack" alt="NPM License"><img src="https://img.shields.io/npm/l/modular-css-webpack.svg" /></a>
-    <a href="https://www.npmjs.com/package/modular-css-webpack" alt="NPM Downloads"><img src="https://img.shields.io/npm/dm/modular-css-webpack.svg" /></a>
-</p>
 
 `modular-css-webpack/plugin` provides a webpack 2 plugin you can use to transform imported `.css` files into lookup objects while outputting CSS to disk.
 
