@@ -3,7 +3,7 @@
   "packages": [
     "packages/*"
   ],
-  "version": "4.0.3",
+  "version": "4.0.4",
   "commands": {
     "publish": {
       "message": "v%s"
