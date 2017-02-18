@@ -1,0 +1,37 @@
+{
+  "name": "modular-css",
+  "version": "3.2.0",
+  "description": "A streamlined reinterpretation of CSS Modules",
+  "main": "./index.js",
+  "bin": "./cli.js",
+  "repository": "tivac/modular-css",
+  "bugs": {
+    "url": "https://github.com/tivac/modular-css/issues"
+  },
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "license": "MIT",
+  "keywords": [
+    "css",
+    "css-modules",
+    "modular-css",
+    "postcss",
+    "postcss-plugin",
+    "browserify",
+    "rollup",
+    "rollup-plugin",
+    "webpack",
+    "webpack-loader",
+    "webpack-plugin",
+    "glob",
+    "cli"
+  ],
+  "dependencies": {
+    "modular-css-core": "^3.2.0",
+    "modular-css-cli": "^3.2.0",
+    "modular-css-glob": "^3.2.0",
+    "modular-css-rollup": "^3.2.0",
+    "modular-css-webpack": "^3.2.0",
+    "modular-cssify": "^3.2.0",
+    "postcss-modular-css": "^3.2.0"
+  }
+}

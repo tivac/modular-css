@@ -1,0 +1,17 @@
+@keyframes nooga {
+      0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.tooga {
+    animation: nooga 2s;
+}
+
+@-webkit-keyframes loadingSpinner {
+    from { background-position: 0px; }
+    to { background-position: -3968px;}
+}
+
+.looga {
+    -webkit-animation: loadingSpinner 2.5s steps(62) infinite;
+}

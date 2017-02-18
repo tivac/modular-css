@@ -1,0 +1,42 @@
+{
+  "name": "modular-cssify",
+  "version": "3.2.0",
+  "description": "Browserify transform for modular-css",
+  "main": "./browserify.js",
+  "repository": "tivac/modular-css",
+  "bugs": {
+    "url": "https://github.com/tivac/modular-css/issues"
+  },
+  "scripts": {
+    "cover": "nyc mocha",
+    "test": "mocha"
+  },
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "license": "MIT",
+  "keywords": [
+    "browserify",
+    "browserify-plugin",
+    "browserify-transform",
+    "css",
+    "css-modules",
+    "modular-css",
+    "postcss"
+  ],
+  "devDependencies": {
+    "browserify": "^14.0.0",
+    "factor-bundle": "^2.5.0",
+    "from2-string": "^1.1.0",
+    "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
+    "shelljs": "^0.7.3",
+    "test-utils": "^1.0.0",
+    "watchify": "^3.7.0"
+  },
+  "dependencies": {
+    "modular-css-core": "^3.2.0",
+    "lodash.foreach": "^4.0.0",
+    "mkdirp": "^0.5.1",
+    "sink-transform": "^2.0.0",
+    "through2": "^2.0.0"
+  }
+}

@@ -1,0 +1,2 @@
+.fooga { color: red; }
+.booga { composes: foo; }

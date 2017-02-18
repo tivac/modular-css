@@ -1,0 +1,35 @@
+{
+  "name": "modular-css-rollup",
+  "version": "3.2.0",
+  "description": "Add modular-css support to rollup",
+  "main": "./rollup.js",
+  "repository": "tivac/modular-css",
+  "bugs": {
+    "url": "https://github.com/tivac/modular-css/issues"
+  },
+  "scripts": {
+    "cover": "nyc mocha",
+    "test": "mocha"
+  },
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "license": "MIT",
+  "keywords": [
+    "rollup",
+    "rollup-plugin",
+    "css",
+    "css-modules",
+    "modular-css",
+    "postcss"
+  ],
+  "devDependencies": {
+    "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
+    "rollup": "^0.41.1",
+    "shelljs": "^0.7.3",
+    "test-utils": "^1.0.0"
+  },
+  "dependencies": {
+    "rollup-pluginutils": "^2.0.0",
+    "modular-css-core": "^3.2.0"
+  }
+}

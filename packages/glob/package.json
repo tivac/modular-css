@@ -1,0 +1,31 @@
+{
+  "name": "modular-css-glob",
+  "version": "3.2.0",
+  "description": "Glob support for modular-css",
+  "main": "./glob.js",
+  "repository": "tivac/modular-css",
+  "bugs": {
+    "url": "https://github.com/tivac/modular-css/issues"
+  },
+  "scripts": {
+    "cover": "nyc mocha",
+    "test": "mocha"
+  },
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "license": "MIT",
+  "keywords": [
+    "glob",
+    "css",
+    "css-modules",
+    "modular-css"
+  ],
+  "devDependencies": {
+    "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
+    "test-utils": "^1.0.0"
+  },
+  "dependencies": {
+    "modular-css-core": "^3.2.0",
+    "globule": "^1.0.0"
+  }
+}

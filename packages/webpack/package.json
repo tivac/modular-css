@@ -1,0 +1,38 @@
+{
+  "name": "modular-css-webpack",
+  "version": "3.2.0",
+  "description": "Webpack support for modular-css",
+  "main": "./index.js",
+  "repository": "tivac/modular-css",
+  "bugs": {
+    "url": "https://github.com/tivac/modular-css/issues"
+  },
+  "scripts": {
+    "cover": "nyc mocha",
+    "test": "mocha"
+  },
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "license": "MIT",
+  "keywords": [
+    "webpack",
+    "webpac-plugin",
+    "webpac-loader",
+    "css",
+    "css-modules",
+    "modular-css",
+    "postcss"
+  ],
+  "devDependencies": {
+    "dentist": "^1.0.3",
+    "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
+    "shelljs": "^0.7.3",
+    "webpack": "^2.2.1",
+    "test-utils": "^1.0.0"
+  },
+  "dependencies": {
+    "modular-css-core": "^3.2.0",
+    "loader-utils": "^0.2.16",
+    "webpack-sources": "^0.1.3"
+  }
+}
