@@ -6,10 +6,11 @@ node_js:
 - '6'
 - '4'
 
-# Don't want danger everywhere, just on Travis
 install:
+  # install root-level dependencies
+  - npm install
+  # install all the sub-package dependencies
   - npm run bootstrap
-  - npm install danger
 
 after_script:
   - npm run danger
