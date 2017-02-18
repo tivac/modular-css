@@ -1,4 +1,4 @@
-modular-css-namer
+modular-css-namer [![NPM Version](https://img.shields.io/npm/v/modular-css-namer.svg)](https://www.npmjs.com/package/modular-css-namer) [![NPM License](https://img.shields.io/npm/l/modular-css-namer.svg)](https://www.npmjs.com/package/modular-css-namer) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-namer.svg)](https://www.npmjs.com/package/modular-css-namer) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
 =================
 
 Tiny classnames for [`modular-css`](https://github.com/tivac/modular-css) builds!
