@@ -5,7 +5,6 @@
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
   },
-  "bin": "./bin/cli.js",
   "scripts": {
     "bootstrap": "lerna bootstrap --hoist",
     "commitmsg": "validate-commit-msg",

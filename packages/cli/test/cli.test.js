@@ -16,7 +16,7 @@ function success(out) {
     return out;
 }
 
-describe("/bin/cli.js", function() {
+describe("/cli.js", function() {
     after(() => require("shelljs").rm("-rf", "./test/output/cli"));
 
     it("should show help with no args", function() {
