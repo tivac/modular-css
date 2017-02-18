@@ -1,6 +1,6 @@
 {
   "name": "modular-css-core",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "A streamlined reinterpretation of CSS Modules",
   "main": "./processor.js",
   "repository": "tivac/modular-css",

@@ -1,13 +1,13 @@
 {
   "name": "test-utils",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "private": true,
   "description": "Test utilities for modular-css",
   "main": "compare.js",
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "dependencies": {
-    "modular-css-core": "^4.0.2"
+    "modular-css-core": "^4.0.3"
   },
   "devDependencies": {
     "mocha": "^3.2.0",
