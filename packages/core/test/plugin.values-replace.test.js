@@ -12,7 +12,7 @@ var path   = require("path"),
     exported   = require("../plugins/values-export.js"),
     namespaced = require("../plugins/values-namespaced.js"),
     
-    resolve = require("..//lib/resolve.js");
+    resolve = require("../lib/resolve.js").resolve;
 
 describe("/plugins", function() {
     describe("/values-replace.js", function() {

@@ -7,7 +7,7 @@ var Graph = require("dependency-graph").DepGraph,
     mapvalues = require("lodash.mapvalues"),
 
     message     = require("../lib/message.js"),
-    resolve     = require("../lib/resolve.js"),
+    resolve     = require("../lib/resolve.js").resolve,
     identifiers = require("../lib/identifiers.js"),
     
     parser = require("../parsers/parser.js"),

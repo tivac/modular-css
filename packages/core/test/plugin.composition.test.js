@@ -68,18 +68,9 @@ describe("/plugins", function() {
             assert.throws(() => out.css, /Invalid file reference/);
         });
 
-        it("should fail if composing from a file that doesn't exist", function() {
-            var out = process(".wooga { composes: googa from \"./fooga.css\"; }", {
-                    from  : "test/specimens/wooga.css",
-                    files : {}
-                });
-            
-            assert.throws(() => out.css, /Unable to locate/);
-        });
-
         it("should fail if non-existant imports are referenced", function() {
             var files = {},
-                out;
+            out;
                 
             files[path.resolve("./test/specimens/local.css")] = {
                 exports : {}
