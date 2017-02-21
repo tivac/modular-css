@@ -7,7 +7,6 @@ var Graph = require("dependency-graph").DepGraph,
     mapvalues = require("lodash.mapvalues"),
 
     message     = require("../lib/message.js"),
-    resolve     = require("../lib/resolve.js").resolve,
     identifiers = require("../lib/identifiers.js"),
     
     parser = require("../parsers/parser.js"),
@@ -48,7 +47,7 @@ module.exports = (css, result) => {
         }
 
         if(details.source) {
-            details.source = resolve(opts.from, details.source);
+            details.source = opts.resolve(opts.from, details.source);
 
             if(!opts.files || !opts.files[details.source]) {
                 throw decl.error("Invalid file reference", { word : decl.value });
