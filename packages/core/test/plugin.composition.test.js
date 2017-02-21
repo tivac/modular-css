@@ -5,6 +5,8 @@ var path   = require("path"),
 
     postcss = require("postcss"),
     
+    resolve = require("../lib/resolve.js").resolve,
+
     scoping     = require("../plugins/scoping.js"),
     composition = require("../plugins/composition.js");
 
@@ -23,10 +25,15 @@ describe("/plugins", function() {
         beforeEach(function() {
             var processor = postcss([ scoping, composition ]);
             
-            process = (css, opts) => processor.process(css, Object.assign(Object.create(null), {
-                namer : (file, selector) =>
-                    file ? `${path.basename(file, path.extname(file))}_${selector}` : selector
-            }, opts));
+            process = (css, opts) => processor.process(css, Object.assign(
+                Object.create(null),
+                {
+                    resolve,
+                    namer : (file, selector) =>
+                        file ? `${path.basename(file, path.extname(file))}_${selector}` : selector
+                },
+                opts
+            ));
         });
 
         it("should fail if the selector is not a simple, singular selector", function() {
