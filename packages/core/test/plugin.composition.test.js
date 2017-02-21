@@ -5,8 +5,8 @@ var path   = require("path"),
 
     postcss = require("postcss"),
     
-    scoping     = require("..//plugins/scoping.js"),
-    composition = require("..//plugins/composition.js");
+    scoping     = require("../plugins/scoping.js"),
+    composition = require("../plugins/composition.js");
 
 function msg(classes) {
     return {

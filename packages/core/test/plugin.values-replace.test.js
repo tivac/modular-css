@@ -6,11 +6,11 @@ var path   = require("path"),
     postcss = require("postcss"),
     dedent  = require("dentist").dedent,
 
-    plugin     = require("..//plugins/values-replace.js"),
-    local      = require("..//plugins/values-local.js"),
-    composed   = require("..//plugins/values-composed.js"),
-    exported   = require("..//plugins/values-export.js"),
-    namespaced = require("..//plugins/values-namespaced.js"),
+    plugin     = require("../plugins/values-replace.js"),
+    local      = require("../plugins/values-local.js"),
+    composed   = require("../plugins/values-composed.js"),
+    exported   = require("../plugins/values-export.js"),
+    namespaced = require("../plugins/values-namespaced.js"),
     
     resolve = require("..//lib/resolve.js");
 

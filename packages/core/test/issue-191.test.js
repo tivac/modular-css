@@ -5,7 +5,7 @@ var fs     = require("fs"),
     
     compare = require("./lib/compare.js"),
 
-    Processor = require("..//processor.js");
+    Processor = require("../processor.js");
 
 describe("/issues", function() {
     describe("/191", function() {

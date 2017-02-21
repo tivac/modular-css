@@ -5,8 +5,8 @@ var path   = require("path"),
 
     postcss = require("postcss"),
     
-    plugin  = require("..//plugins/externals.js"),
-    resolve = require("..//lib/resolve.js"),
+    plugin  = require("../plugins/externals.js"),
+    resolve = require("../lib/resolve.js").resolve,
     
     processor = postcss([ plugin ]);
 
