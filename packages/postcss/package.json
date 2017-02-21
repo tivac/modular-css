@@ -1,7 +1,7 @@
 {
   "name": "postcss-modular-css",
   "version": "4.1.0",
-  "description": "A streamlined reinterpretation of CSS Modules via CLI, API, Browserify, Rollup, Webpack, or PostCSS",
+  "description": "Use modular-css via postcss",
   "main": "./postcss.js",
   "repository": "tivac/modular-css",
   "bugs": {
