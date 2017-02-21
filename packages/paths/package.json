@@ -1,0 +1,32 @@
+{
+  "name": "modular-css-paths",
+  "version": "4.1.0",
+  "description": "A streamlined reinterpretation of CSS Modules via CLI, API, Browserify, Rollup, Webpack, or PostCSS",
+  "main": "./paths.js",
+  "repository": "tivac/modular-css",
+  "bugs": {
+    "url": "https://github.com/tivac/modular-css/issues"
+  },
+  "scripts": {
+    "cover": "nyc mocha",
+    "test": "mocha"
+  },
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "license": "MIT",
+  "keywords": [
+    "css",
+    "css-modules",
+    "modular-css",
+    "paths"
+  ],
+  "devDependencies": {
+    "dentist": "^1.0.3",
+    "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
+    "test-utils": "^4.0.4",
+    "modular-css-core": "^4.0.4"
+  },
+  "dependencies": {
+    "resolve-from": "^2.0.0"
+  }
+}
