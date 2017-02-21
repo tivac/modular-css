@@ -59,7 +59,7 @@ describe("/paths.js", function() {
             });
         
         return processor.string(
-            "./test/one/start.css",
+            "./test/specimens/one/start.css",
             dedent(`
                 @value sub from "./sub.css";
                 
@@ -69,6 +69,21 @@ describe("/paths.js", function() {
             `)
         )
         .then(() => processor.output())
-        .then((result) => console.log(result));
+        .then((result) => assert.deepEqual(
+            result.compositions,
+            {
+                "test/specimens/one/start.css" : {
+                    rule : "mc16fc57c4_two mc2632bbcb_rule"
+                },
+
+                "test/specimens/one/sub/sub.css" : {
+                    "sub" : "mc8e516949_sub"
+                },
+
+                "test/specimens/two/two.css" : {
+                    "two" : "mc16fc57c4_two"
+                }
+            }
+        ));
     });
 });
