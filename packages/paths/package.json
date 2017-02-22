@@ -1,6 +1,6 @@
 {
   "name": "modular-css-paths",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "A streamlined reinterpretation of CSS Modules via CLI, API, Browserify, Rollup, Webpack, or PostCSS",
   "main": "./paths.js",
   "repository": "tivac/modular-css",
@@ -23,8 +23,8 @@
     "dentist": "^1.0.3",
     "mocha": "^3.2.0",
     "nyc": "^10.1.2",
-    "test-utils": "^4.0.4",
-    "modular-css-core": "^4.0.4"
+    "test-utils": "^4.0.5",
+    "modular-css-core": "^4.0.5"
   },
   "dependencies": {
     "resolve-from": "^2.0.0"
