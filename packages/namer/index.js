@@ -1,40 +1,50 @@
 "use strict";
 
-var alphabet = require("alphabet"),
-    length   = alphabet.lower.length;
+var alphabet   = require("alphabet"),
+    letters    = alphabet,
+    everything = letters.concat(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+function value(source, count) {
+    var out = "";
+
+     // Keep adding letters until we're done
+    while(count >= 0) {
+        out += source[Math.min(count, source.length - 1)];
+
+        count -= source.length;
+    }
+
+    return out;
+}
 
 module.exports = function() {
-    var files = {};
+    var meta  = {},
+        cache = {};
     
     return function namer(file, selector) {
-        var prefix = "",
-            current, id;
+        var key = `${file}${selector}`,
+            current;
         
-        if(!files[file]) {
-            files[file] = {
-                id        : Object.keys(files).length,
+        if(key in cache) {
+            return cache[key];
+        }
+        
+        if(!meta[file]) {
+            meta[file] = {
+                id        : Object.keys(meta).length,
                 selectors : {}
             };
         }
 
-        current = files[file];
-        id = current.id;
+        current = meta[file];
         
         // Has to use "in" because they can be 0 which is falsey
         if(!(selector in current.selectors)) {
             current.selectors[selector] = Object.keys(current.selectors).length;
         }
 
-        // Keep adding letters until we're done
-        while(id >= length) {
-            prefix += alphabet.lower[length - 1];
+        cache[key] = value(letters, current.id) + value(everything, current.selectors[selector]);
 
-            id -= length;
-        }
-
-        prefix += alphabet.lower[id];
-        
-        // Use "_" to split parts so it's never ambiguous which is file and which is selector
-        return `${prefix}${current.selectors[selector]}`;
+        return cache[key];
     };
 };

@@ -5,52 +5,48 @@ var assert = require("assert"),
     namer = require("../");
 
 describe("modular-css-namer", function() {
-    beforeEach(function() {
-        this.namer = namer();
-    });
+    var fn;
+    
+    beforeEach(() => (fn = namer()));
     
     it("should hash its arguments", function() {
-        assert.equal(this.namer("./fooga", ".fooga"), "a0");
+        assert.equal(fn("./fooga", ".fooga"), "AA");
     });
     
-    it("should re-use prefixes for files w/ the same path", function() {
-        var one = this.namer("./fooga", ".fooga"),
-            two = this.namer("./fooga", ".booga");
+    it("should differ within files", function() {
+        var one = fn("./fooga", ".fooga"),
+            two = fn("./fooga", ".booga");
         
-        assert.equal(one, "a0");
-        assert.equal(two, "a1");
+        assert.equal(one, "AA");
+        assert.equal(two, "AB");
     });
     
-    it("should re-use suffixes for identical selectors", function() {
-        var one = this.namer("./fooga", ".fooga"),
-            two = this.namer("./booga", ".fooga");
+    it("should re-use selectors for identical inputs", function() {
+        var one = fn("./fooga", ".fooga"),
+            two = fn("./fooga", ".fooga");
         
-        assert.equal(one, "a0");
-        assert.equal(two, "b0");
+        assert.equal(one, "AA");
+        assert.equal(two, "AA");
+    });
+
+    it("should differ between files", function() {
+        assert.equal(fn("./fooga", ".fooga"), "AA");
+        assert.equal(fn("./booga", ".fooga"), "BA");
     });
     
-    it("should increment file counters", function() {
-        assert.equal(this.namer("./fooga", ".fooga"), "a0");
-        assert.equal(this.namer("./booga", ".fooga"), "b0");
-    });
-    
-    it("should increment selector counters", function() {
-        assert.equal(this.namer("./fooga", ".fooga"), "a0");
-        assert.equal(this.namer("./fooga", ".booga"), "a1");
-    });
-    
-    it("should increase the prefix as necessary", function() {
+    it("should wrap as necessary", function() {
         var x, y;
         
-        for(x = 0; x < 50; x++) {
-            for(y = 0; y < 50; y++) {
-                this.namer("./fooga" + x, ".fooga" + y);
+        for(x = 0; x < 100; x++) {
+            for(y = 0; y < 100; y++) {
+                fn("./fooga" + x, ".fooga" + y);
             }
         }
         
-        assert.equal(this.namer("./fooga" + 15, ".fooga" + 5), "p5");
-        assert.equal(this.namer("./fooga" + 1, ".fooga" + 5), "b5");
-        assert.equal(this.namer("./fooga" + 49, ".fooga" + 33), "zx33");
-        assert.equal(this.namer("./fooga" + 26, ".fooga" + 0), "za0");
+        assert.equal(fn("./fooga" + 15, ".fooga" + 5), "PF");
+        assert.equal(fn("./fooga" + 1, ".fooga" + 5), "BF");
+        assert.equal(fn("./fooga" + 49, ".fooga" + 33), "xh");
+        assert.equal(fn("./fooga" + 55, ".fooga" + 63), "zD9B");
+        assert.equal(fn("./fooga" + 26, ".fooga" + 0), "aA");
     });
 });
