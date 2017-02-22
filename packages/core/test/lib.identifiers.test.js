@@ -2,7 +2,7 @@
 
 var assert = require("assert"),
 
-    identifiers = require("..//lib/identifiers.js");
+    identifiers = require("../lib/identifiers.js");
 
 describe("/lib", function() {
     describe("/identifiers.js", function() {

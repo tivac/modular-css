@@ -1,8 +1,8 @@
 {
-  "name": "postcss-modular-css",
+  "name": "modular-css-paths",
   "version": "4.1.0",
-  "description": "Use modular-css via postcss",
-  "main": "./postcss.js",
+  "description": "A streamlined reinterpretation of CSS Modules via CLI, API, Browserify, Rollup, Webpack, or PostCSS",
+  "main": "./paths.js",
   "repository": "tivac/modular-css",
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
@@ -17,16 +17,16 @@
     "css",
     "css-modules",
     "modular-css",
-    "postcss"
+    "paths"
   ],
   "devDependencies": {
+    "dentist": "^1.0.3",
     "mocha": "^3.2.0",
     "nyc": "^10.1.2",
-    "test-utils": "^4.0.4"
+    "test-utils": "^4.0.4",
+    "modular-css-core": "^4.0.4"
   },
   "dependencies": {
-    "modular-css-core": "^4.0.4",
-    "mkdirp": "^0.5.1",
-    "postcss": "^5.2.5"
+    "resolve-from": "^2.0.0"
   }
 }

@@ -4,7 +4,7 @@ var fs      = require("fs"),
     path    = require("path"),
     assert  = require("assert"),
     
-    Processor = require("..//processor.js"),
+    Processor = require("../processor.js"),
     
     compare = require("./lib/compare.js");
 
@@ -203,7 +203,7 @@ describe("/processor.js", function() {
             });
         });
 
-        describe(".resolve()", function() {
+        describe("._resolve()", function() {
             it("should run resolvers until a match is found", function() {
                 var ran = false,
 
@@ -219,7 +219,7 @@ describe("/processor.js", function() {
                     });
                 
                 assert.equal(
-                    processor.resolve(
+                    processor._resolve(
                         require.resolve("./specimens/simple.css"),
                         "./local.css"
                     ),
@@ -237,7 +237,7 @@ describe("/processor.js", function() {
                     });
                 
                 assert.equal(
-                    processor.resolve(
+                    processor._resolve(
                         require.resolve("./specimens/simple.css"),
                         "./local.css"
                     ),

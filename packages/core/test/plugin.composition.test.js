@@ -5,8 +5,10 @@ var path   = require("path"),
 
     postcss = require("postcss"),
     
-    scoping     = require("..//plugins/scoping.js"),
-    composition = require("..//plugins/composition.js");
+    resolve = require("../lib/resolve.js").resolve,
+
+    scoping     = require("../plugins/scoping.js"),
+    composition = require("../plugins/composition.js");
 
 function msg(classes) {
     return {
@@ -23,10 +25,15 @@ describe("/plugins", function() {
         beforeEach(function() {
             var processor = postcss([ scoping, composition ]);
             
-            process = (css, opts) => processor.process(css, Object.assign(Object.create(null), {
-                namer : (file, selector) =>
-                    file ? `${path.basename(file, path.extname(file))}_${selector}` : selector
-            }, opts));
+            process = (css, opts) => processor.process(css, Object.assign(
+                Object.create(null),
+                {
+                    resolve,
+                    namer : (file, selector) =>
+                        file ? `${path.basename(file, path.extname(file))}_${selector}` : selector
+                },
+                opts
+            ));
         });
 
         it("should fail if the selector is not a simple, singular selector", function() {
@@ -68,18 +75,9 @@ describe("/plugins", function() {
             assert.throws(() => out.css, /Invalid file reference/);
         });
 
-        it("should fail if composing from a file that doesn't exist", function() {
-            var out = process(".wooga { composes: googa from \"./fooga.css\"; }", {
-                    from  : "test/specimens/wooga.css",
-                    files : {}
-                });
-            
-            assert.throws(() => out.css, /Unable to locate/);
-        });
-
         it("should fail if non-existant imports are referenced", function() {
             var files = {},
-                out;
+            out;
                 
             files[path.resolve("./test/specimens/local.css")] = {
                 exports : {}

@@ -6,7 +6,7 @@ var fs      = require("fs"),
 
     leading = require("dentist").dedent,
     
-    Processor = require("..//processor.js"),
+    Processor = require("../processor.js"),
     
     compare = require("./lib/compare.js");
 
@@ -50,14 +50,15 @@ describe("/processor.js", function() {
         });
         
         describe("bad imports", function() {
-            var invalid = `Unable to locate "../local.css" from "${path.resolve("invalid")}"`;
-            
             it("should fail if a value imports a non-existant reference", function() {
                 return this.processor.string(
                     "./invalid/value.css",
                     "@value not-real from \"../local.css\";"
                 )
-                .catch((error) => assert.equal(error.message, invalid));
+                .catch((error) => assert.equal(
+                    error.message,
+                    `Unable to locate "../local.css" from "${path.resolve("./invalid/value.css")}"`
+                ));
             });
             
             it("should fail if a composition imports a non-existant reference", function() {
@@ -65,7 +66,10 @@ describe("/processor.js", function() {
                     "./invalid/composition.css",
                     ".wooga { composes: fake from \"../local.css\"; }"
                 )
-                .catch((error) => assert.equal(error.message, invalid));
+                .catch((error) => assert.equal(
+                    error.message,
+                    `Unable to locate "../local.css" from "${path.resolve("./invalid/composition.css")}"`
+                ));
             });
         });
 

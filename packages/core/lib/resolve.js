@@ -2,15 +2,25 @@
 
 var path = require("path"),
 
-    find = require("resolve-from");
+    resolve = require("resolve-from");
 
-module.exports = function resolve(src, file) {
-    var dir   = path.dirname(src),
-        found = find(dir, file);
+exports.resolve = (src, file) =>
+    resolve(path.dirname(src), file);
 
-    if(!found) {
-        throw new Error("Unable to locate \"" + file + "\" from \"" + dir + "\"");
-    }
+exports.resolvers = (resolvers) => {
+    resolvers.push(exports.resolve);
     
-    return found;
+    return (src, file) => {
+        var result;
+    
+        resolvers.some((fn) =>
+            (result = fn(src, file, exports.resolve))
+        );
+        
+        if(!result) {
+            throw new Error(`Unable to locate "${file}" from "${src}"`);
+        }
+
+        return result;
+    };
 };

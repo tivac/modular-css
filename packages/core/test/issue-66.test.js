@@ -2,7 +2,7 @@
 
 var assert = require("assert"),
     
-    Processor = require("..//processor.js");
+    Processor = require("../processor.js");
 
 describe("/issues", function() {
     describe("/66", function() {
