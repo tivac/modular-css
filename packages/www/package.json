@@ -8,7 +8,8 @@
     "prepublish": "npm run build",
     "publish": "surge",
     "build": "rollup -c",
-    "watch": "rollup -c --watch"
+    "watch": "rollup -c --watch",
+    "start": "live-server --no-browser --entry-file=index.html --watch=gen"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
@@ -21,6 +22,7 @@
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-json": "^2.1.0",
     "rollup-plugin-node-builtins": "^2.1.0",
+    "rollup-plugin-node-globals": "^1.1.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-watch": "^3.2.2",
     "surge": "^0.18.0"
