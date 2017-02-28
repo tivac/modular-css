@@ -7,16 +7,20 @@
   "scripts": {
     "prepublish": "npm run build",
     "publish": "surge",
-    "build": "rollup -c",
-    "watch": "rollup -c --watch",
-    "start": "live-server --no-browser --entry-file=index.html --watch=gen"
+    "build": "browserify index.js -o gen/app.js",
+    "watch": "watchify index.js -o gen/app.js",
+    "start": "beefy index.js -- -o gen/app.js"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "dependencies": {
-    "modular-css-core": "^4.0.0"
+    "codemirror": "^5.24.2",
+    "mithril": "^1.0.1",
+    "modular-css-core": "^4.0.0",
+    "prismjs": "^1.6.0"
   },
   "devDependencies": {
+    "beefy": "^2.1.8",
     "live-server": "^1.2.0",
     "modular-css-rollup": "^4.0.0",
     "rollup": "^0.41.4",
@@ -26,6 +30,7 @@
     "rollup-plugin-node-globals": "^1.1.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-watch": "^3.2.2",
-    "surge": "^0.18.0"
+    "surge": "^0.18.0",
+    "watchify": "^3.9.0"
   }
 }
