@@ -7,8 +7,8 @@
   "scripts": {
     "prepublish": "npm run build",
     "publish": "surge",
-    "build": "browserify index.js -o gen/app.js",
-    "watch": "watchify index.js -o gen/app.js",
+    "build": "browserify -p [ modular-cssify --css \"./gen/style.css\" ] index.js -o gen/app.js",
+    "watch": "watchify -p [ modular-cssify --css \"./gen/style.css\" ] index.js -o gen/app.js",
     "start": "beefy index.js -- -o gen/app.js"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
@@ -24,6 +24,7 @@
     "live-server": "^1.2.0",
     "modular-css-rollup": "^4.0.0",
     "rollup": "^0.41.4",
+    "modular-cssify": "^4.0.0",
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-json": "^2.1.0",
     "rollup-plugin-node-builtins": "^2.1.0",

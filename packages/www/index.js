@@ -3,6 +3,8 @@ var Processor = require("modular-css-core");
 var cm = require("codemirror");
 var prism = require("prismjs");
 
+var css = require("./style.css");
+
 var files = [
     { name : "test.css", css : "" }
 ];
