@@ -1,0 +1,20 @@
+{
+  "name": "www",
+  "version": "1.0.0",
+  "private": true,
+  "description": "web site for modular-css",
+  "main": "index.js",
+  "scripts": {
+    "publish": "surge"
+  },
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "license": "MIT",
+  "dependencies": {
+    "modular-css-core": "^4.1.0"
+  },
+  "devDependencies": {
+    "rollup": "^0.41.4",
+    "rollup-plugin-commonjs": "^7.0.0",
+    "surge": "^0.18.0"
+  }
+}
