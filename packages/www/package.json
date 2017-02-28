@@ -17,6 +17,7 @@
     "modular-css-core": "^4.0.0"
   },
   "devDependencies": {
+    "live-server": "^1.2.0",
     "modular-css-rollup": "^4.0.0",
     "rollup": "^0.41.4",
     "rollup-plugin-commonjs": "^7.0.0",
