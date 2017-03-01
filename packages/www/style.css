@@ -27,13 +27,26 @@ body {
     margin-top: 20px;
 }
 
-.name {
-    height: 3em;
-    width: 100%;
+.meta {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: space-between;
+    justify-content: center;
+    
     margin-bottom: 5px;
+}
+
+.name {
+    flex: 2;
+    height: 3em;
     padding: 5px;
  
     border: 1px solid #666;
+}
+
+.remove {
+    color: red;
 }
 
 :global(.CodeMirror) {
