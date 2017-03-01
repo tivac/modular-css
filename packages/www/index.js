@@ -7,19 +7,29 @@ var m = require("mithril"),
     css = require("./style.css"),
 
     files = [
-        { name : "test.css", css : "" }
+        { name : "1.css", css : "" }
     ],
-    output = "",
+    output = {
+        css : "",
+        js  : false
+    },
     error,
     throttled;
+
+require("module")._nodeModulePaths = () => [ "/" ];
+require("module")._resolveFilename = (id) => id.slice(1);
 
 function process() {
     var processor = new Processor();
     
     Promise.all(files.map((file) => processor.string(file.name, file.css)))
-    .then(() => processor.output())
+    .then(() => {
+        return processor.output();
+    })
     .then((result) => {
-        output = result.css;
+        output.css = result.css;
+        output.js  = JSON.stringify(result.compositions, null, 4);
+        
         error = false;
     })
     .catch((e) => (error = e.toString()))
@@ -31,6 +41,15 @@ throttled = throttle(process, 200);
 m.mount(document.body, {
     view : () => m("div", { class : css.content },
         m("div", { class : css.files },
+            m("button", {
+                class : css.add,
+
+                onclick : () => files.push({
+                    name : `${files.length + 1}.css`,
+                    css  : ""
+                })
+            }, "Add file"),
+
             files.map((file) => m("div", { class : css.file },
                 m("input", {
                     class    : css.name,
@@ -51,21 +70,22 @@ m.mount(document.body, {
                     },
                     file.css
                 )
-            )),
-
-            m("button", {
-                onclick : () => files.push({
-                    name : `file-${files.length}.css`,
-                    css  : ""
-                })
-            }, "Add file")
+            ))
         ),
 
         m("div", { class : css.output },
-            error && m("div", { class : css.error },
-                m("pre", error)
-            ),
-            m("pre", m("code", { class : "language-css" }, output))
+            error && [
+                m("h2", "Error"),
+                m("div", { class : css.error },
+                    m("pre", error)
+                )
+            ],
+            
+            m("h2", "CSS Output"),
+            m("pre", m("code", { class : "language-css" }, output.css)),
+            
+            m("h2", "JSON Output"),
+            m("pre", m("code", { class : "language-json" }, output.js))
         )
     )
 });

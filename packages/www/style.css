@@ -16,7 +16,11 @@ body {
     display: flex;
     flex-direction: column;
 
-    margin-right: 10px;
+    margin: 10px;
+}
+
+.add {
+    margin-bottom: 10px;
 }
 
 .file + .file {
