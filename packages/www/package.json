@@ -5,11 +5,11 @@
   "description": "web site for modular-css",
   "main": "index.js",
   "scripts": {
-    "prepublish": "npm run build",
+    "build": "browserify --plugin [ modular-cssify --css \"./gen/style.css\" ] index.js -o gen/app.js",
+    "compress": "buble -i gen/app.js -o gen/app.js && uglifyjs gen/app.js --compress --mangle --source-map=./gen/app.js.map --in-source-map=gen/app.js.map --output=gen/app.js",
+    "prepublish": "npm run build && npm run compress",
     "publish": "surge",
-    "build": "browserify -p [ modular-cssify --css \"./gen/style.css\" ] index.js -o gen/app.js",
-    "watch": "watchify -p [ modular-cssify --css \"./gen/style.css\" ] index.js -o gen/app.js",
-    "start": "beefy index.js -- -o gen/app.js"
+    "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/style.css\" ]"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
@@ -17,21 +17,13 @@
     "codemirror": "^5.24.2",
     "mithril": "^1.0.1",
     "modular-css-core": "^4.0.0",
-    "prismjs": "^1.6.0"
+    "throttleit": "^1.0.0"
   },
   "devDependencies": {
-    "beefy": "^2.1.8",
-    "live-server": "^1.2.0",
-    "modular-css-rollup": "^4.0.0",
-    "rollup": "^0.41.4",
+    "buble": "^0.15.2",
     "modular-cssify": "^4.0.0",
-    "rollup-plugin-commonjs": "^7.0.0",
-    "rollup-plugin-json": "^2.1.0",
-    "rollup-plugin-node-builtins": "^2.1.0",
-    "rollup-plugin-node-globals": "^1.1.0",
-    "rollup-plugin-node-resolve": "^2.0.0",
-    "rollup-watch": "^3.2.2",
+    "rum": "^3.0.0",
     "surge": "^0.18.0",
-    "watchify": "^3.9.0"
+    "uglify-js": "^2.8.2"
   }
 }
