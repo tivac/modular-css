@@ -15,8 +15,8 @@ module.exports = (cwd) => {
     };
 
     out.results = function(name1, name2) {
-        var path1 = path.join(cwd, "./test/output", name1),
-            path2 = path.join(cwd, "./test/results", name2 || name1);
+        var path1 = path.join(cwd, "./output", name1),
+            path2 = path.join(cwd, "./results", name2 || name1);
 
         return out.paths(path1, path2);
     };
@@ -30,7 +30,7 @@ module.exports = (cwd) => {
     };
 
     out.contains = function(haystack, name) {
-        var needle = fs.readFileSync(path.join(cwd, "./test/results", name), "utf8");
+        var needle = fs.readFileSync(path.join(cwd, "./results", name), "utf8");
         
         expect(haystack).toMatch(needle);
     };
