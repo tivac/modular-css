@@ -1,0 +1,63 @@
+body {
+    background: #CCC;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.files {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    margin: 10px;
+}
+
+.add {
+    margin-bottom: 10px;
+}
+
+.file + .file {
+    margin-top: 20px;
+}
+
+.meta {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: space-between;
+    justify-content: center;
+    
+    margin-bottom: 5px;
+}
+
+.name {
+    flex: 2;
+    height: 3em;
+    padding: 5px;
+ 
+    border: 1px solid #666;
+}
+
+.remove {
+    color: red;
+}
+
+:global(.CodeMirror) {
+    border: 1px solid #666;
+}
+
+.output {
+    flex: 1;
+}
+
+/* Since modular-css uses some non-standard things */
+:global(.CodeMirror .cm-property.cm-error) {
+    background: transparent;
+}

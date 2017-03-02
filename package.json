@@ -41,7 +41,8 @@
       "Promise": true
     },
     "rules": {
-      "prefer-template": "off"
+      "prefer-template": "off",
+      "ident": "off"
     }
   },
   "nyc": {

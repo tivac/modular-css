@@ -1,0 +1,29 @@
+{
+  "name": "www",
+  "version": "1.0.0",
+  "private": true,
+  "description": "web site for modular-css",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify --plugin [ modular-cssify --css \"./gen/style.css\" ] index.js -o gen/app.js",
+    "compress": "buble -i gen/app.js -o gen/app.js && uglifyjs gen/app.js --compress --mangle --source-map=./gen/app.js.map --in-source-map=gen/app.js.map --output=gen/app.js",
+    "predeploy": "npm run build && npm run compress",
+    "deploy": "surge",
+    "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/style.css\" --no-cache ]"
+  },
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "license": "MIT",
+  "dependencies": {
+    "codemirror": "^5.24.2",
+    "mithril": "^1.0.1",
+    "modular-css-core": "^4.0.0",
+    "throttleit": "^1.0.0"
+  },
+  "devDependencies": {
+    "buble": "^0.15.2",
+    "modular-cssify": "^4.0.0",
+    "rum": "^3.0.0",
+    "surge": "^0.18.0",
+    "uglify-js": "^2.8.2"
+  }
+}

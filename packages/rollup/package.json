@@ -24,7 +24,7 @@
   "devDependencies": {
     "mocha": "^3.2.0",
     "nyc": "^10.1.2",
-    "rollup": "^0.41.1",
+    "rollup": "^0.41.4",
     "shelljs": "^0.7.3",
     "test-utils": "^4.0.5"
   },
