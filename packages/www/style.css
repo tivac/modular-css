@@ -1,5 +1,31 @@
+@value buttonCss: "./button.css";
+
+html {
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
 body {
-    background: #CCC;
+    background: #242424;
+    color: #F6F3E8;
+}
+
+.head {
+    margin-top: 0;
+    padding: 15px 10px;
+    
+    background: #384048;
+    color: #A0A8B0;
+
+    border-bottom: 2px solid #00A0E0;
+}
+
+.subhead {
+    font-size: 60%;
 }
 
 .content {
@@ -11,7 +37,7 @@ body {
     align-items: flex-start;
 }
 
-.files {
+.column {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -19,8 +45,18 @@ body {
     margin: 10px;
 }
 
+.files,
+.output {
+    composes: column;
+}
+
 .add {
+    composes: button from buttonCss;
+
     margin-bottom: 10px;
+    background: #95E454;
+
+    font-weight: bold;
 }
 
 .file + .file {
@@ -39,25 +75,71 @@ body {
 
 .name {
     flex: 2;
-    height: 3em;
     padding: 5px;
+
+    background: #343434;
+    color: #F6F3E8;
  
     border: 1px solid #666;
+    border-radius: 2px;
 }
 
 .remove {
-    color: red;
+    composes: button from buttonCss;
+
+    background: #F08080;
+}
+
+.name + .remove {
+    margin-left: 10px;
+}
+
+.tab {
+    padding: 10px 15px;
+    
+    background: #444444;
+    border: 1px solid #666;
+    color: #99968B;
+
+    cursor: pointer;
+}
+
+.active {
+    composes: tab;
+
+    color: #F6F3E8;
+    background: #656565;
+}
+
+.panel {
+    
+}
+
+.errors {
+    margin: 0;
+    padding: 10px;
+
+    min-height: 500px;
+
+    border: 1px solid #666;
+    color: #F08080;
+
+    white-space: pre-wrap;
+}
+
+.panel :global(.CodeMirror) {
+    min-height: 500px;
 }
 
 :global(.CodeMirror) {
     border: 1px solid #666;
 }
 
-.output {
-    flex: 1;
-}
-
 /* Since modular-css uses some non-standard things */
 :global(.CodeMirror .cm-property.cm-error) {
     background: transparent;
+}
+
+:global(.cm-s-monokai.CodeMirror) {
+    background: #242424;
 }

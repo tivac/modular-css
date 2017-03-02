@@ -6,10 +6,11 @@
   "main": "index.js",
   "scripts": {
     "build": "browserify --plugin [ modular-cssify --css \"./gen/style.css\" ] index.js -o gen/app.js",
+    "watch": "watchify --plugin [ modular-cssify --css \"./gen/style.css\" --no-cache] index.js -o gen/app.js",
     "compress": "buble -i gen/app.js -o gen/app.js && uglifyjs gen/app.js --compress --mangle --source-map=./gen/app.js.map --in-source-map=gen/app.js.map --output=gen/app.js",
     "predeploy": "npm run build && npm run compress",
     "deploy": "surge",
-    "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/style.css\" --no-cache ]"
+    "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/style.css\" ]"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
@@ -24,6 +25,7 @@
     "modular-cssify": "^4.2.1",
     "rum": "^3.0.0",
     "surge": "^0.18.0",
-    "uglify-js": "^2.8.2"
+    "uglify-js": "^2.8.2",
+    "watchify": "^3.9.0"
   }
 }
