@@ -16,6 +16,10 @@ var m = require("mithril"),
     error,
     throttled;
 
+// Load up codemirror modes
+require("codemirror/mode/css/css.js");
+require("codemirror/mode/javascript/javascript.js");
+
 // Hacks to get file resolution to work
 require("module")._nodeModulePaths = () => [ "/" ];
 require("module")._resolveFilename = (id) => id.slice(1);
@@ -28,9 +32,9 @@ function process() {
         return processor.output();
     })
     .then((result) => {
-        output.css = result.css;
-        output.js  = JSON.stringify(result.compositions, null, 4);
-        
+        output.css  = result.css;
+        output.json = JSON.stringify(result.compositions, null, 4);
+
         m.route.set(`/?${m.buildQueryString({ state : btoa(JSON.stringify(files)) })}`);
 
         error = false;
@@ -90,7 +94,7 @@ m.route(document.body, "/", {
                     m("textarea", {
                             oncreate : (vnode) => {
                                 var editor = cm.fromTextArea(vnode.dom, {
-                                        mode        : "css",
+                                        mode        : "text/css",
                                         theme       : "monokai",
                                         lineNumbers : true,
                                         autofocus   : true
@@ -117,18 +121,34 @@ m.route(document.body, "/", {
                 ],
                 
                 m("h2", "CSS Output"),
-                m("pre.line-numbers",
-                    m("code", { class : "language-css" },
-                        output.css || "/* Nothing yet... */"
-                    )
-                ),
                 
-                m("h2", "JSON Output"),
-                m("pre.line-numbers",
-                    m("code", { class : "language-js" },
-                        output.js || "// Nothing yet..."
-                    )
-                )
+                m("textarea", {
+                    oncreate : (vnode) => {
+                        vnode.state.editor = cm.fromTextArea(vnode.dom, {
+                            mode        : "text/css",
+                            theme       : "monokai",
+                            lineNumbers : true,
+                            readOnly    : "nocursor"
+                        });
+                    },
+
+                    onupdate : (vnode) => vnode.state.editor.doc.setValue(output.css)
+                }, output.css),
+                
+                m("h2", "Compositions"),
+                
+                m("textarea", {
+                    oncreate : (vnode) => {
+                        vnode.state.editor = cm.fromTextArea(vnode.dom, {
+                            mode        : "application/json",
+                            theme       : "monokai",
+                            lineNumbers : true,
+                            readOnly    : "nocursor"
+                        });
+                    },
+
+                    onupdate : (vnode) => vnode.state.editor.doc.setValue(output.json)
+                }, output.json)
             )
         )
     }
