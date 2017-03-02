@@ -1,6 +1,6 @@
 {
   "name": "www",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "web site for modular-css",
   "main": "index.js",
@@ -16,12 +16,12 @@
   "dependencies": {
     "codemirror": "^5.24.2",
     "mithril": "^1.0.1",
-    "modular-css-core": "^4.0.0",
+    "modular-css-core": "^4.0.6",
     "throttleit": "^1.0.0"
   },
   "devDependencies": {
     "buble": "^0.15.2",
-    "modular-cssify": "^4.2.0",
+    "modular-cssify": "^4.2.1",
     "rum": "^3.0.0",
     "surge": "^0.18.0",
     "uglify-js": "^2.8.2"

@@ -1,6 +1,6 @@
 {
   "name": "postcss-modular-css",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "Use modular-css via postcss",
   "main": "./postcss.js",
   "repository": "tivac/modular-css",
@@ -22,10 +22,10 @@
   "devDependencies": {
     "mocha": "^3.2.0",
     "nyc": "^10.1.2",
-    "test-utils": "^4.0.5"
+    "test-utils": "^4.0.6"
   },
   "dependencies": {
-    "modular-css-core": "^4.0.5",
+    "modular-css-core": "^4.0.6",
     "mkdirp": "^0.5.1",
     "postcss": "^5.2.5"
   }
