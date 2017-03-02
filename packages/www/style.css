@@ -24,6 +24,17 @@ body {
     border-bottom: 2px solid #00A0E0;
 }
 
+.head a,
+.head a:active,
+.head a:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
+.head a:hover {
+    text-decoration: underline;
+}
+
 .subhead {
     font-size: 60%;
 }

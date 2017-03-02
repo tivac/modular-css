@@ -80,7 +80,7 @@ m.route(document.body, "/", {
 
         view : () => [
             m("h1", { class : css.head },
-                "modular-css",
+                m("a", { href : "https://github.com/tivac/modular-css" }, "modular-css"),
                 " ",
                 m("span", { class : css.subhead }, "v", pkg.version)
             ),
