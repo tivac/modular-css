@@ -7,51 +7,51 @@ var assert = require("assert"),
 describe("/lib", function() {
     describe("/identifiers.js", function() {
         it("should export a parse function", function() {
-            assert.equal(typeof identifiers.parse, "function");
+            expect(typeof identifiers.parse).toBe("function");
         });
 
         it("should export a keyframes regex", function() {
-            assert(identifiers.keyframes instanceof RegExp);
+            expect(identifiers.keyframes).toBeInstanceOf(RegExp);
         });
         
         it("should extract a class", function() {
-            assert.deepEqual(identifiers.parse(".fooga"), [ "fooga" ]);
+            expect(identifiers.parse(".fooga")).toEqual([ "fooga" ]);
         });
         
         it("should extract multiple classes", function() {
-            assert.deepEqual(identifiers.parse(".fooga, .wooga"), [ "fooga", "wooga" ]);
-            assert.deepEqual(identifiers.parse(".fooga,.wooga"), [ "fooga", "wooga" ]);
+            expect(identifiers.parse(".fooga, .wooga")).toEqual([ "fooga", "wooga" ]);
+            expect(identifiers.parse(".fooga,.wooga")).toEqual([ "fooga", "wooga" ]);
         });
         
         it("should extract an id", function() {
-            assert.deepEqual(identifiers.parse("#fooga"), [ "fooga" ]);
+            expect(identifiers.parse("#fooga")).toEqual([ "fooga" ]);
         });
         
         it("should extract multiple ids", function() {
-            assert.deepEqual(identifiers.parse("#fooga, #wooga"), [ "fooga", "wooga" ]);
-            assert.deepEqual(identifiers.parse("#fooga,#wooga"), [ "fooga", "wooga" ]);
+            expect(identifiers.parse("#fooga, #wooga")).toEqual([ "fooga", "wooga" ]);
+            expect(identifiers.parse("#fooga,#wooga")).toEqual([ "fooga", "wooga" ]);
         });
         
         it("should extract @keyframes definitions", function() {
-            assert.deepEqual(identifiers.parse("@keyframes fooga"), [ "fooga" ]);
-            assert.deepEqual(identifiers.parse("@-webkit-keyframes fooga"), [ "fooga" ]);
-            assert.deepEqual(identifiers.parse("@-moz-keyframes fooga"), [ "fooga" ]);
+            expect(identifiers.parse("@keyframes fooga")).toEqual([ "fooga" ]);
+            expect(identifiers.parse("@-webkit-keyframes fooga")).toEqual([ "fooga" ]);
+            expect(identifiers.parse("@-moz-keyframes fooga")).toEqual([ "fooga" ]);
         });
         
         it("should extract multi-level classes", function() {
-            assert.deepEqual(identifiers.parse(".fooga .wooga"), [ "fooga", "wooga" ]);
+            expect(identifiers.parse(".fooga .wooga")).toEqual([ "fooga", "wooga" ]);
         });
         
         it("should extract multi-level ids", function() {
-            assert.deepEqual(identifiers.parse("#fooga #wooga"), [ "fooga", "wooga" ]);
+            expect(identifiers.parse("#fooga #wooga")).toEqual([ "fooga", "wooga" ]);
         });
         
         it("should extract mixed classes, ids, and keyframes", function() {
             // Slightly unintuitive output order is due to the iteration going classes then IDs
-            assert.deepEqual(
-                
+            expect(
                 // Also this selector is bonkers and makes no sense
-                identifiers.parse("#fooga, .wooga, #googa .booga, .tooga #looga, @keyframes kooga"),
+                identifiers.parse("#fooga, .wooga, #googa .booga, .tooga #looga, @keyframes kooga")
+            ).toEqual(
                 [ "wooga", "booga", "tooga", "fooga", "googa", "looga", "kooga" ]
             );
         });

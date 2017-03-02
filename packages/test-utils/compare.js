@@ -1,37 +1,39 @@
 "use strict";
 
 var fs     = require("fs"),
-    path   = require("path"),
-    assert = require("assert");
+    path   = require("path");
 
-exports.paths = function(path1, path2) {
-    assert.equal(
-        fs.readFileSync(path1, "utf8").trim(),
-        fs.readFileSync(path2, "utf8").trim(),
-        `Expected ${path1} to be the same as ${path2}`
-    );
-};
+module.exports = (cwd) => {
+    var out = {};
 
-exports.results = function(name1, name2) {
-    var path1 = path.join("./test/output", name1),
-        path2 = path.join("./test/results", name2 || name1);
+    out.paths = function(path1, path2) {
+        expect(
+            fs.readFileSync(path1, "utf8").trim()
+        ).toBe(
+            fs.readFileSync(path2, "utf8").trim()
+        );
+    };
 
-    return exports.paths(path1, path2);
-};
+    out.results = function(name1, name2) {
+        var path1 = path.join(cwd, "./test/output", name1),
+            path2 = path.join(cwd, "./test/results", name2 || name1);
 
-exports.stringToFile = function(str, file) {
-    assert.equal(
-        str.trim(),
-        fs.readFileSync(file, "utf8").trim(),
-        `Expected css to match ${file}`
-    );
-};
+        return out.paths(path1, path2);
+    };
 
-exports.contains = function(haystack, name) {
-    var needle = fs.readFileSync(path.join("./test/results", name), "utf8");
-    
-    assert(
-        haystack.indexOf(needle) > -1,
-        `Unable to find ${needle} in ${haystack}`
-    );
+    out.stringToFile = function(str, file) {
+        expect(
+            str.trim()
+        ).toBe(
+            fs.readFileSync(file, "utf8").trim()
+        );
+    };
+
+    out.contains = function(haystack, name) {
+        var needle = fs.readFileSync(path.join(cwd, "./test/results", name), "utf8");
+        
+        expect(haystack).toMatch(needle);
+    };
+
+    return out;
 };

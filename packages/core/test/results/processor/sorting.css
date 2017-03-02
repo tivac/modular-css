@@ -1,29 +1,29 @@
-/* test/specimens/folder/folder.css */
-.mc04bb002b_folder {
+/* packages/core/test/specimens/folder/folder.css */
+.folder {
     margin: 2px
 }
-/* test/specimens/folder/folder2.css */
-.mc0a0b0aff_folder2 {
+/* packages/core/test/specimens/folder/folder2.css */
+.folder2 {
     color: green
 }
-/* test/specimens/folder/subfolder/subfolder.css */
-.mc85c09a4a_subfolder {
+/* packages/core/test/specimens/folder/subfolder/subfolder.css */
+.subfolder {
     color: yellow
 }
-/* test/specimens/composes.css */
-/* test/specimens/deep.css */
-.mc25934484_deep {
+/* packages/core/test/specimens/composes.css */
+/* packages/core/test/specimens/deep.css */
+.deep {
     color: black
 }
-/* test/specimens/local.css */
-.mc04cb4cb2_booga {
+/* packages/core/test/specimens/local.css */
+.booga {
     background: green
 }
-/* test/specimens/start.css */
-.mc61f0515a_booga {
+/* packages/core/test/specimens/start.css */
+.booga {
     color: red;
     background: blue
 }
-.mc61f0515a_tooga {
+.tooga {
     border: 1px solid white
 }

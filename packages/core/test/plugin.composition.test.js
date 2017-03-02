@@ -7,6 +7,8 @@ var path   = require("path"),
     
     resolve = require("../lib/resolve.js").resolve,
 
+    namer = require("test-utils/namer.js"),
+
     scoping     = require("../plugins/scoping.js"),
     composition = require("../plugins/composition.js");
 
@@ -29,8 +31,7 @@ describe("/plugins", function() {
                 Object.create(null),
                 {
                     resolve,
-                    namer : (file, selector) =>
-                        file ? `${path.basename(file, path.extname(file))}_${selector}` : selector
+                    namer
                 },
                 opts
             ));
@@ -68,7 +69,7 @@ describe("/plugins", function() {
 
         it("should fail if imports are referenced without having been parsed", function() {
             var out = process(".wooga { composes: booga from \"./local.css\"; }", {
-                    from  : "test/specimens/wooga.css",
+                    from  : "packages/core/test/specimens/wooga.css",
                     files : {}
                 });
             
@@ -79,12 +80,12 @@ describe("/plugins", function() {
             var files = {},
             out;
                 
-            files[path.resolve("./test/specimens/local.css")] = {
+            files[path.resolve("./packages/core/test/specimens/local.css")] = {
                 exports : {}
             };
             
             out = process(".wooga { composes: googa from \"./local.css\"; }", {
-                from  : path.resolve("./test/specimens/wooga.css"),
+                from  : path.resolve("./packages/core/test/specimens/wooga.css"),
                 files : files
             });
             
@@ -107,7 +108,7 @@ describe("/plugins", function() {
             var messages = process(".wooga { color: red; } .fooga { composes: wooga; }").messages;
             
             assert.equal(messages.length, 2);
-            assert.deepEqual(messages[1], msg({
+            expect(messages[1], msg({
                 wooga : [ "wooga" ],
                 fooga : [ "wooga", "fooga" ]
             }));
@@ -147,7 +148,7 @@ describe("/plugins", function() {
                 );
             
             assert.equal(out.messages.length, 2);
-            assert.deepEqual(out.messages[1], msg({
+            expect(out.messages[1], msg({
                 wooga : [ "wooga" ],
                 booga : [ "booga" ],
                 tooga : [ "booga", "wooga", "tooga" ]
@@ -158,7 +159,7 @@ describe("/plugins", function() {
             var out = process(".wooga { composes: booga; } .booga { color: red; }");
             
             assert.equal(out.messages.length, 2);
-            assert.deepEqual(out.messages[1], msg({
+            expect(out.messages[1], msg({
                 wooga : [ "booga", "wooga" ],
                 booga : [ "booga" ]
             }));
@@ -168,7 +169,7 @@ describe("/plugins", function() {
             var out = process(".wooga { } .booga { } .tooga { composes: wooga; composes: booga; }");
         
             assert.equal(out.messages.length, 2);
-            assert.deepEqual(out.messages[1], msg({
+            expect(out.messages[1], msg({
                 wooga : [ "wooga" ],
                 booga : [ "booga" ],
                 tooga : [ "wooga", "booga", "tooga" ]
@@ -181,28 +182,28 @@ describe("/plugins", function() {
             out = process(".wooga { composes: global(booga); }");
             
             assert.equal(out.messages.length, 2);
-            assert.deepEqual(out.messages[1], msg({
+            expect(out.messages[1], msg({
                 wooga : [ "booga", "wooga" ]
             }));
 
             out = process(".wooga { composes: global(booga), global(tooga); }");
             
             assert.equal(out.messages.length, 2);
-            assert.deepEqual(out.messages[1], msg({
+            expect(out.messages[1], msg({
                 wooga : [ "booga", "tooga", "wooga" ]
             }));
 
             out = process(".wooga { composes: global(booga); color: red; }");
             
             assert.equal(out.messages.length, 2);
-            assert.deepEqual(out.messages[1], msg({
+            expect(out.messages[1], msg({
                 wooga : [ "booga", "wooga" ]
             }));
 
             out = process(".tooga { } .wooga { composes: global(booga), tooga; }");
             
             assert.equal(out.messages.length, 2);
-            assert.deepEqual(out.messages[1], msg({
+            expect(out.messages[1], msg({
                 tooga : [ "tooga" ],
                 wooga : [ "booga", "tooga", "wooga" ]
             }));
@@ -210,7 +211,7 @@ describe("/plugins", function() {
             out = process(".tooga { } .wooga { composes: global(booga), tooga; color: red; }");
             
             assert.equal(out.messages.length, 2);
-            assert.deepEqual(out.messages[1], msg({
+            expect(out.messages[1], msg({
                 tooga : [ "tooga" ],
                 wooga : [ "booga", "tooga", "wooga" ]
             }));
@@ -218,7 +219,7 @@ describe("/plugins", function() {
             out = process(".tooga { } .wooga { composes: global(booga); composes: tooga; }");
             
             assert.equal(out.messages.length, 2);
-            assert.deepEqual(out.messages[1], msg({
+            expect(out.messages[1], msg({
                 tooga : [ "tooga" ],
                 wooga : [ "booga", "tooga", "wooga" ]
             }));
@@ -226,7 +227,7 @@ describe("/plugins", function() {
             out = process(".tooga { } .wooga { composes: global(booga); composes: tooga; color: red; }");
             
             assert.equal(out.messages.length, 2);
-            assert.deepEqual(out.messages[1], msg({
+            expect(out.messages[1], msg({
                 tooga : [ "tooga" ],
                 wooga : [ "booga", "tooga", "wooga" ]
             }));
@@ -234,12 +235,12 @@ describe("/plugins", function() {
 
         it("should support composing against global identifiers w/ the same name", () => {
             var out = process(".wooga { composes: global(wooga); color: red; }", {
-                    from : "test/specimens/simple.css"
+                    from : "packages/core/test/specimens/simple.css"
                 });
             
             assert.equal(out.messages.length, 2);
-            assert.deepEqual(out.messages[1], msg({
-                wooga : [ "wooga", "simple_wooga" ]
+            expect(out.messages[1], msg({
+                wooga : [ "wooga", "wooga" ]
             }));
         });
         
@@ -249,7 +250,7 @@ describe("/plugins", function() {
                 );
             
             assert.equal(out.messages.length, 2);
-            assert.deepEqual(out.messages[1], msg({
+            expect(out.messages[1], msg({
                 wooga : [ "wooga" ],
                 booga : [ "wooga", "booga" ],
                 tooga : [ "wooga", "booga", "tooga" ]
@@ -260,22 +261,21 @@ describe("/plugins", function() {
             var out = process(
                     ".wooga { color: red; } .googa { composes: wooga; }",
                     {
-                        from  : "test/specimens/simple.css",
-                        namer : (file, selector) =>
-                            `${path.basename(file, path.extname(file))}_${selector}`
+                        from  : "packages/core/test/specimens/simple.css",
+                        namer
                     }
                 );
             
-            assert.deepEqual(out.messages, [ {
+            expect(out.messages, [ {
                 type    : "modular-css",
                 plugin  : "modular-css-scoping",
                 classes : {
-                    googa : [ "simple_googa" ],
-                    wooga : [ "simple_wooga" ]
+                    googa : [ "googa" ],
+                    wooga : [ "wooga" ]
                 }
             }, msg({
-                googa : [ "simple_wooga", "simple_googa" ],
-                wooga : [ "simple_wooga" ]
+                googa : [ "wooga", "googa" ],
+                wooga : [ "wooga" ]
             }) ]);
         });
         
@@ -283,24 +283,24 @@ describe("/plugins", function() {
             var files = {},
                 out;
                 
-            files[path.resolve("./test/specimens/local.css")] = {
+            files[path.resolve("./packages/core/test/specimens/local.css")] = {
                 exports : {
-                    googa : [ "local_googa" ],
-                    tooga : [ "local_tooga" ]
+                    googa : [ "googa" ],
+                    tooga : [ "tooga" ]
                 }
             };
             
             out = process(".wooga { composes: googa, tooga from \"./local.css\"; }", {
-                from  : path.resolve("./test/specimens/wooga.css"),
+                from  : path.resolve("./packages/core/test/specimens/wooga.css"),
                 files : files
             });
         
             assert.equal(out.messages.length, 2);
-            assert.deepEqual(out.messages[1], msg({
+            expect(out.messages[1], msg({
                 wooga : [
-                    "local_googa",
-                    "local_tooga",
-                    "wooga_wooga"
+                    "googa",
+                    "tooga",
+                    "wooga"
                 ]
             }));
         });
@@ -309,23 +309,23 @@ describe("/plugins", function() {
             var files = {},
                 out;
                 
-            files[path.resolve("./test/specimens/local.css")] = {
+            files[path.resolve("./packages/core/test/specimens/local.css")] = {
                 exports : {
-                    googa : [ "local_googa" ],
-                    tooga : [ "local_tooga" ]
+                    googa : [ "googa" ],
+                    tooga : [ "tooga" ]
                 }
             };
             
             out = process(".wooga { composes: googa from \"./local.css\"; }", {
-                from  : path.resolve("./test/specimens/wooga.css"),
+                from  : path.resolve("./packages/core/test/specimens/wooga.css"),
                 files : files
             });
         
             assert.equal(out.messages.length, 2);
-            assert.deepEqual(out.messages[1], msg({
+            expect(out.messages[1], msg({
                 wooga : [
-                    "local_googa",
-                    "wooga_wooga"
+                    "googa",
+                    "wooga"
                 ]
             }));
         });

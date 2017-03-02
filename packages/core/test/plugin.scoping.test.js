@@ -22,7 +22,7 @@ function process(src, options) {
     return processor.process(
         src,
         Object.assign(Object.create(null), {
-            from  : "test/specimens/a.css",
+            from  : "packages/core/test/specimens/a.css",
             namer : (file, selector) => `a_${selector}`
         },
         options || {})
@@ -111,7 +111,7 @@ describe("/plugins", function() {
         });
         
         it("should expose original names in a message", function() {
-            assert.deepEqual(
+            expect(
                 process(leading(`
                     .wooga { color: red; }
                     #booga { color: black; }
@@ -229,7 +229,7 @@ describe("/plugins", function() {
             });
 
             it("should include :global(...) identifiers in a message", function() {
-                assert.deepEqual(
+                expect(
                     process(leading(`
                         :global(.wooga) { color: red; }
                         :global(#fooga) { color: red; }
@@ -266,7 +266,7 @@ describe("/plugins", function() {
                     ".a_fooga .wooga { color: red; }"
                 );
                 
-                assert.deepEqual(
+                expect(
                     processed.messages,
                     [ msg({
                         fooga : [ "a_fooga" ],

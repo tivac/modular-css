@@ -15,7 +15,7 @@ describe("/plugins", function() {
     describe("/graph-nodes.js", function() {
         it("should populate a graph with external @value references", () => {
             var graph = new Graph(),
-                from  = path.resolve("./test/specimens/simple.css");
+                from  = path.resolve("./packages/core/test/specimens/simple.css");
 
             graph.addNode(from);
             
@@ -23,15 +23,15 @@ describe("/plugins", function() {
                 `@value one from "./local.css";`,
                 { from, graph, resolve }
             )
-            .then(() => assert.deepEqual(graph.overallOrder(), [
-                path.resolve("./test/specimens/local.css"),
+            .then(() => expect(graph.overallOrder(), [
+                path.resolve("./packages/core/test/specimens/local.css"),
                 from
             ]));
         });
 
         it("should populate a graph with external composes references", () => {
             var graph = new Graph(),
-                from  = path.resolve("./test/specimens/simple.css");
+                from  = path.resolve("./packages/core/test/specimens/simple.css");
 
             graph.addNode(from);
             
@@ -39,15 +39,15 @@ describe("/plugins", function() {
                 `.a { composes: booga from "./local.css"; }`,
                 { from, graph, resolve }
             )
-            .then(() => assert.deepEqual(graph.overallOrder(), [
-                path.resolve("./test/specimens/local.css"),
+            .then(() => expect(graph.overallOrder(), [
+                path.resolve("./packages/core/test/specimens/local.css"),
                 from
             ]));
         });
 
         it("should populate a graph with :external references", () => {
             var graph = new Graph(),
-                from  = path.resolve("./test/specimens/simple.css");
+                from  = path.resolve("./packages/core/test/specimens/simple.css");
 
             graph.addNode(from);
             
@@ -55,15 +55,15 @@ describe("/plugins", function() {
                 `.a :external(booga from "./local.css") { color: red; }`,
                 { from, graph, resolve }
             )
-            .then(() => assert.deepEqual(graph.overallOrder(), [
-                path.resolve("./test/specimens/local.css"),
+            .then(() => expect(graph.overallOrder(), [
+                path.resolve("./packages/core/test/specimens/local.css"),
                 from
             ]));
         });
 
         it("should return useful errors when parsing", () => {
             var graph = new Graph(),
-                from  = path.resolve("./test/specimens/simple.css");
+                from  = path.resolve("./packages/core/test/specimens/simple.css");
 
             graph.addNode(from);
             

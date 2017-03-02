@@ -12,8 +12,8 @@ var path   = require("path"),
 
 describe("/plugins", function() {
     describe("/externals.js", function() {
-        var start = path.resolve("./test/specimens/start.css"),
-            local = path.resolve("./test/specimens/local.css");
+        var start = path.resolve("./packages/core/test/specimens/start.css"),
+            local = path.resolve("./packages/core/test/specimens/local.css");
 
         // Helper to create environment where other files are already processed
         function process(css) {
