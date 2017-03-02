@@ -9,7 +9,7 @@
     "compress": "buble -i gen/app.js -o gen/app.js && uglifyjs gen/app.js --compress --mangle --source-map=./gen/app.js.map --in-source-map=gen/app.js.map --output=gen/app.js",
     "prepublish": "npm run build && npm run compress",
     "publish": "surge",
-    "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/style.css\" ]"
+    "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/style.css\" --no-cache ]"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",

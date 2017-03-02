@@ -56,3 +56,8 @@ body {
 .output {
     flex: 1;
 }
+
+/* Since modular-css uses some non-standard things */
+:global(.CodeMirror .cm-property.cm-error) {
+    background: transparent;
+}
