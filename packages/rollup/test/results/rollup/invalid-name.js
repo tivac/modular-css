@@ -1,7 +1,7 @@
-var fooga = "mce24b2248_fooga";
+var fooga = "fooga";
 var css = {
-    "fooga": "mce24b2248_fooga",
-    "fooga-wooga": "mce24b2248_fooga-wooga"
+    "fooga": "fooga",
+    "fooga-wooga": "fooga-wooga"
 };
 
 console.log(css, fooga);

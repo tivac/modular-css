@@ -1,6 +1,6 @@
-var fooga = "mcad949cca_fooga";
+var fooga = "fooga";
 var css = {
-    "fooga": "mcad949cca_fooga"
+    "fooga": "fooga"
 };
 
 console.log(css);

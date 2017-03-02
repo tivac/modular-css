@@ -1,3 +1,3 @@
-var fooga = "mccbbaee09_fooga";
+var fooga = "fooga";
 
 console.log(fooga);
