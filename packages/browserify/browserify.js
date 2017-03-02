@@ -15,12 +15,13 @@ var fs   = require("fs"),
 
 module.exports = function(browserify, opts) {
     var options = Object.assign(Object.create(null), {
-            ext : ".css",
-            map : browserify._options.debug,
-            cwd : browserify._options.basedir || process.cwd()
+            ext   : ".css",
+            map   : browserify._options.debug,
+            cwd   : browserify._options.basedir || process.cwd(),
+            cache : true
         }, opts),
         
-        processor = new Processor(options),
+        processor = opts.cache && new Processor(options),
         
         bundler, bundles, handled;
     
@@ -131,6 +132,11 @@ module.exports = function(browserify, opts) {
         bundles = {};
         handled = {};
         
+        // cache set to false means we need to create a new Processor each run-through
+        if(!opts.cache) {
+            processor = new Processor(options);
+        }
+
         bundler = current;
         
         // Listen for bundling to finish
