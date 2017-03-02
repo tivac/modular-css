@@ -1,6 +1,6 @@
+"use strict";
 /* eslint-env browser, node */
 /* eslint indent: off */
-"use strict";
 
 var m = require("mithril"),
     Processor = require("modular-css-core"),
