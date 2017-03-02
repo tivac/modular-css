@@ -1,5 +1,6 @@
 {
   "name": "modular-css",
+  "version": "1.0.0",
   "private": true,
   "repository": "tivac/modular-css",
   "bugs": {

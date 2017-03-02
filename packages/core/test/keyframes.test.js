@@ -9,11 +9,23 @@ var path   = require("path"),
     keyframes = require("../plugins/keyframes.js");
 
 function namer(file, selector) {
-    return `${path.basename(file, path.extname(file))}_${selector}`;
+    return selector;
 }
 
 describe("/plugins", function() {
     describe("/keyframes.js", function() {
+        it("should leave unknown animation names alone", function() {
+            var out = postcss([ scoping, keyframes ]).process(
+                    ".a { animation: a; } .b { animation-name: b; }",
+                    { from : "test/specimens/simple.css", namer : namer }
+                );
+            
+            assert.equal(
+                out.css,
+                ".a { animation: a; } .b { animation-name: b; }"
+            );
+        });
+        
         it("should update scoped animations from the scoping plugin's message", function() {
             var out = postcss([ scoping, keyframes ]).process(
                     "@keyframes kooga {} .wooga { animation: kooga; }",
@@ -22,7 +34,7 @@ describe("/plugins", function() {
             
             assert.equal(
                 out.css,
-                "@keyframes simple_kooga {} .simple_wooga { animation: simple_kooga; }"
+                "@keyframes kooga {} .wooga { animation: kooga; }"
             );
         });
 
@@ -34,7 +46,7 @@ describe("/plugins", function() {
             
             assert.equal(
                 out.css,
-                "@keyframes simple_kooga {} .simple_wooga { animation-name: simple_kooga; }"
+                "@keyframes kooga {} .wooga { animation-name: kooga; }"
             );
         });
 
@@ -47,7 +59,7 @@ describe("/plugins", function() {
             
             assert.equal(
                 out.css,
-                "@keyframes simple_kooga {} @keyframes simple_tooga {} .simple_wooga { animation: simple_kooga 10s linear, simple_tooga 0.2s infinite; }"
+                "@keyframes kooga {} @keyframes tooga {} .wooga { animation: kooga 10s linear, tooga 0.2s infinite; }"
             );
         });
 
@@ -59,7 +71,7 @@ describe("/plugins", function() {
             
             assert.equal(
                 out.css,
-                "@-webkit-keyframes simple_kooga {} .simple_wooga { animation: simple_kooga; }"
+                "@-webkit-keyframes kooga {} .wooga { animation: kooga; }"
             );
         });
     });
