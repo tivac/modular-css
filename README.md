@@ -5,43 +5,43 @@ A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/
 
 ## Install
 
-### [API](/packages/core/README.md)
+### [API](/packages/core/#readme)
 
 ```bash
 $ npm i modular-css-core
 ```
 
-### [CLI](/packages/cli/README.md)
+### [CLI](/packages/cli/#readme)
 
 ```bash
 $ npm i modular-css-cli
 ```
 
-### [Browserify](/packages/browserify/README.md)
+### [Browserify](/packages/browserify/#readme)
 
 ```bash
 $ npm i modular-cssify
 ```
 
-### [Rollup](/packages/rollup/README.md)
+### [Rollup](/packages/rollup/#readme)
 
 ```bash
 $ npm i modular-css-rollup
 ```
 
-### [Webpack 2](/packages/webpack/README.md)
+### [Webpack 2](/packages/webpack/#readme)
 
 ```bash
 $ npm i modular-css-webpack
 ```
 
-### [PostCSS Plugin](/packages/postcss/README.md)
+### [PostCSS Plugin](/packages/postcss/#readme)
 
 ```bash
 $ npm i postcss-modular-css
 ```
 
-### [Globbing API](/packages/glob/README.md)
+### [Globbing API](/packages/glob/#readme)
 
 ```bash
 $ npm i modular-css-glob
