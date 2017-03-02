@@ -5,6 +5,7 @@ var assert = require("assert"),
     dedent = require("dentist").dedent,
     
     Processor = require("modular-css-core"),
+    namer     = require("test-utils/namer.js"),
 
     paths = require("../paths.js");
 
@@ -12,7 +13,7 @@ describe("/paths.js", function() {
     it("should return a falsey value if a file isn't found", function() {
         var fn = paths({
             paths : [
-                "./test/specimens"
+                "./packages/paths/test/specimens"
             ]
         });
 
@@ -22,44 +23,39 @@ describe("/paths.js", function() {
     it("should return the absolute path if a file is found", function() {
         var fn = paths({
             paths : [
-                "./test/specimens/one"
+                "./packages/paths/test/specimens/one"
             ]
         });
 
-        assert.equal(
-            fn(".", "./one.css"),
-            require.resolve("./specimens/one/one.css")
-        );
+        expect(fn(".", "./one.css")).toBe(require.resolve("./specimens/one/one.css"));
     });
 
     it("should check multiple paths for files & return the first match", function() {
         var fn = paths({
             paths : [
-                "./test/specimens/one",
-                "./test/specimens/one/sub"
+                "./packages/paths/test/specimens/one",
+                "./packages/paths/test/specimens/one/sub"
             ]
         });
 
-        assert.equal(
-            fn(".", "./sub.css"),
-            require.resolve("./specimens/one/sub/sub.css")
-        );
+        expect(fn(".", "./sub.css")).toBe(require.resolve("./specimens/one/sub/sub.css"));
     });
 
     it("should be usable as a modular-css resolver", function() {
         var processor = new Processor({
+                namer,
                 resolvers : [
                     paths({
                         paths : [
-                            "./test/specimens/one/sub",
-                            "./test/specimens/two"
+                            "./packages/paths/test/specimens/one/sub",
+                            "./packages/paths/test/specimens/two"
                         ]
                     })
                 ]
             });
         
         return processor.string(
-            "./test/specimens/one/start.css",
+            "./packages/paths/test/specimens/one/start.css",
             dedent(`
                 @value sub from "./sub.css";
                 
@@ -72,16 +68,16 @@ describe("/paths.js", function() {
         .then((result) => assert.deepEqual(
             result.compositions,
             {
-                "test/specimens/one/start.css" : {
-                    rule : "mc16fc57c4_two mc2632bbcb_rule"
+                "packages/paths/test/specimens/one/start.css" : {
+                    rule : "two rule"
                 },
 
-                "test/specimens/one/sub/sub.css" : {
-                    "sub" : "mc8e516949_sub"
+                "packages/paths/test/specimens/one/sub/sub.css" : {
+                    "sub" : "sub"
                 },
 
-                "test/specimens/two/two.css" : {
-                    "two" : "mc16fc57c4_two"
+                "packages/paths/test/specimens/two/two.css" : {
+                    "two" : "two"
                 }
             }
         ));
