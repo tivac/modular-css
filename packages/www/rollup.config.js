@@ -15,5 +15,5 @@ module.exports = {
         require("rollup-plugin-commonjs")(),
         require("rollup-plugin-node-globals")(),
         require("rollup-plugin-node-builtins")()
-    ],
+    ]
 };

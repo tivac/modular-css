@@ -1,3 +1,4 @@
+/* eslint-env browser, node */
 /* eslint indent: off */
 var m = require("mithril"),
     Processor = require("modular-css-core"),
@@ -28,9 +29,7 @@ function process() {
     var processor = new Processor();
     
     Promise.all(files.map((file) => processor.string(file.name, file.css)))
-    .then(() => {
-        return processor.output();
-    })
+    .then(() => processor.output())
     .then((result) => {
         output.css  = result.css;
         output.json = JSON.stringify(result.compositions, null, 4);
