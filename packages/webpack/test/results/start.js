@@ -71,7 +71,9 @@
 /***/ (function(module, exports) {
 
 module.exports = {
-    "wooga": "mc08e91a5b_wooga"
+    "wooga": "booga wooga",
+    "booga": "booga",
+    "tooga": "tooga"
 };
 
 /***/ }),

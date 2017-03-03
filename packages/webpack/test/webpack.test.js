@@ -5,7 +5,8 @@ var path   = require("path"),
 
     webpack = require("webpack"),
 
-    compare = require("test-utils/compare.js"),
+    compare = require("test-utils/compare.js")(__dirname),
+    namer   = require("test-utils/namer.js"),
     
     Plugin  = require("../plugin.js"),
 
@@ -13,7 +14,7 @@ var path   = require("path"),
     test = /\.css$/;
 
 describe("/webpack.js", function() {
-    after(() => require("shelljs").rm("-rf", "./test/output/webpack"));
+    afterAll(() => require("shelljs").rm("-rf", "./packages/webpack/test/output/*"));
 
     it("should be a function", function() {
         assert(typeof Plugin, "function")
@@ -21,9 +22,9 @@ describe("/webpack.js", function() {
 
     it("should output css to disk", function(done) {
         webpack({
-            entry   : "./test/specimens/simple.js",
+            entry   : "./packages/webpack/test/specimens/simple.js",
             output  : {
-                path : path.resolve("./test/output/webpack"),
+                path : path.resolve("./packages/webpack/test/output"),
                 filename : "./simple.js"
             },
             module : {
@@ -36,6 +37,7 @@ describe("/webpack.js", function() {
             },
             plugins : [
                 new Plugin({
+                    namer,
                     css : "./simple.css"
                 })
             ]
@@ -43,8 +45,8 @@ describe("/webpack.js", function() {
             assert.ifError(err);
             assert.equal(stats.hasErrors(), false);
 
-            compare.results("webpack/simple.js");
-            compare.results("webpack/simple.css");
+            compare.results("simple.js");
+            compare.results("simple.css");
 
             done();
         });
@@ -52,9 +54,9 @@ describe("/webpack.js", function() {
 
     it("should output json to disk", function(done) {
         webpack({
-            entry   : "./test/specimens/simple.js",
+            entry   : "./packages/webpack/test/specimens/simple.js",
             output  : {
-                path : path.resolve("./test/output/webpack"),
+                path : path.resolve("./packages/webpack/test/output"),
                 filename : "./simple.js"
             },
             module : {
@@ -67,6 +69,7 @@ describe("/webpack.js", function() {
             },
             plugins : [
                 new Plugin({
+                    namer,
                     json : "./simple.json"
                 })
             ]
@@ -74,8 +77,8 @@ describe("/webpack.js", function() {
             assert.ifError(err);
             assert.equal(stats.hasErrors(), false);
 
-            compare.results("webpack/simple.js");
-            compare.results("webpack/simple.json");
+            compare.results("simple.js");
+            compare.results("simple.json");
 
             done();
         });
@@ -83,9 +86,9 @@ describe("/webpack.js", function() {
 
     it("should report errors", function(done) {
         webpack({
-            entry   : "./test/specimens/invalid.js",
+            entry   : "./packages/webpack/test/specimens/invalid.js",
             output  : {
-                path : path.resolve("./test/output/webpack"),
+                path : path.resolve("./packages/webpack/test/output"),
                 filename : "./invalid.js"
             },
             module : {
@@ -97,7 +100,9 @@ describe("/webpack.js", function() {
                 ]
             },
             plugins : [
-                new Plugin()
+                new Plugin({
+                    namer
+                })
             ]
         }, (err, stats) => {
             assert.ifError(err);
@@ -112,9 +117,9 @@ describe("/webpack.js", function() {
 
     it("should handle dependencies", function(done) {
         webpack({
-            entry   : "./test/specimens/start.js",
+            entry   : "./packages/webpack/test/specimens/start.js",
             output  : {
-                path : path.resolve("./test/output/webpack"),
+                path : path.resolve("./packages/webpack/test/output"),
                 filename : "./start.js"
             },
             module : {
@@ -127,6 +132,7 @@ describe("/webpack.js", function() {
             },
             plugins : [
                 new Plugin({
+                    namer,
                     css  : "./start.css",
                     json : "./start.json"
                 })
@@ -135,9 +141,9 @@ describe("/webpack.js", function() {
             assert.ifError(err);
             assert.equal(stats.hasErrors(), false);
 
-            compare.results("webpack/start.js");
-            compare.results("webpack/start.css");
-            compare.results("webpack/start.json");
+            compare.results("start.js");
+            compare.results("start.css");
+            compare.results("start.json");
 
             done();
         });
