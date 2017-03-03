@@ -13,31 +13,31 @@ var fs     = require("fs"),
     plugin = require("../browserify.js"),
     bundle  = require("./lib/bundle.js");
 
-describe("/issues", function() {
+describe.skip("/issues", function() {
     describe("/58", function() {
-        after(() => {
-            shell.rm("-rf", "./test/output/issues")
-            shell.rm("./test/specimens/issues/58/other.css");
+        afterAll(() => {
+            shell.rm("-rf", "./packages/browserify/test/output/issues")
+            shell.rm("./packages/browserify/test/specimens/issues/58/other.css");
         });
         
         it("should update when CSS dependencies change", function(done) {
             var build = browserify();
             
             shell.cp("-f",
-                "./test/specimens/issues/58/1.css",
-                "./test/specimens/issues/58/other.css"
+                "./packages/browserify/test/specimens/issues/58/1.css",
+                "./packages/browserify/test/specimens/issues/58/other.css"
             );
             
-            build.add(from("require('./test/specimens/issues/58/issue.css');"));
+            build.add(from("require('./packages/browserify/test/specimens/issues/58/issue.css');"));
 
             build.plugin(watchify);
             build.plugin(plugin, {
-                css : "./test/output/issues/58.css"
+                css : "./packages/browserify/test/output/issues/58.css"
             });
 
             build.on("update", function() {
                 bundle(build, function(out) {
-                    assert.equal(out, fs.readFileSync("./test/results/issues/58-2.js", "utf8"));
+                    assert.equal(out, fs.readFileSync("./packages/browserify/test/results/issues/58-2.js", "utf8"));
                     
                     compare.results("issues/58.css");
                     
@@ -48,11 +48,11 @@ describe("/issues", function() {
             });
 
             bundle(build, function(out) {
-                assert.equal(out, fs.readFileSync("./test/results/issues/58-1.js", "utf8"));
+                assert.equal(out, fs.readFileSync("./packages/browserify/test/results/issues/58-1.js", "utf8"));
                 
                 shell.cp("-f",
-                    "./test/specimens/issues/58/2.css",
-                    "./test/specimens/issues/58/other.css"
+                    "./packages/browserify/test/specimens/issues/58/2.css",
+                    "./packages/browserify/test/specimens/issues/58/other.css"
                 );
             });
         });

@@ -1,4 +1,4 @@
-/* test/specimens/keyframes.css */
+/* packages/browserify/test/specimens/keyframes.css */
 @keyframes keyframes-nooga {
     0% {
         opacity: 0

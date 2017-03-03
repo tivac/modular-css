@@ -1,9 +1,9 @@
-/* test/specimens/relative.css */
+/* packages/browserify/test/specimens/relative.css */
 .mc592b2d8f_wooga {
     color: red;
     background: url("../../../specimens/folder/to.png")
 }
-/* test/specimens/start.css */
+/* packages/browserify/test/specimens/start.css */
 .mc61f0515a_booga {
     color: red;
     background: blue
