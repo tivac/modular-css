@@ -19,7 +19,7 @@ function error(root, result) {
 error.postcssPlugin = "error-plugin";
 
 describe("/rollup.js", function() {
-    afterAll(() => require("shelljs").rm("-rf", "./packages/rollup/test/output/rollup"));
+    afterAll(() => require("shelljs").rm("-rf", "./packages/rollup/test/output/*"));
     
     it("should be a function", function() {
         expect(typeof plugin).toBe("function");
@@ -27,7 +27,7 @@ describe("/rollup.js", function() {
     
     it("should generate exports", function() {
         return rollup({
-            entry   : "./packages/rollup/test/specimens/rollup/simple.js",
+            entry   : "./packages/rollup/test/specimens/simple.js",
             plugins : [
                 plugin({
                     namer
@@ -36,13 +36,13 @@ describe("/rollup.js", function() {
         })
         .then((bundle) => compare.stringToFile(
             bundle.generate({ format : "es" }).code,
-            "./packages/rollup/test/results/rollup/simple.js"
+            "./packages/rollup/test/results/simple.js"
         ));
     });
     
     it("should be able to tree-shake results", function() {
         return rollup({
-            entry   : "./packages/rollup/test/specimens/rollup/tree-shaking.js",
+            entry   : "./packages/rollup/test/specimens/tree-shaking.js",
             plugins : [
                 plugin({
                     namer
@@ -51,17 +51,17 @@ describe("/rollup.js", function() {
         })
         .then((bundle) => compare.stringToFile(
             bundle.generate({ format : "es" }).code,
-            "./packages/rollup/test/results/rollup/tree-shaking.js"
+            "./packages/rollup/test/results/tree-shaking.js"
         ));
     });
 
     it("should attach a promise to the bundle.generate response", function() {
           return rollup({
-            entry   : "./packages/rollup/test/specimens/rollup/simple.js",
+            entry   : "./packages/rollup/test/specimens/simple.js",
             plugins : [
                 plugin({
                     namer,
-                    css : "./packages/rollup/test/output/rollup/simple.css"
+                    css : "./packages/rollup/test/output/simple.css"
                 })
             ]
         })
@@ -74,41 +74,41 @@ describe("/rollup.js", function() {
     
     it("should generate CSS", function() {
         return rollup({
-            entry   : "./packages/rollup/test/specimens/rollup/simple.js",
+            entry   : "./packages/rollup/test/specimens/simple.js",
             plugins : [
                 plugin({
                     namer,
-                    css : "./packages/rollup/test/output/rollup/simple.css"
+                    css : "./packages/rollup/test/output/simple.css"
                 })
             ]
         })
         .then((bundle) => bundle.write({
             format : "es",
-            dest   : "./packages/rollup/test/output/rollup/simple.js"
+            dest   : "./packages/rollup/test/output/simple.js"
         }))
-        .then(() => compare.results("rollup/simple.css"));
+        .then(() => compare.results("simple.css"));
     });
     
     it("should generate JSON", function() {
         return rollup({
-            entry   : "./packages/rollup/test/specimens/rollup/simple.js",
+            entry   : "./packages/rollup/test/specimens/simple.js",
             plugins : [
                 plugin({
                     namer,
-                    json : "./packages/rollup/test/output/rollup/simple.json"
+                    json : "./packages/rollup/test/output/simple.json"
                 })
             ]
         })
         .then((bundle) => bundle.write({
             format : "es",
-            dest   : "./packages/rollup/test/output/rollup/simple.js"
+            dest   : "./packages/rollup/test/output/simple.js"
         }))
-        .then(() => compare.results("rollup/simple.json"));
+        .then(() => compare.results("simple.json"));
     });
     
     it("should warn & not export individual keys when they are not valid identifiers", function() {
         return rollup({
-            entry   : "./packages/rollup/test/specimens/rollup/invalid-name.js",
+            entry   : "./packages/rollup/test/specimens/invalid-name.js",
             plugins : [
                 plugin({
                     namer,
@@ -120,13 +120,13 @@ describe("/rollup.js", function() {
         })
         .then((bundle) => compare.stringToFile(
             bundle.generate({ format : "es" }).code,
-            "./packages/rollup/test/results/rollup/invalid-name.js"
+            "./packages/rollup/test/results/invalid-name.js"
         ));
     });
     
     it("shouldn't disable sourcemap generation", function() {
         return rollup({
-            entry   : "./packages/rollup/test/specimens/rollup/simple.js",
+            entry   : "./packages/rollup/test/specimens/simple.js",
             plugins : [
                 plugin({
                     namer,
@@ -145,7 +145,7 @@ describe("/rollup.js", function() {
             mappings : ";;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC;AACjB,OAAO,CAAC,GAAG,CAAC,KAAK,CAAC,CAAC",
             names    : [],
             sources  : [
-                path.resolve(__dirname, "./specimens/rollup/simple.js").replace(/\\/g, "/")
+                path.resolve(__dirname, "./specimens/simple.js").replace(/\\/g, "/")
             ],
             
             sourcesContent : [
@@ -156,12 +156,12 @@ describe("/rollup.js", function() {
     
     it("should not output sourcemaps when they are disabled", function() {
         return rollup({
-            entry   : "./packages/rollup/test/specimens/rollup/simple.js",
+            entry   : "./packages/rollup/test/specimens/simple.js",
             plugins : [
                 plugin({
                     namer,
                     map : false,
-                    css : "./packages/rollup/test/output/rollup/no-maps.css"
+                    css : "./packages/rollup/test/output/no-maps.css"
                 })
             ]
         })
@@ -175,16 +175,16 @@ describe("/rollup.js", function() {
 
             return bundle.write({
                 format    : "es",
-                dest      : "./packages/rollup/test/output/rollup/no-maps.js",
+                dest      : "./packages/rollup/test/output/no-maps.js",
                 sourceMap : false
             });
         })
-        .then(() => compare.results("rollup/no-maps.css"));
+        .then(() => compare.results("no-maps.css"));
     });
 
     it("should respect the CSS dependency tree", function() {
         return rollup({
-            entry   : "./packages/rollup/test/specimens/rollup/dependencies.js",
+            entry   : "./packages/rollup/test/specimens/dependencies.js",
             plugins : [
                 plugin({
                     namer
@@ -193,7 +193,7 @@ describe("/rollup.js", function() {
         })
         .then((bundle) => compare.stringToFile(
             bundle.generate({ format : "es" }).code,
-            "./packages/rollup/test/results/rollup/dependencies.js"
+            "./packages/rollup/test/results/dependencies.js"
         ));
     });
 
@@ -204,7 +204,7 @@ describe("/rollup.js", function() {
 
         it("should throw errors in in before plugins", function() {
             return rollup({
-                entry   : "./packages/rollup/test/specimens/rollup/simple.js",
+                entry   : "./packages/rollup/test/specimens/simple.js",
                 plugins : [
                     plugin({
                         namer,
@@ -218,7 +218,7 @@ describe("/rollup.js", function() {
 
         it("should throw errors in after plugins", function() {
             return rollup({
-                entry   : "./packages/rollup/test/specimens/rollup/simple.js",
+                entry   : "./packages/rollup/test/specimens/simple.js",
                 plugins : [
                     plugin({
                         namer,
@@ -232,7 +232,7 @@ describe("/rollup.js", function() {
 
         it("should throw errors in done plugins", function() {
             return rollup({
-                entry   : "./packages/rollup/test/specimens/rollup/simple.js",
+                entry   : "./packages/rollup/test/specimens/simple.js",
                 plugins : [
                     plugin({
                         namer,

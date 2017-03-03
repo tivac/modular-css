@@ -1,0 +1,5 @@
+{
+    "packages/rollup/test/specimens/simple.css": {
+        "fooga": "fooga"
+    }
+}
