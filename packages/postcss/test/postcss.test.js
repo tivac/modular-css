@@ -10,7 +10,9 @@ var fs     = require("fs"),
     
     message = require("modular-css-core/lib/message.js"),
 
-    plugin  = require("../postcss.js");
+    plugin  = require("../postcss.js"),
+    
+    start = "";
 
 function process(file, opts) {
     return plugin.process(
@@ -27,7 +29,7 @@ function process(file, opts) {
 }
 
 describe("/postcss.js", function() {
-    afterAll(() => require("shelljs").rm("-rf", "./packages/postcss/test/output/postcss"));
+    afterAll(() => require("shelljs").rm("-rf", "./packages/postcss/test/output/*"));
     
     it("should be a function", function() {
         expect(typeof plugin).toBe("function");
@@ -38,7 +40,7 @@ describe("/postcss.js", function() {
             .then((result) =>
                 compare.stringToFile(
                     result.css,
-                    "./packages/postcss/test/results/postcss/simple.css"
+                    "./packages/postcss/test/results/simple.css"
                 )
             );
     });
@@ -48,7 +50,7 @@ describe("/postcss.js", function() {
             .then((result) =>
                 compare.stringToFile(
                     result.css,
-                    "./packages/postcss/test/results/postcss/start.css"
+                    "./packages/postcss/test/results/start.css"
                 )
             );
     });
@@ -73,33 +75,42 @@ describe("/postcss.js", function() {
         .then((result) =>
             compare.stringToFile(
                 result.css,
-                "./packages/postcss/test/results/postcss/simple-namer.css"
+                "./packages/postcss/test/results/simple-namer.css"
             )
         );
     });
 
     it("should accept a `json` property and write exports to that file", function() {
-        return process("./packages/postcss/test/specimens/start.css", { json : "./packages/postcss/test/output/postcss/classes.json" })
-            .then(() => compare.results("postcss/classes.json"));
+        return process(
+            "./packages/postcss/test/specimens/start.css",
+            {
+                json : "./packages/postcss/test/output/classes.json"
+            }
+        )
+        .then(() => compare.results("classes.json"));
     });
 
     it("should be usable like a normal postcss plugin", function() {
         var processor = postcss([
                 plugin({
-                    json  : "./packages/postcss/test/output/postcss/classes.json",
-                    map   : {
-                        inline : true
-                    },
                     namer : (f, s) => `fooga_${s}`
                 })
             ]);
         
-        processor.process(fs.readFileSync("./packages/postcss/test/specimens/start.css"), { from : "./packages/postcss/test/specimens/start.css" })
-            .then((result) =>
-                compare.stringToFile(
-                    resut.css,
-                    "./packages/postcss/test/results/postcss/simple-namer.cs"
-                )
-            );
+        return processor.process(
+            fs.readFileSync("./packages/postcss/test/specimens/simple.css"),
+            {
+                from : "./packages/postcss/test/specimens/simple.css",
+                map  : {
+                    inline : true
+                }
+            }
+        )
+        .then((result) =>
+            compare.stringToFile(
+                result.css,
+                "./packages/postcss/test/results/simple-namer.css"
+            )
+        );
     });
 });
