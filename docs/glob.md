@@ -1,4 +1,4 @@
-# Globb
+# Glob
 
 If you don't care about the dependency tree from your code you can also use the globbing API to find files to process.
 
