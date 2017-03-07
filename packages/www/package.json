@@ -14,7 +14,7 @@
     "compress-css": "cssnano ./gen/app.css ./dist/app.min.css",
     "predeploy": "npm run build && npm run compress && npm run dist",
     "deploy": "surge ./dist",
-    "dist": "shx sed \"app.(js|css)\" \"app.min.$1\" ./index.html > ./dist/index.html",
+    "dist": "shx sed \"gen/app.(js|css)\" \"app.min.$1\" ./index.html > ./dist/index.html",
     "prestart": "npm run clean",
     "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/app.css\" ]"
   },
