@@ -32,7 +32,7 @@ function params(processor, args) {
 }
 
 function Processor(opts) {
-    /* eslint consistent-return:0 */
+    /* eslint consistent-return:0, max-statements:0 */
     
     if(!(this instanceof Processor)) {
         return new Processor(opts);
