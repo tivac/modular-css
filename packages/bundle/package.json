@@ -1,6 +1,6 @@
 {
   "name": "modular-css",
-  "version": "4.2.0",
+  "version": "4.2.2",
   "description": "A streamlined reinterpretation of CSS Modules",
   "main": "./index.js",
   "bin": "./cli.js",
@@ -25,13 +25,16 @@
     "glob",
     "cli"
   ],
+  "scripts": {
+    "test": "true"
+  },
   "dependencies": {
-    "modular-css-core": "^4.1.0",
-    "modular-css-cli": "^4.1.0",
-    "modular-css-glob": "^4.1.0",
-    "modular-css-rollup": "^4.1.0",
-    "modular-css-webpack": "^4.1.0",
-    "modular-cssify": "^4.3.0",
-    "postcss-modular-css": "^4.2.0"
+    "modular-css-core": "^4.1.2",
+    "modular-css-cli": "^4.1.2",
+    "modular-css-glob": "^4.1.2",
+    "modular-css-rollup": "^4.1.2",
+    "modular-css-webpack": "^4.1.2",
+    "modular-cssify": "^4.3.2",
+    "postcss-modular-css": "^4.2.2"
   }
 }

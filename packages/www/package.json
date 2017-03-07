@@ -1,6 +1,6 @@
 {
   "name": "www",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "private": true,
   "description": "web site for modular-css",
   "main": "index.js",
@@ -16,21 +16,22 @@
     "deploy": "surge --project ./dist --domain m-css.com",
     "dist": "shx sed \"gen/app.(js|css)\" \"app.min.$1\" ./index.html > ./dist/index.html",
     "prestart": "npm run clean",
-    "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/app.css\" ]"
+    "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/app.css\" ]",
+    "test": "true"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "dependencies": {
     "codemirror": "^5.24.2",
     "mithril": "^1.0.1",
-    "modular-css-core": "^4.1.0",
+    "modular-css-core": "^4.1.2",
     "throttleit": "^1.0.0"
   },
   "devDependencies": {
     "buble": "^0.15.2",
     "cssnano-cli": "^1.0.5",
     "modular-css-namer": "^5.0.0",
-    "modular-cssify": "^4.3.0",
+    "modular-cssify": "^4.3.2",
     "rum": "^3.0.0",
     "shx": "^0.2.2",
     "surge": "^0.18.0",
