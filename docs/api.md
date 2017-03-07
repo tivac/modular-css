@@ -92,7 +92,9 @@ new Processor({
 
 #### `namer`
 
-Specify a function (that takes `filename` & `selector` as arguments to produce scoped selectors.
+Specify a function (that takes `filename` & `selector` as arguments) to produce scoped selectors.
+
+Can also pass a string that will be `require()`'d and executed, it should return the namer function.
 
 **Default**: Function that returns `"mc" + unique-slug(<file>) + "_" + selector`
 
@@ -101,6 +103,12 @@ new Processor({
     namer : function(file, selector) {
         return file.replace(/[:\/\\ .]/g, "") + "_" + selector;
     }
+});
+
+// or
+
+new Processor({
+    namer : "modular-css-namer"
 });
 ```
 
