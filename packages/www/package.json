@@ -5,16 +5,18 @@
   "description": "web site for modular-css",
   "main": "index.js",
   "scripts": {
-    "build": "browserify --plugin [ modular-cssify --css \"./gen/app.css\" --namer \"modular-css-namer\"] index.js --outfile gen/app.js",
+    "prebuild": "npm run clean",
+    "build": "browserify --plugin [ modular-cssify --css \"./gen/app.css\" --namer \"modular-css-namer\" ] index.js --outfile gen/app.js",
+    "clean": "shx rm -rf ./dist/* ./gen/*",
     "compress": "npm run compress-js && npm run compress-css",
     "precompress-js": "buble -i ./gen/app.js -o ./gen/app.js",
-    "compress-js": "uglifyjs ./gen/app.js --compress --mangle --output=./dist/app.min.js",
+    "compress-js": "uglifyjs ./gen/app.js --compress warnings=false --mangle --output=./dist/app.min.js",
     "compress-css": "cssnano ./gen/app.css ./dist/app.min.css",
     "predeploy": "npm run build && npm run compress && npm run dist",
     "deploy": "surge ./dist",
     "dist": "shx sed \"app.(js|css)\" \"app.min.$1\" ./index.html > ./dist/index.html",
-    "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/app.css\" ]",
-    "watch": "watchify --plugin [ modular-cssify --css \"./gen/app.css\" --no-cache] index.js --outfile gen/app.js"
+    "prestart": "npm run clean",
+    "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/app.css\" ]"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
