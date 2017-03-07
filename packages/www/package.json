@@ -5,13 +5,18 @@
   "description": "web site for modular-css",
   "main": "index.js",
   "scripts": {
-    "build": "browserify --plugin [ modular-cssify --css \"./gen/style.css\" ] index.js -o gen/app.js",
-    "watch": "watchify --plugin [ modular-cssify --css \"./gen/style.css\" --no-cache] index.js -o gen/app.js",
-    "compress": "uglifyjs gen/app.js --compress --mangle --output=gen/app.js",
-    "predeploy": "npm run build && npm run transpile && npm run compress ",
-    "deploy": "surge",
-    "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/style.css\" ]",
-    "transpile": "buble -i gen/app.js -o gen/app.js"
+    "prebuild": "npm run clean",
+    "build": "browserify --plugin [ modular-cssify --css \"./gen/app.css\" --namer \"modular-css-namer\" ] index.js --outfile gen/app.js",
+    "clean": "shx rm -rf ./dist/* ./gen/*",
+    "compress": "npm run compress-js && npm run compress-css",
+    "precompress-js": "buble -i ./gen/app.js -o ./gen/app.js",
+    "compress-js": "uglifyjs ./gen/app.js --compress warnings=false --mangle --output=./dist/app.min.js",
+    "compress-css": "cssnano ./gen/app.css ./dist/app.min.css",
+    "predeploy": "npm run build && npm run compress && npm run dist",
+    "deploy": "surge --project ./dist --domain m-css.com",
+    "dist": "shx sed \"gen/app.(js|css)\" \"app.min.$1\" ./index.html > ./dist/index.html",
+    "prestart": "npm run clean",
+    "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/app.css\" ]"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
@@ -23,8 +28,11 @@
   },
   "devDependencies": {
     "buble": "^0.15.2",
+    "cssnano-cli": "^1.0.5",
+    "modular-css-namer": "^5.0.0",
     "modular-cssify": "^4.2.1",
     "rum": "^3.0.0",
+    "shx": "^0.2.2",
     "surge": "^0.18.0",
     "uglify-js": "^2.8.2",
     "watchify": "^3.9.0"
