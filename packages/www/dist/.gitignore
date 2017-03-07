@@ -3,6 +3,3 @@
 
 # Except this file
 !.gitignore
-
-# & the CNAME file, we need that...
-!CNAME
