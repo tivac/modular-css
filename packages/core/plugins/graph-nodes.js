@@ -30,7 +30,14 @@ module.exports = (css, result) => {
     var externals, current;
     
     externals = selector((selectors) =>
-        selectors.walkPseudos((pseudo) => parse(result.opts, current, pseudo.nodes.toString()))
+        selectors.walkPseudos((pseudo) => {
+            // Need to ensure we only process :external pseudos, see #261
+            if(pseudo.value !== ":external") {
+                return;
+            }
+            
+            parse(result.opts, current, pseudo.nodes.toString());
+        })
     );
     
     // @value <value> from <file>

@@ -1,0 +1,8 @@
+/* test/specimens/issues/261/1.css */
+.mcba581bd3_a {
+    color: red
+}
+/* test/specimens/issues/261/2.css */
+.mce9e2bc2a_b:hover .mcba581bd3_a {
+    color: blue
+}
