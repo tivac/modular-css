@@ -13,7 +13,7 @@
     "compress-js": "uglifyjs ./gen/app.js --compress warnings=false --mangle --output=./dist/app.min.js",
     "compress-css": "cssnano ./gen/app.css ./dist/app.min.css",
     "predeploy": "npm run build && npm run compress && npm run dist",
-    "deploy": "surge ./dist",
+    "deploy": "surge --project ./dist --domain m-css.com",
     "dist": "shx sed \"gen/app.(js|css)\" \"app.min.$1\" ./index.html > ./dist/index.html",
     "prestart": "npm run clean",
     "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/app.css\" ]"
