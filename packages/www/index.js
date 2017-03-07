@@ -66,6 +66,19 @@ function update(encoded) {
     }
 }
 
+function exported() {
+    return "// Input Files\n\n" +
+    files
+        .map((file) => `// ${file.name}\n${file.css}`)
+        .concat(
+            output.css && `// Output CSS\n${output.css || ""}`,
+            output.json && `// Output JSON\n${output.json || ""}`,
+            error && `// Error\n${error}`
+        )
+        .filter(Boolean)
+        .join("\n\n");
+}
+
 throttled = throttle(process, 200);
 
 m.route(document.body, "/", {
@@ -151,7 +164,12 @@ m.route(document.body, "/", {
                         m("button", {
                             class : tab === "json" ? css.active : css.tab,
                             onclick : () => (tab = "json")
-                        }, "JSON")
+                        }, "JSON"),
+
+                         m("button", {
+                            class : tab === "export" ? css.active : css.tab,
+                            onclick : () => (tab = "export")
+                        }, "Export")
                     ),
 
                     tab === "errors" && m("pre", { class : css.errors },
@@ -186,6 +204,21 @@ m.route(document.body, "/", {
 
                             onupdate : (vnode) => vnode.state.editor.doc.setValue(output.json)
                         }, output.json)
+                    ),
+
+                    tab === "export" && m("div", { class : css.panel },
+                        m("textarea", {
+                            oncreate : (vnode) => {
+                                vnode.state.editor = cm.fromTextArea(vnode.dom, {
+                                    mode        : "text/css",
+                                    theme       : "monokai",
+                                    lineNumbers : true,
+                                    readOnly    : "nocursor"
+                                });
+                            },
+
+                            onupdate : (vnode) => vnode.state.editor.doc.setValue(exported())
+                        }, exported())
                     )
                 )
             )
