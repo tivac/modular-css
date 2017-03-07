@@ -3,49 +3,13 @@ modular-css [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https
 
 A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/css-modules)
 
-## Install
+## Try it
 
-### [API](/packages/core/#readme)
+There's an online REPL where you can try out `modular-css` without needing to install anything!
 
-```bash
-$ npm i modular-css-core
-```
+http://m-css.com
 
-### [CLI](/packages/cli/#readme)
-
-```bash
-$ npm i modular-css-cli
-```
-
-### [Browserify](/packages/browserify/#readme)
-
-```bash
-$ npm i modular-cssify
-```
-
-### [Rollup](/packages/rollup/#readme)
-
-```bash
-$ npm i modular-css-rollup
-```
-
-### [Webpack 2](/packages/webpack/#readme)
-
-```bash
-$ npm i modular-css-webpack
-```
-
-### [PostCSS Plugin](/packages/postcss/#readme)
-
-```bash
-$ npm i postcss-modular-css
-```
-
-### [Globbing API](/packages/glob/#readme)
-
-```bash
-$ npm i modular-css-glob
-```
+Here's a prefilled version showing some [`modular-css` features](http://m-css.com/#!/?state=W3sibmFtZSI6IjEuY3NzIiwiY3NzIjoiLyogc2ltcGxlIHZhbHVlcyAqL1xuQHZhbHVlIHJlZDogI0YwMDtcbkB2YWx1ZSBibHVlOiAjMDBGO1xuXG4uYSB7IGNvbG9yOiByZWQ7IH1cblxuLyogc2VsZWN0b3Igbm90IHJlbmFtZWQgKi9cbjpnbG9iYWwoLmIpIHsgYmFja2dyb3VuZDogd2hpdGU7IH1cblxuLyogTm90IG91dHB1dCBpbiBDU1MgYmVjYXVzZSBvbmx5IGNvbXBvc2VzICovXG4uYyB7IGNvbXBvc2VzOiBhOyB9In0seyJuYW1lIjoiMi5jc3MiLCJjc3MiOiJAdmFsdWUgKiBhcyBvbmUgZnJvbSBcIi4vMS5jc3NcIjtcblxuLyogaW1wb3J0IHZhbHVlcyBhcyBhIG5hbWVzcGFjZSAqL1xuLmEgeyBjb2xvcjogb25lLnJlZDsgfVxuXG4vKiBncmFiIHJlZmVyZW5jZSB0byBleHRlcm5hbCBzZWxlY3RvciBmb3Igb3ZlcnJpZGVzICovXG46ZXh0ZXJuYWwoYSBmcm9tIFwiLi8xLmNzc1wiKSAuYiB7IGNvbG9yOiBvbmUuYmx1ZTsgfSJ9XQ%3D%3D).
 
 ## Features
 
@@ -117,6 +81,50 @@ $ npm i modular-css-glob
 ```
 
 More detailed descriptions are available in [docs/features.md](docs/features.md)
+
+## Install
+
+### [API](/packages/core/#readme)
+
+```bash
+$ npm i modular-css-core
+```
+
+### [CLI](/packages/cli/#readme)
+
+```bash
+$ npm i modular-css-cli
+```
+
+### [Browserify](/packages/browserify/#readme)
+
+```bash
+$ npm i modular-cssify
+```
+
+### [Rollup](/packages/rollup/#readme)
+
+```bash
+$ npm i modular-css-rollup
+```
+
+### [Webpack 2](/packages/webpack/#readme)
+
+```bash
+$ npm i modular-css-webpack
+```
+
+### [PostCSS Plugin](/packages/postcss/#readme)
+
+```bash
+$ npm i postcss-modular-css
+```
+
+### [Globbing API](/packages/glob/#readme)
+
+```bash
+$ npm i modular-css-glob
+```
 
 ## Why?
 
