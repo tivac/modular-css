@@ -152,22 +152,22 @@ m.route(document.body, "/", {
                 m("div", { class : css.output },
                     m("div", { class : css.tabs },
                         m("button", {
-                            class : tab === "errors" ? css.active : css.tab,
+                            class   : tab === "errors" ? css.active : css.tab,
                             onclick : () => (tab = "errors")
                         }, "Errors"),
                         
                         m("button", {
-                            class : tab === "css" ? css.active : css.tab,
+                            class   : tab === "css" ? css.active : css.tab,
                             onclick : () => (tab = "css")
                         }, "CSS"),
                         
                         m("button", {
-                            class : tab === "json" ? css.active : css.tab,
+                            class   : tab === "json" ? css.active : css.tab,
                             onclick : () => (tab = "json")
                         }, "JSON"),
 
                          m("button", {
-                            class : tab === "export" ? css.active : css.tab,
+                            class   : tab === "export" ? css.active : css.tab,
                             onclick : () => (tab = "export")
                         }, "Export")
                     ),
