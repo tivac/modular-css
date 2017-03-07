@@ -3,3 +3,5 @@ coverage/
 parsers/
 node_modules/
 dangerfile.js
+gen/
+dist/
