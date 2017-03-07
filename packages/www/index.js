@@ -67,13 +67,13 @@ function update(encoded) {
 }
 
 function exported() {
-    return "// Input Files\n\n" +
+    return "/* Input Files */\n\n" +
     files
-        .map((file) => `// ${file.name}\n${file.css}`)
+        .map((file) => `/* ${file.name} */\n${file.css}`)
         .concat(
-            output.css && `// Output CSS\n${output.css || ""}`,
-            output.json && `// Output JSON\n${output.json || ""}`,
-            error && `// Error\n${error}`
+            output.css && `/* Output CSS */\n${output.css || ""}`,
+            output.json && `/* Output JSON */\n${output.json || ""}`,
+            error && `/* Error */\n${error}`
         )
         .filter(Boolean)
         .join("\n\n");
