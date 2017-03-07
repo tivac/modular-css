@@ -47,6 +47,10 @@ function Processor(opts) {
         },
         opts || Object.create(null)
     );
+    
+    if(typeof this._options.namer === "string") {
+        this._options.namer = require(this._options.namer)();
+    }
 
     if(typeof this._options.namer !== "function") {
         this._options.namer = namer.bind(null, this._options.cwd);

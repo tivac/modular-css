@@ -59,6 +59,21 @@ describe("/processor.js", function() {
                 });
             });
 
+            it("should require a namer if a string is passed", function() {
+                var id        = path.resolve("./test/specimens/simple.css"),
+                    processor = new Processor({
+                        namer : "modular-css-namer"
+                    });
+                    
+                return processor.string(
+                    "./test/specimens/simple.css",
+                    ".wooga { }"
+                )
+                .then((result) => assert.deepEqual(result.exports, {
+                    wooga : [ "a0" ]
+                }));
+            });
+
             it("should use the default naming function if a non-function is passed", function() {
                 var id        = path.resolve("./test/specimens/simple.css"),
                     processor = new Processor({
