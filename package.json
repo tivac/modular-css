@@ -8,16 +8,11 @@
   },
   "scripts": {
     "bootstrap": "lerna bootstrap --hoist",
-    "commitmsg": "validate-commit-msg",
     "clean": "lerna clean",
     "danger": "danger run || true",
     "lint": "eslint .",
-    "preview": "changes || true",
-    "preversion": "npm test",
     "test": "lerna run test",
-    "posttest": "npm run lint",
-    "version": "changes",
-    "postversion": "git push --follow-tags"
+    "posttest": "npm run lint"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
@@ -25,12 +20,10 @@
     "danger": "^0.11.4",
     "eslint": "^3.12.0",
     "eslint-config-arenanet": "^3.0.0",
-    "husky": "^0.13.1",
     "lerna": "2.0.0-beta.38",
     "locater": "^1.3.0",
     "outdent": "^0.3.0",
-    "pinpoint": "^1.1.0",
-    "validate-commit-msg": "^2.8.2"
+    "pinpoint": "^1.1.0"
   },
   "eslintConfig": {
     "extends": "arenanet",
@@ -45,22 +38,5 @@
       "prefer-template": "off",
       "ident": "off"
     }
-  },
-  "nyc": {
-    "lines": 80,
-    "statements": 80,
-    "functions": 80,
-    "branches": 80,
-    "check-coverage": true,
-    "cache": true,
-    "reporter": [
-      "lcov",
-      "text-summary",
-      "text"
-    ],
-    "exclude": [
-      "src/parsers/**",
-      "test/**"
-    ]
   }
 }
