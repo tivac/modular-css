@@ -1,9 +1,12 @@
 "use strict";
 
-var path   = require("path"),
+var fs     = require("fs"),
+    path   = require("path"),
     assert = require("assert"),
     
+    shell   = require("shelljs"),
     rollup  = require("rollup").rollup,
+    watch   = require("rollup-watch"),
     compare = require("test-utils/compare.js"),
     warn    = require("test-utils/warn.js"),
     
@@ -16,7 +19,7 @@ function error(root, result) {
 error.postcssPlugin = "error-plugin";
 
 describe("/rollup.js", function() {
-    after(() => require("shelljs").rm("-rf", "./test/output/rollup"));
+    after(() => shell.rm("-rf", "./test/output/rollup"));
     
     it("should be a function", function() {
         assert.equal(typeof plugin, "function");
@@ -227,6 +230,59 @@ describe("/rollup.js", function() {
                 dest   : "./test/output/rollup/done-error.js"
             }))
             .catch(checkError);
+        });
+    });
+
+    describe("watch", function() {
+        var watcher;
+
+        after(() => watcher.close());
+        
+        it("should generate correct builds in watch mode when files change", function(done) {
+            // Create v1 of the file
+            fs.writeFileSync("./test/output/watched.css", ".one { color: red; }");
+
+            // Start watching (re-requiring rollup because it needs root obj reference)
+            watcher = watch(require("rollup"), {
+                entry   : "./test/specimens/rollup/watch.js",
+                dest    : "./test/output/watch.js",
+                format  : "es",
+                plugins : [
+                    plugin({
+                        css  : "./test/output/watch-output.css",
+                        map  : false
+                    })
+                ]
+            });
+
+            // Create v2 of the file after a bit
+            setTimeout(() => fs.writeFileSync("./test/output/watched.css", ".two { color: blue; }"), 200);
+            
+            watcher.on("event", (details) => {
+                if(details.code === "BUILD_END" && details.initial) {
+                    try {
+                        compare.results(
+                            "watch-output.css",
+                            "rollup/watch1.css"
+                        );
+                    } catch(e) {
+                        return done(e);
+                    }
+                }
+
+                if(details.code === "BUILD_END" && !details.initial) {
+                    try {
+                        compare.results(
+                            "watch-output.css",
+                            "rollup/watch2.css"
+                        );
+                    } catch(e) {
+                        return done(e);
+                    }
+
+                    return done();
+                }
+            });
         });
     });
 });
