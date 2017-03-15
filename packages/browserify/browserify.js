@@ -161,7 +161,7 @@ module.exports = function(browserify, opts) {
             
             if(bundling) {
                 // Write out each bundle's CSS files (if they have any)
-                each(bundles, function(files, bundle) {
+                each(bundles, (files, bundle) => {
                     var dest;
                     
                     if(!files.length && !options.empty) {
@@ -169,9 +169,9 @@ module.exports = function(browserify, opts) {
                     }
 
                     // This file was part of a bundle, so remove from the common file
-                    files.forEach(function(file) {
-                        common.splice(common.indexOf(file), 1);
-                    });
+                    files.forEach((file) =>
+                        common.splice(common.indexOf(file), 1)
+                    );
 
                     dest = path.join(
                         path.dirname(options.css),
@@ -183,12 +183,9 @@ module.exports = function(browserify, opts) {
                     processor.output({
                         files : files,
                         to    : dest
-                    }).then(
-                        function(result) {
-                            fs.writeFileSync(dest, result.css);
-                        },
-                        bundler.emit.bind(bundler, "error")
-                    );
+                    })
+                    .then((result) => fs.writeFileSync(dest, result.css))
+                    .catch((error) => bundler.emit("error", error));
                 });
                 
                 // No common CSS files to write out, so don't (unless they asked nicely)
@@ -203,12 +200,9 @@ module.exports = function(browserify, opts) {
             processor.output({
                 files : bundling && common,
                 to    : options.css
-            }).then(
-                function(result) {
-                    fs.writeFileSync(options.css, result.css);
-                },
-                bundler.emit.bind(bundler, "error")
-            );
+            })
+            .then((result) => fs.writeFileSync(options.css, result.css))
+            .catch((error) => bundler.emit("error", error));
         });
     });
 };
