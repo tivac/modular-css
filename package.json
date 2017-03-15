@@ -35,7 +35,7 @@
     "extends": "arenanet",
     "env": {
       "node": true,
-      "mocha": true
+      "jest": true
     },
     "globals": {
       "Promise": true
