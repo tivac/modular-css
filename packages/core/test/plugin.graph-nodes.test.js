@@ -1,19 +1,22 @@
 "use strict";
 
-var path   = require("path"),
-
-    Graph   = require("dependency-graph").DepGraph,
+var Graph   = require("dependency-graph").DepGraph,
     
-    plugin  = require("../plugins/graph-nodes.js"),
-    resolve = require("../lib/resolve.js").resolve,
+    plugin   = require("../plugins/graph-nodes.js"),
+    resolver = require("../lib/resolve.js").resolve,
+    relative = require("../lib/relative.js"),
     
     processor = require("postcss")([ plugin ]);
+    
+function resolve(src, file) {
+    return relative(process.cwd(), resolver(src, file));
+}
 
 describe("/plugins", function() {
     describe("/graph-nodes.js", function() {
         it("should populate a graph with external @value references", () => {
             var graph = new Graph(),
-                from  = path.resolve("./packages/core/test/specimens/simple.css");
+                from  = "packages/core/test/specimens/simple.css";
 
             graph.addNode(from);
             
@@ -26,7 +29,7 @@ describe("/plugins", function() {
 
         it("should populate a graph with external composes references", () => {
             var graph = new Graph(),
-                from  = path.resolve("./packages/core/test/specimens/simple.css");
+                from  = "packages/core/test/specimens/simple.css";
 
             graph.addNode(from);
             
@@ -39,7 +42,7 @@ describe("/plugins", function() {
 
         it("should populate a graph with :external references", () => {
             var graph = new Graph(),
-                from  = path.resolve("./packages/core/test/specimens/simple.css");
+                from  = "packages/core/test/specimens/simple.css";
 
             graph.addNode(from);
             
@@ -52,7 +55,7 @@ describe("/plugins", function() {
 
         it("should return useful errors when parsing", () => {
             var graph = new Graph(),
-                from  = path.resolve("./packages/core/test/specimens/simple.css");
+                from  = "packages/core/test/specimens/simple.css";
 
             graph.addNode(from);
             
