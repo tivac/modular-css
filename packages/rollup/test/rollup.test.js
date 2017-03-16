@@ -4,8 +4,8 @@ var fs     = require("fs"),
     path   = require("path"),
     assert = require("assert"),
     
-    shell   = require("shelljs"),
     rollup  = require("rollup").rollup,
+    watch   = require("rollup-watch"),
     compare = require("test-utils/compare.js")(__dirname),
     namer   = require("test-utils/namer.js"),
     
@@ -251,29 +251,30 @@ describe("/rollup.js", function() {
     describe("watch", function() {
         var watcher;
 
-        after(() => watcher.close());
+        afterEach(() => watcher.close());
         
         it("should generate correct builds in watch mode when files change", function(done) {
             // Create v1 of the file
-            fs.writeFileSync("./test/output/watched.css", ".one { color: red; }");
+            fs.writeFileSync("./packages/rollup/test/output/watched.css", ".one { color: red; }");
 
             // Start watching (re-requiring rollup because it needs root obj reference)
             watcher = watch(require("rollup"), {
-                entry   : "./test/specimens/rollup/watch.js",
-                dest    : "./test/output/watch.js",
+                entry   : "./packages/rollup/test/specimens/rollup/watch.js",
+                dest    : "./packages/rollup/test/output/watch.js",
                 format  : "es",
                 plugins : [
                     plugin({
-                        css  : "./test/output/watch-output.css",
-                        map  : false
+                        css : "./packages/rollup/test/output/watch-output.css",
+                        map : false
                     })
                 ]
             });
 
             // Create v2 of the file after a bit
-            setTimeout(() => fs.writeFileSync("./test/output/watched.css", ".two { color: blue; }"), 200);
+            setTimeout(() => fs.writeFileSync("./packages/rollup/test/output/watched.css", ".two { color: blue; }"), 200);
             
             watcher.on("event", (details) => {
+                /* eslint consistent-return:0 */
                 if(details.code === "BUILD_END" && details.initial) {
                     try {
                         compare.results(
