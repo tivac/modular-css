@@ -18,7 +18,7 @@ after_script:
 # Cache node_modules
 cache:
   directories:
-  - node_modules
+  # - node_modules
 
 # NPM auto-deployment on tagged releases
 deploy:
