@@ -32,7 +32,7 @@ describe("/plugins", function() {
                     
                     from  : "file",
                     files : {
-                        "file" : {
+                        file : {
                             values : false
                         }
                     }
@@ -141,13 +141,13 @@ describe("/plugins", function() {
                         resolve,
                         
                         map   : false,
-                        from  : path.resolve("./test/specimens/in.css"),
+                        from  : path.resolve("./packages/core/test/specimens/in.css"),
                         files : {
                             // Composition source
-                            [ path.resolve("./test/specimens/in.css") ] : {},
+                            [ path.resolve("./packages/core/test/specimens/in.css") ] : {},
 
                             // Composition target
-                            [ path.resolve("./test/specimens/local.css") ] : {
+                            [ path.resolve("./packages/core/test/specimens/local.css") ] : {
                                 values : {
                                     color : {
                                         value  : "#F00",
@@ -180,13 +180,13 @@ describe("/plugins", function() {
                         resolve,
 
                         map   : false,
-                        from  : path.resolve("./test/specimens/in.css"),
+                        from  : path.resolve("./packages/core/test/specimens/in.css"),
                         files : {
                             // Composition source
-                            [ path.resolve("./test/specimens/in.css") ] : {},
+                            [ path.resolve("./packages/core/test/specimens/in.css") ] : {},
 
                             // Composition target
-                            [ path.resolve("./test/specimens/local.css") ] : {
+                            [ path.resolve("./packages/core/test/specimens/local.css") ] : {
                                 values : {
                                     red : {
                                         value  : "#F00",
@@ -223,13 +223,13 @@ describe("/plugins", function() {
                         resolve,
                         
                         map   : false,
-                        from  : path.resolve("./test/specimens/in.css"),
+                        from  : path.resolve("./packages/core/test/specimens/in.css"),
                         files : {
                             // Composition source
-                            [ path.resolve("./test/specimens/in.css") ] : {},
+                            [ path.resolve("./packages/core/test/specimens/in.css") ] : {},
 
                             // Composition target
-                            [ path.resolve("./test/specimens/local.css") ] : {
+                            [ path.resolve("./packages/core/test/specimens/local.css") ] : {
                                 values : {
                                     red : {
                                         value  : "#F00",

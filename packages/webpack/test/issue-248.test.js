@@ -1,7 +1,6 @@
 "use strict";
 
 var path   = require("path"),
-    assert = require("assert"),
 
     webpack = require("webpack"),
 
@@ -12,11 +11,13 @@ var path   = require("path"),
 
 describe("/issues", function() {
     describe("/248", function() {
+        afterAll(() => require("shelljs").rm("-rf", "./packages/webpack/test/output/*"));
+
         it("should output css to disk", function(done) {
             webpack({
-                entry   : "./test/specimens/issues/248/index.js",
-                output  : {
-                    path : path.resolve("./test/output/webpack"),
+                entry  : "./packages/webpack/test/specimens/issues/248/index.js",
+                output : {
+                    path     : path.resolve("./packages/webpack/test/output"),
                     filename : "./issue-248.js"
                 },
                 module : {
@@ -34,7 +35,7 @@ describe("/issues", function() {
                 ]
             }, (err, stats) => {
                 // I don't understand why err is null here?
-                assert.equal(stats.hasErrors(), true);
+                expect(stats.hasErrors()).toBe(true);
 
                 done();
             });

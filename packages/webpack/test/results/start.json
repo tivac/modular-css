@@ -1,0 +1,14 @@
+{
+    "packages/webpack/test/specimens/folder/folder.css": {
+        "folder": "folder"
+    },
+    "packages/webpack/test/specimens/local.css": {
+        "booga": "booga",
+        "looga": "booga looga"
+    },
+    "packages/webpack/test/specimens/start.css": {
+        "wooga": "booga wooga",
+        "booga": "booga",
+        "tooga": "tooga"
+    }
+}

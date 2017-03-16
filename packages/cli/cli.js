@@ -56,7 +56,7 @@ glob(Object.assign(
         return fs.writeFileSync(cli.flags.out, output.css, "utf8");
     }
 
-    return process.stdout.write(output.css + "\n");
+    return process.stdout.write(`${output.css}\n`);
 })
 .catch((error) => {
     process.stderr.write(error.toString());

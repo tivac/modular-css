@@ -15,13 +15,13 @@ describe("/plugins", function() {
             return processor.process(css, {
                 resolve,
                 
-                from  : path.resolve("./test/specimens/start.css"),
+                from  : path.resolve("./packages/core/test/specimens/start.css"),
                 files : {
                     // Composition source
-                    [path.resolve("./test/specimens/start.css")] : {},
+                    [path.resolve("./packages/core/test/specimens/start.css")] : {},
 
                     // Composition target
-                    [path.resolve("./test/specimens/local.css")] : {
+                    [path.resolve("./packages/core/test/specimens/local.css")] : {
                         values : {
                             fooga : {
                                 value  : "red",
@@ -61,7 +61,7 @@ describe("/plugins", function() {
         });
 
         it("should support importing a value from another file", function() {
-            assert.deepEqual(
+            expect(
                 process(`@value fooga from "./local.css";`).messages,
                 [{
                     type   : "modular-css",
@@ -77,7 +77,7 @@ describe("/plugins", function() {
         });
 
         it("should support importing multiple values from another file", function() {
-            assert.deepEqual(
+            expect(
                 process(`@value googa, fooga from "./local.css";`).messages,
                 [{
                     type   : "modular-css",

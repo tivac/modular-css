@@ -1,13 +1,11 @@
 "use strict";
 
-var assert = require("assert"),
-
-    message   = require("../lib/message.js");
+var message   = require("../lib/message.js");
 
 describe("/lib", function() {
     describe("/message.js", function() {
         it("should find the last message containing a given field", function() {
-            assert.deepEqual(
+            expect(
                 message({ messages : [
                     { fooga : { aooga : "aooga" } },
                     { fooga : { booga : "booga" } },
@@ -18,7 +16,7 @@ describe("/lib", function() {
         });
         
         it("should return an empty object if a message wasn't found", function() {
-            assert.deepEqual(
+            expect(
                 message({ messages : [
                     { fooga : { aooga : "aooga" } },
                     { fooga : { booga : "booga" } },

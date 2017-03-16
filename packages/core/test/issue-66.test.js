@@ -10,7 +10,7 @@ describe("/issues", function() {
             var processor = new Processor();
 
             return processor.string(
-                "./test/specimens/a.css",
+                "./packages/core/test/specimens/a.css",
                 ".aooga { }"
             )
             .then(() => assert.doesNotThrow(function() {

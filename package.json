@@ -1,5 +1,5 @@
 {
-  "name": "modular-css",
+  "name": "modular-css-root",
   "version": "1.0.0",
   "private": true,
   "repository": "tivac/modular-css",
@@ -11,15 +11,22 @@
     "clean": "lerna clean",
     "danger": "danger run || true",
     "lint": "eslint .",
-    "test": "lerna run test",
-    "posttest": "npm run lint"
+    "preview": "changes || true",
+    "preversion": "npm test",
+    "test": "jest",
+    "posttest": "npm run lint",
+    "version": "changes",
+    "postversion": "git push --follow-tags",
+    "watch": "jest --watch"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "devDependencies": {
     "danger": "^0.11.4",
-    "eslint": "^3.12.0",
+    "eslint": "^3.17.1",
     "eslint-config-arenanet": "^3.0.0",
+    "husky": "^0.13.1",
+    "jest": "^19.0.2",
     "lerna": "2.0.0-beta.38",
     "locater": "^1.3.0",
     "outdent": "^0.3.0",
@@ -29,14 +36,7 @@
     "extends": "arenanet",
     "env": {
       "node": true,
-      "mocha": true
-    },
-    "globals": {
-      "Promise": true
-    },
-    "rules": {
-      "prefer-template": "off",
-      "ident": "off"
+      "jest": true
     }
   }
 }

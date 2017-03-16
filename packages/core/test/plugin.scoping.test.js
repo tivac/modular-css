@@ -1,7 +1,6 @@
 "use strict";
 
-var path   = require("path"),
-    assert = require("assert"),
+var assert = require("assert"),
     
     leading = require("dentist").dedent,
 
@@ -22,7 +21,7 @@ function process(src, options) {
     return processor.process(
         src,
         Object.assign(Object.create(null), {
-            from  : "test/specimens/a.css",
+            from  : "packages/core/test/specimens/a.css",
             namer : (file, selector) => `a_${selector}`
         },
         options || {})
@@ -111,7 +110,7 @@ describe("/plugins", function() {
         });
         
         it("should expose original names in a message", function() {
-            assert.deepEqual(
+            expect(
                 process(leading(`
                     .wooga { color: red; }
                     #booga { color: black; }
@@ -213,7 +212,7 @@ describe("/plugins", function() {
                 assert.equal(
                     process(".b { color: red; } :global(.c) { color: blue; }").css,
                     ".a_b { color: red; } .c { color: blue; }"
-                )
+                );
                 
                 assert.equal(
                     process(".wooga :global(.booga) .fooga { color: red; }").css,
@@ -229,7 +228,7 @@ describe("/plugins", function() {
             });
 
             it("should include :global(...) identifiers in a message", function() {
-                assert.deepEqual(
+                expect(
                     process(leading(`
                         :global(.wooga) { color: red; }
                         :global(#fooga) { color: red; }
@@ -266,7 +265,7 @@ describe("/plugins", function() {
                     ".a_fooga .wooga { color: red; }"
                 );
                 
-                assert.deepEqual(
+                expect(
                     processed.messages,
                     [ msg({
                         fooga : [ "a_fooga" ],

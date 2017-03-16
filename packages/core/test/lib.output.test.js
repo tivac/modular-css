@@ -8,7 +8,7 @@ var assert = require("assert"),
 function compositions(css) {
     var processor = new Processor();
     
-    return processor.string("./test/specimens/simple.css", css).then(function() {
+    return processor.string("./packages/core/test/specimens/simple.css", css).then(function() {
         var out = output.compositions(process.cwd(), processor);
         
         return out;
@@ -29,9 +29,9 @@ describe("/lib", function() {
                 .then((out) => {
                     assert(typeof out === "object");
                     
-                    assert.deepEqual(out, {
-                        "test/specimens/simple.css" : {
-                            wooga : "mc08e91a5b_wooga"
+                    expect(out, {
+                        "packages/core/test/specimens/simple.css" : {
+                            wooga : "wooga"
                         }
                     });
                 });
@@ -42,10 +42,10 @@ describe("/lib", function() {
                     ".wooga .booga { }"
                 )
                 .then(function(out) {
-                    assert.deepEqual(out, {
-                        "test/specimens/simple.css" : {
-                            booga : "mc08e91a5b_booga",
-                            wooga : "mc08e91a5b_wooga"
+                    expect(out, {
+                        "packages/core/test/specimens/simple.css" : {
+                            booga : "booga",
+                            wooga : "wooga"
                         }
                     });
                 });
@@ -56,10 +56,10 @@ describe("/lib", function() {
                     ".wooga { } .booga { composes: wooga; }"
                 )
                 .then(function(out) {
-                    assert.deepEqual(out, {
-                        "test/specimens/simple.css" : {
-                            booga : "mc08e91a5b_wooga mc08e91a5b_booga",
-                            wooga : "mc08e91a5b_wooga"
+                    expect(out, {
+                        "packages/core/test/specimens/simple.css" : {
+                            booga : "wooga booga",
+                            wooga : "wooga"
                         }
                     });
                 });

@@ -1,19 +1,18 @@
 "use strict";
 
-var fs      = require("fs"),
-    path    = require("path"),
+var path    = require("path"),
     assert  = require("assert"),
 
     leading = require("dentist").dedent,
     
     Processor = require("../processor.js"),
     
-    compare = require("./lib/compare.js");
+    compare = require("test-utils/compare.js")(__dirname);
 
 describe("/processor.js", function() {
     describe("Basics", function() {
         it("should be a function", function() {
-            assert.equal(typeof Processor, "function");
+            expect(typeof Processor).toBe("function");
         });
         
         it("should auto-instantiate if called without new", function() {
@@ -24,7 +23,9 @@ describe("/processor.js", function() {
 
     describe("functionality", function() {
         beforeEach(function() {
-            this.processor = new Processor();
+            this.processor = new Processor({
+                namer : (file, selector) => selector
+            });
         });
         
         describe("getters", function() {
@@ -33,17 +34,17 @@ describe("/processor.js", function() {
                     var processor = this.processor;
                     
                     return processor.file(
-                        "./test/specimens/start.css"
+                        "./packages/core/test/specimens/start.css"
                     )
-                    .then(() => processor.file("./test/specimens/local.css"))
+                    .then(() => processor.file("./packages/core/test/specimens/local.css"))
                     .then(() => {
-                        assert.equal(typeof processor.files, "object");
+                        expect(typeof processor.files).toBe("object");
                         
-                        assert.equal(Object.keys(processor.files).length, 3);
+                        expect(Object.keys(processor.files).length).toBe(3);
                         
-                        assert(path.resolve("./test/specimens/local.css") in processor.files);
-                        assert(path.resolve("./test/specimens/start.css") in processor.files);
-                        assert(path.resolve("./test/specimens/folder/folder.css") in processor.files);
+                        assert(path.resolve("./packages/core/test/specimens/local.css") in processor.files);
+                        assert(path.resolve("./packages/core/test/specimens/start.css") in processor.files);
+                        assert(path.resolve("./packages/core/test/specimens/folder/folder.css") in processor.files);
                     });
                 });
             });
@@ -55,8 +56,7 @@ describe("/processor.js", function() {
                     "./invalid/value.css",
                     "@value not-real from \"../local.css\";"
                 )
-                .catch((error) => assert.equal(
-                    error.message,
+                .catch((error) => expect(error.message).toBe(
                     `Unable to locate "../local.css" from "${path.resolve("./invalid/value.css")}"`
                 ));
             });
@@ -66,8 +66,7 @@ describe("/processor.js", function() {
                     "./invalid/composition.css",
                     ".wooga { composes: fake from \"../local.css\"; }"
                 )
-                .catch((error) => assert.equal(
-                    error.message,
+                .catch((error) => expect(error.message).toBe(
                     `Unable to locate "../local.css" from "${path.resolve("./invalid/composition.css")}"`
                 ));
             });
@@ -76,7 +75,7 @@ describe("/processor.js", function() {
         describe("scoping", function() {
             it("should scope classes, ids, and keyframes", function() {
                 return this.processor.string(
-                    "./test/specimens/simple.css",
+                    "./packages/core/test/specimens/simple.css",
                     leading(`
                         @keyframes kooga { }
                         #fooga { }
@@ -86,25 +85,24 @@ describe("/processor.js", function() {
                     `)
                 )
                 .then((result) => {
-                    assert.deepEqual(result.exports, {
-                        fooga : [ "mc08e91a5b_fooga" ],
-                        wooga : [ "mc08e91a5b_wooga" ],
-                        one   : [ "mc08e91a5b_one" ],
-                        two   : [ "mc08e91a5b_two" ]
+                    expect(result.exports).toEqual({
+                        fooga : [ "fooga" ],
+                        wooga : [ "wooga" ],
+                        one   : [ "one" ],
+                        two   : [ "two" ]
                     });
 
                     return this.processor.output();
                 })
                 .then((output) =>
-                    assert.equal(
-                        output.css,
+                    expect(output.css).toEqual(
                         leading(`
-                            /* test/specimens/simple.css */
-                            @keyframes mc08e91a5b_kooga {}
-                            #mc08e91a5b_fooga {}
-                            .mc08e91a5b_wooga {}
-                            .mc08e91a5b_one,
-                            .mc08e91a5b_two {}
+                            /* packages/core/test/specimens/simple.css */
+                            @keyframes kooga {}
+                            #fooga {}
+                            .wooga {}
+                            .one,
+                            .two {}
                         `)
                     )
                 );
@@ -114,11 +112,11 @@ describe("/processor.js", function() {
         describe("values", function() {
             it("should support local values in value composition", function() {
                 return this.processor.string(
-                    "./test/specimens/simple.css",
+                    "./packages/core/test/specimens/simple.css",
                     "@value local: './local.css'; @value one from local; .fooga { background: one; }"
                 )
-                .then((result) => assert.deepEqual(result.exports, {
-                    fooga : [ "mc08e91a5b_fooga" ]
+                .then((result) => expect(result.exports).toEqual({
+                    fooga : [ "fooga" ]
                 }));
             });
         });
@@ -126,52 +124,36 @@ describe("/processor.js", function() {
         describe("externals", function() {
             it("should support overriding external values", function() {
                 return this.processor.file(
-                    "./test/specimens/externals.css"
+                    "./packages/core/test/specimens/externals.css"
                 )
                 .then(() => this.processor.output())
-                .then((result) => compare.stringToFile(result.css, "./test/results/processor/externals.css"));
+                .then((result) => compare.stringToFile(result.css, "./packages/core/test/results/processor/externals.css"));
             });
         });
 
         describe("exports", function() {
             it("should export an object of arrays containing strings", function() {
                 return this.processor.string(
-                    "./test/specimens/simple.css",
+                    "./packages/core/test/specimens/simple.css",
                     ".red { color: red; } .black { background: #000; } .one, .two { composes: red, black; }"
                 )
-                .then((result) => assert.deepEqual(result.exports, {
-                    red   : [ "mc08e91a5b_red" ],
-                    black : [ "mc08e91a5b_black" ],
-                    one   : [ "mc08e91a5b_red", "mc08e91a5b_black", "mc08e91a5b_one" ],
-                    two   : [ "mc08e91a5b_red", "mc08e91a5b_black", "mc08e91a5b_two" ]
+                .then((result) => expect(result.exports).toEqual({
+                    red   : [ "red" ],
+                    black : [ "black" ],
+                    one   : [ "red", "black", "one" ],
+                    two   : [ "red", "black", "two" ]
                 }))
                 .catch((e) => {
                     throw e;
-                })
+                });
             });
 
             it("should export identifiers and their classes", function() {
                 return this.processor.file(
-                    "./test/specimens/start.css"
+                    "./packages/core/test/specimens/start.css"
                 )
-                .then((result) => this.processor.output())
-                .then((output) => assert.deepEqual(
-                    output.compositions,
-                    {
-                        "test/specimens/folder/folder.css" : {
-                            "folder" : "mc04bb002b_folder"
-                        },
-                        "test/specimens/local.css" : {
-                            "booga" : "mc04cb4cb2_booga",
-                            "looga" : "mc04cb4cb2_booga mc04cb4cb2_looga"
-                        },
-                        "test/specimens/start.css" : {
-                            "booga" : "mc61f0515a_booga",
-                            "tooga" : "mc61f0515a_tooga",
-                            "wooga" : "mc04cb4cb2_booga mc61f0515a_wooga"
-                        }
-                    }
-                ));
+                .then(() => this.processor.output())
+                .then((output) => expect(output.compositions).toMatchSnapshot());
             });
         });
 
@@ -181,10 +163,10 @@ describe("/processor.js", function() {
                 });
             
             return processor.file(
-                "./test/specimens/processor/unicode.css"
+                "./packages/core/test/specimens/processor/unicode.css"
             )
-            .then(() => processor.output({ to : "./test/output/processor/unicode.css" }))
-            .then((output) => compare.stringToFile(output.css, "./test/results/processor/unicode.css"));
+            .then(() => processor.output({ to : "./packages/core/test/output/processor/unicode.css" }))
+            .then((output) => compare.stringToFile(output.css, "./packages/core/test/results/processor/unicode.css"));
         });
     });
 });

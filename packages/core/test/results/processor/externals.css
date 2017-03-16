@@ -1,19 +1,19 @@
-/* test/specimens/folder/folder.css */
-.mc04bb002b_folder {
+/* packages/core/test/specimens/folder/folder.css */
+.folder {
     margin: 2px
 }
-/* test/specimens/simple.css */
-.mc08e91a5b_wooga {
+/* packages/core/test/specimens/simple.css */
+.wooga {
     color: red
 }
-/* test/specimens/local.css */
-.mc04cb4cb2_booga {
+/* packages/core/test/specimens/local.css */
+.booga {
     background: green
 }
-/* test/specimens/externals.css */
-.mc56537f08_a .mc08e91a5b_wooga {
+/* packages/core/test/specimens/externals.css */
+.a .wooga {
     color: green
 }
-.mc56537f08_b .mc04cb4cb2_booga {
+.b .booga {
     background: blue
 }

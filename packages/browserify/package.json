@@ -7,10 +7,6 @@
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
   },
-  "scripts": {
-    "cover": "nyc mocha",
-    "test": "mocha"
-  },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "keywords": [
@@ -26,8 +22,6 @@
     "browserify": "^14.0.0",
     "factor-bundle": "^2.5.0",
     "from2-string": "^1.1.0",
-    "mocha": "^3.2.0",
-    "nyc": "^10.1.2",
     "shelljs": "^0.7.3",
     "test-utils": "^4.0.9",
     "watchify": "^3.7.0"

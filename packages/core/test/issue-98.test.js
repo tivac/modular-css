@@ -1,19 +1,21 @@
 "use strict";
 
-var assert    = require("assert"),
-
-    leading = require("dentist").dedent,
+var leading = require("dentist").dedent,
     
-    Processor = require("../processor.js"),
-    compare   = require("./lib/compare.js");
+    compare = require("test-utils/compare.js")(__dirname),
+    namer   = require("test-utils/namer.js"),
+    
+    Processor = require("../processor.js");
 
 describe("/issues", function() {
     describe("/98", function() {
         it("should prune rules that only compose, but leave them in the exports", function() {
-            var processor = new Processor();
+            var processor = new Processor({
+                    namer
+                });
             
             return processor.string(
-                "./test/specimens/issues/98.css",
+                "./packages/core/test/specimens/issues/98.css",
                 leading(`
                     .booga { color: red }
                     .fooga { composes: booga }
@@ -21,14 +23,14 @@ describe("/issues", function() {
                 `)
             )
             .then((result) => {
-                assert.deepEqual(result.exports, {
-                    booga : [ "mc2a6c9ee9_booga" ],
-                    fooga : [ "mc2a6c9ee9_booga", "mc2a6c9ee9_fooga" ]
+                expect(result.exports).toEqual({
+                    booga : [ "booga" ],
+                    fooga : [ "booga", "fooga" ]
                 });
 
                 return processor.output();
             })
-            .then((result) => compare.stringToFile(result.css, "./test/results/issues/98.css"));
+            .then((result) => compare.stringToFile(result.css, "./packages/core/test/results/issues/98.css"));
         });
     });
 });

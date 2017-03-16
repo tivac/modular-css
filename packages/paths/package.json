@@ -7,10 +7,6 @@
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
   },
-  "scripts": {
-    "cover": "nyc mocha",
-    "test": "mocha"
-  },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "keywords": [
@@ -21,10 +17,8 @@
   ],
   "devDependencies": {
     "dentist": "^1.0.3",
-    "mocha": "^3.2.0",
-    "nyc": "^10.1.2",
-    "test-utils": "^4.0.9",
-    "modular-css-core": "^4.1.2"
+    "test-utils": "^4.0.6",
+    "modular-css-core": "^4.0.6"
   },
   "dependencies": {
     "resolve-from": "^2.0.0"

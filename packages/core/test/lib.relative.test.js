@@ -1,40 +1,55 @@
 "use strict";
 
 var path   = require("path"),
-    assert = require("assert"),
     
     relative = require("../lib/relative.js");
 
 describe("/lib", function() {
     describe("/relative.js", function() {
         it("should be a function", function() {
-            assert.equal(typeof relative, "function");
+            expect(typeof relative).toBe("function");
         });
 
         it(`should export a "prefixed" property`, function() {
-            assert.equal(typeof relative.prefixed, "function");
+            expect(typeof relative.prefixed).toBe("function");
         });
         
         it("should resolve files against a specified cwd", function() {
-            assert.equal(
-                relative(process.cwd(), path.resolve("./test/specimens/start.css")),
-                "test/specimens/start.css"
+            expect(
+                relative(
+                    process.cwd(),
+                    path.resolve("./packages/core/test/specimens/start.css")
+                )
+            ).toBe(
+                "packages/core/test/specimens/start.css"
             );
             
-            assert.equal(
-                relative(path.resolve("./test"), path.resolve("./test/specimens/start.css")),
+            expect(
+                relative(
+                    path.resolve("./packages/core/test"),
+                    path.resolve("./packages/core/test/specimens/start.css")
+                )
+            ).toBe(
                 "specimens/start.css"
             );
         });
 
         it("should resolve files against a specified cwd w/ prefixes", function() {
-            assert.equal(
-                relative.prefixed(process.cwd(), path.resolve("./test/specimens/start.css")),
-                "./test/specimens/start.css"
+            expect(
+                relative.prefixed(
+                    process.cwd(),
+                    path.resolve("./packages/core/test/specimens/start.css")
+                )
+            ).toBe(
+                "./packages/core/test/specimens/start.css"
             );
             
-            assert.equal(
-                relative.prefixed(path.resolve("./test/specimens/"), path.resolve("./test/lib.relative.test.js")),
+            expect(
+                relative.prefixed(
+                    path.resolve("./packages/core/test/specimens/"),
+                    path.resolve("./packages/core/test/lib.relative.test.js")
+                )
+            ).toBe(
                 "../lib.relative.test.js"
             );
         });
