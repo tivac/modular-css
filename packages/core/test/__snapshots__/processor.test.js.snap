@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js functionality exports should export identifiers and their classes 1`] = `
+Object {
+  "packages/core/test/specimens/folder/folder.css": Object {
+    "folder": "folder",
+  },
+  "packages/core/test/specimens/local.css": Object {
+    "booga": "booga",
+    "looga": "booga looga",
+  },
+  "packages/core/test/specimens/start.css": Object {
+    "booga": "booga",
+    "tooga": "tooga",
+    "wooga": "booga wooga",
+  },
+}
+`;
