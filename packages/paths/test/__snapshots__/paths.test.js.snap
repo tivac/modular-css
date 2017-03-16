@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/paths.js should be usable as a modular-css resolver 1`] = `
+Object {
+  "packages/paths/test/specimens/one/start.css": Object {
+    "rule": "two rule",
+  },
+  "packages/paths/test/specimens/one/sub/sub.css": Object {
+    "sub": "sub",
+  },
+  "packages/paths/test/specimens/two/two.css": Object {
+    "two": "two",
+  },
+}
+`;
+
+exports[`/paths.js should check multiple paths for files & return the first match 1`] = `"D:\\\\git\\\\modular-css\\\\packages\\\\paths\\\\test\\\\specimens\\\\one\\\\sub\\\\sub.css"`;
+
+exports[`/paths.js should return the absolute path if a file is found 1`] = `"D:\\\\git\\\\modular-css\\\\packages\\\\paths\\\\test\\\\specimens\\\\one\\\\one.css"`;
