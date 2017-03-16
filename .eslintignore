@@ -1,7 +1,8 @@
-test/
 coverage/
 parsers/
 node_modules/
+specimens/
+results/
 dangerfile.js
 gen/
 dist/

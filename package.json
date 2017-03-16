@@ -42,7 +42,7 @@
     },
     "rules": {
       "prefer-template": "off",
-      "ident": "off"
+      "indent": "off"
     }
   }
 }
