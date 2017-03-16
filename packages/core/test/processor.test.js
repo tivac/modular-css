@@ -1,7 +1,6 @@
 "use strict";
 
-var fs      = require("fs"),
-    path    = require("path"),
+var path    = require("path"),
     assert  = require("assert"),
 
     leading = require("dentist").dedent,
@@ -146,28 +145,15 @@ describe("/processor.js", function() {
                 }))
                 .catch((e) => {
                     throw e;
-                })
+                });
             });
 
             it("should export identifiers and their classes", function() {
                 return this.processor.file(
                     "./packages/core/test/specimens/start.css"
                 )
-                .then((result) => this.processor.output())
-                .then((output) => expect(output.compositions).toEqual({
-                    "packages/core/test/specimens/folder/folder.css" : {
-                        "folder" : "folder"
-                    },
-                    "packages/core/test/specimens/local.css" : {
-                        "booga" : "booga",
-                        "looga" : "booga looga"
-                    },
-                    "packages/core/test/specimens/start.css" : {
-                        "booga" : "booga",
-                        "tooga" : "tooga",
-                        "wooga" : "booga wooga"
-                    }
-                }));
+                .then(() => this.processor.output())
+                .then((output) => expect(output.compositions).toMatchSnapshot());
             });
         });
 

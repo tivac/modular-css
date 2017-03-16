@@ -213,7 +213,7 @@ describe("/plugins", function() {
                 assert.equal(
                     process(".b { color: red; } :global(.c) { color: blue; }").css,
                     ".a_b { color: red; } .c { color: blue; }"
-                )
+                );
                 
                 assert.equal(
                     process(".wooga :global(.booga) .fooga { color: red; }").css,

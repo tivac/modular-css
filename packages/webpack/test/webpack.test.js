@@ -17,7 +17,7 @@ describe("/webpack.js", function() {
     afterAll(() => require("shelljs").rm("-rf", "./packages/webpack/test/output/*"));
 
     it("should be a function", function() {
-        assert(typeof Plugin, "function")
+        assert(typeof Plugin, "function");
     });
 
     it("should output css to disk", function(done) {
@@ -147,5 +147,5 @@ describe("/webpack.js", function() {
 
             done();
         });
-    })
+    });
 });

@@ -7,14 +7,13 @@ var fs     = require("fs"),
     shell   = require("shelljs"),
     rollup  = require("rollup").rollup,
     compare = require("test-utils/compare.js")(__dirname),
-    warn    = require("test-utils/warn.js"),
     namer   = require("test-utils/namer.js"),
     
     plugin = require("../rollup.js");
 
-function error(root, result) {
+function error(root) {
     throw root.error("boom");
-};
+}
 
 error.postcssPlugin = "error-plugin";
 
@@ -198,8 +197,8 @@ describe("/rollup.js", function() {
     });
 
     describe("errors", function() {
-        function checkError(error) {
-            assert(error.toString().indexOf("error-plugin:") > -1);
+        function checkError(err) {
+            assert(err.toString().indexOf("error-plugin:") > -1);
         }
 
         it("should throw errors in in before plugins", function() {
