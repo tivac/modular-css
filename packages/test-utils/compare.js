@@ -32,7 +32,7 @@ module.exports = (cwd) => {
     out.contains = function(haystack, name) {
         var needle = fs.readFileSync(path.join(cwd, "./results", name), "utf8");
         
-        expect(haystack).toMatch(needle);
+        expect(haystack.toString()).toMatch(needle);
     };
 
     return out;
