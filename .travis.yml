@@ -12,7 +12,7 @@ install:
   # install all the sub-package dependencies
   - npm run bootstrap
   # verify what got installed for debugging
-  - npm ls
+  - npm ls || true
 
 after_script:
   - npm run danger
