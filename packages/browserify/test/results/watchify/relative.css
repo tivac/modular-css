@@ -1,9 +1,0 @@
-/* packages/browserify/test/specimens/relative.css */
-.mc592b2d8f_wooga {
-    color: red;
-    background: url("../../specimens/folder/to.png")
-}
-/* packages/browserify/test/specimens/watchify/relative.css */
-.mc3810717d_booga {
-    background: url("../../specimens/watchify/to.png")
-}

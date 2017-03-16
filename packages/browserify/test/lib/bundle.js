@@ -1,13 +1,14 @@
 "use strict";
 
-module.exports = function bundle(build, done) {
-    build.bundle(function(err, out) {
-        expect(err).toBeFalsy();
+module.exports = (build) =>
+    new Promise((resolve, reject) => {
+        build.bundle(function(err, out) {
+            expect(err).toBeFalsy();
 
-        // Wrapped because browserify event lifecycle demands it
-        // Need to investigate further
-        setTimeout(function() {
-            done(out.toString());
-        }, 25);
+            // CSS processing in the plugin takes non-zero amount of time,
+            // this is ridiculous but seemingly unavoiadable
+            setTimeout(() => {
+                resolve(out.toString())
+            }, 25);
+        });
     });
-};
