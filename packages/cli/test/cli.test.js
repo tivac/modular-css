@@ -1,10 +1,6 @@
 "use strict";
 
-var fs     = require("fs"),
-    path   = require("path"),
-    assert = require("assert"),
-    
-    tester = require("cli-tester/es5"),
+var tester = require("cli-tester/es5"),
 
     compare = require("test-utils/compare.js")(__dirname),
     
@@ -34,13 +30,13 @@ describe("/cli.js", function() {
     it("should support outputting to a file", function() {
         return tester(cli, "--out=./packages/cli/test/output/simple.css", "./packages/cli/test/specimens/simple.css")
             .then(success)
-            .then((out) => compare.results("simple.css"));
+            .then(() => compare.results("simple.css"));
     });
 
     it("should support outputting compositions to a file", function() {
         return tester(cli, "--json=./packages/cli/test/output/classes.json", "./packages/cli/test/specimens/simple.css")
             .then(success)
-            .then((out) => compare.results("classes.json"));
+            .then(() => compare.results("classes.json"));
     });
 
     it("should return the correct error code on invalid CSS", function() {

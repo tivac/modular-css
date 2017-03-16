@@ -1,7 +1,6 @@
 "use strict";
 
 var fs     = require("fs"),
-    path   = require("path"),
     
     compare = require("test-utils/compare.js")(__dirname),
     namer   = require("test-utils/namer.js"),
@@ -13,8 +12,7 @@ describe("/issues", function() {
         afterAll(() => require("shelljs").rm("-rf", "./packages/core/test/output/sensitive.txt"));
 
         it("should ignore case differences in file paths", function() {
-            var test = this,
-                processor;
+            var processor;
             
             // Verify that filesystem is case-insensitive before bothering
             fs.writeFileSync("./packages/core/test/output/sensitive.txt");

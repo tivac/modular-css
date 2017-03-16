@@ -1,9 +1,6 @@
 "use strict";
 
-var path   = require("path"),
-    assert = require("assert"),
-    
-    leading = require("dentist").dedent,
+var leading = require("dentist").dedent,
     namer = require("test-utils/namer.js"),
 
     Processor = require("../processor.js");
