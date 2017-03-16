@@ -32,7 +32,7 @@ describe("/plugins", function() {
                     
                     from  : "file",
                     files : {
-                        "file" : {
+                        file : {
                             values : false
                         }
                     }

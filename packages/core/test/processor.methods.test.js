@@ -1,7 +1,6 @@
 "use strict";
 
-var fs      = require("fs"),
-    path    = require("path"),
+var path    = require("path"),
     assert  = require("assert"),
     
     Processor = require("../processor.js"),
@@ -214,9 +213,7 @@ describe("/processor.js", function() {
                             () => {
                                 ran = true;
                             },
-                            (src, file) => {
-                                return path.resolve(path.dirname(src), file);
-                            }
+                            (src, file) => path.resolve(path.dirname(src), file)
                         ]
                     });
                 
@@ -234,7 +231,7 @@ describe("/processor.js", function() {
             it("should fall back to a default resolver", function() {
                 var processor = new Processor({
                         resolvers : [
-                            () => {}
+                            () => undefined
                         ]
                     });
                 

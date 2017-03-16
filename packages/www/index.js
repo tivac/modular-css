@@ -67,7 +67,7 @@ function update(encoded) {
 }
 
 function exported() {
-    return "/* Input Files */\n\n" +
+    return `/* Input Files */\n\n${
     files
         .map((file) => `/* ${file.name} */\n${file.css}`)
         .concat(
@@ -76,7 +76,7 @@ function exported() {
             error && `/* Error */\n${error}`
         )
         .filter(Boolean)
-        .join("\n\n");
+        .join("\n\n")}`;
 }
 
 throttled = throttle(process, 200);

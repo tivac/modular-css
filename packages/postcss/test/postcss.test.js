@@ -1,7 +1,6 @@
 "use strict";
 
 var fs     = require("fs"),
-    path   = require("path"),
     assert = require("assert"),
     
     postcss = require("postcss"),
@@ -10,9 +9,7 @@ var fs     = require("fs"),
     
     message = require("modular-css-core/lib/message.js"),
 
-    plugin  = require("../postcss.js"),
-    
-    start = "";
+    plugin  = require("../postcss.js");
 
 function process(file, opts) {
     return plugin.process(
@@ -67,7 +64,7 @@ describe("/postcss.js", function() {
 
     it("should accept normal processor options", function() {
         return process("./packages/postcss/test/specimens/simple.css", {
-            map   : {
+            map : {
                 inline : true
             },
             namer : (f, s) => `fooga_${s}`

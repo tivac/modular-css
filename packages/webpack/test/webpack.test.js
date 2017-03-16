@@ -22,9 +22,9 @@ describe("/webpack.js", function() {
 
     it("should output css to disk", function(done) {
         webpack({
-            entry   : "./packages/webpack/test/specimens/simple.js",
-            output  : {
-                path : path.resolve("./packages/webpack/test/output"),
+            entry  : "./packages/webpack/test/specimens/simple.js",
+            output : {
+                path     : path.resolve("./packages/webpack/test/output"),
                 filename : "./simple.js"
             },
             module : {
@@ -54,9 +54,9 @@ describe("/webpack.js", function() {
 
     it("should output json to disk", function(done) {
         webpack({
-            entry   : "./packages/webpack/test/specimens/simple.js",
-            output  : {
-                path : path.resolve("./packages/webpack/test/output"),
+            entry  : "./packages/webpack/test/specimens/simple.js",
+            output : {
+                path     : path.resolve("./packages/webpack/test/output"),
                 filename : "./simple.js"
             },
             module : {
@@ -86,9 +86,9 @@ describe("/webpack.js", function() {
 
     it("should report errors", function(done) {
         webpack({
-            entry   : "./packages/webpack/test/specimens/invalid.js",
-            output  : {
-                path : path.resolve("./packages/webpack/test/output"),
+            entry  : "./packages/webpack/test/specimens/invalid.js",
+            output : {
+                path     : path.resolve("./packages/webpack/test/output"),
                 filename : "./invalid.js"
             },
             module : {
@@ -117,9 +117,9 @@ describe("/webpack.js", function() {
 
     it("should handle dependencies", function(done) {
         webpack({
-            entry   : "./packages/webpack/test/specimens/start.js",
-            output  : {
-                path : path.resolve("./packages/webpack/test/output"),
+            entry  : "./packages/webpack/test/specimens/start.js",
+            output : {
+                path     : path.resolve("./packages/webpack/test/output"),
                 filename : "./start.js"
             },
             module : {

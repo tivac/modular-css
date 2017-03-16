@@ -15,7 +15,7 @@ var fs   = require("fs"),
     resolve  = require("./lib/resolve.js");
 
 function namer(cwd, file, selector) {
-    return "mc" + slug(relative(cwd, file)) + "_" + selector;
+    return `mc${slug(relative(cwd, file))}_${selector}`;
 }
 
 function params(processor, args) {

@@ -59,9 +59,9 @@ module.exports = (css, result) => {
             var scoped;
                 
             if(ref.global) {
-                scoped = "global-" + ref.name;
+                scoped = `global-${ref.name}`;
             } else {
-                scoped = (details.source ? details.source + "-" : "") + ref.name;
+                scoped = (details.source ? `${details.source}-` : "") + ref.name;
             }
 
             graph.addNode(scoped);

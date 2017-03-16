@@ -73,11 +73,11 @@ describe("/paths.js", function() {
                 },
 
                 "packages/paths/test/specimens/one/sub/sub.css" : {
-                    "sub" : "sub"
+                    sub : "sub"
                 },
 
                 "packages/paths/test/specimens/two/two.css" : {
-                    "two" : "two"
+                    two : "two"
                 }
             }
         ));

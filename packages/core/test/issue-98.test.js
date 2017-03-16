@@ -1,8 +1,6 @@
 "use strict";
 
-var assert    = require("assert"),
-
-    leading = require("dentist").dedent,
+var leading = require("dentist").dedent,
     
     compare = require("test-utils/compare.js")(__dirname),
     namer   = require("test-utils/namer.js"),

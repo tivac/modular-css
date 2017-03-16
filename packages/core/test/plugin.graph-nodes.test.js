@@ -3,7 +3,6 @@
 var path   = require("path"),
     assert = require("assert"),
 
-    postcss = require("postcss"),
     Graph   = require("dependency-graph").DepGraph,
     
     plugin  = require("../plugins/graph-nodes.js"),

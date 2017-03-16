@@ -37,13 +37,6 @@
     "env": {
       "node": true,
       "jest": true
-    },
-    "globals": {
-      "Promise": true
-    },
-    "rules": {
-      "prefer-template": "off",
-      "indent": "off"
     }
   }
 }

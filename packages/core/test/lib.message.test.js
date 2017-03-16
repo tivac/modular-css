@@ -1,8 +1,6 @@
 "use strict";
 
-var assert = require("assert"),
-
-    message   = require("../lib/message.js");
+var message   = require("../lib/message.js");
 
 describe("/lib", function() {
     describe("/message.js", function() {

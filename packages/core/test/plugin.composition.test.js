@@ -22,6 +22,7 @@ function msg(classes) {
 
 describe("/plugins", function() {
     describe("/composition.js", function() {
+        /* eslint max-statements:0 */
         var process;
         
         beforeEach(function() {
@@ -261,12 +262,12 @@ describe("/plugins", function() {
             var out = process(
                     ".wooga { color: red; } .googa { composes: wooga; }",
                     {
-                        from  : "packages/core/test/specimens/simple.css",
+                        from : "packages/core/test/specimens/simple.css",
                         namer
                     }
                 );
             
-            expect(out.messages, [ {
+            expect(out.messages, [{
                 type    : "modular-css",
                 plugin  : "modular-css-scoping",
                 classes : {

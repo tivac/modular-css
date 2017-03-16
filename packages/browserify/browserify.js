@@ -26,7 +26,7 @@ module.exports = function(browserify, opts) {
         bundler, bundles, handled;
     
     if(!options.ext || options.ext.charAt(0) !== ".") {
-        return browserify.emit("error", "Missing or invalid \"ext\" option: " + options.ext);
+        return browserify.emit("error", `Missing or invalid "ext" option: ${options.ext}`);
     }
     
     function depReducer(curr, next) {
@@ -53,7 +53,7 @@ module.exports = function(browserify, opts) {
                         browserify.emit("file", path.resolve(process.cwd(), id), id);
                     });
                     
-                    push("module.exports = " + JSON.stringify(output.join(result.exports), null, 4) + ";");
+                    push(`module.exports = ${JSON.stringify(output.join(result.exports), null, 4)};`);
                     
                     done();
                 },
@@ -97,7 +97,7 @@ module.exports = function(browserify, opts) {
             push({
                 id     : dep,
                 file   : dep,
-                source : "module.exports = " + JSON.stringify(output.join(processor.files[dep].exports), null, 4) + ";",
+                source : `module.exports = ${JSON.stringify(output.join(processor.files[dep].exports), null, 4)};`,
                 deps   : processor.dependencies(dep).reduce(depReducer, {})
             });
         });
@@ -175,7 +175,7 @@ module.exports = function(browserify, opts) {
 
                     dest = path.join(
                         path.dirname(options.css),
-                        path.basename(bundle, path.extname(bundle)) + ".css"
+                        `${path.basename(bundle, path.extname(bundle))}.css`
                     );
                     
                     mkdirp.sync(path.dirname(dest));

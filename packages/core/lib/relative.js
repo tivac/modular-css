@@ -15,7 +15,7 @@ module.exports.prefixed = function(cwd, file) {
     var out = module.exports(cwd, file);
 
     if(!prefixRegex.test(out)) {
-        out = "./" + out;
+        out = `./${out}`;
     }
 
     return out;

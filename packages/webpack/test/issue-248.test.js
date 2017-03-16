@@ -1,7 +1,6 @@
 "use strict";
 
 var path   = require("path"),
-    assert = require("assert"),
 
     webpack = require("webpack"),
 
@@ -16,9 +15,9 @@ describe("/issues", function() {
 
         it("should output css to disk", function(done) {
             webpack({
-                entry   : "./packages/webpack/test/specimens/issues/248/index.js",
-                output  : {
-                    path : path.resolve("./packages/webpack/test/output"),
+                entry  : "./packages/webpack/test/specimens/issues/248/index.js",
+                output : {
+                    path     : path.resolve("./packages/webpack/test/output"),
                     filename : "./issue-248.js"
                 },
                 module : {

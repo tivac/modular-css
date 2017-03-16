@@ -1,7 +1,6 @@
 "use strict";
 
-var fs      = require("fs"),
-    path    = require("path"),
+var path    = require("path"),
     assert  = require("assert"),
     
     leading = require("dentist").dedent,
@@ -63,8 +62,7 @@ describe("/processor.js", function() {
             });
 
             it("should require a namer if a string is passed", function() {
-                var id        = path.resolve("./test/specimens/simple.css"),
-                    processor = new Processor({
+                var processor = new Processor({
                         namer : "modular-css-namer"
                     });
                     
@@ -78,8 +76,7 @@ describe("/processor.js", function() {
             });
 
             it("should use the default naming function if a non-function is passed", function() {
-                var id        = path.resolve("./packages/core/test/specimens/simple.css"),
-                    processor = new Processor({
+                var processor = new Processor({
                         namer : false
                     });
                     

@@ -1,7 +1,6 @@
 "use strict";
 
 var path   = require("path"),
-    assert = require("assert"),
     
     relative = require("../lib/relative.js");
 
