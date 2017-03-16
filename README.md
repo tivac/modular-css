@@ -1,12 +1,6 @@
 modular-css [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https://www.npmjs.com/package/modular-css) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
 ===========
 
-:warning: **BRANCH BLOCKED UNTIL JEST SUPPORTS ASYNC STUFF** :warning:
-
-https://github.com/facebook/jest/issues/2059
-
-:sad: :sad: :sad: :sad: :sad:
-
 A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/css-modules)
 
 ## Try it
