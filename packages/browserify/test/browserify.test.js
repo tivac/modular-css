@@ -50,7 +50,7 @@ describe("/browserify.js", function() {
                 expect(err).toBeTruthy();
                 
                 if(errors === 1) {
-                    expect(err).toMatchSnapshot();
+                    expect(err.name).toMatch(/SyntaxError|CssSyntaxError/);
                     
                     return false;
                 }

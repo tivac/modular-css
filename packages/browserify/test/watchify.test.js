@@ -97,7 +97,8 @@ describe("/browserify.js", function() {
                 // Run first bundle to start watching
                 build.bundle(function(err) {
                     // This one should fail, but not stop watchify from running
-                    expect(err).toMatchSnapshot();
+                    expect(err);
+                    expect(err.name).toMatch(/SyntaxError|CssSyntaxError/);
                     
                     if(wait) {
                         return;
