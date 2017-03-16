@@ -11,14 +11,12 @@ install:
   - npm install
   # install all the sub-package dependencies
   - npm run bootstrap
+  # verify what got installed for debugging
+  - npm ls
 
 after_script:
   - npm run danger
 
-# Cache node_modules
-cache:
-  directories:
-  # - node_modules
 
 # NPM auto-deployment on tagged releases
 deploy:
