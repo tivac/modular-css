@@ -71,7 +71,7 @@ describe("/processor.js", function() {
                     ".wooga { }"
                 )
                 .then((result) => assert.deepEqual(result.exports, {
-                    wooga : [ "a0" ]
+                    wooga : [ "AA" ]
                 }));
             });
 
