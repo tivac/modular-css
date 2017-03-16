@@ -46,13 +46,13 @@ describe("/plugins", function() {
 
         it("should fail if importing from a file that doesn't exist", function() {
             assert.throws(function() {
-                process(`@value * as booga from "./no.css";`).css;
+                return process(`@value * as booga from "./no.css";`).css;
             }, /Unknown composition source/);
         });
 
         it("should fail if importing a file w/ no exports", function() {
             assert.throws(function() {
-                process(`@value * as booga from "./empty.css";`).css;
+                return process(`@value * as booga from "./empty.css";`).css;
             }, /Unknown composition source/);
         });
 
