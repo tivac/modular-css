@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/glob.js should find files on disk & output css 1`] = `
+"/* 1.css */
+.one {
+    color: red
+}
+/* dir/3.css */
+.three {
+    color: white
+}
+/* exclude/4.css */
+.four {
+    color: red
+}
+/* dir/2.css */
+.two {
+    background: blue
+}"
+`;
+
+exports[`/glob.js should support exclusion patterns 1`] = `
+"/* 1.css */
+.one {
+    color: red
+}
+/* dir/3.css */
+.three {
+    color: white
+}
+/* dir/2.css */
+.two {
+    background: blue
+}"
+`;
+
+exports[`/glob.js should use a default search 1`] = `
+"/* 1.css */
+.one {
+    color: red
+}
+/* dir/3.css */
+.three {
+    color: white
+}
+/* exclude/4.css */
+.four {
+    color: red
+}
+/* dir/2.css */
+.two {
+    background: blue
+}"
+`;
