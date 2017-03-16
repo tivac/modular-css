@@ -16,7 +16,8 @@
     "test": "jest",
     "posttest": "npm run lint",
     "version": "changes",
-    "postversion": "git push --follow-tags"
+    "postversion": "git push --follow-tags",
+    "watch": "jest --watch"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
