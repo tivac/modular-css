@@ -17,7 +17,6 @@ install:
 after_script:
   - npm run danger
 
-
 # NPM auto-deployment on tagged releases
 deploy:
   provider: npm
