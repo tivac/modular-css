@@ -9,19 +9,22 @@ var fs     = require("fs"),
 
 describe("/issues", function() {
     describe("/191", function() {
+        var fn = it;
+        
         afterAll(() => require("shelljs").rm("-rf", "./packages/core/test/output/sensitive.txt"));
 
-        it("should ignore case differences in file paths", function() {
+        // Verify that filesystem is case-insensitive before bothering
+        fs.writeFileSync("./packages/core/test/output/sensitive.txt");
+
+        try {
+            fs.statSync("./packages/core/test/output/SENSITIVE.txt");
+        } catch(e) {
+            fn = it.skip;
+        }
+
+        fn("should ignore case differences in file paths", function() {
             var processor;
             
-            // Verify that filesystem is case-insensitive before bothering
-            fs.writeFileSync("./packages/core/test/output/sensitive.txt");
-
-            try {
-                fs.statSync("./packages/core/test/output/SENSITIVE.txt");
-            } catch(e) {
-                return this.skip();
-            }
 
             processor = new Processor({
                 namer
