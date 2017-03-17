@@ -5,9 +5,9 @@ var from       = require("from2-string"),
     browserify = require("browserify"),
     watchify   = require("watchify"),
     
-    bundle = require("./lib/bundle.js"),
-    read   = require("./lib/read.js"),
+    read = require("test-utils/read.js")(__dirname),
 
+    bundle = require("./lib/bundle.js"),
     plugin = require("../browserify.js");
 
 describe("/browserify.js", function() {
