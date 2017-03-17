@@ -1,14 +1,11 @@
 "use strict";
 
 var fs     = require("fs"),
-    assert = require("assert"),
     
     postcss = require("postcss"),
-    compare = require("test-utils/compare.js")(__dirname),
+    read    = require("test-utils/read.js")(__dirname),
     namer   = require("test-utils/namer.js"),
     
-    message = require("modular-css-core/lib/message.js"),
-
     plugin  = require("../postcss.js");
 
 function process(file, opts) {
@@ -34,32 +31,17 @@ describe("/postcss.js", function() {
 
     it("should process CSS and output the result", function() {
         return process("./packages/postcss/test/specimens/simple.css")
-            .then((result) =>
-                compare.stringToFile(
-                    result.css,
-                    "./packages/postcss/test/results/simple.css"
-                )
-            );
+            .then((result) => expect(result.css).toMatchSnapshot());
     });
 
     it("should process CSS with dependencies and output the result", function() {
         return process("./packages/postcss/test/specimens/start.css")
-            .then((result) =>
-                compare.stringToFile(
-                    result.css,
-                    "./packages/postcss/test/results/start.css"
-                )
-            );
+            .then((result) => expect(result.css).toMatchSnapshot());
     });
 
     it("should process CSS and output exports as a message", function() {
         return process("./packages/postcss/test/specimens/simple.css")
-            .then((result) => assert.deepEqual(
-                message(result, (msg) => msg.type === "modular-css-exports", "exports"),
-                {
-                    wooga : [ "wooga" ]
-                }
-            ));
+            .then((result) => expect(result.messages).toMatchSnapshot());
     });
 
     it("should accept normal processor options", function() {
@@ -69,12 +51,7 @@ describe("/postcss.js", function() {
             },
             namer : (f, s) => `fooga_${s}`
         })
-        .then((result) =>
-            compare.stringToFile(
-                result.css,
-                "./packages/postcss/test/results/simple-namer.css"
-            )
-        );
+        .then((result) => expect(result.css).toMatchSnapshot());
     });
 
     it("should accept a `json` property and write exports to that file", function() {
@@ -84,13 +61,13 @@ describe("/postcss.js", function() {
                 json : "./packages/postcss/test/output/classes.json"
             }
         )
-        .then(() => compare.results("classes.json"));
+        .then(() => expect(read("classes.json")).toMatchSnapshot());
     });
 
     it("should be usable like a normal postcss plugin", function() {
         var processor = postcss([
                 plugin({
-                    namer : (f, s) => `fooga_${s}`
+                    namer : () => "a"
                 })
             ]);
         
@@ -103,12 +80,7 @@ describe("/postcss.js", function() {
                 }
             }
         )
-        .then((result) =>
-            compare.stringToFile(
-                result.css,
-                "./packages/postcss/test/results/simple-namer.css"
-            )
-        );
+        .then((result) => expect(result.css).toMatchSnapshot());
     });
 
     it("should output json when used within postcss", function() {
