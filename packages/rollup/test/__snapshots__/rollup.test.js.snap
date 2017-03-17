@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/rollup.js should be able to tree-shake results 1`] = `
+"var fooga = \\"fooga\\";
+
+console.log(fooga);
+"
+`;
+
+exports[`/rollup.js should generate CSS 1`] = `
+"/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red
+}
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NwZWNpbWVucy9zaW1wbGUuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLCtDQUFDO0FBQUQ7SUFDSSxVQUFXO0NBQ2QiLCJmaWxlIjoic2ltcGxlLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5mb29nYSB7XG4gICAgY29sb3I6IHJlZDtcbn1cbiJdfQ== */"
+`;
+
+exports[`/rollup.js should generate JSON 1`] = `
+"{
+    \\"packages/rollup/test/specimens/simple.css\\": {
+        \\"fooga\\": \\"fooga\\"
+    }
+}"
+`;
+
+exports[`/rollup.js should generate exports 1`] = `
+"var fooga = \\"fooga\\";
+var css = {
+    \\"fooga\\": \\"fooga\\"
+};
+
+console.log(css);
+console.log(fooga);
+"
+`;
+
+exports[`/rollup.js should not output sourcemaps when they are disabled 1`] = `
+"/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red
+}"
+`;
+
+exports[`/rollup.js should respect the CSS dependency tree 1`] = `
+"var css = {
+    \\"wooga\\": \\"fooga wooga\\"
+};
+
+console.log(css);
+"
+`;
+
+exports[`/rollup.js should warn & not export individual keys when they are not valid identifiers 1`] = `
+"var fooga = \\"fooga\\";
+var css = {
+    \\"fooga\\": \\"fooga\\",
+    \\"fooga-wooga\\": \\"fooga-wooga\\"
+};
+
+console.log(css, fooga);
+"
+`;
