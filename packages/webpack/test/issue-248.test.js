@@ -35,7 +35,7 @@ describe("/issues", function() {
                 ]
             }, (err, stats) => {
                 // I don't understand why err is null here?
-                expect(stats.hasErrors()).toBe(true);
+                expect(stats.hasErrors()).toBeTruthy();
 
                 done();
             });

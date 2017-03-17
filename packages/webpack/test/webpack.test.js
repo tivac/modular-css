@@ -1,12 +1,11 @@
 "use strict";
 
 var path   = require("path"),
-    assert = require("assert"),
 
     webpack = require("webpack"),
 
-    compare = require("test-utils/compare.js")(__dirname),
-    namer   = require("test-utils/namer.js"),
+    read  = require("test-utils/read.js")(__dirname),
+    namer = require("test-utils/namer.js"),
     
     Plugin  = require("../plugin.js"),
 
@@ -14,17 +13,19 @@ var path   = require("path"),
     test = /\.css$/;
 
 describe("/webpack.js", function() {
+    var output = path.resolve(__dirname, "./output");
+    
     afterAll(() => require("shelljs").rm("-rf", "./packages/webpack/test/output/*"));
 
     it("should be a function", function() {
-        assert(typeof Plugin, "function");
+        expect(typeof Plugin).toBe("function");
     });
 
     it("should output css to disk", function(done) {
         webpack({
             entry  : "./packages/webpack/test/specimens/simple.js",
             output : {
-                path     : path.resolve("./packages/webpack/test/output"),
+                path     : output,
                 filename : "./simple.js"
             },
             module : {
@@ -42,11 +43,11 @@ describe("/webpack.js", function() {
                 })
             ]
         }, (err, stats) => {
-            assert.ifError(err);
-            assert.equal(stats.hasErrors(), false);
+            expect(err).toBeFalsy();
+            expect(stats.hasErrors()).toBeFalsy();
 
-            compare.results("simple.js");
-            compare.results("simple.css");
+            expect(read("simple.js")).toMatchSnapshot();
+            expect(read("simple.css")).toMatchSnapshot();
 
             done();
         });
@@ -56,7 +57,7 @@ describe("/webpack.js", function() {
         webpack({
             entry  : "./packages/webpack/test/specimens/simple.js",
             output : {
-                path     : path.resolve("./packages/webpack/test/output"),
+                path     : output,
                 filename : "./simple.js"
             },
             module : {
@@ -74,11 +75,11 @@ describe("/webpack.js", function() {
                 })
             ]
         }, (err, stats) => {
-            assert.ifError(err);
-            assert.equal(stats.hasErrors(), false);
+            expect(err).toBeFalsy();
+            expect(stats.hasErrors()).toBeFalsy();
 
-            compare.results("simple.js");
-            compare.results("simple.json");
+            expect(read("simple.js")).toMatchSnapshot();
+            expect(read("simple.json")).toMatchSnapshot();
 
             done();
         });
@@ -88,7 +89,7 @@ describe("/webpack.js", function() {
         webpack({
             entry  : "./packages/webpack/test/specimens/invalid.js",
             output : {
-                path     : path.resolve("./packages/webpack/test/output"),
+                path     : output,
                 filename : "./invalid.js"
             },
             module : {
@@ -105,11 +106,12 @@ describe("/webpack.js", function() {
                 })
             ]
         }, (err, stats) => {
-            assert.ifError(err);
+            // Why is err not truthy?
+            expect(err).toBeFalsy();
+            
+            expect(stats.hasErrors()).toBeTruthy();
 
-            assert.equal(stats.hasErrors(), true);
-
-            assert(stats.toJson().errors[0].indexOf("Invalid composes reference") > -1);
+            expect(stats.toJson().errors[0]).toMatch("Invalid composes reference");
 
             done();
         });
@@ -119,7 +121,7 @@ describe("/webpack.js", function() {
         webpack({
             entry  : "./packages/webpack/test/specimens/start.js",
             output : {
-                path     : path.resolve("./packages/webpack/test/output"),
+                path     : output,
                 filename : "./start.js"
             },
             module : {
@@ -138,12 +140,12 @@ describe("/webpack.js", function() {
                 })
             ]
         }, (err, stats) => {
-            assert.ifError(err);
-            assert.equal(stats.hasErrors(), false);
+            expect(err).toBeFalsy();
+            expect(stats.hasErrors()).toBeFalsy();
 
-            compare.results("start.js");
-            compare.results("start.css");
-            compare.results("start.json");
+            expect(read("start.js")).toMatchSnapshot();
+            expect(read("start.css")).toMatchSnapshot();
+            expect(read("start.json")).toMatchSnapshot();
 
             done();
         });
