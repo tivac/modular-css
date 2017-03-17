@@ -20,7 +20,7 @@
     "postcss"
   ],
   "devDependencies": {
-    "dentist": "^1.0.3",
+    "dedent": "^0.7.0",
     "pegjs": "^0.10.0",
     "shelljs": "^0.7.3",
     "test-utils": "^4.0.10"

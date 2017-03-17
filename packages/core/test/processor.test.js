@@ -3,7 +3,7 @@
 var path    = require("path"),
     assert  = require("assert"),
 
-    leading = require("dentist").dedent,
+    dedent = require("dedent"),
     
     Processor = require("../processor.js"),
     
@@ -82,7 +82,7 @@ describe("/processor.js", function() {
             it("should scope classes, ids, and keyframes", function() {
                 return this.processor.string(
                     "./packages/core/test/specimens/simple.css",
-                    leading(`
+                    dedent(`
                         @keyframes kooga { }
                         #fooga { }
                         .wooga { }
@@ -102,7 +102,7 @@ describe("/processor.js", function() {
                 })
                 .then((output) =>
                     expect(output.css).toEqual(
-                        leading(`
+                        dedent(`
                             /* packages/core/test/specimens/simple.css */
                             @keyframes kooga {}
                             #fooga {}

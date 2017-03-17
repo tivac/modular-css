@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/lib /identifiers.js should extract @keyframes definitions 1`] = `
+Array [
+  "fooga",
+]
+`;
+
+exports[`/lib /identifiers.js should extract @keyframes definitions 2`] = `
+Array [
+  "fooga",
+]
+`;
+
+exports[`/lib /identifiers.js should extract @keyframes definitions 3`] = `
+Array [
+  "fooga",
+]
+`;
+
+exports[`/lib /identifiers.js should extract a class 1`] = `
+Array [
+  "fooga",
+]
+`;
+
+exports[`/lib /identifiers.js should extract an id 1`] = `
+Array [
+  "fooga",
+]
+`;
+
+exports[`/lib /identifiers.js should extract mixed classes, ids, and keyframes 1`] = `
+Array [
+  "wooga",
+  "booga",
+  "tooga",
+  "fooga",
+  "googa",
+  "looga",
+  "kooga",
+]
+`;
+
+exports[`/lib /identifiers.js should extract multi-level classes 1`] = `
+Array [
+  "fooga",
+  "wooga",
+]
+`;
+
+exports[`/lib /identifiers.js should extract multi-level ids 1`] = `
+Array [
+  "fooga",
+  "wooga",
+]
+`;
+
+exports[`/lib /identifiers.js should extract multiple classes 1`] = `
+Array [
+  "fooga",
+  "wooga",
+]
+`;
+
+exports[`/lib /identifiers.js should extract multiple classes 2`] = `
+Array [
+  "fooga",
+  "wooga",
+]
+`;
+
+exports[`/lib /identifiers.js should extract multiple ids 1`] = `
+Array [
+  "fooga",
+  "wooga",
+]
+`;
+
+exports[`/lib /identifiers.js should extract multiple ids 2`] = `
+Array [
+  "fooga",
+  "wooga",
+]
+`;

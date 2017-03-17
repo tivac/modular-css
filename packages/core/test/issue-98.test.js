@@ -1,9 +1,7 @@
 "use strict";
 
-var leading = require("dentist").dedent,
-    
-    compare = require("test-utils/compare.js")(__dirname),
-    namer   = require("test-utils/namer.js"),
+var dedent = require("dedent"),
+    namer  = require("test-utils/namer.js"),
     
     Processor = require("../processor.js");
 
@@ -16,21 +14,18 @@ describe("/issues", function() {
             
             return processor.string(
                 "./packages/core/test/specimens/issues/98.css",
-                leading(`
+                dedent(`
                     .booga { color: red }
                     .fooga { composes: booga }
                     .fooga + .fooga { color: blue }
                 `)
             )
             .then((result) => {
-                expect(result.exports).toEqual({
-                    booga : [ "booga" ],
-                    fooga : [ "booga", "fooga" ]
-                });
+                expect(result.exports).toMatchSnapshot();
 
                 return processor.output();
             })
-            .then((result) => compare.stringToFile(result.css, "./packages/core/test/results/issues/98.css"));
+            .then((result) => expect(result.css).toMatchSnapshot());
         });
     });
 });

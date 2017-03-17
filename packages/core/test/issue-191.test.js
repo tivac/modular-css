@@ -1,9 +1,8 @@
 "use strict";
 
-var fs     = require("fs"),
+var fs = require("fs"),
     
-    compare = require("test-utils/compare.js")(__dirname),
-    namer   = require("test-utils/namer.js"),
+    namer = require("test-utils/namer.js"),
 
     Processor = require("../processor.js");
 
@@ -23,18 +22,13 @@ describe("/issues", function() {
         }
 
         fn("should ignore case differences in file paths", function() {
-            var processor;
-            
-
-            processor = new Processor({
-                namer
-            });
+            var processor = new Processor({
+                    namer
+                });
             
             return processor.file("./packages/core/test/specimens/issues/191/start.css")
                 .then(() => processor.output())
-                .then((output) =>
-                    compare.stringToFile(output.css, "./packages/core/test/results/issues/191.css")
-                );
+                .then((result) => expect(result.css).toMatchSnapshot());
         });
     });
 });

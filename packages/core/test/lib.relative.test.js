@@ -1,6 +1,6 @@
 "use strict";
 
-var path   = require("path"),
+var path = require("path"),
     
     relative = require("../lib/relative.js");
 
@@ -18,20 +18,18 @@ describe("/lib", function() {
             expect(
                 relative(
                     process.cwd(),
-                    path.resolve("./packages/core/test/specimens/start.css")
+                    require.resolve("./specimens/start.css")
                 )
-            ).toBe(
-                "packages/core/test/specimens/start.css"
-            );
+            )
+            .toMatchSnapshot();
             
             expect(
                 relative(
-                    path.resolve("./packages/core/test"),
-                    path.resolve("./packages/core/test/specimens/start.css")
+                    __dirname,
+                    require.resolve("./specimens/start.css")
                 )
-            ).toBe(
-                "specimens/start.css"
-            );
+            )
+            .toMatchSnapshot();
         });
 
         it("should resolve files against a specified cwd w/ prefixes", function() {
@@ -40,18 +38,16 @@ describe("/lib", function() {
                     process.cwd(),
                     path.resolve("./packages/core/test/specimens/start.css")
                 )
-            ).toBe(
-                "./packages/core/test/specimens/start.css"
-            );
+            )
+            .toMatchSnapshot();
             
             expect(
                 relative.prefixed(
                     path.resolve("./packages/core/test/specimens/"),
-                    path.resolve("./packages/core/test/lib.relative.test.js")
+                    require.resolve("./lib.relative.test.js")
                 )
-            ).toBe(
-                "../lib.relative.test.js"
-            );
+            )
+            .toMatchSnapshot();
         });
     });
 });

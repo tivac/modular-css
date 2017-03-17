@@ -1,8 +1,6 @@
 "use strict";
 
-var assert = require("assert"),
-
-    postcss = require("postcss"),
+var postcss = require("postcss"),
     
     scoping   = require("../plugins/scoping.js"),
     keyframes = require("../plugins/keyframes.js");
@@ -19,10 +17,7 @@ describe("/plugins", function() {
                     { from : "packages/core/test/specimens/simple.css", namer : namer }
                 );
             
-            assert.equal(
-                out.css,
-                ".a { animation: a; } .b { animation-name: b; }"
-            );
+            expect(out.css).toMatchSnapshot();
         });
         
         it("should update scoped animations from the scoping plugin's message", function() {
@@ -31,10 +26,7 @@ describe("/plugins", function() {
                     { from : "packages/core/test/specimens/simple.css", namer : namer }
                 );
             
-            assert.equal(
-                out.css,
-                "@keyframes kooga {} .wooga { animation: kooga; }"
-            );
+            expect(out.css).toMatchSnapshot();
         });
 
         it("should update the animation-name property", function() {
@@ -43,10 +35,7 @@ describe("/plugins", function() {
                     { from : "packages/core/test/specimens/simple.css", namer : namer }
                 );
             
-            assert.equal(
-                out.css,
-                "@keyframes kooga {} .wooga { animation-name: kooga; }"
-            );
+            expect(out.css).toMatchSnapshot();
         });
 
         // Issue 208
@@ -56,10 +45,7 @@ describe("/plugins", function() {
                     { from : "packages/core/test/specimens/simple.css", namer : namer }
                 );
             
-            assert.equal(
-                out.css,
-                "@keyframes kooga {} @keyframes tooga {} .wooga { animation: kooga 10s linear, tooga 0.2s infinite; }"
-            );
+            expect(out.css).toMatchSnapshot();
         });
 
         it("should update scoped prefixed animations from the scoping plugin's message", function() {
@@ -68,10 +54,7 @@ describe("/plugins", function() {
                     { from : "packages/core/test/specimens/simple.css", namer : namer }
                 );
             
-            assert.equal(
-                out.css,
-                "@-webkit-keyframes kooga {} .wooga { animation: kooga; }"
-            );
+            expect(out.css).toMatchSnapshot();
         });
     });
 });

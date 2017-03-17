@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/lib /message.js should find the last message containing a given field 1`] = `
+Object {
+  "cooga": "cooga",
+}
+`;
+
+exports[`/lib /message.js should return an empty object if a message wasn't found 1`] = `Object {}`;

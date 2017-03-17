@@ -4,7 +4,7 @@ var path   = require("path"),
     assert = require("assert"),
     
     postcss = require("postcss"),
-    dedent  = require("dentist").dedent,
+    dedent  = require("dedent"),
 
     plugin     = require("../plugins/values-replace.js"),
     local      = require("../plugins/values-local.js"),

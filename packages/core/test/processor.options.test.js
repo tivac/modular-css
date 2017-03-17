@@ -3,7 +3,7 @@
 var path    = require("path"),
     assert  = require("assert"),
     
-    leading = require("dentist").dedent,
+    dedent = require("dedent"),
 
     compare = require("test-utils/compare.js")(__dirname),
     namer   = require("test-utils/namer.js"),
@@ -120,7 +120,7 @@ describe("/processor.js", function() {
                     .then(() => processor.output())
                     .then((result) => assert.equal(
                         result.css,
-                        leading(`
+                        dedent(`
                             /* packages/core/test/specimens/sync-before.css */
                             a {}
                         `)
@@ -140,7 +140,7 @@ describe("/processor.js", function() {
                     .then(() => processor.output())
                     .then((result) => assert.equal(
                         result.css,
-                        leading(`
+                        dedent(`
                             /* packages/core/test/specimens/async-before.css */
                             a {}
                         `)
@@ -171,7 +171,7 @@ describe("/processor.js", function() {
                     .then(() => processor.output({ to : "./packages/core/test/output/relative.css" }))
                     .then((result) => assert.equal(
                         result.css,
-                        leading(`
+                        dedent(`
                             /* packages/core/test/specimens/relative.css */
                             .wooga {
                                 color: red;
@@ -194,7 +194,7 @@ describe("/processor.js", function() {
                     .then(() => processor.output({ to : "./packages/core/test/output/relative.css" }))
                     .then((result) => assert.equal(
                         result.css,
-                        leading(`
+                        dedent(`
                             /* packages/core/test/specimens/relative.css */
                             .wooga {
                                 color: red;
@@ -220,7 +220,7 @@ describe("/processor.js", function() {
                     .then(() => processor.output())
                     .then((result) => assert.equal(
                         result.css,
-                        leading(`
+                        dedent(`
                             /* packages/core/test/specimens/sync-done.css */
                             a {}
                         `)
@@ -240,7 +240,7 @@ describe("/processor.js", function() {
                     .then(() => processor.output())
                     .then((result) => assert.equal(
                         result.css,
-                        leading(`
+                        dedent(`
                             /* packages/core/test/specimens/async-done.css */
                             a {}
                         `)

@@ -2,7 +2,7 @@
 
 var assert = require("assert"),
     
-    leading = require("dentist").dedent,
+    dedent = require("dedent"),
 
     plugin = require("../plugins/scoping.js"),
     
@@ -111,7 +111,7 @@ describe("/plugins", function() {
         
         it("should expose original names in a message", function() {
             expect(
-                process(leading(`
+                process(dedent(`
                     .wooga { color: red; }
                     #booga { color: black; }
                     @keyframes fooga {
@@ -229,7 +229,7 @@ describe("/plugins", function() {
 
             it("should include :global(...) identifiers in a message", function() {
                 expect(
-                    process(leading(`
+                    process(dedent(`
                         :global(.wooga) { color: red; }
                         :global(#fooga) { color: red; }
                         :global(.googa .tooga) { color: red; }

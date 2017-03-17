@@ -26,43 +26,21 @@ describe("/lib", function() {
                 return compositions(
                     ".wooga { }"
                 )
-                .then((out) => {
-                    assert(typeof out === "object");
-                    
-                    expect(out, {
-                        "packages/core/test/specimens/simple.css" : {
-                            wooga : "wooga"
-                        }
-                    });
-                });
+                .then((result) => expect(result).toMatchSnapshot());
             });
             
             it("should output an object containing compositions for multiple classes", function() {
                 return compositions(
                     ".wooga .booga { }"
                 )
-                .then(function(out) {
-                    expect(out, {
-                        "packages/core/test/specimens/simple.css" : {
-                            booga : "booga",
-                            wooga : "wooga"
-                        }
-                    });
-                });
+                .then((result) => expect(result).toMatchSnapshot());
             });
             
             it("should output an object containing compositions for inheritance", function() {
                 return compositions(
                     ".wooga { } .booga { composes: wooga; }"
                 )
-                .then(function(out) {
-                    expect(out, {
-                        "packages/core/test/specimens/simple.css" : {
-                            booga : "wooga booga",
-                            wooga : "wooga"
-                        }
-                    });
-                });
+                .then((result) => expect(result).toMatchSnapshot());
             });
         });
     });
