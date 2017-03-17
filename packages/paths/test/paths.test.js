@@ -25,7 +25,7 @@ describe("modular-css-paths", function() {
             ]
         });
 
-        expect(fn(".", "./one.css")).toMatchSnapshot();
+        expect(fn(".", "./one.css")).toBe(require.resolve("./specimens/one/one.css"));
     });
 
     it("should check multiple paths for files & return the first match", function() {
@@ -36,7 +36,7 @@ describe("modular-css-paths", function() {
             ]
         });
 
-        expect(fn(".", "./sub.css")).toMatchSnapshot();
+         expect(fn(".", "./sub.css")).toBe(require.resolve("./specimens/one/sub/sub.css"));
     });
 
     it("should be usable as a modular-css resolver", function() {
