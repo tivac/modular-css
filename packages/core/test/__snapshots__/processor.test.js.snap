@@ -1,5 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/processor.js functionality exports should export an object of arrays containing strings 1`] = `
+Object {
+  "black": Array [
+    "black",
+  ],
+  "one": Array [
+    "red",
+    "black",
+    "one",
+  ],
+  "red": Array [
+    "red",
+  ],
+  "two": Array [
+    "red",
+    "black",
+    "two",
+  ],
+}
+`;
+
 exports[`/processor.js functionality exports should export identifiers and their classes 1`] = `
 Object {
   "packages/core/test/specimens/folder/folder.css": Object {
@@ -14,5 +35,277 @@ Object {
     "tooga": "tooga",
     "wooga": "booga wooga",
   },
+}
+`;
+
+exports[`/processor.js functionality externals should support overriding external values 1`] = `
+"/* packages/core/test/specimens/folder/folder.css */
+.folder {
+    margin: 2px
+}
+/* packages/core/test/specimens/simple.css */
+.wooga {
+    color: red
+}
+/* packages/core/test/specimens/local.css */
+.booga {
+    background: green
+}
+/* packages/core/test/specimens/externals.css */
+.a .wooga {
+    color: green
+}
+.b .booga {
+    background: blue
+}"
+`;
+
+exports[`/processor.js functionality getters .file should return all the files that have been added 1`] = `
+Array [
+  "packages/core/test/specimens/start.css",
+  "packages/core/test/specimens/local.css",
+  "packages/core/test/specimens/folder/folder.css",
+]
+`;
+
+exports[`/processor.js functionality scoping should scope classes, ids, and keyframes 1`] = `
+Object {
+  "fooga": Array [
+    "fooga",
+  ],
+  "one": Array [
+    "one",
+  ],
+  "two": Array [
+    "two",
+  ],
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js functionality scoping should scope classes, ids, and keyframes 2`] = `
+"/* simple.css */
+@keyframes kooga {}
+#fooga {}
+.wooga {}
+.one,
+.two {}"
+`;
+
+exports[`/processor.js functionality should support unicode classes & ids 1`] = `
+"/* packages/core/test/specimens/processor/unicode.css */
+#♥ {
+    background: lime
+}
+#© {
+    background: lime
+}
+#“‘’” {
+    background: lime
+}
+#☺☃ {
+    background: lime
+}
+#⌘⌥ {
+    background: lime
+}
+#𝄞♪♩♫♬ {
+    background: lime
+}
+#💩 {
+    background: lime
+}
+#\\\\? {
+    background: lime
+}
+#\\\\@ {
+    background: lime
+}
+#\\\\. {
+    background: lime
+}
+#\\\\3A \\\\) {
+    background: lime
+}
+#\\\\3A \\\\\`\\\\( {
+    background: lime
+}
+#\\\\31 23 {
+    background: lime
+}
+#\\\\31 a2b3c {
+    background: lime
+}
+#\\\\<p\\\\> {
+    background: lime
+}
+#\\\\<\\\\>\\\\<\\\\<\\\\<\\\\>\\\\>\\\\<\\\\> {
+    background: lime
+}
+#\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\[\\\\>\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\>\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\>\\\\+\\\\+\\\\+\\\\>\\\\+\\\\<\\\\<\\\\<\\\\<\\\\-\\\\]\\\\>\\\\+\\\\+\\\\.\\\\>\\\\+\\\\.\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\.\\\\.\\\\+\\\\+\\\\+\\\\.\\\\>\\\\+\\\\+\\\\.\\\\<\\\\<\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\.\\\\>\\\\.\\\\+\\\\+\\\\+\\\\.\\\\-\\\\-\\\\-\\\\-\\\\-\\\\-\\\\.\\\\-\\\\-\\\\-\\\\-\\\\-\\\\-\\\\-\\\\-\\\\.\\\\>\\\\+\\\\.\\\\>\\\\. {
+    background: lime
+}
+#\\\\# {
+    background: lime
+}
+#\\\\#\\\\# {
+    background: lime
+}
+#\\\\#\\\\.\\\\#\\\\.\\\\# {
+    background: lime
+}
+#\\\\_ {
+    background: lime
+}
+#\\\\{\\\\} {
+    background: lime
+}
+#\\\\.fake\\\\-class {
+    background: lime
+}
+#foo\\\\.bar {
+    background: lime
+}
+#\\\\3A hover {
+    background: lime
+}
+#\\\\3A hover\\\\3A focus\\\\3A active {
+    background: lime
+}
+#\\\\[attr\\\\=value\\\\] {
+    background: lime
+}
+#f\\\\/o\\\\/o {
+    background: lime
+}
+#f\\\\\\\\o\\\\\\\\o {
+    background: lime
+}
+#f\\\\*o\\\\*o {
+    background: lime
+}
+#f\\\\!o\\\\!o {
+    background: lime
+}
+#f\\\\'o\\\\'o {
+    background: lime
+}
+#f\\\\~o\\\\~o {
+    background: lime
+}
+#f\\\\+o\\\\+o {
+    background: lime
+}
+.♥ {
+    background: lime
+}
+.© {
+    background: lime
+}
+.“‘’” {
+    background: lime
+}
+.☺☃ {
+    background: lime
+}
+.⌘⌥ {
+    background: lime
+}
+.𝄞♪♩♫♬ {
+    background: lime
+}
+.💩 {
+    background: lime
+}
+.\\\\? {
+    background: lime
+}
+.\\\\@ {
+    background: lime
+}
+.\\\\. {
+    background: lime
+}
+.\\\\3A \\\\) {
+    background: lime
+}
+.\\\\3A \\\\\`\\\\( {
+    background: lime
+}
+.\\\\31 23 {
+    background: lime
+}
+.\\\\31 a2b3c {
+    background: lime
+}
+.\\\\<p\\\\> {
+    background: lime
+}
+.\\\\<\\\\>\\\\<\\\\<\\\\<\\\\>\\\\>\\\\<\\\\> {
+    background: lime
+}
+.\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\[\\\\>\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\>\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\>\\\\+\\\\+\\\\+\\\\>\\\\+\\\\<\\\\<\\\\<\\\\<\\\\-\\\\]\\\\>\\\\+\\\\+\\\\.\\\\>\\\\+\\\\.\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\.\\\\.\\\\+\\\\+\\\\+\\\\.\\\\>\\\\+\\\\+\\\\.\\\\<\\\\<\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\.\\\\>\\\\.\\\\+\\\\+\\\\+\\\\.\\\\-\\\\-\\\\-\\\\-\\\\-\\\\-\\\\.\\\\-\\\\-\\\\-\\\\-\\\\-\\\\-\\\\-\\\\-\\\\.\\\\>\\\\+\\\\.\\\\>\\\\. {
+    background: lime
+}
+.\\\\# {
+    background: lime
+}
+.\\\\#\\\\# {
+    background: lime
+}
+.\\\\#\\\\.\\\\#\\\\.\\\\# {
+    background: lime
+}
+.\\\\_ {
+    background: lime
+}
+.\\\\{\\\\} {
+    background: lime
+}
+.\\\\#fake\\\\-id {
+    background: lime
+}
+.foo\\\\.bar {
+    background: lime
+}
+.\\\\3A hover {
+    background: lime
+}
+.\\\\3A hover\\\\3A focus\\\\3A active {
+    background: lime
+}
+.\\\\[attr\\\\=value\\\\] {
+    background: lime
+}
+.f\\\\/o\\\\/o {
+    background: lime
+}
+.f\\\\\\\\o\\\\\\\\o {
+    background: lime
+}
+.f\\\\*o\\\\*o {
+    background: lime
+}
+.f\\\\!o\\\\!o {
+    background: lime
+}
+.f\\\\'o\\\\'o {
+    background: lime
+}
+.f\\\\~o\\\\~o {
+    background: lime
+}
+.f\\\\+o\\\\+o {
+    background: lime
+}"
+`;
+
+exports[`/processor.js functionality values should support local values in value composition 1`] = `
+Object {
+  "fooga": Array [
+    "fooga",
+  ],
 }
 `;
