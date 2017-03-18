@@ -1,7 +1,6 @@
 "use strict";
 
 var path   = require("path"),
-    assert = require("assert"),
 
     postcss = require("postcss"),
     
@@ -36,43 +35,43 @@ describe("/plugins", function() {
         }
         
         it("should fail to parse invalid declarations", function() {
-            assert.throws(
-                () => process(`:external(red from "./local.css) {}`).css,
-                /: Unclosed string/
-            );
+            expect(
+                () => process(`:external(red from "./local.css) {}`).css
+            )
+            .toThrow(/: Unclosed string/);
             
-            assert.throws(
-                () => process(`:external(blue from) {} `).css,
-                /SyntaxError: Expected source/
-            );
+            expect(
+                () => process(`:external(blue from) {} `).css
+            )
+            .toThrowErrorMatchingSnapshot();
         });
 
         it("should fail if there's no file reference", function() {
-            assert.throws(
-                () => process(`:external(booga) {}`).css,
-                /externals must be from another file/
-            );
+            expect(
+                () => process(`:external(booga) {}`).css
+            )
+            .toThrow(/externals must be from another file/);
         });
 
         it("should fail if importing from a file that doesn't exist", function() {
-            assert.throws(
-                () => process(`:external(booga from "./no.css") {}`).css,
-                /Unknown external source/
-            );
+            expect(
+                () => process(`:external(booga from "./no.css") {}`).css
+            )
+            .toThrow(/Unknown external source/);
         });
 
         it("should fail if a non-existant selector is referenced", function() {
-            assert.throws(
-                () => process(`:external(booga from "./local.css") {}`).css,
-                /Invalid external reference: booga/
-            );
+            expect(
+                () => process(`:external(booga from "./local.css") {}`).css
+            )
+            .toThrow(/Invalid external reference: booga/);
         });
 
         it("should support importing a selector from another file", function() {
-            assert.equal(
-                process(`.a :external(fooga from "./local.css") {}`).css,
-                ".a .a.b {}"
-            );
+            expect(
+                process(`.a :external(fooga from "./local.css") {}`).css
+            )
+            .toMatchSnapshot();
         });
     });
 });
