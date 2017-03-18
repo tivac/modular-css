@@ -1,21 +1,10 @@
 "use strict";
 
-var assert = require("assert"),
-    
-    dedent = require("dedent"),
+var dedent = require("dedent"),
 
     plugin = require("../plugins/scoping.js"),
     
     processor = require("postcss")([ plugin ]);
-
-function msg(things, name) {
-    return {
-        type   : "modular-css",
-        plugin : "modular-css-scoping",
-
-        [ name || "classes" ] : things
-    };
-}
 
 function process(src, options) {
     return processor.process(
@@ -31,11 +20,11 @@ function process(src, options) {
 describe("/plugins", function() {
     describe("/scoping.js", function() {
         it("should generate a prefix for class names", function() {
-            expect(process(".wooga { color: red; }").css).toMatchSnapshot();
+            expect(process(".a { color: red; }").css).toMatchSnapshot();
         });
         
         it("should generate a prefix for ids", function() {
-            expect(process("#wooga { color: red; }").css).toMatchSnapshot();
+            expect(process("#a { color: red; }").css).toMatchSnapshot();
         });
         
         it("should ignore non-class/non-id selectors", function() {
@@ -43,15 +32,15 @@ describe("/plugins", function() {
         });
 
         it("should transform class/id selectors", function() {
-            expect(process(".wooga p { color: red; }").css).toMatchSnapshot();
-            expect(process("#wooga p { color: red; }").css).toMatchSnapshot();
-            expect(process("#wooga .booga { color: red; }").css).toMatchSnapshot();
-            expect(process("#wooga { color: red; } #wooga:hover { color: blue; }").css).toMatchSnapshot();
-            expect(process(".wooga { color: red; } .wooga:hover { color: black; }").css).toMatchSnapshot();
+            expect(process(".a p { color: red; }").css).toMatchSnapshot();
+            expect(process("#a p { color: red; }").css).toMatchSnapshot();
+            expect(process("#a .b { color: red; }").css).toMatchSnapshot();
+            expect(process("#a { color: red; } #a:hover { color: blue; }").css).toMatchSnapshot();
+            expect(process(".a { color: red; } .a:hover { color: black; }").css).toMatchSnapshot();
         });
         
         it("should transform selectors within media queries", function() {
-            expect(process("@media (max-width: 100px) { .booga { color: red; } }").css).toMatchSnapshot();
+            expect(process("@media (max-width: 100px) { .b { color: red; } }").css).toMatchSnapshot();
         });
 
         it("should transform multiple grouped selectors ", function() {
@@ -59,39 +48,31 @@ describe("/plugins", function() {
         });
 
         it("should transform the names of @keyframes rules", function() {
-            expect(process("@keyframes fooga { }").css).toMatchSnapshot();
-            expect(process("@-webkit-keyframes fooga { }").css).toMatchSnapshot();
-            expect(process("@-moz-keyframes fooga { }").css).toMatchSnapshot();
+            expect(process("@keyframes a { }").css).toMatchSnapshot();
+            expect(process("@-webkit-keyframes a { }").css).toMatchSnapshot();
+            expect(process("@-moz-keyframes a { }").css).toMatchSnapshot();
         });
         
         it("should expose original names in a message", function() {
             expect(
                 process(dedent(`
-                    .wooga { color: red; }
-                    #booga { color: black; }
-                    @keyframes fooga {
+                    .a { color: red; }
+                    #b { color: black; }
+                    @keyframes c {
                         0% { color: red; }
                         100% { color: black; }
                     }
-                `)).messages,
-                [
-                    msg({
-                        fooga : [ "a_fooga" ]
-                    }, "keyframes"),
-                    msg({
-                        booga : [ "a_booga" ],
-                        wooga : [ "a_wooga" ]
-                    })
-                ]
-            );
+                `)).messages
+            )
+            .toMatchSnapshot();
         });
 
         describe(":global()", function() {
             it("should remove :global() from non-class/non-id selectors", function() {
-                assert.equal(
-                    process(":global(p) { color: red; }").css,
-                    "p { color: red; }"
-                );
+                expect(
+                    process(":global(p) { color: red; }").css
+                )
+                .toMatchSnapshot();
             });
 
             it("should throw if :global is used without a child selector", function() {
@@ -130,39 +111,39 @@ describe("/plugins", function() {
 
             it("shouldn't transform global selectors", function() {
                 expect(
-                    process(":global(.wooga) { color: red; }").css
+                    process(":global(.a) { color: red; }").css
                 )
                 .toMatchSnapshot();
                 
                 expect(
-                    process(":global(#wooga) { color: red; }").css
+                    process(":global(#a) { color: red; }").css
                 )
                 .toMatchSnapshot();
                 
                 expect(
-                    process("@media (max-width: 100px) { :global(.booga) { color: red; } }").css
+                    process("@media (max-width: 100px) { :global(.b) { color: red; } }").css
                 )
                 .toMatchSnapshot();
 
                 expect(
-                    process("@keyframes :global(fooga) { 0% { color: red; } 100% { color: black; } }").css
+                    process("@keyframes :global(c) { 0% { color: red; } 100% { color: black; } }").css
                 )
                 .toMatchSnapshot();
             });
             
             it("should support mixed local & global selectors", function() {
                 expect(
-                    process(":global(#wooga), .booga { color: red; }").css
+                    process(":global(#a), .b { color: red; }").css
                 )
                 .toMatchSnapshot();
                 
                 expect(
-                    process(":global(.wooga) .booga { color: red; }").css
+                    process(":global(.a) .b { color: red; }").css
                 )
                 .toMatchSnapshot();
                 
                 expect(
-                    process(".wooga :global(.booga) { color: red; }").css
+                    process(".a :global(.b) { color: red; }").css
                 )
                 .toMatchSnapshot();
 
@@ -172,14 +153,14 @@ describe("/plugins", function() {
                 .toMatchSnapshot();
                 
                 expect(
-                    process(".wooga :global(.booga) .fooga { color: red; }").css
+                    process(".a :global(.b) .c { color: red; }").css
                 )
                 .toMatchSnapshot();
             });
             
             it("should support multiple selectors", function() {
                 expect(
-                    process(":global(.wooga .booga) { color: red; }")
+                    process(":global(.a .b) { color: red; }").css
                 )
                 .toMatchSnapshot();
             });
@@ -187,10 +168,10 @@ describe("/plugins", function() {
             it("should include :global(...) identifiers in a message", function() {
                 expect(
                     process(dedent(`
-                        :global(.wooga) { color: red; }
-                        :global(#fooga) { color: red; }
-                        :global(.googa .tooga) { color: red; }
-                        @keyframes :global(yooga) {
+                        :global(.a) { color: red; }
+                        :global(#b) { color: red; }
+                        :global(.c .d) { color: red; }
+                        @keyframes :global(e) {
                             0% {
                                 color: red;
                             }
@@ -205,7 +186,7 @@ describe("/plugins", function() {
             });
 
             it("should support mixing local & global selectors in a single string", function() {
-                var processed = process(".fooga :global(.wooga) { color: red; }");
+                var processed = process(".c :global(.a) { color: red; }");
                 
                 expect(processed.css).toMatchSnapshot();
                 expect(processed.messages).toMatchSnapshot();
