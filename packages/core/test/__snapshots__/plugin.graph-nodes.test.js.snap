@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/plugins /graph-nodes.js should populate a graph with :external references 1`] = `
+Array [
+  "D:\\\\git\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\local.css",
+  "D:\\\\git\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\simple.css",
+]
+`;
+
+exports[`/plugins /graph-nodes.js should populate a graph with external @value references 1`] = `
+Array [
+  "D:\\\\git\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\local.css",
+  "D:\\\\git\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\simple.css",
+]
+`;
+
+exports[`/plugins /graph-nodes.js should populate a graph with external composes references 1`] = `
+Array [
+  "D:\\\\git\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\local.css",
+  "D:\\\\git\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\simple.css",
+]
+`;

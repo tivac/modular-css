@@ -1,7 +1,6 @@
 "use strict";
 
 var path   = require("path"),
-    assert = require("assert"),
 
     Graph   = require("dependency-graph").DepGraph,
     
@@ -22,10 +21,7 @@ describe("/plugins", function() {
                 `@value one from "./local.css";`,
                 { from, graph, resolve }
             )
-            .then(() => expect(graph.overallOrder(), [
-                path.resolve("./packages/core/test/specimens/local.css"),
-                from
-            ]));
+            .then(() => expect(graph.overallOrder()).toMatchSnapshot());
         });
 
         it("should populate a graph with external composes references", () => {
@@ -38,10 +34,7 @@ describe("/plugins", function() {
                 `.a { composes: booga from "./local.css"; }`,
                 { from, graph, resolve }
             )
-            .then(() => expect(graph.overallOrder(), [
-                path.resolve("./packages/core/test/specimens/local.css"),
-                from
-            ]));
+            .then(() => expect(graph.overallOrder()).toMatchSnapshot());
         });
 
         it("should populate a graph with :external references", () => {
@@ -54,10 +47,7 @@ describe("/plugins", function() {
                 `.a :external(booga from "./local.css") { color: red; }`,
                 { from, graph, resolve }
             )
-            .then(() => expect(graph.overallOrder(), [
-                path.resolve("./packages/core/test/specimens/local.css"),
-                from
-            ]));
+            .then(() => expect(graph.overallOrder()).toMatchSnapshot());
         });
 
         it("should return useful errors when parsing", () => {
@@ -70,7 +60,7 @@ describe("/plugins", function() {
                 `@value sm, md, lg "../../shared.css";`,
                 { from, graph, resolve }
             )
-            .catch((e) => assert(e.message.indexOf(`SyntaxError: Expected "from"`) > -1));
+            .catch((e) => expect(e.message).toMatch(`SyntaxError: Expected "from"`));
         });
     });
 });

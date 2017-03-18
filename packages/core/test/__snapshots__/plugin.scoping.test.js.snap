@@ -1,0 +1,186 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/plugins /scoping.js :global() should include :global(...) identifiers in a message 1`] = `
+Array [
+  Object {
+    "keyframes": Object {
+      "yooga": Array [
+        "yooga",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "fooga": Array [
+        "fooga",
+      ],
+      "googa": Array [
+        "googa",
+      ],
+      "tooga": Array [
+        "tooga",
+      ],
+      "wooga": Array [
+        "wooga",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /scoping.js :global() should support mixed local & global selectors 1`] = `"#wooga, .a_booga { color: red; }"`;
+
+exports[`/plugins /scoping.js :global() should support mixed local & global selectors 2`] = `".wooga .a_booga { color: red; }"`;
+
+exports[`/plugins /scoping.js :global() should support mixed local & global selectors 3`] = `".a_wooga .booga { color: red; }"`;
+
+exports[`/plugins /scoping.js :global() should support mixed local & global selectors 4`] = `".a_b { color: red; } .c { color: blue; }"`;
+
+exports[`/plugins /scoping.js :global() should support mixed local & global selectors 5`] = `".a_wooga .booga .a_fooga { color: red; }"`;
+
+exports[`/plugins /scoping.js :global() should support mixing local & global selectors in a single string 1`] = `".a_fooga .wooga { color: red; }"`;
+
+exports[`/plugins /scoping.js :global() should support mixing local & global selectors in a single string 2`] = `
+Array [
+  Object {
+    "classes": Object {
+      "fooga": Array [
+        "a_fooga",
+      ],
+      "wooga": Array [
+        "wooga",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /scoping.js :global() should support multiple selectors 1`] = `
+LazyResult {
+  "processed": false,
+  "result": Result {
+    "css": undefined,
+    "map": undefined,
+    "messages": Array [],
+    "opts": Object {
+      "from": "packages/core/test/specimens/a.css",
+      "namer": [Function],
+    },
+    "processor": Processor {
+      "plugins": Array [
+        [Function],
+      ],
+      "version": "5.2.16",
+    },
+    "root": Object {
+      "nodes": Array [
+        Object {
+          "nodes": Array [
+            Object {
+              "prop": "color",
+              "raws": Object {
+                "before": " ",
+                "between": ": ",
+              },
+              "source": Object {
+                "end": Object {
+                  "column": 36,
+                  "line": 1,
+                },
+                "input": Input {
+                  "css": ":global(.wooga .booga) { color: red; }",
+                  "file": "D:\\\\git\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\a.css",
+                },
+                "start": Object {
+                  "column": 26,
+                  "line": 1,
+                },
+              },
+              "type": "decl",
+              "value": "red",
+            },
+          ],
+          "raws": Object {
+            "after": " ",
+            "before": "",
+            "between": " ",
+            "semicolon": true,
+          },
+          "selector": ":global(.wooga .booga)",
+          "source": Object {
+            "end": Object {
+              "column": 38,
+              "line": 1,
+            },
+            "input": Input {
+              "css": ":global(.wooga .booga) { color: red; }",
+              "file": "D:\\\\git\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\a.css",
+            },
+            "start": Object {
+              "column": 1,
+              "line": 1,
+            },
+          },
+          "type": "rule",
+        },
+      ],
+      "raws": Object {
+        "after": "",
+        "semicolon": false,
+      },
+      "source": Object {
+        "input": Input {
+          "css": ":global(.wooga .booga) { color: red; }",
+          "file": "D:\\\\git\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\a.css",
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+        },
+      },
+      "type": "root",
+    },
+  },
+  "stringified": false,
+}
+`;
+
+exports[`/plugins /scoping.js :global() shouldn't transform global selectors 1`] = `".wooga { color: red; }"`;
+
+exports[`/plugins /scoping.js :global() shouldn't transform global selectors 2`] = `"#wooga { color: red; }"`;
+
+exports[`/plugins /scoping.js :global() shouldn't transform global selectors 3`] = `"@media (max-width: 100px) { .booga { color: red; } }"`;
+
+exports[`/plugins /scoping.js :global() shouldn't transform global selectors 4`] = `"@keyframes fooga { 0% { color: red; } 100% { color: black; } }"`;
+
+exports[`/plugins /scoping.js should generate a prefix for class names 1`] = `".a_wooga { color: red; }"`;
+
+exports[`/plugins /scoping.js should generate a prefix for ids 1`] = `"#a_wooga { color: red; }"`;
+
+exports[`/plugins /scoping.js should ignore non-class/non-id selectors 1`] = `"p { color: red; }"`;
+
+exports[`/plugins /scoping.js should transform class/id selectors 1`] = `".a_wooga p { color: red; }"`;
+
+exports[`/plugins /scoping.js should transform class/id selectors 2`] = `"#a_wooga p { color: red; }"`;
+
+exports[`/plugins /scoping.js should transform class/id selectors 3`] = `"#a_wooga .a_booga { color: red; }"`;
+
+exports[`/plugins /scoping.js should transform class/id selectors 4`] = `"#a_wooga { color: red; } #a_wooga:hover { color: blue; }"`;
+
+exports[`/plugins /scoping.js should transform class/id selectors 5`] = `".a_wooga { color: red; } .a_wooga:hover { color: black; }"`;
+
+exports[`/plugins /scoping.js should transform multiple grouped selectors  1`] = `".a_one, .a_two { color: red; }"`;
+
+exports[`/plugins /scoping.js should transform selectors within media queries 1`] = `"@media (max-width: 100px) { .a_booga { color: red; } }"`;
+
+exports[`/plugins /scoping.js should transform the names of @keyframes rules 1`] = `"@keyframes a_fooga { }"`;
+
+exports[`/plugins /scoping.js should transform the names of @keyframes rules 2`] = `"@-webkit-keyframes a_fooga { }"`;
+
+exports[`/plugins /scoping.js should transform the names of @keyframes rules 3`] = `"@-moz-keyframes a_fooga { }"`;
