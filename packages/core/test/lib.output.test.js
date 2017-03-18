@@ -1,44 +1,42 @@
 "use strict";
 
-var assert = require("assert"),
-
-    Processor = require("../processor.js"),
-    output   = require("../lib/output.js");
+var Processor = require("../processor.js"),
+    output    = require("../lib/output.js");
 
 function compositions(css) {
     var processor = new Processor();
     
-    return processor.string("./packages/core/test/specimens/simple.css", css).then(function() {
-        var out = output.compositions(process.cwd(), processor);
-        
-        return out;
-    });
+    return processor.string(
+        "./simple.css",
+        css
+    )
+    .then(() => output.compositions(process.cwd(), processor));
 }
 
 describe("/lib", function() {
     describe("/output.js", function() {
         describe(".compositions()", function() {
             it("should be a function", function() {
-                assert(typeof output.compositions === "function");
+                expect(typeof output.compositions).toBe("function");
             });
             
             it("should output an object containing compositions", function() {
                 return compositions(
-                    ".wooga { }"
+                    ".a { }"
                 )
                 .then((result) => expect(result).toMatchSnapshot());
             });
             
             it("should output an object containing compositions for multiple classes", function() {
                 return compositions(
-                    ".wooga .booga { }"
+                    ".a .b { }"
                 )
                 .then((result) => expect(result).toMatchSnapshot());
             });
             
             it("should output an object containing compositions for inheritance", function() {
                 return compositions(
-                    ".wooga { } .booga { composes: wooga; }"
+                    ".a { } .b { composes: a; }"
                 )
                 .then((result) => expect(result).toMatchSnapshot());
             });
