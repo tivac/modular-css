@@ -1,12 +1,13 @@
 "use strict";
 
 var postcss = require("postcss"),
+    dedent  = require("dedent"),
     
     scoping   = require("../plugins/scoping.js"),
     keyframes = require("../plugins/keyframes.js");
 
 function namer(file, selector) {
-    return selector;
+    return `${selector}_`;
 }
 
 describe("/plugins", function() {
@@ -26,52 +27,48 @@ describe("/plugins", function() {
         }
 
         it("should leave unknown animation names alone", function() {
-            expect(
-                process(
-                    ".a { animation: a; } .b { animation-name: b; }"
-                )
-                .css
+            expect(process(dedent(`
+                    .a { animation: a; }
+                    .b { animation-name: b; }
+                `)).css
             )
             .toMatchSnapshot();
         });
         
         it("should update scoped animations from the scoping plugin's message", function() {
-            expect(
-                process(
-                    "@keyframes kooga {} .wooga { animation: kooga; }"
-                )
-                .css
+            expect(process(dedent(`
+                    @keyframes a {}
+                    .b { animation: a; }
+                `)).css
             )
             .toMatchSnapshot();
         });
 
         it("should update the animation-name property", function() {
-            expect(
-                process(
-                    "@keyframes kooga {} .wooga { animation-name: kooga; }"
-                )
-                .css
+            expect(process(dedent(`
+                    @keyframes a {}
+                    .b { animation-name: a; }
+                `)).css
             )
             .toMatchSnapshot();
         });
 
         // Issue 208
         it("should update multiple animations properly", function() {
-            expect(
-                process(
-                    "@keyframes kooga {} @keyframes tooga {} .wooga { animation: kooga 10s linear, tooga 0.2s infinite; }"
-                )
-                .css
+            expect(process(dedent(`
+                    @keyframes a {}
+                    @keyframes b {}
+                    .c { animation: a 10s linear, b 0.2s infinite; }
+                `)).css
             )
             .toMatchSnapshot();
         });
 
         it("should update scoped prefixed animations from the scoping plugin's message", function() {
-            expect(
-                process(
-                    "@-webkit-keyframes kooga {} .wooga { animation: kooga; }"
-                )
-                .css
+            expect(process(dedent(`
+                    @-webkit-keyframes a {}
+                    .b { animation: a; }
+                `)).css
             )
             .toMatchSnapshot();
         });
