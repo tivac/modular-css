@@ -11,7 +11,12 @@ describe("/issues", function() {
                 "./packages/core/test/specimens/a.css",
                 ".aooga { }"
             )
-            .then(() => expect(() => processor.remove("./fooga.js")).not.toThrow());
+            .then(() =>
+                expect(() =>
+                    processor.remove("./fooga.js")
+                )
+                .not.toThrow()
+            );
         });
     });
 });
