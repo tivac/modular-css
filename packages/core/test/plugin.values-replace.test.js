@@ -1,7 +1,6 @@
 "use strict";
 
 var path   = require("path"),
-    assert = require("assert"),
     
     postcss = require("postcss"),
     dedent  = require("dedent"),

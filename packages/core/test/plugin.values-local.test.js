@@ -1,8 +1,6 @@
 "use strict";
 
-var assert = require("assert"),
-    
-    plugin = require("../plugins/values-local.js"),
+var plugin = require("../plugins/values-local.js"),
     
     processor = require("postcss")([ plugin ]);
 
