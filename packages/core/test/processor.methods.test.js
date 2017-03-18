@@ -1,8 +1,6 @@
 "use strict";
 
-var path = require("path"),
-    
-    Processor = require("../processor.js");
+var Processor = require("../processor.js");
 
 function namer(file, selector) {
     return selector;
