@@ -4,14 +4,14 @@ exports[`/plugins /composition.js should allow multiple composes declarations 1`
 Array [
   Object {
     "classes": Object {
-      "booga": Array [
-        "booga",
+      "a": Array [
+        "a",
       ],
-      "tooga": Array [
-        "tooga",
+      "b": Array [
+        "b",
       ],
-      "wooga": Array [
-        "wooga",
+      "c": Array [
+        "c",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -19,16 +19,16 @@ Array [
   },
   Object {
     "classes": Object {
-      "booga": Array [
-        "booga",
+      "a": Array [
+        "a",
       ],
-      "tooga": Array [
-        "wooga",
-        "booga",
-        "tooga",
+      "b": Array [
+        "b",
       ],
-      "wooga": Array [
-        "wooga",
+      "c": Array [
+        "a",
+        "b",
+        "c",
       ],
     },
     "plugin": "modular-css-composition",
@@ -41,8 +41,8 @@ exports[`/plugins /composition.js should compose multiple classes from imports 1
 Array [
   Object {
     "classes": Object {
-      "wooga": Array [
-        "wooga",
+      "a": Array [
+        "a",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -50,10 +50,10 @@ Array [
   },
   Object {
     "classes": Object {
-      "wooga": Array [
-        "googa",
-        "tooga",
-        "wooga",
+      "a": Array [
+        "b",
+        "c",
+        "a",
       ],
     },
     "plugin": "modular-css-composition",
@@ -66,8 +66,8 @@ exports[`/plugins /composition.js should expose imported heirachy details in the
 Array [
   Object {
     "classes": Object {
-      "wooga": Array [
-        "wooga",
+      "a": Array [
+        "a",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -75,9 +75,9 @@ Array [
   },
   Object {
     "classes": Object {
-      "wooga": Array [
-        "googa",
-        "wooga",
+      "a": Array [
+        "b",
+        "a",
       ],
     },
     "plugin": "modular-css-composition",
@@ -90,11 +90,11 @@ exports[`/plugins /composition.js should find scoped identifiers from the scopin
 Array [
   Object {
     "classes": Object {
-      "googa": Array [
-        "googa",
+      "a": Array [
+        "a",
       ],
-      "wooga": Array [
-        "wooga",
+      "b": Array [
+        "b",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -102,12 +102,12 @@ Array [
   },
   Object {
     "classes": Object {
-      "googa": Array [
-        "wooga",
-        "googa",
+      "a": Array [
+        "a",
       ],
-      "wooga": Array [
-        "wooga",
+      "b": Array [
+        "a",
+        "b",
       ],
     },
     "plugin": "modular-css-composition",
@@ -120,14 +120,14 @@ exports[`/plugins /composition.js should handle multi-level dependencies 1`] = `
 Array [
   Object {
     "classes": Object {
-      "booga": Array [
-        "booga",
+      "a": Array [
+        "a",
       ],
-      "tooga": Array [
-        "tooga",
+      "b": Array [
+        "b",
       ],
-      "wooga": Array [
-        "wooga",
+      "c": Array [
+        "c",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -135,17 +135,17 @@ Array [
   },
   Object {
     "classes": Object {
-      "booga": Array [
-        "wooga",
-        "booga",
+      "a": Array [
+        "a",
       ],
-      "tooga": Array [
-        "wooga",
-        "booga",
-        "tooga",
+      "b": Array [
+        "a",
+        "b",
       ],
-      "wooga": Array [
-        "wooga",
+      "c": Array [
+        "a",
+        "b",
+        "c",
       ],
     },
     "plugin": "modular-css-composition",
@@ -158,11 +158,11 @@ exports[`/plugins /composition.js should output composition results as a message
 Array [
   Object {
     "classes": Object {
-      "fooga": Array [
-        "fooga",
+      "a": Array [
+        "a",
       ],
-      "wooga": Array [
-        "wooga",
+      "b": Array [
+        "b",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -170,12 +170,12 @@ Array [
   },
   Object {
     "classes": Object {
-      "fooga": Array [
-        "wooga",
-        "fooga",
+      "a": Array [
+        "a",
       ],
-      "wooga": Array [
-        "wooga",
+      "b": Array [
+        "a",
+        "b",
       ],
     },
     "plugin": "modular-css-composition",
@@ -188,11 +188,11 @@ exports[`/plugins /composition.js should output removed classes as part of a mes
 Array [
   Object {
     "classes": Object {
-      "fooga": Array [
-        "fooga",
+      "a": Array [
+        "a",
       ],
-      "wooga": Array [
-        "wooga",
+      "b": Array [
+        "b",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -200,12 +200,12 @@ Array [
   },
   Object {
     "classes": Object {
-      "fooga": Array [
-        "wooga",
-        "fooga",
+      "a": Array [
+        "a",
       ],
-      "wooga": Array [
-        "wooga",
+      "b": Array [
+        "a",
+        "b",
       ],
     },
     "plugin": "modular-css-composition",
@@ -218,14 +218,14 @@ exports[`/plugins /composition.js should output the class hierarchy in a message
 Array [
   Object {
     "classes": Object {
-      "booga": Array [
-        "booga",
+      "a": Array [
+        "a",
       ],
-      "tooga": Array [
-        "tooga",
+      "b": Array [
+        "b",
       ],
-      "wooga": Array [
-        "wooga",
+      "c": Array [
+        "c",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -233,16 +233,16 @@ Array [
   },
   Object {
     "classes": Object {
-      "booga": Array [
-        "booga",
+      "a": Array [
+        "a",
       ],
-      "tooga": Array [
-        "booga",
-        "wooga",
-        "tooga",
+      "b": Array [
+        "b",
       ],
-      "wooga": Array [
-        "wooga",
+      "c": Array [
+        "b",
+        "a",
+        "c",
       ],
     },
     "plugin": "modular-css-composition",
@@ -251,17 +251,17 @@ Array [
 ]
 `;
 
-exports[`/plugins /composition.js should remove classes that only contain a composes rule from the output CSS 1`] = `".wooga { color: red; }"`;
+exports[`/plugins /composition.js should remove classes that only contain a composes rule from the output CSS 1`] = `".a { color: red; }"`;
 
 exports[`/plugins /composition.js should support IDs instead of classes 1`] = `
 Array [
   Object {
     "classes": Object {
-      "fooga": Array [
-        "fooga",
+      "a": Array [
+        "a",
       ],
-      "wooga": Array [
-        "wooga",
+      "b": Array [
+        "b",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -269,12 +269,12 @@ Array [
   },
   Object {
     "classes": Object {
-      "fooga": Array [
-        "wooga",
-        "fooga",
+      "a": Array [
+        "a",
       ],
-      "wooga": Array [
-        "wooga",
+      "b": Array [
+        "a",
+        "b",
       ],
     },
     "plugin": "modular-css-composition",
@@ -287,8 +287,8 @@ exports[`/plugins /composition.js should support composing against global identi
 Array [
   Object {
     "classes": Object {
-      "wooga": Array [
-        "wooga",
+      "a": Array [
+        "a",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -296,9 +296,9 @@ Array [
   },
   Object {
     "classes": Object {
-      "wooga": Array [
-        "booga",
-        "wooga",
+      "a": Array [
+        "b",
+        "a",
       ],
     },
     "plugin": "modular-css-composition",
@@ -311,8 +311,8 @@ exports[`/plugins /composition.js should support composing against global identi
 Array [
   Object {
     "classes": Object {
-      "wooga": Array [
-        "wooga",
+      "a": Array [
+        "a",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -320,10 +320,10 @@ Array [
   },
   Object {
     "classes": Object {
-      "wooga": Array [
-        "booga",
-        "tooga",
-        "wooga",
+      "a": Array [
+        "b",
+        "c",
+        "a",
       ],
     },
     "plugin": "modular-css-composition",
@@ -336,8 +336,8 @@ exports[`/plugins /composition.js should support composing against global identi
 Array [
   Object {
     "classes": Object {
-      "wooga": Array [
-        "wooga",
+      "a": Array [
+        "a",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -345,9 +345,9 @@ Array [
   },
   Object {
     "classes": Object {
-      "wooga": Array [
-        "booga",
-        "wooga",
+      "a": Array [
+        "b",
+        "a",
       ],
     },
     "plugin": "modular-css-composition",
@@ -360,11 +360,11 @@ exports[`/plugins /composition.js should support composing against global identi
 Array [
   Object {
     "classes": Object {
-      "tooga": Array [
-        "tooga",
+      "a": Array [
+        "a",
       ],
-      "wooga": Array [
-        "wooga",
+      "c": Array [
+        "c",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -372,13 +372,13 @@ Array [
   },
   Object {
     "classes": Object {
-      "tooga": Array [
-        "tooga",
+      "a": Array [
+        "b",
+        "c",
+        "a",
       ],
-      "wooga": Array [
-        "booga",
-        "tooga",
-        "wooga",
+      "c": Array [
+        "c",
       ],
     },
     "plugin": "modular-css-composition",
@@ -391,11 +391,11 @@ exports[`/plugins /composition.js should support composing against global identi
 Array [
   Object {
     "classes": Object {
-      "tooga": Array [
-        "tooga",
+      "a": Array [
+        "a",
       ],
-      "wooga": Array [
-        "wooga",
+      "c": Array [
+        "c",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -403,13 +403,13 @@ Array [
   },
   Object {
     "classes": Object {
-      "tooga": Array [
-        "tooga",
+      "a": Array [
+        "b",
+        "c",
+        "a",
       ],
-      "wooga": Array [
-        "booga",
-        "tooga",
-        "wooga",
+      "c": Array [
+        "c",
       ],
     },
     "plugin": "modular-css-composition",
@@ -422,11 +422,11 @@ exports[`/plugins /composition.js should support composing against global identi
 Array [
   Object {
     "classes": Object {
-      "tooga": Array [
-        "tooga",
+      "a": Array [
+        "a",
       ],
-      "wooga": Array [
-        "wooga",
+      "c": Array [
+        "c",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -434,13 +434,13 @@ Array [
   },
   Object {
     "classes": Object {
-      "tooga": Array [
-        "tooga",
+      "a": Array [
+        "b",
+        "c",
+        "a",
       ],
-      "wooga": Array [
-        "booga",
-        "tooga",
-        "wooga",
+      "c": Array [
+        "c",
       ],
     },
     "plugin": "modular-css-composition",
@@ -453,11 +453,11 @@ exports[`/plugins /composition.js should support composing against global identi
 Array [
   Object {
     "classes": Object {
-      "tooga": Array [
-        "tooga",
+      "a": Array [
+        "a",
       ],
-      "wooga": Array [
-        "wooga",
+      "c": Array [
+        "c",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -465,13 +465,13 @@ Array [
   },
   Object {
     "classes": Object {
-      "tooga": Array [
-        "tooga",
+      "a": Array [
+        "b",
+        "c",
+        "a",
       ],
-      "wooga": Array [
-        "booga",
-        "tooga",
-        "wooga",
+      "c": Array [
+        "c",
       ],
     },
     "plugin": "modular-css-composition",
@@ -484,8 +484,8 @@ exports[`/plugins /composition.js should support composing against global identi
 Array [
   Object {
     "classes": Object {
-      "wooga": Array [
-        "wooga",
+      "a": Array [
+        "a",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -493,8 +493,8 @@ Array [
   },
   Object {
     "classes": Object {
-      "wooga": Array [
-        "wooga",
+      "a": Array [
+        "a",
       ],
     },
     "plugin": "modular-css-composition",
@@ -507,11 +507,11 @@ exports[`/plugins /composition.js should support composing against later classes
 Array [
   Object {
     "classes": Object {
-      "booga": Array [
-        "booga",
+      "a": Array [
+        "a",
       ],
-      "wooga": Array [
-        "wooga",
+      "b": Array [
+        "b",
       ],
     },
     "plugin": "modular-css-scoping",
@@ -519,12 +519,12 @@ Array [
   },
   Object {
     "classes": Object {
-      "booga": Array [
-        "booga",
+      "a": Array [
+        "b",
+        "a",
       ],
-      "wooga": Array [
-        "booga",
-        "wooga",
+      "b": Array [
+        "b",
       ],
     },
     "plugin": "modular-css-composition",
