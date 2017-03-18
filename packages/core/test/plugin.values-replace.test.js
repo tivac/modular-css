@@ -17,10 +17,10 @@ var path   = require("path"),
 describe("/plugins", function() {
     describe("/values-replace.js", function() {
         it("should noop without values to replace", function() {
-            assert.equal(
-                postcss([ plugin ]).process(".wooga { color: red; }").css,
-                ".wooga { color: red; }"
-            );
+            expect(
+                postcss([ plugin ]).process(".wooga { color: red; }").css
+            )
+            .toMatchSnapshot();
         });
 
         describe("local values", function() {
@@ -40,24 +40,20 @@ describe("/plugins", function() {
             }
             
             it("should replace values in declarations", function() {
-                assert.equal(
+                expect(
                     process(dedent(`
                         @value color: red;
                         
                         .wooga {
                             color: color;
                         }
-                    `)).css,
-                    dedent(`
-                        .wooga {
-                            color: red;
-                        }
-                    `)
-                );
+                    `)).css
+                )
+                .toMatchSnapshot();
             });
 
             it("should replace value references in @value declarations", function() {
-                assert.equal(
+                expect(
                     process(dedent(`
                         @value color: red;
                         @value value: color;
@@ -65,15 +61,11 @@ describe("/plugins", function() {
                         .wooga {
                             color: value;
                         }
-                    `)).css,
-                    dedent(`
-                        .wooga {
-                            color: red;
-                        }
-                    `)
-                );
+                    `)).css
+                )
+                .toMatchSnapshot();
 
-                assert.equal(
+                expect(
                     process(dedent(`
                         @value red: #F00;
                         @value color: red;
@@ -82,30 +74,24 @@ describe("/plugins", function() {
                         .wooga {
                             color: value;
                         }
-                    `)).css,
-                    dedent(`
-                        .wooga {
-                            color: #F00;
-                        }
-                    `)
-                );
+                    `)).css
+                )
+                .toMatchSnapshot();
             });
 
             it("should replace values in media queries", function() {
-                assert.equal(
+                expect(
                     process(dedent(`
                         @value small: (max-width: 599px);
                         
                         @media small { }
-                    `)).css,
-                    dedent(`
-                        @media (max-width: 599px) { }
-                    `)
-                );
+                    `)).css
+                )
+                .toMatchSnapshot();
             });
 
             it("should replace values surrounded by non-word characters (#245)", function() {
-                assert.equal(
+                expect(
                     process(dedent(`
                         @value one: 10px;
                         @value two: calc(one - 2px);
@@ -115,15 +101,9 @@ describe("/plugins", function() {
                             width: -one;
                             color: twoodle;
                         }
-                    `)).css,
-                    dedent(`
-                        .a {
-                            height: calc(10px - 2px);
-                            width: -10px;
-                            color: twoodle;
-                        }
-                    `)
-                );
+                    `)).css
+                )
+                .toMatchSnapshot();
             });
         });
 
@@ -131,7 +111,7 @@ describe("/plugins", function() {
             var css = postcss([ composed, exported, plugin ]);
             
             it("should replace values in declarations", function() {
-                assert.equal(
+                expect(
                     css.process(dedent(`
                         @value color from "./local.css";
                         .wooga {
@@ -156,13 +136,9 @@ describe("/plugins", function() {
                                 }
                             }
                         }
-                    }).css,
-                    dedent(`
-                        .wooga {
-                            color: #F00;
-                        }
-                    `)
-                );
+                    }).css
+                )
+                .toMatchSnapshot();
             });
         });
 
@@ -170,7 +146,7 @@ describe("/plugins", function() {
             var css = postcss([ namespaced, exported, plugin ]);
             
             it("should replace values in declarations", function() {
-                assert.equal(
+                expect(
                     css.process(dedent(`
                         @value * as colors from "./local.css";
                         .wooga {
@@ -195,13 +171,9 @@ describe("/plugins", function() {
                                 }
                             }
                         }
-                    }).css,
-                    dedent(`
-                        .wooga {
-                            color: #F00;
-                        }
-                    `)
-                );
+                    }).css
+                )
+                .toMatchSnapshot();
             });
         });
 
@@ -209,7 +181,7 @@ describe("/plugins", function() {
             var css = postcss([ local, namespaced, composed, exported, plugin ]);
 
             it("should replace values in declarations", function() {
-                assert.equal(
+                expect(
                     css.process(dedent(`
                         @value * as colors from "./local.css";
                         @value red from "./local.css";
@@ -238,15 +210,9 @@ describe("/plugins", function() {
                                 }
                             }
                         }
-                    }).css,
-                    dedent(`
-                        .wooga {
-                            color: #F00;
-                            background: #F00;
-                            border: 1px solid #F00;
-                        }
-                    `)
-                );
+                    }).css
+                )
+                .toMatchSnapshot();
             });
         });
     });
