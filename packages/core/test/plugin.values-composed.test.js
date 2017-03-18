@@ -22,12 +22,12 @@ describe("/plugins", function() {
                     // Composition target
                     [path.resolve("./packages/core/test/specimens/local.css")] : {
                         values : {
-                            fooga : {
+                            a : {
                                 value  : "red",
                                 source : {}
                             },
 
-                            googa : {
+                            b : {
                                 value  : "blue",
                                 source : {}
                             }
@@ -51,40 +51,35 @@ describe("/plugins", function() {
 
         it("should fail if importing from a file that doesn't exist", function() {
             expect(
-                () => process(`@value booga from "./no.css";`).css
+                () => process(`@value a from "./no.css";`).css
             )
             .toThrow(/Unknown composition source/);
         });
 
-        it("should fail if non-existant imports are referenced", function() {
+        it("should fail if non-existent imports are referenced", function() {
             expect(
-                () => process(`@value booga from "./local.css";`).css
+                () => process(`@value c from "./local.css";`).css
             )
-            .toThrow(/Invalid @value reference: booga/);
-            
-            expect(
-                () => process(`@value tooga from "./local.css";`).css
-            )
-            .toThrow(/Invalid @value reference: tooga/);
+            .toThrow(/Invalid @value reference: c/);
         });
 
         it("should ignore other @value types", function() {
             expect(
-                process(`@value * as fooga from "./local.css"; @value tooga: red;`).css
+                process(`@value * as a from "./local.css"; @value b: red;`).css
             )
             .toMatchSnapshot();
         });
 
         it("should support importing a value from another file", function() {
             expect(
-                process(`@value fooga from "./local.css";`).messages
+                process(`@value a from "./local.css";`).messages
             )
             .toMatchSnapshot();
         });
 
         it("should support importing multiple values from another file", function() {
             expect(
-                process(`@value googa, fooga from "./local.css";`).messages
+                process(`@value a, b from "./local.css";`).messages
             )
             .toMatchSnapshot();
         });
