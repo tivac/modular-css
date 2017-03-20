@@ -7,7 +7,8 @@ var fs     = require("fs"),
     from       = require("from2-string"),
     shell      = require("shelljs"),
     
-    read = require("test-utils/read.js")(__dirname),
+    read   = require("test-utils/read.js")(__dirname),
+    prefix = require("test-utils/prefix.js")(__dirname),
 
     bundle = require("./lib/bundle.js"),
     plugin = require("../browserify.js");
@@ -24,13 +25,13 @@ describe("/browserify.js", function() {
                 ]);
             
             build.plugin(plugin, {
-                css : "./packages/browserify/test/output/factor-bundle/basic/basic.css"
+                css : prefix("output/factor-bundle/basic/basic.css")
             });
 
             build.plugin("factor-bundle", {
                 outputs : [
-                    "./packages/browserify/test/output/factor-bundle/basic-a.js",
-                    "./packages/browserify/test/output/factor-bundle/basic-b.js"
+                    prefix("output/factor-bundle/basic-a.js"),
+                    prefix("output/factor-bundle/basic-b.js")
                 ]
             });
             
@@ -49,13 +50,13 @@ describe("/browserify.js", function() {
                 ]);
             
             build.plugin(plugin, {
-                css : "./packages/browserify/test/output/factor-bundle/nocommon/nocommon.css"
+                css : prefix("output/factor-bundle/nocommon/nocommon.css")
             });
 
             build.plugin("factor-bundle", {
                 outputs : [
-                    "./packages/browserify/test/output/factor-bundle/nocommon-a.js",
-                    "./packages/browserify/test/output/factor-bundle/nocommon-b.js"
+                    prefix("output/factor-bundle/nocommon-a.js"),
+                    prefix("output/factor-bundle/nocommon-b.js")
                 ]
             });
             
@@ -68,18 +69,18 @@ describe("/browserify.js", function() {
         
         it("should properly handle files w/o dependencies", function() {
             var build = browserify([
-                    "./packages/browserify/test/specimens/factor-bundle/deps/a.js",
-                    "./packages/browserify/test/specimens/factor-bundle/deps/b.js"
+                    prefix("specimens/factor-bundle/deps/a.js"),
+                    prefix("specimens/factor-bundle/deps/b.js")
                 ]);
             
             build.plugin(plugin, {
-                css : "./packages/browserify/test/output/factor-bundle/deps/deps.css"
+                css : prefix("output/factor-bundle/deps/deps.css")
             });
 
             build.plugin("factor-bundle", {
                 outputs : [
-                    "./packages/browserify/test/output/factor-bundle/deps-a.js",
-                    "./packages/browserify/test/output/factor-bundle/deps-b.js"
+                    prefix("output/factor-bundle/deps-a.js"),
+                    prefix("output/factor-bundle/deps-b.js")
                 ]
             });
             
@@ -92,18 +93,18 @@ describe("/browserify.js", function() {
 
         it("should support relative paths within factor-bundle files", function() {
             var build = browserify([
-                    "./packages/browserify/test/specimens/factor-bundle/relative/a.js",
-                    "./packages/browserify/test/specimens/factor-bundle/relative/b.js"
+                    prefix("specimens/factor-bundle/relative/a.js"),
+                    prefix("specimens/factor-bundle/relative/b.js")
                 ]);
             
             build.plugin(plugin, {
-                css : "./packages/browserify/test/output/factor-bundle/relative/relative.css"
+                css : prefix("output/factor-bundle/relative/relative.css")
             });
 
             build.plugin("factor-bundle", {
                 outputs : [
-                    "./packages/browserify/test/output/factor-bundle/relative-a.js",
-                    "./packages/browserify/test/output/factor-bundle/relative-b.js"
+                    prefix("output/factor-bundle/relative-a.js"),
+                    prefix("output/factor-bundle/relative-b.js")
                 ]
             });
             
@@ -116,25 +117,25 @@ describe("/browserify.js", function() {
 
         it("should avoid outputting empty css files by default", function() {
             var build = browserify([
-                    "./packages/browserify/test/specimens/factor-bundle/noempty/a.js",
-                    "./packages/browserify/test/specimens/factor-bundle/noempty/b.js"
+                    prefix("specimens/factor-bundle/noempty/a.js"),
+                    prefix("specimens/factor-bundle/noempty/b.js")
                 ]);
             
             build.plugin(plugin, {
-                css : "./packages/browserify/test/output/factor-bundle/noempty/noempty.css"
+                css : prefix("output/factor-bundle/noempty/noempty.css")
             });
 
             build.plugin("factor-bundle", {
                 outputs : [
-                    "./packages/browserify/test/output/factor-bundle/noempty-a.js",
-                    "./packages/browserify/test/output/factor-bundle/noempty-b.js"
+                    prefix("output/factor-bundle/noempty-a.js"),
+                    prefix("output/factor-bundle/noempty-b.js")
                 ]
             });
             
             return bundle(build)
                 .then(() => {
                     assert.throws(function() {
-                        fs.statSync("./packages/browserify/test/output/factor-bundle/noempty/b.css");
+                        fs.statSync(prefix("output/factor-bundle/noempty/b.css"));
                     });
                     
                     expect(read("./factor-bundle/noempty/noempty.css")).toMatchSnapshot();
@@ -144,19 +145,19 @@ describe("/browserify.js", function() {
 
         it("should output empty css files when asked", function() {
             var build = browserify([
-                    "./packages/browserify/test/specimens/factor-bundle/empty/a.js",
-                    "./packages/browserify/test/specimens/factor-bundle/empty/b.js"
+                    prefix("specimens/factor-bundle/empty/a.js"),
+                    prefix("specimens/factor-bundle/empty/b.js")
                 ]);
             
             build.plugin(plugin, {
-                css   : "./packages/browserify/test/output/factor-bundle/empty/empty.css",
+                css   : prefix("output/factor-bundle/empty/empty.css"),
                 empty : true
             });
 
             build.plugin("factor-bundle", {
                 outputs : [
-                    "./packages/browserify/test/output/factor-bundle/empty-a.js",
-                    "./packages/browserify/test/output/factor-bundle/empty-b.js"
+                    prefix("output/factor-bundle/empty-a.js"),
+                    prefix("output/factor-bundle/empty-b.js")
                 ]
             });
             
