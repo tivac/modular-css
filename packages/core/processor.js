@@ -238,6 +238,11 @@ Processor.prototype = {
         return this._files;
     },
 
+    // Expose combined options object
+    get options() {
+        return this._options;
+    },
+
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
     _walk : function(name, text) {

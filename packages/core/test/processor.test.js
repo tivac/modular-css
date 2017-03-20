@@ -48,6 +48,12 @@ describe("/processor.js", function() {
                     });
                 });
             });
+
+            describe(".options", function() {
+                it("should return the merged options object", function() {
+                    expect(typeof this.processor.options).toBe("object");
+                });
+            });
         });
         
         describe("bad imports", function() {
