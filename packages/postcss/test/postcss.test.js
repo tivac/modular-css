@@ -110,4 +110,21 @@ describe("/postcss.js", function() {
             )
         );
     });
+
+    it("should output json when used within postcss", function() {
+        var processor = postcss([
+                plugin({
+                    namer
+                })
+            ]);
+        
+        return processor.process(
+            fs.readFileSync("./packages/postcss/test/specimens/simple.css"),
+            {
+                from : "./packages/postcss/test/specimens/simple.css",
+                json : "./packages/postcss/test/output/simple.json"
+            }
+        )
+        .then(() => compare.results("simple.json"));
+    });
 });
