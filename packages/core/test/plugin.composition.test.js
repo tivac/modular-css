@@ -34,13 +34,13 @@ describe("/plugins", function() {
             expect(() => process(dedent(`
                 .red { color: red; }
                 .one .two .three { composes: red; }
-            `).css))
+            `)).css)
             .toThrow(/Only simple singular selectors may use composition/);
 
             expect(() => process(dedent(`
                 .red { color: red; }
                 #id .class { composes: red; }
-            `).css))
+            `)).css)
             .toThrow(/Only simple singular selectors may use composition/);
         });
         
