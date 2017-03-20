@@ -127,4 +127,21 @@ describe("/postcss.js", function() {
         )
         .then(() => compare.results("simple.json"));
     });
+
+    it("should accept json args in either position with postcss", function() {
+        var processor = postcss([
+            plugin({
+                namer,
+                json : "./packages/postcss/test/output/simple.json"
+            })
+        ]);
+        
+        return processor.process(
+            fs.readFileSync("./packages/postcss/test/specimens/simple.css"),
+            {
+                from : "./packages/postcss/test/specimens/simple.css"
+            }
+        )
+        .then(() => compare.results("simple.json"));
+    });
 });

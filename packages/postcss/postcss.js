@@ -12,8 +12,8 @@ module.exports = postcss.plugin("modular-css", (opts) =>
     (root, result) => {
         var processor = new Processor(Object.assign(
                 Object.create(null),
-                opts || /* istanbul ignore next */ {},
-                result.opts || /* istanbul ignore next */ {}
+                opts || {},
+                result.opts || {}
             )),
             classes;
 
@@ -24,15 +24,18 @@ module.exports = postcss.plugin("modular-css", (opts) =>
                 return processor.output();
             })
             .then((output) => {
+                var json = processor.options.json;
+                
                 result.messages.push({
                     type    : "modular-css-exports",
                     exports : classes
                 });
                 
-                if(result.opts.json) {
-                    mkdirp.sync(path.dirname(result.opts.json));
+                if(json) {
+                    mkdirp.sync(path.dirname(json));
+                    
                     fs.writeFileSync(
-                        result.opts.json,
+                        json,
                         JSON.stringify(output.compositions, null, 4)
                     );
                 }
