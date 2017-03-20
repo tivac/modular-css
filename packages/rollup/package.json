@@ -1,6 +1,6 @@
 {
   "name": "modular-css-rollup",
-  "version": "4.1.4",
+  "version": "4.1.5",
   "description": "Add modular-css support to rollup",
   "main": "./rollup.js",
   "repository": "tivac/modular-css",
@@ -21,11 +21,11 @@
     "rollup": "^0.41.4",
     "rollup-watch": "^3.2.2",
     "shelljs": "^0.7.3",
-    "test-utils": "^4.0.9"
+    "test-utils": "^4.0.10"
   },
   "dependencies": {
     "esutils": "^2.0.2",
-    "modular-css-core": "^4.1.2",
+    "modular-css-core": "^4.2.0",
     "rollup-pluginutils": "^2.0.0"
   }
 }
