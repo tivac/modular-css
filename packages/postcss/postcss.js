@@ -29,10 +29,10 @@ module.exports = postcss.plugin("modular-css", (opts) =>
                     exports : classes
                 });
                 
-                if(result.opts.json) {
-                    mkdirp.sync(path.dirname(result.opts.json));
+                if(opts.json) {
+                    mkdirp.sync(path.dirname(opts.json));
                     fs.writeFileSync(
-                        result.opts.json,
+                        opts.json,
                         JSON.stringify(output.compositions, null, 4)
                     );
                 }
