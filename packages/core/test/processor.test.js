@@ -44,6 +44,7 @@ describe("/processor.js", function() {
         });
         
         describe("bad imports", function() {
+            // These can't use expect(...).toThrow() because they're async
             it("should fail if a value imports a non-existant reference", function() {
                 return this.processor.string(
                     "./invalid/value.css",
