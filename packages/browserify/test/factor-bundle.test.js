@@ -3,6 +3,7 @@
 var fs     = require("fs"),
     assert = require("assert"),
     
+    dedent     = require("dedent"),
     browserify = require("browserify"),
     from       = require("from2-string"),
     shell      = require("shelljs"),
@@ -20,8 +21,14 @@ describe("/browserify.js", function() {
         
         it("should be supported", function() {
             var build = browserify([
-                    from("require('./packages/browserify/test/specimens/factor-bundle/basic/common.js'); require('./packages/browserify/test/specimens/start.css');"),
-                    from("require('./packages/browserify/test/specimens/factor-bundle/basic/common.js'); require('./packages/browserify/test/specimens/local.css');")
+                    from(dedent(`
+                        require('./packages/browserify/test/specimens/factor-bundle/basic/common.js');
+                        require('./packages/browserify/test/specimens/start.css');
+                    `)),
+                    from(dedent(`
+                        require('./packages/browserify/test/specimens/factor-bundle/basic/common.js');
+                        require('./packages/browserify/test/specimens/local.css');
+                    `))
                 ]);
             
             build.plugin(plugin, {
@@ -45,8 +52,12 @@ describe("/browserify.js", function() {
         
         it("should support files w/o commonalities", function() {
             var build = browserify([
-                    from("require('./packages/browserify/test/specimens/simple.css');"),
-                    from("require('./packages/browserify/test/specimens/blue.css');")
+                    from(dedent(`
+                        require('./packages/browserify/test/specimens/simple.css');
+                    `)),
+                    from(dedent(`
+                        require('./packages/browserify/test/specimens/blue.css');
+                    `))
                 ]);
             
             build.plugin(plugin, {

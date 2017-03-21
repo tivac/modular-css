@@ -13,6 +13,12 @@ var fs   = require("fs"),
     relative  = require("modular-css-core/lib/relative.js"),
     output    = require("modular-css-core/lib/output.js");
 
+function exports(out) {
+    return `module.exports = ${
+        JSON.stringify(output.join(out.exports), null, 4)
+    };`;
+}
+
 module.exports = function(browserify, opts) {
     var options = Object.assign(Object.create(null), {
             ext   : ".css",
@@ -27,6 +33,11 @@ module.exports = function(browserify, opts) {
     
     if(!options.ext || options.ext.charAt(0) !== ".") {
         return browserify.emit("error", `Missing or invalid "ext" option: ${options.ext}`);
+    }
+
+    // Wrapper for processor.dependencies() so that all paths are absolute
+    function dependencies(file) {
+        return processor.dependencies(file).map((dep) => path.resolve(options.cwd, dep));
     }
     
     function depReducer(curr, next) {
@@ -49,11 +60,11 @@ module.exports = function(browserify, opts) {
                     // Tell watchers about dependencies by emitting "file" events
                     // AFAIK this is only useful to watchify, to ensure that it watches
                     // everyone in the dependency graph
-                    processor.dependencies(result.id).forEach(function(id) {
-                        browserify.emit("file", path.resolve(options.cwd, id), id);
-                    });
+                    dependencies(result.id).forEach((dep) =>
+                        browserify.emit("file", dep, dep)
+                    );
                     
-                    push(`module.exports = ${JSON.stringify(output.join(result.exports), null, 4)};`);
+                    push(exports(result));
                     
                     done();
                 },
@@ -81,7 +92,7 @@ module.exports = function(browserify, opts) {
         
         // Ensure that browserify knows about the CSS dependency tree by updating
         // any referenced entries w/ their dependencies
-        row.deps = processor.dependencies(row.file).reduce(depReducer, {});
+        row.deps = dependencies(row.file).reduce(depReducer, {});
         
         return done(null, row);
     }, function(done) {
@@ -89,7 +100,7 @@ module.exports = function(browserify, opts) {
         // injected into the stream of files being managed
         var push = this.push.bind(this);
         
-        processor.dependencies().forEach(function(dep) {
+        dependencies().forEach(function(dep) {
             if(dep in handled) {
                 return;
             }
@@ -97,8 +108,8 @@ module.exports = function(browserify, opts) {
             push({
                 id     : path.resolve(options.cwd, dep),
                 file   : path.resolve(options.cwd, dep),
-                source : `module.exports = ${JSON.stringify(output.join(processor.files[dep].exports), null, 4)};`,
-                deps   : processor.dependencies(dep).reduce(depReducer, {})
+                source : exports(processor.files[relative(options.cwd, dep)]),
+                deps   : dependencies(dep).reduce(depReducer, {})
             });
         });
         
@@ -157,8 +168,8 @@ module.exports = function(browserify, opts) {
                 return;
             }
             
-            common = processor.dependencies();
-            
+            common = dependencies();
+
             if(bundling) {
                 // Write out each bundle's CSS files (if they have any)
                 each(bundles, (files, bundle) => {
@@ -170,7 +181,7 @@ module.exports = function(browserify, opts) {
 
                     // This file was part of a bundle, so remove from the common file
                     files.forEach((file) =>
-                        common.splice(common.indexOf(path.relative(options.cwd, file)), 1)
+                        common.splice(common.indexOf(file), 1)
                     );
 
                     dest = path.join(

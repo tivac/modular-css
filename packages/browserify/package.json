@@ -20,6 +20,7 @@
   ],
   "devDependencies": {
     "browserify": "^14.0.0",
+    "dedent": "^0.7.0",
     "factor-bundle": "^2.5.0",
     "from2-string": "^1.1.0",
     "shelljs": "^0.7.3",
