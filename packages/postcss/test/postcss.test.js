@@ -1,6 +1,6 @@
 "use strict";
 
-var fs     = require("fs"),
+var fs = require("fs"),
     
     postcss = require("postcss"),
     read    = require("test-utils/read.js")(__dirname),
@@ -97,7 +97,7 @@ describe("/postcss.js", function() {
                 json : "./packages/postcss/test/output/simple.json"
             }
         )
-        .then(() => compare.results("simple.json"));
+        .then(() => expect(read("simple.json")).toMatchSnapshot());
     });
 
     it("should accept json args in either position with postcss", function() {
@@ -114,6 +114,6 @@ describe("/postcss.js", function() {
                 from : "./packages/postcss/test/specimens/simple.css"
             }
         )
-        .then(() => compare.results("simple.json"));
+        .then(() => expect(read("simple.json")).toMatchSnapshot());
     });
 });
