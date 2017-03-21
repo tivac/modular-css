@@ -38,5 +38,11 @@
       "node": true,
       "jest": true
     }
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      "parsers"
+    ]
   }
 }
