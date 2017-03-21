@@ -1,15 +1,13 @@
 "use strict";
 
-var assert = require("assert"),
-
-    dedent = require("dentist").dedent,
+var dedent = require("dentist").dedent,
     
     Processor = require("modular-css-core"),
     namer     = require("test-utils/namer.js"),
 
     paths = require("../paths.js");
 
-describe("/paths.js", function() {
+describe("modular-css-paths", function() {
     it("should return a falsey value if a file isn't found", function() {
         var fn = paths({
             paths : [
@@ -17,7 +15,7 @@ describe("/paths.js", function() {
             ]
         });
 
-        assert.ok(!fn(".", "./fooga.css"));
+        expect(fn(".", "./fooga.css")).toBeFalsy();
     });
 
     it("should return the absolute path if a file is found", function() {
@@ -38,7 +36,7 @@ describe("/paths.js", function() {
             ]
         });
 
-        expect(fn(".", "./sub.css")).toBe(require.resolve("./specimens/one/sub/sub.css"));
+         expect(fn(".", "./sub.css")).toBe(require.resolve("./specimens/one/sub/sub.css"));
     });
 
     it("should be usable as a modular-css resolver", function() {
@@ -65,21 +63,6 @@ describe("/paths.js", function() {
             `)
         )
         .then(() => processor.output())
-        .then((result) => assert.deepEqual(
-            result.compositions,
-            {
-                "packages/paths/test/specimens/one/start.css" : {
-                    rule : "two rule"
-                },
-
-                "packages/paths/test/specimens/one/sub/sub.css" : {
-                    sub : "sub"
-                },
-
-                "packages/paths/test/specimens/two/two.css" : {
-                    two : "two"
-                }
-            }
-        ));
+        .then((result) => expect(result.compositions).toMatchSnapshot());
     });
 });

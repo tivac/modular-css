@@ -1,13 +1,13 @@
 "use strict";
 
 var fs     = require("fs"),
-    path   = require("path"),
     assert = require("assert"),
     
     rollup  = require("rollup").rollup,
     watch   = require("rollup-watch"),
-    compare = require("test-utils/compare.js")(__dirname),
-    namer   = require("test-utils/namer.js"),
+    
+    read  = require("test-utils/read.js")(__dirname),
+    namer = require("test-utils/namer.js"),
     
     plugin = require("../rollup.js");
 
@@ -33,10 +33,7 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => compare.stringToFile(
-            bundle.generate({ format : "es" }).code,
-            "./packages/rollup/test/results/simple.js"
-        ));
+        .then((bundle) => expect(bundle.generate({ format : "es" }).code).toMatchSnapshot());
     });
     
     it("should be able to tree-shake results", function() {
@@ -48,10 +45,7 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => compare.stringToFile(
-            bundle.generate({ format : "es" }).code,
-            "./packages/rollup/test/results/tree-shaking.js"
-        ));
+        .then((bundle) => expect(bundle.generate({ format : "es" }).code).toMatchSnapshot());
     });
 
     it("should attach a promise to the bundle.generate response", function() {
@@ -85,7 +79,7 @@ describe("/rollup.js", function() {
             format : "es",
             dest   : "./packages/rollup/test/output/simple.js"
         }))
-        .then(() => compare.results("simple.css"));
+        .then(() => expect(read("simple.css")).toMatchSnapshot());
     });
     
     it("should generate JSON", function() {
@@ -102,7 +96,7 @@ describe("/rollup.js", function() {
             format : "es",
             dest   : "./packages/rollup/test/output/simple.js"
         }))
-        .then(() => compare.results("simple.json"));
+        .then(() => expect(read("simple.json")).toMatchSnapshot());
     });
     
     it("should warn & not export individual keys when they are not valid identifiers", function() {
@@ -117,10 +111,7 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => compare.stringToFile(
-            bundle.generate({ format : "es" }).code,
-            "./packages/rollup/test/results/invalid-name.js"
-        ));
+        .then((bundle) => expect(bundle.generate({ format : "es" }).code).toMatchSnapshot());
     });
     
     it("shouldn't disable sourcemap generation", function() {
@@ -144,7 +135,7 @@ describe("/rollup.js", function() {
             mappings : ";;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC;AACjB,OAAO,CAAC,GAAG,CAAC,KAAK,CAAC,CAAC",
             names    : [],
             sources  : [
-                path.resolve(__dirname, "./specimens/simple.js").replace(/\\/g, "/")
+                require.resolve("./specimens/simple.js").replace(/\\/g, "/")
             ],
             
             sourcesContent : [
@@ -178,7 +169,7 @@ describe("/rollup.js", function() {
                 sourceMap : false
             });
         })
-        .then(() => compare.results("no-maps.css"));
+        .then(() => expect(read("no-maps.css")).toMatchSnapshot());
     });
 
     it("should respect the CSS dependency tree", function() {
@@ -190,10 +181,7 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => compare.stringToFile(
-            bundle.generate({ format : "es" }).code,
-            "./packages/rollup/test/results/dependencies.js"
-        ));
+        .then((bundle) => expect(bundle.generate({ format : "es" }).code).toMatchSnapshot());
     });
 
     describe("errors", function() {
@@ -277,10 +265,7 @@ describe("/rollup.js", function() {
                 /* eslint consistent-return:0 */
                 if(details.code === "BUILD_END" && details.initial) {
                     try {
-                        compare.results(
-                            "watch-output.css",
-                            "rollup/watch1.css"
-                        );
+                        expect(read("watch-output.css").toMatchSnapshot());
                     } catch(e) {
                         return done(e);
                     }
@@ -288,10 +273,7 @@ describe("/rollup.js", function() {
 
                 if(details.code === "BUILD_END" && !details.initial) {
                     try {
-                        compare.results(
-                            "watch-output.css",
-                            "rollup/watch2.css"
-                        );
+                        expect(read("watch-output.css").toMatchSnapshot());
                     } catch(e) {
                         return done(e);
                     }

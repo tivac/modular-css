@@ -5,9 +5,9 @@ var browserify = require("browserify"),
     
     Processor = require("modular-css-core"),
     
-    bundle = require("./lib/bundle.js"),
-    read   = require("./lib/read.js"),
+    read = require("test-utils/read.js")(__dirname),
 
+    bundle = require("./lib/bundle.js"),
     plugin = require("../browserify.js");
 
 describe("/browserify.js", function() {

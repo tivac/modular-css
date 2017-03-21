@@ -1,7 +1,6 @@
 "use strict";
 
-var path   = require("path"),
-    assert = require("assert"),
+var path = require("path"),
     
     plugin  = require("../plugins/values-namespaced.js"),
     resolve = require("../lib/resolve.js").resolve,
@@ -40,50 +39,43 @@ describe("/plugins", function() {
         }
         
         it("should fail to parse invalid declarations", function() {
-            assert.throws(() => process(`@value * as fooga from "./local.css`).css, /: Unclosed string/);
-            assert.throws(() => process(`@value * as fooga`).css, /SyntaxError: Expected "from"/);
+            expect(
+                () => process(`@value * as fooga from "./local.css`).css
+            )
+            .toThrow(/: Unclosed string/);
+            
+            expect(
+                () => process(`@value * as fooga`).css
+            )
+            .toThrow(/SyntaxError: Expected "from"/);
         });
 
         it("should fail if importing from a file that doesn't exist", function() {
-            assert.throws(function() {
-                return process(`@value * as booga from "./no.css";`).css;
-            }, /Unknown composition source/);
+            expect(
+                () => process(`@value * as booga from "./no.css";`).css
+            )
+            .toThrow(/Unknown composition source/);
         });
 
         it("should fail if importing a file w/ no exports", function() {
-            assert.throws(function() {
-                return process(`@value * as booga from "./empty.css";`).css;
-            }, /Unknown composition source/);
+            expect(
+                () => process(`@value * as booga from "./empty.css";`).css
+            )
+            .toThrow(/Unknown composition source/);
         });
 
         it("should ignore other @value types", function() {
-            assert.equal(
-                process(`@value fooga from "./local.css"; @value tooga: red;`).css,
-                `@value fooga from "./local.css"; @value tooga: red;`
-            );
+            expect(
+                process(`@value fooga from "./local.css"; @value tooga: red;`).css
+            )
+            .toMatchSnapshot();
         });
 
         it("should support importing a value from another file", function() {
             expect(
-                process(`@value * as ns from "./local.css";`).messages,
-                [{
-                    type   : "modular-css",
-                    plugin : "modular-css-values-namespaced",
-                    values : {
-                        ns : {
-                            fooga : {
-                                value  : "red",
-                                source : {}
-                            },
-
-                            googa : {
-                                value  : "blue",
-                                source : {}
-                            }
-                        }
-                    }
-                }]
-            );
+                process(`@value * as ns from "./local.css";`).messages
+            )
+            .toMatchSnapshot();
         });
     });
 });

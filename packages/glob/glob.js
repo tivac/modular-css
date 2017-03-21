@@ -1,5 +1,4 @@
 "use strict";
-/* eslint indent:off */
 
 var globule = require("globule"),
     
@@ -9,16 +8,12 @@ module.exports = function(opts) {
     var options = Object.assign(
             Object.create(null),
             {
-                search : [
-                    "**/*.css"
-                ]
-            
+                search : [ "**/*.css" ]
             },
-            /* istanbul ignore next */
             opts || {}
         ),
         processor = new Processor(options);
-        
+    
     return Promise.all(
         globule.find({
             src        : options.search,

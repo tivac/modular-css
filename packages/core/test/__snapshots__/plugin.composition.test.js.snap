@@ -1,0 +1,534 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/plugins /composition.js should allow multiple composes declarations 1`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "b",
+      ],
+      "c": Array [
+        "c",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "b",
+      ],
+      "c": Array [
+        "a",
+        "b",
+        "c",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should compose multiple classes from imports 1`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "b",
+        "c",
+        "a",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should expose imported heirachy details in the messages 1`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "b",
+        "a",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should find scoped identifiers from the scoping plugin's message 1`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "b",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "a",
+        "b",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should handle multi-level dependencies 1`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "b",
+      ],
+      "c": Array [
+        "c",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "a",
+        "b",
+      ],
+      "c": Array [
+        "a",
+        "b",
+        "c",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should output composition results as a message 1`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "b",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "a",
+        "b",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should output removed classes as part of a message 1`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "b",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "a",
+        "b",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should output the class hierarchy in a message 1`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "b",
+      ],
+      "c": Array [
+        "c",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "b",
+      ],
+      "c": Array [
+        "b",
+        "a",
+        "c",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should remove classes that only contain a composes rule from the output CSS 1`] = `".a { color: red; }"`;
+
+exports[`/plugins /composition.js should support IDs instead of classes 1`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "b",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "a",
+        "b",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should support composing against global identifiers 1`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "b",
+        "a",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should support composing against global identifiers 2`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "b",
+        "c",
+        "a",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should support composing against global identifiers 3`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "b",
+        "a",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should support composing against global identifiers 4`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "c": Array [
+        "c",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "b",
+        "c",
+        "a",
+      ],
+      "c": Array [
+        "c",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should support composing against global identifiers 5`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "c": Array [
+        "c",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "b",
+        "c",
+        "a",
+      ],
+      "c": Array [
+        "c",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should support composing against global identifiers 6`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "c": Array [
+        "c",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "b",
+        "c",
+        "a",
+      ],
+      "c": Array [
+        "c",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should support composing against global identifiers 7`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "c": Array [
+        "c",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "b",
+        "c",
+        "a",
+      ],
+      "c": Array [
+        "c",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should support composing against global identifiers w/ the same name 1`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
+exports[`/plugins /composition.js should support composing against later classes 1`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "b",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "b",
+        "a",
+      ],
+      "b": Array [
+        "b",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;

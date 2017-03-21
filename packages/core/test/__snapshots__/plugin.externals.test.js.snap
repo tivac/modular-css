@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/plugins /externals.js should fail to parse invalid declarations 1`] = `"Expected source but end of input found."`;
+
+exports[`/plugins /externals.js should support importing a selector from another file 1`] = `".a .a.b {}"`;

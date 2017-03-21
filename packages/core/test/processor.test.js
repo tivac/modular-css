@@ -1,13 +1,9 @@
 "use strict";
 
-var path    = require("path"),
-    assert  = require("assert"),
-
-    leading = require("dentist").dedent,
+var dedent = require("dedent"),
+    namer  = require("test-utils/namer.js"),
     
-    Processor = require("../processor.js"),
-    
-    compare = require("test-utils/compare.js")(__dirname);
+    Processor = require("../processor.js");
 
 describe("/processor.js", function() {
     describe("Basics", function() {
@@ -17,14 +13,14 @@ describe("/processor.js", function() {
         
         it("should auto-instantiate if called without new", function() {
             /* eslint new-cap:0 */
-            assert(Processor() instanceof Processor);
+            expect(Processor()).toBeInstanceOf(Processor);
         });
     });
 
     describe("functionality", function() {
         beforeEach(function() {
             this.processor = new Processor({
-                namer : (file, selector) => selector
+                namer
             });
         });
         
@@ -37,15 +33,7 @@ describe("/processor.js", function() {
                         "./packages/core/test/specimens/start.css"
                     )
                     .then(() => processor.file("./packages/core/test/specimens/local.css"))
-                    .then(() => {
-                        expect(typeof processor.files).toBe("object");
-                        
-                        expect(Object.keys(processor.files).length).toBe(3);
-                        
-                        assert(path.resolve("./packages/core/test/specimens/local.css") in processor.files);
-                        assert(path.resolve("./packages/core/test/specimens/start.css") in processor.files);
-                        assert(path.resolve("./packages/core/test/specimens/folder/folder.css") in processor.files);
-                    });
+                    .then(() => expect(Object.keys(processor.files)).toMatchSnapshot());
                 });
             });
 
@@ -57,14 +45,13 @@ describe("/processor.js", function() {
         });
         
         describe("bad imports", function() {
+            // These can't use expect(...).toThrow() because they're async
             it("should fail if a value imports a non-existant reference", function() {
                 return this.processor.string(
                     "./invalid/value.css",
                     "@value not-real from \"../local.css\";"
                 )
-                .catch((error) => expect(error.message).toBe(
-                    `Unable to locate "../local.css" from "${path.resolve("./invalid/value.css")}"`
-                ));
+                .catch((error) => expect(error.message).toMatch(`Unable to locate "../local.css" from`));
             });
             
             it("should fail if a composition imports a non-existant reference", function() {
@@ -72,17 +59,15 @@ describe("/processor.js", function() {
                     "./invalid/composition.css",
                     ".wooga { composes: fake from \"../local.css\"; }"
                 )
-                .catch((error) => expect(error.message).toBe(
-                    `Unable to locate "../local.css" from "${path.resolve("./invalid/composition.css")}"`
-                ));
+                .catch((error) => expect(error.message).toMatch(`Unable to locate "../local.css" from`));
             });
         });
 
         describe("scoping", function() {
             it("should scope classes, ids, and keyframes", function() {
                 return this.processor.string(
-                    "./packages/core/test/specimens/simple.css",
-                    leading(`
+                    "./simple.css",
+                    dedent(`
                         @keyframes kooga { }
                         #fooga { }
                         .wooga { }
@@ -91,27 +76,11 @@ describe("/processor.js", function() {
                     `)
                 )
                 .then((result) => {
-                    expect(result.exports).toEqual({
-                        fooga : [ "fooga" ],
-                        wooga : [ "wooga" ],
-                        one   : [ "one" ],
-                        two   : [ "two" ]
-                    });
+                    expect(result.exports).toMatchSnapshot();
 
                     return this.processor.output();
                 })
-                .then((output) =>
-                    expect(output.css).toEqual(
-                        leading(`
-                            /* packages/core/test/specimens/simple.css */
-                            @keyframes kooga {}
-                            #fooga {}
-                            .wooga {}
-                            .one,
-                            .two {}
-                        `)
-                    )
-                );
+                .then((output) => expect(output.css).toMatchSnapshot());
             });
         });
 
@@ -119,11 +88,13 @@ describe("/processor.js", function() {
             it("should support local values in value composition", function() {
                 return this.processor.string(
                     "./packages/core/test/specimens/simple.css",
-                    "@value local: './local.css'; @value one from local; .fooga { background: one; }"
+                    dedent(`
+                        @value local: './local.css';
+                        @value one from local;
+                        .fooga { background: one; }
+                    `)
                 )
-                .then((result) => expect(result.exports).toEqual({
-                    fooga : [ "fooga" ]
-                }));
+                .then((result) => expect(result.exports).toMatchSnapshot());
             });
         });
 
@@ -133,25 +104,21 @@ describe("/processor.js", function() {
                     "./packages/core/test/specimens/externals.css"
                 )
                 .then(() => this.processor.output())
-                .then((result) => compare.stringToFile(result.css, "./packages/core/test/results/processor/externals.css"));
+                .then((result) => expect(result.css).toMatchSnapshot());
             });
         });
 
         describe("exports", function() {
             it("should export an object of arrays containing strings", function() {
                 return this.processor.string(
-                    "./packages/core/test/specimens/simple.css",
-                    ".red { color: red; } .black { background: #000; } .one, .two { composes: red, black; }"
+                    "./simple.css",
+                    dedent(`
+                        .red { color: red; }
+                        .black { background: #000; }
+                        .one, .two { composes: red, black; }
+                    `)
                 )
-                .then((result) => expect(result.exports).toEqual({
-                    red   : [ "red" ],
-                    black : [ "black" ],
-                    one   : [ "red", "black", "one" ],
-                    two   : [ "red", "black", "two" ]
-                }))
-                .catch((e) => {
-                    throw e;
-                });
+                .then((result) => expect(result.exports).toMatchSnapshot());
             });
 
             it("should export identifiers and their classes", function() {
@@ -165,14 +132,14 @@ describe("/processor.js", function() {
 
         it("should support unicode classes & ids", function() {
             var processor = new Processor({
-                    namer : (file, selector) => selector
+                    namer
                 });
             
             return processor.file(
                 "./packages/core/test/specimens/processor/unicode.css"
             )
             .then(() => processor.output({ to : "./packages/core/test/output/processor/unicode.css" }))
-            .then((output) => compare.stringToFile(output.css, "./packages/core/test/results/processor/unicode.css"));
+            .then((output) => expect(output.css).toMatchSnapshot());
         });
     });
 });

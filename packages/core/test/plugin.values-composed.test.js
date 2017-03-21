@@ -1,7 +1,6 @@
 "use strict";
 
 var path   = require("path"),
-    assert = require("assert"),
     
     plugin  = require("../plugins/values-composed.js"),
     resolve = require("../lib/resolve.js").resolve,
@@ -23,12 +22,12 @@ describe("/plugins", function() {
                     // Composition target
                     [path.resolve("./packages/core/test/specimens/local.css")] : {
                         values : {
-                            fooga : {
+                            a : {
                                 value  : "red",
                                 source : {}
                             },
 
-                            googa : {
+                            b : {
                                 value  : "blue",
                                 source : {}
                             }
@@ -39,62 +38,50 @@ describe("/plugins", function() {
         }
         
         it("should fail to parse invalid declarations", function() {
-            assert.throws(() => process(`@value red from "./local.css`).css, /: Unclosed string/);
-            assert.throws(() => process(`@value blue from `).css, /SyntaxError: Expected source/);
+            expect(
+                () => process(`@value red from "./local.css`).css
+            )
+            .toThrow(/: Unclosed string/);
+            
+            expect(
+                () => process(`@value blue from `).css
+            )
+            .toThrow(/SyntaxError: Expected source/);
         });
 
         it("should fail if importing from a file that doesn't exist", function() {
-            assert.throws(() => process(`@value booga from "./no.css";`).css, /Unknown composition source/);
+            expect(
+                () => process(`@value a from "./no.css";`).css
+            )
+            .toThrow(/Unknown composition source/);
         });
 
-        it("should fail if non-existant imports are referenced", function() {
-            assert.throws(() => process(`@value booga from "./local.css";`).css, /Invalid @value reference: booga/);
-            
-            assert.throws(() => process(`@value tooga from "./local.css";`).css, /Invalid @value reference: tooga/);
+        it("should fail if non-existent imports are referenced", function() {
+            expect(
+                () => process(`@value c from "./local.css";`).css
+            )
+            .toThrow(/Invalid @value reference: c/);
         });
 
         it("should ignore other @value types", function() {
-            assert.equal(
-                process(`@value * as fooga from "./local.css"; @value tooga: red;`).css,
-                `@value * as fooga from "./local.css"; @value tooga: red;`
-            );
+            expect(
+                process(`@value * as a from "./local.css"; @value b: red;`).css
+            )
+            .toMatchSnapshot();
         });
 
         it("should support importing a value from another file", function() {
             expect(
-                process(`@value fooga from "./local.css";`).messages,
-                [{
-                    type   : "modular-css",
-                    plugin : "modular-css-values-composed",
-                    values : {
-                        fooga : {
-                            value  : "red",
-                            source : {}
-                        }
-                    }
-                }]
-            );
+                process(`@value a from "./local.css";`).messages
+            )
+            .toMatchSnapshot();
         });
 
         it("should support importing multiple values from another file", function() {
             expect(
-                process(`@value googa, fooga from "./local.css";`).messages,
-                [{
-                    type   : "modular-css",
-                    plugin : "modular-css-values-composed",
-                    values : {
-                        fooga : {
-                            value  : "red",
-                            source : {}
-                        },
-
-                        googa : {
-                            value  : "blue",
-                            source : {}
-                        }
-                    }
-                }]
-            );
+                process(`@value a, b from "./local.css";`).messages
+            )
+            .toMatchSnapshot();
         });
     });
 });

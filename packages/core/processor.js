@@ -32,6 +32,8 @@ function params(processor, args) {
 }
 
 function Processor(opts) {
+    var resolver;
+
     /* eslint consistent-return:0, max-statements:0 */
     
     if(!(this instanceof Processor)) {
@@ -60,7 +62,15 @@ function Processor(opts) {
         this._options.resolvers = [];
     }
 
-    this._resolve = resolve.resolvers(this._options.resolvers);
+    this._relative = relative.bind(null, this._options.cwd);
+
+    resolver = resolve.resolvers(this._options.resolvers);
+    this._resolve = (src, file) =>
+        this._relative(
+            resolver(
+                path.join(this._options.cwd, src), file
+            )
+        );
 
     this._files = Object.create(null);
     this._graph = new Graph();
@@ -98,7 +108,7 @@ Processor.prototype = {
     
     // Add a file by name + contents to the dependency graph
     string : function(name, text) {
-        var start = path.resolve(name);
+        var start = this._relative(name);
         
         return this._walk(start, text).then(() => {
             var deps = this._graph.dependenciesOf(start).concat(start);
@@ -142,24 +152,27 @@ Processor.prototype = {
             options = false;
         }
 
-        files.filter((key) => this._graph.hasNode(key)).forEach((key) => {
-            if(!options.shallow) {
-                // Remove everything that depends on this too, it'll all need
-                // to be recalculated
-                this.remove(this._graph.dependantsOf(key));
-            }
+        files
+            .map((file) => this._relative(file))
+            .filter((file) => this._graph.hasNode(file))
+            .forEach((file) => {
+                if(!options.shallow) {
+                    // Remove everything that depends on this too, it'll all need
+                    // to be recalculated
+                    this.remove(this._graph.dependantsOf(file));
+                }
 
-            delete this._files[key];
-            
-            this._graph.removeNode(key);
-        });
+                delete this._files[file];
+                
+                this._graph.removeNode(file);
+            });
     },
     
     // Get the dependency order for a file or the entire tree
     dependencies : function(file) {
         if(file) {
             return this._graph.dependenciesOf(
-                path.normalize(file)
+                this._relative(file)
             );
         }
 
@@ -174,11 +187,14 @@ Processor.prototype = {
         if(!Array.isArray(files)) {
             files = tiered(this._graph);
         }
-        
+
         // Rewrite relative URLs before adding
         // Have to do this every time because target file might be different!
         //
-        return Promise.all(files
+        return Promise.all(
+            files
+            // Ensure we're dealing w/ relative paths
+            .map((dep) => (path.isAbsolute(dep) ? relative(this._options.cwd, dep) : dep))
             // Protect from any files that errored out (#248)
             .filter((dep) => dep in this._files && this._files[dep].result)
             .map((dep) => this._after.process(
@@ -200,7 +216,7 @@ Processor.prototype = {
             results.forEach((result) => {
                 // Add file path comment
                 root.append(postcss.comment({
-                    text : relative(this._options.cwd, result.opts.from),
+                    text : result.opts.from,
                     
                     // Add a bogus-ish source property so postcss won't make weird-looking
                     // source-maps that break the visualizer
@@ -277,7 +293,7 @@ Processor.prototype = {
                     dependency,
                     this._files[dependency] ?
                         null :
-                        fs.readFileSync(dependency, "utf8")
+                        fs.readFileSync(path.join(this._options.cwd, dependency), "utf8")
                 ))
             );
         });

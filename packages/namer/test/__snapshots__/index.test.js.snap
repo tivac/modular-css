@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modular-css-namer should differ between files 1`] = `"AA"`;
+
+exports[`modular-css-namer should differ between files 2`] = `"BA"`;
+
+exports[`modular-css-namer should differ within files 1`] = `"AA"`;
+
+exports[`modular-css-namer should differ within files 2`] = `"AB"`;
+
+exports[`modular-css-namer should hash its arguments 1`] = `"AA"`;
+
+exports[`modular-css-namer should re-use selectors for identical inputs 1`] = `"AA"`;
+
+exports[`modular-css-namer should re-use selectors for identical inputs 2`] = `"AA"`;
+
+exports[`modular-css-namer should wrap as necessary 1`] = `"PF"`;
+
+exports[`modular-css-namer should wrap as necessary 2`] = `"BF"`;
+
+exports[`modular-css-namer should wrap as necessary 3`] = `"xh"`;
+
+exports[`modular-css-namer should wrap as necessary 4`] = `"zD9B"`;
+
+exports[`modular-css-namer should wrap as necessary 5`] = `"aA"`;

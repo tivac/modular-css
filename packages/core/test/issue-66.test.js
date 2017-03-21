@@ -1,8 +1,6 @@
 "use strict";
 
-var assert = require("assert"),
-    
-    Processor = require("../processor.js");
+var Processor = require("../processor.js");
 
 describe("/issues", function() {
     describe("/66", function() {
@@ -13,9 +11,12 @@ describe("/issues", function() {
                 "./packages/core/test/specimens/a.css",
                 ".aooga { }"
             )
-            .then(() => assert.doesNotThrow(function() {
-                processor.remove("./fooga.js");
-            }));
+            .then(() =>
+                expect(() =>
+                    processor.remove("./fooga.js")
+                )
+                .not.toThrow()
+            );
         });
     });
 });

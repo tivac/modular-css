@@ -1,66 +1,62 @@
 "use strict";
 
-var assert = require("assert"),
-    
-    plugin = require("../plugins/values-local.js"),
+var plugin = require("../plugins/values-local.js"),
     
     processor = require("postcss")([ plugin ]);
 
 describe("/plugins", function() {
     describe("/values-local.js", function() {
         it("should ignore invalid declarations in normal mode", function() {
-            assert.doesNotThrow(() => processor.process("@value red:").css);
-            assert.doesNotThrow(() => processor.process("@value blue red").css);
+            expect(() => processor.process("@value red:").css).not.toThrow();
+            expect(() => processor.process("@value blue red").css).not.toThrow();
         });
         
         it("should complain about invalid declarations in strict mode", function() {
-            assert.throws(
-                () => processor.process("@value red:", { strict : true }).css,
-                /SyntaxError: /
-            );
+            expect(
+                () => processor.process("@value red:", { strict : true }).css
+            )
+            .toThrow(/SyntaxError: /);
             
-            assert.throws(
-                () => processor.process("@value blue red", { strict : true }).css,
-                /SyntaxError: /
-            );
+            expect(
+                () => processor.process("@value blue red", { strict : true }).css
+            )
+            .toThrow(/SyntaxError: /);
         });
 
         it("should remove value declarations from output", function() {
-            assert.equal(
-                processor.process("@value red: #F00").css,
-                ""
-            );
+            expect(
+                processor.process("@value red: #F00").css
+            )
+            .toMatchSnapshot();
 
-            assert.equal(
-                processor.process("@value red: #F00; @value blue: blue;").css,
-                ""
-            );
+            expect(
+                processor.process("@value red: #F00; @value blue: blue;").css
+            )
+            .toMatchSnapshot();
 
-            assert.equal(
-                processor.process("@value red: #F00; .wooga { color: red; }").css,
-                ".wooga { color: red; }"
-            );
+            expect(
+                processor.process("@value red: #F00; .wooga { color: red; }").css
+            )
+            .toMatchSnapshot();
         });
         
         it("should emit a message with details about values", function() {
-            var msg = processor.process("@value red: #F00; @value blue: blue;").messages[0];
-            
-            assert.equal(msg.plugin, "modular-css-values-local");
-            assert.equal(msg.type, "modular-css");
-            assert.equal(msg.values.blue.value, "blue");
-            assert.equal(msg.values.red.value, "#F00");
+            expect(
+                processor.process("@value red: #F00; @value blue: blue;").messages
+            )
+            .toMatchSnapshot();
         });
 
         it("should ignore non-local values", function() {
-            assert.equal(
-                processor.process(`@value red from "./fooga.css";`).css,
-                `@value red from "./fooga.css";`
-            );
+            expect(
+                processor.process(`@value red from "./fooga.css";`).css
+            )
+            .toMatchSnapshot();
 
-            assert.equal(
-                processor.process(`@value red from "./fooga.css"; .fooga { color: red; }`).css,
-                `@value red from "./fooga.css"; .fooga { color: red; }`
-            );
+            expect(
+                processor.process(`@value red from "./fooga.css"; .fooga { color: red; }`).css
+            )
+            .toMatchSnapshot();
         });
     });
 });

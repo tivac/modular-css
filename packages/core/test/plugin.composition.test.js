@@ -1,9 +1,9 @@
 "use strict";
 
 var path   = require("path"),
-    assert = require("assert"),
 
     postcss = require("postcss"),
+    dedent  = require("dedent"),
     
     resolve = require("../lib/resolve.js").resolve,
 
@@ -11,14 +11,6 @@ var path   = require("path"),
 
     scoping     = require("../plugins/scoping.js"),
     composition = require("../plugins/composition.js");
-
-function msg(classes) {
-    return {
-        type    : "modular-css",
-        plugin  : "modular-css-composition",
-        classes : classes
-    };
-}
 
 describe("/plugins", function() {
     describe("/composition.js", function() {
@@ -39,42 +31,44 @@ describe("/plugins", function() {
         });
 
         it("should fail if the selector is not a simple, singular selector", function() {
-            assert.throws(
-                () => process(".red { color: red; } .one .two .three { composes: red; } ").css,
-                /Only simple singular selectors may use composition/
-            );
+            expect(() => process(dedent(`
+                .red { color: red; }
+                .one .two .three { composes: red; }
+            `)).css)
+            .toThrow(/Only simple singular selectors may use composition/);
 
-            assert.throws(
-                () => process(".red { color: red; } #id .class { composes: red; }").css,
-                /Only simple singular selectors may use composition/
-            );
+            expect(() => process(dedent(`
+                .red { color: red; }
+                #id .class { composes: red; }
+            `)).css)
+            .toThrow(/Only simple singular selectors may use composition/);
         });
         
         it("should fail if attempting to compose a class that doesn't exist", function() {
-            var out = process(".wooga { composes: googa; }");
+            var out = process(".a { composes: b; }");
             
-            assert.throws(() => out.css, /Invalid composes reference/);
+            expect(() => out.css).toThrow(/Invalid composes reference/);
         });
         
         it("should fail if composes isn't the first rule", function() {
-            var out = process(".wooga { color: red; composes: googa; }");
+            var out = process(".a { color: red; composes: b; }");
             
-            assert.throws(() => out.css, /composes must be the first declaration/);
+            expect(() => out.css).toThrow(/composes must be the first declaration/);
         });
         
         it("should fail if classes have a cyclic dependency", function() {
-            var out = process(".wooga { composes: booga; } .booga { composes: wooga; }");
+            var out = process(".a { composes: b; } .b { composes: a; }");
             
-            assert.throws(() => out.css, /Dependency Cycle Found: wooga -> booga -> wooga/);
+            expect(() => out.css).toThrow(/Dependency Cycle Found: a -> b -> a/);
         });
 
         it("should fail if imports are referenced without having been parsed", function() {
-            var out = process(".wooga { composes: booga from \"./local.css\"; }", {
-                    from  : "packages/core/test/specimens/wooga.css",
+            var out = process(`.a { composes: b from "./local.css"; }`, {
+                    from  : "packages/core/test/specimens/a.css",
                     files : {}
                 });
             
-            assert.throws(() => out.css, /Invalid file reference/);
+            expect(() => out.css).toThrow(/Invalid file reference/);
         });
 
         it("should fail if non-existant imports are referenced", function() {
@@ -85,250 +79,191 @@ describe("/plugins", function() {
                 exports : {}
             };
             
-            out = process(".wooga { composes: googa from \"./local.css\"; }", {
-                from  : path.resolve("./packages/core/test/specimens/wooga.css"),
+            out = process(".a { composes: b from \"./local.css\"; }", {
+                from  : path.resolve("./packages/core/test/specimens/a.css"),
                 files : files
             });
             
-            assert.throws(() => out.css, /Invalid composes reference/);
+            expect(() => out.css).toThrow(/Invalid composes reference/);
         });
         
         it("should fail when parsing an invalid value", function() {
             var out;
 
-            out = process(".wooga { composes: global(); }");
+            out = process(".a { composes: global(); }");
             
-            assert.throws(() => out.css, /SyntaxError: Expected/);
+            expect(() => out.css).toThrow(/SyntaxError: Expected/);
 
-            out = process(".wooga { composes: fooga wooga; }");
+            out = process(".a { composes: b a; }");
             
-            assert.throws(() => out.css, /SyntaxError: Expected/);
+            expect(() => out.css).toThrow(/SyntaxError: Expected/);
         });
 
         it("should output composition results as a message", function() {
-            var messages = process(".wooga { color: red; } .fooga { composes: wooga; }").messages;
-            
-            assert.equal(messages.length, 2);
-            expect(messages[1], msg({
-                wooga : [ "wooga" ],
-                fooga : [ "wooga", "fooga" ]
-            }));
+            expect(process(dedent(`
+                .a { color: red; }
+                .b { composes: a; }
+            `)).messages)
+            .toMatchSnapshot();
         });
 
         it("should remove classes that only contain a composes rule from the output CSS", function() {
-            assert.equal(
-                process(".wooga { color: red; } .fooga { composes: wooga; }").css,
-                ".wooga { color: red; }"
-            );
+            expect(process(dedent(`
+                .a { color: red; }
+                .b { composes: a; }
+            `)).css)
+            .toMatchSnapshot();
         });
         
         it("should output removed classes as part of a message", function() {
-            var messages = process(".wooga { color: red; } .fooga { composes: wooga; }").messages;
-            
-            assert.equal(messages.length, 2);
-            assert("fooga" in messages[1].classes);
-            assert.equal(messages[1].classes.fooga[0], "wooga");
+            expect(process(dedent(`
+                .a { color: red; }
+                .b { composes: a; }
+            `)).messages)
+            .toMatchSnapshot();
         });
 
         it("should support IDs instead of classes", function() {
-            var messages = process("#wooga { color: red; } .fooga { composes: wooga; }").messages;
-            
-            assert.equal(messages.length, 2);
-            assert("fooga" in messages[1].classes);
-            assert.equal(messages[1].classes.fooga[0], "wooga");
+            expect(process(dedent(`
+                #a { color: red; }
+                .b { composes: a; }
+            `)).messages)
+            .toMatchSnapshot();
         });
 
         it("should support multiple singular selectors", function() {
-            assert.doesNotThrow(() => process(".red { color: red; } .one, .two { composes: red; }").css);
-            assert.doesNotThrow(() => process(".red { color: red; } #one, .two { composes: red; }").css);
+            expect(() => process(dedent(`
+                .red { color: red; }
+                .one, .two { composes: red; }
+            `).css))
+            .not.toThrow();
+            
+            expect(() => process(dedent(`
+                .red { color: red; }
+                #one, .two { composes: red; }
+            `).css))
+            .not.toThrow();
         });
         
         it("should output the class hierarchy in a message", function() {
-            var out = process(
-                    ".wooga { color: red; } .booga { background: blue; } #tooga { composes: booga, wooga; }"
-                );
-            
-            assert.equal(out.messages.length, 2);
-            expect(out.messages[1], msg({
-                wooga : [ "wooga" ],
-                booga : [ "booga" ],
-                tooga : [ "booga", "wooga", "tooga" ]
-            }));
+            expect(process(dedent(`
+                .a { color: red; }
+                .b { background: blue; }
+                #c { composes: b, a; }
+            `)).messages)
+            .toMatchSnapshot();
         });
         
         it("should support composing against later classes", function() {
-            var out = process(".wooga { composes: booga; } .booga { color: red; }");
-            
-            assert.equal(out.messages.length, 2);
-            expect(out.messages[1], msg({
-                wooga : [ "booga", "wooga" ],
-                booga : [ "booga" ]
-            }));
+            expect(process(dedent(`
+                .a { composes: b; }
+                .b { color: red; }
+            `)).messages)
+            .toMatchSnapshot();
         });
 
         it("should allow multiple composes declarations", function() {
-            var out = process(".wooga { } .booga { } .tooga { composes: wooga; composes: booga; }");
-        
-            assert.equal(out.messages.length, 2);
-            expect(out.messages[1], msg({
-                wooga : [ "wooga" ],
-                booga : [ "booga" ],
-                tooga : [ "wooga", "booga", "tooga" ]
-            }));
+            expect(process(dedent(`
+                .a { }
+                .b { }
+                .c { composes: a; composes: b; }
+            `)).messages)
+            .toMatchSnapshot();
         });
         
         it("should support composing against global identifiers", function() {
-            var out;
+            function check(input) {
+                expect(process(input).messages).toMatchSnapshot();
+            }
 
-            out = process(".wooga { composes: global(booga); }");
-            
-            assert.equal(out.messages.length, 2);
-            expect(out.messages[1], msg({
-                wooga : [ "booga", "wooga" ]
-            }));
-
-            out = process(".wooga { composes: global(booga), global(tooga); }");
-            
-            assert.equal(out.messages.length, 2);
-            expect(out.messages[1], msg({
-                wooga : [ "booga", "tooga", "wooga" ]
-            }));
-
-            out = process(".wooga { composes: global(booga); color: red; }");
-            
-            assert.equal(out.messages.length, 2);
-            expect(out.messages[1], msg({
-                wooga : [ "booga", "wooga" ]
-            }));
-
-            out = process(".tooga { } .wooga { composes: global(booga), tooga; }");
-            
-            assert.equal(out.messages.length, 2);
-            expect(out.messages[1], msg({
-                tooga : [ "tooga" ],
-                wooga : [ "booga", "tooga", "wooga" ]
-            }));
-
-            out = process(".tooga { } .wooga { composes: global(booga), tooga; color: red; }");
-            
-            assert.equal(out.messages.length, 2);
-            expect(out.messages[1], msg({
-                tooga : [ "tooga" ],
-                wooga : [ "booga", "tooga", "wooga" ]
-            }));
-
-            out = process(".tooga { } .wooga { composes: global(booga); composes: tooga; }");
-            
-            assert.equal(out.messages.length, 2);
-            expect(out.messages[1], msg({
-                tooga : [ "tooga" ],
-                wooga : [ "booga", "tooga", "wooga" ]
-            }));
-
-            out = process(".tooga { } .wooga { composes: global(booga); composes: tooga; color: red; }");
-            
-            assert.equal(out.messages.length, 2);
-            expect(out.messages[1], msg({
-                tooga : [ "tooga" ],
-                wooga : [ "booga", "tooga", "wooga" ]
-            }));
+            check(".a { composes: global(b); }");
+            check(".a { composes: global(b), global(c); }");
+            check(".a { composes: global(b); color: red; }");
+            check(".c { } .a { composes: global(b), c; }");
+            check(".c { } .a { composes: global(b), c; color: red; }");
+            check(".c { } .a { composes: global(b); composes: c; }");
+            check(".c { } .a { composes: global(b); composes: c; color: red; }");
         });
 
         it("should support composing against global identifiers w/ the same name", () => {
-            var out = process(".wooga { composes: global(wooga); color: red; }", {
+            expect(process(
+                dedent(`
+                    .a { composes: global(a); color: red; }
+                `),
+                {
                     from : "packages/core/test/specimens/simple.css"
-                });
-            
-            assert.equal(out.messages.length, 2);
-            expect(out.messages[1], msg({
-                wooga : [ "wooga", "wooga" ]
-            }));
+                }
+            ).messages)
+            .toMatchSnapshot();
         });
         
         it("should handle multi-level dependencies", function() {
-            var out = process(
-                    ".wooga { color: red; } .booga { composes: wooga; background: blue; } .tooga { composes: booga; display: block; }"
-                );
-            
-            assert.equal(out.messages.length, 2);
-            expect(out.messages[1], msg({
-                wooga : [ "wooga" ],
-                booga : [ "wooga", "booga" ],
-                tooga : [ "wooga", "booga", "tooga" ]
-            }));
+            expect(process(dedent(`
+                .a { color: red; }
+                .b { composes: a; background: blue; }
+                .c { composes: b; display: block; }
+            `)).messages)
+            .toMatchSnapshot();
         });
         
         it("should find scoped identifiers from the scoping plugin's message", function() {
-            var out = process(
-                    ".wooga { color: red; } .googa { composes: wooga; }",
-                    {
-                        from : "packages/core/test/specimens/simple.css",
-                        namer
-                    }
-                );
-            
-            expect(out.messages, [{
-                type    : "modular-css",
-                plugin  : "modular-css-scoping",
-                classes : {
-                    googa : [ "googa" ],
-                    wooga : [ "wooga" ]
+            expect(process(
+                dedent(`
+                    .a { color: red; }
+                    .b { composes: a; }
+                `),
+                {
+                    from : "packages/core/test/specimens/simple.css",
+                    namer
                 }
-            }, msg({
-                googa : [ "wooga", "googa" ],
-                wooga : [ "wooga" ]
-            }) ]);
+            ).messages)
+            .toMatchSnapshot();
         });
         
         it("should compose multiple classes from imports", function() {
-            var files = {},
-                out;
+            var files = {};
                 
             files[path.resolve("./packages/core/test/specimens/local.css")] = {
                 exports : {
-                    googa : [ "googa" ],
-                    tooga : [ "tooga" ]
+                    b : [ "b" ],
+                    c : [ "c" ]
                 }
             };
             
-            out = process(".wooga { composes: googa, tooga from \"./local.css\"; }", {
-                from  : path.resolve("./packages/core/test/specimens/wooga.css"),
-                files : files
-            });
-        
-            assert.equal(out.messages.length, 2);
-            expect(out.messages[1], msg({
-                wooga : [
-                    "googa",
-                    "tooga",
-                    "wooga"
-                ]
-            }));
+            expect(process(
+                dedent(`
+                    .a { composes: b, c from "./local.css"; }
+                `),
+                {
+                    from : path.resolve("./packages/core/test/specimens/a.css"),
+                    files
+                }
+            ).messages)
+            .toMatchSnapshot();
         });
 
         it("should expose imported heirachy details in the messages", function() {
-            var files = {},
-                out;
+            var files = {};
                 
             files[path.resolve("./packages/core/test/specimens/local.css")] = {
                 exports : {
-                    googa : [ "googa" ],
-                    tooga : [ "tooga" ]
+                    b : [ "b" ],
+                    c : [ "c" ]
                 }
             };
             
-            out = process(".wooga { composes: googa from \"./local.css\"; }", {
-                from  : path.resolve("./packages/core/test/specimens/wooga.css"),
-                files : files
-            });
-        
-            assert.equal(out.messages.length, 2);
-            expect(out.messages[1], msg({
-                wooga : [
-                    "googa",
-                    "wooga"
-                ]
-            }));
+            expect(
+                process(
+                    dedent(`
+                        .a { composes: b from "./local.css"; }
+                    `),
+                    {
+                        from  : path.resolve("./packages/core/test/specimens/a.css"),
+                        files : files
+                    }
+                ).messages
+            )
+            .toMatchSnapshot();
         });
     });
 });

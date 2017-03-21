@@ -1,12 +1,6 @@
 "use strict";
 
-var path    = require("path"),
-    assert  = require("assert"),
-    
-    leading = require("dentist").dedent,
-
-    compare = require("test-utils/compare.js")(__dirname),
-    namer   = require("test-utils/namer.js"),
+var namer = require("test-utils/namer.js"),
 
     Processor = require("../processor.js");
 
@@ -34,8 +28,7 @@ describe("/processor.js", function() {
     describe("options", function() {
         describe("namer", function() {
             it("should use a custom naming function", function() {
-                var id        = path.resolve("./packages/core/test/specimens/simple.css"),
-                    processor = new Processor({
+                var processor = new Processor({
                         namer : (filename, selector) => `${filename}${selector}`
                     });
                     
@@ -44,20 +37,12 @@ describe("/processor.js", function() {
                     ".wooga { }"
                 )
                 .then((result) => {
-                    var file = result.files[id];
+                    var file = result.files["packages/core/test/specimens/simple.css"];
                 
-                    expect(result.exports).toEqual({
-                        wooga : [ `${id}wooga` ]
-                    });
-
-                    assert.equal(typeof file, "object");
-
-                    expect(file.exports, {
-                        wooga : [ `${id}wooga` ]
-                    });
-
-                    assert.equal(file.text, ".wooga { }");
-                    assert.equal(file.processed.root.toResult().css, `.${id}wooga { }`);
+                    expect(result.exports).toMatchSnapshot();
+                    expect(file.text).toMatchSnapshot();
+                    expect(file.exports).toMatchSnapshot();
+                    expect(file.processed.root.toResult().css).toMatchSnapshot();
                 });
             });
 
@@ -70,9 +55,7 @@ describe("/processor.js", function() {
                     "./test/specimens/simple.css",
                     ".wooga { }"
                 )
-                .then((result) => assert.deepEqual(result.exports, {
-                    wooga : [ "AA" ]
-                }));
+                .then((result) => expect(result.exports).toMatchSnapshot());
             });
 
             it("should use the default naming function if a non-function is passed", function() {
@@ -84,9 +67,7 @@ describe("/processor.js", function() {
                     "./packages/core/test/specimens/simple.css",
                     ".wooga { }"
                 )
-                .then((result) => expect(result.exports).toEqual({
-                    wooga : [ "mcb251c446_wooga" ]
-                }));
+                .then((result) => expect(result.exports).toMatchSnapshot());
             });
         });
 
@@ -101,7 +82,7 @@ describe("/processor.js", function() {
                     "./packages/core/test/specimens/start.css"
                 )
                 .then(() => processor.output({ to : "out.css" }))
-                .then((result) => compare.stringToFile(result.css, "./packages/core/test/results/processor/source-map.css"));
+                .then((result) => expect(result.css).toMatchSnapshot());
             });
         });
 
@@ -118,13 +99,7 @@ describe("/processor.js", function() {
                         ""
                     )
                     .then(() => processor.output())
-                    .then((result) => assert.equal(
-                        result.css,
-                        leading(`
-                            /* packages/core/test/specimens/sync-before.css */
-                            a {}
-                        `)
-                    ));
+                    .then((result) => expect(result.css).toMatchSnapshot());
                 });
 
                 it("should run async postcss plugins before processing", function() {
@@ -138,13 +113,7 @@ describe("/processor.js", function() {
                         ""
                     )
                     .then(() => processor.output())
-                    .then((result) => assert.equal(
-                        result.css,
-                        leading(`
-                            /* packages/core/test/specimens/async-before.css */
-                            a {}
-                        `)
-                    ));
+                    .then((result) => expect(result.css).toMatchSnapshot());
                 });
             });
             
@@ -156,7 +125,7 @@ describe("/processor.js", function() {
                         "./packages/core/test/specimens/relative.css"
                     )
                     .then(() => processor.output({ to : "./packages/core/test/output/relative.css" }))
-                    .then((result) => compare.stringToFile(result.css, "./packages/core/test/results/processor/relative.css"));
+                    .then((result) => expect(result.css).toMatchSnapshot());
                 });
                 
                 it("should run sync postcss plugins", function() {
@@ -169,17 +138,7 @@ describe("/processor.js", function() {
                         "./packages/core/test/specimens/relative.css"
                     )
                     .then(() => processor.output({ to : "./packages/core/test/output/relative.css" }))
-                    .then((result) => assert.equal(
-                        result.css,
-                        leading(`
-                            /* packages/core/test/specimens/relative.css */
-                            .wooga {
-                                color: red;
-                                background: url("./folder/to.png")
-                            }
-                            a {}
-                        `)
-                    ));
+                    .then((result) => expect(result.css).toMatchSnapshot());
                 });
                 
                 it("should run async postcss plugins", function() {
@@ -192,17 +151,7 @@ describe("/processor.js", function() {
                         "./packages/core/test/specimens/relative.css"
                     )
                     .then(() => processor.output({ to : "./packages/core/test/output/relative.css" }))
-                    .then((result) => assert.equal(
-                        result.css,
-                        leading(`
-                            /* packages/core/test/specimens/relative.css */
-                            .wooga {
-                                color: red;
-                                background: url("./folder/to.png")
-                            }
-                            a {}
-                        `)
-                    ));
+                    .then((result) => expect(result.css).toMatchSnapshot());
                 });
             });
             
@@ -218,13 +167,7 @@ describe("/processor.js", function() {
                         ""
                     )
                     .then(() => processor.output())
-                    .then((result) => assert.equal(
-                        result.css,
-                        leading(`
-                            /* packages/core/test/specimens/sync-done.css */
-                            a {}
-                        `)
-                    ));
+                    .then((result) => expect(result.css).toMatchSnapshot());
                 });
                 
                 it("should run async postcss plugins done processing", function() {
@@ -238,13 +181,7 @@ describe("/processor.js", function() {
                         ""
                     )
                     .then(() => processor.output())
-                    .then((result) => assert.equal(
-                        result.css,
-                        leading(`
-                            /* packages/core/test/specimens/async-done.css */
-                            a {}
-                        `)
-                    ));
+                    .then((result) => expect(result.css).toMatchSnapshot());
                 });
             });
         });

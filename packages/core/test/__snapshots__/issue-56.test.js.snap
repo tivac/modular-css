@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/issues /56 should prune rules that only compose, but leave them in the exports 1`] = `
+Object {
+  "booga": Array [
+    "booga",
+  ],
+  "fooga": Array [
+    "booga",
+    "fooga",
+  ],
+  "wooga": Array [
+    "booga",
+    "wooga",
+  ],
+}
+`;
+
+exports[`/issues /56 should prune rules that only compose, but leave them in the exports 2`] = `
+"/* packages/core/test/specimens/issues/56.css */
+.booga {
+    color: red
+}
+.fooga:hover {
+    color: blue
+}"
+`;

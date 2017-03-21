@@ -1,77 +1,76 @@
 "use strict";
 
-var assert = require("assert"),
-
-    postcss = require("postcss"),
+var postcss = require("postcss"),
+    dedent  = require("dedent"),
     
     scoping   = require("../plugins/scoping.js"),
     keyframes = require("../plugins/keyframes.js");
 
 function namer(file, selector) {
-    return selector;
+    return `${selector}_`;
 }
 
 describe("/plugins", function() {
     describe("/keyframes.js", function() {
-        it("should leave unknown animation names alone", function() {
-            var out = postcss([ scoping, keyframes ]).process(
-                    ".a { animation: a; } .b { animation-name: b; }",
-                    { from : "packages/core/test/specimens/simple.css", namer : namer }
-                );
-            
-            assert.equal(
-                out.css,
-                ".a { animation: a; } .b { animation-name: b; }"
+        function process(css) {
+            return postcss([
+                scoping,
+                keyframes
+            ])
+            .process(
+                css,
+                {
+                    from : "packages/core/test/specimens/simple.css",
+                    namer
+                }
             );
+        }
+
+        it("should leave unknown animation names alone", function() {
+            expect(process(dedent(`
+                    .a { animation: a; }
+                    .b { animation-name: b; }
+                `)).css
+            )
+            .toMatchSnapshot();
         });
         
         it("should update scoped animations from the scoping plugin's message", function() {
-            var out = postcss([ scoping, keyframes ]).process(
-                    "@keyframes kooga {} .wooga { animation: kooga; }",
-                    { from : "packages/core/test/specimens/simple.css", namer : namer }
-                );
-            
-            assert.equal(
-                out.css,
-                "@keyframes kooga {} .wooga { animation: kooga; }"
-            );
+            expect(process(dedent(`
+                    @keyframes a {}
+                    .b { animation: a; }
+                `)).css
+            )
+            .toMatchSnapshot();
         });
 
         it("should update the animation-name property", function() {
-            var out = postcss([ scoping, keyframes ]).process(
-                    "@keyframes kooga {} .wooga { animation-name: kooga; }",
-                    { from : "packages/core/test/specimens/simple.css", namer : namer }
-                );
-            
-            assert.equal(
-                out.css,
-                "@keyframes kooga {} .wooga { animation-name: kooga; }"
-            );
+            expect(process(dedent(`
+                    @keyframes a {}
+                    .b { animation-name: a; }
+                `)).css
+            )
+            .toMatchSnapshot();
         });
 
         // Issue 208
         it("should update multiple animations properly", function() {
-            var out = postcss([ scoping, keyframes ]).process(
-                    "@keyframes kooga {} @keyframes tooga {} .wooga { animation: kooga 10s linear, tooga 0.2s infinite; }",
-                    { from : "packages/core/test/specimens/simple.css", namer : namer }
-                );
-            
-            assert.equal(
-                out.css,
-                "@keyframes kooga {} @keyframes tooga {} .wooga { animation: kooga 10s linear, tooga 0.2s infinite; }"
-            );
+            expect(process(dedent(`
+                    @keyframes a {}
+                    @keyframes b {}
+                    .c { animation: a 10s linear, b 0.2s infinite; }
+                `)).css
+            )
+            .toMatchSnapshot();
         });
 
         it("should update scoped prefixed animations from the scoping plugin's message", function() {
-            var out = postcss([ scoping, keyframes ]).process(
-                    "@-webkit-keyframes kooga {} .wooga { animation: kooga; }",
-                    { from : "packages/core/test/specimens/simple.css", namer : namer }
-                );
-            
-            assert.equal(
-                out.css,
-                "@-webkit-keyframes kooga {} .wooga { animation: kooga; }"
-            );
+            expect(process(dedent(`
+                    @-webkit-keyframes a {}
+                    .b { animation: a; }
+                `)).css
+            )
+            .toMatchSnapshot();
         });
     });
 });

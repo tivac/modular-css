@@ -1,15 +1,12 @@
 "use strict";
 
-var assert  = require("assert"),
-    
-    compare = require("test-utils/compare.js")(__dirname),
-    namer   = require("test-utils/namer.js"),
+var namer = require("test-utils/namer.js"),
 
     glob = require("../glob.js");
 
 describe("/glob.js", function() {
     it("should be a function", function() {
-        assert.equal(typeof glob, "function");
+        expect(typeof glob).toBe("function");
     });
 
     it("should use a default search", function() {
@@ -18,7 +15,7 @@ describe("/glob.js", function() {
             cwd : "./packages/glob/test/specimens"
         })
         .then((processor) => processor.output())
-        .then((output) => compare.stringToFile(output.css, "./packages/glob/test/results/glob.css"));
+        .then((output) => expect(output.css).toMatchSnapshot());
     });
 
     it("should find files on disk & output css", function() {
@@ -30,7 +27,7 @@ describe("/glob.js", function() {
             ]
         })
         .then((processor) => processor.output())
-        .then((output) => compare.stringToFile(output.css, "./packages/glob/test/results/glob.css"));
+        .then((output) => expect(output.css).toMatchSnapshot());
     });
 
     it("should support exclusion patterns", function() {
@@ -43,6 +40,6 @@ describe("/glob.js", function() {
             ]
         })
         .then((processor) => processor.output())
-        .then((output) => compare.stringToFile(output.css, "./packages/glob/test/results/glob-excludes.css"));
+        .then((output) => expect(output.css).toMatchSnapshot());
     });
 });

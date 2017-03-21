@@ -1,7 +1,0 @@
-/* packages/core/test/specimens/issues/98.css */
-.booga {
-    color: red
-}
-.fooga + .fooga {
-    color: blue
-}

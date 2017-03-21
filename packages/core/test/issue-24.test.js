@@ -1,7 +1,7 @@
 "use strict";
 
-var leading = require("dentist").dedent,
-    namer = require("test-utils/namer.js"),
+var dedent = require("dedent"),
+    namer  = require("test-utils/namer.js"),
 
     Processor = require("../processor.js");
 
@@ -14,7 +14,7 @@ describe("/issues", function() {
             
             return processor.string(
                 "./packages/core/test/specimens/composition.css",
-                leading(`
+                dedent(`
                     @value simple: "./simple.css";
                     
                     .a {
@@ -24,29 +24,11 @@ describe("/issues", function() {
                 `)
             )
             .then((result) => {
-                expect(result.exports).toEqual({
-                    a : [
-                        "wooga",
-                        "a"
-                    ]
-                });
+                expect(result.exports).toMatchSnapshot();
 
                 return processor.output();
             })
-            .then((result) =>
-                expect(result.css).toBe(
-                    leading(`
-                        /* packages/core/test/specimens/simple.css */
-                        .wooga {
-                            color: red
-                        }
-                        /* packages/core/test/specimens/composition.css */
-                        .a {
-                            background: #000
-                        }
-                    `)
-                )
-            );
+            .then((result) => expect(result.css).toMatchSnapshot());
         });
     });
 });

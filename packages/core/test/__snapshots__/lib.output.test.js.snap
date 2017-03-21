@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/lib /output.js .compositions() should output an object containing compositions 1`] = `
+Object {
+  "simple.css": Object {
+    "a": "mcfd263606_a",
+  },
+}
+`;
+
+exports[`/lib /output.js .compositions() should output an object containing compositions for inheritance 1`] = `
+Object {
+  "simple.css": Object {
+    "a": "mcfd263606_a",
+    "b": "mcfd263606_a mcfd263606_b",
+  },
+}
+`;
+
+exports[`/lib /output.js .compositions() should output an object containing compositions for multiple classes 1`] = `
+Object {
+  "simple.css": Object {
+    "a": "mcfd263606_a",
+    "b": "mcfd263606_b",
+  },
+}
+`;
