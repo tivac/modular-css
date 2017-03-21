@@ -194,7 +194,7 @@ Processor.prototype = {
         return Promise.all(
             files
             // Ensure we're dealing w/ relative paths
-            .map((dep) => path.isAbsolute(dep) ? relative(this._options.cwd, dep) : dep)
+            .map((dep) => (path.isAbsolute(dep) ? relative(this._options.cwd, dep) : dep))
             // Protect from any files that errored out (#248)
             .filter((dep) => dep in this._files && this._files[dep].result)
             .map((dep) => this._after.process(
