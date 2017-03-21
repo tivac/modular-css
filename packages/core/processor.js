@@ -187,14 +187,14 @@ Processor.prototype = {
         if(!Array.isArray(files)) {
             files = tiered(this._graph);
         }
-        
+
         // Rewrite relative URLs before adding
         // Have to do this every time because target file might be different!
         //
         return Promise.all(
             files
             // Ensure we're dealing w/ relative paths
-            .map((dep) => relative(this._options.cwd, dep))
+            .map((dep) => path.isAbsolute(dep) ? relative(this._options.cwd, dep) : dep)
             // Protect from any files that errored out (#248)
             .filter((dep) => dep in this._files && this._files[dep].result)
             .map((dep) => this._after.process(
