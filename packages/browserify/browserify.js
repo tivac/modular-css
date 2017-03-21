@@ -30,7 +30,7 @@ module.exports = function(browserify, opts) {
     }
     
     function depReducer(curr, next) {
-        curr[relative.prefixed(options.cwd, next)] = next;
+        curr[relative.prefixed(options.cwd, next)] = path.resolve(options.cwd, next);
         
         return curr;
     }
@@ -50,7 +50,7 @@ module.exports = function(browserify, opts) {
                     // AFAIK this is only useful to watchify, to ensure that it watches
                     // everyone in the dependency graph
                     processor.dependencies(result.id).forEach(function(id) {
-                        browserify.emit("file", path.resolve(process.cwd(), id), id);
+                        browserify.emit("file", path.resolve(options.cwd, id), id);
                     });
                     
                     push(`module.exports = ${JSON.stringify(output.join(result.exports), null, 4)};`);
@@ -95,8 +95,8 @@ module.exports = function(browserify, opts) {
             }
             
             push({
-                id     : dep,
-                file   : dep,
+                id     : path.resolve(options.cwd, dep),
+                file   : path.resolve(options.cwd, dep),
                 source : `module.exports = ${JSON.stringify(output.join(processor.files[dep].exports), null, 4)};`,
                 deps   : processor.dependencies(dep).reduce(depReducer, {})
             });
@@ -170,7 +170,7 @@ module.exports = function(browserify, opts) {
 
                     // This file was part of a bundle, so remove from the common file
                     files.forEach((file) =>
-                        common.splice(common.indexOf(file), 1)
+                        common.splice(common.indexOf(path.relative(options.cwd, file)), 1)
                     );
 
                     dest = path.join(
