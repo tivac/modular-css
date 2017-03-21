@@ -1,6 +1,7 @@
 "use strict";
 
 var dedent = require("dedent"),
+    namer  = require("test-utils/namer.js"),
     
     Processor = require("../processor.js");
 
@@ -19,7 +20,7 @@ describe("/processor.js", function() {
     describe("functionality", function() {
         beforeEach(function() {
             this.processor = new Processor({
-                namer : (file, selector) => selector
+                namer
             });
         });
         
@@ -131,7 +132,7 @@ describe("/processor.js", function() {
 
         it("should support unicode classes & ids", function() {
             var processor = new Processor({
-                    namer : (file, selector) => selector
+                    namer
                 });
             
             return processor.file(

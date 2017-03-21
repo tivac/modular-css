@@ -1,17 +1,16 @@
 "use strict";
 
-var Processor = require("../processor.js");
+var namer = require("test-utils/namer.js"),
 
-function namer(file, selector) {
-    return selector;
-}
+    Processor = require("../processor.js");
+    
 
 describe("/processor.js", function() {
     describe("Methods", function() {
         beforeEach(function() {
             this.processor = new Processor({
-                cwd   : process.cwd(),
-                namer : namer
+                cwd : process.cwd(),
+                namer
             });
         });
 
