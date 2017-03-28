@@ -55,6 +55,28 @@ describe("/plugins", function() {
             
             expect(() => out.css).toThrow(/composes must be the first declaration/);
         });
+
+        it("should allow comments before composes", function() {
+            expect(process(dedent(`
+                .a {
+                    color: red;
+                }
+
+                .b {
+                    color: blue;
+                }
+
+                .c {
+                    /* Comment */
+                    /* Comment */
+                    /* Comment */
+                    composes: a;
+                    /* Comment */
+                    composes: b;
+                }
+            `)).messages)
+            .toMatchSnapshot();
+        });
         
         it("should fail if classes have a cyclic dependency", function() {
             var out = process(".a { composes: b; } .b { composes: a; }");
