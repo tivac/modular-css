@@ -1,5 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/plugins /composition.js should allow comments before composes 1`] = `
+Array [
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "b",
+      ],
+      "c": Array [
+        "c",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "a": Array [
+        "a",
+      ],
+      "b": Array [
+        "b",
+      ],
+      "c": Array [
+        "a",
+        "b",
+        "c",
+      ],
+    },
+    "plugin": "modular-css-composition",
+    "type": "modular-css",
+  },
+]
+`;
+
 exports[`/plugins /composition.js should allow multiple composes declarations 1`] = `
 Array [
   Object {

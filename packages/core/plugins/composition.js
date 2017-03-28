@@ -13,6 +13,22 @@ var Graph = require("dependency-graph").DepGraph,
     
     plugin = "modular-css-composition";
 
+// Loop through all previous nodes in the container to ensure
+// that composes (or a comment) comes first
+function composesFirst(decl) {
+    var prev;
+
+    prev = decl.prev();
+
+    while(prev) {
+        if(prev.type !== "comment" && prev.prop !== "composes") {
+            throw decl.error("composes must be the first declaration", { word : "composes" });
+        }
+
+        prev = prev.prev();
+    }
+}
+
 module.exports = (css, result) => {
     var refs  = message(result, "classes"),
         map   = invert(refs),
@@ -24,13 +40,11 @@ module.exports = (css, result) => {
 
     // Go look up "composes" declarations and populate dependency graph
     css.walkDecls("composes", function(decl) {
-        /* eslint max-statements:[2, 17] */
+        /* eslint max-statements: "off" */
         var selectors, details;
 
-        if(decl.prev() && decl.prev().prop !== "composes") {
-            throw decl.error("composes must be the first declaration", { word : "composes" });
-        }
-        
+        composesFirst(decl);
+
         try {
             details   = parser.parse(decl.value);
             selectors = decl.parent.selectors.map(identifiers.parse);
