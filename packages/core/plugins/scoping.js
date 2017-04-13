@@ -41,7 +41,7 @@ module.exports = (css, result) => {
             // Replace the :global(...) with its contents
             node.replaceWith(processor.selector({
                 nodes  : node.nodes,
-                source : node.source,
+                source : node.source
             }));
 
             node.walk(function(child) {
