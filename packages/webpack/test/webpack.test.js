@@ -182,4 +182,68 @@ describe("/webpack.js", function() {
             done();
         });
     });
+
+    it("should support ES2015 default exports", function(done) {
+        webpack({
+            entry  : "./packages/webpack/test/specimens/es2015-default.js",
+            output : {
+                path     : output,
+                filename : "./es2015-default.js"
+            },
+            module : {
+                rules : [
+                    {
+                        test,
+                        use
+                    }
+                ]
+            },
+            plugins : [
+                new Plugin({
+                    namer,
+                    css : "./es2015-default.css"
+                })
+            ]
+        }, (err, stats) => {
+            expect(err).toBeFalsy();
+            expect(stats.hasErrors()).toBeFalsy();
+
+            expect(read("es2015-default.js")).toMatchSnapshot();
+            expect(read("es2015-default.css")).toMatchSnapshot();
+
+            done();
+        });
+    });
+
+    it("should support ES2015 named exports", function(done) {
+        webpack({
+            entry  : "./packages/webpack/test/specimens/es2015-named.js",
+            output : {
+                path     : output,
+                filename : "./es2015-named.js"
+            },
+            module : {
+                rules : [
+                    {
+                        test,
+                        use
+                    }
+                ]
+            },
+            plugins : [
+                new Plugin({
+                    namer,
+                    css : "./es2015-named.css"
+                })
+            ]
+        }, (err, stats) => {
+            expect(err).toBeFalsy();
+            expect(stats.hasErrors()).toBeFalsy();
+
+            expect(read("es2015-named.js")).toMatchSnapshot();
+            expect(read("es2015-named.css")).toMatchSnapshot();
+
+            done();
+        });
+    });
 });
