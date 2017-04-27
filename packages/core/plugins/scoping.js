@@ -24,10 +24,10 @@ module.exports = (css, result) => {
         globals   = Object.create(null),
         parser, current, lookup;
 
-    parser = processor(function(selectors) {
+    parser = processor((selectors) => {
         var pseudos = [];
 
-        selectors.walkPseudos(function(node) {
+        selectors.walkPseudos((node) => {
             if(node.value !== ":global") {
                 return;
             }
@@ -40,14 +40,14 @@ module.exports = (css, result) => {
             pseudos.push(node);
         });
 
-        pseudos.forEach(function(node) {
+        pseudos.forEach((node) => {
             // Replace the :global(...) with its contents
             node.replaceWith(processor.selector({
                 nodes  : node.nodes,
                 source : node.source
             }));
 
-            node.walk(function(child) {
+            node.walk((child) => {
                 var key = rename(current, child);
 
                 if(!key) {
@@ -65,7 +65,7 @@ module.exports = (css, result) => {
             });
         });
 
-        selectors.walk(function(node) {
+        selectors.walk((node) => {
             var key = rename(current, node);
 
             if(!key || node.ignore) {
@@ -86,7 +86,7 @@ module.exports = (css, result) => {
     });
 
     // Walk all rules and save off rewritten selectors
-    css.walkRules(function(rule) {
+    css.walkRules((rule) => {
         // Save closure ref to this rule
         current = rule;
         lookup = classes;
@@ -95,7 +95,7 @@ module.exports = (css, result) => {
     });
 
     // Also scope @keyframes rules so they don't leak globally
-    css.walkAtRules(identifiers.keyframes, function(rule) {
+    css.walkAtRules(identifiers.keyframes, (rule) => {
         // Save closure ref to this rule
         current = rule;
 
