@@ -11,9 +11,5 @@
   },
   "dependencies": {
     "modular-css-core": "^4.2.1"
-  },
-  "devDependencies": {
-    "mocha": "^3.2.0",
-    "nyc": "^10.1.2"
   }
 }

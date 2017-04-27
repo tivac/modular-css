@@ -19,19 +19,17 @@
     "postcss"
   ],
   "devDependencies": {
-    "browserify": "^14.0.0",
-    "dedent": "^0.7.0",
+    "browserify": "^14.3.0",
     "factor-bundle": "^2.5.0",
     "from2-string": "^1.1.0",
-    "shelljs": "^0.7.3",
     "test-utils": "^4.0.11",
     "watchify": "^3.9.0"
   },
   "dependencies": {
     "modular-css-core": "^4.2.1",
-    "lodash.foreach": "^4.0.0",
+    "lodash.foreach": "^4.5.0",
     "mkdirp": "^0.5.1",
     "sink-transform": "^2.0.0",
-    "through2": "^2.0.0"
+    "through2": "^2.0.3"
   }
 }

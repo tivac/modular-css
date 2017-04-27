@@ -21,6 +21,6 @@
   "dependencies": {
     "modular-css-core": "^4.2.1",
     "mkdirp": "^0.5.1",
-    "postcss": "^5.2.5"
+    "postcss": "^5.2.17"
   }
 }
