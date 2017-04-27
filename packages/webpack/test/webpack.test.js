@@ -117,6 +117,38 @@ describe("/webpack.js", function() {
         });
     });
 
+    it("should report warnings on invalid property names", function(done) {
+        webpack({
+            entry  : "./packages/webpack/test/specimens/invalid-name.js",
+            output : {
+                path     : output,
+                filename : "./invalid-name.js"
+            },
+            module : {
+                rules : [
+                    {
+                        test,
+                        use
+                    }
+                ]
+            },
+            plugins : [
+                new Plugin({
+                    namer
+                })
+            ]
+        }, (err, stats) => {
+            // Why is err not truthy?
+            expect(err).toBeFalsy();
+            
+            expect(stats.hasWarnings()).toBeTruthy();
+
+            expect(stats.toJson().warnings[0]).toMatch("Invalid JS identifier");
+
+            done();
+        });
+    });
+
     it("should handle dependencies", function(done) {
         webpack({
             entry  : "./packages/webpack/test/specimens/start.js",

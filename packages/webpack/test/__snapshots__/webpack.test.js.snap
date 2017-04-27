@@ -66,24 +66,66 @@ exports[`/webpack.js should handle dependencies 1`] = `
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = {
-    \\"wooga\\": \\"booga wooga\\",
-    \\"booga\\": \\"booga\\",
-    \\"tooga\\": \\"tooga\\"
-};
+\\"use strict\\";
+/* unused harmony export folder */
+var folder = \\"folder\\";
+/* unused harmony default export */ var _unused_webpack_default_export = ({
+    \\"folder\\": \\"folder\\"
+});
+
 
 /***/ }),
 /* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+\\"use strict\\";
+Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__folder_folder_css__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_css__ = __webpack_require__(2);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"tooga\\", function() { return tooga; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"booga\\", function() { return booga; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"wooga\\", function() { return wooga; });
+
+
+var tooga = \\"tooga\\";
+var booga = \\"booga\\";
+var wooga = \\"booga wooga\\";
+/* harmony default export */ __webpack_exports__[\\"default\\"] = ({
+    \\"wooga\\": \\"booga wooga\\",
+    \\"booga\\": \\"booga\\",
+    \\"tooga\\": \\"tooga\\"
+});
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+\\"use strict\\";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__folder_folder_css__ = __webpack_require__(0);
+/* unused harmony export looga */
+/* unused harmony export booga */
+
+var looga = \\"booga looga\\";
+var booga = \\"booga\\";
+/* unused harmony default export */ var _unused_webpack_default_export = ({
+    \\"booga\\": \\"booga\\",
+    \\"looga\\": \\"booga looga\\"
+});
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(0);
+__webpack_require__(1);
 
 
 /***/ })
@@ -197,11 +239,16 @@ exports[`/webpack.js should output css to disk 1`] = `
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = {
+\\"use strict\\";
+Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"wooga\\", function() { return wooga; });
+var wooga = \\"wooga\\";
+/* harmony default export */ __webpack_exports__[\\"default\\"] = ({
     \\"wooga\\": \\"wooga\\"
-};
+});
+
 
 /***/ }),
 /* 1 */
@@ -292,11 +339,16 @@ exports[`/webpack.js should output json to disk 1`] = `
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = {
+\\"use strict\\";
+Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"wooga\\", function() { return wooga; });
+var wooga = \\"wooga\\";
+/* harmony default export */ __webpack_exports__[\\"default\\"] = ({
     \\"wooga\\": \\"wooga\\"
-};
+});
+
 
 /***/ }),
 /* 1 */
