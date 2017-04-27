@@ -1,8 +1,6 @@
 "use strict";
 
-var path = require("path"),
-
-    keyword = require("esutils").keyword,
+var keyword = require("esutils").keyword,
     
     output   = require("modular-css-core/lib/output.js"),
     relative = require("modular-css-core/lib/relative.js");
@@ -18,7 +16,7 @@ module.exports = function(source) {
             var classes = output.join(result.exports),
                 deps    = processor.dependencies(this.resourcePath),
                 imports = deps.map((file) =>
-                    `import "${relative.prefixed(path.dirname(this.resourcePath), file)}";`
+                    `import "${relative.prefixed(this.context, file)}";`
                 );
 
             deps.forEach((dep) => this.addDependency(dep));
