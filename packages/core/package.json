@@ -37,7 +37,7 @@
     "p-each-series": "^1.0.0",
     "postcss": "^5.2.5",
     "postcss-selector-parser": "^2.0.0",
-    "postcss-url": "^5.1.0",
+    "postcss-url": "^6.0.4",
     "postcss-value-parser": "^3.2.3",
     "resolve-from": "^2.0.0",
     "unique-slug": "^2.0.0"
