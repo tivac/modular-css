@@ -4,6 +4,7 @@ var processor = require("postcss-selector-parser"),
 
     identifiers = require("../lib/identifiers.js"),
 
+    reuse  = "Unable to re-use the same selector for global & local",
     plugin = "modular-css-scoping";
 
 // Validate whether a selector should be renamed, returns the key to use
@@ -24,7 +25,7 @@ module.exports = (css, result) => {
         parser, current, lookup;
 
     parser = processor(function(selectors) {
-        const pseudos = [];
+        var pseudos = [];
 
         selectors.walkPseudos(function(node) {
             if(node.value !== ":global") {
@@ -34,6 +35,8 @@ module.exports = (css, result) => {
             if(!node.length || !node.first.length) {
                 throw current.error(":global(...) must not be empty", { word : ":global" });
             }
+
+            // Can't remove here, see #277 or postcss/postcss-selector-parser#105
             pseudos.push(node);
         });
 
@@ -50,9 +53,10 @@ module.exports = (css, result) => {
                 if(!key) {
                     return;
                 }
+
                 // Don't allow local/global overlap (but globals can overlap each other nbd)
                 if(key in lookup && !globals[key]) {
-                    throw current.error("Unable to re-use the same selector for global & local", { word : key });
+                    throw current.error(reuse, { word : key });
                 }
 
                 globals[key] = true;
@@ -70,7 +74,7 @@ module.exports = (css, result) => {
 
             // Don't allow local/global overlap
             if(key in globals) {
-                throw current.error("Unable to re-use the same selector for global & local", { word : key });
+                throw current.error(reuse, { word : key });
             }
 
             node.value = result.opts.namer(result.opts.from, node.value);

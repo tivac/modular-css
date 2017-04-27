@@ -15,15 +15,13 @@ function process(src, options) {
     );
 }
 
-describe("/plugins", function() {
-    describe("/scoping.js", function() {
-        describe(":global issue()", function() {
-            it("shouldn't transform global selectors", function() {
-                expect(
-                    process(":global(.a) :global(.b) { color: red; }").css
-                )
-                .toMatchSnapshot();
-            });
+describe("/issues", () => {
+    describe("/277", () => {
+        it("should transform multiple :global(...) in a single selector", () => {
+            expect(
+                process(":global(.a) :global(.b) { color: red; }").css
+            )
+            .toMatchSnapshot();
         });
     });
 });
