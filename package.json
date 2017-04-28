@@ -9,14 +9,12 @@
   "scripts": {
     "bootstrap": "lerna bootstrap --hoist",
     "clean": "lerna clean",
+    "changes": "changes",
     "danger": "danger run || true",
     "lint": "eslint .",
-    "preview": "changes || true",
     "preversion": "npm test",
     "test": "jest",
     "posttest": "npm run lint",
-    "version": "changes",
-    "postversion": "git push --follow-tags",
     "watch": "jest --watch"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
