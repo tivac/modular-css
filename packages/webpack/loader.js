@@ -2,8 +2,7 @@
 
 var keyword = require("esutils").keyword,
     
-    output   = require("modular-css-core/lib/output.js"),
-    relative = require("modular-css-core/lib/relative.js");
+    output = require("modular-css-core/lib/output.js");
 
 module.exports = function(source) {
     var done      = this.async(),
@@ -14,16 +13,12 @@ module.exports = function(source) {
     return processor.string(this.resourcePath, source)
         .then((result) => {
             var classes = output.join(result.exports),
-                deps    = processor.dependencies(this.resourcePath),
-                imports = deps.map((file) =>
-                    `import "${relative.prefixed(this.context, file)}";`
-                );
+                deps    = processor.dependencies(this.resourcePath);
 
             deps.forEach((dep) => this.addDependency(dep));
             
             return done(
                 null,
-                (imports.length ? `${imports.join("\n")}\n` : "") +
                 Object.keys(classes).reduce(
                     (prev, curr) => {
                         // Warn if any of the exported CSS wasn't able to be used as a valid JS identifier
