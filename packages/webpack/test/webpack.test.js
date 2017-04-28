@@ -117,6 +117,38 @@ describe("/webpack.js", function() {
         });
     });
 
+    it("should report warnings on invalid property names", function(done) {
+        webpack({
+            entry  : "./packages/webpack/test/specimens/invalid-name.js",
+            output : {
+                path     : output,
+                filename : "./invalid-name.js"
+            },
+            module : {
+                rules : [
+                    {
+                        test,
+                        use
+                    }
+                ]
+            },
+            plugins : [
+                new Plugin({
+                    namer
+                })
+            ]
+        }, (err, stats) => {
+            // Why is err not truthy?
+            expect(err).toBeFalsy();
+            
+            expect(stats.hasWarnings()).toBeTruthy();
+
+            expect(stats.toJson().warnings[0]).toMatch("Invalid JS identifier");
+
+            done();
+        });
+    });
+
     it("should handle dependencies", function(done) {
         webpack({
             entry  : "./packages/webpack/test/specimens/start.js",
@@ -146,6 +178,70 @@ describe("/webpack.js", function() {
             expect(read("start.js")).toMatchSnapshot();
             expect(read("start.css")).toMatchSnapshot();
             expect(read("start.json")).toMatchSnapshot();
+
+            done();
+        });
+    });
+
+    it("should support ES2015 default exports", function(done) {
+        webpack({
+            entry  : "./packages/webpack/test/specimens/es2015-default.js",
+            output : {
+                path     : output,
+                filename : "./es2015-default.js"
+            },
+            module : {
+                rules : [
+                    {
+                        test,
+                        use
+                    }
+                ]
+            },
+            plugins : [
+                new Plugin({
+                    namer,
+                    css : "./es2015-default.css"
+                })
+            ]
+        }, (err, stats) => {
+            expect(err).toBeFalsy();
+            expect(stats.hasErrors()).toBeFalsy();
+
+            expect(read("es2015-default.js")).toMatchSnapshot();
+            expect(read("es2015-default.css")).toMatchSnapshot();
+
+            done();
+        });
+    });
+
+    it("should support ES2015 named exports", function(done) {
+        webpack({
+            entry  : "./packages/webpack/test/specimens/es2015-named.js",
+            output : {
+                path     : output,
+                filename : "./es2015-named.js"
+            },
+            module : {
+                rules : [
+                    {
+                        test,
+                        use
+                    }
+                ]
+            },
+            plugins : [
+                new Plugin({
+                    namer,
+                    css : "./es2015-named.css"
+                })
+            ]
+        }, (err, stats) => {
+            expect(err).toBeFalsy();
+            expect(stats.hasErrors()).toBeFalsy();
+
+            expect(read("es2015-named.js")).toMatchSnapshot();
+            expect(read("es2015-named.css")).toMatchSnapshot();
 
             done();
         });

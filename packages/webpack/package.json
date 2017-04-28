@@ -15,8 +15,8 @@
   "license": "MIT",
   "keywords": [
     "webpack",
-    "webpac-plugin",
-    "webpac-loader",
+    "webpack-plugin",
+    "webpack-loader",
     "css",
     "css-modules",
     "modular-css",
@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "loader-utils": "^1.1.0",
+    "esutils": "^2.0.2",
     "modular-css-core": "^4.2.1",
     "webpack-sources": "^0.2.3"
   }
