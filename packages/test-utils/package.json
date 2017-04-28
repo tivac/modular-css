@@ -1,6 +1,6 @@
 {
   "name": "test-utils",
-  "version": "4.0.11",
+  "version": "4.0.12",
   "private": true,
   "description": "Test utilities for modular-css",
   "main": "compare.js",
@@ -10,6 +10,6 @@
     "test": "true"
   },
   "dependencies": {
-    "modular-css-core": "^4.2.1"
+    "modular-css-core": "^4.2.2"
   }
 }
