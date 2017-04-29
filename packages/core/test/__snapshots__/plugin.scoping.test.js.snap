@@ -32,6 +32,29 @@ Array [
 ]
 `;
 
+exports[`/plugins /scoping.js :global() should not include :global(...) identifiers in a message with disabled exportGlobals 1`] = `
+Array [
+  Object {
+    "keyframes": Object {
+      "g": Array [
+        "a_g",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+  Object {
+    "classes": Object {
+      "e": Array [
+        "a_e",
+      ],
+    },
+    "plugin": "modular-css-scoping",
+    "type": "modular-css",
+  },
+]
+`;
+
 exports[`/plugins /scoping.js :global() should remove :global() from non-class/non-id selectors 1`] = `"p { color: red; }"`;
 
 exports[`/plugins /scoping.js :global() should support mixed local & global selectors 1`] = `"#a, .a_b { color: red; }"`;

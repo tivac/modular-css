@@ -132,3 +132,15 @@ new Processor({
     ]
 })
 ```
+
+#### `exportGlobals`
+
+Enable exporting `:global` identifiers.
+
+**Default**: true
+
+```js
+new Processor({
+    exportDefaults: false
+})
+```
