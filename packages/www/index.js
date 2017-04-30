@@ -2,7 +2,8 @@
 /* eslint-env browser, node */
 /* eslint indent: off */
 
-var m = require("mithril"),
+var fs = require("fs"),
+    m = require("mithril"),
     Processor = require("modular-css-core"),
     pkg = require("modular-css-core/package.json"),
     cm = require("codemirror"),
@@ -11,12 +12,14 @@ var m = require("mithril"),
     css = require("./style.css"),
 
     files = [
-        { name : "1.css", css : "" }
+        "/1.css"
     ],
+
     output = {
         css : "",
         js  : false
     },
+    
     error,
     throttled,
     tab = "css",
@@ -26,9 +29,13 @@ var m = require("mithril"),
 require("codemirror/mode/css/css.js");
 require("codemirror/mode/javascript/javascript.js");
 
+window.fs = fs;
+
+fs.writeFileSync(files[0], "/* Start here */");
+
 // Hacks to get file resolution to work
-require("module")._nodeModulePaths = () => [ "/" ];
-require("module")._resolveFilename = (id) => id.slice(1);
+// require("module")._nodeModulePaths = () => [ "/" ];
+// require("module")._resolveFilename = (id) => id.slice(1);
 
 function process() {
     var processor = new Processor();
@@ -37,7 +44,7 @@ function process() {
 
     m.route.set(`/?${m.buildQueryString({ state : state })}`);
     
-    Promise.all(files.map((file) => processor.string(file.name, file.css)))
+    Promise.all(files.map((file) => processor.file(file)))
     .then(() => processor.output())
     .then((result) => {
         output.css  = result.css;
@@ -69,7 +76,7 @@ function update(encoded) {
 function exported() {
     return `/* Input Files */\n\n${
     files
-        .map((file) => `/* ${file.name} */\n${file.css}`)
+        .map((file) => `/* ${file} */\n${fs.readFileSync(file, "utf8")}`)
         .concat(
             output.css && `/* Output CSS */\n${output.css || ""}`,
             output.json && `/* Output JSON */\n${output.json || ""}`,
@@ -103,25 +110,30 @@ m.route(document.body, "/", {
                     m("button", {
                         class : css.add,
 
-                        onclick : () => files.push({
-                            name : `${files.length + 1}.css`,
-                            css  : ""
-                        })
+                        onclick : () => {
+                            var file = {
+                                name : `/${files.length + 1}.css`
+                            };
+
+                            fs.writeFileSync(file.name, "");
+                        }
                     }, "Add file"),
 
                     files.map((file, idx) => m("div", { class : css.file },
                         m("div", { class : css.meta },
                             m("input", {
                                 class    : css.name,
-                                value    : file.name,
-                                onchange : (e) => (file.name = e.target.value)
+                                value    : file,
+                                onchange : (e) => (files[idx] = e.target.value)
                             }),
 
                             idx > 0 && m("button", {
                                 class : css.remove,
 
                                 onclick : () => {
-                                    files.splice(idx, 1);
+                                    var out = files.splice(idx, 1);
+
+                                    fs.unlink(out[0]);
 
                                     process();
                                 }
@@ -138,13 +150,13 @@ m.route(document.body, "/", {
                                         });
 
                                     editor.on("changes", () => {
-                                        file.css = editor.doc.getValue();
+                                        fs.writeFileSync(file, editor.doc.getValue());
                                         
                                         throttled();
                                     });
                                 }
                             },
-                            file.css
+                            fs.readFileSync(file, "utf8")
                         )
                     ))
                 ),

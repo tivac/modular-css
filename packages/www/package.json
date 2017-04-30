@@ -6,29 +6,30 @@
   "main": "index.js",
   "scripts": {
     "prebuild": "npm run clean",
-    "build": "browserify --plugin [ modular-cssify --css \"./gen/app.css\" --namer \"modular-css-namer\" ] index.js --outfile gen/app.js",
+    "build": "webpack",
     "clean": "shx rm -rf ./dist/* ./gen/*",
     "compress": "npm run compress-js && npm run compress-css",
     "precompress-js": "buble -i ./gen/app.js -o ./gen/app.js",
-    "compress-js": "uglifyjs ./gen/app.js --compress warnings=false --mangle --output=./dist/app.min.js",
     "compress-css": "cssnano ./gen/app.css ./dist/app.min.css",
-    "predeploy": "npm run build && npm run compress && npm run dist",
+    "predeploy": "webpack -p && npm run dist",
     "deploy": "surge --project ./dist --domain m-css.com",
     "dist": "shx sed \"gen/app.(js|css)\" \"app.min.$1\" ./index.html > ./dist/index.html",
     "prestart": "npm run clean",
-    "start": "rum . ./gen/app.js --port=9966 -- index.js --plugin [ modular-cssify --css \"./gen/app.css\" ]",
+    "start": "webpack-dev-server",
     "test": "true"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "dependencies": {
     "codemirror": "^5.24.2",
+    "memory-fs": "^0.4.1",
     "mithril": "^1.0.1",
     "modular-css-core": "^6.0.0",
     "throttleit": "^1.0.0"
   },
   "devDependencies": {
     "buble": "^0.15.2",
+    "buble-loader": "^0.4.1",
     "cssnano-cli": "^1.0.5",
     "modular-css-namer": "^6.0.0",
     "modular-cssify": "^6.0.0",
@@ -36,6 +37,7 @@
     "shx": "^0.2.2",
     "surge": "^0.18.0",
     "uglify-js": "^2.8.2",
-    "watchify": "^3.9.0"
+    "webpack": "^2.4.1",
+    "webpack-dev-server": "^2.4.5"
   }
 }
