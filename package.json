@@ -9,7 +9,6 @@
   "scripts": {
     "bootstrap": "lerna bootstrap --hoist",
     "clean": "lerna clean",
-    "changes": "changes",
     "danger": "danger run || true",
     "lint": "eslint .",
     "preversion": "npm test",
