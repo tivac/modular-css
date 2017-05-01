@@ -185,6 +185,28 @@ describe("/plugins", function() {
                 .toMatchSnapshot();
             });
 
+            it("should not include :global(...) identifiers in a message with disabled exportGlobals", function() {
+                expect(
+                    process(dedent(`
+                        :global(.a) { color: red; }
+                        :global(#b) { color: red; }
+                        :global(.c .d) { color: red; }
+                        .e {}
+                        @keyframes :global(f) {
+                            0% { color: red; }
+                            100% { color: black; }
+                        }
+                        @keyframes g {
+                            0% { color: red; }
+                            100% { color: black; }
+                        }
+                    `), {
+                        exportGlobals: false
+                    }).messages
+                )
+                .toMatchSnapshot();
+            });
+
             it("should support mixing local & global selectors in a single string", function() {
                 var processed = process(".c :global(.a) { color: red; }");
                 
