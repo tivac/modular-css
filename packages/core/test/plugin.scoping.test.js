@@ -201,7 +201,7 @@ describe("/plugins", function() {
                             100% { color: black; }
                         }
                     `), {
-                        exportGlobals: false
+                        exportGlobals : false
                     }).messages
                 )
                 .toMatchSnapshot();

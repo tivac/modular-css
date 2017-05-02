@@ -60,9 +60,11 @@ module.exports = (css, result) => {
                 }
 
                 globals[key] = true;
-                if (result.opts.exportGlobals !== false) {
+                
+                if(result.opts.exportGlobals !== false) {
                     lookup[key] = [ child.value ];
                 }
+                
                 child.ignore = true;
             });
         });
