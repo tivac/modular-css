@@ -243,7 +243,10 @@ describe("/rollup.js", function() {
         
         it("should generate correct builds in watch mode when files change", function(done) {
             // Create v1 of the file
-            fs.writeFileSync("./packages/rollup/test/output/watched.css", ".one { color: red; }");
+            fs.writeFileSync(
+                "./packages/rollup/test/output/watched.css",
+                ".one { color: red; }"
+            );
 
             // Start watching (re-requiring rollup because it needs root obj reference)
             watcher = watch(require("rollup"), {
@@ -259,13 +262,16 @@ describe("/rollup.js", function() {
             });
 
             // Create v2 of the file after a bit
-            setTimeout(() => fs.writeFileSync("./packages/rollup/test/output/watched.css", ".two { color: blue; }"), 200);
+            setTimeout(() => fs.writeFileSync(
+                "./packages/rollup/test/output/watched.css",
+                ".two { color: blue; }"
+            ), 200);
             
             watcher.on("event", (details) => {
                 /* eslint consistent-return:0 */
                 if(details.code === "BUILD_END" && details.initial) {
                     try {
-                        expect(read("watch-output.css").toMatchSnapshot());
+                        expect(read("watch-output.css")).toMatchSnapshot();
                     } catch(e) {
                         return done(e);
                     }
@@ -273,7 +279,7 @@ describe("/rollup.js", function() {
 
                 if(details.code === "BUILD_END" && !details.initial) {
                     try {
-                        expect(read("watch-output.css").toMatchSnapshot());
+                        expect(read("watch-output.css")).toMatchSnapshot();
                     } catch(e) {
                         return done(e);
                     }
