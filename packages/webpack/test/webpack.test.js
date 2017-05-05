@@ -1,6 +1,7 @@
 "use strict";
 
-var path   = require("path"),
+var fs   = require("fs"),
+    path = require("path"),
 
     webpack = require("webpack"),
 
@@ -244,6 +245,120 @@ describe("/webpack.js", function() {
             expect(read("es2015-named.css")).toMatchSnapshot();
 
             done();
+        });
+    });
+
+    it("should generate correct builds in watch mode when files change", function(done) {
+        var changed = 0,
+            compiler, watcher;
+        
+        // Create v1 of the file
+        fs.writeFileSync(
+            "./packages/webpack/test/output/watched.css",
+            ".one { color: red; }"
+        );
+
+        compiler = webpack({
+            entry  : "./packages/webpack/test/specimens/watch.js",
+            output : {
+                path     : output,
+                filename : "./watching.js"
+            },
+            module : {
+                rules : [
+                    {
+                        test,
+                        use
+                    }
+                ]
+            },
+            plugins : [
+                new Plugin({
+                    namer,
+                    css : "./watching.css"
+                })
+            ]
+        });
+        
+        watcher = compiler.watch({ }, (err, stats) => {
+            /* eslint consistent-return: off */
+            changed++;
+            
+            expect(err).toBeFalsy();
+            expect(stats.hasErrors()).toBeFalsy();
+
+            // TODO: verify that output is correct
+            expect(read("watching.js")).toMatchSnapshot(`webpack watching.js ${changed}`);
+            expect(read("watching.css")).toMatchSnapshot(`webpack watching.css ${changed}`);
+
+            if(changed > 1) {
+                watcher.close();
+
+                return done();
+            }
+        });
+
+        setTimeout(() => fs.writeFileSync(
+            "./packages/webpack/test/output/watched.css",
+            ".two { color: blue; }"
+        ), 100);
+    });
+
+    it("should generate correct builds when files change", function(done) {
+        var compiler;
+        
+        // Create v1 of the file
+        fs.writeFileSync(
+            "./packages/webpack/test/output/changed.css",
+            ".one { color: red; }"
+        );
+
+        compiler = webpack({
+            entry  : "./packages/webpack/test/specimens/change.js",
+            output : {
+                path     : output,
+                filename : "./changing.js"
+            },
+            module : {
+                rules : [
+                    {
+                        test,
+                        use
+                    }
+                ]
+            },
+            plugins : [
+                new Plugin({
+                    namer,
+                    css : "./changing.css"
+                })
+            ]
+        });
+        
+        // Run webpack the first time
+        compiler.run((err, stats) => {
+            expect(err).toBeFalsy();
+            expect(stats.hasErrors()).toBeFalsy();
+
+            expect(read("changing.js")).toMatchSnapshot();
+            expect(read("changing.css")).toMatchSnapshot();
+            
+            // v2 of the file
+            fs.writeFileSync(
+                "./packages/webpack/test/output/changed.css",
+                ".two { color: blue; }"
+            );
+
+            // Run webpack again!
+            compiler.run((err2, stats2) => {
+                expect(err2).toBeFalsy();
+                expect(stats2.hasErrors()).toBeFalsy();
+
+                expect(read("changing.js")).toMatchSnapshot();
+                expect(read("changing.css")).toMatchSnapshot();
+
+                done();
+            });
         });
     });
 });
