@@ -303,4 +303,62 @@ describe("/webpack.js", function() {
             ".two { color: blue; }"
         ), 100);
     });
+
+    it("should generate correct builds when files change", function(done) {
+        var compiler;
+        
+        // Create v1 of the file
+        fs.writeFileSync(
+            "./packages/webpack/test/output/changed.css",
+            ".one { color: red; }"
+        );
+
+        compiler = webpack({
+            entry  : "./packages/webpack/test/specimens/change.js",
+            output : {
+                path     : output,
+                filename : "./changing.js"
+            },
+            module : {
+                rules : [
+                    {
+                        test,
+                        use
+                    }
+                ]
+            },
+            plugins : [
+                new Plugin({
+                    namer,
+                    css : "./changing.css"
+                })
+            ]
+        });
+        
+        // Run webpack the first time
+        compiler.run((err, stats) => {
+            expect(err).toBeFalsy();
+            expect(stats.hasErrors()).toBeFalsy();
+
+            expect(read("changing.js")).toMatchSnapshot();
+            expect(read("changing.css")).toMatchSnapshot();
+            
+            // v2 of the file
+            fs.writeFileSync(
+                "./packages/webpack/test/output/changed.css",
+                ".two { color: blue; }"
+            );
+
+            // Run webpack again!
+            compiler.run((err2, stats2) => {
+                expect(err2).toBeFalsy();
+                expect(stats2.hasErrors()).toBeFalsy();
+
+                expect(read("changing.js")).toMatchSnapshot();
+                expect(read("changing.css")).toMatchSnapshot();
+
+                done();
+            });
+        });
+    });
 });
