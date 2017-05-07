@@ -304,14 +304,12 @@ describe("/webpack.js", function() {
         ), 100);
     });
 
-    it("should generate correct builds when files change", function(done) {
-        var compiler;
+    it.only("should generate correct builds when files change", function(done) {
+        var compiler,
+            file = "./packages/webpack/test/output/changed.css";
         
         // Create v1 of the file
-        fs.writeFileSync(
-            "./packages/webpack/test/output/changed.css",
-            ".one { color: red; }"
-        );
+        fs.writeFileSync(file, ".one { color: red; }");
 
         compiler = webpack({
             entry  : "./packages/webpack/test/specimens/change.js",
@@ -344,10 +342,7 @@ describe("/webpack.js", function() {
             expect(read("changing.css")).toMatchSnapshot();
             
             // v2 of the file
-            fs.writeFileSync(
-                "./packages/webpack/test/output/changed.css",
-                ".two { color: blue; }"
-            );
+            fs.writeFileSync(file, ".two { color: blue; }");
 
             // Run webpack again!
             compiler.run((err2, stats2) => {
@@ -357,7 +352,24 @@ describe("/webpack.js", function() {
                 expect(read("changing.js")).toMatchSnapshot();
                 expect(read("changing.css")).toMatchSnapshot();
 
-                done();
+                fs.unlinkSync(file);
+
+                compiler.run(() => {
+                    expect(read("changing.js")).toMatchSnapshot();
+                    expect(read("changing.css")).toMatchSnapshot();
+
+                    fs.writeFileSync(file, ".two { color: green; }");
+
+                    compiler.run((err4, stats4) => {
+                        expect(err4).toBeFalsy();
+                        expect(stats4.hasErrors()).toBeFalsy();
+
+                        expect(read("changing.js")).toMatchSnapshot();
+                        expect(read("changing.css")).toMatchSnapshot();
+
+                        done();
+                    });
+                });
             });
         });
     });
