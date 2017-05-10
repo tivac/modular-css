@@ -287,7 +287,6 @@ describe("/webpack.js", function() {
             expect(err).toBeFalsy();
             expect(stats.hasErrors()).toBeFalsy();
 
-            // TODO: verify that output is correct
             expect(read("watching.js")).toMatchSnapshot(`webpack watching.js ${changed}`);
             expect(read("watching.css")).toMatchSnapshot(`webpack watching.css ${changed}`);
 
@@ -304,12 +303,18 @@ describe("/webpack.js", function() {
         ), 100);
     });
 
-    it.only("should generate correct builds when files change", function(done) {
-        var compiler,
-            file = "./packages/webpack/test/output/changed.css";
+    it("should generate correct builds when files change", function() {
+        var changed = "./packages/webpack/test/output/changed.css",
+            compiler;
         
-        // Create v1 of the file
-        fs.writeFileSync(file, ".one { color: red; }");
+        // wrap compiler.run in a promise for easier chaining
+        function run() {
+            return new Promise((resolve, reject) =>
+                compiler.run((err, stats) =>
+                    (stats.hasErrors() ? reject(stats) : resolve(stats))
+                )
+            );
+        }
 
         compiler = webpack({
             entry  : "./packages/webpack/test/specimens/change.js",
@@ -333,44 +338,39 @@ describe("/webpack.js", function() {
             ]
         });
         
+        // Create v1 of the file
+        fs.writeFileSync(changed, ".one { color: red; }");
+
         // Run webpack the first time
-        compiler.run((err, stats) => {
-            expect(err).toBeFalsy();
-            expect(stats.hasErrors()).toBeFalsy();
-
-            expect(read("changing.js")).toMatchSnapshot();
-            expect(read("changing.css")).toMatchSnapshot();
+        return run()
+            .then(() => {
+                expect(read("changing.js")).toMatchSnapshot();
+                expect(read("changing.css")).toMatchSnapshot();
             
-            // v2 of the file
-            fs.writeFileSync(file, ".two { color: blue; }");
+                // v2 of the file
+                fs.writeFileSync(changed, ".two { color: blue; }");
 
-            // Run webpack again!
-            compiler.run((err2, stats2) => {
-                expect(err2).toBeFalsy();
-                expect(stats2.hasErrors()).toBeFalsy();
-
+                return run();
+            })
+            .then(() => {
                 expect(read("changing.js")).toMatchSnapshot();
                 expect(read("changing.css")).toMatchSnapshot();
 
-                fs.unlinkSync(file);
+                fs.unlinkSync(changed);
 
-                compiler.run(() => {
-                    expect(read("changing.js")).toMatchSnapshot();
-                    expect(read("changing.css")).toMatchSnapshot();
+                return run();
+            })
+            // This build fails because the file is missing
+            .catch((stats) => {
+                expect(stats.toJson().errors[0]).toMatch("no such file or directory");
+                
+                fs.writeFileSync(changed, ".two { color: green; }");
 
-                    fs.writeFileSync(file, ".two { color: green; }");
-
-                    compiler.run((err4, stats4) => {
-                        expect(err4).toBeFalsy();
-                        expect(stats4.hasErrors()).toBeFalsy();
-
-                        expect(read("changing.js")).toMatchSnapshot();
-                        expect(read("changing.css")).toMatchSnapshot();
-
-                        done();
-                    });
-                });
+                return run();
+            })
+            .then(() => {
+                expect(read("changing.js")).toMatchSnapshot();
+                expect(read("changing.css")).toMatchSnapshot();
             });
-        });
     });
 });
