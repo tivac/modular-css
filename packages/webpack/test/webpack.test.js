@@ -13,6 +13,13 @@ var fs   = require("fs"),
     use  = require.resolve("../loader.js"),
     test = /\.css$/;
 
+function success(err, stats) {
+    expect(err).toBeFalsy();
+    if(stats.hasErrors()) {
+        throw stats.toJson().errors[0];
+    }
+}
+
 describe("/webpack.js", function() {
     var output = path.resolve(__dirname, "./output");
     
@@ -44,8 +51,7 @@ describe("/webpack.js", function() {
                 })
             ]
         }, (err, stats) => {
-            expect(err).toBeFalsy();
-            expect(stats.hasErrors()).toBeFalsy();
+            success(err, stats);
 
             expect(read("simple.js")).toMatchSnapshot();
             expect(read("simple.css")).toMatchSnapshot();
@@ -76,8 +82,7 @@ describe("/webpack.js", function() {
                 })
             ]
         }, (err, stats) => {
-            expect(err).toBeFalsy();
-            expect(stats.hasErrors()).toBeFalsy();
+            success(err, stats);
 
             expect(read("simple.js")).toMatchSnapshot();
             expect(read("simple.json")).toMatchSnapshot();
@@ -107,9 +112,6 @@ describe("/webpack.js", function() {
                 })
             ]
         }, (err, stats) => {
-            // Why is err not truthy?
-            expect(err).toBeFalsy();
-            
             expect(stats.hasErrors()).toBeTruthy();
 
             expect(stats.toJson().errors[0]).toMatch("Invalid composes reference");
@@ -139,9 +141,6 @@ describe("/webpack.js", function() {
                 })
             ]
         }, (err, stats) => {
-            // Why is err not truthy?
-            expect(err).toBeFalsy();
-            
             expect(stats.hasWarnings()).toBeTruthy();
 
             expect(stats.toJson().warnings[0]).toMatch("Invalid JS identifier");
@@ -173,8 +172,7 @@ describe("/webpack.js", function() {
                 })
             ]
         }, (err, stats) => {
-            expect(err).toBeFalsy();
-            expect(stats.hasErrors()).toBeFalsy();
+            success(err, stats);
 
             expect(read("start.js")).toMatchSnapshot();
             expect(read("start.css")).toMatchSnapshot();
@@ -206,8 +204,7 @@ describe("/webpack.js", function() {
                 })
             ]
         }, (err, stats) => {
-            expect(err).toBeFalsy();
-            expect(stats.hasErrors()).toBeFalsy();
+            success(err, stats);
 
             expect(read("es2015-default.js")).toMatchSnapshot();
             expect(read("es2015-default.css")).toMatchSnapshot();
@@ -238,11 +235,45 @@ describe("/webpack.js", function() {
                 })
             ]
         }, (err, stats) => {
-            expect(err).toBeFalsy();
-            expect(stats.hasErrors()).toBeFalsy();
+            success(err, stats);
 
             expect(read("es2015-named.js")).toMatchSnapshot();
             expect(read("es2015-named.css")).toMatchSnapshot();
+
+            done();
+        });
+    });
+
+    it("should support CommonJS exports when the option is set", function(done) {
+        webpack({
+            entry  : "./packages/webpack/test/specimens/simple.js",
+            output : {
+                path     : output,
+                filename : "./simple.js"
+            },
+            module : {
+                rules : [
+                    {
+                        test,
+                        use : {
+                            loader  : use,
+                            options : {
+                                cjs : true
+                            }
+                        }
+                    }
+                ]
+            },
+            plugins : [
+                new Plugin({
+                    namer,
+                    css : "./simple.css"
+                })
+            ]
+        }, (err, stats) => {
+            success(err, stats);
+
+            expect(read("simple.js")).toMatchSnapshot();
 
             done();
         });
@@ -284,8 +315,7 @@ describe("/webpack.js", function() {
             /* eslint consistent-return: off */
             changed++;
             
-            expect(err).toBeFalsy();
-            expect(stats.hasErrors()).toBeFalsy();
+            success(err, stats);
 
             expect(read("watching.js")).toMatchSnapshot(`webpack watching.js ${changed}`);
             expect(read("watching.css")).toMatchSnapshot(`webpack watching.css ${changed}`);
