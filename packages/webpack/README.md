@@ -22,12 +22,10 @@ module.exports = {
         filename : "./output.js"
     },
     module : {
-        rules : [
-            {
-                test : /\.css$/,
-                use  : "modular-css-webpack/loader"
-            }
-        ]
+        rules : [{
+            test : /\.css$/,
+            use  : "modular-css-webpack/loader"
+        }]
     },
     plugins : [
         new CSSPlugin({
@@ -40,15 +38,38 @@ module.exports = {
 
 ## Options
 
-### `css`
+### Plugin Options
+
+#### `css`
 
 Location to write the generated CSS file to, relative to `output.path` just like `output.filename`
 
-### `json`
+#### `json`
 
 Location to write out the JSON mapping file to, relative to `output.path` just like `output.filename`
 
-### Shared Options
+#### Shared Options
 
 All other options are passed to the underlying `Processor` instance, see [Options](https://github.com/tivac/modular-css/blob/master/docs/api.md#processor-options).
 
+### Loader Options
+
+#### `cjs`
+
+By default this plugin will export ES2015 module `export`s. If you want to use CommonJS exports set the `cjs` option to `true`
+
+```js
+...
+    module : {
+        rules : [{
+            test : /\.css$/,
+            use  : {
+                loader  : "modular-css-webpack/loader",
+                options : {
+                    cjs : true
+                }
+            }
+        }]
+    },
+...
+```

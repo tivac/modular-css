@@ -1,11 +1,13 @@
 "use strict";
 
-var keyword = require("esutils").keyword,
+var utils   = require("loader-utils"),
+    keyword = require("esutils").keyword,
     
     output = require("modular-css-core/lib/output.js");
 
 module.exports = function(source) {
-    var done      = this.async(),
+    var options   = utils.getOptions(this) || false,
+        done      = this.async(),
         processor = this.options.processor;
 
     this.cacheable();
@@ -19,19 +21,21 @@ module.exports = function(source) {
             
             return done(
                 null,
-                Object.keys(classes).reduce(
-                    (prev, curr) => {
-                        // Warn if any of the exported CSS wasn't able to be used as a valid JS identifier
-                        if(keyword.isReservedWordES6(curr) || !keyword.isIdentifierNameES6(curr)) {
-                            this.emitWarning(new Error(`Invalid JS identifier "${curr}", unable to export`));
+                options.cjs ?
+                    `module.exports = ${JSON.stringify(classes, null, 4)};\n` :
+                    Object.keys(classes).reduce(
+                        (prev, curr) => {
+                            // Warn if any of the exported CSS wasn't able to be used as a valid JS identifier
+                            if(keyword.isReservedWordES6(curr) || !keyword.isIdentifierNameES6(curr)) {
+                                this.emitWarning(new Error(`Invalid JS identifier "${curr}", unable to export`));
+                                
+                                return prev;
+                            }
                             
-                            return prev;
-                        }
-                        
-                        return `export var ${curr} = "${classes[curr]}";\n${prev}`;
-                    },
-                    `export default ${JSON.stringify(classes, null, 4)};\n`
-                )
+                            return `export var ${curr} = "${classes[curr]}";\n${prev}`;
+                        },
+                        `export default ${JSON.stringify(classes, null, 4)};\n`
+                    )
             );
         })
         .catch(done);
