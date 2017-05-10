@@ -1,2 +1,8 @@
 # Always \n to make tests easier to deal w/
 * text eol=lf
+
+# Ignore www package for language stats
+packages/www/** linguist-documentation
+
+# Ignore specimens
+**/specimens/** linguist-vendored
