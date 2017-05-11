@@ -64,7 +64,7 @@ describe("/processor.js", function() {
         });
 
         describe("scoping", function() {
-            it.only("should scope classes, ids, and keyframes", function() {
+            it("should scope classes, ids, and keyframes", function() {
                 return processor.string(
                     "./simple.css",
                     dedent(`
