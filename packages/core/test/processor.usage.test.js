@@ -12,18 +12,7 @@ function relative(files) {
 }
 
 describe("/processor.js", function() {
-    describe("Basics", function() {
-        it("should be a function", function() {
-            expect(typeof Processor).toBe("function");
-        });
-        
-        it("should auto-instantiate if called without new", function() {
-            /* eslint new-cap:0 */
-            expect(Processor()).toBeInstanceOf(Processor);
-        });
-    });
-
-    describe("functionality", function() {
+    describe("usage", function() {
         var processor;
         
         beforeEach(function() {
@@ -75,7 +64,7 @@ describe("/processor.js", function() {
         });
 
         describe("scoping", function() {
-            it("should scope classes, ids, and keyframes", function() {
+            it.only("should scope classes, ids, and keyframes", function() {
                 return processor.string(
                     "./simple.css",
                     dedent(`

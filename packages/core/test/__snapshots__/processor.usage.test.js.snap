@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js usage scoping should scope classes, ids, and keyframes 1`] = `
+Object {
+  "fooga": Array [
+    "fooga",
+  ],
+  "one": Array [
+    "one",
+  ],
+  "two": Array [
+    "two",
+  ],
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js usage scoping should scope classes, ids, and keyframes 2`] = `
+"/* simple.css */
+@keyframes kooga {}
+#fooga {}
+.wooga {}
+.one,
+.two {}"
+`;
