@@ -142,10 +142,6 @@ describe("/processor.js", function() {
         });
 
         it("should support unicode classes & ids", function() {
-            var processor = new Processor({
-                    namer
-                });
-            
             return processor.file(
                 "./packages/core/test/specimens/processor/unicode.css"
             )
