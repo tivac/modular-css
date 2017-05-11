@@ -18,8 +18,10 @@ describe("/processor.js", function() {
     });
 
     describe("functionality", function() {
+        var processor;
+        
         beforeEach(function() {
-            this.processor = new Processor({
+            processor = new Processor({
                 namer
             });
         });
@@ -27,8 +29,6 @@ describe("/processor.js", function() {
         describe("getters", function() {
             describe(".file", function() {
                 it("should return all the files that have been added", function() {
-                    var processor = this.processor;
-                    
                     return processor.file(
                         "./packages/core/test/specimens/start.css"
                     )
@@ -39,7 +39,7 @@ describe("/processor.js", function() {
 
             describe(".options", function() {
                 it("should return the merged options object", function() {
-                    expect(typeof this.processor.options).toBe("object");
+                    expect(typeof processor.options).toBe("object");
                 });
             });
         });
@@ -47,7 +47,7 @@ describe("/processor.js", function() {
         describe("bad imports", function() {
             // These can't use expect(...).toThrow() because they're async
             it("should fail if a value imports a non-existant reference", function() {
-                return this.processor.string(
+                return processor.string(
                     "./invalid/value.css",
                     "@value not-real from \"../local.css\";"
                 )
@@ -55,7 +55,7 @@ describe("/processor.js", function() {
             });
             
             it("should fail if a composition imports a non-existant reference", function() {
-                return this.processor.string(
+                return processor.string(
                     "./invalid/composition.css",
                     ".wooga { composes: fake from \"../local.css\"; }"
                 )
@@ -65,7 +65,7 @@ describe("/processor.js", function() {
 
         describe("scoping", function() {
             it("should scope classes, ids, and keyframes", function() {
-                return this.processor.string(
+                return processor.string(
                     "./simple.css",
                     dedent(`
                         @keyframes kooga { }
@@ -78,7 +78,7 @@ describe("/processor.js", function() {
                 .then((result) => {
                     expect(result.exports).toMatchSnapshot();
 
-                    return this.processor.output();
+                    return processor.output();
                 })
                 .then((output) => expect(output.css).toMatchSnapshot());
             });
@@ -86,7 +86,7 @@ describe("/processor.js", function() {
 
         describe("values", function() {
             it("should support local values in value composition", function() {
-                return this.processor.string(
+                return processor.string(
                     "./packages/core/test/specimens/simple.css",
                     dedent(`
                         @value local: './local.css';
@@ -100,17 +100,17 @@ describe("/processor.js", function() {
 
         describe("externals", function() {
             it("should support overriding external values", function() {
-                return this.processor.file(
+                return processor.file(
                     "./packages/core/test/specimens/externals.css"
                 )
-                .then(() => this.processor.output())
+                .then(() => processor.output())
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
         });
 
         describe("exports", function() {
             it("should export an object of arrays containing strings", function() {
-                return this.processor.string(
+                return processor.string(
                     "./simple.css",
                     dedent(`
                         .red { color: red; }
@@ -122,10 +122,10 @@ describe("/processor.js", function() {
             });
 
             it("should export identifiers and their classes", function() {
-                return this.processor.file(
+                return processor.file(
                     "./packages/core/test/specimens/start.css"
                 )
-                .then(() => this.processor.output())
+                .then(() => processor.output())
                 .then((output) => expect(output.compositions).toMatchSnapshot());
             });
         });
