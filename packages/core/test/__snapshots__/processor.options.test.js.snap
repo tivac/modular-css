@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/processor.js options exportGlobals should not export :global values when exportGlobals is false 1`] = `
+Object {
+  "b": Array [
+    "mc8df92ddf_b",
+  ],
+}
+`;
+
 exports[`/processor.js options lifecycle options after should run async postcss plugins 1`] = `
 "/* packages/core/test/specimens/relative.css */
 .wooga {
