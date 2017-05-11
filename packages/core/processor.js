@@ -49,6 +49,10 @@ function Processor(opts) {
         },
         opts || Object.create(null)
     );
+
+    if(!path.isAbsolute(this._options.cwd)) {
+        this._options.cwd = path.resolve(this._options.cwd);
+    }
     
     if(typeof this._options.namer === "string") {
         this._options.namer = require(this._options.namer)();
@@ -65,15 +69,12 @@ function Processor(opts) {
     this._relative = relative.bind(null, this._options.cwd);
 
     resolver = resolve.resolvers(this._options.resolvers);
-    this._resolve = (src, file) => {
-        debugger;
-        
-        return this._relative(
+    this._resolve = (src, file) =>
+        this._relative(
             resolver(
                 path.resolve(this._options.cwd, src), file
             )
         );
-    }
 
     this._files = Object.create(null);
     this._graph = new Graph();
