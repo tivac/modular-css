@@ -68,6 +68,38 @@ Array [
 ]
 `;
 
+exports[`/processor.js usage scoping should handle pseudo classes correctly 1`] = `
+Object {
+  "b": Array [
+    "b",
+  ],
+  "c": Array [
+    "c",
+  ],
+  "d": Array [
+    "d",
+  ],
+  "e": Array [
+    "e",
+  ],
+  "g1": Array [
+    "g1",
+  ],
+  "g2": Array [
+    "g2",
+  ],
+}
+`;
+
+exports[`/processor.js usage scoping should handle pseudo classes correctly 2`] = `
+"/* simple.css */
+.g1 {}
+.b .g2 {}
+#c {}
+.d:hover {}
+.e:not(.e) {}"
+`;
+
 exports[`/processor.js usage scoping should scope classes, ids, and keyframes 1`] = `
 Object {
   "fooga": Array [
@@ -308,4 +340,19 @@ Object {
     "fooga",
   ],
 }
+`;
+
+exports[`/processor.js usage values should support simple values 1`] = `
+"/* values.css */
+.a {
+    color: red
+}"
+`;
+
+exports[`/processor.js usage values should support value composition 1`] = `
+"/* packages/core/test/specimens/value.css */
+/* packages/core/test/specimens/value-composition.css */
+.red {
+    color: red
+}"
 `;
