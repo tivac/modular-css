@@ -1,21 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/processor.js Methods ._resolve() should fall back to a default resolver 1`] = `"packages/core/test/specimens/local.css"`;
+exports[`/processor.js Methods ._resolve() should fall back to a default resolver 1`] = `"C:\\\\Users\\\\Patrick\\\\Documents\\\\Code\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\local.css"`;
 
-exports[`/processor.js Methods ._resolve() should run resolvers until a match is found 1`] = `"local.css"`;
+exports[`/processor.js Methods ._resolve() should run resolvers until a match is found 1`] = `"./local.css"`;
 
 exports[`/processor.js Methods .dependencies() should return the dependencies of the specified file 1`] = `
 Array [
-  "packages/core/test/specimens/folder/folder.css",
-  "packages/core/test/specimens/local.css",
+  "C:\\\\Users\\\\Patrick\\\\Documents\\\\Code\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\folder\\\\folder.css",
+  "C:\\\\Users\\\\Patrick\\\\Documents\\\\Code\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\local.css",
 ]
 `;
 
 exports[`/processor.js Methods .dependencies() should return the overall order of dependencies if no file is specified 1`] = `
 Array [
-  "packages/core/test/specimens/folder/folder.css",
-  "packages/core/test/specimens/local.css",
-  "packages/core/test/specimens/start.css",
+  "C:\\\\Users\\\\Patrick\\\\Documents\\\\Code\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\folder\\\\folder.css",
+  "C:\\\\Users\\\\Patrick\\\\Documents\\\\Code\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\local.css",
+  "C:\\\\Users\\\\Patrick\\\\Documents\\\\Code\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\start.css",
 ]
 `;
 
@@ -155,11 +155,17 @@ exports[`/processor.js Methods .output() should return a postcss result 1`] = `
 }"
 `;
 
-exports[`/processor.js Methods .remove() should remove a file 1`] = `Array []`;
+exports[`/processor.js Methods .remove() should remove a file 1`] = `
+Array [
+  "C:\\\\Users\\\\Patrick\\\\Documents\\\\Code\\\\modular-css\\\\simple.css",
+]
+`;
 
 exports[`/processor.js Methods .remove() should remove multiple files 1`] = `
 Array [
-  "c.css",
+  "C:\\\\Users\\\\Patrick\\\\Documents\\\\Code\\\\modular-css\\\\a.css",
+  "C:\\\\Users\\\\Patrick\\\\Documents\\\\Code\\\\modular-css\\\\b.css",
+  "C:\\\\Users\\\\Patrick\\\\Documents\\\\Code\\\\modular-css\\\\c.css",
 ]
 `;
 

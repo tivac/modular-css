@@ -37,12 +37,10 @@ describe("/processor.js", function() {
                     ".wooga { }"
                 )
                 .then((result) => {
-                    var file = result.files["packages/core/test/specimens/simple.css"];
-                
                     expect(result.exports).toMatchSnapshot();
-                    expect(file.text).toMatchSnapshot();
-                    expect(file.exports).toMatchSnapshot();
-                    expect(file.processed.root.toResult().css).toMatchSnapshot();
+                    expect(result.details.text).toMatchSnapshot();
+                    expect(result.details.exports).toMatchSnapshot();
+                    expect(result.details.processed.root.toResult().css).toMatchSnapshot();
                 });
             });
 

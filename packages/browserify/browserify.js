@@ -108,7 +108,7 @@ module.exports = function(browserify, opts) {
             push({
                 id     : path.resolve(options.cwd, dep),
                 file   : path.resolve(options.cwd, dep),
-                source : exports(processor.files[relative(options.cwd, dep)]),
+                source : exports(processor.files[dep]),
                 deps   : dependencies(dep).reduce(depReducer, {})
             });
         });

@@ -70,10 +70,8 @@ function Processor(opts) {
 
     resolver = resolve.resolvers(this._options.resolvers);
     this._resolve = (src, file) =>
-        this._relative(
-            resolver(
-                path.resolve(this._options.cwd, src), file
-            )
+        resolver(
+            path.resolve(this._options.cwd, src), file
         );
 
     this._files = Object.create(null);
@@ -112,7 +110,7 @@ Processor.prototype = {
     
     // Add a file by name + contents to the dependency graph
     string : function(name, text) {
-        var start = this._relative(name);
+        var start = path.resolve(this._options.cwd, name);
         
         return this._walk(start, text).then(() => {
             var deps = this._graph.dependenciesOf(start).concat(start);
@@ -140,6 +138,7 @@ Processor.prototype = {
             id      : start,
             file    : start,
             files   : this._files,
+            details : this._files[start],
             exports : this._files[start].exports
         }));
     },
@@ -157,7 +156,6 @@ Processor.prototype = {
         }
 
         files
-            .map((file) => this._relative(file))
             .filter((file) => this._graph.hasNode(file))
             .forEach((file) => {
                 if(!options.shallow) {
@@ -176,7 +174,7 @@ Processor.prototype = {
     dependencies : function(file) {
         if(file) {
             return this._graph.dependenciesOf(
-                this._relative(file)
+                file
             );
         }
 
@@ -197,8 +195,6 @@ Processor.prototype = {
         //
         return Promise.all(
             files
-            // Ensure we're dealing w/ relative paths
-            .map((dep) => (path.isAbsolute(dep) ? relative(this._options.cwd, dep) : dep))
             // Protect from any files that errored out (#248)
             .filter((dep) => dep in this._files && this._files[dep].result)
             .map((dep) => this._after.process(
@@ -220,7 +216,7 @@ Processor.prototype = {
             results.forEach((result) => {
                 // Add file path comment
                 root.append(postcss.comment({
-                    text : result.opts.from,
+                    text : path.relative(this._options.cwd, result.opts.from).replace(/\\/g, "/"),
                     
                     // Add a bogus-ish source property so postcss won't make weird-looking
                     // source-maps that break the visualizer
@@ -297,7 +293,7 @@ Processor.prototype = {
                     dependency,
                     this._files[dependency] ?
                         null :
-                        fs.readFileSync(path.join(this._options.cwd, dependency), "utf8")
+                        fs.readFileSync(dependency, "utf8")
                 ))
             );
         });

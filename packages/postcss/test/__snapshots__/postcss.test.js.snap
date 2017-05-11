@@ -2,24 +2,24 @@
 
 exports[`/postcss.js should accept a \`json\` property and write exports to that file 1`] = `
 "{
+    \\"./packages/postcss/test/specimens/start.css\\": {
+        \\"wooga\\": \\"booga wooga\\",
+        \\"booga\\": \\"booga\\",
+        \\"tooga\\": \\"tooga\\"
+    },
     \\"packages/postcss/test/specimens/folder/folder.css\\": {
         \\"folder\\": \\"folder\\"
     },
     \\"packages/postcss/test/specimens/local.css\\": {
         \\"booga\\": \\"booga\\",
         \\"looga\\": \\"booga looga\\"
-    },
-    \\"packages/postcss/test/specimens/start.css\\": {
-        \\"wooga\\": \\"booga wooga\\",
-        \\"booga\\": \\"booga\\",
-        \\"tooga\\": \\"tooga\\"
     }
 }"
 `;
 
 exports[`/postcss.js should accept json args in either position with postcss 1`] = `
 "{
-    \\"packages/postcss/test/specimens/simple.css\\": {
+    \\"./packages/postcss/test/specimens/simple.css\\": {
         \\"wooga\\": \\"wooga\\"
     }
 }"
@@ -39,7 +39,7 @@ exports[`/postcss.js should be usable like a normal postcss plugin 1`] = `
 
 exports[`/postcss.js should output json when used within postcss 1`] = `
 "{
-    \\"packages/postcss/test/specimens/simple.css\\": {
+    \\"./packages/postcss/test/specimens/simple.css\\": {
         \\"wooga\\": \\"wooga\\"
     }
 }"
