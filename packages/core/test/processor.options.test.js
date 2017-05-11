@@ -22,6 +22,38 @@ function async(css) {
 
 describe("/processor.js", function() {
     describe("options", function() {
+        describe("cwd", function() {
+            it("should use an absolute path", function() {
+                var cwd       = path.resolve("./packages/core/test/specimens/folder"),
+                    processor = new Processor({
+                        cwd
+                    });
+                
+                return processor.file(
+                    "./folder.css"
+                )
+                .then((result) => {
+                    expect(processor._options.cwd).toBe(cwd);
+                    expect(result.file).toBe(require.resolve("./specimens/folder/folder.css"));
+                });
+            });
+
+            it("should accept a relative path but make it absolute", function() {
+                var cwd       = "./packages/core/test/specimens/folder",
+                    processor = new Processor({
+                        cwd
+                    });
+                
+                return processor.file(
+                    "./folder.css"
+                )
+                .then((result) => {
+                    expect(processor._options.cwd).toBe(path.resolve(cwd));
+                    expect(result.file).toBe(require.resolve("./specimens/folder/folder.css"));
+                });
+            });
+        });
+
         describe("namer", function() {
             it("should use a custom naming function", function() {
                 var processor = new Processor({

@@ -66,13 +66,13 @@ function Processor(opts) {
         this._options.resolvers = [];
     }
 
-    this._relative = relative.bind(null, this._options.cwd);
-
     resolver = resolve.resolvers(this._options.resolvers);
     this._resolve = (src, file) =>
         resolver(
             path.resolve(this._options.cwd, src), file
         );
+    
+    this._absolute = (file) => (path.isAbsolute(file) ? file : path.join(this._options.cwd, file));
 
     this._files = Object.create(null);
     this._graph = new Graph();
@@ -105,12 +105,18 @@ function Processor(opts) {
 Processor.prototype = {
     // Add a file on disk to the dependency graph
     file : function(file) {
+        if(!path.isAbsolute(file)) {
+            file = path.join(this._options.cwd, file);
+        }
+
         return this.string(file, fs.readFileSync(file, "utf8"));
     },
     
     // Add a file by name + contents to the dependency graph
-    string : function(name, text) {
-        var start = path.resolve(this._options.cwd, name);
+    string : function(start, text) {
+        if(!path.isAbsolute(start)) {
+            start = path.join(this._options.cwd, start);
+        }
         
         return this._walk(start, text).then(() => {
             var deps = this._graph.dependenciesOf(start).concat(start);
@@ -144,18 +150,15 @@ Processor.prototype = {
     },
     
     // Remove a file from the dependency graph
-    remove : function(input, options) {
+    remove : function(input) {
         var files = input;
 
         if(!Array.isArray(files)) {
             files = [ files ];
         }
         
-        if(!options) {
-            options = false;
-        }
-
         files
+            .map(this._absolute)
             .filter((file) => this._graph.hasNode(file))
             .forEach((file) => {
                 if(!options.shallow) {
@@ -195,6 +198,7 @@ Processor.prototype = {
         //
         return Promise.all(
             files
+            .map(this._absolute)
             // Protect from any files that errored out (#248)
             .filter((dep) => dep in this._files && this._files[dep].result)
             .map((dep) => this._after.process(

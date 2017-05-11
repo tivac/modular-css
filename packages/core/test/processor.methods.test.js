@@ -34,9 +34,21 @@ describe("/processor.js", function() {
         });
         
         describe(".file()", function() {
-            it("should process a file", function() {
+            it("should process a relative file", function() {
                 return processor.file(
                     "./packages/core/test/specimens/simple.css"
+                )
+                .then((result) => {
+                    expect(result.exports).toMatchSnapshot();
+                    expect(result.details.exports).toMatchSnapshot();
+                    expect(result.details.text).toMatchSnapshot();
+                    expect(result.details.processed.root.toResult().css).toMatchSnapshot();
+                });
+            });
+
+            it("should process an absolute file", function() {
+                return processor.file(
+                    require.resolve("./specimens/simple.css")
                 )
                 .then((result) => {
                     expect(result.exports).toMatchSnapshot();
@@ -48,13 +60,25 @@ describe("/processor.js", function() {
         });
         
         describe(".remove()", function() {
-            it("should remove a file", function() {
+            it("should remove a relative file", function() {
                 return processor.string(
                     "./simple.css",
                     ".wooga { }"
                 )
                 .then(() => {
                     processor.remove("./simple.css");
+                    
+                    expect(relative(processor.dependencies())).toMatchSnapshot();
+                });
+            });
+
+            it("should remove an absolute file", function() {
+                return processor.string(
+                    "./packages/core/test/specimens/simple.css",
+                    ".wooga { }"
+                )
+                .then(() => {
+                    processor.remove(require.resolve("./specimens/simple.css"));
                     
                     expect(relative(processor.dependencies())).toMatchSnapshot();
                 });
@@ -143,6 +167,32 @@ describe("/processor.js", function() {
                     processor.file("./packages/core/test/specimens/deep.css")
                 ])
                 .then(() => processor.output())
+                .then((result) => expect(result.css).toMatchSnapshot());
+            });
+
+            it("should support returning output for specified relative files", function() {
+                return Promise.all([
+                    processor.file("./packages/core/test/specimens/start.css"),
+                    processor.file("./packages/core/test/specimens/local.css")
+                ])
+                .then(() => processor.output({
+                    files : [
+                        "./packages/core/test/specimens/start.css"
+                    ]
+                }))
+                .then((result) => expect(result.css).toMatchSnapshot());
+            });
+
+            it("should support returning output for specified absolute files", function() {
+                return Promise.all([
+                    processor.file("./packages/core/test/specimens/start.css"),
+                    processor.file("./packages/core/test/specimens/local.css")
+                ])
+                .then(() => processor.output({
+                    files : [
+                        require.resolve("./specimens/start.css")
+                    ]
+                }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
         });

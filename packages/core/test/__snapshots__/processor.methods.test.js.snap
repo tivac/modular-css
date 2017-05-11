@@ -23,7 +23,7 @@ Array [
 ]
 `;
 
-exports[`/processor.js Methods .file() should process a file 1`] = `
+exports[`/processor.js Methods .file() should process a relative file 1`] = `
 Object {
   "wooga": Array [
     "wooga",
@@ -31,7 +31,7 @@ Object {
 }
 `;
 
-exports[`/processor.js Methods .file() should process a file 2`] = `
+exports[`/processor.js Methods .file() should process a relative file 2`] = `
 Object {
   "wooga": Array [
     "wooga",
@@ -39,12 +39,38 @@ Object {
 }
 `;
 
-exports[`/processor.js Methods .file() should process a file 3`] = `
+exports[`/processor.js Methods .file() should process a relative file 3`] = `
 ".wooga { color: red; }
 "
 `;
 
-exports[`/processor.js Methods .file() should process a file 4`] = `
+exports[`/processor.js Methods .file() should process a relative file 4`] = `
+".wooga { color: red; }
+"
+`;
+
+exports[`/processor.js Methods .file() should process an absolute file 1`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js Methods .file() should process an absolute file 2`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js Methods .file() should process an absolute file 3`] = `
+".wooga { color: red; }
+"
+`;
+
+exports[`/processor.js Methods .file() should process an absolute file 4`] = `
 ".wooga { color: red; }
 "
 `;
@@ -163,7 +189,31 @@ exports[`/processor.js Methods .remove() should remove a file 1`] = `
 Array [
   "simple.css",
 ]
+exports[`/processor.js Methods .output() should support returning output for specified absolute files 1`] = `
+"/* packages/core/test/specimens/start.css */
+.booga {
+    color: red;
+    background: blue
+}
+.tooga {
+    border: 1px solid white
+}"
 `;
+
+exports[`/processor.js Methods .output() should support returning output for specified relative files 1`] = `
+"/* packages/core/test/specimens/start.css */
+.booga {
+    color: red;
+    background: blue
+}
+.tooga {
+    border: 1px solid white
+}"
+`;
+
+exports[`/processor.js Methods .remove() should remove a relative file 1`] = `Array []`;
+
+exports[`/processor.js Methods .remove() should remove an absolute file 1`] = `Array []`;
 
 exports[`/processor.js Methods .remove() should remove multiple files 1`] = `
 Array [
