@@ -20,7 +20,7 @@ a {}"
 
 exports[`/processor.js options lifecycle options after should use postcss-url by default 1`] = `
 "/* packages/core/test/specimens/relative.css */
-.wooga {
+.mcbb30f12e_wooga {
     color: red;
     background: url(\\"../specimens/folder/to.png\\")
 }"
@@ -77,7 +77,7 @@ Object {
 exports[`/processor.js options namer should use a custom naming function 1`] = `
 Object {
   "wooga": Array [
-    "C:\\\\Users\\\\Patrick\\\\Documents\\\\Code\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\simple.csswooga",
+    "packages\\\\core\\\\test\\\\specimens\\\\simple.css_wooga",
   ],
 }
 `;
@@ -87,12 +87,12 @@ exports[`/processor.js options namer should use a custom naming function 2`] = `
 exports[`/processor.js options namer should use a custom naming function 3`] = `
 Object {
   "wooga": Array [
-    "C:\\\\Users\\\\Patrick\\\\Documents\\\\Code\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\simple.csswooga",
+    "packages\\\\core\\\\test\\\\specimens\\\\simple.css_wooga",
   ],
 }
 `;
 
-exports[`/processor.js options namer should use a custom naming function 4`] = `".C:\\\\Users\\\\Patrick\\\\Documents\\\\Code\\\\modular-css\\\\packages\\\\core\\\\test\\\\specimens\\\\simple.csswooga { }"`;
+exports[`/processor.js options namer should use a custom naming function 4`] = `".packages\\\\core\\\\test\\\\specimens\\\\simple.css_wooga { }"`;
 
 exports[`/processor.js options namer should use the default naming function if a non-function is passed 1`] = `
 Object {

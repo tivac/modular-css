@@ -1,6 +1,8 @@
 "use strict";
 
-var namer = require("test-utils/namer.js"),
+var path = require("path"),
+
+    namer = require("test-utils/namer.js"),
 
     Processor = require("../processor.js");
 
@@ -19,17 +21,12 @@ function async(css) {
 }
 
 describe("/processor.js", function() {
-    beforeEach(function() {
-        this.processor = new Processor({
-            namer : namer
-        });
-    });
-    
     describe("options", function() {
         describe("namer", function() {
             it("should use a custom naming function", function() {
                 var processor = new Processor({
-                        namer : (filename, selector) => `${filename}${selector}`
+                        namer : (filename, selector) =>
+                            `${path.relative(process.cwd(), filename)}_${selector}`
                     });
                     
                 return processor.string(
@@ -117,7 +114,7 @@ describe("/processor.js", function() {
             
             describe("after", function() {
                 it("should use postcss-url by default", function() {
-                    var processor = this.processor;
+                    var processor = new Processor();
 
                     return processor.file(
                         "./packages/core/test/specimens/relative.css"
