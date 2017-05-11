@@ -161,11 +161,9 @@ Processor.prototype = {
             .map(this._absolute)
             .filter((file) => this._graph.hasNode(file))
             .forEach((file) => {
-                if(!options.shallow) {
-                    // Remove everything that depends on this too, it'll all need
-                    // to be recalculated
-                    this.remove(this._graph.dependantsOf(file));
-                }
+                // Remove everything that depends on this too, it'll all need
+                // to be recalculated
+                this.remove(this._graph.dependantsOf(file));
 
                 delete this._files[file];
                 

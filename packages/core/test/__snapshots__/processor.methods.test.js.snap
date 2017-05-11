@@ -185,10 +185,6 @@ exports[`/processor.js Methods .output() should return a postcss result 1`] = `
 }"
 `;
 
-exports[`/processor.js Methods .remove() should remove a file 1`] = `
-Array [
-  "simple.css",
-]
 exports[`/processor.js Methods .output() should support returning output for specified absolute files 1`] = `
 "/* packages/core/test/specimens/start.css */
 .booga {
@@ -217,8 +213,6 @@ exports[`/processor.js Methods .remove() should remove an absolute file 1`] = `A
 
 exports[`/processor.js Methods .remove() should remove multiple files 1`] = `
 Array [
-  "a.css",
-  "b.css",
   "c.css",
 ]
 `;
