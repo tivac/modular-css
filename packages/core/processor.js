@@ -65,12 +65,15 @@ function Processor(opts) {
     this._relative = relative.bind(null, this._options.cwd);
 
     resolver = resolve.resolvers(this._options.resolvers);
-    this._resolve = (src, file) =>
-        this._relative(
+    this._resolve = (src, file) => {
+        debugger;
+        
+        return this._relative(
             resolver(
-                path.join(this._options.cwd, src), file
+                path.resolve(this._options.cwd, src), file
             )
         );
+    }
 
     this._files = Object.create(null);
     this._graph = new Graph();

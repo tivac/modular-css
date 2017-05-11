@@ -9,7 +9,7 @@ describe("/glob.js", function() {
         expect(typeof glob).toBe("function");
     });
 
-    it("should use a default search", function() {
+    it.only("should use a default search", function() {
         return glob({
             namer,
             cwd : "./packages/glob/test/specimens"

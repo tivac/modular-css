@@ -8,7 +8,11 @@ var path = require("path"),
 // Get a relative version of an absolute path w/ cross-platform/URL-friendly
 // directory separators
 module.exports = function(cwd, file) {
-    return path.relative(cwd, file).replace(sepRegex, "/");
+    debugger;
+    
+    var absolute = path.isAbsolute(file) ? file : path.resolve(cwd, file);
+
+    return path.relative(cwd, absolute).replace(sepRegex, "/");
 };
 
 module.exports.prefixed = function(cwd, file) {

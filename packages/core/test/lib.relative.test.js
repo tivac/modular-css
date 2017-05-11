@@ -14,7 +14,7 @@ describe("/lib", function() {
             expect(typeof relative.prefixed).toBe("function");
         });
         
-        it("should resolve files against a specified cwd", function() {
+        it("should resolve absolute files against a specified cwd", function() {
             expect(
                 relative(
                     process.cwd(),
@@ -27,6 +27,24 @@ describe("/lib", function() {
                 relative(
                     __dirname,
                     require.resolve("./specimens/start.css")
+                )
+            )
+            .toMatchSnapshot();
+        });
+
+        it("should resolve relative files against a specified cwd", function() {
+            expect(
+                relative(
+                    process.cwd(),
+                    "./packages/core/test/specimens/start.css"
+                )
+            )
+            .toMatchSnapshot();
+            
+            expect(
+                relative(
+                    __dirname,
+                    "./packages/core/test/specimens/start.css"
                 )
             )
             .toMatchSnapshot();
