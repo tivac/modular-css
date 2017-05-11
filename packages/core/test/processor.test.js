@@ -1,9 +1,15 @@
 "use strict";
 
-var dedent = require("dedent"),
+var path = require("path"),
+    
+    dedent = require("dedent"),
     namer  = require("test-utils/namer.js"),
     
     Processor = require("../processor.js");
+
+function relative(files) {
+    return files.map((file) => path.relative(process.cwd(), file));
+}
 
 describe("/processor.js", function() {
     describe("Basics", function() {
@@ -33,7 +39,12 @@ describe("/processor.js", function() {
                         "./packages/core/test/specimens/start.css"
                     )
                     .then(() => processor.file("./packages/core/test/specimens/local.css"))
-                    .then(() => expect(Object.keys(processor.files)).toMatchSnapshot());
+                    .then(() =>
+                        expect(
+                            relative(Object.keys(processor.files))
+                        )
+                        .toMatchSnapshot()
+                    );
                 });
             });
 
