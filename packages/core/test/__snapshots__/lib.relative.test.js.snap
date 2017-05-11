@@ -4,10 +4,14 @@ exports[`/lib /relative.js should resolve absolute files against a specified cwd
 
 exports[`/lib /relative.js should resolve absolute files against a specified cwd 2`] = `"specimens/start.css"`;
 
-exports[`/lib /relative.js should resolve files against a specified cwd w/ prefixes 1`] = `"./packages/core/test/specimens/start.css"`;
+exports[`/lib /relative.js should resolve absolute files against a specified cwd w/ prefixes 1`] = `"./packages/core/test/specimens/start.css"`;
 
-exports[`/lib /relative.js should resolve files against a specified cwd w/ prefixes 2`] = `"../lib.relative.test.js"`;
+exports[`/lib /relative.js should resolve absolute files against a specified cwd w/ prefixes 2`] = `"../lib.relative.test.js"`;
 
 exports[`/lib /relative.js should resolve relative files against a specified cwd 1`] = `"packages/core/test/specimens/start.css"`;
 
 exports[`/lib /relative.js should resolve relative files against a specified cwd 2`] = `"packages/core/test/specimens/start.css"`;
+
+exports[`/lib /relative.js should resolve relative files against a specified cwd w/ prefixes 1`] = `"./specimens/start.css"`;
+
+exports[`/lib /relative.js should resolve relative files against a specified cwd w/ prefixes 2`] = `"./lib.relative.test.js"`;

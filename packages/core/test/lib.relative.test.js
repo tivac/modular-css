@@ -50,7 +50,7 @@ describe("/lib", function() {
             .toMatchSnapshot();
         });
 
-        it("should resolve files against a specified cwd w/ prefixes", function() {
+        it("should resolve absolute files against a specified cwd w/ prefixes", function() {
             expect(
                 relative.prefixed(
                     process.cwd(),
@@ -62,7 +62,25 @@ describe("/lib", function() {
             expect(
                 relative.prefixed(
                     path.resolve("./packages/core/test/specimens/"),
-                    require.resolve("./lib.relative.test.js")
+                    __filename
+                )
+            )
+            .toMatchSnapshot();
+        });
+
+        it("should resolve relative files against a specified cwd w/ prefixes", function() {
+            expect(
+                relative.prefixed(
+                    __dirname,
+                    "./specimens/start.css"
+                )
+            )
+            .toMatchSnapshot();
+            
+            expect(
+                relative.prefixed(
+                    path.resolve("./packages/core/test/specimens/"),
+                    "../lib.relative.test.js"
                 )
             )
             .toMatchSnapshot();
