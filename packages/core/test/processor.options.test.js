@@ -2,7 +2,8 @@
 
 var path = require("path"),
 
-    namer = require("test-utils/namer.js"),
+    dedent = require("dedent"),
+    namer  = require("test-utils/namer.js"),
 
     Processor = require("../processor.js");
 
@@ -110,6 +111,23 @@ describe("/processor.js", function() {
                 )
                 .then(() => processor.output({ to : "out.css" }))
                 .then((result) => expect(result.css).toMatchSnapshot());
+            });
+        });
+
+        describe("exportGlobals", function() {
+            it("should not export :global values when exportGlobals is false", function() {
+                var processor = new Processor({
+                        exportGlobals : false
+                    });
+                
+                return processor.string(
+                    "./exportGlobals.css",
+                    dedent(`
+                        :global(.a) {}
+                        .b {}
+                    `)
+                )
+                .then((result) => expect(result.exports).toMatchSnapshot());
             });
         });
 
