@@ -1,0 +1,5 @@
+:global(.a) {}
+.a :global(.b) {}
+:global(#a) {}
+.a:hover {}
+.a:not(.b) {}
