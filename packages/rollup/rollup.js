@@ -46,7 +46,7 @@ module.exports = function(opts) {
             return processor.string(id, code).then(function(result) {
                 var classes = output.join(result.exports),
                     imports = processor.dependencies(id)
-                        .map((file) => `import "${path.join(processor._options.cwd, file).replace(/\\/g, "/")}";`)
+                        .map((file) => `import "${file.replace(/\\/g, "/")}";`)
                         .join("\n");
                 
                 return {
