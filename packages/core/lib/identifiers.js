@@ -7,22 +7,19 @@ var createParser = require("postcss-selector-parser"),
 exports.keyframes = keyframes;
 
 // TODO: this is probably inefficient, but oh well for now
-exports.parse = function parse(selector) {
-    var values = [];
+exports.parse = (selector) => {
+    var values = [],
+        parser;
     
-    createParser(function(selectors) {
+    parser = createParser((selectors) => {
         // Walk classes
-        selectors.walkClasses(function(part) {
-            values.push(part.value);
-        });
+        selectors.walkClasses((part) => values.push(part.value));
         
         // Walk IDs
-        selectors.walkIds(function(part) {
-            values.push(part.value);
-        });
+        selectors.walkIds((part) => values.push(part.value));
         
         // Walk @keyframes definitions
-        selectors.walkTags(function(part) {
+        selectors.walkTags((part) => {
             // This is a slightly ridiculous conditional, but postcss-selector-parser
             // spits out @keyframes <name> as [ @keyframes, <name> ] so we have to do
             // this flopping around to find the real value. Blech.
@@ -32,7 +29,9 @@ exports.parse = function parse(selector) {
                 values.push(part.value);
             }
         });
-    }).process(selector);
+    });
+    
+    parser.process(selector);
     
     return values;
 };
