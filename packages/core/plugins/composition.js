@@ -21,7 +21,7 @@ function composesFirst(decl) {
     prev = decl.prev();
 
     while(prev) {
-        if(prev.type !== "comment" && prev.prop !== "composes") {
+        if(prev.type !== "comment") {
             throw decl.error("composes must be the first declaration", { word : "composes" });
         }
 
@@ -41,19 +41,10 @@ module.exports = (css, result) => {
     // Go look up "composes" declarations and populate dependency graph
     css.walkDecls("composes", function(decl) {
         /* eslint max-statements: "off" */
-        var selectors, details;
-
-        console.log("decl", decl.toString());
-        console.log("parent", decl.parent.nodes);
+        var details   = parser.parse(decl.value),
+            selectors = decl.parent.selectors.map(identifiers.parse);
 
         composesFirst(decl);
-
-        try {
-            details   = parser.parse(decl.value);
-            selectors = decl.parent.selectors.map(identifiers.parse);
-        } catch(e) {
-            throw decl.error(e.toString(), { word : decl.value });
-        }
 
         // https://github.com/tivac/modular-css/issues/238
         if(selectors.some((selector) => selector.length > 1)) {
@@ -65,10 +56,6 @@ module.exports = (css, result) => {
 
         if(details.source) {
             details.source = opts.resolve(opts.from, details.source);
-
-            if(!opts.files || !opts.files[details.source]) {
-                throw decl.error("Invalid file reference", { word : decl.value });
-            }
         }
 
         // Add references and update graph

@@ -2,8 +2,7 @@
 
 var parser = require("../parsers/parser.js"),
     
-    plugin = "modular-css-values-local",
-    offset = "@value ".length;
+    plugin = "modular-css-values-local";
 
 // Find @value fooga: wooga entries & catalog/remove them
 module.exports = (css, result) => {
@@ -15,11 +14,8 @@ module.exports = (css, result) => {
         try {
             parsed = parser.parse(rule.params);
         } catch(e) {
-            if(result.opts.strict) {
-                throw rule.error(e.toString(), { index : offset + e.location.start.column });
-            } else {
-                return;
-            }
+            // Errors aren't world-ending, necessarily
+            return;
         }
 
         if(parsed.type !== "assignment") {
