@@ -32,10 +32,7 @@ function params(processor, args) {
 }
 
 function Processor(opts) {
-    var resolver;
-
-    /* eslint consistent-return:0, max-statements:0 */
-    
+    /* eslint consistent-return: off, max-statements: off */
     if(!(this instanceof Processor)) {
         return new Processor(opts);
     }
@@ -66,11 +63,7 @@ function Processor(opts) {
         this._options.resolvers = [];
     }
 
-    resolver = resolve.resolvers(this._options.resolvers);
-    this._resolve = (src, file) =>
-        resolver(
-            path.resolve(this._options.cwd, src), file
-        );
+    this._resolve = resolve.resolvers(this._options.resolvers);
     
     this._absolute = (file) => (path.isAbsolute(file) ? file : path.join(this._options.cwd, file));
 
