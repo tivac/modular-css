@@ -1,6 +1,6 @@
 {
   "name": "modular-css-paths",
-  "version": "4.2.6",
+  "version": "5.0.0-0",
   "description": "Custom file resolver supporting multiple paths for modular-css",
   "main": "./paths.js",
   "repository": "tivac/modular-css",
@@ -17,8 +17,8 @@
   ],
   "devDependencies": {
     "dentist": "^1.0.3",
-    "modular-css-core": "^4.3.0",
-    "test-utils": "^4.0.13"
+    "modular-css-core": "^5.0.0-0",
+    "test-utils": "^5.0.0-0"
   },
   "dependencies": {
     "resolve-from": "^2.0.0"
