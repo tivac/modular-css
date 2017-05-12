@@ -43,6 +43,9 @@ module.exports = (css, result) => {
         /* eslint max-statements: "off" */
         var selectors, details;
 
+        console.log("decl", decl.toString());
+        console.log("parent", decl.parent.nodes);
+
         composesFirst(decl);
 
         try {

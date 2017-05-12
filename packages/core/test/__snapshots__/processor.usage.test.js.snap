@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/processor.js usage composition should allow composing multiple classes 1`] = `
+Object {
+  "multiple-composes.css": Object {
+    "a": "a",
+    "b": "b",
+    "c": "c",
+    "d": "a b c d",
+  },
+}
+`;
+
 exports[`/processor.js usage exports should export an object of arrays containing strings 1`] = `
 Object {
   "black": Array [
@@ -350,9 +361,20 @@ exports[`/processor.js usage values should support simple values 1`] = `
 `;
 
 exports[`/processor.js usage values should support value composition 1`] = `
-"/* packages/core/test/specimens/value.css */
+"/* packages/core/test/specimens/values.css */
 /* packages/core/test/specimens/value-composition.css */
 .red {
     color: red
+}"
+`;
+
+exports[`/processor.js usage values should support value namespaces 1`] = `
+"/* packages/core/test/specimens/values.css */
+/* packages/core/test/specimens/value-namespace.css */
+.red {
+    color: red
+}
+.blue {
+    color: blue
 }"
 `;

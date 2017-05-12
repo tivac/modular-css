@@ -44,48 +44,6 @@ describe("/processor.js", () => {
             });
         });
         
-        describe("invalid compositions", () => {
-            it("should fail on invalid value syntax", () =>
-                processor.string(
-                    "./invalid/value.css",
-                    "@value foo, bar from nowhere.css"
-                )
-                .catch((error) =>
-                    expect(error.message).toMatch(`SyntaxError: Expected source but "n" found.`)
-                )
-            );
-
-            it("should fail on invalid composes syntax", () =>
-                processor.string(
-                    "./invalid/value.css",
-                    ".a { composes: foo from nowhere.css; }"
-                )
-                .catch((error) =>
-                    expect(error.message).toMatch(`SyntaxError: Expected source but "n" found.`)
-                )
-            );
-
-            it("should fail if a value imports a non-existant reference", () =>
-                processor.string(
-                    "./invalid/value.css",
-                    "@value not-real from \"../local.css\";"
-                )
-                .catch((error) =>
-                    expect(error.message).toMatch(`Unable to locate "../local.css" from`)
-                )
-            );
-            
-            it("should fail if a composition imports a non-existant reference", () =>
-                processor.string(
-                    "./invalid/composition.css",
-                    ".wooga { composes: fake from \"../local.css\"; }"
-                )
-                .catch((error) =>
-                    expect(error.message).toMatch(`Unable to locate "../local.css" from`)
-                )
-            );
-        });
-
         describe("scoping", () => {
             it("should scope classes, ids, and keyframes", () =>
                 processor.string(
@@ -167,6 +125,26 @@ describe("/processor.js", () => {
         });
 
         describe("values", () => {
+            it("should fail on invalid value syntax", () =>
+                processor.string(
+                    "./invalid/value.css",
+                    "@value foo, bar from nowhere.css"
+                )
+                .catch((error) =>
+                    expect(error.message).toMatch(`SyntaxError: Expected source but "n" found.`)
+                )
+            );
+
+            it("should fail if a value imports a non-existant reference", () =>
+                processor.string(
+                    "./invalid/value.css",
+                    "@value not-real from \"../local.css\";"
+                )
+                .catch((error) =>
+                    expect(error.message).toMatch(`Unable to locate "../local.css" from`)
+                )
+            );
+
             it("should support simple values", () =>
                 processor.string(
                     "./values.css",
@@ -198,6 +176,14 @@ describe("/processor.js", () => {
 
             it("should support value composition", () =>
                 processor.file(require.resolve("./specimens/value-composition.css"))
+                .then(() => processor.output())
+                .then((result) =>
+                    expect(result.css).toMatchSnapshot()
+                )
+            );
+
+            it("should support value namespaces", () =>
+                processor.file(require.resolve("./specimens/value-namespace.css"))
                 .then(() => processor.output())
                 .then((result) =>
                     expect(result.css).toMatchSnapshot()
@@ -235,6 +221,68 @@ describe("/processor.js", () => {
             it("should export identifiers and their classes", () =>
                 processor.file(
                     "./packages/core/test/specimens/start.css"
+                )
+                .then(() => processor.output())
+                .then((output) =>
+                    expect(output.compositions).toMatchSnapshot()
+                )
+            );
+        });
+
+        describe("composition", () => {
+            it("should fail on invalid composes syntax", () =>
+                processor.string(
+                    "./invalid/value.css",
+                    ".a { composes: foo from nowhere.css; }"
+                )
+                .catch((error) =>
+                    expect(error.message).toMatch(`SyntaxError: Expected source but "n" found.`)
+                )
+            );
+            
+            it("should fail if a composition imports a non-existant reference", () =>
+                processor.string(
+                    "./invalid/composition.css",
+                    ".wooga { composes: fake from \"../local.css\"; }"
+                )
+                .catch((error) =>
+                    expect(error.message).toMatch(`Unable to locate "../local.css" from`)
+                )
+            );
+
+            it("should fail if composes isn't the first property", () =>
+                processor.string(
+                    "./invalid/composes-first.css",
+                    dedent(`
+                        .a {
+                            color: red;
+                        }
+
+                        .b {
+                            color: blue;
+
+                            composes: a;
+                        }
+                    `)
+                )
+                .catch((error) =>
+                    expect(error.message).toMatch(`composes must be the first declaration`)
+                )
+            );
+
+            it.only("should allow composing multiple classes", () =>
+                processor.string(
+                    "./multiple-composes.css",
+                    dedent(`
+                        .a { color: red; }
+                        .b { color: blue; }
+                        .c { color: green; }
+                        .d {
+                            composes: a;
+                            composes: b;
+                            composes: c;
+                        }
+                    `)
                 )
                 .then(() => processor.output())
                 .then((output) =>

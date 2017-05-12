@@ -12,11 +12,13 @@ module.exports = (css, result) => {
         var parsed = parser.parse(rule.params),
             source;
         
-        try {
-            source = result.opts.files[result.opts.resolve(result.opts.from, parsed.source)];
-        } catch(e) {
-            // NO-OP
+        if(parsed.type !== "composition") {
+            return;
         }
+
+        source = result.opts.files[
+            result.opts.resolve(result.opts.from, parsed.source)
+        ];
 
         parsed.refs.forEach((ref) => {
             values[ref.name] = source.values[ref.name];

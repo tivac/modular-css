@@ -1,0 +1,9 @@
+@value * as colors from "./values.css";
+
+.red {
+    color: colors.a;
+}
+
+.blue {
+    color: colors.b;
+}
