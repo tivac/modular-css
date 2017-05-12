@@ -1,8 +1,6 @@
 "use strict";
 
-var path = require("path"),
-    
-    namer  = require("test-utils/namer.js"),
+var namer  = require("test-utils/namer.js"),
     
     Processor = require("../processor.js");
 
