@@ -41,7 +41,7 @@ describe("/processor.js", () => {
                 ".a { composes: b from \"../local.css\"; }"
             )
             .catch((error) =>
-                expect(error.message).toMatch(`Unable to locate "../local.css" from`)
+                expect(error.message).toMatch(`Cannot find module '../local.css'`)
             )
         );
 
