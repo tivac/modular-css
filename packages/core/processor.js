@@ -109,7 +109,7 @@ Processor.prototype = {
             file = path.join(this._options.cwd, file);
         }
 
-        return this.string(file, fs.readFileSync(file, "utf8"));
+        return this.string(path.normalize(file), fs.readFileSync(file, "utf8"));
     },
     
     // Add a file by name + contents to the dependency graph

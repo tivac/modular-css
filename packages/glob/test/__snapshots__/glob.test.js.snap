@@ -5,13 +5,13 @@ exports[`/glob.js should find files on disk & output css 1`] = `
 .one {
     color: red
 }
-/* exclude/4.css */
-.four {
-    color: red
-}
 /* dir/3.css */
 .three {
     color: white
+}
+/* exclude/4.css */
+.four {
+    color: red
 }
 /* dir/2.css */
 .two {
@@ -39,13 +39,13 @@ exports[`/glob.js should use a default search 1`] = `
 .one {
     color: red
 }
-/* exclude/4.css */
-.four {
-    color: red
-}
 /* dir/3.css */
 .three {
     color: white
+}
+/* exclude/4.css */
+.four {
+    color: red
 }
 /* dir/2.css */
 .two {
