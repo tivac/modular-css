@@ -35,7 +35,7 @@ describe("/processor.js", function() {
                     "./folder.css"
                 )
                 .then((result) => {
-                    expect(processor._options.cwd).toBe(cwd);
+                    expect(processor.options.cwd).toBe(cwd);
                     expect(result.file).toBe(require.resolve("./specimens/folder/folder.css"));
                 });
             });
@@ -50,7 +50,7 @@ describe("/processor.js", function() {
                     "./folder.css"
                 )
                 .then((result) => {
-                    expect(processor._options.cwd).toBe(path.resolve(cwd));
+                    expect(processor.options.cwd).toBe(path.resolve(cwd));
                     expect(result.file).toBe(require.resolve("./specimens/folder/folder.css"));
                 });
             });
