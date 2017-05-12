@@ -85,7 +85,7 @@ Object {
 exports[`/processor.js options namer should use a custom naming function 1`] = `
 Object {
   "wooga": Array [
-    "packages\\\\core\\\\test\\\\specimens\\\\simple.css_wooga",
+    "packages/core/test/specimens/simple.css_wooga",
   ],
 }
 `;
@@ -95,12 +95,12 @@ exports[`/processor.js options namer should use a custom naming function 2`] = `
 exports[`/processor.js options namer should use a custom naming function 3`] = `
 Object {
   "wooga": Array [
-    "packages\\\\core\\\\test\\\\specimens\\\\simple.css_wooga",
+    "packages/core/test/specimens/simple.css_wooga",
   ],
 }
 `;
 
-exports[`/processor.js options namer should use a custom naming function 4`] = `".packages\\\\core\\\\test\\\\specimens\\\\simple.css_wooga { }"`;
+exports[`/processor.js options namer should use a custom naming function 4`] = `".packages/core/test/specimens/simple.css_wooga { }"`;
 
 exports[`/processor.js options namer should use the default naming function if a non-function is passed 1`] = `
 Object {

@@ -2,8 +2,9 @@
 
 var path = require("path"),
 
-    dedent = require("dedent"),
-    namer  = require("test-utils/namer.js"),
+    dedent   = require("dedent"),
+    namer    = require("test-utils/namer.js"),
+    relative = require("test-utils/relative.js"),
 
     Processor = require("../processor.js");
 
@@ -59,7 +60,7 @@ describe("/processor.js", function() {
             it("should use a custom naming function", function() {
                 var processor = new Processor({
                         namer : (filename, selector) =>
-                            `${path.relative(process.cwd(), filename)}_${selector}`
+                            `${relative([ filename ])[0]}_${selector}`
                     });
                     
                 return processor.string(

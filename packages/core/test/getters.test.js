@@ -1,14 +1,9 @@
 "use strict";
 
-var path = require("path"),
-    
-    namer  = require("test-utils/namer.js"),
+var namer    = require("test-utils/namer.js"),
+    relative = require("test-utils/relative.js"),
     
     Processor = require("../processor.js");
-
-function relative(files) {
-    return files.map((file) => path.relative(process.cwd(), file));
-}
 
 describe("/processor.js", () => {
     describe("getters", () => {
