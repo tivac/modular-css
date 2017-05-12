@@ -10,13 +10,22 @@ function relative(files) {
 }
 
 describe("/processor.js", function() {
-    describe("Methods", function() {
+    describe("API", function() {
         var processor;
 
         beforeEach(function() {
             processor = new Processor({
                 namer
             });
+        });
+
+        it("should be a function", function() {
+            expect(typeof Processor).toBe("function");
+        });
+        
+        it("should auto-instantiate if called without new", function() {
+            /* eslint new-cap:0 */
+            expect(Processor()).toBeInstanceOf(Processor);
         });
 
         describe(".string()", function() {

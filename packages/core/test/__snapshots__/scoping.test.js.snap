@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js scoping should handle pseudo classes correctly 1`] = `
+Object {
+  "b": Array [
+    "b",
+  ],
+  "c": Array [
+    "c",
+  ],
+  "d": Array [
+    "d",
+  ],
+  "e": Array [
+    "e",
+  ],
+  "g1": Array [
+    "g1",
+  ],
+  "g2": Array [
+    "g2",
+  ],
+}
+`;
+
+exports[`/processor.js scoping should handle pseudo classes correctly 2`] = `
+"/* simple.css */
+.g1 {}
+.b .g2 {}
+#c {}
+.d:hover {}
+.e:not(.e) {}"
+`;
+
+exports[`/processor.js scoping should scope classes, ids, and keyframes 1`] = `
+Object {
+  "fooga": Array [
+    "fooga",
+  ],
+  "one": Array [
+    "one",
+  ],
+  "two": Array [
+    "two",
+  ],
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js scoping should scope classes, ids, and keyframes 2`] = `
+"/* simple.css */
+@keyframes kooga {}
+#fooga {}
+.wooga {}
+.one,
+.two {}"
+`;
