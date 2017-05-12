@@ -6,7 +6,7 @@ var path  = require("path"),
     Processor = require("../processor.js");
 
 function relative(files) {
-    return files.map((file) => path.relative(process.cwd(), file));
+    return files.map((file) => path.relative(process.cwd(), file).replace(/\\/g, "/"));
 }
 
 describe("/processor.js", function() {

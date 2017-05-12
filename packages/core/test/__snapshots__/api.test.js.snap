@@ -2,7 +2,7 @@
 
 exports[`/processor.js API ._resolve() should fall back to a default resolver 1`] = `
 Array [
-  "packages\\\\core\\\\test\\\\specimens\\\\local.css",
+  "packages/core/test/specimens/local.css",
 ]
 `;
 
@@ -10,16 +10,16 @@ exports[`/processor.js API ._resolve() should run resolvers until a match is fou
 
 exports[`/processor.js API .dependencies() should return the dependencies of the specified file 1`] = `
 Array [
-  "packages\\\\core\\\\test\\\\specimens\\\\folder\\\\folder.css",
-  "packages\\\\core\\\\test\\\\specimens\\\\local.css",
+  "packages/core/test/specimens/folder/folder.css",
+  "packages/core/test/specimens/local.css",
 ]
 `;
 
 exports[`/processor.js API .dependencies() should return the overall order of dependencies if no file is specified 1`] = `
 Array [
-  "packages\\\\core\\\\test\\\\specimens\\\\folder\\\\folder.css",
-  "packages\\\\core\\\\test\\\\specimens\\\\local.css",
-  "packages\\\\core\\\\test\\\\specimens\\\\start.css",
+  "packages/core/test/specimens/folder/folder.css",
+  "packages/core/test/specimens/local.css",
+  "packages/core/test/specimens/start.css",
 ]
 `;
 
