@@ -2,22 +2,22 @@
 
 exports[`/browserify.js factor-bundle should avoid outputting empty css files by default 1`] = `
 "/* packages/browserify/test/specimens/folder/folder.css */
-.mcd19f1319_folder {
+.mc42ae4de1_folder {
     margin: 2px
 }"
 `;
 
 exports[`/browserify.js factor-bundle should avoid outputting empty css files by default 2`] = `
 "/* packages/browserify/test/specimens/local.css */
-.mcc4e2a8e1_booga {
+.mcc5008ce7_booga {
     background: green
 }
 /* packages/browserify/test/specimens/start.css */
-.mc1c78395f_booga {
+.mcc9e3c943_booga {
     color: red;
     background: blue
 }
-.mc1c78395f_tooga {
+.mcc9e3c943_tooga {
     border: 1px solid white
 }"
 `;
@@ -25,15 +25,15 @@ exports[`/browserify.js factor-bundle should avoid outputting empty css files by
 exports[`/browserify.js factor-bundle should be supported 1`] = `
 "require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require==\\"function\\"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error(\\"Cannot find module '\\"+o+\\"'\\");throw f.code=\\"MODULE_NOT_FOUND\\",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require==\\"function\\"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({5:[function(require,module,exports){
 module.exports = {
-    \\"booga\\": \\"mcc4e2a8e1_booga\\",
-    \\"looga\\": \\"mcc4e2a8e1_booga mcc4e2a8e1_looga\\"
+    \\"booga\\": \\"mcc5008ce7_booga\\",
+    \\"looga\\": \\"mcc5008ce7_booga mcc5008ce7_looga\\"
 };
 },{\\"./packages/browserify/test/specimens/folder/folder.css\\":4}],3:[function(require,module,exports){
 require(\\"../../folder/folder.css\\");
 
 },{\\"../../folder/folder.css\\":4}],4:[function(require,module,exports){
 module.exports = {
-    \\"folder\\": \\"mcd19f1319_folder\\"
+    \\"folder\\": \\"mc42ae4de1_folder\\"
 };
 },{}]},{},[]);
 "
@@ -41,44 +41,44 @@ module.exports = {
 
 exports[`/browserify.js factor-bundle should be supported 2`] = `
 "/* packages/browserify/test/specimens/folder/folder.css */
-.mcd19f1319_folder {
+.mc42ae4de1_folder {
     margin: 2px
 }
 /* packages/browserify/test/specimens/local.css */
-.mcc4e2a8e1_booga {
+.mcc5008ce7_booga {
     background: green
 }"
 `;
 
 exports[`/browserify.js factor-bundle should be supported 3`] = `
 "/* packages/browserify/test/specimens/start.css */
-.mc1c78395f_booga {
+.mcc9e3c943_booga {
     color: red;
     background: blue
 }
-.mc1c78395f_tooga {
+.mcc9e3c943_tooga {
     border: 1px solid white
 }"
 `;
 
 exports[`/browserify.js factor-bundle should output empty css files when asked 1`] = `
 "/* packages/browserify/test/specimens/folder/folder.css */
-.mcd19f1319_folder {
+.mc42ae4de1_folder {
     margin: 2px
 }"
 `;
 
 exports[`/browserify.js factor-bundle should output empty css files when asked 2`] = `
 "/* packages/browserify/test/specimens/local.css */
-.mcc4e2a8e1_booga {
+.mcc5008ce7_booga {
     background: green
 }
 /* packages/browserify/test/specimens/start.css */
-.mc1c78395f_booga {
+.mcc9e3c943_booga {
     color: red;
     background: blue
 }
-.mc1c78395f_tooga {
+.mcc9e3c943_tooga {
     border: 1px solid white
 }"
 `;
@@ -87,59 +87,59 @@ exports[`/browserify.js factor-bundle should output empty css files when asked 3
 
 exports[`/browserify.js factor-bundle should properly handle files w/o dependencies 1`] = `
 "/* packages/browserify/test/specimens/folder/folder.css */
-.mcd19f1319_folder {
+.mc42ae4de1_folder {
     margin: 2px
 }
 /* packages/browserify/test/specimens/local.css */
-.mcc4e2a8e1_booga {
+.mcc5008ce7_booga {
     background: green
 }"
 `;
 
 exports[`/browserify.js factor-bundle should properly handle files w/o dependencies 2`] = `
 "/* packages/browserify/test/specimens/simple.css */
-.mc459e927d_wooga {
+.mc7569bdf8_wooga {
     color: red
 }"
 `;
 
 exports[`/browserify.js factor-bundle should support files w/o commonalities 1`] = `
 "/* packages/browserify/test/specimens/simple.css */
-.mc459e927d_wooga {
+.mc7569bdf8_wooga {
     color: red
 }"
 `;
 
 exports[`/browserify.js factor-bundle should support files w/o commonalities 2`] = `
 "/* packages/browserify/test/specimens/blue.css */
-.mcd53407d1_wooga {
+.mcae4e1a2d_wooga {
     color: blue
 }"
 `;
 
 exports[`/browserify.js factor-bundle should support relative paths within factor-bundle files 1`] = `
 "/* packages/browserify/test/specimens/folder/folder.css */
-.mcd19f1319_folder {
+.mc42ae4de1_folder {
     margin: 2px
 }
 /* packages/browserify/test/specimens/local.css */
-.mcc4e2a8e1_booga {
+.mcc5008ce7_booga {
     background: green
 }"
 `;
 
 exports[`/browserify.js factor-bundle should support relative paths within factor-bundle files 2`] = `
 "/* packages/browserify/test/specimens/relative.css */
-.mcdf61ec72_wooga {
+.mcf7944f88_wooga {
     color: red;
     background: url(\\"../../../specimens/folder/to.png\\")
 }
 /* packages/browserify/test/specimens/start.css */
-.mc1c78395f_booga {
+.mcc9e3c943_booga {
     color: red;
     background: blue
 }
-.mc1c78395f_tooga {
+.mcc9e3c943_tooga {
     border: 1px solid white
 }"
 `;

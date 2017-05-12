@@ -14,8 +14,8 @@ var fs   = require("fs"),
     tiered   = require("./lib/graph-tiers.js"),
     resolve  = require("./lib/resolve.js");
 
-function namer(cwd, file, selector) {
-    return `mc${slug(relative(cwd, file))}_${selector}`;
+function namer(file, selector) {
+    return `mc${slug(file)}_${selector}`;
 }
 
 function params(processor, args) {
@@ -40,9 +40,9 @@ function Processor(opts) {
     this._options = Object.assign(
         Object.create(null),
         {
-            cwd    : process.cwd(),
-            map    : false,
-            strict : true
+            cwd : process.cwd(),
+            map : false,
+            namer
         },
         opts || Object.create(null)
     );
@@ -56,7 +56,7 @@ function Processor(opts) {
     }
 
     if(typeof this._options.namer !== "function") {
-        this._options.namer = namer.bind(null, this._options.cwd);
+        this._options.namer = namer;
     }
 
     if(!Array.isArray(this._options.resolvers)) {
@@ -211,7 +211,7 @@ Processor.prototype = {
             results.forEach((result) => {
                 // Add file path comment
                 root.append(postcss.comment({
-                    text : path.relative(this._options.cwd, result.opts.from).replace(/\\/g, "/"),
+                    text : relative(this._options.cwd, result.opts.from),
                     
                     // Add a bogus-ish source property so postcss won't make weird-looking
                     // source-maps that break the visualizer

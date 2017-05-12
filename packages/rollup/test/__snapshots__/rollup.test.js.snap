@@ -63,14 +63,14 @@ console.log(css, fooga);
 
 exports[`/rollup.js watch should generate correct builds in watch mode when files change 1`] = `
 "/* packages/rollup/test/output/watched.css */
-.mc580619a9_one {
+.mcb6cdaade_one {
     color: red
 }"
 `;
 
 exports[`/rollup.js watch should generate correct builds in watch mode when files change 2`] = `
 "/* packages/rollup/test/output/watched.css */
-.mc580619a9_two {
+.mcb6cdaade_two {
     color: blue
 }"
 `;
