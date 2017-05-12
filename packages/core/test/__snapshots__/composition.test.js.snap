@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js composition should allow comments before composes 1`] = `
+Object {
+  "multiple-composes.css": Object {
+    "a": "a",
+    "b": "a b",
+  },
+}
+`;
+
+exports[`/processor.js composition should compose from globals 1`] = `
+Object {
+  "global-compose.css": Object {
+    "a": "b a",
+  },
+}
+`;
+
+exports[`/processor.js composition should compose from other files 1`] = `
+Object {
+  "packages/core/test/specimens/composes.css": Object {
+    "composes": "folder2 composes",
+  },
+  "packages/core/test/specimens/folder/folder2.css": Object {
+    "folder2": "folder2",
+  },
+}
+`;
+
+exports[`/processor.js composition should compose multiple classes 1`] = `
+Object {
+  "multiple-composes.css": Object {
+    "a": "a",
+    "b": "b",
+    "c": "a b c",
+  },
+}
+`;

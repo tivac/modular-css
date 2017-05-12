@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js options exportGlobals should not export :global values when exportGlobals is false 1`] = `
+Object {
+  "b": Array [
+    "mc8df92ddf_b",
+  ],
+}
+`;
+
+exports[`/processor.js options lifecycle options after should run async postcss plugins 1`] = `
+"/* packages/core/test/specimens/relative.css */
+.wooga {
+    color: red;
+    background: url(\\"./folder/to.png\\")
+}
+a {}"
+`;
+
+exports[`/processor.js options lifecycle options after should run sync postcss plugins 1`] = `
+"/* packages/core/test/specimens/relative.css */
+.wooga {
+    color: red;
+    background: url(\\"./folder/to.png\\")
+}
+a {}"
+`;
+
+exports[`/processor.js options lifecycle options after should use postcss-url by default 1`] = `
+"/* packages/core/test/specimens/relative.css */
+.mcbb30f12e_wooga {
+    color: red;
+    background: url(\\"../specimens/folder/to.png\\")
+}"
+`;
+
+exports[`/processor.js options lifecycle options before should run async postcss plugins before processing 1`] = `
+"/* packages/core/test/specimens/async-before.css */
+a {}"
+`;
+
+exports[`/processor.js options lifecycle options before should run sync postcss plugins before processing 1`] = `
+"/* packages/core/test/specimens/sync-before.css */
+a {}"
+`;
+
+exports[`/processor.js options lifecycle options done should run async postcss plugins done processing 1`] = `
+"/* packages/core/test/specimens/async-done.css */
+a {}"
+`;
+
+exports[`/processor.js options lifecycle options done should run sync postcss plugins done processing 1`] = `
+"/* packages/core/test/specimens/sync-done.css */
+a {}"
+`;
+
+exports[`/processor.js options map should generate source maps 1`] = `
+"/* packages/core/test/specimens/folder/folder.css */
+.folder {
+    margin: 2px
+}
+/* packages/core/test/specimens/local.css */
+.booga {
+    background: green
+}
+/* packages/core/test/specimens/start.css */
+.booga {
+    color: red;
+    background: blue
+}
+.tooga {
+    border: 1px solid white
+}
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2NvcmUvdGVzdC9zcGVjaW1lbnMvZm9sZGVyL2ZvbGRlci5jc3MiLCJwYWNrYWdlcy9jb3JlL3Rlc3Qvc3BlY2ltZW5zL2xvY2FsLmNzcyIsInBhY2thZ2VzL2NvcmUvdGVzdC9zcGVjaW1lbnMvc3RhcnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLG9EQUFDO0FBQ0Q7SUFBVSxXQUFZO0NBQUU7QUNEeEIsNENBQUM7QUFJRDtJQUFTLGlCQUFrQjtDQUFFO0FDSjdCLDRDQUFDO0FBRUQ7SURGQSxXQUFnQjtJQUNoQixnQkFBaUI7Q0NDc0I7QUFDdkM7SUZIQSx1QkFBcUI7Q0VHZSIsImZpbGUiOiJvdXQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiQHZhbHVlIGZvbGRlcjogd2hpdGU7XG4uZm9sZGVyIHsgbWFyZ2luOiAycHg7IH1cbiIsIkB2YWx1ZSBvbmU6IHJlZDtcbkB2YWx1ZSB0d286IGJsdWU7XG5AdmFsdWUgZm9sZGVyIGZyb20gXCIuL2ZvbGRlci9mb2xkZXIuY3NzXCI7XG5cbi5ib29nYSB7IGJhY2tncm91bmQ6IGdyZWVuOyB9XG4ubG9vZ2EgeyBjb21wb3NlczogYm9vZ2E7IH1cbiIsIkB2YWx1ZSBvbmUsIHR3bywgZm9sZGVyIGZyb20gXCIuL2xvY2FsLmNzc1wiO1xuLndvb2dhIHsgY29tcG9zZXM6IGJvb2dhIGZyb20gXCIuL2xvY2FsLmNzc1wiOyB9XG4uYm9vZ2EgeyBjb2xvcjogb25lOyBiYWNrZ3JvdW5kOiB0d287IH1cbi50b29nYSB7IGJvcmRlcjogMXB4IHNvbGlkIGZvbGRlcjsgfVxuIl19 */"
+`;
+
+exports[`/processor.js options namer should require a namer if a string is passed 1`] = `
+Object {
+  "wooga": Array [
+    "AA",
+  ],
+}
+`;
+
+exports[`/processor.js options namer should use a custom naming function 1`] = `
+Object {
+  "wooga": Array [
+    "packages/core/test/specimens/simple.css_wooga",
+  ],
+}
+`;
+
+exports[`/processor.js options namer should use a custom naming function 2`] = `".wooga { }"`;
+
+exports[`/processor.js options namer should use a custom naming function 3`] = `
+Object {
+  "wooga": Array [
+    "packages/core/test/specimens/simple.css_wooga",
+  ],
+}
+`;
+
+exports[`/processor.js options namer should use a custom naming function 4`] = `".packages/core/test/specimens/simple.css_wooga { }"`;
+
+exports[`/processor.js options namer should use the default naming function if a non-function is passed 1`] = `
+Object {
+  "wooga": Array [
+    "mcb251c446_wooga",
+  ],
+}
+`;

@@ -15,7 +15,7 @@ module.exports = (css, result) => {
         // Create local copy of values since we're going to merge in namespace stuff
         values = Object.assign(
             Object.create(null),
-            get(result.opts, [ "files", result.opts.from, "values" ]) || {}
+            get(result.opts, [ "files", result.opts.from, "values" ])
         ),
 
         external = selector((selectors) =>

@@ -17,7 +17,7 @@ module.exports = function(opts) {
     return Promise.all(
         globule.find({
             src        : options.search,
-            cwd        : processor._options.cwd,
+            cwd        : processor.options.cwd,
             prefixBase : true
         })
         .map((file) => processor.file(file))

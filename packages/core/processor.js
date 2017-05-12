@@ -14,10 +14,6 @@ var fs   = require("fs"),
     tiered   = require("./lib/graph-tiers.js"),
     resolve  = require("./lib/resolve.js");
 
-function namer(cwd, file, selector) {
-    return `mc${slug(relative(cwd, file))}_${selector}`;
-}
-
 function params(processor, args) {
     return Object.assign(
         Object.create(null),
@@ -32,10 +28,7 @@ function params(processor, args) {
 }
 
 function Processor(opts) {
-    var resolver;
-
-    /* eslint consistent-return:0, max-statements:0 */
-    
+    /* eslint consistent-return: off, max-statements: off */
     if(!(this instanceof Processor)) {
         return new Processor(opts);
     }
@@ -43,34 +36,32 @@ function Processor(opts) {
     this._options = Object.assign(
         Object.create(null),
         {
-            cwd    : process.cwd(),
-            map    : false,
-            strict : true
+            cwd : process.cwd(),
+            map : false
         },
         opts || Object.create(null)
     );
+
+    if(!path.isAbsolute(this._options.cwd)) {
+        this._options.cwd = path.resolve(this._options.cwd);
+    }
     
     if(typeof this._options.namer === "string") {
         this._options.namer = require(this._options.namer)();
     }
 
     if(typeof this._options.namer !== "function") {
-        this._options.namer = namer.bind(null, this._options.cwd);
+        this._options.namer = (file, selector) =>
+            `mc${slug(relative(this._options.cwd, file))}_${selector}`;
     }
 
     if(!Array.isArray(this._options.resolvers)) {
         this._options.resolvers = [];
     }
 
-    this._relative = relative.bind(null, this._options.cwd);
-
-    resolver = resolve.resolvers(this._options.resolvers);
-    this._resolve = (src, file) =>
-        this._relative(
-            resolver(
-                path.join(this._options.cwd, src), file
-            )
-        );
+    this._resolve = resolve.resolvers(this._options.resolvers);
+    
+    this._absolute = (file) => (path.isAbsolute(file) ? file : path.join(this._options.cwd, file));
 
     this._files = Object.create(null);
     this._graph = new Graph();
@@ -103,12 +94,18 @@ function Processor(opts) {
 Processor.prototype = {
     // Add a file on disk to the dependency graph
     file : function(file) {
-        return this.string(file, fs.readFileSync(file, "utf8"));
+        if(!path.isAbsolute(file)) {
+            file = path.join(this._options.cwd, file);
+        }
+
+        return this.string(path.normalize(file), fs.readFileSync(file, "utf8"));
     },
     
     // Add a file by name + contents to the dependency graph
-    string : function(name, text) {
-        var start = this._relative(name);
+    string : function(start, text) {
+        if(!path.isAbsolute(start)) {
+            start = path.join(this._options.cwd, start);
+        }
         
         return this._walk(start, text).then(() => {
             var deps = this._graph.dependenciesOf(start).concat(start);
@@ -136,31 +133,26 @@ Processor.prototype = {
             id      : start,
             file    : start,
             files   : this._files,
+            details : this._files[start],
             exports : this._files[start].exports
         }));
     },
     
     // Remove a file from the dependency graph
-    remove : function(input, options) {
+    remove : function(input) {
         var files = input;
 
         if(!Array.isArray(files)) {
             files = [ files ];
         }
         
-        if(!options) {
-            options = false;
-        }
-
         files
-            .map((file) => this._relative(file))
+            .map(this._absolute)
             .filter((file) => this._graph.hasNode(file))
             .forEach((file) => {
-                if(!options.shallow) {
-                    // Remove everything that depends on this too, it'll all need
-                    // to be recalculated
-                    this.remove(this._graph.dependantsOf(file));
-                }
+                // Remove everything that depends on this too, it'll all need
+                // to be recalculated
+                this.remove(this._graph.dependantsOf(file));
 
                 delete this._files[file];
                 
@@ -172,7 +164,7 @@ Processor.prototype = {
     dependencies : function(file) {
         if(file) {
             return this._graph.dependenciesOf(
-                this._relative(file)
+                file
             );
         }
 
@@ -193,8 +185,7 @@ Processor.prototype = {
         //
         return Promise.all(
             files
-            // Ensure we're dealing w/ relative paths
-            .map((dep) => (path.isAbsolute(dep) ? relative(this._options.cwd, dep) : dep))
+            .map(this._absolute)
             // Protect from any files that errored out (#248)
             .filter((dep) => dep in this._files && this._files[dep].result)
             .map((dep) => this._after.process(
@@ -216,7 +207,7 @@ Processor.prototype = {
             results.forEach((result) => {
                 // Add file path comment
                 root.append(postcss.comment({
-                    text : result.opts.from,
+                    text : relative(this._options.cwd, result.opts.from),
                     
                     // Add a bogus-ish source property so postcss won't make weird-looking
                     // source-maps that break the visualizer
@@ -293,7 +284,7 @@ Processor.prototype = {
                     dependency,
                     this._files[dependency] ?
                         null :
-                        fs.readFileSync(path.join(this._options.cwd, dependency), "utf8")
+                        fs.readFileSync(dependency, "utf8")
                 ))
             );
         });

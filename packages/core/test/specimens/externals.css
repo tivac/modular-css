@@ -4,6 +4,6 @@
     color: green;
 }
 
-.b :external(booga from localCss) {
+.b:hover :external(booga from localCss) {
     background: blue;
 }

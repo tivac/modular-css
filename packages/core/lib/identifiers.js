@@ -1,38 +1,19 @@
 "use strict";
 
-var createParser = require("postcss-selector-parser"),
-    
-    keyframes = /keyframes$/i;
+var createParser = require("postcss-selector-parser");
 
-exports.keyframes = keyframes;
+exports.keyframes = /keyframes$/i;
 
-// TODO: this is probably inefficient, but oh well for now
-exports.parse = function parse(selector) {
-    var values = [];
+// Find all classes that comprise a selector and return 'em
+exports.parse = (selector) => {
+    var values = [],
+        parser;
     
-    createParser(function(selectors) {
-        // Walk classes
-        selectors.walkClasses(function(part) {
-            values.push(part.value);
-        });
-        
-        // Walk IDs
-        selectors.walkIds(function(part) {
-            values.push(part.value);
-        });
-        
-        // Walk @keyframes definitions
-        selectors.walkTags(function(part) {
-            // This is a slightly ridiculous conditional, but postcss-selector-parser
-            // spits out @keyframes <name> as [ @keyframes, <name> ] so we have to do
-            // this flopping around to find the real value. Blech.
-            if(part.parent.nodes[0] &&
-               part.parent.nodes[0] !== part  &&
-               part.parent.nodes[0].value.search(keyframes) > -1) {
-                values.push(part.value);
-            }
-        });
-    }).process(selector);
+    parser = createParser((selectors) => {
+        selectors.walkClasses((part) => values.push(part.value));
+    });
+    
+    parser.process(selector);
     
     return values;
 };

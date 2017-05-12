@@ -2,35 +2,24 @@
 
 var parser  = require("../parsers/parser.js"),
     
-    plugin = "modular-css-values-namespaced",
-    offset = "@value ".length;
+    plugin = "modular-css-values-namespaced";
 
 // Find @value fooga: wooga entries & catalog/remove them
 module.exports = (css, result) => {
     var values = Object.create(null);
 
     css.walkAtRules("value", (rule) => {
-        var parsed, source;
+        var parsed = parser.parse(rule.params),
+            source;
         
-        try {
-            parsed = parser.parse(rule.params);
-        } catch(e) {
-            throw rule.error(e.toString(), { index : offset + e.location.start.column });
-        }
-
+        /* istanbul ignore if */
         if(parsed.type !== "namespace") {
             return;
         }
 
-        try {
-            source = result.opts.files[result.opts.resolve(result.opts.from, parsed.source)];
-        } catch(e) {
-            // NO-OP
-        }
-
-        if(!source) {
-            throw rule.error("Unknown composition source", { word : parsed.source });
-        }
+        source = result.opts.files[
+            result.opts.resolve(result.opts.from, parsed.source)
+        ];
 
         values[parsed.name] = source.values;
 

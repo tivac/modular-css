@@ -20,18 +20,9 @@ module.exports = (css, result) => {
             );
         }
 
-        try {
-            source = result.opts.files[result.opts.resolve(result.opts.from, parsed.source)];
-        } catch(e) {
-            // NO-OP
-        }
-
-        if(!source) {
-            throw rule.error(
-                "Unknown external source",
-                { word : parsed.source }
-            );
-        }
+        source = result.opts.files[
+            result.opts.resolve(result.opts.from, parsed.source)
+        ];
 
         // There will only ever be one, but this is nicer
         parsed.refs.forEach((ref) => {

@@ -1,0 +1,238 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js API ._resolve() should fall back to a default resolver 1`] = `
+Array [
+  "packages/core/test/specimens/local.css",
+]
+`;
+
+exports[`/processor.js API ._resolve() should run resolvers until a match is found 1`] = `"./local.css"`;
+
+exports[`/processor.js API .dependencies() should return the dependencies of the specified file 1`] = `
+Array [
+  "packages/core/test/specimens/folder/folder.css",
+  "packages/core/test/specimens/local.css",
+]
+`;
+
+exports[`/processor.js API .dependencies() should return the overall order of dependencies if no file is specified 1`] = `
+Array [
+  "packages/core/test/specimens/folder/folder.css",
+  "packages/core/test/specimens/local.css",
+  "packages/core/test/specimens/start.css",
+]
+`;
+
+exports[`/processor.js API .file() should process a relative file 1`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js API .file() should process a relative file 2`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js API .file() should process a relative file 3`] = `
+".wooga { color: red; }
+"
+`;
+
+exports[`/processor.js API .file() should process a relative file 4`] = `
+".wooga { color: red; }
+"
+`;
+
+exports[`/processor.js API .file() should process an absolute file 1`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js API .file() should process an absolute file 2`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js API .file() should process an absolute file 3`] = `
+".wooga { color: red; }
+"
+`;
+
+exports[`/processor.js API .file() should process an absolute file 4`] = `
+".wooga { color: red; }
+"
+`;
+
+exports[`/processor.js API .output() should avoid duplicating files in the output 1`] = `
+"/* packages/core/test/specimens/folder/folder.css */
+.folder {
+    margin: 2px
+}
+/* packages/core/test/specimens/local.css */
+.booga {
+    background: green
+}
+/* packages/core/test/specimens/start.css */
+.booga {
+    color: red;
+    background: blue
+}
+.tooga {
+    border: 1px solid white
+}"
+`;
+
+exports[`/processor.js API .output() should generate a JSON structure of all the compositions 1`] = `
+Object {
+  "packages/core/test/specimens/folder/folder.css": Object {
+    "folder": "folder",
+  },
+  "packages/core/test/specimens/local.css": Object {
+    "booga": "booga",
+    "looga": "booga looga",
+  },
+  "packages/core/test/specimens/start.css": Object {
+    "booga": "booga",
+    "tooga": "tooga",
+    "wooga": "booga wooga",
+  },
+}
+`;
+
+exports[`/processor.js API .output() should generate css representing the output from all added files 1`] = `
+"/* packages/core/test/specimens/folder/folder.css */
+.folder {
+    margin: 2px
+}
+/* packages/core/test/specimens/simple.css */
+.wooga {
+    color: red
+}
+/* packages/core/test/specimens/local.css */
+.booga {
+    background: green
+}
+/* packages/core/test/specimens/start.css */
+.booga {
+    color: red;
+    background: blue
+}
+.tooga {
+    border: 1px solid white
+}"
+`;
+
+exports[`/processor.js API .output() should order output by dependencies, then alphabetically 1`] = `
+"/* packages/core/test/specimens/folder/folder.css */
+.folder {
+    margin: 2px
+}
+/* packages/core/test/specimens/folder/folder2.css */
+.folder2 {
+    color: green
+}
+/* packages/core/test/specimens/folder/subfolder/subfolder.css */
+.subfolder {
+    color: yellow
+}
+/* packages/core/test/specimens/composes.css */
+/* packages/core/test/specimens/deep.css */
+.deep {
+    color: black
+}
+/* packages/core/test/specimens/local.css */
+.booga {
+    background: green
+}
+/* packages/core/test/specimens/start.css */
+.booga {
+    color: red;
+    background: blue
+}
+.tooga {
+    border: 1px solid white
+}"
+`;
+
+exports[`/processor.js API .output() should return a postcss result 1`] = `
+"/* packages/core/test/specimens/folder/folder.css */
+.folder {
+    margin: 2px
+}
+/* packages/core/test/specimens/local.css */
+.booga {
+    background: green
+}
+/* packages/core/test/specimens/start.css */
+.booga {
+    color: red;
+    background: blue
+}
+.tooga {
+    border: 1px solid white
+}"
+`;
+
+exports[`/processor.js API .output() should support returning output for specified absolute files 1`] = `
+"/* packages/core/test/specimens/start.css */
+.booga {
+    color: red;
+    background: blue
+}
+.tooga {
+    border: 1px solid white
+}"
+`;
+
+exports[`/processor.js API .output() should support returning output for specified relative files 1`] = `
+"/* packages/core/test/specimens/start.css */
+.booga {
+    color: red;
+    background: blue
+}
+.tooga {
+    border: 1px solid white
+}"
+`;
+
+exports[`/processor.js API .remove() should remove a relative file 1`] = `Array []`;
+
+exports[`/processor.js API .remove() should remove an absolute file 1`] = `Array []`;
+
+exports[`/processor.js API .remove() should remove multiple files 1`] = `
+Array [
+  "c.css",
+]
+`;
+
+exports[`/processor.js API .string() should process a string 1`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js API .string() should process a string 2`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js API .string() should process a string 3`] = `".wooga { }"`;
+
+exports[`/processor.js API .string() should process a string 4`] = `".wooga { }"`;

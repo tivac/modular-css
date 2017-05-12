@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js exports should export an object of arrays containing strings 1`] = `
+Object {
+  "black": Array [
+    "black",
+  ],
+  "one": Array [
+    "red",
+    "black",
+    "one",
+  ],
+  "red": Array [
+    "red",
+  ],
+  "two": Array [
+    "red",
+    "black",
+    "two",
+  ],
+}
+`;
+
+exports[`/processor.js exports should export identifiers and their classes 1`] = `
+Object {
+  "packages/core/test/specimens/folder/folder.css": Object {
+    "folder": "folder",
+  },
+  "packages/core/test/specimens/local.css": Object {
+    "booga": "booga",
+    "looga": "booga looga",
+  },
+  "packages/core/test/specimens/start.css": Object {
+    "booga": "booga",
+    "tooga": "tooga",
+    "wooga": "booga wooga",
+  },
+}
+`;

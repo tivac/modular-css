@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`/issues /191 should ignore case differences in file paths 1`] = `
-"/* packages/core/test/specimens/issues/191/values.css */
-.fooga {
-    color: #F00
-}
-/* packages/core/test/specimens/issues/191/start.css */"
-`;

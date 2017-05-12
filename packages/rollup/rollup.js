@@ -8,8 +8,7 @@ var fs   = require("fs"),
     mkdirp  = require("mkdirp"),
     
     Processor = require("modular-css-core"),
-    output    = require("modular-css-core/lib/output.js"),
-    relative  = require("modular-css-core/lib/relative.js");
+    output    = require("modular-css-core/lib/output.js");
 
 module.exports = function(opts) {
     var options = Object.assign(Object.create(null), {
@@ -47,9 +46,7 @@ module.exports = function(opts) {
             return processor.string(id, code).then(function(result) {
                 var classes = output.join(result.exports),
                     imports = processor.dependencies(id)
-                        .map(function(file) {
-                            return `import "${relative.prefixed(path.dirname(id), file)}";`;
-                        })
+                        .map((file) => `import "${file.replace(/\\/g, "/")}";`)
                         .join("\n");
                 
                 return {

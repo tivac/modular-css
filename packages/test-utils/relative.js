@@ -1,3 +1,5 @@
 "use strict";
 
-module.exports = require("modular-css-core/lib/relative.js").bind(null, process.cwd());
+var rel = require("modular-css-core/lib/relative.js").bind(null, process.cwd());
+
+module.exports = (files) => files.map(rel);
