@@ -4,7 +4,7 @@ var fs = require("fs"),
     
     namer = require("test-utils/namer.js"),
 
-    Processor = require("../processor.js");
+    Processor = require("../../processor.js");
 
 describe("/issues", function() {
     describe("/191", function() {
@@ -26,7 +26,7 @@ describe("/issues", function() {
                     namer
                 });
             
-            return processor.file("./packages/core/test/specimens/issues/191/start.css")
+            return processor.file(require.resolve("./specimens/191/start.css"))
                 .then(() => processor.output())
                 .then((result) => expect(result.css).toMatchSnapshot());
         });

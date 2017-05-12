@@ -1,6 +1,6 @@
 "use strict";
 
-var Processor = require("../processor.js");
+var Processor = require("../../processor.js");
 
 describe("/issues", function() {
     describe("/66", function() {

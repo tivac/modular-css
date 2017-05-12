@@ -3,7 +3,7 @@
 var dedent = require("dedent"),
     namer  = require("test-utils/namer.js"),
     
-    Processor = require("../processor.js");
+    Processor = require("../../processor.js");
 
 describe("/issues", function() {
     describe("/98", function() {
