@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js scoping should leave unknown animation names alone 1`] = `
+"/* unknown-name.css */
+.a {
+    animation: a
+}
+.b {
+    animation-name: b
+}"
+`;
+
+exports[`/processor.js scoping should update multiple animations properly 1`] = `
+"/* multiple-animations.css */
+@keyframes a {}
+@keyframes b {}
+.c {
+    animation: a 10s linear, b 0.2s infinite
+}"
+`;
+
+exports[`/processor.js scoping should update scoped animations from the scoping plugin's message 1`] = `
+"/* animation.css */
+@keyframes a {}
+.b {
+    animation: a
+}"
+`;
+
+exports[`/processor.js scoping should update scoped prefixed animations from the scoping plugin's message 1`] = `
+"/* prefixed-animations.css */
+@-webkit-keyframes a {}
+.b {
+    animation: a
+}"
+`;
+
+exports[`/processor.js scoping should update the animation-name property 1`] = `
+"/* animation-name.css */
+@keyframes a {}
+.b {
+    animation-name: a
+}"
+`;
