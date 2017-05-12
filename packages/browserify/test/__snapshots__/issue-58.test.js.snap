@@ -5,14 +5,14 @@ exports[`/browserify.js /issues /58 should update when CSS dependencies change 1
 require('./packages/browserify/test/specimens/issues/58/issue.css');
 },{\\"./packages/browserify/test/specimens/issues/58/issue.css\\":2}],2:[function(require,module,exports){
 module.exports = {
-    \\"issue1\\": \\"mc536dbb4e_other1 mc4530832b_issue1\\",
-    \\"issue2\\": \\"mc536dbb4e_other1 mc4530832b_issue1 mc536dbb4e_other3 mc4530832b_issue2\\"
+    \\"issue1\\": \\"mc2652cf16_other1 mc46e4a65d_issue1\\",
+    \\"issue2\\": \\"mc2652cf16_other1 mc46e4a65d_issue1 mc2652cf16_other3 mc46e4a65d_issue2\\"
 };
 },{\\"./packages/browserify/test/specimens/issues/58/other.css\\":3}],3:[function(require,module,exports){
 module.exports = {
-    \\"other1\\": \\"mc536dbb4e_other1\\",
-    \\"other2\\": \\"mc536dbb4e_other2\\",
-    \\"other3\\": \\"mc536dbb4e_other3\\"
+    \\"other1\\": \\"mc2652cf16_other1\\",
+    \\"other2\\": \\"mc2652cf16_other2\\",
+    \\"other3\\": \\"mc2652cf16_other3\\"
 };
 },{}]},{},[1]);
 "
@@ -23,8 +23,8 @@ exports[`/browserify.js /issues /58 should update when CSS dependencies change 2
 require('./packages/browserify/test/specimens/issues/58/issue.css');
 },{\\"./packages/browserify/test/specimens/issues/58/issue.css\\":2}],2:[function(require,module,exports){
 module.exports = {
-    \\"issue1\\": \\"mc536dbb4e_other1 mc4530832b_issue1\\",
-    \\"issue2\\": \\"mc536dbb4e_other1 mc4530832b_issue1 mc536dbb4e_other2 mc536dbb4e_other3 mc4530832b_issue2\\"
+    \\"issue1\\": \\"mc2652cf16_other1 mc46e4a65d_issue1\\",
+    \\"issue2\\": \\"mc2652cf16_other1 mc46e4a65d_issue1 mc2652cf16_other2 mc2652cf16_other3 mc46e4a65d_issue2\\"
 };
 },{}]},{},[1]);
 "
@@ -32,20 +32,20 @@ module.exports = {
 
 exports[`/browserify.js /issues /58 should update when CSS dependencies change 3`] = `
 "/* packages/browserify/test/specimens/issues/58/other.css */
-.mc536dbb4e_other1 {
+.mc2652cf16_other1 {
     color: green
 }
-.mc536dbb4e_other2 {
+.mc2652cf16_other2 {
     color: yellow
 }
-.mc536dbb4e_other3 {
+.mc2652cf16_other3 {
     background: white
 }
 /* packages/browserify/test/specimens/issues/58/issue.css */
-.mc4530832b_issue1 {
+.mc46e4a65d_issue1 {
     color: teal
 }
-.mc4530832b_issue2 {
+.mc46e4a65d_issue2 {
     color: aqua
 }"
 `;

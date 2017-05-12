@@ -3,7 +3,7 @@
 exports[`/processor.js options exportGlobals should not export :global values when exportGlobals is false 1`] = `
 Object {
   "b": Array [
-    "mc3b4cd5df_b",
+    "mc8df92ddf_b",
   ],
 }
 `;
@@ -28,7 +28,7 @@ a {}"
 
 exports[`/processor.js options lifecycle options after should use postcss-url by default 1`] = `
 "/* packages/core/test/specimens/relative.css */
-.mc31623a0f_wooga {
+.mcbb30f12e_wooga {
     color: red;
     background: url(\\"../specimens/folder/to.png\\")
 }"
@@ -105,7 +105,7 @@ exports[`/processor.js options namer should use a custom naming function 4`] = `
 exports[`/processor.js options namer should use the default naming function if a non-function is passed 1`] = `
 Object {
   "wooga": Array [
-    "mcd38b1ded_wooga",
+    "mcb251c446_wooga",
   ],
 }
 `;

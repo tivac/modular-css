@@ -14,10 +14,6 @@ var fs   = require("fs"),
     tiered   = require("./lib/graph-tiers.js"),
     resolve  = require("./lib/resolve.js");
 
-function namer(file, selector) {
-    return `mc${slug(file)}_${selector}`;
-}
-
 function params(processor, args) {
     return Object.assign(
         Object.create(null),
@@ -41,8 +37,7 @@ function Processor(opts) {
         Object.create(null),
         {
             cwd : process.cwd(),
-            map : false,
-            namer
+            map : false
         },
         opts || Object.create(null)
     );
@@ -56,7 +51,8 @@ function Processor(opts) {
     }
 
     if(typeof this._options.namer !== "function") {
-        this._options.namer = namer;
+        this._options.namer = (file, selector) =>
+            `mc${slug(relative(this._options.cwd, file))}_${selector}`;
     }
 
     if(!Array.isArray(this._options.resolvers)) {
