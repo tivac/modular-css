@@ -1,6 +1,6 @@
 {
   "name": "modular-cssify",
-  "version": "5.0.0-rc1",
+  "version": "5.0.0",
   "description": "Browserify transform for modular-css",
   "main": "./browserify.js",
   "repository": "tivac/modular-css",
@@ -22,13 +22,13 @@
     "browserify": "^14.3.0",
     "factor-bundle": "^2.5.0",
     "from2-string": "^1.1.0",
-    "test-utils": "^5.0.0-rc1",
+    "test-utils": "^5.0.0",
     "watchify": "^3.9.0"
   },
   "dependencies": {
     "lodash.foreach": "^4.5.0",
     "mkdirp": "^0.5.1",
-    "modular-css-core": "^5.0.0-rc1",
+    "modular-css-core": "^5.0.0",
     "sink-transform": "^2.0.0",
     "through2": "^2.0.3"
   }
