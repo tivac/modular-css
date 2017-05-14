@@ -104,6 +104,20 @@ describe("/processor.js", function() {
                     expect(relative(processor.dependencies())).toMatchSnapshot();
                 });
             });
+            
+            it("should remove dependant files", function() {
+                return Promise.all([
+                    processor.file("./packages/core/test/specimens/start.css")
+                ])
+                .then(() => {
+                    processor.remove([
+                        "./packages/core/test/specimens/local.css",
+                        "./packages/core/test/specimens/folder/folder.css",
+                        "./packages/core/test/specimens/start.css"
+                    ]);
+                    expect(processor.dependencies()).toEqual([]);
+                });
+            });
         });
         
         describe(".dependencies()", function() {

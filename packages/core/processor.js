@@ -152,11 +152,13 @@ Processor.prototype = {
             .forEach((file) => {
                 // Remove everything that depends on this too, it'll all need
                 // to be recalculated
-                this.remove(this._graph.dependantsOf(file));
+                if (this._graph.hasNode(file)) {
+                    this.remove(this._graph.dependantsOf(file));
 
-                delete this._files[file];
-                
-                this._graph.removeNode(file);
+                    delete this._files[file];
+
+                    this._graph.removeNode(file);
+                }
             });
     },
     
