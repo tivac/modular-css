@@ -1,6 +1,7 @@
 "use strict";
 
-var dedent = require("dedent"),
+var path = require("path"),
+    dedent = require("dedent"),
     namer  = require("test-utils/namer.js"),
     
     Processor = require("../processor.js");
@@ -31,7 +32,9 @@ describe("/processor.js", () => {
                 "@value not-real from \"../local.css\";"
             )
             .catch((error) =>
-                expect(error.message).toMatch(`Cannot find module '../local.css'`)
+                expect(error.message).toMatch(
+                    `Unable to locate "../local.css" from "${path.resolve("invalid/value.css")}"`
+                )
             )
         );
 
