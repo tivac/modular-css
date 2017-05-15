@@ -5,28 +5,28 @@ var namer    = require("test-utils/namer.js"),
 
     Processor = require("../processor.js");
 
-describe("/processor.js", function() {
-    describe("API", function() {
+describe("/processor.js", () => {
+    describe("API", () => {
         var processor;
 
-        beforeEach(function() {
+        beforeEach(() => {
             processor = new Processor({
                 namer
             });
         });
 
-        it("should be a function", function() {
-            expect(typeof Processor).toBe("function");
-        });
+        it("should be a function", () =>
+            expect(typeof Processor).toBe("function")
+        );
         
-        it("should auto-instantiate if called without new", function() {
+        it("should auto-instantiate if called without new", () =>
             /* eslint new-cap:0 */
-            expect(Processor()).toBeInstanceOf(Processor);
-        });
+            expect(Processor()).toBeInstanceOf(Processor)
+        );
 
-        describe(".string()", function() {
-            it("should process a string", function() {
-                return processor.string(
+        describe(".string()", () => {
+            it("should process a string", () =>
+                processor.string(
                     "./simple.css", ".wooga { }"
                 )
                 .then((result) => {
@@ -34,13 +34,13 @@ describe("/processor.js", function() {
                     expect(result.details.exports).toMatchSnapshot();
                     expect(result.details.text).toMatchSnapshot();
                     expect(result.details.processed.root.toResult().css).toMatchSnapshot();
-                });
-            });
+                })
+            );
         });
         
-        describe(".file()", function() {
-            it("should process a relative file", function() {
-                return processor.file(
+        describe(".file()", () => {
+            it("should process a relative file", () =>
+                processor.file(
                     "./packages/core/test/specimens/simple.css"
                 )
                 .then((result) => {
@@ -48,11 +48,11 @@ describe("/processor.js", function() {
                     expect(result.details.exports).toMatchSnapshot();
                     expect(result.details.text).toMatchSnapshot();
                     expect(result.details.processed.root.toResult().css).toMatchSnapshot();
-                });
-            });
+                })
+            );
 
-            it("should process an absolute file", function() {
-                return processor.file(
+            it("should process an absolute file", () =>
+                processor.file(
                     require.resolve("./specimens/simple.css")
                 )
                 .then((result) => {
@@ -60,13 +60,13 @@ describe("/processor.js", function() {
                     expect(result.details.exports).toMatchSnapshot();
                     expect(result.details.text).toMatchSnapshot();
                     expect(result.details.processed.root.toResult().css).toMatchSnapshot();
-                });
-            });
+                })
+            );
         });
         
-        describe(".remove()", function() {
-            it("should remove a relative file", function() {
-                return processor.string(
+        describe(".remove()", () => {
+            it("should remove a relative file", () =>
+                processor.string(
                     "./simple.css",
                     ".wooga { }"
                 )
@@ -74,11 +74,11 @@ describe("/processor.js", function() {
                     processor.remove("./simple.css");
                     
                     expect(relative(processor.dependencies())).toMatchSnapshot();
-                });
-            });
+                })
+            );
 
-            it("should remove an absolute file", function() {
-                return processor.string(
+            it("should remove an absolute file", () =>
+                processor.string(
                     "./packages/core/test/specimens/simple.css",
                     ".wooga { }"
                 )
@@ -86,14 +86,14 @@ describe("/processor.js", function() {
                     processor.remove(require.resolve("./specimens/simple.css"));
                     
                     expect(relative(processor.dependencies())).toMatchSnapshot();
-                });
-            });
+                })
+            );
             
-            it("should remove multiple files", function() {
-                return Promise.all([
-                    processor.string("./a.css", ".aooga { }"),
-                    processor.string("./b.css", ".booga { }"),
-                    processor.string("./c.css", ".cooga { }")
+            it("should remove multiple files", () =>
+                Promise.all([
+                    processor.string("./a.css", ".a { }"),
+                    processor.string("./b.css", ".b { }"),
+                    processor.string("./c.css", ".c { }")
                 ])
                 .then(() => {
                     processor.remove([
@@ -102,27 +102,23 @@ describe("/processor.js", function() {
                     ]);
                     
                     expect(relative(processor.dependencies())).toMatchSnapshot();
-                });
-            });
+                })
+            );
             
-            it("should remove dependant files", function() {
-                return Promise.all([
-                    processor.file("./packages/core/test/specimens/start.css")
-                ])
+            it("should remove dependant files", () =>
+                processor.file("./packages/core/test/specimens/start.css")
                 .then(() => {
                     processor.remove([
-                        "./packages/core/test/specimens/local.css",
-                        "./packages/core/test/specimens/folder/folder.css",
-                        "./packages/core/test/specimens/start.css"
+                        "./packages/core/test/specimens/folder/folder.css"
                     ]);
                     expect(processor.dependencies()).toEqual([]);
-                });
-            });
+                })
+            );
         });
         
-        describe(".dependencies()", function() {
-            it("should return the dependencies of the specified file", function() {
-                return processor.file(
+        describe(".dependencies()", () => {
+            it("should return the dependencies of the specified file", () =>
+                processor.file(
                     "./packages/core/test/specimens/start.css"
                 )
                 .then(() =>
@@ -130,67 +126,67 @@ describe("/processor.js", function() {
                         relative(processor.dependencies(require.resolve("./specimens/start.css")))
                     )
                     .toMatchSnapshot()
-                );
-            });
+                )
+            );
             
-            it("should return the overall order of dependencies if no file is specified", function() {
-                return processor.file(
+            it("should return the overall order of dependencies if no file is specified", () =>
+                processor.file(
                     "./packages/core/test/specimens/start.css"
                 )
                 .then(() =>
                     expect(relative(processor.dependencies())).toMatchSnapshot()
-                );
-            });
+                )
+            );
         });
         
-        describe(".output()", function() {
-            it("should return a postcss result", function() {
-                return processor.file(
+        describe(".output()", () => {
+            it("should return a postcss result", () =>
+                processor.file(
                     "./packages/core/test/specimens/start.css"
                 )
                 .then(() => processor.output())
-                .then((result) => expect(result.css).toMatchSnapshot());
-            });
+                .then((result) => expect(result.css).toMatchSnapshot())
+            );
             
-            it("should generate css representing the output from all added files", function() {
-                return Promise.all([
+            it("should generate css representing the output from all added files", () =>
+                Promise.all([
                     processor.file("./packages/core/test/specimens/start.css"),
                     processor.file("./packages/core/test/specimens/simple.css")
                 ])
                 .then(() => processor.output())
-                .then((result) => expect(result.css).toMatchSnapshot());
-            });
+                .then((result) => expect(result.css).toMatchSnapshot())
+            );
 
-            it("should avoid duplicating files in the output", function() {
-                return Promise.all([
+            it("should avoid duplicating files in the output", () =>
+                Promise.all([
                     processor.file("./packages/core/test/specimens/start.css"),
                     processor.file("./packages/core/test/specimens/local.css")
                 ])
                 .then(() => processor.output())
-                .then((result) => expect(result.css).toMatchSnapshot());
-            });
+                .then((result) => expect(result.css).toMatchSnapshot())
+            );
             
-            it("should generate a JSON structure of all the compositions", function() {
-                return processor.file(
+            it("should generate a JSON structure of all the compositions", () =>
+                processor.file(
                     "./packages/core/test/specimens/start.css"
                 )
                 .then(() => processor.output())
-                .then((result) => expect(result.compositions).toMatchSnapshot());
-            });
+                .then((result) => expect(result.compositions).toMatchSnapshot())
+            );
             
-            it("should order output by dependencies, then alphabetically", function() {
-                return Promise.all([
+            it("should order output by dependencies, then alphabetically", () =>
+                Promise.all([
                     processor.file("./packages/core/test/specimens/start.css"),
                     processor.file("./packages/core/test/specimens/local.css"),
                     processor.file("./packages/core/test/specimens/composes.css"),
                     processor.file("./packages/core/test/specimens/deep.css")
                 ])
                 .then(() => processor.output())
-                .then((result) => expect(result.css).toMatchSnapshot());
-            });
+                .then((result) => expect(result.css).toMatchSnapshot())
+            );
 
-            it("should support returning output for specified relative files", function() {
-                return Promise.all([
+            it("should support returning output for specified relative files", () =>
+                Promise.all([
                     processor.file("./packages/core/test/specimens/start.css"),
                     processor.file("./packages/core/test/specimens/local.css")
                 ])
@@ -199,11 +195,11 @@ describe("/processor.js", function() {
                         "./packages/core/test/specimens/start.css"
                     ]
                 }))
-                .then((result) => expect(result.css).toMatchSnapshot());
-            });
+                .then((result) => expect(result.css).toMatchSnapshot())
+            );
 
-            it("should support returning output for specified absolute files", function() {
-                return Promise.all([
+            it("should support returning output for specified absolute files", () =>
+                Promise.all([
                     processor.file("./packages/core/test/specimens/start.css"),
                     processor.file("./packages/core/test/specimens/local.css")
                 ])
@@ -212,12 +208,12 @@ describe("/processor.js", function() {
                         require.resolve("./specimens/start.css")
                     ]
                 }))
-                .then((result) => expect(result.css).toMatchSnapshot());
-            });
+                .then((result) => expect(result.css).toMatchSnapshot())
+            );
         });
 
-        describe("._resolve()", function() {
-            it("should run resolvers until a match is found", function() {
+        describe("._resolve()", () => {
+            it("should run resolvers until a match is found", () => {
                 var ran = false;
 
                 processor = new Processor({
@@ -240,7 +236,7 @@ describe("/processor.js", function() {
                 expect(ran).toBeTruthy();
             });
 
-            it("should fall back to a default resolver", function() {
+            it("should fall back to a default resolver", () => {
                 processor = new Processor({
                     resolvers : [
                         () => undefined

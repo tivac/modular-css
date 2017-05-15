@@ -7,6 +7,7 @@ var fs   = require("fs"),
     postcss = require("postcss"),
     slug    = require("unique-slug"),
     series  = require("p-each-series"),
+    unique  = require("lodash.uniq"),
 
     output   = require("./lib/output.js"),
     message  = require("./lib/message.js"),
@@ -146,20 +147,26 @@ Processor.prototype = {
             files = [ files ];
         }
         
-        files
+        files = files
             .map(this._absolute)
             .filter((file) => this._graph.hasNode(file))
-            .forEach((file) => {
-                // Remove everything that depends on this too, it'll all need
-                // to be recalculated
-                if(this._graph.hasNode(file)) {
-                    this.remove(this._graph.dependantsOf(file));
+            // Remove everything that depends on files to be removed as well
+            // since it will also have to be recalculated
+            .reduce(
+                (prev, curr) =>
+                    prev.concat(
+                        this._graph.dependantsOf(curr)
+                            .concat(curr)
+                    )
+                ,
+                files
+            );
 
-                    delete this._files[file];
+        unique(files).forEach((file) => {
+            delete this._files[file];
 
-                    this._graph.removeNode(file);
-                }
-            });
+            this._graph.removeNode(file);
+        });
     },
     
     // Get the dependency order for a file or the entire tree
