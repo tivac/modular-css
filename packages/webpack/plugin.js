@@ -66,9 +66,15 @@ ModularCSS.prototype.apply = function(compiler) {
         this.processor.output()
             .then((data) => {
                 if(this.options.css) {
-                    compilation.assets[this.options.css] = new sources.RawSource(
-                        data.css
-                    );
+                    compilation.assets[this.options.css] = data.map ?
+                        new sources.SourceMapSource(
+                            data.css,
+                            data.map.file,
+                            data.map
+                        ) :
+                        new sources.RawSource(
+                            data.css
+                        );
                 }
                 
                 if(this.options.json) {

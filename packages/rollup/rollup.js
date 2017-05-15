@@ -70,13 +70,6 @@ module.exports = function(opts) {
                         `export default ${JSON.stringify(classes, null, 4)};`
                     ];
                 
-                // Add dependencies
-                out = out.concat(
-                    processor.dependencies(id).map((file) =>
-                        `import "${file.replace(/\\/g, "/")}";`
-                    )
-                );
-                    
                 if(options.namedExports === false) {
                     return {
                         code : out.join("\n"),
@@ -118,6 +111,15 @@ module.exports = function(opts) {
                     fs.writeFileSync(
                         options.css,
                         data.css
+                    );
+                }
+
+                if(options.css && data.map) {
+                    mkdirp.sync(path.dirname(options.css));
+
+                    fs.writeFileSync(
+                        `${options.css}.map`,
+                        data.map.toString()
                     );
                 }
                 
