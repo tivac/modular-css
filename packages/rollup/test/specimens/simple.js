@@ -1,4 +1,3 @@
-import css, {fooga} from "./simple.css";
+import css from "./simple.css";
 
 console.log(css);
-console.log(fooga);

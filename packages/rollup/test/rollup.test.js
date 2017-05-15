@@ -17,15 +17,15 @@ function error(root) {
 
 error.postcssPlugin = "error-plugin";
 
-describe("/rollup.js", function() {
+describe("/rollup.js", () => {
     afterAll(() => require("shelljs").rm("-rf", "./packages/rollup/test/output/*"));
     
-    it("should be a function", function() {
-        expect(typeof plugin).toBe("function");
-    });
+    it("should be a function", () =>
+        expect(typeof plugin).toBe("function")
+    );
     
-    it("should generate exports", function() {
-        return rollup({
+    it("should generate exports", () =>
+        rollup({
             entry   : "./packages/rollup/test/specimens/simple.js",
             plugins : [
                 plugin({
@@ -33,11 +33,13 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => expect(bundle.generate({ format : "es" }).code).toMatchSnapshot());
-    });
+        .then((bundle) =>
+            expect(bundle.generate({ format : "es" }).code).toMatchSnapshot()
+        )
+    );
     
-    it("should be able to tree-shake results", function() {
-        return rollup({
+    it("should be able to tree-shake results", () =>
+        rollup({
             entry   : "./packages/rollup/test/specimens/tree-shaking.js",
             plugins : [
                 plugin({
@@ -45,11 +47,13 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => expect(bundle.generate({ format : "es" }).code).toMatchSnapshot());
-    });
+        .then((bundle) =>
+            expect(bundle.generate({ format : "es" }).code).toMatchSnapshot()
+        )
+    );
 
-    it("should attach a promise to the bundle.generate response", function() {
-          return rollup({
+    it("should attach a promise to the bundle.generate response", () =>
+        rollup({
             entry   : "./packages/rollup/test/specimens/simple.js",
             plugins : [
                 plugin({
@@ -62,11 +66,11 @@ describe("/rollup.js", function() {
             expect(
                 typeof bundle.generate({ format : "es" }).css.then
             ).toBe("function")
-        );
-    });
+        )
+    );
     
-    it("should generate CSS", function() {
-        return rollup({
+    it("should generate CSS", () =>
+        rollup({
             entry   : "./packages/rollup/test/specimens/simple.js",
             plugins : [
                 plugin({
@@ -79,11 +83,13 @@ describe("/rollup.js", function() {
             format : "es",
             dest   : "./packages/rollup/test/output/simple.js"
         }))
-        .then(() => expect(read("simple.css")).toMatchSnapshot());
-    });
+        .then(() =>
+            expect(read("simple.css")).toMatchSnapshot()
+        )
+    );
     
-    it("should generate JSON", function() {
-        return rollup({
+    it("should generate JSON", () =>
+        rollup({
             entry   : "./packages/rollup/test/specimens/simple.js",
             plugins : [
                 plugin({
@@ -96,26 +102,58 @@ describe("/rollup.js", function() {
             format : "es",
             dest   : "./packages/rollup/test/output/simple.js"
         }))
-        .then(() => expect(read("simple.json")).toMatchSnapshot());
-    });
+        .then(() =>
+            expect(read("simple.json")).toMatchSnapshot()
+        )
+    );
+
+    it("should provide named exports", () =>
+        rollup({
+            entry   : "./packages/rollup/test/specimens/named.js",
+            plugins : [
+                plugin({
+                    namer
+                })
+            ]
+        })
+        .then((bundle) =>
+            expect(bundle.generate({ format : "es" }).code).toMatchSnapshot()
+        )
+    );
     
-    it("should warn & not export individual keys when they are not valid identifiers", function() {
-        return rollup({
+    it("should warn & not export individual keys when they are not valid identifiers", () =>
+        rollup({
             entry   : "./packages/rollup/test/specimens/invalid-name.js",
             plugins : [
                 plugin({
                     namer,
-                    onwarn : function(msg) {
-                        assert(msg === "Invalid JS identifier \"fooga-wooga\", unable to export");
-                    }
+                    onwarn : (msg) =>
+                        assert(msg === "Invalid JS identifier \"fooga-wooga\", unable to export")
                 })
             ]
         })
-        .then((bundle) => expect(bundle.generate({ format : "es" }).code).toMatchSnapshot());
-    });
+        .then((bundle) =>
+            expect(bundle.generate({ format : "es" }).code).toMatchSnapshot()
+        )
+    );
+
+    it("should allow disabling of named exports", () =>
+        rollup({
+            entry   : "./packages/rollup/test/specimens/simple.js",
+            plugins : [
+                plugin({
+                    namer,
+                    namedExports : false
+                })
+            ]
+        })
+        .then((bundle) =>
+            expect(bundle.generate({ format : "es" }).code).toMatchSnapshot()
+        )
+    );
     
-    it("shouldn't disable sourcemap generation", function() {
-        return rollup({
+    it("shouldn't disable sourcemap generation", () =>
+        rollup({
             entry   : "./packages/rollup/test/specimens/simple.js",
             plugins : [
                 plugin({
@@ -124,28 +162,21 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => expect(
-            bundle.generate({
+        .then((bundle) => {
+            var map = bundle.generate({
                 format    : "es",
                 sourceMap : true
-            }).map
-        ).toEqual({
-            version  : 3,
-            file     : null,
-            mappings : ";;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC;AACjB,OAAO,CAAC,GAAG,CAAC,KAAK,CAAC,CAAC",
-            names    : [],
-            sources  : [
-                require.resolve("./specimens/simple.js").replace(/\\/g, "/")
-            ],
+            }).map;
+
+            // Sources are absolute file paths, so prevent snapshot testing
+            delete map.sources;
             
-            sourcesContent : [
-                "import css, {fooga} from \"./simple.css\";\n\nconsole.log(css);\nconsole.log(fooga);\n"
-            ]
-        }));
-    });
+            expect(map).toMatchSnapshot();
+        })
+    );
     
-    it("should not output sourcemaps when they are disabled", function() {
-        return rollup({
+    it("should not output sourcemaps when they are disabled", () =>
+        rollup({
             entry   : "./packages/rollup/test/specimens/simple.js",
             plugins : [
                 plugin({
@@ -169,11 +200,13 @@ describe("/rollup.js", function() {
                 sourceMap : false
             });
         })
-        .then(() => expect(read("no-maps.css")).toMatchSnapshot());
-    });
+        .then(() =>
+            expect(read("no-maps.css")).toMatchSnapshot()
+        )
+    );
 
-    it("should respect the CSS dependency tree", function() {
-        return rollup({
+    it("should respect the CSS dependency tree", () =>
+        rollup({
             entry   : "./packages/rollup/test/specimens/dependencies.js",
             plugins : [
                 plugin({
@@ -181,16 +214,18 @@ describe("/rollup.js", function() {
                 })
             ]
         })
-        .then((bundle) => expect(bundle.generate({ format : "es" }).code).toMatchSnapshot());
-    });
+        .then((bundle) =>
+            expect(bundle.generate({ format : "es" }).code).toMatchSnapshot()
+        )
+    );
 
-    describe("errors", function() {
+    describe("errors", () => {
         function checkError(err) {
             assert(err.toString().indexOf("error-plugin:") > -1);
         }
 
-        it("should throw errors in in before plugins", function() {
-            return rollup({
+        it("should throw errors in in before plugins", () =>
+            rollup({
                 entry   : "./packages/rollup/test/specimens/simple.js",
                 plugins : [
                     plugin({
@@ -200,11 +235,11 @@ describe("/rollup.js", function() {
                     })
                 ]
             })
-            .catch(checkError);
-        });
+            .catch(checkError)
+        );
 
-        it("should throw errors in after plugins", function() {
-            return rollup({
+        it("should throw errors in after plugins", () =>
+            rollup({
                 entry   : "./packages/rollup/test/specimens/simple.js",
                 plugins : [
                     plugin({
@@ -214,11 +249,11 @@ describe("/rollup.js", function() {
                     })
                 ]
             })
-            .catch(checkError);
-        });
+            .catch(checkError)
+        );
 
-        it("should throw errors in done plugins", function() {
-            return rollup({
+        it("should throw errors in done plugins", () =>
+            rollup({
                 entry   : "./packages/rollup/test/specimens/simple.js",
                 plugins : [
                     plugin({
@@ -232,16 +267,16 @@ describe("/rollup.js", function() {
                 format : "es",
                 dest   : "./packages/rollup/test/output/done-error.js"
             }))
-            .catch(checkError);
-        });
+            .catch(checkError)
+        );
     });
 
-    describe("watch", function() {
+    describe("watch", () => {
         var watcher;
 
         afterEach(() => watcher.close());
         
-        it("should generate correct builds in watch mode when files change", function(done) {
+        it("should generate correct builds in watch mode when files change", (done) => {
             // Create v1 of the file
             fs.writeFileSync(
                 "./packages/rollup/test/output/watched.css",

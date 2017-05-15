@@ -20,6 +20,10 @@ function ModularCSS(args) {
             args
         );
 
+    if(options.cjs) {
+        options.namedExports = false;
+    }
+
     this.prev = {};
     this.processor = new Processor(options);
     this.options = options;

@@ -1,5 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/rollup.js should allow disabling of named exports 1`] = `
+"var css = {
+    \\"fooga\\": \\"fooga\\"
+};
+
+console.log(css);
+"
+`;
+
 exports[`/rollup.js should be able to tree-shake results 1`] = `
 "var fooga = \\"fooga\\";
 
@@ -24,13 +33,11 @@ exports[`/rollup.js should generate JSON 1`] = `
 `;
 
 exports[`/rollup.js should generate exports 1`] = `
-"var fooga = \\"fooga\\";
-var css = {
+"var css = {
     \\"fooga\\": \\"fooga\\"
 };
 
 console.log(css);
-console.log(fooga);
 "
 `;
 
@@ -39,6 +46,13 @@ exports[`/rollup.js should not output sourcemaps when they are disabled 1`] = `
 .fooga {
     color: red
 }"
+`;
+
+exports[`/rollup.js should provide named exports 1`] = `
+"var a = \\"a\\";
+
+console.log(a);
+"
 `;
 
 exports[`/rollup.js should respect the CSS dependency tree 1`] = `
@@ -51,14 +65,29 @@ console.log(css);
 `;
 
 exports[`/rollup.js should warn & not export individual keys when they are not valid identifiers 1`] = `
-"var fooga = \\"fooga\\";
-var css = {
+"var css = {
     \\"fooga\\": \\"fooga\\",
     \\"fooga-wooga\\": \\"fooga-wooga\\"
 };
+var fooga = \\"fooga\\";
 
 console.log(css, fooga);
 "
+`;
+
+exports[`/rollup.js shouldn't disable sourcemap generation 1`] = `
+Object {
+  "file": null,
+  "mappings": ";;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC",
+  "names": Array [],
+  "sourcesContent": Array [
+    "import css from \\"./simple.css\\";
+
+console.log(css);
+",
+  ],
+  "version": 3,
+}
 `;
 
 exports[`/rollup.js watch should generate correct builds in watch mode when files change 1`] = `

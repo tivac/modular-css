@@ -8,13 +8,20 @@ var fs   = require("fs"),
     mkdirp  = require("mkdirp"),
     
     Processor = require("modular-css-core"),
-    output    = require("modular-css-core/lib/output.js");
+    output    = require("modular-css-core/lib/output.js"),
+    
+    // sourcemaps for css-to-js don't make much sense, so always return nothing
+    // https://github.com/rollup/rollup/wiki/Plugins#conventions
+    map = {
+        mappings : ""
+    };
 
 module.exports = function(opts) {
     var options = Object.assign(Object.create(null), {
-            ext  : ".css",
-            json : false,
-            map  : true
+            ext          : ".css",
+            json         : false,
+            map          : true,
+            namedExports : true
         }, opts || {}),
         
         slice = -1 * options.ext.length,
@@ -45,27 +52,38 @@ module.exports = function(opts) {
             // Add the file & its dependencies
             return processor.string(id, code).then(function(result) {
                 var classes = output.join(result.exports),
-                    imports = processor.dependencies(id)
-                        .map((file) => `import "${file.replace(/\\/g, "/")}";`)
-                        .join("\n");
+                    named   = Object.keys(classes),
+                    out     = [
+                        `export default ${JSON.stringify(classes, null, 4)};`
+                    ];
                 
-                return {
-                    code : (imports.length ? `${imports}\n` : "") + Object.keys(classes).reduce(function(prev, curr) {
-                        // Warn if any of the exported CSS wasn't able to be used as a valid JS identifier
-                        if(keyword.isReservedWordES6(curr) || !keyword.isIdentifierNameES6(curr)) {
-                            options.onwarn(`Invalid JS identifier "${curr}", unable to export`);
-                            
-                            return prev;
-                        }
-                        
-                        return `export var ${curr} = "${classes[curr]}";\n${prev}`;
-                    }, `export default ${JSON.stringify(classes, null, 4)};\n`),
+                // Add dependencies
+                out = out.concat(
+                    processor.dependencies(id).map((file) =>
+                        `import "${file.replace(/\\/g, "/")}";`
+                    )
+                );
                     
-                    // sourcemap doesn't make a ton of sense here, so always return nothing
-                    // https://github.com/rollup/rollup/wiki/Plugins#conventions
-                    map : {
-                        mappings : ""
+                if(options.namedExports === false) {
+                    return {
+                        code : out.join("\n"),
+                        map
+                    };
+                }
+
+                named.forEach((ident) => {
+                    if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
+                        options.onwarn(`Invalid JS identifier "${ident}", unable to export`);
+                        
+                        return;
                     }
+
+                    out.push(`export var ${ident} = "${classes[ident]}";`);
+                });
+
+                return {
+                    code : out.join("\n"),
+                    map
                 };
             });
         },
