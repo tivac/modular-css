@@ -8,13 +8,21 @@ var fs   = require("fs"),
     mkdirp  = require("mkdirp"),
     
     Processor = require("modular-css-core"),
-    output    = require("modular-css-core/lib/output.js");
+    output    = require("modular-css-core/lib/output.js"),
+    
+    // sourcemaps for css-to-js don't make much sense, so always return nothing
+    // https://github.com/rollup/rollup/wiki/Plugins#conventions
+    map = {
+        mappings : ""
+    };
 
 module.exports = function(opts) {
     var options = Object.assign(Object.create(null), {
             ext  : ".css",
             json : false,
-            map  : true
+            map  : true,
+            
+            namedExports : true
         }, opts || {}),
         
         slice = -1 * options.ext.length,
@@ -45,10 +53,23 @@ module.exports = function(opts) {
             // Add the file & its dependencies
             return processor.string(id, code).then(function(result) {
                 var classes = output.join(result.exports),
-                    imports = processor.dependencies(id)
-                        .map((file) => `import "${file.replace(/\\/g, "/")}";`)
-                        .join("\n");
-                
+                    named   = Object.keys(classes),
+                    imports = processor.dependencies(id).map((file) =>
+                        `import "${file.replace(/\\/g, "/")}";`
+                    );
+
+                // always includes the default export
+                out.push(
+                    `export default ${JSON.stringify(classes, null, 4)};`
+                );
+                    
+                if(options.namedExports === false) {
+                    return {
+                        code : out.join("\n"),
+                        map
+                    };
+                }
+
                 return {
                     code : (imports.length ? `${imports}\n` : "") + Object.keys(classes).reduce(function(prev, curr) {
                         // Warn if any of the exported CSS wasn't able to be used as a valid JS identifier
@@ -59,7 +80,7 @@ module.exports = function(opts) {
                         }
                         
                         return `export var ${curr} = "${classes[curr]}";\n${prev}`;
-                    }, `export default ${JSON.stringify(classes, null, 4)};\n`),
+                    }, ),
                     
                     // sourcemap doesn't make a ton of sense here, so always return nothing
                     // https://github.com/rollup/rollup/wiki/Plugins#conventions
