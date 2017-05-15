@@ -12,23 +12,24 @@ var Processor = require("modular-css"),
 
 // Add entries, either from disk using .file() or as strings with .string()
 Promise.all([
-    processor.file("./entry.css").then(function(result) {
-        // result now contains
-        //  .exports - Scoped selector mappings
-        //  .files - metadata about the file hierarchy
+    processor.file("./entry.css").then((result) => {
+        // result contains
+        //  id      : Absolute path of the file that was added
+        //  file    : Absolute path of hte file that was added
+        //  files   : metadata about the file hierarchy,
+        //  details : metadata aboutthe file that was added,
+        //  exports : Scoped selector mappings for the file that was added
     }),
     processor.string("./fake-file.css", ".class { color: red; }")
 ])
-.then(function() {
+.then(() => {
     // Once all files are added, use .output() to get at the rewritten CSS
     return processor.output();
 })
-.then(function(result) {
-    // Output CSS lives on the .css property
-    result.css;
-    
-    // Source map (if requested) lives on the .map property
-    result.map;
+.then((result) => {
+    // result.css : Combined CSS output
+    // result.map : Source map data if enabled
+    // result.compositions - All files and their composed dependencies
 });
 ```
 
@@ -73,8 +74,16 @@ Enable source map generation. Can also be passed to `.output()`.
 **Default**: `false`
 
 ```js
+// Inline source map
 new Processor({
     map : true
+});
+
+// External source map
+new Processor({
+    map : {
+        inline : fase
+    }
 });
 ```
 
@@ -135,3 +144,12 @@ new Processor({
 })
 ```
 
+#### `exportGlobals`
+
+By default identifiers wrapped in `:global(...)` are exported for ease of referencing via JS. By setting `exportGlobals` to `false` that behavior can be disabled. Mostly useful to avoid warnings when global CSS properties are not valid JS identifiers.
+
+```
+new Processor({
+    exportGlobals : false
+});
+```
