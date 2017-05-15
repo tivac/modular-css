@@ -244,6 +244,43 @@ describe("/webpack.js", function() {
         });
     });
 
+    it("should warn about using the cjs option & disable namedExports", function(done) {
+        webpack({
+            entry  : "./packages/webpack/test/specimens/simple.js",
+            output : {
+                path     : output,
+                filename : "./simple.js"
+            },
+            module : {
+                rules : [
+                    {
+                        test,
+                        use : {
+                            loader  : use,
+                            options : {
+                                cjs : true
+                            }
+                        }
+                    }
+                ]
+            },
+            plugins : [
+                new Plugin({
+                    namer,
+                    css : "./simple.css"
+                })
+            ]
+        }, (err, stats) => {
+            success(err, stats);
+
+            expect(stats.toJson().warnings[0]).toMatch("cjs option is deprecated, used namedExports: false instead");
+
+            expect(read("simple.js")).toMatchSnapshot();
+
+            done();
+        });
+    });
+
     it("should support disabling namedExports when the option is set", function(done) {
         webpack({
             entry  : "./packages/webpack/test/specimens/simple.js",
