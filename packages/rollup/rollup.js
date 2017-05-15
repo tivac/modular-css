@@ -18,10 +18,9 @@ var fs   = require("fs"),
 
 module.exports = function(opts) {
     var options = Object.assign(Object.create(null), {
-            ext  : ".css",
-            json : false,
-            map  : true,
-            
+            ext          : ".css",
+            json         : false,
+            map          : true,
             namedExports : true
         }, opts || {}),
         
