@@ -152,7 +152,7 @@ Processor.prototype = {
             .forEach((file) => {
                 // Remove everything that depends on this too, it'll all need
                 // to be recalculated
-                if (this._graph.hasNode(file)) {
+                if(this._graph.hasNode(file)) {
                     this.remove(this._graph.dependantsOf(file));
 
                     delete this._files[file];

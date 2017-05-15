@@ -2,7 +2,7 @@
 
 var path = require("path"),
 
-    resolve = require("resolve-from");
+    resolve = require("resolve-from").silent;
 
 exports.resolve = (src, file) =>
     resolve(path.dirname(src), file);
