@@ -21,13 +21,14 @@ module.exports = function(source) {
     return processor.string(this.resourcePath, source)
         .then((result) => {
             var classes = output.join(result.exports),
-                deps    = processor.dependencies(this.resourcePath),
                 named   = Object.keys(classes),
                 out     = [
                     `export default ${JSON.stringify(classes, null, 4)};`
                 ];
 
-            deps.forEach((dep) => this.addDependency(dep));
+            processor.dependencies(this.resourcePath).forEach((dep) =>
+                this.addDependency(dep)
+            );
 
             // Just default object export in this case
             if(options.namedExports === false) {
