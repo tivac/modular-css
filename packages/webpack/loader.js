@@ -10,7 +10,7 @@ module.exports = function(source) {
         done      = this.async(),
         processor = this.options.processor;
 
-    if(this.options.cjs) {
+    if(options.cjs) {
         this.emitWarning(
             new Error("cjs option is deprecated, used namedExports: false instead")
         );
