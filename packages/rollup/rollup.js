@@ -54,13 +54,15 @@ module.exports = function(opts) {
             return processor.string(id, code).then(function(result) {
                 var classes = output.join(result.exports),
                     named   = Object.keys(classes),
-                    imports = processor.dependencies(id).map((file) =>
+                    out     = [
+                        `export default ${JSON.stringify(classes, null, 4)};`
+                    ];
+                
+                // Add dependencies
+                out = out.concat(
+                    processor.dependencies(id).map((file) =>
                         `import "${file.replace(/\\/g, "/")}";`
-                    );
-
-                // always includes the default export
-                out.push(
-                    `export default ${JSON.stringify(classes, null, 4)};`
+                    )
                 );
                     
                 if(options.namedExports === false) {
@@ -70,23 +72,19 @@ module.exports = function(opts) {
                     };
                 }
 
-                return {
-                    code : (imports.length ? `${imports}\n` : "") + Object.keys(classes).reduce(function(prev, curr) {
-                        // Warn if any of the exported CSS wasn't able to be used as a valid JS identifier
-                        if(keyword.isReservedWordES6(curr) || !keyword.isIdentifierNameES6(curr)) {
-                            options.onwarn(`Invalid JS identifier "${curr}", unable to export`);
-                            
-                            return prev;
-                        }
+                named.forEach((ident) => {
+                    if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
+                        options.onwarn(`Invalid JS identifier "${ident}", unable to export`);
                         
-                        return `export var ${curr} = "${classes[curr]}";\n${prev}`;
-                    }, ),
-                    
-                    // sourcemap doesn't make a ton of sense here, so always return nothing
-                    // https://github.com/rollup/rollup/wiki/Plugins#conventions
-                    map : {
-                        mappings : ""
+                        return;
                     }
+
+                    out.push(`export var ${ident} = "${classes[ident]}";`);
+                });
+
+                return {
+                    code : out.join("\n"),
+                    map
                 };
             });
         },
