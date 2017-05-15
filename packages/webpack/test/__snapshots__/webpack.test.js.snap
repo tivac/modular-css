@@ -75,11 +75,10 @@ exports[`/webpack.js should generate correct builds when files change 1`] = `
 
 \\"use strict\\";
 /* unused harmony export one */
-var one = \\"one\\";
 /* harmony default export */ __webpack_exports__[\\"a\\"] = ({
     \\"one\\": \\"one\\"
 });
-
+var one = \\"one\\";
 
 /***/ }),
 /* 1 */
@@ -179,11 +178,10 @@ exports[`/webpack.js should generate correct builds when files change 3`] = `
 
 \\"use strict\\";
 /* unused harmony export two */
-var two = \\"two\\";
 /* harmony default export */ __webpack_exports__[\\"a\\"] = ({
     \\"two\\": \\"two\\"
 });
-
+var two = \\"two\\";
 
 /***/ }),
 /* 1 */
@@ -283,11 +281,10 @@ exports[`/webpack.js should generate correct builds when files change 5`] = `
 
 \\"use strict\\";
 /* unused harmony export two */
-var two = \\"two\\";
 /* harmony default export */ __webpack_exports__[\\"a\\"] = ({
     \\"two\\": \\"two\\"
 });
-
+var two = \\"two\\";
 
 /***/ }),
 /* 1 */
@@ -390,15 +387,14 @@ Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"wooga\\", function() { return wooga; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"booga\\", function() { return booga; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"tooga\\", function() { return tooga; });
-var wooga = \\"booga wooga\\";
-var booga = \\"booga\\";
-var tooga = \\"tooga\\";
 /* harmony default export */ __webpack_exports__[\\"default\\"] = ({
     \\"wooga\\": \\"booga wooga\\",
     \\"booga\\": \\"booga\\",
     \\"tooga\\": \\"tooga\\"
 });
-
+var wooga = \\"booga wooga\\";
+var booga = \\"booga\\";
+var tooga = \\"tooga\\";
 
 /***/ }),
 /* 1 */
@@ -523,11 +519,10 @@ exports[`/webpack.js should output css to disk 1`] = `
 \\"use strict\\";
 Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"wooga\\", function() { return wooga; });
-var wooga = \\"wooga\\";
 /* harmony default export */ __webpack_exports__[\\"default\\"] = ({
     \\"wooga\\": \\"wooga\\"
 });
-
+var wooga = \\"wooga\\";
 
 /***/ }),
 /* 1 */
@@ -623,11 +618,10 @@ exports[`/webpack.js should output json to disk 1`] = `
 \\"use strict\\";
 Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"wooga\\", function() { return wooga; });
-var wooga = \\"wooga\\";
 /* harmony default export */ __webpack_exports__[\\"default\\"] = ({
     \\"wooga\\": \\"wooga\\"
 });
-
+var wooga = \\"wooga\\";
 
 /***/ }),
 /* 1 */
@@ -724,13 +718,12 @@ exports[`/webpack.js should support ES2015 default exports 1`] = `
 \\"use strict\\";
 /* unused harmony export a */
 /* unused harmony export b */
-var a = \\"a\\";
-var b = \\"b\\";
 /* harmony default export */ __webpack_exports__[\\"a\\"] = ({
     \\"a\\": \\"a\\",
     \\"b\\": \\"b\\"
 });
-
+var a = \\"a\\";
+var b = \\"b\\";
 
 /***/ }),
 /* 1 */
@@ -834,13 +827,12 @@ exports[`/webpack.js should support ES2015 named exports 1`] = `
 \\"use strict\\";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"a\\", function() { return a; });
 /* unused harmony export b */
-var a = \\"a\\";
-var b = \\"b\\";
 /* unused harmony default export */ var _unused_webpack_default_export = ({
     \\"a\\": \\"a\\",
     \\"b\\": \\"b\\"
 });
-
+var a = \\"a\\";
+var b = \\"b\\";
 
 /***/ }),
 /* 1 */
@@ -947,7 +939,6 @@ Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
     \\"wooga\\": \\"wooga\\"
 });
 
-
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1048,11 +1039,10 @@ exports[`webpack watching.js 1 1`] = `
 
 \\"use strict\\";
 /* unused harmony export one */
-var one = \\"one\\";
 /* harmony default export */ __webpack_exports__[\\"a\\"] = ({
     \\"one\\": \\"one\\"
 });
-
+var one = \\"one\\";
 
 /***/ }),
 /* 1 */
@@ -1145,11 +1135,10 @@ exports[`webpack watching.js 2 1`] = `
 
 \\"use strict\\";
 /* unused harmony export two */
-var two = \\"two\\";
 /* harmony default export */ __webpack_exports__[\\"a\\"] = ({
     \\"two\\": \\"two\\"
 });
-
+var two = \\"two\\";
 
 /***/ }),
 /* 1 */
