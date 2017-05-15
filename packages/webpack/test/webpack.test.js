@@ -244,7 +244,7 @@ describe("/webpack.js", function() {
         });
     });
 
-    it("should support CommonJS exports when the option is set", function(done) {
+    it("should support disabling namedExports when the option is set", function(done) {
         webpack({
             entry  : "./packages/webpack/test/specimens/simple.js",
             output : {
@@ -258,7 +258,7 @@ describe("/webpack.js", function() {
                         use : {
                             loader  : use,
                             options : {
-                                cjs : true
+                                namedExports : false
                             }
                         }
                     }
