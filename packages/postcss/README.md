@@ -1,4 +1,4 @@
-postcss-modular-css [![NPM Version](https://img.shields.io/npm/v/postcss-modular-css.svg)](https://www.npmjs.com/package/postcss-modular-css) [![NPM License](https://img.shields.io/npm/l/postcss-modular-css.svg)](https://www.npmjs.com/package/postcss-modular-css) [![NPM Downloads](https://img.shields.io/npm/dm/postcss-modular-css.svg)](https://www.npmjs.com/package/postcss-modular-css) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
+postcss-modular-css [![NPM Version](https://img.shields.io/npm/v/postcss-modular-css.svg)](https://www.npmjs.com/package/postcss-modular-css) [![NPM License](https://img.shields.io/npm/l/postcss-modular-css.svg)](https://www.npmjs.com/package/postcss-modular-css) [![NPM Downloads](https://img.shields.io/npm/dm/postcss-modular-css.svg)](https://www.npmjs.com/package/postcss-modular-css)
 ===========
 
 Use `modular-css` as a PostCSS plugin.

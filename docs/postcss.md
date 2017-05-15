@@ -15,7 +15,7 @@ All other options are passed to the underlying `Processor` instance, see [Option
 ## CLI
 
 ```
-$ postcss --use modular-css/postcss input.css
+$ postcss --use postcss-modular-css input.css
 ```
 
 ## API
@@ -23,7 +23,7 @@ $ postcss --use modular-css/postcss input.css
 ```js
 var postcss   = require("postcss"),
     processor = postcss([
-        require("modular-css/postcss")({
+        require("postcss-modular-css")({
             json : "./path/to/output.json"
         })
     ]);

@@ -20,6 +20,10 @@ Location to write the generated CSS file to.
 
 Location to write out the JSON mapping file for use in server rendering.
 
+### `namedExports`
+
+Set to `false` to disable named exports, instead only the default export wll be used. This is useful to avoid warnings when your classes aren't valid JS identifiers.
+
 ### Shared Options
 
 All other options are passed to the underlying `Processor` instance, see [Options](api.md#processor-options).
@@ -30,7 +34,7 @@ All other options are passed to the underlying `Processor` instance, see [Option
 rollup({
     entry   : "./index.js",
     plugins : [
-        require("modular-css/rollup")({
+        require("modular-css-rollup")({
             css : "./gen/index.css"
         })
     ]
@@ -42,7 +46,7 @@ rollup({
 ## Config file
 
 ```js
-import css from "modular-css/rollup";
+import css from "modular-css-rollup";
 
 export default {
     entry   : "./index.js",

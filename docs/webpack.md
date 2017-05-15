@@ -6,7 +6,49 @@
 
 You will need to use **both** in tandem for things to work!
 
-## Options
+## Usage
+
+```js
+// webpack.config.js
+var path = require("path"),
+    
+    CSSPlugin = require("modular-css-webpack/plugin");
+
+module.exports = {
+    entry   : "./input.js",
+    output  : {
+        path : path.resolve(__dirname, "dist"),
+        filename : "./output.js"
+    },
+    module : {
+        rules : [
+            {
+                test : /\.css$/,
+                use  : "modular-css-webpack/loader"
+            },
+
+            // Or with loader options
+            {
+                test : /\.css$/,
+                use : {
+                    loader  : "modular-css-webpack/loader",
+                    options : {
+                        namedExports : false
+                    }
+                }
+            }
+        ]
+    },
+    plugins : [
+        new CSSPlugin({
+            css  : "./output.css",
+            json : "./output.json"
+        })
+    ]
+});
+```
+
+## Plugin Options
 
 ### `css`
 
@@ -20,33 +62,8 @@ Location to write out the JSON mapping file to, relative to `output.path` just l
 
 All other options are passed to the underlying `Processor` instance, see [Options](api.md#processor-options).
 
-## Usage
+## Loader Options
 
-```js
-// webpack.config.js
-var path = require("path"),
-    
-    CSSPlugin = require("modular-css/webpack/plugin");
+### `namedExports`
 
-module.exports = {
-    entry   : "./input.js",
-    output  : {
-        path : path.resolve(__dirname, "dist"),
-        filename : "./output.js"
-    },
-    module : {
-        rules : [
-            {
-                test : /\.css$/,
-                use  : "modular-css/webpack/loader"
-            }
-        ]
-    },
-    plugins : [
-        new CSSPlugin({
-            css  : "./output.css",
-            json : "./output.json"
-        })
-    ]
-});
-```
+Set to `false` to disable named exports, instead only the default export wll be used. This is useful to avoid warnings when your classes aren't valid JS identifiers.

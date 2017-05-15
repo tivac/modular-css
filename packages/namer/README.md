@@ -1,7 +1,7 @@
-modular-css-namer [![NPM Version](https://img.shields.io/npm/v/modular-css-namer.svg)](https://www.npmjs.com/package/modular-css-namer) [![NPM License](https://img.shields.io/npm/l/modular-css-namer.svg)](https://www.npmjs.com/package/modular-css-namer) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-namer.svg)](https://www.npmjs.com/package/modular-css-namer) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
+modular-css-namer [![NPM Version](https://img.shields.io/npm/v/modular-css-namer.svg)](https://www.npmjs.com/package/modular-css-namer) [![NPM License](https://img.shields.io/npm/l/modular-css-namer.svg)](https://www.npmjs.com/package/modular-css-namer) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-namer.svg)](https://www.npmjs.com/package/modular-css-namer)
 =================
 
-Tiny classnames for [`modular-css`](https://github.com/tivac/modular-css) builds!
+Tiny classnames for [`modular-css`](https://github.com/tivac/modular-css) production builds!
 
 ## Usage
 
@@ -38,8 +38,28 @@ rollup({
             namer : require("modular-css-namer")()
         })
     ]
-})
-.then(function(bundle) {
-    // ...
 });
+```
+
+## Example output
+
+```css
+/* one.css */
+.alert {}
+.notification {}
+
+/* two.css */
+.title {}
+.heading .subheading {}
+```
+
+becomes
+
+```css
+/* output.css */
+.AA {}
+.AB {}
+
+.BA {}
+.BB .BC {}
 ```

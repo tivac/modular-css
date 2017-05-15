@@ -1,4 +1,4 @@
-modular-css [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https://www.npmjs.com/package/modular-css) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
+modular-css [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
 ===========
 
 A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/css-modules)
@@ -84,7 +84,7 @@ More detailed descriptions are available in [docs/features.md](docs/features.md)
 
 ## Install
 
-### [API](/packages/core/#readme)
+### [JS API](/packages/core/#readme)
 
 ```bash
 $ npm i modular-css-core

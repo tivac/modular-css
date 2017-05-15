@@ -148,8 +148,31 @@ new Processor({
 
 By default identifiers wrapped in `:global(...)` are exported for ease of referencing via JS. By setting `exportGlobals` to `false` that behavior can be disabled. Mostly useful to avoid warnings when global CSS properties are not valid JS identifiers.
 
-```
+```js
 new Processor({
     exportGlobals : false
 });
+```
+
+```css
+/* exportGlobals: true */
+.a {}
+:global(.b) {}
+
+/* Outputs
+{
+    "a" : "mc12345_a",
+    "b" : "b"
+}
+*/
+
+/* exportGlobals: false */
+.a {}
+:global(.b) {}
+
+/* Outputs
+{
+    "a" : "mc12345_a"
+}
+*/
 ```

@@ -1,4 +1,4 @@
-modular-css-glob [![NPM Version](https://img.shields.io/npm/v/modular-css-glob.svg)](https://www.npmjs.com/package/modular-css-glob) [![NPM License](https://img.shields.io/npm/l/modular-css-glob.svg)](https://www.npmjs.com/package/modular-css-glob) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-glob.svg)](https://www.npmjs.com/package/modular-css-glob) [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
+modular-css-glob [![NPM Version](https://img.shields.io/npm/v/modular-css-glob.svg)](https://www.npmjs.com/package/modular-css-glob) [![NPM License](https://img.shields.io/npm/l/modular-css-glob.svg)](https://www.npmjs.com/package/modular-css-glob) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-glob.svg)](https://www.npmjs.com/package/modular-css-glob)
 ===========
 
 A JS API for using `modular-css` via glob patterns.

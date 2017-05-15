@@ -1,14 +1,18 @@
 # Browserify
 
-`modular-css` can be used as a browserify plugin, it can also be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
+`modular-cssify` provides a browserify plugin that exposes `modular-css` functionality. It can also be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
 
-The `modular-css` plugin will use the `basedir` passed to browserify as it's `cwd` parameter.
+The `modular-cssify` plugin will use the `basedir` passed to browserify as it's `cwd` parameter.
 
 ## Options
 
 ### `css`
 
 Location to write the generated CSS file to.
+
+### `json`
+
+Location to write out the JSON mapping file for use in server rendering.
 
 ### Shared Options
 
@@ -17,7 +21,7 @@ All other options are passed to the underlying `Processor` instance, see [Option
 ## CLI
 
 ```
-$ browserify -p [ modular-css/browserify --css "./style.css" ] entry.js
+$ browserify -p [ modular-cssify --css "./style.css" ] entry.js
 ```
 
 ## API
@@ -28,22 +32,22 @@ var browserify = require("browserify"),
 
 build = browserify("./entry.js");
 
-build.plugin("modular-css/browserify", {
+build.plugin("modular-cssify", {
     css : "./style.css",
 });
 ```
 
-## factor-bundle
+## `factor-bundle`
 
-The `modular-css` browserify plugin is fully factor-bundle aware and will output correctly-partitioned CSS bundles to match the JS bundles created by factor-bundle.
+The `modular-cssify` is fully `factor-bundle` aware and will output correctly-partitioned CSS bundles to match the JS bundles created by `factor-bundle`.
 
-**WARNING**: Due to how `factor-bundle` works the `modular-css/browserify` plugin must be applied to the Browserify object **before** `factor-bundle`.
+**WARNING**: Due to how `factor-bundle` works the `modular-cssify` plugin must be applied to the Browserify object **before** `factor-bundle`.
 
 ### CLI
 
 ```
 $ browserify home.js account.js \
-    -p [ modular-css/browserify --css gen/common.css ] \
+    -p [ modular-cssify --css gen/common.css ] \
     -p [ factor-bundle -o gen/home.js -o gen/account.js ] \
     -o bundle/common.js
 ```
@@ -57,7 +61,7 @@ var build = browserify([
     ]);
 
 // NOTE modular-css applied before factor-bundle, it won't work otherwise!
-build.plugin("modular-css/browserify", {
+build.plugin("modular-cssify", {
     css : "./gen/common.css"
 });
 
