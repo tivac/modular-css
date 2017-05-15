@@ -10,15 +10,15 @@ var from       = require("from2-string"),
     bundle = require("./lib/bundle.js"),
     plugin = require("../browserify.js");
 
-describe("/browserify.js", function() {
-    describe("/issues", function() {
-        describe("/58", function() {
+describe("/browserify.js", () => {
+    describe("/issues", () => {
+        describe("/58", () => {
             afterAll(() => {
                 shell.rm("-rf", "./packages/browserify/test/output/issues");
                 shell.rm("./packages/browserify/test/specimens/issues/58/other.css");
             });
             
-            it("should update when CSS dependencies change", function(done) {
+            it("should update when CSS dependencies change", (done) => {
                 var build = browserify();
                 
                 shell.cp("-f",
@@ -55,7 +55,7 @@ describe("/browserify.js", function() {
                             "./packages/browserify/test/specimens/issues/58/other.css"
                         );
                     });
-            });
+            }, 10000);
         });
     });
 });
