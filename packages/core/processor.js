@@ -7,6 +7,7 @@ var fs   = require("fs"),
     postcss = require("postcss"),
     slug    = require("unique-slug"),
     series  = require("p-each-series"),
+    unique  = require("lodash.uniq"),
 
     output   = require("./lib/output.js"),
     message  = require("./lib/message.js"),
@@ -159,12 +160,13 @@ Processor.prototype = {
                     )
                 ,
                 files
-            )
-            .forEach((file) => {
-                delete this._files[file];
+            );
 
-                this._graph.removeNode(file);
-            });
+        unique(files).forEach((file) => {
+            delete this._files[file];
+
+            this._graph.removeNode(file);
+        });
     },
     
     // Get the dependency order for a file or the entire tree
