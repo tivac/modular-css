@@ -1,24 +1,30 @@
 "use strict";
-/* eslint-env browser, node */
-/* eslint indent: off */
+import fs from "fs";
+import Processor from "modular-css-core";
+import m from "mithril";
+import pkg from "modular-css-core/package.json";
+import cm from "codemirror";
+import throttle from "throttleit";
 
-var fs = require("fs"),
-    m = require("mithril"),
-    Processor = require("modular-css-core"),
-    pkg = require("modular-css-core/package.json"),
-    cm = require("codemirror"),
-    throttle = require("throttleit"),
+import css from "./style.css";
 
-    css = require("./style.css"),
 
-    files = [
-        "/1.css"
-    ],
+var files = [],
 
     output = {
         css : "",
         js  : false
     },
+
+    processor = new Processor({
+        resolvers : [
+            (src, file) => {
+                file = file.replace(/^\.\.\/|\.\//, "");
+
+                return `/${file}`;
+            }
+        ]
+    }),
     
     error,
     throttled,
@@ -31,20 +37,31 @@ require("codemirror/mode/javascript/javascript.js");
 
 window.fs = fs;
 
-fs.writeFileSync(files[0], "/* Start here */");
+function createFile() {
+    var file = `/${files.length + 1}.css`;
 
-// Hacks to get file resolution to work
-// require("module")._nodeModulePaths = () => [ "/" ];
-// require("module")._resolveFilename = (id) => id.slice(1);
+    fs.writeFileSync(file, `/* ${file} */\n`);
+    
+    files.push(file);
+}
 
 function process() {
-    var processor = new Processor();
-    
-    state = btoa(JSON.stringify(files));
+    state = btoa(
+        JSON.stringify(
+            files.map((name) => ({
+                name,
+                css : fs.readFileSync(name, "utf8")
+            }))
+        )
+    );
 
     m.route.set(`/?${m.buildQueryString({ state : state })}`);
     
-    Promise.all(files.map((file) => processor.file(file)))
+    Promise.all(
+        files.map((file) =>
+            processor.file(file)
+        )
+    )
     .then(() => processor.output())
     .then((result) => {
         output.css  = result.css;
@@ -61,16 +78,6 @@ function process() {
         tab = "errors";
     })
     .then(m.redraw);
-}
-
-function update(encoded) {
-    try {
-        files = JSON.parse(atob(encoded));
-
-        process();
-    } catch(e) {
-        error = "Unable to parse state";
-    }
 }
 
 function exported() {
@@ -91,11 +98,30 @@ throttled = throttle(process, 200);
 m.route(document.body, "/", {
     "/" : {
         oninit : (vnode) => {
+            var parsed;
+
+            // No existing state, create a default file
             if(!vnode.attrs.state) {
+                createFile();
+
                 return;
             }
+            
+            try {
+                parsed = JSON.parse(atob(vnode.attrs.state));
 
-            update(vnode.attrs.state);
+                console.log(parsed)
+
+                parsed.forEach((file) => {
+                    files.push(file.name);
+
+                    fs.writeFileSync(file.name, file.css);
+                });
+
+                process();
+            } catch(e) {
+                error = "Unable to parse state";
+            }
         },
 
         view : () => [
@@ -108,15 +134,8 @@ m.route(document.body, "/", {
             m("div", { class : css.content },
                 m("div", { class : css.files },
                     m("button", {
-                        class : css.add,
-
-                        onclick : () => {
-                            var file = {
-                                name : `/${files.length + 1}.css`
-                            };
-
-                            fs.writeFileSync(file.name, "");
-                        }
+                        class   : css.add,
+                        onclick : createFile
                     }, "Add file"),
 
                     files.map((file, idx) => m("div", { class : css.file },
@@ -151,6 +170,10 @@ m.route(document.body, "/", {
 
                                     editor.on("changes", () => {
                                         fs.writeFileSync(file, editor.doc.getValue());
+
+                                        processor.remove([
+                                            file
+                                        ]);
                                         
                                         throttled();
                                     });

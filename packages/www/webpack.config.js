@@ -4,12 +4,12 @@ var path = require("path"),
     
     CSS = require("modular-css-webpack/plugin");
 
-module.exports = {
+module.exports = (env) => ({
     entry : "./index.js",
 
     output : {
         filename : "app.js",
-        path     : path.resolve("./gen")
+        path     : path.resolve(env === "dist" ? "./dist" : "./gen")
     },
 
     devtool : "cheap-source-map",
@@ -18,7 +18,12 @@ module.exports = {
         rules : [
             {
                 test : /\.css$/,
-                use  : "modular-css-webpack/loader"
+                use  : {
+                    loader  : "modular-css-webpack/loader",
+                    options : {
+                        namedExports : false
+                    }
+                }
             },
             {
                 test : /\.js$/,
@@ -29,16 +34,19 @@ module.exports = {
     
     plugins : [
         new CSS({
-            css : "./app.css"
+            css : "./app.css",
+            done : [
+                env === "dist" ?
+                    require("cssnano")() :
+                    () => {}
+            ]
         })
     ],
     
     resolve : {
         alias : {
-            fs : require.resolve("./fs-stub.js"),
-            
-            // TODO: is this gonna be a problem?
-            module : require.resolve("./stub.js")
+            fs     : require.resolve("./stubs/fs.js"),
+            module : require.resolve("./stubs/generic.js")
         }
     },
 
@@ -49,4 +57,4 @@ module.exports = {
     watchOptions : {
         ignored : /node_modules/
     }
-};
+});

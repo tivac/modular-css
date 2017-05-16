@@ -7,13 +7,12 @@
   "scripts": {
     "prebuild": "npm run clean",
     "build": "webpack",
+    "build:dist": "webpack --env=dist --optimize-minimize --define process.env.NODE_ENV=\"'production'\"",
     "clean": "shx rm -rf ./dist/* ./gen/*",
-    "compress": "npm run compress-js && npm run compress-css",
-    "precompress-js": "buble -i ./gen/app.js -o ./gen/app.js",
-    "compress-css": "cssnano ./gen/app.css ./dist/app.min.css",
-    "predeploy": "webpack -p && npm run dist",
+    "predeploy": "npm run dist",
     "deploy": "surge --project ./dist --domain m-css.com",
-    "dist": "shx sed \"gen/app.(js|css)\" \"app.min.$1\" ./index.html > ./dist/index.html",
+    "predist": "npm run clean && npm run build:dist",
+    "dist": "shx cp ./index.html ./dist/index.html",
     "prestart": "npm run clean",
     "start": "webpack-dev-server",
     "test": "true"
@@ -28,16 +27,24 @@
     "throttleit": "^1.0.0"
   },
   "devDependencies": {
-    "buble": "^0.15.2",
     "buble-loader": "^0.4.1",
     "cssnano-cli": "^1.0.5",
     "modular-css-namer": "^6.0.0",
     "modular-cssify": "^6.0.0",
     "rum": "^3.0.0",
     "shx": "^0.2.2",
-    "surge": "^0.18.0",
-    "uglify-js": "^2.8.2",
+    "surge": "^0.19.0",
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.5"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+    "env": {
+      "browser": true,
+      "node": true
+    }
   }
 }
