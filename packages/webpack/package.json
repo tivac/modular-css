@@ -7,10 +7,6 @@
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
   },
-  "scripts": {
-    "cover": "nyc mocha",
-    "test": "mocha"
-  },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "keywords": [
