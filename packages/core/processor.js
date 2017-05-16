@@ -281,10 +281,7 @@ Processor.prototype = {
         return this._before.process(
             text,
             params(this, {
-                from : name,
-
-                // Run parsers in loose mode for this first pass
-                strict : false
+                from : name
             })
         )
         .then((result) => {
