@@ -30,37 +30,34 @@ function ModularCSS(args) {
 }
 
 ModularCSS.prototype.apply = function(compiler) {
-    // Ensure the processor instance is always available to the loader
-    compiler.plugin("compilation", (compilation) => {
+    compiler.plugin("this-compilation", (compilation) => {
+        var files = getChangedFiles(this.prev, compilation.fileTimestamps);
+
+        // Remove changed/removed files from processor instance
+        this.processor.remove(files);
+        
+        this.prev = compilation.fileTimestamps;
+
+        // Make processor instance available to the loader
         compilation.options.processor = this.processor;
     });
 
     compiler.plugin("emit", (compilation, done) => {
-        this.processor.output()
-            .then((data) => {
-                if(this.options.css) {
-                    compilation.assets[this.options.css] = new sources.RawSource(
-                        data.css
-                    );
-                }
-                
-                if(this.options.json) {
-                    compilation.assets[this.options.json] = new sources.RawSource(
-                        JSON.stringify(data.compositions, null, 4)
-                    );
-                }
-            })
-            .then(() => {
-                var files = getChangedFiles(this.prev, compilation.fileTimestamps);
-                
-                // Remove changed/removed files from processor instance
-                // HAS TO BE AFTER OUTPUT WAS GENERATED OTHERWISE BAD THINGS HAPPEN
-                this.processor.remove(files);
-                
-                this.prev = compilation.fileTimestamps;
+        this.processor.output().then((data) => {
+            if(this.options.css) {
+                compilation.assets[this.options.css] = new sources.RawSource(
+                    data.css
+                );
+            }
+            
+            if(this.options.json) {
+                compilation.assets[this.options.json] = new sources.RawSource(
+                    JSON.stringify(data.compositions, null, 4)
+                );
+            }
 
-                done();
-            });
+            done();
+        });
     });
 };
 
