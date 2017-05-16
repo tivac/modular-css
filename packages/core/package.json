@@ -1,6 +1,6 @@
 {
   "name": "modular-css-core",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "A streamlined reinterpretation of CSS Modules",
   "main": "./processor.js",
   "repository": "tivac/modular-css",
@@ -21,7 +21,7 @@
   ],
   "devDependencies": {
     "pegjs": "^0.10.0",
-    "test-utils": "^5.1.1"
+    "test-utils": "^5.1.2"
   },
   "dependencies": {
     "dependency-graph": "^0.5.0",
