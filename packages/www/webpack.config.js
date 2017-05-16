@@ -34,11 +34,11 @@ module.exports = (env) => ({
     
     plugins : [
         new CSS({
-            css : "./app.css",
+            css  : "./app.css",
             done : [
                 env === "dist" ?
                     require("cssnano")() :
-                    () => {}
+                    () => {} // eslint-disable-line
             ]
         })
     ],
