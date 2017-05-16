@@ -322,12 +322,12 @@ describe("/webpack.js", function() {
         
         // Create v1 of the file
         fs.writeFileSync(
-            "./packages/webpack/test/output/watched.css",
+            path.join(__dirname, "./output/watched.css"),
             ".one { color: red; }"
         );
 
         compiler = webpack({
-            entry  : "./packages/webpack/test/specimens/watch.js",
+            entry  : require.resolve("./specimens/watch.js"),
             output : {
                 path     : output,
                 filename : "./watching.js"
@@ -345,29 +345,27 @@ describe("/webpack.js", function() {
                     namer,
                     css : "./watching.css"
                 })
-            ]
+            ],
+            watch : true
         });
         
-        watcher = compiler.watch({ }, (err, stats) => {
-            /* eslint consistent-return: off */
+        watcher = compiler.watch(null, (err, stats) => {
             changed++;
             
             success(err, stats);
 
-            expect(read("watching.js")).toMatchSnapshot(`webpack watching.js ${changed}`);
-            expect(read("watching.css")).toMatchSnapshot(`webpack watching.css ${changed}`);
+            expect(read("watching.js")).toMatchSnapshot();
+            expect(read("watching.css")).toMatchSnapshot();
 
-            if(changed > 1) {
-                watcher.close();
-
-                return done();
+            if(changed < 2) {
+                return fs.writeFileSync(
+                    path.join(__dirname, "./output/watched.css"),
+                    ".two { color: blue; }"
+                );
             }
-        });
 
-        setTimeout(() => fs.writeFileSync(
-            "./packages/webpack/test/output/watched.css",
-            ".two { color: blue; }"
-        ), 100);
+            return watcher.close(done);
+        });
     });
 
     it("should generate correct builds when files change", function() {
@@ -431,7 +429,7 @@ describe("/webpack.js", function() {
             .catch((stats) => {
                 expect(stats.toJson().errors[0]).toMatch("no such file or directory");
                 
-                fs.writeFileSync(changed, ".two { color: green; }");
+                fs.writeFileSync(changed, ".three { color: green; }");
 
                 return run();
             })
