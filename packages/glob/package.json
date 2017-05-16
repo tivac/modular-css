@@ -1,6 +1,6 @@
 {
   "name": "modular-css-glob",
-  "version": "5.1.2",
+  "version": "5.1.3",
   "description": "Glob support for modular-css",
   "main": "./glob.js",
   "repository": "tivac/modular-css",
@@ -16,10 +16,10 @@
     "modular-css"
   ],
   "devDependencies": {
-    "test-utils": "^5.1.2"
+    "test-utils": "^5.1.3"
   },
   "dependencies": {
     "globule": "^1.1.0",
-    "modular-css-core": "^5.1.2"
+    "modular-css-core": "^5.1.3"
   }
 }
