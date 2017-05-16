@@ -141,28 +141,34 @@ Processor.prototype = {
     
     // Remove a file from the dependency graph
     remove : function(input) {
-        var files = input;
-
-        if(!Array.isArray(files)) {
-            files = [ files ];
-        }
+        var order = this._graph.overallOrder(),
+            files;
         
-        files = files
+        // Only want files actually in the array
+        files = (Array.isArray(input) ? input : [ input ])
             .map(this._absolute)
-            .filter((file) => this._graph.hasNode(file))
-            // Remove everything that depends on files to be removed as well
-            // since it will also have to be recalculated
-            .reduce(
-                (prev, curr) =>
-                    prev.concat(
-                        this._graph.dependantsOf(curr)
-                            .concat(curr)
-                    )
-                ,
-                files
-            );
+            .filter((file) => this._graph.hasNode(file));
+        
+        if(!files.length) {
+            return;
+        }
 
-        unique(files).forEach((file) => {
+        // Remove everything that depends on files to be removed as well
+        // since it will also have to be recalculated
+        files = unique(
+            files.reduce(
+                (prev, curr) => prev.concat(
+                    this._graph.dependantsOf(curr)
+                        .concat(curr)
+                ),
+                []
+            )
+            .sort((a, b) => order.indexOf(a) - order.indexOf(b))
+        );
+
+        console.log("ACTUALLY REMOVING", files);
+
+        files.forEach((file) => {
             delete this._files[file];
 
             this._graph.removeNode(file);
