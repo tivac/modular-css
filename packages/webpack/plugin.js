@@ -30,35 +30,56 @@ function ModularCSS(args) {
 }
 
 ModularCSS.prototype.apply = function(compiler) {
+    var watching = false;
+
+    // File invalidated by webpack watcher
+    compiler.plugin("invalid", (file) => {
+        this.processor.remove(file);
+    });
+    
+    compiler.plugin("watch-run", (c, done) => {
+        watching = true;
+
+        done();
+    });
+
+    // Runs before compilation begins
     compiler.plugin("this-compilation", (compilation) => {
-        var files = getChangedFiles(this.prev, compilation.fileTimestamps);
-
-        // Remove changed/removed files from processor instance
-        this.processor.remove(files);
+        var files;
         
-        this.prev = compilation.fileTimestamps;
-
         // Make processor instance available to the loader
         compilation.options.processor = this.processor;
-    });
+        
+        // This code is only useful when calling .run() multiple times
+        // watching handles its own invalidations
+        if(!watching) {
+            files = getChangedFiles(this.prev, compilation.fileTimestamps);
 
-    compiler.plugin("emit", (compilation, done) => {
-        this.processor.output().then((data) => {
-            if(this.options.css) {
-                compilation.assets[this.options.css] = new sources.RawSource(
-                    data.css
-                );
-            }
+            // Remove changed/removed files from processor instance
+            this.processor.remove(files);
             
-            if(this.options.json) {
-                compilation.assets[this.options.json] = new sources.RawSource(
-                    JSON.stringify(data.compositions, null, 4)
-                );
-            }
-
-            done();
-        });
+            this.prev = compilation.fileTimestamps;
+        }
     });
+
+    compiler.plugin("emit", (compilation, done) =>
+        this.processor.output()
+            .then((data) => {
+                if(this.options.css) {
+                    compilation.assets[this.options.css] = new sources.RawSource(
+                        data.css
+                    );
+                }
+                
+                if(this.options.json) {
+                    compilation.assets[this.options.json] = new sources.RawSource(
+                        JSON.stringify(data.compositions, null, 4)
+                    );
+                }
+
+                return done();
+            })
+    );
 };
 
 module.exports = ModularCSS;
