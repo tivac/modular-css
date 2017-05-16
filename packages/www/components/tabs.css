@@ -2,8 +2,10 @@
     padding: 10px 15px;
     
     background: #444444;
-    border: 1px solid #666;
     color: #99968B;
+    
+    border: 1px solid #666;
+    border-bottom: 0;
 
     cursor: pointer;
 }
