@@ -70,13 +70,13 @@ function process() {
 
         error = false;
         
-        if(tab === "errors") {
-            tab = "css";
+        if(tab === "Errors") {
+            tab = "CSS";
         }
     })
     .catch((e) => {
         error = e.toString();
-        tab = "errors";
+        tab = "Errors";
     })
     .then(m.redraw);
 }
