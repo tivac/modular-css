@@ -1,4 +1,4 @@
-modular-css [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css)
+modular-css [![Build Status](https://img.shields.io/travis/tivac/modular-css/master.svg)](https://travis-ci.org/tivac/modular-css) [![Gitter](https://img.shields.io/gitter/room/modular-css/modular-css.svg)](https://gitter.im/modular-css/modular-css)
 ===========
 
 A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/css-modules)
