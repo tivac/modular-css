@@ -1,6 +1,10 @@
 postcss-modular-css [![NPM Version](https://img.shields.io/npm/v/postcss-modular-css.svg)](https://www.npmjs.com/package/postcss-modular-css) [![NPM License](https://img.shields.io/npm/l/postcss-modular-css.svg)](https://www.npmjs.com/package/postcss-modular-css) [![NPM Downloads](https://img.shields.io/npm/dm/postcss-modular-css.svg)](https://www.npmjs.com/package/postcss-modular-css)
 ===========
 
+<p align="center">
+    <a href="https://gitter.im/modular-css/modular-css"><img src="https://img.shields.io/gitter/room/modular-css/modular-css.svg" alt="Gitter" /></a>
+</p>
+
 PostCSS plugin to use [`modular-css`](https://github.com/tivac/modular-css) within a PostCSS processor instance.
 
 ## Install

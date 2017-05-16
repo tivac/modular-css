@@ -1,6 +1,10 @@
 modular-css  [![NPM Version](https://img.shields.io/npm/v/modular-css.svg)](https://www.npmjs.com/package/modular-css) [![NPM License](https://img.shields.io/npm/l/modular-css.svg)](https://www.npmjs.com/package/modular-css) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css.svg)](https://www.npmjs.com/package/modular-css)
 ===========
 
+<p align="center">
+    <a href="https://gitter.im/modular-css/modular-css"><img src="https://img.shields.io/gitter/room/modular-css/modular-css.svg" alt="Gitter" /></a>
+</p>
+
 A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/css-modules). This package is a bundle that includes all of the functionality, you may want something more specific.
 
 ## Install
