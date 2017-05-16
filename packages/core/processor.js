@@ -155,20 +155,17 @@ Processor.prototype = {
 
         // Remove everything that depends on files to be removed as well
         // since it will also have to be recalculated
-        files = unique(
-            files.reduce(
+        files = files
+            .reduce(
                 (prev, curr) => prev.concat(
                     this._graph.dependantsOf(curr)
                         .concat(curr)
                 ),
                 []
             )
-            .sort((a, b) => order.indexOf(a) - order.indexOf(b))
-        );
+            .sort((a, b) => order.indexOf(a) - order.indexOf(b));
 
-        console.log("ACTUALLY REMOVING", files);
-
-        files.forEach((file) => {
+        unique(files).forEach((file) => {
             delete this._files[file];
 
             this._graph.removeNode(file);
