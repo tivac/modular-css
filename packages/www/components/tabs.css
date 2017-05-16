@@ -1,0 +1,20 @@
+.tab {
+    padding: 10px 15px;
+    
+    background: #444444;
+    border: 1px solid #666;
+    color: #99968B;
+
+    cursor: pointer;
+}
+
+.active {
+    composes: tab;
+
+    color: #F6F3E8;
+    background: #656565;
+}
+
+.panel {
+    
+}

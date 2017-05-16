@@ -6,8 +6,13 @@ import pkg from "modular-css-core/package.json";
 import cm from "codemirror";
 import throttle from "throttleit";
 
-import css from "./style.css";
+// Load up codemirror modes
+import "codemirror/mode/css/css.js";
+import "codemirror/mode/javascript/javascript.js";
 
+import tabs from "./components/tabs.js";
+
+import css from "./style.css";
 
 var files = [],
 
@@ -28,12 +33,8 @@ var files = [],
     
     error,
     throttled,
-    tab = "css",
+    tab = "CSS",
     state;
-
-// Load up codemirror modes
-require("codemirror/mode/css/css.js");
-require("codemirror/mode/javascript/javascript.js");
 
 window.fs = fs;
 
@@ -110,8 +111,6 @@ m.route(document.body, "/", {
             try {
                 parsed = JSON.parse(atob(vnode.attrs.state));
 
-                console.log(parsed)
-
                 parsed.forEach((file) => {
                     files.push(file.name);
 
@@ -128,7 +127,7 @@ m.route(document.body, "/", {
             m("h1", { class : css.head },
                 m("a", { href : "https://github.com/tivac/modular-css" }, "modular-css"),
                 " ",
-                m("span", { class : css.subhead }, "v", pkg.version)
+                m("span", { class : css.subhead }, `v${pkg.version}`)
             ),
 
             m("div", { class : css.content },
@@ -185,76 +184,62 @@ m.route(document.body, "/", {
                 ),
 
                 m("div", { class : css.output },
-                    m("div", { class : css.tabs },
-                        m("button", {
-                            class   : tab === "errors" ? css.active : css.tab,
-                            onclick : () => (tab = "errors")
-                        }, "Errors"),
-                        
-                        m("button", {
-                            class   : tab === "css" ? css.active : css.tab,
-                            onclick : () => (tab = "css")
-                        }, "CSS"),
-                        
-                        m("button", {
-                            class   : tab === "json" ? css.active : css.tab,
-                            onclick : () => (tab = "json")
-                        }, "JSON"),
+                    m(tabs, {
+                        active : tab,
+                        tabs   : {
+                            Errors : () => m("pre", { class : css.errors },
+                                error || "No errors!"
+                            ),
 
-                         m("button", {
-                            class   : tab === "export" ? css.active : css.tab,
-                            onclick : () => (tab = "export")
-                        }, "Export")
-                    ),
+                            CSS : () => m("div", { class : css.panel },
+                                m("textarea", {
+                                    oncreate : (vnode) => {
+                                        vnode.state.editor = cm.fromTextArea(vnode.dom, {
+                                            mode        : "text/css",
+                                            theme       : "monokai",
+                                            lineNumbers : true,
+                                            readOnly    : "nocursor",
+                                            value       : output.css
+                                        });
+                                    },
 
-                    tab === "errors" && m("pre", { class : css.errors },
-                        error || "No errors!"
-                    ),
+                                    onupdate : (vnode) => vnode.state.editor.doc.setValue(output.css)
+                                })
+                            ),
+                            
+                            JSON : () => m("div", { class : css.panel },
+                                m("textarea", {
+                                    oncreate : (vnode) => {
+                                        vnode.state.editor = cm.fromTextArea(vnode.dom, {
+                                            mode        : "application/json",
+                                            theme       : "monokai",
+                                            lineNumbers : true,
+                                            readOnly    : "nocursor",
+                                            value       : output.json
+                                        });
+                                    },
 
-                    tab === "css" && m("div", { class : css.panel },
-                        m("textarea", {
-                            oncreate : (vnode) => {
-                                vnode.state.editor = cm.fromTextArea(vnode.dom, {
-                                    mode        : "text/css",
-                                    theme       : "monokai",
-                                    lineNumbers : true,
-                                    readOnly    : "nocursor"
-                                });
-                            },
+                                    onupdate : (vnode) => vnode.state.editor.doc.setValue(output.json)
+                                })
+                            ),
+                            
+                            Export : () => m("div", { class : css.panel },
+                                m("textarea", {
+                                    oncreate : (vnode) => {
+                                        vnode.state.editor = cm.fromTextArea(vnode.dom, {
+                                            mode        : "text/css",
+                                            theme       : "monokai",
+                                            lineNumbers : true,
+                                            readOnly    : "nocursor",
+                                            value       : exported()
+                                        });
+                                    },
 
-                            onupdate : (vnode) => vnode.state.editor.doc.setValue(output.css)
-                        }, output.css)
-                    ),
-                    
-                    tab === "json" && m("div", { class : css.panel },
-                        m("textarea", {
-                            oncreate : (vnode) => {
-                                vnode.state.editor = cm.fromTextArea(vnode.dom, {
-                                    mode        : "application/json",
-                                    theme       : "monokai",
-                                    lineNumbers : true,
-                                    readOnly    : "nocursor"
-                                });
-                            },
-
-                            onupdate : (vnode) => vnode.state.editor.doc.setValue(output.json)
-                        }, output.json)
-                    ),
-
-                    tab === "export" && m("div", { class : css.panel },
-                        m("textarea", {
-                            oncreate : (vnode) => {
-                                vnode.state.editor = cm.fromTextArea(vnode.dom, {
-                                    mode        : "text/css",
-                                    theme       : "monokai",
-                                    lineNumbers : true,
-                                    readOnly    : "nocursor"
-                                });
-                            },
-
-                            onupdate : (vnode) => vnode.state.editor.doc.setValue(exported())
-                        }, exported())
-                    )
+                                    onupdate : (vnode) => vnode.state.editor.doc.setValue(exported())
+                                })
+                            )
+                        }
+                    })
                 )
             )
         ]
