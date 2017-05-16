@@ -144,3 +144,26 @@ new Processor({
     exportDefaults: false
 })
 ```
+
+```css
+/* exportGlobals: true */
+.a {}
+:global(.b) {}
+
+/* Outputs
+{
+    "a" : "mc12345_a",
+    "b" : "b"
+}
+*/
+
+/* exportGlobals: false */
+.a {}
+:global(.b) {}
+
+/* Outputs
+{
+    "a" : "mc12345_a"
+}
+*/
+```

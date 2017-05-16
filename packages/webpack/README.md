@@ -1,11 +1,13 @@
 modular-css-webpack  [![NPM Version](https://img.shields.io/npm/v/modular-css-webpack.svg)](https://www.npmjs.com/package/modular-css-webpack) [![NPM License](https://img.shields.io/npm/l/modular-css-webpack.svg)](https://www.npmjs.com/package/modular-css-webpack) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-webpack.svg)](https://www.npmjs.com/package/modular-css-webpack)
 ===========
 
-`modular-css-webpack/plugin` provides a webpack 2 plugin you can use to transform imported `.css` files into lookup objects while outputting CSS to disk.
+Webpack2 support for [`modular-css`](https://github.com/tivac/modular-css).
 
-`modular-css-webpack/loader` provides the file loader that does the actual transformation on files.
+This package contains two entry points, you will need to use **both** in tandem for things to work!
 
-You will need to use **both** in tandem for things to work!
+1. `modular-css-webpack/plugin` provides a webpack 2 plugin you can use to transform imported `.css` files into lookup objects while outputting CSS to disk.
+
+2. `modular-css-webpack/loader` provides the file loader that does the actual transformation on files.
 
 ## Usage
 
@@ -54,9 +56,9 @@ All other options are passed to the underlying `Processor` instance, see [Option
 
 ### Loader Options
 
-#### `cjs`
+#### `namedExports`
 
-By default this plugin will export ES2015 module `export`s. If you want to use CommonJS exports set the `cjs` option to `true`
+By default this plugin will create both a default export and named `export`s for each class in a CSS file. You can disable this by setting `namedExports` to `false`.
 
 ```js
 ...
@@ -66,7 +68,7 @@ By default this plugin will export ES2015 module `export`s. If you want to use C
             use  : {
                 loader  : "modular-css-webpack/loader",
                 options : {
-                    cjs : true
+                    namedExports : false
                 }
             }
         }]

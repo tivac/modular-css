@@ -1,7 +1,7 @@
 modular-css-cli  [![NPM Version](https://img.shields.io/npm/v/modular-css-cli.svg)](https://www.npmjs.com/package/modular-css-cli) [![NPM License](https://img.shields.io/npm/l/modular-css-cli.svg)](https://www.npmjs.com/package/modular-css-cli) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-cli.svg)](https://www.npmjs.com/package/modular-css-cli)
 ===========
 
-Use `modular-css` via the CLI!
+CLI interface to [`modular-css`](https://github.com/tivac/modular-css).
 
 ## Installation
 

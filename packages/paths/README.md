@@ -1,7 +1,7 @@
 modular-css-paths [![NPM Version](https://img.shields.io/npm/v/modular-css-paths.svg)](https://www.npmjs.com/package/modular-css-paths) [![NPM License](https://img.shields.io/npm/l/modular-css-paths.svg)](https://www.npmjs.com/package/modular-css-paths) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-paths.svg)](https://www.npmjs.com/package/modular-css-paths)
 ===========
 
-A resolver for `modular-css` that will let you resolve file references against arbitrary paths. Useful to avoid code like
+A resolver for [`modular-css`](https://github.com/tivac/modular-css) that will let you resolve file references against arbitrary paths. Useful to avoid code like
 
 ```css
 @value foo from "../../../../../../../../some/other/directory/file.css";

@@ -1,7 +1,7 @@
 modular-css-glob [![NPM Version](https://img.shields.io/npm/v/modular-css-glob.svg)](https://www.npmjs.com/package/modular-css-glob) [![NPM License](https://img.shields.io/npm/l/modular-css-glob.svg)](https://www.npmjs.com/package/modular-css-glob) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-glob.svg)](https://www.npmjs.com/package/modular-css-glob)
 ===========
 
-A JS API for using `modular-css` via glob patterns.
+A JS API for using glob patterns with [`modular-css`](https://github.com/tivac/modular-css).
 
 ## Install
 
