@@ -20,6 +20,7 @@
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "dependencies": {
+    "clipboard": "^1.6.1",
     "codemirror": "^5.24.2",
     "memory-fs": "^0.4.1",
     "mithril": "^1.0.1",

@@ -1,0 +1,39 @@
+@value * as colors from "../colors.css";
+
+.file + .file {
+    margin-top: 20px;
+}
+
+.meta {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: baseline;
+    
+    height: 30px;
+
+    margin-bottom: 5px;
+}
+
+.name {
+    flex: 1;
+    margin-left: 5px;
+    
+    padding: 5px;
+
+    background: #343434;
+    color: colors.main;
+ 
+    border: 1px solid #666;
+    border-radius: 2px;
+}
+
+.remove {
+    composes: button from "../button.css";
+
+    background: colors.bad;
+    color: colors.main;
+
+    margin-left: 10px;
+}

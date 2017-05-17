@@ -1,5 +1,7 @@
 @value buttonCss: "./button.css";
 
+@value * as colors from "./colors.css";
+
 html {
     box-sizing: border-box;
     font-family: 'Open Sans', sans-serif;
@@ -10,23 +12,23 @@ html {
 }
 
 body {
-    background: #242424;
-    color: #F6F3E8;
+    background: colors.mainbg;
+    color: colors.main;
 }
 
 .hd {
     margin-top: 0;
     padding: 20px 10px;
     
-    background: #384048;
-    color: #A0A8B0;
+    background: colors.mutedbg;
+    color: colors.muted;
 
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: baseline;
 
-    border-bottom: 2px solid #00A0E0;
+    border-bottom: 2px solid colors.accent;
 }
 
 .title {
@@ -68,62 +70,43 @@ body {
 .files,
 .output {
     composes: column;
+
+    position: relative;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn {
+    flex: 1;
+
+    margin-bottom: 10px;
+}
+
+.btn + .btn {
+    margin-left: 10px;
 }
 
 .add {
     composes: button from buttonCss;
+    composes: btn;
 
-    margin-bottom: 10px;
-    background: #95E454;
+    background: colors.good;
 
     font-weight: bold;
 }
 
-.file + .file {
-    margin-top: 20px;
-}
-
-.meta {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: space-between;
-    justify-content: center;
-    
-    margin-bottom: 5px;
-}
-
-.name {
-    flex: 2;
-    padding: 5px;
-
-    background: #343434;
-    color: #F6F3E8;
- 
-    border: 1px solid #666;
-    border-radius: 2px;
-}
-
-.remove {
+.export {
     composes: button from buttonCss;
+    composes: btn;
 
-    background: #F08080;
-}
+    /* used for clipboard.js targeting */
+    composes: global(clipboard);
 
-.name + .remove {
-    margin-left: 10px;
-}
-
-.errors {
-    margin: 0;
-    padding: 10px;
-
-    min-height: 500px;
-
-    border: 1px solid #666;
-    color: #F08080;
-
-    white-space: pre-wrap;
+    background: colors.mutedbg;
+    color: colors.muted;
 }
 
 .panel :global(.CodeMirror) {
@@ -141,4 +124,8 @@ body {
 
 :global(.cm-s-monokai.CodeMirror) {
     background: #242424;
+}
+
+.exports {
+    display: none;
 }
