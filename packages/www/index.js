@@ -40,7 +40,7 @@ window.fs = fs;
 function createFile() {
     var file = `/${files.length + 1}.css`;
 
-    fs.writeFileSync(file, `/* ${file} */\n`);
+    fs.writeFileSync(file, `\n`);
     
     files.push(file);
 }
