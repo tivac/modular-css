@@ -14,24 +14,33 @@ body {
     color: #F6F3E8;
 }
 
-.head {
+.hd {
     margin-top: 0;
     padding: 15px 10px;
     
     background: #384048;
     color: #A0A8B0;
 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+
     border-bottom: 2px solid #00A0E0;
 }
 
-.head a,
-.head a:active,
-.head a:visited {
+.title {
+    margin: 0 10px 0;
+}
+
+.title a,
+.title a:active,
+.title a:visited {
     color: inherit;
     text-decoration: none;
 }
 
-.head a:hover {
+.title a:hover {
     text-decoration: underline;
 }
 

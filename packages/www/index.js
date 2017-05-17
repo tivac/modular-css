@@ -31,10 +31,9 @@ var files = [],
         ]
     }),
     
-    error,
-    throttled,
     tab = "CSS",
-    state;
+    
+    error, throttled, state;
 
 window.fs = fs;
 
@@ -124,10 +123,21 @@ m.route(document.body, "/", {
         },
 
         view : () => [
-            m("h1", { class : css.head },
-                m("a", { href : "https://github.com/tivac/modular-css" }, "modular-css"),
-                " ",
-                m("span", { class : css.subhead }, `v${pkg.version}`)
+            m("div", { class : css.hd },
+                m("h1", { class : css.title },
+                    m("a", {href : "https://github.com/tivac/modular-css" }, "modular-css"),
+                    " ",
+                    m("span", { class : css.subhead }, `v${pkg.version}`)
+                ),
+                m("a", {
+                        class : css.chat,
+                        href  : "https://gitter.im/modular-css/modular-css"
+                    },
+                    m("img", {
+                        src : "https://img.shields.io/gitter/room/modular-css/modular-css.svg",
+                        alt : "Gitter"
+                    })
+                )
             ),
 
             m("div", { class : css.content },
