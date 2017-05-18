@@ -5,11 +5,9 @@
   "description": "Test utilities for modular-css",
   "main": "compare.js",
   "author": "Pat Cavit <npm@patcavit.com>",
+  "repository": "tivac/modular-css",
   "license": "MIT",
   "scripts": {
     "test": "true"
-  },
-  "dependencies": {
-    "modular-css-core": "^5.1.4"
   }
 }
