@@ -1,5 +1,15 @@
 "use strict";
 
-var rel = require("modular-css-core/lib/relative.js").bind(null, process.cwd());
+var path = require("path"),
 
-module.exports = (files) => files.map(rel);
+    sepRegex = /\\/g;
+
+// Get a relative version of an absolute path w/ cross-platform/URL-friendly
+// directory separators
+module.exports = function(files) {
+    var cwd = process.cwd();
+    
+    return files.map((file) =>
+        path.relative(cwd, file).replace(sepRegex, "/")
+    );
+};
