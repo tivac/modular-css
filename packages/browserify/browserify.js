@@ -27,7 +27,7 @@ module.exports = function(browserify, opts) {
             cache : true
         }, opts),
         
-        processor = opts.cache && new Processor(options),
+        processor = options.cache && new Processor(options),
         
         bundler, bundles, handled;
     
@@ -50,7 +50,7 @@ module.exports = function(browserify, opts) {
         if(path.extname(file) !== options.ext) {
             return through();
         }
-        
+
         return sink.str(function(buffer, done) {
             var push = this.push.bind(this),
                 real = fs.realpathSync(file);
@@ -144,7 +144,7 @@ module.exports = function(browserify, opts) {
         handled = {};
         
         // cache set to false means we need to create a new Processor each run-through
-        if(!opts.cache) {
+        if(!options.cache) {
             processor = new Processor(options);
         }
 
@@ -154,7 +154,7 @@ module.exports = function(browserify, opts) {
         bundler.on("end", function() {
             var bundling = Object.keys(bundles).length > 0,
                 common;
-            
+
             if(options.json) {
                 mkdirp.sync(path.dirname(options.json));
                 
@@ -212,7 +212,7 @@ module.exports = function(browserify, opts) {
                 files : bundling && common,
                 to    : options.css
             })
-            .then((result) => fs.writeFileSync(options.css, result.css))
+            .then((result) => fs.writeFileSync(options.css, result.css, "utf8"))
             .catch((error) => bundler.emit("error", error));
         });
     });
