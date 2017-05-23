@@ -4,6 +4,7 @@ var fs = require("fs"),
     
     browserify = require("browserify"),
     from       = require("from2-string"),
+    dedent     = require("dedent"),
     
     read = require("test-utils/read.js")(__dirname),
 
@@ -14,26 +15,29 @@ describe("/browserify.js", function() {
     describe("/issues", function() {
         describe("/313", function() {
             it("should include all dependencies after watchify update", function(done) {
-                var src = from("require('./packages/browserify/test/specimens/issues/313/1.css');require('./packages/browserify/test/specimens/issues/313/2.css');"),
-                    opts = { cache: {}, packageCache: {} },
-                    
-                    build = browserify(src, opts);
+                var build = browserify(
+                        from(dedent(`
+                            require("./packages/browserify/test/specimens/issues/313/1.css");
+                            require("./packages/browserify/test/specimens/issues/313/2.css");
+                        `)),
+                        {
+                            cache        : {},
+                            packageCache : {}
+                        }
+                    ),
+                    css;
 
                 build.plugin("watchify");
                 build.plugin(plugin, {
                     css : "./packages/browserify/test/output/issues/313.css"
                 });
 
-                var expectedOutput;
-
                 // File changed
                 build.on("update", function() {
                     bundle(build)
                         .then(() => {
-                            // expect(read("./issues/313.css")).toMatchSnapshot();
-
                             // compare the output of the updated file with the initial bundle
-                            expect(read("./issues/313.css")).toEqual(expectedOutput);
+                            expect(read("./issues/313.css")).toEqual(css);
 
                             build.close();
                             
@@ -45,12 +49,16 @@ describe("/browserify.js", function() {
                 bundle(build)
                     .then(() => {
                         // save the output of the first build
-                        expectedOutput = read("./issues/313.css");
+                        css = read("./issues/313.css");
 
-                        expect(expectedOutput).toMatchSnapshot();
+                        expect(css).toMatchSnapshot();
                         
                         // Trigger a rebuild
-                        fs.utimesSync("./packages/browserify/test/specimens/issues/313/2.css", new Date(), new Date());
+                        fs.utimesSync(
+                            "./packages/browserify/test/specimens/issues/313/2.css",
+                            new Date(),
+                            new Date()
+                        );
                     });
             });
         });
