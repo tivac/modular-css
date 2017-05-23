@@ -10,7 +10,7 @@ install:
   # install root-level dependencies
   - npm install
   # install all the sub-package dependencies
-  - npm run bootstrap
+  - lerna bootstrap --hoist
 
 after_script:
   - npm run danger
