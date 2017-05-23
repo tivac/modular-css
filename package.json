@@ -7,7 +7,6 @@
     "url": "https://github.com/tivac/modular-css/issues"
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap --hoist",
     "clean": "lerna clean",
     "precommit": "lint-staged",
     "cover": "jest --coverage",
