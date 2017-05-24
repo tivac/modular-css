@@ -6,7 +6,7 @@
   "version": "independent",
   "command": {
     "publish": {
-      "message": "v%s"
+      "message": "chore: Publish"
     },
     "bootstrap": {
       "hoist": true
