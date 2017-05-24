@@ -11,15 +11,13 @@ module.exports = function(args) {
             args
         );
     
-    options.paths = options.paths.map((dir) => from.bind(null, dir));
-
     return (src, file) => {
         var result;
 
-        options.paths.some((fn) =>
-            (result = fn(file))
+        options.paths.some((dir) =>
+            (result = from.silent(dir, file))
         );
-        
+
         return result;
     };
 };

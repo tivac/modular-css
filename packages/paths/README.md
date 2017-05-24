@@ -7,7 +7,7 @@ modular-css-paths [![NPM Version](https://img.shields.io/npm/v/modular-css-paths
 
 A resolver for [`modular-css`](https://github.com/tivac/modular-css) that will let you resolve file references against arbitrary paths. Useful to avoid code like
 
-```css
+```
 @value foo from "../../../../../../../../some/other/directory/file.css";
 ```
 

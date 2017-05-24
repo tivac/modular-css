@@ -1,8 +1,8 @@
 {
-  "name": "modular-css-paths",
+  "name": "modular-css-aliases",
   "version": "5.1.5",
-  "description": "Custom file resolver supporting multiple paths for modular-css",
-  "main": "./paths.js",
+  "description": "Custom file resolver supporting directory aliases for modular-css",
+  "main": "./aliases.js",
   "repository": "tivac/modular-css",
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
@@ -13,14 +13,12 @@
     "css",
     "css-modules",
     "modular-css",
-    "paths"
+    "paths",
+    "aliases"
   ],
   "devDependencies": {
     "dentist": "^1.0.3",
     "modular-css-core": "^5.1.5",
     "test-utils": "^5.1.5"
-  },
-  "dependencies": {
-    "resolve-from": "^3.0.0"
   }
 }

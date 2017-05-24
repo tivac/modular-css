@@ -4,9 +4,12 @@
     "packages/*"
   ],
   "version": "independent",
-  "commands": {
+  "command": {
     "publish": {
       "message": "v%s"
+    },
+    "bootstrap": {
+      "hoist": true
     }
   }
 }
