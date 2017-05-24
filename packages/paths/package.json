@@ -21,6 +21,6 @@
     "test-utils": "^5.1.5"
   },
   "dependencies": {
-    "resolve-from": "^2.0.0"
+    "resolve-from": "^3.0.0"
   }
 }
