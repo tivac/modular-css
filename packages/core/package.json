@@ -38,6 +38,7 @@
     "postcss-url": "^6.0.4",
     "postcss-value-parser": "^3.3.0",
     "resolve-from": "^3.0.0",
+    "true-case-path": "^1.0.2",
     "unique-slug": "^2.0.0"
   }
 }

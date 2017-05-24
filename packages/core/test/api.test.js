@@ -220,16 +220,17 @@ describe("/processor.js", () => {
                     resolvers : [
                         () => {
                             ran = true;
-                        },
-                        (src, file) => file
+                        }
                     ]
                 });
                 
                 expect(
-                    processor._resolve(
-                        "./packages/core/test/specimens/start.css",
-                        "./local.css"
-                    )
+                    relative([
+                        processor._resolve(
+                            require.resolve("./specimens/start.css"),
+                            "./local.css"
+                        )
+                    ])
                 )
                 .toMatchSnapshot();
 
@@ -246,7 +247,7 @@ describe("/processor.js", () => {
                 expect(
                     relative([
                         processor._resolve(
-                            "./packages/core/test/specimens/start.css",
+                            require.resolve("./specimens/start.css"),
                             "./local.css"
                         )
                     ])

@@ -6,7 +6,11 @@ Array [
 ]
 `;
 
-exports[`/processor.js API ._resolve() should run resolvers until a match is found 1`] = `"./local.css"`;
+exports[`/processor.js API ._resolve() should run resolvers until a match is found 1`] = `
+Array [
+  "packages/core/test/specimens/local.css",
+]
+`;
 
 exports[`/processor.js API .dependencies() should return the dependencies of the specified file 1`] = `
 Array [
