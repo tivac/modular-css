@@ -11,7 +11,19 @@ var fs   = require("fs"),
     
     Processor = require("modular-css-core"),
     relative  = require("modular-css-core/lib/relative.js"),
-    output    = require("modular-css-core/lib/output.js");
+    output    = require("modular-css-core/lib/output.js"),
+    
+    prefixRegex = /^\.\.?\//;
+
+function prefixed(cwd, file) {
+    var out = relative(cwd, file);
+
+    if(!prefixRegex.test(out)) {
+        out = `./${out}`;
+    }
+
+    return out;
+}
 
 function exports(out) {
     return `module.exports = ${
@@ -35,13 +47,8 @@ module.exports = function(browserify, opts) {
         return browserify.emit("error", `Missing or invalid "ext" option: ${options.ext}`);
     }
 
-    // Wrapper for processor.dependencies() so that all paths are absolute
-    function dependencies(file) {
-        return processor.dependencies(file).map((dep) => path.resolve(options.cwd, dep));
-    }
-    
     function depReducer(curr, next) {
-        curr[relative.prefixed(options.cwd, next)] = path.resolve(options.cwd, next);
+        curr[prefixed(options.cwd, next)] = next;
         
         return curr;
     }
@@ -60,7 +67,7 @@ module.exports = function(browserify, opts) {
                     // Tell watchers about dependencies by emitting "file" events
                     // AFAIK this is only useful to watchify, to ensure that it watches
                     // everyone in the dependency graph
-                    dependencies(result.id).forEach((dep) =>
+                    processor.dependencies(result.id).forEach((dep) =>
                         browserify.emit("file", dep, dep)
                     );
                     
@@ -92,7 +99,7 @@ module.exports = function(browserify, opts) {
         
         // Ensure that browserify knows about the CSS dependency tree by updating
         // any referenced entries w/ their dependencies
-        row.deps = dependencies(row.file).reduce(depReducer, {});
+        row.deps = processor.dependencies(row.file).reduce(depReducer, {});
         
         return done(null, row);
     }, function(done) {
@@ -100,7 +107,7 @@ module.exports = function(browserify, opts) {
         // injected into the stream of files being managed
         var push = this.push.bind(this);
         
-        dependencies().forEach(function(dep) {
+        processor.dependencies().forEach(function(dep) {
             if(dep in handled) {
                 return;
             }
@@ -109,7 +116,7 @@ module.exports = function(browserify, opts) {
                 id     : path.resolve(options.cwd, dep),
                 file   : path.resolve(options.cwd, dep),
                 source : exports(processor.files[dep]),
-                deps   : dependencies(dep).reduce(depReducer, {})
+                deps   : processor.dependencies(dep).reduce(depReducer, {})
             });
         });
         
@@ -168,7 +175,7 @@ module.exports = function(browserify, opts) {
                 return;
             }
             
-            common = dependencies();
+            common = processor.dependencies();
 
             if(bundling) {
                 // Write out each bundle's CSS files (if they have any)

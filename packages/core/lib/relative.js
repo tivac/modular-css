@@ -2,19 +2,8 @@
 
 var path = require("path"),
 
-    sepRegex    = /\\/g,
-    prefixRegex = /^\.\.?\//;
+    sepRegex = /\\/g;
 
 // Get a relative version of an absolute path w/ cross-platform/URL-friendly
 // directory separators
 module.exports = (cwd, file) => path.relative(cwd, file).replace(sepRegex, "/");
-
-module.exports.prefixed = function(cwd, file) {
-    var out = module.exports(cwd, file);
-
-    if(!prefixRegex.test(out)) {
-        out = `./${out}`;
-    }
-
-    return out;
-};
