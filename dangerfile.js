@@ -5,7 +5,7 @@ var fs   = require("fs"),
 
     locater  = require("locater"),
     pinpoint = require("pinpoint"),
-    outdent  = require("outdent"),
+    dedent  = require("dedent"),
     
     jsfiles = danger.git.created_files
         .concat(danger.git.modified_files)
@@ -46,11 +46,11 @@ jsfiles
             locs = locater.find(/it\.only|describe\.only/g, code);
         
         locs.forEach((loc) =>
-            fail(outdent`
+            fail(dedent(`
                 ${link(file, `#L${loc.line}`)} is preventing tests from running.
                 <pre lang="javascript">
                 ${pinpoint(code, { line: loc.line, column : loc.cursor })}
                 </pre>
-            `)
+            `))
         )
     });

@@ -9,8 +9,12 @@ node_js:
 install:
   # install root-level dependencies
   - npm install
+  
   # install all the sub-package dependencies
   - lerna bootstrap --hoist
+  
+  # WTF did npm just install?
+  - npm ls
 
 after_script:
   - npm run danger
