@@ -26,7 +26,7 @@ describe("/rollup.js", () => {
     
     it("should generate exports", () =>
         rollup({
-            entry   : "./packages/rollup/test/specimens/simple.js",
+            entry   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
                     namer
@@ -40,7 +40,7 @@ describe("/rollup.js", () => {
     
     it("should be able to tree-shake results", () =>
         rollup({
-            entry   : "./packages/rollup/test/specimens/tree-shaking.js",
+            entry   : require.resolve("./specimens/tree-shaking.js"),
             plugins : [
                 plugin({
                     namer
@@ -54,7 +54,7 @@ describe("/rollup.js", () => {
 
     it("should attach a promise to the bundle.generate response", () =>
         rollup({
-            entry   : "./packages/rollup/test/specimens/simple.js",
+            entry   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
                     namer,
@@ -71,7 +71,7 @@ describe("/rollup.js", () => {
     
     it("should generate CSS", () =>
         rollup({
-            entry   : "./packages/rollup/test/specimens/simple.js",
+            entry   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
                     namer,
@@ -90,7 +90,7 @@ describe("/rollup.js", () => {
     
     it("should generate JSON", () =>
         rollup({
-            entry   : "./packages/rollup/test/specimens/simple.js",
+            entry   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
                     namer,
@@ -109,7 +109,7 @@ describe("/rollup.js", () => {
 
     it("should provide named exports", () =>
         rollup({
-            entry   : "./packages/rollup/test/specimens/named.js",
+            entry   : require.resolve("./specimens/named.js"),
             plugins : [
                 plugin({
                     namer
@@ -123,7 +123,7 @@ describe("/rollup.js", () => {
     
     it("should warn & not export individual keys when they are not valid identifiers", () =>
         rollup({
-            entry   : "./packages/rollup/test/specimens/invalid-name.js",
+            entry   : require.resolve("./specimens/invalid-name.js"),
             plugins : [
                 plugin({
                     namer,
@@ -139,7 +139,7 @@ describe("/rollup.js", () => {
 
     it("should allow disabling of named exports", () =>
         rollup({
-            entry   : "./packages/rollup/test/specimens/simple.js",
+            entry   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
                     namer,
@@ -154,7 +154,7 @@ describe("/rollup.js", () => {
     
     it("shouldn't disable sourcemap generation", () =>
         rollup({
-            entry   : "./packages/rollup/test/specimens/simple.js",
+            entry   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
                     namer,
@@ -177,7 +177,7 @@ describe("/rollup.js", () => {
     
     it("should not output sourcemaps when they are disabled", () =>
         rollup({
-            entry   : "./packages/rollup/test/specimens/simple.js",
+            entry   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
                     namer,
@@ -207,7 +207,7 @@ describe("/rollup.js", () => {
 
     it("should respect the CSS dependency tree", () =>
         rollup({
-            entry   : "./packages/rollup/test/specimens/dependencies.js",
+            entry   : require.resolve("./specimens/dependencies.js"),
             plugins : [
                 plugin({
                     namer
@@ -226,7 +226,7 @@ describe("/rollup.js", () => {
 
         it("should throw errors in in before plugins", () =>
             rollup({
-                entry   : "./packages/rollup/test/specimens/simple.js",
+                entry   : require.resolve("./specimens/simple.js"),
                 plugins : [
                     plugin({
                         namer,
@@ -240,7 +240,7 @@ describe("/rollup.js", () => {
 
         it("should throw errors in after plugins", () =>
             rollup({
-                entry   : "./packages/rollup/test/specimens/simple.js",
+                entry   : require.resolve("./specimens/simple.js"),
                 plugins : [
                     plugin({
                         namer,
@@ -254,7 +254,7 @@ describe("/rollup.js", () => {
 
         it("should throw errors in done plugins", () =>
             rollup({
-                entry   : "./packages/rollup/test/specimens/simple.js",
+                entry   : require.resolve("./specimens/simple.js"),
                 plugins : [
                     plugin({
                         namer,
@@ -285,7 +285,7 @@ describe("/rollup.js", () => {
 
             // Start watching (re-requiring rollup because it needs root obj reference)
             watcher = watch(require("rollup"), {
-                entry   : "./packages/rollup/test/specimens/rollup/watch.js",
+                entry   : require.resolve("./specimens/rollup/watch.js"),
                 dest    : "./packages/rollup/test/output/watch.js",
                 format  : "es",
                 plugins : [
