@@ -1,7 +1,9 @@
 {
   "name": "modular-css-root",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "private": true,
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "license": "MIT",
   "repository": "tivac/modular-css",
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
@@ -13,14 +15,16 @@
     "cover": "jest --coverage",
     "danger": "danger run || true",
     "lint": "eslint .",
-    "preversion": "npm test",
+    "prepublish": "npm test",
+    "publish": "lerna publish",
+    "postpublish": "lerna exec --concurrency=1 --ignore=test-utils --ignore=www --ignore=modular-css -- changes",
+    "version": "changes",
     "test": "jest",
     "posttest": "npm run lint",
     "watch": "jest --watch"
   },
-  "author": "Pat Cavit <npm@patcavit.com>",
-  "license": "MIT",
   "devDependencies": {
+    "@studio/changes": "^1.2.0",
     "danger": "^0.15.0",
     "dedent": "^0.7.0",
     "eslint": "^3.19.0",
