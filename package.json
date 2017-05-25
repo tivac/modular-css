@@ -16,7 +16,7 @@
     "danger": "danger run || true",
     "lint": "eslint .",
     "prepublish": "npm test",
-    "publish": "lerna publish",
+    "publish": "lerna publish --message \"chore: Publish\"",
     "postpublish": "lerna exec --concurrency=1 --ignore=test-utils --ignore=www --ignore=modular-css -- changes",
     "version": "changes",
     "test": "jest",
