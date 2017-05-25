@@ -14,7 +14,7 @@ install:
   - lerna bootstrap --hoist
   
   # WTF did npm just install?
-  - npm ls
+  - npm ls || true
 
 after_script:
   - npm run danger
