@@ -2,7 +2,8 @@
 
 var path = require("path"),
 
-    resolve = require("resolve-from").silent;
+    resolve = require("resolve-from").silent,
+    fixCase = require("true-case-path");
 
 exports.resolve = (src, file) =>
     resolve(path.dirname(src), file);
@@ -12,7 +13,7 @@ exports.resolvers = (resolvers) => {
     
     return (src, file) => {
         var result;
-    
+
         resolvers.some((fn) =>
             (result = fn(src, file, exports.resolve))
         );
@@ -21,6 +22,6 @@ exports.resolvers = (resolvers) => {
             throw new Error(`Unable to locate "${file}" from "${src}"`);
         }
 
-        return result;
+        return fixCase(result);
     };
 };
