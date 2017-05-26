@@ -113,6 +113,21 @@ describe("/processor.js", function() {
                 .then(() => processor.output({ to : "out.css" }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
+
+            it.skip("should generate external source maps", function() {
+                var processor = new Processor({
+                        namer,
+                        map : {
+                            internal : false
+                        }
+                    });
+                
+                return processor.file(
+                    "./packages/core/test/specimens/start.css"
+                )
+                .then(() => processor.output({ to : "out.css" }))
+                .then((result) => expect(result.css).toMatchSnapshot());
+            });
         });
 
         describe("exportGlobals", function() {
