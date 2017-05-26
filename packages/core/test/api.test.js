@@ -210,6 +210,12 @@ describe("/processor.js", () => {
                 }))
                 .then((result) => expect(result.css).toMatchSnapshot())
             );
+
+            it("should reject if called before input has been processed", () => {
+                processor.file(require.resolve("./specimens/start.css"));
+
+                return expect(processor.output()).rejects.toMatchSnapshot();
+            });
         });
 
         describe("._resolve()", () => {

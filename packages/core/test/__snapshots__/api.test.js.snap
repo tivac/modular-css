@@ -170,6 +170,8 @@ exports[`/processor.js API .output() should order output by dependencies, then a
 }"
 `;
 
+exports[`/processor.js API .output() should reject if called before input has been processed 1`] = `[Error: File processing not complete]`;
+
 exports[`/processor.js API .output() should return a postcss result 1`] = `
 "/* packages/core/test/specimens/folder/folder.css */
 .folder {

@@ -186,21 +186,32 @@ Processor.prototype = {
     // Get the ultimate output for specific files or the entire tree
     output : function(args) {
         var opts  = args || false,
-            files = opts.files;
+            files = opts.files,
+            ready;
         
         if(!Array.isArray(files)) {
             files = tiered(this._graph);
+        }
+
+        files = files.map(this._absolute);
+
+        // Verify that all requested files have been fully processed & succeeded
+        // See
+        //  - https://github.com/tivac/modular-css/issues/248
+        //  - https://github.com/tivac/modular-css/issues/324
+        ready = files.every((dep) =>
+            dep in this._files && this._files[dep].result
+        );
+
+        if(!ready) {
+            return Promise.reject(new Error("File processing not complete"));
         }
 
         // Rewrite relative URLs before adding
         // Have to do this every time because target file might be different!
         //
         return Promise.all(
-            files
-            .map(this._absolute)
-            // Protect from any files that errored out (#248)
-            .filter((dep) => dep in this._files && this._files[dep].result)
-            .map((dep) => this._after.process(
+            files.map((dep) => this._after.process(
                 // NOTE: the call to .clone() is really important here, otherwise this call
                 // modifies the .result root itself and you process URLs multiple times
                 // See https://github.com/tivac/modular-css/issues/35
@@ -231,9 +242,7 @@ Processor.prototype = {
                     source : Object.assign(
                         {},
                         result.root.source,
-                        {
-                            end : result.root.source.start
-                        }
+                        { end : result.root.source.start }
                     )
                 }));
                 

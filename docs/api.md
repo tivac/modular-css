@@ -1,6 +1,11 @@
-# API
+# `Processor` API
 
-## Processor
+- [Usage](#usage)
+- [Options](#options)
+- [Properties](#properties)
+- [API](#api)
+
+## Usage
 
 Instantiate a new `Processor` instance, call it's `.file(<path>)` or `.string(<name>, <contents>)` methods, and then use the returned Promise to get access to the results/output.
 
@@ -33,9 +38,9 @@ Promise.all([
 });
 ```
 
-### Processor Options
+## Options
 
-#### `before`
+### `before`
 
 Specify an array of PostCSS plugins to be run against each file before it is processed.
 
@@ -45,7 +50,7 @@ new Processor({
 });
 ```
 
-#### `after`
+### `after`
 
 Specify an array of PostCSS plugins to be run after files are processed, but before they are combined. Plugin will be passed a `to` and `from` option.
 
@@ -57,7 +62,7 @@ new Processor({
 });
 ```
 
-#### `done`
+### `done`
 
 Specify an array of PostCSS plugins to be run against the complete combined CSS.
 
@@ -67,7 +72,7 @@ new Processor({
 });
 ```
 
-#### `map`
+### `map`
 
 Enable source map generation. Can also be passed to `.output()`.
 
@@ -87,7 +92,7 @@ new Processor({
 });
 ```
 
-#### `cwd`
+### `cwd`
 
 Specify the current working directory for this Processor instance, used when resolving `composes`/`@value` rules that reference other files.
 
@@ -99,7 +104,7 @@ new Processor({
 })
 ```
 
-#### `namer`
+### `namer`
 
 Specify a function (that takes `filename` & `selector` as arguments) to produce scoped selectors.
 
@@ -121,7 +126,7 @@ new Processor({
 });
 ```
 
-#### `resolvers`
+### `resolvers`
 
 If you want to provide your own file resolution logic you can pass an array of resolver functions. Each resolver function receives three arguments:
 
@@ -144,7 +149,7 @@ new Processor({
 })
 ```
 
-#### `exportGlobals`
+### `exportGlobals`
 
 By default identifiers wrapped in `:global(...)` are exported for ease of referencing via JS. By setting `exportGlobals` to `false` that behavior can be disabled. Mostly useful to avoid warnings when global CSS properties are not valid JS identifiers.
 
@@ -176,3 +181,38 @@ new Processor({
 }
 */
 ```
+
+## Properties
+
+### `.files`
+
+Returns an object keyed by absolute file paths of all known files in the `Processor` instance.
+
+### `.options`
+
+Returns the options object passed to the `Processor` augmented with the defaults.
+
+## APIs
+
+### `.string(file, css)`
+
+Returns a promise. Add `file` to the `Processor` instance with `css` contents.
+
+### `.file(file)`
+
+Returns a promise. Add `file` to the `Processor` instance, reads contents from disk using `fs`.
+
+### `.output([files])`
+
+Returns a promise. Finalize processing of all added CSS and create combined CSS output file. Optionally allows for combining a subset of the loaded files by passing a single file or array of files.
+
+**WARNING**: Calling `.output()` before any preceeding `.file(...)`/`.string(...)` calls have resolved their returned promises will return a rejected promise. See [usage](#usage) for an example of correct usage.
+
+### `.remove([files])`
+
+Remove files from the `Processor` instance. Accepts a single file or array of files.
+
+### `.dependencies([file])`
+
+Returns an array of file paths. Accepts a single file argument to get the dependencies for, will return entire dependency graph in order if argument is omitted.
+
