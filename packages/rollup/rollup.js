@@ -70,6 +70,13 @@ module.exports = function(opts) {
                         `export default ${JSON.stringify(classes, null, 4)};`
                     ];
                 
+                // Add dependencies
+                out = out.concat(
+                    processor.dependencies(id).map((file) =>
+                        `import "${file.replace(/\\/g, "/")}";`
+                    )
+                );
+
                 if(options.namedExports === false) {
                     return {
                         code : out.join("\n"),
