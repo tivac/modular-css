@@ -79,7 +79,7 @@ exports[`/processor.js API .file() should process an absolute file 4`] = `
 "
 `;
 
-exports[`/processor.js API .output() should allow for seperate source map results 1`] = `
+exports[`/processor.js API .output() should allow for seperate source map output 1`] = `
 Object {
   "file": "to.css",
   "mappings": "AAAA,oDAAC;AACD;IAAU,WAAY;CAAE;ACDxB,4CAAC;AAID;IAAS,iBAAkB;CAAE;ACJ7B,4CAAC;AAED;IDFA,WAAgB;IAChB,gBAAiB;CCCsB;AACvC;IFHA,uBAAqB;CEGe",

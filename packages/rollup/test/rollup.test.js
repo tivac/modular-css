@@ -36,6 +36,8 @@ function watching(cb) {
 error.postcssPlugin = "error-plugin";
 
 describe("/rollup.js", () => {
+    /* eslint max-statements: "off" */
+    
     afterEach(() => require("shelljs").rm("-rf", "./packages/rollup/test/output/*"));
     
     it("should be a function", () =>
