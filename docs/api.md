@@ -192,7 +192,7 @@ Returns an object keyed by absolute file paths of all known files in the `Proces
 
 Returns the options object passed to the `Processor` augmented with the defaults.
 
-## APIs
+## API
 
 ### `.string(file, css)`
 
