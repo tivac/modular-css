@@ -87,7 +87,7 @@ new Processor({
 // External source map
 new Processor({
     map : {
-        inline : fase
+        inline : false
     }
 });
 ```
