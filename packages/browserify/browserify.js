@@ -6,8 +6,7 @@ var fs   = require("fs"),
     through = require("through2"),
     sink    = require("sink-transform"),
     mkdirp  = require("mkdirp"),
-
-    each    = require("lodash.foreach"),
+    each    = require("p-each-series"),
     
     Processor = require("modular-css-core"),
     relative  = require("modular-css-core/lib/relative.js"),
@@ -51,6 +50,25 @@ module.exports = function(browserify, opts) {
         curr[prefixed(options.cwd, next)] = next;
         
         return curr;
+    }
+
+    function write(files, to) {
+        return processor.output({
+            files,
+            to
+        })
+        .then((result) => {
+            fs.writeFileSync(to, result.css, "utf8");
+
+            if(result.map) {
+                fs.writeFileSync(
+                    `${to}.map`,
+                    result.map.toString(),
+                    "utf8"
+                );
+            }
+        })
+        .catch((error) => bundler.emit("error", error));
     }
 
     browserify.transform(function(file) {
@@ -176,14 +194,22 @@ module.exports = function(browserify, opts) {
             }
             
             common = processor.dependencies();
+            
+            mkdirp.sync(path.dirname(options.css));
+            
+            // Write out each bundle's CSS files (if they have any)
+            each(
+                Object.keys(bundles).map((key) => ({
+                    bundle : key,
+                    files  : bundles[key]
+                })),
+                (details) => {
+                    var bundle = details.bundle,
+                        files  = details.files,
+                        dest;
 
-            if(bundling) {
-                // Write out each bundle's CSS files (if they have any)
-                each(bundles, (files, bundle) => {
-                    var dest;
-                    
                     if(!files.length && !options.empty) {
-                        return;
+                        return Promise.resolve();
                     }
 
                     // This file was part of a bundle, so remove from the common file
@@ -195,32 +221,20 @@ module.exports = function(browserify, opts) {
                         path.dirname(options.css),
                         `${path.basename(bundle, path.extname(bundle))}.css`
                     );
-                    
+
                     mkdirp.sync(path.dirname(dest));
-                    
-                    processor.output({
-                        files : files,
-                        to    : dest
-                    })
-                    .then((result) => fs.writeFileSync(dest, result.css))
-                    .catch((error) => bundler.emit("error", error));
-                });
-                
+
+                    return write(files, dest);
+                }
+            )
+            .then(() => {
                 // No common CSS files to write out, so don't (unless they asked nicely)
                 if(!common.length && !options.empty) {
-                    return;
+                    return Promise.resolve();
                 }
-            }
-            
-            mkdirp.sync(path.dirname(options.css));
-            
-            // Write out common/all css depending on bundling status
-            processor.output({
-                files : bundling && common,
-                to    : options.css
-            })
-            .then((result) => fs.writeFileSync(options.css, result.css, "utf8"))
-            .catch((error) => bundler.emit("error", error));
+                
+                return write(bundling && common, options.css);
+            });
         });
     });
 };
