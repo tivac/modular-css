@@ -91,6 +91,40 @@ describe("/webpack.js", function() {
         });
     });
 
+    it("should output external source maps to disk", function(done) {
+        webpack({
+            entry  : "./packages/webpack/test/specimens/simple.js",
+            output : {
+                path     : output,
+                filename : "./simple.js"
+            },
+            module : {
+                rules : [
+                    {
+                        test,
+                        use
+                    }
+                ]
+            },
+            devtool : "source-map",
+            plugins : [
+                new Plugin({
+                    namer,
+                    css : "./simple.css",
+                    map : {
+                        inline : false
+                    }
+                })
+            ]
+        }, (err, stats) => {
+            success(err, stats);
+
+            expect(read("simple.css.map")).toMatchSnapshot();
+
+            done();
+        });
+    });
+
     it("should report errors", function(done) {
         webpack({
             entry  : "./packages/webpack/test/specimens/invalid.js",
@@ -273,7 +307,9 @@ describe("/webpack.js", function() {
         }, (err, stats) => {
             success(err, stats);
 
-            expect(stats.toJson().warnings[0]).toMatch("cjs option is deprecated, used namedExports: false instead");
+            expect(stats.toJson().warnings[0]).toMatch(
+                "cjs option is deprecated, used namedExports: false instead"
+            );
 
             expect(read("simple.js")).toMatchSnapshot();
 
