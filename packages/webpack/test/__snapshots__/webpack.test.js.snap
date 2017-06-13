@@ -98,9 +98,7 @@ console.log(__WEBPACK_IMPORTED_MODULE_0__output_watched_css__[\\"a\\" /* default
 
 exports[`/webpack.js should generate correct builds in watch mode when files change 2`] = `
 "/* packages/webpack/test/output/watched.css */
-.one {
-    color: red
-}"
+.one { color: red; }"
 `;
 
 exports[`/webpack.js should generate correct builds in watch mode when files change 3`] = `
@@ -201,9 +199,7 @@ console.log(__WEBPACK_IMPORTED_MODULE_0__output_watched_css__[\\"a\\" /* default
 
 exports[`/webpack.js should generate correct builds in watch mode when files change 4`] = `
 "/* packages/webpack/test/output/watched.css */
-.two {
-    color: blue
-}"
+.two { color: blue; }"
 `;
 
 exports[`/webpack.js should generate correct builds when files change 1`] = `
@@ -304,9 +300,7 @@ console.log(__WEBPACK_IMPORTED_MODULE_0__output_changed_css__[\\"a\\" /* default
 
 exports[`/webpack.js should generate correct builds when files change 2`] = `
 "/* packages/webpack/test/output/changed.css */
-.one {
-    color: red
-}"
+.one { color: red; }"
 `;
 
 exports[`/webpack.js should generate correct builds when files change 3`] = `
@@ -407,9 +401,7 @@ console.log(__WEBPACK_IMPORTED_MODULE_0__output_changed_css__[\\"a\\" /* default
 
 exports[`/webpack.js should generate correct builds when files change 4`] = `
 "/* packages/webpack/test/output/changed.css */
-.two {
-    color: blue
-}"
+.two { color: blue; }"
 `;
 
 exports[`/webpack.js should generate correct builds when files change 5`] = `
@@ -510,9 +502,7 @@ console.log(__WEBPACK_IMPORTED_MODULE_0__output_changed_css__[\\"a\\" /* default
 
 exports[`/webpack.js should generate correct builds when files change 6`] = `
 "/* packages/webpack/test/output/changed.css */
-.three {
-    color: green
-}"
+.three { color: green; }"
 `;
 
 exports[`/webpack.js should handle dependencies 1`] = `
@@ -615,21 +605,15 @@ __webpack_require__(0);
 
 exports[`/webpack.js should handle dependencies 2`] = `
 "/* packages/webpack/test/specimens/folder/folder.css */
-.folder {
-    margin: 2px
-}
+.folder { margin: 2px; }
+
 /* packages/webpack/test/specimens/local.css */
-.booga {
-    background: green
-}
+.booga { background: green; }
+
 /* packages/webpack/test/specimens/start.css */
-.booga {
-    color: red;
-    background: blue
-}
-.tooga {
-    border: 1px solid white
-}"
+.booga { color: red; background: blue; }
+.tooga { border: 1px solid white; }
+"
 `;
 
 exports[`/webpack.js should handle dependencies 3`] = `
@@ -743,9 +727,8 @@ __webpack_require__(0);
 
 exports[`/webpack.js should output css to disk 2`] = `
 "/* packages/webpack/test/specimens/simple.css */
-.wooga {
-    color: red
-}"
+.wooga { color: red; }
+"
 `;
 
 exports[`/webpack.js should output json to disk 1`] = `
@@ -949,12 +932,9 @@ console.log(__WEBPACK_IMPORTED_MODULE_0__es2015_css__[\\"a\\" /* default */]);
 
 exports[`/webpack.js should support ES2015 default exports 2`] = `
 "/* packages/webpack/test/specimens/es2015.css */
-.a {
-    color: red
-}
-.b {
-    color: blue
-}"
+.a { color: red; }
+.b { color: blue; }
+"
 `;
 
 exports[`/webpack.js should support ES2015 named exports 1`] = `
@@ -1058,12 +1038,9 @@ console.log(__WEBPACK_IMPORTED_MODULE_0__es2015_css__[\\"a\\"]);
 
 exports[`/webpack.js should support ES2015 named exports 2`] = `
 "/* packages/webpack/test/specimens/es2015.css */
-.a {
-    color: red
-}
-.b {
-    color: blue
-}"
+.a { color: red; }
+.b { color: blue; }
+"
 `;
 
 exports[`/webpack.js should support disabling namedExports when the option is set 1`] = `
