@@ -27,7 +27,7 @@ describe("/browserify.js", function() {
                     ),
                     css;
 
-                build.plugin("watchify");
+                build.plugin(require("watchify"));
                 build.plugin(plugin, {
                     css : "./packages/browserify/test/output/issues/313.css"
                 });

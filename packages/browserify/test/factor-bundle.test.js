@@ -35,7 +35,7 @@ describe("/browserify.js", function() {
                 css : prefix("output/factor-bundle/basic/basic.css")
             });
 
-            build.plugin("factor-bundle", {
+            build.plugin(require("factor-bundle"), {
                 outputs : [
                     prefix("output/factor-bundle/basic-a.js"),
                     prefix("output/factor-bundle/basic-b.js")
@@ -64,7 +64,7 @@ describe("/browserify.js", function() {
                 css : prefix("output/factor-bundle/nocommon/nocommon.css")
             });
 
-            build.plugin("factor-bundle", {
+            build.plugin(require("factor-bundle"), {
                 outputs : [
                     prefix("output/factor-bundle/nocommon-a.js"),
                     prefix("output/factor-bundle/nocommon-b.js")
@@ -88,7 +88,7 @@ describe("/browserify.js", function() {
                 css : prefix("output/factor-bundle/deps/deps.css")
             });
 
-            build.plugin("factor-bundle", {
+            build.plugin(require("factor-bundle"), {
                 outputs : [
                     prefix("output/factor-bundle/deps-a.js"),
                     prefix("output/factor-bundle/deps-b.js")
@@ -112,7 +112,7 @@ describe("/browserify.js", function() {
                 css : prefix("output/factor-bundle/relative/relative.css")
             });
 
-            build.plugin("factor-bundle", {
+            build.plugin(require("factor-bundle"), {
                 outputs : [
                     prefix("output/factor-bundle/relative-a.js"),
                     prefix("output/factor-bundle/relative-b.js")
@@ -136,7 +136,7 @@ describe("/browserify.js", function() {
                 css : prefix("output/factor-bundle/noempty/noempty.css")
             });
 
-            build.plugin("factor-bundle", {
+            build.plugin(require("factor-bundle"), {
                 outputs : [
                     prefix("output/factor-bundle/noempty-a.js"),
                     prefix("output/factor-bundle/noempty-b.js")
@@ -165,7 +165,7 @@ describe("/browserify.js", function() {
                 empty : true
             });
 
-            build.plugin("factor-bundle", {
+            build.plugin(require("factor-bundle"), {
                 outputs : [
                     prefix("output/factor-bundle/empty-a.js"),
                     prefix("output/factor-bundle/empty-b.js")

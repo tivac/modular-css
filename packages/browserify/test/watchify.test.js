@@ -30,7 +30,7 @@ describe("/browserify.js", function() {
                 
                 build.add(from("require('./packages/browserify/test/specimens/watchify/caching.css');"));
 
-                build.plugin("watchify");
+                build.plugin(require("watchify"));
                 build.plugin(plugin, {
                     css : "./packages/browserify/test/output/watchify/caching.css"
                 });
@@ -76,7 +76,7 @@ describe("/browserify.js", function() {
                 
                 build.add(from("require('./packages/browserify/test/specimens/watchify/errors.css');"));
 
-                build.plugin("watchify");
+                build.plugin(require("watchify"));
                 build.plugin(plugin, {
                     css : "./packages/browserify/test/output/watchify/errors.css"
                 });
@@ -119,7 +119,7 @@ describe("/browserify.js", function() {
             it("shouldn't cache file contents between watchify runs", function(done) {
                 var build = browserify(from("require('./packages/browserify/test/specimens/watchify/relative.css');"));
 
-                build.plugin("watchify");
+                build.plugin(require("watchify"));
                 build.plugin(plugin, {
                     css : "./packages/browserify/test/output/watchify/relative.css"
                 });
