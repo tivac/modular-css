@@ -7,9 +7,6 @@
   "command": {
     "publish": {
       "message": "chore: Publish"
-    },
-    "bootstrap": {
-      "hoist": true
     }
   }
 }
