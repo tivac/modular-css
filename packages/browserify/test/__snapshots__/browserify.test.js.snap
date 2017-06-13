@@ -4,8 +4,9 @@ exports[`/browserify.js basic functionality should correctly rewrite urls based 
 "/* packages/browserify/test/specimens/relative.css */
 .mcdf61ec72_wooga {
     color: red;
-    background: url(\\"../../specimens/folder/to.png\\")
-}"
+    background: url(\\"../../specimens/folder/to.png\\");
+}
+"
 `;
 
 exports[`/browserify.js basic functionality should error if an invalid extension is applied 1`] = `"Missing or invalid \\"ext\\" option: false"`;
@@ -34,21 +35,15 @@ module.exports = {
 
 exports[`/browserify.js basic functionality should include all CSS dependencies in output css 2`] = `
 "/* packages/browserify/test/specimens/folder/folder.css */
-.mcd19f1319_folder {
-    margin: 2px
-}
+.mcd19f1319_folder { margin: 2px; }
+
 /* packages/browserify/test/specimens/local.css */
-.mcc4e2a8e1_booga {
-    background: green
-}
+.mcc4e2a8e1_booga { background: green; }
+
 /* packages/browserify/test/specimens/start.css */
-.mc1c78395f_booga {
-    color: red;
-    background: blue
-}
-.mc1c78395f_tooga {
-    border: 1px solid white
-}"
+.mc1c78395f_booga { color: red; background: blue; }
+.mc1c78395f_tooga { border: 1px solid white; }
+"
 `;
 
 exports[`/browserify.js basic functionality should not include duplicate files in the output multiple times 1`] = `
@@ -75,41 +70,29 @@ module.exports = {
 
 exports[`/browserify.js basic functionality should not include duplicate files in the output multiple times 2`] = `
 "/* packages/browserify/test/specimens/folder/folder.css */
-.mcd19f1319_folder {
-    margin: 2px
-}
+.mcd19f1319_folder { margin: 2px; }
+
 /* packages/browserify/test/specimens/local.css */
-.mcc4e2a8e1_booga {
-    background: green
-}
+.mcc4e2a8e1_booga { background: green; }
+
 /* packages/browserify/test/specimens/start.css */
-.mc1c78395f_booga {
-    color: red;
-    background: blue
-}
-.mc1c78395f_tooga {
-    border: 1px solid white
-}"
+.mc1c78395f_booga { color: red; background: blue; }
+.mc1c78395f_tooga { border: 1px solid white; }
+"
 `;
 
 exports[`/browserify.js basic functionality should output an inline source map when the debug option is specified 1`] = `
 "/* packages/browserify/test/specimens/folder/folder.css */
-.mcd19f1319_folder {
-    margin: 2px
-}
+.mcd19f1319_folder { margin: 2px; }
+
 /* packages/browserify/test/specimens/local.css */
-.mcc4e2a8e1_booga {
-    background: green
-}
+.mcc4e2a8e1_booga { background: green; }
+
 /* packages/browserify/test/specimens/start.css */
-.mc1c78395f_booga {
-    color: red;
-    background: blue
-}
-.mc1c78395f_tooga {
-    border: 1px solid white
-}
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NwZWNpbWVucy9mb2xkZXIvZm9sZGVyLmNzcyIsIi4uLy4uL3NwZWNpbWVucy9sb2NhbC5jc3MiLCIuLi8uLi9zcGVjaW1lbnMvc3RhcnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLDBEQUFDO0FBQ0Q7SUFBVSxXQUFZO0NBQUU7QUNEeEIsa0RBQUM7QUFJRDtJQUFTLGlCQUFrQjtDQUFFO0FDSjdCLGtEQUFDO0FBRUQ7SURGQSxXQUFnQjtJQUNoQixnQkFBaUI7Q0NDc0I7QUFDdkM7SUZIQSx1QkFBcUI7Q0VHZSIsImZpbGUiOiJzb3VyY2UtbWFwcy5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJAdmFsdWUgZm9sZGVyOiB3aGl0ZTtcbi5mb2xkZXIgeyBtYXJnaW46IDJweDsgfVxuIiwiQHZhbHVlIG9uZTogcmVkO1xuQHZhbHVlIHR3bzogYmx1ZTtcbkB2YWx1ZSBmb2xkZXIgZnJvbSBcIi4vZm9sZGVyL2ZvbGRlci5jc3NcIjtcblxuLmJvb2dhIHsgYmFja2dyb3VuZDogZ3JlZW47IH1cbi5sb29nYSB7IGNvbXBvc2VzOiBib29nYTsgfVxuIiwiQHZhbHVlIG9uZSwgdHdvLCBmb2xkZXIgZnJvbSBcIi4vbG9jYWwuY3NzXCI7XG4ud29vZ2EgeyBjb21wb3NlczogYm9vZ2EgZnJvbSBcIi4vbG9jYWwuY3NzXCI7IH1cbi5ib29nYSB7IGNvbG9yOiBvbmU7IGJhY2tncm91bmQ6IHR3bzsgfVxuLnRvb2dhIHsgYm9yZGVyOiAxcHggc29saWQgZm9sZGVyOyB9XG4iXX0= */"
+.mc1c78395f_booga { color: red; background: blue; }
+.mc1c78395f_tooga { border: 1px solid white; }
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NwZWNpbWVucy9mb2xkZXIvZm9sZGVyLmNzcyIsIi4uLy4uL3NwZWNpbWVucy9sb2NhbC5jc3MiLCIuLi8uLi9zcGVjaW1lbnMvc3RhcnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLDBEQUFDO0FBQ0QscUJBQVUsWUFBWSxFQUFFOztBQ0R4QixrREFBQztBQUlELG9CQUFTLGtCQUFrQixFQUFFOztBQ0o3QixrREFBQztBQUVELG9CREZBLFdBQWdCLENBQ2hCLGlCQUFpQixFQ0NzQjtBQUN2QyxvQkZIQSx3QkFBcUIsRUVHZSIsImZpbGUiOiJzb3VyY2UtbWFwcy5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJAdmFsdWUgZm9sZGVyOiB3aGl0ZTtcbi5mb2xkZXIgeyBtYXJnaW46IDJweDsgfVxuIiwiQHZhbHVlIG9uZTogcmVkO1xuQHZhbHVlIHR3bzogYmx1ZTtcbkB2YWx1ZSBmb2xkZXIgZnJvbSBcIi4vZm9sZGVyL2ZvbGRlci5jc3NcIjtcblxuLmJvb2dhIHsgYmFja2dyb3VuZDogZ3JlZW47IH1cbi5sb29nYSB7IGNvbXBvc2VzOiBib29nYTsgfVxuIiwiQHZhbHVlIG9uZSwgdHdvLCBmb2xkZXIgZnJvbSBcIi4vbG9jYWwuY3NzXCI7XG4ud29vZ2EgeyBjb21wb3NlczogYm9vZ2EgZnJvbSBcIi4vbG9jYWwuY3NzXCI7IH1cbi5ib29nYSB7IGNvbG9yOiBvbmU7IGJhY2tncm91bmQ6IHR3bzsgfVxuLnRvb2dhIHsgYm9yZGVyOiAxcHggc29saWQgZm9sZGVyOyB9XG4iXX0= */"
 `;
 
 exports[`/browserify.js basic functionality should replace require() calls with the exported identifiers 1`] = `
@@ -126,27 +109,23 @@ module.exports = {
 exports[`/browserify.js basic functionality should use the specified namer function 1`] = `
 "/* packages/browserify/test/specimens/keyframes.css */
 @keyframes a {
-    0% {
-        opacity: 0
-    }
-    100% {
-        opacity: 1
-    }
+      0% { opacity: 0; }
+    100% { opacity: 1; }
 }
+
 .a {
-    animation: a 2s
+    animation: a 2s;
 }
+
 @-webkit-keyframes a {
-    from {
-        background-position: 0px
-    }
-    to {
-        background-position: -3968px
-    }
+    from { background-position: 0px; }
+    to { background-position: -3968px;}
 }
+
 .a {
-    -webkit-animation: a 2.5s steps(62) infinite
-}"
+    -webkit-animation: a 2.5s steps(62) infinite;
+}
+"
 `;
 
 exports[`/browserify.js basic functionality should write out the complete exported identifiers when \`json\` is specified 1`] = `

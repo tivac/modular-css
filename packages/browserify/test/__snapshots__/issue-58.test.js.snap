@@ -32,20 +32,17 @@ module.exports = {
 
 exports[`/browserify.js /issues /58 should update when CSS dependencies change 3`] = `
 "/* packages/browserify/test/specimens/issues/58/other.css */
-.mc2652cf16_other1 {
-    color: green
-}
-.mc2652cf16_other2 {
-    color: yellow
-}
-.mc2652cf16_other3 {
-    background: white
-}
+.mc2652cf16_other1 { color: green; }
+.mc2652cf16_other2 { color: yellow; }
+.mc2652cf16_other3 { background: white; }
+
 /* packages/browserify/test/specimens/issues/58/issue.css */
 .mc46e4a65d_issue1 {
-    color: teal
+    color: teal;
 }
+
 .mc46e4a65d_issue2 {
-    color: aqua
-}"
+    color: aqua;
+}
+"
 `;

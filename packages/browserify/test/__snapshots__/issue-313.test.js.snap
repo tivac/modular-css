@@ -2,11 +2,9 @@
 
 exports[`/browserify.js /issues /313 should include all dependencies after watchify update 1`] = `
 "/* packages/browserify/test/specimens/issues/313/1.css */
-.mcd2dffd93_wooga {
-    color: red
-}
+.mcd2dffd93_wooga { color: red; }
+
 /* packages/browserify/test/specimens/issues/313/2.css */
-.mc4882c370_fooga {
-    color: blue
-}"
+.mc4882c370_fooga { color: blue; }
+"
 `;
