@@ -11,10 +11,7 @@ install:
   - npm install
   
   # install all the sub-package dependencies
-  - lerna bootstrap --hoist
-  
-  # WTF did npm just install?
-  - npm ls || true
+  - lerna bootstrap
 
 after_script:
   - npm run danger
