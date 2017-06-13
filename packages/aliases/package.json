@@ -20,5 +20,8 @@
     "dentist": "^1.0.3",
     "modular-css-core": "^5.1.6",
     "test-utils": "^5.1.5"
+  },
+  "dependencies": {
+    "resolve-from": "^3.0.0"
   }
 }
