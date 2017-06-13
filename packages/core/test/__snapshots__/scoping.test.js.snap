@@ -51,9 +51,9 @@ Object {
 
 exports[`/processor.js scoping should scope classes, ids, and keyframes 2`] = `
 "/* simple.css */
-@keyframes kooga {}
-#fooga {}
-.wooga {}
+@keyframes kooga { }
+#fooga { }
+.wooga { }
 .one,
-.two {}"
+.two { }"
 `;
