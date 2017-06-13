@@ -12,6 +12,9 @@ install:
   # install all the sub-package dependencies
   - lerna bootstrap
 
+  - node -v
+  - npm -v
+
 after_script:
   - npm run danger
 
