@@ -6,17 +6,18 @@ node_js:
 - '6'
 
 install:
-  # install root-level dependencies
-  - npm install
-  
-  # install all the sub-package dependencies
-  - lerna bootstrap
+# install root-level dependencies
+- npm install
 
-  - node -v
-  - npm -v
+# install all the sub-package dependencies
+- lerna bootstrap
+
+# debugging
+- node -v
+- npm -v
 
 after_script:
-  - npm run danger
+- npm run danger
 
 # NPM auto-deployment on tagged releases
 deploy:
