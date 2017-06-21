@@ -57,5 +57,10 @@
       "eslint --fix",
       "git add"
     ]
+  },
+  "config": {
+    "validate-commit-msg": {
+      "warnOnFail": true
+    }
   }
 }
