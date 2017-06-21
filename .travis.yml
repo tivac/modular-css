@@ -18,13 +18,3 @@ install:
 
 after_script:
 - npm run danger
-
-# NPM auto-deployment on tagged releases
-deploy:
-  provider: npm
-  email: npm@patcavit.com
-  api_key:
-    secure: aBM3UMYEkN/Fmx3Ohzi6S8230MK2qp7GHNjyHQo3iAt8DMmc5VC6zpTis/+6UOEF3JnhqN2Vc0GfRt4XevNc1fJrHNvfCUHLaO3fed2IRpk2uMa8aCw5vYLVyXbyKZ7Mslbq9WYFpqwoij53xQGc+QaNfiNsIwS9hWmnJdlx2gthKeQgn7x2iymkBMFIj43mRx+hs8F1rT9q+Dfwq0e83lC5jLu1lSOwMmsGHdgScFWrZRxr6fhctUG1oR2TihY8+oHpLJ++xe2RPPcNuGzpc+gqyqbez1fTHyWostlQJe3KWg6ykFlG5q7a8FqiAtmlXv5sRUHo4rf3NHZgK1DLx503DzCCdfs1L1SbpXj9TY6NbfnA59cesQPXoELJM+Fx+wly9PdUf9NcS+O8kZdFK522bMJKDn1VW1A3S6cgUa8c2G1jYiUlYltWZIRi3SrL3Udsb/ulzvFTgiRGuLLZB/yliGgN5czVlD7v2NnOdfkQeVPxAG3n9TG7pxoFUpJScpKzxbQSXb5Do9x0JLdBO/JNFFV9OlpULVK61Fz+W+Vg6qoLstqv+WUnqkIoloCtJ2NI/2wcePLZZEG/ydAMOUyAUNw6iFAqYy6TG+VMRYF85qOPVa8xnus7WHxgt/8jvtfa43htCDAcz+UrfaaSAoMbS5Ma6JSir6/EHmLc45Q=
-  on:
-    tags: true
-    repo: tivac/modular-css
