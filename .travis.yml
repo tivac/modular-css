@@ -2,8 +2,11 @@ sudo: false
 
 language: node_js
 node_js:
-- node
+# Disabling because lerna seems busted
+# - node
+- '7'
 - '6'
+- '4'
 
 after_script:
 - npm run danger
