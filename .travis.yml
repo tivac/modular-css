@@ -11,4 +11,5 @@ node_js:
 script: npm test -- --coverage
 
 after_script:
-- npm run danger
+# Disabling because danger seems broken atm?
+# - npm run danger
