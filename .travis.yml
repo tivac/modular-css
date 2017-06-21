@@ -5,16 +5,5 @@ node_js:
 - node
 - '6'
 
-install:
-# install root-level dependencies
-- npm install
-
-# install all the sub-package dependencies
-- lerna bootstrap
-
-# debugging
-- node -v
-- npm -v
-
 after_script:
 - npm run danger
