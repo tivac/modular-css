@@ -8,8 +8,12 @@ node_js:
 - '6'
 - '4'
 
+# https://docs.travis-ci.com/user/customizing-the-build/#Fast-Finishing
+matrix:
+  fast_finish: true
+
 script: npm test -- --coverage
 
-after_script:
 # Disabling because danger seems broken atm?
+# after_script:
 # - npm run danger
