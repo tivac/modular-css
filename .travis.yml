@@ -6,7 +6,6 @@ node_js:
 # - node
 - '7'
 - '6'
-- '4'
 
 # https://docs.travis-ci.com/user/customizing-the-build/#Fast-Finishing
 matrix:
