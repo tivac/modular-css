@@ -229,24 +229,39 @@ Processor.prototype = {
 
             results.forEach((result) => {
                 // Add file path comment
-                root.append(postcss.comment({
-                    text : relative(this._options.cwd, result.opts.from),
-                    
-                    // Add a bogus-ish source property so postcss won't make weird-looking
-                    // source-maps that break the visualizer
-                    //
-                    // https://github.com/postcss/postcss/releases/tag/5.1.0
-                    // https://github.com/postcss/postcss/pull/761
-                    // https://github.com/tivac/modular-css/pull/157
-                    //
-                    source : Object.assign(
-                        {},
-                        result.root.source,
-                        { end : result.root.source.start }
-                    )
-                }));
+                var comment = postcss.comment({
+                        text : relative(this._options.cwd, result.opts.from),
+
+                        // Add a bogus-ish source property so postcss won't make weird-looking
+                        // source-maps that break the visualizer
+                        //
+                        // https://github.com/postcss/postcss/releases/tag/5.1.0
+                        // https://github.com/postcss/postcss/pull/761
+                        // https://github.com/tivac/modular-css/pull/157
+                        //
+                        source : Object.assign(
+                            {},
+                            result.root.source,
+                            { end : result.root.source.start }
+                        )
+                    }),
+                    idx;
                 
-                root.append(result.root);
+                root.append([
+                    comment,
+                    result.root
+                ]);
+
+                idx = root.index(comment);
+                
+                // Need to manually insert a newline after the comment, but can only
+                // do that via whatever comes after it for some reason?
+                // I'm not clear why comment nodes lack a `.raws.after` property
+                //
+                // https://github.com/postcss/postcss/issues/44
+                if(root.nodes[idx + 1]) {
+                    root.nodes[idx + 1].raws.before = "\n";
+                }
             });
             
             return this._done.process(

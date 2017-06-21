@@ -19,9 +19,10 @@ console.log(fooga);
 exports[`/rollup.js should generate CSS 1`] = `
 "/* packages/rollup/test/specimens/simple.css */
 .fooga {
-    color: red
+    color: red;
 }
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NwZWNpbWVucy9zaW1wbGUuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLCtDQUFDO0FBQUQ7SUFDSSxVQUFXO0NBQ2QiLCJmaWxlIjoic2ltcGxlLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5mb29nYSB7XG4gICAgY29sb3I6IHJlZDtcbn1cbiJdfQ== */"
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NwZWNpbWVucy9zaW1wbGUuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLCtDQUFDO0FBQUQ7SUFDSSxXQUFXO0NBQ2QiLCJmaWxlIjoic2ltcGxlLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5mb29nYSB7XG4gICAgY29sb3I6IHJlZDtcbn1cbiJdfQ== */"
 `;
 
 exports[`/rollup.js should generate JSON 1`] = `
@@ -44,8 +45,9 @@ console.log(css);
 exports[`/rollup.js should not output sourcemaps when they are disabled 1`] = `
 "/* packages/rollup/test/specimens/simple.css */
 .fooga {
-    color: red
-}"
+    color: red;
+}
+"
 `;
 
 exports[`/rollup.js should provide named exports 1`] = `
@@ -92,14 +94,10 @@ console.log(css);
 
 exports[`/rollup.js watch should generate correct builds in watch mode when files change 1`] = `
 "/* packages/rollup/test/output/watched.css */
-.mc580619a9_one {
-    color: red
-}"
+.mc580619a9_one { color: red; }"
 `;
 
 exports[`/rollup.js watch should generate correct builds in watch mode when files change 2`] = `
 "/* packages/rollup/test/output/watched.css */
-.mc580619a9_two {
-    color: blue
-}"
+.mc580619a9_two { color: blue; }"
 `;

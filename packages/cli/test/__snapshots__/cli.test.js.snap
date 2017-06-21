@@ -2,9 +2,7 @@
 
 exports[`/cli.js should default to outputting to stdout 1`] = `
 "/* packages/cli/test/specimens/simple.css */
-.mc73666a66_wooga {
-    color: red
-}"
+.mc73666a66_wooga { color: red; }"
 `;
 
 exports[`/cli.js should show help with no args 1`] = `
@@ -31,7 +29,6 @@ exports[`/cli.js should support outputting compositions to a file 1`] = `
 
 exports[`/cli.js should support outputting to a file 1`] = `
 "/* packages/cli/test/specimens/simple.css */
-.mc73666a66_wooga {
-    color: red
-}"
+.mc73666a66_wooga { color: red; }
+"
 `;

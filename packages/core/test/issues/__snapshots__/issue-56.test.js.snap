@@ -18,10 +18,6 @@ Object {
 
 exports[`/issues /56 should prune rules that only compose, but leave them in the exports 2`] = `
 "/* packages/core/test/specimens/issues/56.css */
-.booga {
-    color: red
-}
-.fooga:hover {
-    color: blue
-}"
+.booga { color: red }
+.fooga:hover { color: blue }"
 `;

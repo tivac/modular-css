@@ -2,45 +2,46 @@
 
 exports[`/browserify.js watchify caching shouldn't cache file contents between watchify runs 1`] = `
 "/* packages/browserify/test/specimens/watchify/caching.css */
-.mc8fbb0958_wooga {
-    color: red
-}"
+.mc8fbb0958_wooga { color: red; }
+"
 `;
 
 exports[`/browserify.js watchify caching shouldn't cache file contents between watchify runs 2`] = `
 "/* packages/browserify/test/specimens/watchify/caching.css */
-.mc8fbb0958_wooga {
-    color: blue
-}"
+.mc8fbb0958_wooga { color: blue; }
+"
 `;
 
 exports[`/browserify.js watchify caching shouldn't cache file contents between watchify runs 3`] = `
 "/* packages/browserify/test/specimens/relative.css */
 .mcdf61ec72_wooga {
     color: red;
-    background: url(\\"../../specimens/folder/to.png\\")
+    background: url(\\"../../specimens/folder/to.png\\");
 }
+
 /* packages/browserify/test/specimens/watchify/relative.css */
 .mcf6f923e6_booga {
-    background: url(\\"../../specimens/watchify/to.png\\")
-}"
+    background: url(\\"../../specimens/watchify/to.png\\");
+}
+"
 `;
 
 exports[`/browserify.js watchify caching shouldn't cache file contents between watchify runs 4`] = `
 "/* packages/browserify/test/specimens/relative.css */
 .mcdf61ec72_wooga {
     color: red;
-    background: url(\\"../../specimens/folder/to.png\\")
+    background: url(\\"../../specimens/folder/to.png\\");
 }
+
 /* packages/browserify/test/specimens/watchify/relative.css */
 .mcf6f923e6_booga {
-    background: url(\\"../../specimens/watchify/to.png\\")
-}"
+    background: url(\\"../../specimens/watchify/to.png\\");
+}
+"
 `;
 
 exports[`/browserify.js watchify error handling shouldn't explode on invalid CSS 1`] = `
 "/* packages/browserify/test/specimens/watchify/errors.css */
-.mc791e8a7b_wooga {
-    color: blue
-}"
+.mc791e8a7b_wooga { color: blue; }
+"
 `;
