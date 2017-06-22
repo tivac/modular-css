@@ -14,17 +14,7 @@ export default {
 
         return m("div", { class : css.file },
             m("div", { class : css.meta },
-                m("p", "File:"),
-                m("input", {
-                    class    : css.name,
-                    value    : file,
-                    onchange : (e) => {
-                        fs.writeFileSync(e.target.value, fs.readFileSync(file, "utf8"));
-                        
-                        state.files[idx] = e.target.value;
-                    }
-                }),
-
+                m("pre", { class : css.name }, file),
                 idx > 0 && m("button", {
                     class : css.remove,
 
@@ -62,4 +52,4 @@ export default {
             )
         );
     }
-}
+};

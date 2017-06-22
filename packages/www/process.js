@@ -34,7 +34,7 @@ export function process() {
         }
     })
     .catch((e) => {
-        state.error = e.toString();
+        state.error = `${e.toString()}\n\n${e.stack}`;
     })
     .then(m.redraw);
 }

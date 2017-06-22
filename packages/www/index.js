@@ -1,3 +1,9 @@
+// Shim out path.parse since the browser version of path is missing it
+import path from "path";
+import parse from "path-parse";
+
+path.parse = parse;
+
 import fs from "fs";
 import m from "mithril";
 import pkg from "modular-css-core/package.json";
@@ -8,7 +14,7 @@ import Clipboard from "clipboard";
 import "codemirror/mode/css/css.js";
 import "codemirror/mode/javascript/javascript.js";
 
-import { default as state, createFile } from "./state.js";
+import { default as state, createFile, output } from "./state.js";
 import { process } from "./process.js";
 
 import Tabs from "./components/tabs.js";
@@ -22,9 +28,7 @@ window.m = m;
 
 m.mount(document.body, {
     oninit() {
-        var hash = location.hash.length ?
-                location.hash.slice(1) :
-                false,
+        var hash = location.hash.length ? location.hash.slice(1) : false,
             parsed;
 
         // No existing state, create a default file
@@ -45,7 +49,7 @@ m.mount(document.body, {
 
             process();
         } catch(e) {
-            state.error = e.toString();
+            state.error = e.stack;
 
             createFile();
         }
@@ -84,8 +88,8 @@ m.mount(document.body, {
                         class : css.export,
                         
                         // thanks, clipboard.js
-                        "data-clipboard-target" : "#exports"
-                    }, "Export Files")
+                        "data-clipboard-text" : output()
+                    }, "Copy Details")
                 ),
 
                 state.files.map((file, idx) => m(Input, { idx }))
@@ -129,20 +133,6 @@ m.mount(document.body, {
                     }
                 })
             )
-        ),
-
-        m("textarea", { id : "exports", class : css.exports },
-            `## Files\n\n${
-                state.files
-                    .map((file) => `/* ${file} */\n${fs.readFileSync(file, "utf8")}`)
-                    .concat(
-                        state.output.css && `## CSS Output\n\n${state.output.css}`,
-                        state.output.json && `## JSON Output\n\n${state.output.json}`,
-                        state.error && `## Error\n\n${state.error}`
-                    )
-                    .filter(Boolean)
-                    .join("\n\n")
-            }`
         )
     ]
 });

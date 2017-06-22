@@ -33,4 +33,18 @@ export function createFile() {
     state.files.push(file);
 }
 
+export function output() {
+    return `## Files\n\n${
+        state.files
+            .map((file) => `/* ${file} */\n${fs.readFileSync(file, "utf8")}`)
+            .concat(
+                state.output.css && `## CSS Output\n\n${state.output.css}`,
+                state.output.json && `## JSON Output\n\n${state.output.json}`,
+                state.error && `## Error\n\n${state.error}`
+            )
+            .filter(Boolean)
+            .join("\n\n")
+    }`;
+}
+
 export default state;
