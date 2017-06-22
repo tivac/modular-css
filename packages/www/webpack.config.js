@@ -1,18 +1,21 @@
 "use strict";
 
 var path = require("path"),
+
+    webpack = require("webpack"),
+
+    Cleanup = require("webpack-cleanup-plugin"),
+    Copy    = require("copy-webpack-plugin"),
     
     CSS = require("modular-css-webpack/plugin");
 
 module.exports = (env) => ({
-    entry : "./index.js",
-
-    output : {
-        filename : "app.js",
-        path     : path.resolve(env === "dist" ? "./dist" : "./gen")
-    },
-
+    entry   : "./index.js",
     devtool : "cheap-source-map",
+    output  : {
+        filename : "app.js",
+        path     : path.resolve("./gen")
+    },
     
     module : {
         rules : [
@@ -33,14 +36,32 @@ module.exports = (env) => ({
     },
     
     plugins : [
+        env === "dist" ?
+            new webpack.optimize.ModuleConcatenationPlugin() :
+            () => {},
+
         new CSS({
-            css  : "./app.css",
-            done : [
-                env === "dist" ?
-                    require("cssnano")() :
-                    () => {} // eslint-disable-line
+            css : "./app.css",
+            
+            namer : env === "dist" ?
+                 require("modular-css-namer")() :
+                 null,
+            
+            done : env === "dist" ?
+                // can't use cssnanountil v4 is out :(
+                // [ require("cssnano")() ] :
+                [] : []
+        }),
+
+        new Cleanup({
+            exclude : [
+                ".gitignore"
             ]
-        })
+        }),
+
+        new Copy([
+            { from : "index.html" }
+        ])
     ],
     
     resolve : {
@@ -50,11 +71,12 @@ module.exports = (env) => ({
         }
     },
 
-    devServer : {
-        publicPath : "http://localhost:8080/gen/"
-    },
-
     watchOptions : {
         ignored : /node_modules/
+    },
+
+    devServer : {
+        compress   : true,
+        publicPath : "http://localhost:8080/"
     }
 });
