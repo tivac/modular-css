@@ -32,7 +32,6 @@
     "cssnano-cli": "^1.0.5",
     "modular-css-namer": "^6.0.0",
     "modular-cssify": "^6.0.0",
-    "rum": "^3.0.0",
     "shx": "^0.2.2",
     "surge": "^0.19.0",
     "webpack": "^2.4.1",
