@@ -17,11 +17,16 @@ export default {
                 m("h3", { class : css.name }, file),
                 idx > 0 && m("button", {
                     class : css.remove,
+                    title : "Remove file",
 
                     onclick : () => {
                         var out = state.files.splice(idx, 1);
 
                         fs.unlink(out[0]);
+
+                        state.processor.remove([
+                            file
+                        ]);
 
                         process();
                     }
