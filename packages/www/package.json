@@ -7,7 +7,7 @@
   "scripts": {
     "build": "webpack",
     "predeploy": "npm run dist",
-    "deploy": "surge --project ./dist --domain m-css.com",
+    "deploy": "surge --project ./gen --domain m-css.com",
     "dist": "webpack --env=dist --optimize-minimize --define process.env.NODE_ENV=\"'production'\"",
     "start": "webpack-dev-server",
     "test": "echo \"no tests ¯\\_(ツ)_/¯\""
@@ -27,6 +27,7 @@
     "buble-loader": "^0.4.1",
     "copy-webpack-plugin": "^4.0.1",
     "cssnano-cli": "^1.0.5",
+    "html-webpack-plugin": "^2.28.0",
     "modular-css-namer": "^6.0.0",
     "modular-css-webpack": "^6.0.1",
     "surge": "^0.19.0",

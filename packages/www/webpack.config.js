@@ -5,7 +5,7 @@ var path = require("path"),
     webpack = require("webpack"),
 
     Cleanup = require("webpack-cleanup-plugin"),
-    Copy    = require("copy-webpack-plugin"),
+    HTML    = require("html-webpack-plugin"),
     
     CSS = require("modular-css-webpack/plugin");
 
@@ -13,8 +13,8 @@ module.exports = (env) => ({
     entry   : "./index.js",
     devtool : "cheap-source-map",
     output  : {
-        filename : "app.js",
-        path     : path.resolve("./gen")
+        path     : path.resolve("./gen"),
+        filename : "app.js"
     },
     
     module : {
@@ -36,6 +36,12 @@ module.exports = (env) => ({
     },
     
     plugins : [
+        new Cleanup({
+            exclude : [
+                ".gitignore"
+            ]
+        }),
+
         env === "dist" ?
             new webpack.optimize.ModuleConcatenationPlugin() :
             () => {}, // eslint-disable-line
@@ -53,15 +59,10 @@ module.exports = (env) => ({
                 [] : []
         }),
 
-        new Cleanup({
-            exclude : [
-                ".gitignore"
-            ]
-        }),
-
-        new Copy([
-            { from : "index.html" }
-        ])
+        new HTML({
+            template : "./index.ejs",
+            inject   : true
+        })
     ],
     
     resolve : {
