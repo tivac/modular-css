@@ -1,227 +1,123 @@
-"use strict";
-/* eslint-env browser, node */
-/* eslint indent: off */
+// Shim out path.parse since the browser version of path is missing it
+import path from "path";
+import parse from "path-parse";
 
-var m = require("mithril"),
-    Processor = require("modular-css-core"),
-    pkg = require("modular-css-core/package.json"),
-    cm = require("codemirror"),
-    throttle = require("throttleit"),
+path.parse = parse;
 
-    css = require("./style.css"),
+import fs from "fs";
+import m from "mithril";
+import pkg from "modular-css-core/package.json";
+import Clipboard from "clipboard";
 
-    files = [
-        { name : "1.css", css : "" }
-    ],
-    output = {
-        css : "",
-        js  : false
-    },
-    error,
-    throttled,
-    tab = "css",
-    state;
+import { default as state, createFile, output } from "./state.js";
+import { process } from "./process.js";
 
-// Load up codemirror modes
-require("codemirror/mode/css/css.js");
-require("codemirror/mode/javascript/javascript.js");
+import Errors from "./components/errors.js";
+import Input from "./components/input.js";
+import Editor from "./components/editor.js";
 
-// Hacks to get file resolution to work
-require("module")._nodeModulePaths = () => [ "/" ];
-require("module")._resolveFilename = (id) => id.slice(1);
+import css from "./style.css";
 
-function process() {
-    var processor = new Processor();
-    
-    state = btoa(JSON.stringify(files));
+window.fs = fs;
+window.m = m;
 
-    m.route.set(`/?${m.buildQueryString({ state : state })}`);
-    
-    Promise.all(files.map((file) => processor.string(file.name, file.css)))
-    .then(() => processor.output())
-    .then((result) => {
-        output.css  = result.css;
-        output.json = JSON.stringify(result.compositions, null, 4);
+m.mount(document.body, {
+    oninit() {
+        var hash = location.hash.length ? location.hash.slice(1) : false,
+            parsed;
 
-        error = false;
-        
-        if(tab === "errors") {
-            tab = "css";
+        // No existing state, create a default file
+        if(!hash) {
+            createFile();
+
+            return;
         }
-    })
-    .catch((e) => {
-        error = e.toString();
-        tab = "errors";
-    })
-    .then(m.redraw);
-}
+        
+        try {
+            parsed = JSON.parse(atob(hash));
 
-function update(encoded) {
-    try {
-        files = JSON.parse(atob(encoded));
+            parsed.forEach((file) => {
+                state.files.push(file.name);
 
-        process();
-    } catch(e) {
-        error = "Unable to parse state";
-    }
-}
+                fs.writeFileSync(file.name, file.css);
+            });
 
-function exported() {
-    return `/* Input Files */\n\n${
-    files
-        .map((file) => `/* ${file.name} */\n${file.css}`)
-        .concat(
-            output.css && `/* Output CSS */\n${output.css || ""}`,
-            output.json && `/* Output JSON */\n${output.json || ""}`,
-            error && `/* Error */\n${error}`
-        )
-        .filter(Boolean)
-        .join("\n\n")}`;
-}
+            process();
+        } catch(e) {
+            state.error = e.stack;
 
-throttled = throttle(process, 200);
+            createFile();
+        }
 
-m.route(document.body, "/", {
-    "/" : {
-        oninit : (vnode) => {
-            if(!vnode.attrs.state) {
-                return;
-            }
+        // set up the clipboard.js watcher
+        new Clipboard(".clipboard");
+    },
 
-            update(vnode.attrs.state);
-        },
-
-        view : () => [
-            m("h1", { class : css.head },
+    view : () => [
+        m("div", { class : css.hd },
+            m("h1", { class : css.title },
                 m("a", { href : "https://github.com/tivac/modular-css" }, "modular-css"),
                 " ",
-                m("span", { class : css.subhead }, "v", pkg.version)
+                m("span", { class : css.subhead }, `v${pkg.version}`)
             ),
+            m("a", {
+                    class : css.chat,
+                    href  : "https://gitter.im/modular-css/modular-css"
+                },
+                m("img", {
+                    src : "https://img.shields.io/gitter/room/modular-css/modular-css.svg",
+                    alt : "Gitter"
+                })
+            )
+        ),
 
-            m("div", { class : css.content },
-                m("div", { class : css.files },
+        m("div", { class : css.content },
+            m("div", { class : css.files },
+                m("div", { class : css.actions },
                     m("button", {
-                        class : css.add,
-
-                        onclick : () => files.push({
-                            name : `${files.length + 1}.css`,
-                            css  : ""
-                        })
-                    }, "Add file"),
-
-                    files.map((file, idx) => m("div", { class : css.file },
-                        m("div", { class : css.meta },
-                            m("input", {
-                                class    : css.name,
-                                value    : file.name,
-                                onchange : (e) => (file.name = e.target.value)
-                            }),
-
-                            idx > 0 && m("button", {
-                                class : css.remove,
-
-                                onclick : () => {
-                                    files.splice(idx, 1);
-
-                                    process();
-                                }
-                            }, "✖")
-                        ),
-                        
-                        m("textarea", {
-                                oncreate : (vnode) => {
-                                    var editor = cm.fromTextArea(vnode.dom, {
-                                            mode        : "text/css",
-                                            theme       : "monokai",
-                                            lineNumbers : true,
-                                            autofocus   : true
-                                        });
-
-                                    editor.on("changes", () => {
-                                        file.css = editor.doc.getValue();
-                                        
-                                        throttled();
-                                    });
-                                }
-                            },
-                            file.css
-                        )
-                    ))
+                        class   : css.add,
+                        onclick : createFile,
+                        title   : "Add another file"
+                    }, "Add file")
                 ),
 
-                m("div", { class : css.output },
-                    m("div", { class : css.tabs },
-                        m("button", {
-                            class   : tab === "errors" ? css.active : css.tab,
-                            onclick : () => (tab = "errors")
-                        }, "Errors"),
-                        
-                        m("button", {
-                            class   : tab === "css" ? css.active : css.tab,
-                            onclick : () => (tab = "css")
-                        }, "CSS"),
-                        
-                        m("button", {
-                            class   : tab === "json" ? css.active : css.tab,
-                            onclick : () => (tab = "json")
-                        }, "JSON"),
+                state.files.map((file, idx) => m(Input, { idx }))
+            ),
 
-                         m("button", {
-                            class   : tab === "export" ? css.active : css.tab,
-                            onclick : () => (tab = "export")
-                        }, "Export")
+            m("div", { class : css.output },
+                m("div", { class : css.actions },
+                    m("button", {
+                        class : css.copy,
+                        title : "Copy all output to your clipboard",
+
+                        "data-clipboard-text" : output()
+                    }, "Copy Details")
+                ),
+                
+                m(Errors),
+                
+                m("div", { class : css.pane },
+                    m("div", { class : css.meta },
+                        m("h3", { class : css.name }, "CSS Output")
                     ),
 
-                    tab === "errors" && m("pre", { class : css.errors },
-                        error || "No errors!"
+                    m(Editor, {
+                        mode  : "text/css",
+                        field : "css"
+                    })
+                ),
+
+                m("div", { class : css.pane },
+                    m("div", { class : css.meta },
+                        m("h3", { class : css.name }, "JSON Output")
                     ),
 
-                    tab === "css" && m("div", { class : css.panel },
-                        m("textarea", {
-                            oncreate : (vnode) => {
-                                vnode.state.editor = cm.fromTextArea(vnode.dom, {
-                                    mode        : "text/css",
-                                    theme       : "monokai",
-                                    lineNumbers : true,
-                                    readOnly    : "nocursor"
-                                });
-                            },
-
-                            onupdate : (vnode) => vnode.state.editor.doc.setValue(output.css)
-                        }, output.css)
-                    ),
-                    
-                    tab === "json" && m("div", { class : css.panel },
-                        m("textarea", {
-                            oncreate : (vnode) => {
-                                vnode.state.editor = cm.fromTextArea(vnode.dom, {
-                                    mode        : "application/json",
-                                    theme       : "monokai",
-                                    lineNumbers : true,
-                                    readOnly    : "nocursor"
-                                });
-                            },
-
-                            onupdate : (vnode) => vnode.state.editor.doc.setValue(output.json)
-                        }, output.json)
-                    ),
-
-                    tab === "export" && m("div", { class : css.panel },
-                        m("textarea", {
-                            oncreate : (vnode) => {
-                                vnode.state.editor = cm.fromTextArea(vnode.dom, {
-                                    mode        : "text/css",
-                                    theme       : "monokai",
-                                    lineNumbers : true,
-                                    readOnly    : "nocursor"
-                                });
-                            },
-
-                            onupdate : (vnode) => vnode.state.editor.doc.setValue(exported())
-                        }, exported())
-                    )
+                    m(Editor, {
+                        mode  : "application/json",
+                        field : "json"
+                    })
                 )
             )
-        ]
-    }
+        )
+    ]
 });

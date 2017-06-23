@@ -1,5 +1,7 @@
 @value buttonCss: "./button.css";
 
+@value * as colors from "./colors.css";
+
 html {
     box-sizing: border-box;
     font-family: 'Open Sans', sans-serif;
@@ -10,28 +12,37 @@ html {
 }
 
 body {
-    background: #242424;
-    color: #F6F3E8;
+    background: colors.mainbg;
+    color: colors.main;
 }
 
-.head {
+.hd {
     margin-top: 0;
-    padding: 15px 10px;
+    padding: 20px 10px;
     
-    background: #384048;
-    color: #A0A8B0;
+    background: colors.mutedbg;
+    color: colors.muted;
 
-    border-bottom: 2px solid #00A0E0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+
+    border-bottom: 2px solid colors.accent;
 }
 
-.head a,
-.head a:active,
-.head a:visited {
+.title {
+    margin: 0 10px 0;
+}
+
+.title a,
+.title a:active,
+.title a:visited {
     color: inherit;
     text-decoration: none;
 }
 
-.head a:hover {
+.title a:hover {
     text-decoration: underline;
 }
 
@@ -59,18 +70,45 @@ body {
 .files,
 .output {
     composes: column;
+
+    position: relative;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.btn {
+    flex: 1;
+    font-weight: bold;
+    
+    margin-bottom: 10px;
+
+    color: colors.neutral;
+    border: 2px solid colors.main;
 }
 
 .add {
     composes: button from buttonCss;
+    composes: btn;
 
-    margin-bottom: 10px;
-    background: #95E454;
-
-    font-weight: bold;
+    background: colors.good;
 }
 
-.file + .file {
+.copy {
+    composes: button from buttonCss;
+    composes: btn;
+
+    /* used for clipboard.js targeting */
+    composes: global(clipboard);
+
+    background: colors.neutralbg;
+}
+
+.pane + .pane {
     margin-top: 20px;
 }
 
@@ -78,79 +116,13 @@ body {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    align-items: space-between;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
     
     margin-bottom: 5px;
 }
 
 .name {
-    flex: 2;
-    padding: 5px;
-
-    background: #343434;
-    color: #F6F3E8;
- 
-    border: 1px solid #666;
-    border-radius: 2px;
-}
-
-.remove {
-    composes: button from buttonCss;
-
-    background: #F08080;
-}
-
-.name + .remove {
-    margin-left: 10px;
-}
-
-.tab {
-    padding: 10px 15px;
-    
-    background: #444444;
-    border: 1px solid #666;
-    color: #99968B;
-
-    cursor: pointer;
-}
-
-.active {
-    composes: tab;
-
-    color: #F6F3E8;
-    background: #656565;
-}
-
-.panel {
-    
-}
-
-.errors {
-    margin: 0;
-    padding: 10px;
-
-    min-height: 500px;
-
-    border: 1px solid #666;
-    color: #F08080;
-
-    white-space: pre-wrap;
-}
-
-.panel :global(.CodeMirror) {
-    min-height: 500px;
-}
-
-:global(.CodeMirror) {
-    border: 1px solid #666;
-}
-
-/* Since modular-css uses some non-standard things */
-:global(.CodeMirror .cm-property.cm-error) {
-    background: transparent;
-}
-
-:global(.cm-s-monokai.CodeMirror) {
-    background: #242424;
+    flex: 1;
+    margin: 2px 0;
 }
