@@ -76,7 +76,8 @@ m.mount(document.body, {
                 m("div", { class : css.actions },
                     m("button", {
                         class   : css.add,
-                        onclick : createFile
+                        onclick : createFile,
+                        title   : "Add another file"
                     }, "Add file")
                 ),
 
@@ -87,8 +88,8 @@ m.mount(document.body, {
                 m("div", { class : css.actions },
                     m("button", {
                         class : css.copy,
+                        title : "Copy all output to your clipboard",
 
-                        // thanks, clipboard.js
                         "data-clipboard-text" : output()
                     }, "Copy Details")
                 ),

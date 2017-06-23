@@ -77,6 +77,8 @@ body {
 .actions {
     display: flex;
     justify-content: space-between;
+
+    margin-bottom: 20px;
 }
 
 .btn {
@@ -85,7 +87,8 @@ body {
     
     margin-bottom: 10px;
 
-    color: #808080;
+    color: colors.neutral;
+    border: 2px solid colors.main;
 }
 
 .add {

@@ -20,5 +20,6 @@
     background: colors.bad;
     color: colors.main;
 
-    padding: 0.2em 0.5em;
+    border: 2px solid colors.main;
+    padding: 0 0.5em;
 }
