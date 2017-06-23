@@ -38,7 +38,7 @@ module.exports = (env) => ({
     plugins : [
         env === "dist" ?
             new webpack.optimize.ModuleConcatenationPlugin() :
-            () => {},
+            () => {}, // eslint-disable-line
 
         new CSS({
             css : "./app.css",
