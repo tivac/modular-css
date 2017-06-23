@@ -14,7 +14,7 @@ export default {
 
         return m("div", { class : css.file },
             m("div", { class : css.meta },
-                m("pre", { class : css.name }, file),
+                m("h3", { class : css.name }, file),
                 idx > 0 && m("button", {
                     class : css.remove,
 

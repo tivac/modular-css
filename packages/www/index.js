@@ -7,19 +7,14 @@ path.parse = parse;
 import fs from "fs";
 import m from "mithril";
 import pkg from "modular-css-core/package.json";
-import cm from "codemirror";
 import Clipboard from "clipboard";
-
-// Load up codemirror modes
-import "codemirror/mode/css/css.js";
-import "codemirror/mode/javascript/javascript.js";
 
 import { default as state, createFile, output } from "./state.js";
 import { process } from "./process.js";
 
-import Tabs from "./components/tabs.js";
 import Errors from "./components/errors.js";
 import Input from "./components/input.js";
+import Editor from "./components/editor.js";
 
 import css from "./style.css";
 
@@ -82,56 +77,45 @@ m.mount(document.body, {
                     m("button", {
                         class   : css.add,
                         onclick : createFile
-                    }, "Add file"),
-
-                    m("button", {
-                        class : css.export,
-                        
-                        // thanks, clipboard.js
-                        "data-clipboard-text" : output()
-                    }, "Copy Details")
+                    }, "Add file")
                 ),
 
                 state.files.map((file, idx) => m(Input, { idx }))
             ),
 
             m("div", { class : css.output },
+                m("div", { class : css.actions },
+                    m("button", {
+                        class : css.copy,
+
+                        // thanks, clipboard.js
+                        "data-clipboard-text" : output()
+                    }, "Copy Details")
+                ),
+                
                 m(Errors),
-                m(Tabs, {
-                    tabs : {
-                        CSS : () => m("div", { class : css.panel },
-                            m("textarea", {
-                                oncreate : (vnode) => {
-                                    vnode.state.editor = cm.fromTextArea(vnode.dom, {
-                                        mode        : "text/css",
-                                        theme       : "monokai",
-                                        lineNumbers : true,
-                                        readOnly    : "nocursor",
-                                        value       : state.output.css
-                                    });
-                                },
+                
+                m("div", { class : css.pane },
+                    m("div", { class : css.meta },
+                        m("h3", { class : css.name }, "CSS Output")
+                    ),
 
-                                onupdate : (vnode) => vnode.state.editor.doc.setValue(state.output.css)
-                            })
-                        ),
-                        
-                        JSON : () => m("div", { class : css.panel },
-                            m("textarea", {
-                                oncreate : (vnode) => {
-                                    vnode.state.editor = cm.fromTextArea(vnode.dom, {
-                                        mode        : "application/json",
-                                        theme       : "monokai",
-                                        lineNumbers : true,
-                                        readOnly    : "nocursor",
-                                        value       : state.output.json
-                                    });
-                                },
+                    m(Editor, {
+                        mode  : "text/css",
+                        field : "css"
+                    })
+                ),
 
-                                onupdate : (vnode) => vnode.state.editor.doc.setValue(state.output.json)
-                            })
-                        )
-                    }
-                })
+                m("div", { class : css.pane },
+                    m("div", { class : css.meta },
+                        m("h3", { class : css.name }, "JSON Output")
+                    ),
+
+                    m(Editor, {
+                        mode  : "application/json",
+                        field : "json"
+                    })
+                )
             )
         )
     ]

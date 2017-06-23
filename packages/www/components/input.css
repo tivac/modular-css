@@ -1,22 +1,17 @@
 @value * as colors from "../colors.css";
 
-.file + .file {
-    margin-top: 20px;
+.file {
+    composes: pane from "../style.css";
 }
 
 .meta {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: baseline;
-    
-    margin-bottom: 5px;
+    composes: meta from "../style.css";
 }
 
 .name {
-    flex: 1;
-    margin: 2px 0;
+    composes: name from "../style.css";
+
+    letter-spacing: 2px;
 }
 
 .remove {

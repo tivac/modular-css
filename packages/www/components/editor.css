@@ -1,0 +1,15 @@
+:global(.CodeMirror) {
+    min-height: 250px;
+    min-width: 100%;
+    
+    border: 1px solid #666;
+}
+
+/* Since modular-css uses some non-standard things */
+:global(.CodeMirror .cm-property.cm-error) {
+    background: transparent;
+}
+
+:global(.cm-s-monokai.CodeMirror) {
+    background: #242424;
+}

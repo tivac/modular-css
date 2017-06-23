@@ -81,12 +81,11 @@ body {
 
 .btn {
     flex: 1;
-
+    font-weight: bold;
+    
     margin-bottom: 10px;
-}
 
-.btn + .btn {
-    margin-left: 10px;
+    color: #808080;
 }
 
 .add {
@@ -94,38 +93,33 @@ body {
     composes: btn;
 
     background: colors.good;
-
-    font-weight: bold;
 }
 
-.export {
+.copy {
     composes: button from buttonCss;
     composes: btn;
 
     /* used for clipboard.js targeting */
     composes: global(clipboard);
 
-    background: colors.mutedbg;
-    color: colors.muted;
+    background: colors.neutralbg;
 }
 
-.panel :global(.CodeMirror) {
-    min-height: 500px;
+.pane + .pane {
+    margin-top: 20px;
 }
 
-:global(.CodeMirror) {
-    border: 1px solid #666;
+.meta {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    
+    margin-bottom: 5px;
 }
 
-/* Since modular-css uses some non-standard things */
-:global(.CodeMirror .cm-property.cm-error) {
-    background: transparent;
-}
-
-:global(.cm-s-monokai.CodeMirror) {
-    background: #242424;
-}
-
-.exports {
-    display: none;
+.name {
+    flex: 1;
+    margin: 2px 0;
 }
