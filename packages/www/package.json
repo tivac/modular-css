@@ -1,6 +1,6 @@
 {
   "name": "www",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "private": true,
   "description": "web site for modular-css",
   "main": "index.js",
@@ -19,7 +19,7 @@
     "codemirror": "^5.24.2",
     "memory-fs": "^0.4.1",
     "mithril": "^1.0.1",
-    "modular-css-core": "^6.0.0",
+    "modular-css-core": "^6.0.1",
     "path-parse": "^1.0.5",
     "throttleit": "^1.0.0"
   },
@@ -28,7 +28,7 @@
     "copy-webpack-plugin": "^4.0.1",
     "cssnano-cli": "^1.0.5",
     "modular-css-namer": "^6.0.0",
-    "modular-css-webpack": "^6.0.0",
+    "modular-css-webpack": "^6.0.1",
     "surge": "^0.19.0",
     "webpack": "^3.0.0",
     "webpack-cleanup-plugin": "^0.5.1",
