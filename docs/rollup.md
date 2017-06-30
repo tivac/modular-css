@@ -34,6 +34,7 @@ All other options are passed to the underlying `Processor` instance, see [Option
 rollup({
     entry   : "./index.js",
     plugins : [
+        // Make sure it's the first entry in your plugin list to avoid syntax errors
         require("modular-css-rollup")({
             css : "./gen/index.css"
         })
