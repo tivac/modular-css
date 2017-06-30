@@ -1,6 +1,6 @@
 # Rollup
 
-`modular-css/rollup` provides a rollup build plugin you can use to transform imported `.css` files into lookup objects.
+`modular-css-rollup` provides a rollup build plugin you can use to transform imported `.css` files into lookup objects.
 
 ## Options
 
