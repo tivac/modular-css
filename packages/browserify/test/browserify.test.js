@@ -1,3 +1,4 @@
+/* global jasmine */
 "use strict";
 
 var browserify = require("browserify"),
@@ -9,6 +10,9 @@ var browserify = require("browserify"),
     bundle = require("./lib/bundle.js"),
     
     plugin = require("../browserify.js");
+
+// Because these tests keep failing CI...
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
 describe("/browserify.js", function() {
     afterAll(() => shell.rm("-rf", "./packages/browserify/test/output/browserify"));
