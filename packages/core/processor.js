@@ -251,7 +251,13 @@ Processor.prototype = {
                 root.append(result.root.nodes);
 
                 idx = root.index(comment);
-                
+
+                if(idx > 0) {
+                    comment.raws.before = "\n\n";
+                }
+
+                root.raws.after = result.root.raws.after;
+
                 // Need to manually insert a newline after the comment, but can only
                 // do that via whatever comes after it for some reason?
                 // I'm not clear why comment nodes lack a `.raws.after` property
@@ -261,7 +267,7 @@ Processor.prototype = {
                     root.nodes[idx + 1].raws.before = "\n";
                 }
             });
-            
+
             return this._done.process(
                 root,
                 params(this, args)

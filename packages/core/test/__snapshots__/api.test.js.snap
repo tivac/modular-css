@@ -137,7 +137,6 @@ exports[`/processor.js API .output() should order output by dependencies, then a
 
 /* packages/core/test/specimens/composes.css */
 
-
 /* packages/core/test/specimens/deep.css */
 .deep {
     

@@ -49,13 +49,11 @@ a {}"
 
 exports[`/processor.js options lifecycle options done should run async postcss plugins done processing 1`] = `
 "/* packages/core/test/specimens/async-done.css */
-
 a {}"
 `;
 
 exports[`/processor.js options lifecycle options done should run sync postcss plugins done processing 1`] = `
 "/* packages/core/test/specimens/sync-done.css */
-
 a {}"
 `;
 
