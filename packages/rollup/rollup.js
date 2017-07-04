@@ -28,7 +28,9 @@ module.exports = function(opts) {
         
         filter = utils.createFilter(options.include, options.exclude),
         
-        processor;
+        processor = new Processor(options),
+        
+        runs = 0;
         
     if(!options.onwarn) {
         options.onwarn = console.warn.bind(console); // eslint-disable-line
@@ -38,19 +40,18 @@ module.exports = function(opts) {
         name : "modular-css",
 
         transform : function(code, id) {
-            // JIT processor creation to support dumping it at the end of each generation pass
-            // since rollup-watch doesn't notify us which files have changed
-            // https://github.com/tivac/modular-css/issues/158
-            if(!processor) {
-                processor = new Processor(options);
-            }
-
             if(!filter(id) || id.slice(slice) !== options.ext) {
                 return null;
             }
 
+            // If the file is being re-processed we need to remove it to
+            // avoid cache staleness issues
+            if(runs) {
+                processor.remove(id);
+            }
+
             // Add the file & its dependencies
-            return processor.string(id, code).then(function(result) {
+            return processor.string(id, code).then((result) => {
                 var classes = output.join(result.exports),
                     named   = Object.keys(classes),
                     out     = [
@@ -90,14 +91,10 @@ module.exports = function(opts) {
 
         // Hook for when bundle.generate() is called
         ongenerate : function(bundle, result) {
+            runs++;
+            
             result.css = processor.output({
                 to : options.css
-            })
-            .then((data) => {
-                // Remove processor reference so it'll be re-created on the next run
-                processor = null;
-
-                return data;
             });
         },
 
