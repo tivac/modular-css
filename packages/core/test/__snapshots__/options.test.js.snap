@@ -15,7 +15,6 @@ exports[`/processor.js options lifecycle options after should run async postcss 
     background: url(\\"./folder/to.png\\");
 }
 a {}
-
 "
 `;
 
@@ -26,7 +25,6 @@ exports[`/processor.js options lifecycle options after should run sync postcss p
     background: url(\\"./folder/to.png\\");
 }
 a {}
-
 "
 `;
 
@@ -36,15 +34,7 @@ exports[`/processor.js options lifecycle options after should use postcss-url by
     color: red;
     background: url(\\"../specimens/folder/to.png\\");
 }
-
 "
-`;
-
-exports[`/processor.js options lifecycle options after should work with cssnano 1`] = `
-"/*packages/core/test/specimens/folder/folder.css*/
-.folder{margin:2px}
-/*packages/core/test/specimens/local.css*/
-.booga{background:green}"
 `;
 
 exports[`/processor.js options lifecycle options before should run async postcss plugins before processing 1`] = `
@@ -59,29 +49,28 @@ a {}"
 
 exports[`/processor.js options lifecycle options done should run async postcss plugins done processing 1`] = `
 "/* packages/core/test/specimens/async-done.css */
-
 a {}"
 `;
 
 exports[`/processor.js options lifecycle options done should run sync postcss plugins done processing 1`] = `
 "/* packages/core/test/specimens/sync-done.css */
-
 a {}"
 `;
+
+exports[`/processor.js options lifecycle options done should work with cssnano (default preset) 1`] = `".folder{margin:2px}.booga{background:green}"`;
+
+exports[`/processor.js options lifecycle options done should work with cssnano (no preset) 1`] = `".folder{margin:2px}.booga{background:green}"`;
 
 exports[`/processor.js options map should generate source maps 1`] = `
 "/* packages/core/test/specimens/folder/folder.css */
 .folder { margin: 2px; }
-
 /* packages/core/test/specimens/local.css */
 .booga { background: green; }
-
 /* packages/core/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
 
-
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2NvcmUvdGVzdC9zcGVjaW1lbnMvZm9sZGVyL2ZvbGRlci5jc3MiLCJwYWNrYWdlcy9jb3JlL3Rlc3Qvc3BlY2ltZW5zL2xvY2FsLmNzcyIsInBhY2thZ2VzL2NvcmUvdGVzdC9zcGVjaW1lbnMvc3RhcnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLG9EQUFDO0FBQ0QsVUFBVSxZQUFZLEVBQUU7O0FDRHhCLDRDQUFDO0FBSUQsU0FBUyxrQkFBa0IsRUFBRTs7QUNKN0IsNENBQUM7QUFFRCxTREZBLFdBQWdCLENBQ2hCLGlCQUFpQixFQ0NzQjtBQUN2QyxTRkhBLHdCQUFxQixFRUdlIiwiZmlsZSI6Im91dC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJAdmFsdWUgZm9sZGVyOiB3aGl0ZTtcbi5mb2xkZXIgeyBtYXJnaW46IDJweDsgfVxuIiwiQHZhbHVlIG9uZTogcmVkO1xuQHZhbHVlIHR3bzogYmx1ZTtcbkB2YWx1ZSBmb2xkZXIgZnJvbSBcIi4vZm9sZGVyL2ZvbGRlci5jc3NcIjtcblxuLmJvb2dhIHsgYmFja2dyb3VuZDogZ3JlZW47IH1cbi5sb29nYSB7IGNvbXBvc2VzOiBib29nYTsgfVxuIiwiQHZhbHVlIG9uZSwgdHdvLCBmb2xkZXIgZnJvbSBcIi4vbG9jYWwuY3NzXCI7XG4ud29vZ2EgeyBjb21wb3NlczogYm9vZ2EgZnJvbSBcIi4vbG9jYWwuY3NzXCI7IH1cbi5ib29nYSB7IGNvbG9yOiBvbmU7IGJhY2tncm91bmQ6IHR3bzsgfVxuLnRvb2dhIHsgYm9yZGVyOiAxcHggc29saWQgZm9sZGVyOyB9XG4iXX0= */"
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2NvcmUvdGVzdC9zcGVjaW1lbnMvZm9sZGVyL2ZvbGRlci5jc3MiLCJwYWNrYWdlcy9jb3JlL3Rlc3Qvc3BlY2ltZW5zL2xvY2FsLmNzcyIsInBhY2thZ2VzL2NvcmUvdGVzdC9zcGVjaW1lbnMvc3RhcnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLG9EQUFDO0FBQ0QsVUFBVSxZQUFZLEVBQUU7QUNEeEIsNENBQUM7QUFJRCxTQUFTLGtCQUFrQixFQUFFO0FDSjdCLDRDQUFDO0FBRUQsU0RGQSxXQUFnQixDQUNoQixpQkFBaUIsRUNDc0I7QUFDdkMsU0ZIQSx3QkFBcUIsRUVHZSIsImZpbGUiOiJvdXQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiQHZhbHVlIGZvbGRlcjogd2hpdGU7XG4uZm9sZGVyIHsgbWFyZ2luOiAycHg7IH1cbiIsIkB2YWx1ZSBvbmU6IHJlZDtcbkB2YWx1ZSB0d286IGJsdWU7XG5AdmFsdWUgZm9sZGVyIGZyb20gXCIuL2ZvbGRlci9mb2xkZXIuY3NzXCI7XG5cbi5ib29nYSB7IGJhY2tncm91bmQ6IGdyZWVuOyB9XG4ubG9vZ2EgeyBjb21wb3NlczogYm9vZ2E7IH1cbiIsIkB2YWx1ZSBvbmUsIHR3bywgZm9sZGVyIGZyb20gXCIuL2xvY2FsLmNzc1wiO1xuLndvb2dhIHsgY29tcG9zZXM6IGJvb2dhIGZyb20gXCIuL2xvY2FsLmNzc1wiOyB9XG4uYm9vZ2EgeyBjb2xvcjogb25lOyBiYWNrZ3JvdW5kOiB0d287IH1cbi50b29nYSB7IGJvcmRlcjogMXB4IHNvbGlkIGZvbGRlcjsgfVxuIl19 */"
 `;
 
 exports[`/processor.js options namer should require a namer if a string is passed 1`] = `

@@ -251,10 +251,7 @@ Processor.prototype = {
                     }),
                     idx;
 
-                root.append([
-                    comment,
-                    result.root
-                ]);
+                root.append([ comment ].concat(result.root.nodes));
                 
                 idx = root.index(comment);
                 
