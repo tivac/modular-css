@@ -225,7 +225,7 @@ Processor.prototype = {
             ))
         )
         .then((results) => {
-            // Clone the first result to get valid source-maps
+            // Clone the first result if available to get valid source information
             var root = results.length ? results[0].root.clone() : postcss.root();
 
             // Then destroy all its children before adding new ones
