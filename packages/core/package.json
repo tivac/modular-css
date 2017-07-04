@@ -21,7 +21,8 @@
   ],
   "devDependencies": {
     "pegjs": "^0.10.0",
-    "test-utils": "^5.1.5"
+    "test-utils": "^5.1.5",
+    "cssnano": "^4.0.0-rc.1"
   },
   "dependencies": {
     "dependency-graph": "^0.5.0",
