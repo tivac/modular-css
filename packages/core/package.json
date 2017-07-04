@@ -20,6 +20,7 @@
     "postcss"
   ],
   "devDependencies": {
+    "cssnano": "^3.10.0",
     "pegjs": "^0.10.0",
     "test-utils": "^5.1.5"
   },

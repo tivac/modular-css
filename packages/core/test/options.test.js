@@ -214,6 +214,19 @@ describe("/processor.js", function() {
                     .then(() => processor.output({ to : "./packages/core/test/output/relative.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
+
+                it("should work with cssnano", () => {
+                    var processor = new Processor({
+                        namer,
+                        after : [ require("cssnano") ]
+                    });
+
+                    return processor.file(
+                        "./packages/core/test/specimens/local.css"
+                    )
+                    .then(() => processor.output({ to : "./packages/core/test/output/local.css" }))
+                    .then((result) => expect(result.css).toMatchSnapshot());
+                });
             });
             
             describe("done", function() {

@@ -246,12 +246,12 @@ Processor.prototype = {
                         )
                     }),
                     idx;
-                
+
                 root.append([
                     comment,
                     result.root
                 ]);
-
+                
                 idx = root.index(comment);
                 
                 // Need to manually insert a newline after the comment, but can only

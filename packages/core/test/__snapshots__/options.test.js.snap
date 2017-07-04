@@ -37,6 +37,13 @@ exports[`/processor.js options lifecycle options after should use postcss-url by
 "
 `;
 
+exports[`/processor.js options lifecycle options after should work with cssnano 1`] = `
+"/* packages/core/test/specimens/folder/folder.css */
+.folder{margin:2px}
+/* packages/core/test/specimens/local.css */
+.booga{background:green}"
+`;
+
 exports[`/processor.js options lifecycle options before should run async postcss plugins before processing 1`] = `
 "/* packages/core/test/specimens/async-before.css */
 a {}"
