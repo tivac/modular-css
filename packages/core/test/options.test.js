@@ -214,19 +214,6 @@ describe("/processor.js", function() {
                     .then(() => processor.output({ to : "./packages/core/test/output/relative.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
-
-                it("should work with cssnano", () => {
-                    var processor = new Processor({
-                        namer,
-                        after : [ require("cssnano") ]
-                    });
-
-                    return processor.file(
-                        "./packages/core/test/specimens/local.css"
-                    )
-                    .then(() => processor.output({ to : "./packages/core/test/output/local.css" }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
-                });
             });
             
             describe("done", function() {
@@ -260,9 +247,9 @@ describe("/processor.js", function() {
 
                 it("should work with cssnano (no preset)", () => {
                     var processor = new Processor({
-                        namer,
-                        done : [ require("cssnano") ]
-                    });
+                            namer,
+                            done : [ require("cssnano") ]
+                        });
 
                     return processor.file(
                         "./packages/core/test/specimens/local.css"
@@ -273,13 +260,13 @@ describe("/processor.js", function() {
 
                 it("should work with cssnano (default preset)", () => {
                     var processor = new Processor({
-                        namer,
-                        done : [ 
-                            require("cssnano")({
-                                 preset : "default"
-                            })
-                        ]
-                    });
+                            namer,
+                            done : [
+                                require("cssnano")({
+                                    preset : "default"
+                                })
+                            ]
+                        });
 
                     return processor.file(
                         "./packages/core/test/specimens/local.css"
