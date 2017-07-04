@@ -6,6 +6,7 @@ var path = require("path"),
 
     Cleanup = require("webpack-cleanup-plugin"),
     HTML    = require("html-webpack-plugin"),
+    Shake   = require("webpack-common-shake").Plugin,
     
     CSS = require("modular-css-webpack/plugin");
 
@@ -36,15 +37,17 @@ module.exports = (env) => ({
     },
     
     plugins : [
-        new Cleanup({
-            exclude : [
-                ".gitignore"
-            ]
-        }),
+        // new Cleanup({
+        //     exclude : [
+        //         ".gitignore"
+        //     ]
+        // }),
 
-        env === "dist" ?
-            new webpack.optimize.ModuleConcatenationPlugin() :
-            () => {}, // eslint-disable-line
+        // tree-shake ES modules
+        new webpack.optimize.ModuleConcatenationPlugin(),
+
+        // tree-shake commonJS modules
+        new Shake(),
 
         new CSS({
             css : "./app.css",
@@ -54,7 +57,7 @@ module.exports = (env) => ({
                  null,
             
             done : env === "dist" ?
-                // can't use cssnanountil v4 is out :(
+                // can't use cssnano until v4 is out :(
                 // [ require("cssnano")() ] :
                 [] : []
         }),
