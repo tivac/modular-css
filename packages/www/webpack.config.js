@@ -37,11 +37,11 @@ module.exports = (env) => ({
     },
     
     plugins : [
-        // new Cleanup({
-        //     exclude : [
-        //         ".gitignore"
-        //     ]
-        // }),
+        new Cleanup({
+            exclude : [
+                ".gitignore"
+            ]
+        }),
 
         // tree-shake ES modules
         new webpack.optimize.ModuleConcatenationPlugin(),
