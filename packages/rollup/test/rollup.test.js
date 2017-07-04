@@ -285,7 +285,7 @@ describe("/rollup.js", () => {
 
             // Start watching (re-requiring rollup because it needs root obj reference)
             watcher = watch(require("rollup"), {
-                entry   : require.resolve("./specimens/rollup/watch.js"),
+                entry   : require.resolve("./specimens/watch.js"),
                 dest    : "./packages/rollup/test/output/watch.js",
                 format  : "es",
                 plugins : [
