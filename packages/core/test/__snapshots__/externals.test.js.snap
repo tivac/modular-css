@@ -3,21 +3,16 @@
 exports[`/processor.js externals should support overriding external values 1`] = `
 "/* packages/core/test/specimens/folder/folder.css */
 .folder { margin: 2px; }
-
 /* packages/core/test/specimens/simple.css */
 .wooga { color: red; }
-
 /* packages/core/test/specimens/local.css */
 .booga { background: green; }
-
 /* packages/core/test/specimens/externals.css */
 .a .wooga {
     color: green;
 }
-
 .b:hover .booga {
     background: blue;
 }
-
 "
 `;

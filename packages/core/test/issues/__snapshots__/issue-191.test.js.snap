@@ -5,9 +5,6 @@ exports[`/issues /191 should ignore case differences in file paths 1`] = `
 .fooga {
     color: #F00;
 }
-
 /* packages/core/test/issues/specimens/191/start.css */
-
-
 "
 `;

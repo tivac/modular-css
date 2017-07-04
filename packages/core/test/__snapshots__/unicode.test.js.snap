@@ -71,6 +71,5 @@ exports[`/processor.js unicode should support unicode classes & ids 1`] = `
 .f\\\\'o\\\\'o { background: lime; }
 .f\\\\~o\\\\~o { background: lime; }
 .f\\\\+o\\\\+o { background: lime; }
-
 "
 `;

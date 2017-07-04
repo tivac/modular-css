@@ -606,10 +606,8 @@ __webpack_require__(0);
 exports[`/webpack.js should handle dependencies 2`] = `
 "/* packages/webpack/test/specimens/folder/folder.css */
 .folder { margin: 2px; }
-
 /* packages/webpack/test/specimens/local.css */
 .booga { background: green; }
-
 /* packages/webpack/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }

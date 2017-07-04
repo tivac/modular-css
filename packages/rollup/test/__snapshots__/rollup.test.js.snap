@@ -98,8 +98,7 @@ exports[`/rollup.js watch should generate correct builds in watch mode when file
 /* packages/rollup/test/specimens/simple.css */
 .mc12d71625_fooga {
     color: red;
-}
-"
+}"
 `;
 
 exports[`/rollup.js watch should generate correct builds in watch mode when files change 2`] = `
@@ -108,6 +107,5 @@ exports[`/rollup.js watch should generate correct builds in watch mode when file
 /* packages/rollup/test/specimens/simple.css */
 .mc12d71625_fooga {
     color: red;
-}
-"
+}"
 `;

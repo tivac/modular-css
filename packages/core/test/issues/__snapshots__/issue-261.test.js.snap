@@ -5,11 +5,9 @@ exports[`/issues /261 should allow colons in rules that also use :external() 1`]
 .mcaafb0c20_a {
     color: red;
 }
-
 /* packages/core/test/issues/specimens/261/2.css */
 .mcdbec3a1b_b:hover .mcaafb0c20_a {
     color: blue;
 }
-
 "
 `;

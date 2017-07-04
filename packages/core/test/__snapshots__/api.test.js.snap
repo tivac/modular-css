@@ -82,14 +82,11 @@ exports[`/processor.js API .file() should process an absolute file 4`] = `
 exports[`/processor.js API .output() should avoid duplicating files in the output 1`] = `
 "/* packages/core/test/specimens/folder/folder.css */
 .folder { margin: 2px; }
-
 /* packages/core/test/specimens/local.css */
 .booga { background: green; }
-
 /* packages/core/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
-
 "
 `;
 
@@ -113,46 +110,34 @@ Object {
 exports[`/processor.js API .output() should generate css representing the output from all added files 1`] = `
 "/* packages/core/test/specimens/folder/folder.css */
 .folder { margin: 2px; }
-
 /* packages/core/test/specimens/simple.css */
 .wooga { color: red; }
-
 /* packages/core/test/specimens/local.css */
 .booga { background: green; }
-
 /* packages/core/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
-
 "
 `;
 
 exports[`/processor.js API .output() should order output by dependencies, then alphabetically 1`] = `
 "/* packages/core/test/specimens/folder/folder.css */
 .folder { margin: 2px; }
-
 /* packages/core/test/specimens/folder/folder2.css */
 .folder2 { color: green; }
-
 /* packages/core/test/specimens/folder/subfolder/subfolder.css */
 .subfolder { color: yellow; }
-
 /* packages/core/test/specimens/composes.css */
-
-
 /* packages/core/test/specimens/deep.css */
 .deep {
     
     color: black;
 }
-
 /* packages/core/test/specimens/local.css */
 .booga { background: green; }
-
 /* packages/core/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
-
 "
 `;
 
@@ -161,14 +146,11 @@ exports[`/processor.js API .output() should reject if called before input has be
 exports[`/processor.js API .output() should return a postcss result 1`] = `
 "/* packages/core/test/specimens/folder/folder.css */
 .folder { margin: 2px; }
-
 /* packages/core/test/specimens/local.css */
 .booga { background: green; }
-
 /* packages/core/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
-
 "
 `;
 
@@ -176,7 +158,6 @@ exports[`/processor.js API .output() should support returning output for specifi
 "/* packages/core/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
-
 "
 `;
 
@@ -184,7 +165,6 @@ exports[`/processor.js API .output() should support returning output for specifi
 "/* packages/core/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
-
 "
 `;
 
