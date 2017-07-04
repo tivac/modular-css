@@ -21,6 +21,7 @@ exports[`/processor.js values should support value composition 1`] = `
 .red {
     color: red;
 }
+
 "
 `;
 
@@ -36,6 +37,7 @@ exports[`/processor.js values should support value namespaces 1`] = `
 .blue {
     color: blue;
 }
+
 "
 `;
 
@@ -57,5 +59,6 @@ exports[`/processor.js values should support value replacement in :external(...)
 .b:hover .booga {
     background: blue;
 }
+
 "
 `;

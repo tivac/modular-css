@@ -225,7 +225,11 @@ Processor.prototype = {
             ))
         )
         .then((results) => {
-            var root = postcss.root();
+            // Clone the first result to get valid source-maps
+            var root = results.length ? results[0].root.clone() : postcss.root();
+
+            // Then destroy all its children before adding new ones
+            root.removeAll();
 
             results.forEach((result) => {
                 // Add file path comment

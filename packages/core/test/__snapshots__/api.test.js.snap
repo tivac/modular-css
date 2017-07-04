@@ -89,6 +89,7 @@ exports[`/processor.js API .output() should avoid duplicating files in the outpu
 /* packages/core/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
+
 "
 `;
 
@@ -122,6 +123,7 @@ exports[`/processor.js API .output() should generate css representing the output
 /* packages/core/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
+
 "
 `;
 
@@ -150,6 +152,7 @@ exports[`/processor.js API .output() should order output by dependencies, then a
 /* packages/core/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
+
 "
 `;
 
@@ -165,6 +168,7 @@ exports[`/processor.js API .output() should return a postcss result 1`] = `
 /* packages/core/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
+
 "
 `;
 
@@ -172,6 +176,7 @@ exports[`/processor.js API .output() should support returning output for specifi
 "/* packages/core/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
+
 "
 `;
 
@@ -179,6 +184,7 @@ exports[`/processor.js API .output() should support returning output for specifi
 "/* packages/core/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
+
 "
 `;
 

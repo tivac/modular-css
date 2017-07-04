@@ -16,5 +16,6 @@ exports[`/issues /24 should be able to compose using a value 2`] = `
 /* packages/core/test/specimens/composition.css */
 .a {
     background: #000;
-}"
+}
+"
 `;

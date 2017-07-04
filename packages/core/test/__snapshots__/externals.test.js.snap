@@ -18,5 +18,6 @@ exports[`/processor.js externals should support overriding external values 1`] =
 .b:hover .booga {
     background: blue;
 }
+
 "
 `;
