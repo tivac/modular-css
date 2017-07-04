@@ -14,7 +14,6 @@ exports[`/processor.js externals should support overriding external values 1`] =
 .a .wooga {
     color: green;
 }
-
 .b:hover .booga {
     background: blue;
 }

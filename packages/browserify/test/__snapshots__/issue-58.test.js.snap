@@ -40,7 +40,6 @@ exports[`/browserify.js /issues /58 should update when CSS dependencies change 3
 .mc46e4a65d_issue1 {
     color: teal;
 }
-
 .mc46e4a65d_issue2 {
     color: aqua;
 }

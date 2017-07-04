@@ -16,7 +16,6 @@ exports[`/processor.js values should support simple values 1`] = `
 exports[`/processor.js values should support value composition 1`] = `
 "/* packages/core/test/specimens/values.css */
 
-
 /* packages/core/test/specimens/value-composition.css */
 .red {
     color: red;
@@ -27,12 +26,10 @@ exports[`/processor.js values should support value composition 1`] = `
 exports[`/processor.js values should support value namespaces 1`] = `
 "/* packages/core/test/specimens/values.css */
 
-
 /* packages/core/test/specimens/value-namespace.css */
 .red {
     color: red;
 }
-
 .blue {
     color: blue;
 }
@@ -53,7 +50,6 @@ exports[`/processor.js values should support value replacement in :external(...)
 .a .wooga {
     color: green;
 }
-
 .b:hover .booga {
     background: blue;
 }
