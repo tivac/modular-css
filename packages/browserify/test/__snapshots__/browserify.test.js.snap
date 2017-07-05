@@ -36,10 +36,8 @@ module.exports = {
 exports[`/browserify.js basic functionality should include all CSS dependencies in output css 2`] = `
 "/* packages/browserify/test/specimens/folder/folder.css */
 .mcd19f1319_folder { margin: 2px; }
-
 /* packages/browserify/test/specimens/local.css */
 .mcc4e2a8e1_booga { background: green; }
-
 /* packages/browserify/test/specimens/start.css */
 .mc1c78395f_booga { color: red; background: blue; }
 .mc1c78395f_tooga { border: 1px solid white; }
@@ -71,10 +69,8 @@ module.exports = {
 exports[`/browserify.js basic functionality should not include duplicate files in the output multiple times 2`] = `
 "/* packages/browserify/test/specimens/folder/folder.css */
 .mcd19f1319_folder { margin: 2px; }
-
 /* packages/browserify/test/specimens/local.css */
 .mcc4e2a8e1_booga { background: green; }
-
 /* packages/browserify/test/specimens/start.css */
 .mc1c78395f_booga { color: red; background: blue; }
 .mc1c78395f_tooga { border: 1px solid white; }
@@ -84,15 +80,13 @@ exports[`/browserify.js basic functionality should not include duplicate files i
 exports[`/browserify.js basic functionality should output an inline source map when the debug option is specified 1`] = `
 "/* packages/browserify/test/specimens/folder/folder.css */
 .mcd19f1319_folder { margin: 2px; }
-
 /* packages/browserify/test/specimens/local.css */
 .mcc4e2a8e1_booga { background: green; }
-
 /* packages/browserify/test/specimens/start.css */
 .mc1c78395f_booga { color: red; background: blue; }
 .mc1c78395f_tooga { border: 1px solid white; }
 
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NwZWNpbWVucy9mb2xkZXIvZm9sZGVyLmNzcyIsIi4uLy4uL3NwZWNpbWVucy9sb2NhbC5jc3MiLCIuLi8uLi9zcGVjaW1lbnMvc3RhcnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLDBEQUFDO0FBQ0QscUJBQVUsWUFBWSxFQUFFOztBQ0R4QixrREFBQztBQUlELG9CQUFTLGtCQUFrQixFQUFFOztBQ0o3QixrREFBQztBQUVELG9CREZBLFdBQWdCLENBQ2hCLGlCQUFpQixFQ0NzQjtBQUN2QyxvQkZIQSx3QkFBcUIsRUVHZSIsImZpbGUiOiJzb3VyY2UtbWFwcy5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJAdmFsdWUgZm9sZGVyOiB3aGl0ZTtcbi5mb2xkZXIgeyBtYXJnaW46IDJweDsgfVxuIiwiQHZhbHVlIG9uZTogcmVkO1xuQHZhbHVlIHR3bzogYmx1ZTtcbkB2YWx1ZSBmb2xkZXIgZnJvbSBcIi4vZm9sZGVyL2ZvbGRlci5jc3NcIjtcblxuLmJvb2dhIHsgYmFja2dyb3VuZDogZ3JlZW47IH1cbi5sb29nYSB7IGNvbXBvc2VzOiBib29nYTsgfVxuIiwiQHZhbHVlIG9uZSwgdHdvLCBmb2xkZXIgZnJvbSBcIi4vbG9jYWwuY3NzXCI7XG4ud29vZ2EgeyBjb21wb3NlczogYm9vZ2EgZnJvbSBcIi4vbG9jYWwuY3NzXCI7IH1cbi5ib29nYSB7IGNvbG9yOiBvbmU7IGJhY2tncm91bmQ6IHR3bzsgfVxuLnRvb2dhIHsgYm9yZGVyOiAxcHggc29saWQgZm9sZGVyOyB9XG4iXX0= */"
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NwZWNpbWVucy9mb2xkZXIvZm9sZGVyLmNzcyIsIi4uLy4uL3NwZWNpbWVucy9sb2NhbC5jc3MiLCIuLi8uLi9zcGVjaW1lbnMvc3RhcnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLDBEQUFDO0FBQ0QscUJBQVUsWUFBWSxFQUFFO0FDRHhCLGtEQUFDO0FBSUQsb0JBQVMsa0JBQWtCLEVBQUU7QUNKN0Isa0RBQUM7QUFFRCxvQkRGQSxXQUFnQixDQUNoQixpQkFBaUIsRUNDc0I7QUFDdkMsb0JGSEEsd0JBQXFCLEVFR2UiLCJmaWxlIjoic291cmNlLW1hcHMuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiQHZhbHVlIGZvbGRlcjogd2hpdGU7XG4uZm9sZGVyIHsgbWFyZ2luOiAycHg7IH1cbiIsIkB2YWx1ZSBvbmU6IHJlZDtcbkB2YWx1ZSB0d286IGJsdWU7XG5AdmFsdWUgZm9sZGVyIGZyb20gXCIuL2ZvbGRlci9mb2xkZXIuY3NzXCI7XG5cbi5ib29nYSB7IGJhY2tncm91bmQ6IGdyZWVuOyB9XG4ubG9vZ2EgeyBjb21wb3NlczogYm9vZ2E7IH1cbiIsIkB2YWx1ZSBvbmUsIHR3bywgZm9sZGVyIGZyb20gXCIuL2xvY2FsLmNzc1wiO1xuLndvb2dhIHsgY29tcG9zZXM6IGJvb2dhIGZyb20gXCIuL2xvY2FsLmNzc1wiOyB9XG4uYm9vZ2EgeyBjb2xvcjogb25lOyBiYWNrZ3JvdW5kOiB0d287IH1cbi50b29nYSB7IGJvcmRlcjogMXB4IHNvbGlkIGZvbGRlcjsgfVxuIl19 */"
 `;
 
 exports[`/browserify.js basic functionality should replace require() calls with the exported identifiers 1`] = `

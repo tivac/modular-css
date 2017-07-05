@@ -225,7 +225,11 @@ Processor.prototype = {
             ))
         )
         .then((results) => {
-            var root = postcss.root();
+            // Clone the first result if available to get valid source information
+            var root = results.length ? results[0].root.clone() : postcss.root();
+
+            // Then destroy all its children before adding new ones
+            root.removeAll();
 
             results.forEach((result) => {
                 // Add file path comment
@@ -246,12 +250,9 @@ Processor.prototype = {
                         )
                     }),
                     idx;
-                
-                root.append([
-                    comment,
-                    result.root
-                ]);
 
+                root.append([ comment ].concat(result.root.nodes));
+                
                 idx = root.index(comment);
                 
                 // Need to manually insert a newline after the comment, but can only
