@@ -49,7 +49,6 @@ exports[`/processor.js values should support value replacement in :external(...)
 .b:hover .booga {
     background: blue;
 }
-
 .wooga .booga {
     color: red;
 }
