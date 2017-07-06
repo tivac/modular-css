@@ -6,6 +6,7 @@
 
 .b:hover :external(booga from localCss) {
     background: blue;
+}
 
 :external(wooga from "./simple.css") :external(booga from localCss) {
     color: red;
