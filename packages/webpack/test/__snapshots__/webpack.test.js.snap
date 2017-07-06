@@ -36,9 +36,6 @@ exports[`/webpack.js should generate correct builds in watch mode when files cha
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -66,11 +63,23 @@ exports[`/webpack.js should generate correct builds in watch mode when files cha
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+\\"use strict\\";
+Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__output_watched_css__ = __webpack_require__(1);
+
+
+console.log(__WEBPACK_IMPORTED_MODULE_0__output_watched_css__[\\"a\\" /* default */]);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
@@ -79,18 +88,6 @@ exports[`/webpack.js should generate correct builds in watch mode when files cha
     \\"one\\": \\"one\\"
 });
 var one = \\"one\\";
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-\\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__output_watched_css__ = __webpack_require__(0);
-
-
-console.log(__WEBPACK_IMPORTED_MODULE_0__output_watched_css__[\\"a\\" /* default */]);
-
 
 /***/ })
 /******/ ]);"
@@ -137,9 +134,6 @@ exports[`/webpack.js should generate correct builds in watch mode when files cha
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -167,11 +161,23 @@ exports[`/webpack.js should generate correct builds in watch mode when files cha
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+\\"use strict\\";
+Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__output_watched_css__ = __webpack_require__(1);
+
+
+console.log(__WEBPACK_IMPORTED_MODULE_0__output_watched_css__[\\"a\\" /* default */]);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
@@ -180,18 +186,6 @@ exports[`/webpack.js should generate correct builds in watch mode when files cha
     \\"two\\": \\"two\\"
 });
 var two = \\"two\\";
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-\\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__output_watched_css__ = __webpack_require__(0);
-
-
-console.log(__WEBPACK_IMPORTED_MODULE_0__output_watched_css__[\\"a\\" /* default */]);
-
 
 /***/ })
 /******/ ]);"
@@ -238,9 +232,6 @@ exports[`/webpack.js should generate correct builds when files change 1`] = `
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -268,11 +259,23 @@ exports[`/webpack.js should generate correct builds when files change 1`] = `
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+\\"use strict\\";
+Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__output_changed_css__ = __webpack_require__(1);
+
+
+console.log(__WEBPACK_IMPORTED_MODULE_0__output_changed_css__[\\"a\\" /* default */]);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
@@ -281,18 +284,6 @@ exports[`/webpack.js should generate correct builds when files change 1`] = `
     \\"one\\": \\"one\\"
 });
 var one = \\"one\\";
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-\\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__output_changed_css__ = __webpack_require__(0);
-
-
-console.log(__WEBPACK_IMPORTED_MODULE_0__output_changed_css__[\\"a\\" /* default */]);
-
 
 /***/ })
 /******/ ]);"
@@ -339,9 +330,6 @@ exports[`/webpack.js should generate correct builds when files change 3`] = `
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -369,11 +357,23 @@ exports[`/webpack.js should generate correct builds when files change 3`] = `
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+\\"use strict\\";
+Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__output_changed_css__ = __webpack_require__(1);
+
+
+console.log(__WEBPACK_IMPORTED_MODULE_0__output_changed_css__[\\"a\\" /* default */]);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
@@ -382,18 +382,6 @@ exports[`/webpack.js should generate correct builds when files change 3`] = `
     \\"two\\": \\"two\\"
 });
 var two = \\"two\\";
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-\\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__output_changed_css__ = __webpack_require__(0);
-
-
-console.log(__WEBPACK_IMPORTED_MODULE_0__output_changed_css__[\\"a\\" /* default */]);
-
 
 /***/ })
 /******/ ]);"
@@ -440,9 +428,6 @@ exports[`/webpack.js should generate correct builds when files change 5`] = `
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -470,11 +455,23 @@ exports[`/webpack.js should generate correct builds when files change 5`] = `
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+\\"use strict\\";
+Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__output_changed_css__ = __webpack_require__(1);
+
+
+console.log(__WEBPACK_IMPORTED_MODULE_0__output_changed_css__[\\"a\\" /* default */]);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
@@ -483,18 +480,6 @@ exports[`/webpack.js should generate correct builds when files change 5`] = `
     \\"three\\": \\"three\\"
 });
 var three = \\"three\\";
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-\\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__output_changed_css__ = __webpack_require__(0);
-
-
-console.log(__WEBPACK_IMPORTED_MODULE_0__output_changed_css__[\\"a\\" /* default */]);
-
 
 /***/ })
 /******/ ]);"
@@ -541,9 +526,6 @@ exports[`/webpack.js should handle dependencies 1`] = `
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -571,11 +553,18 @@ exports[`/webpack.js should handle dependencies 1`] = `
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(1);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
@@ -591,13 +580,6 @@ Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
 var wooga = \\"booga wooga\\";
 var booga = \\"booga\\";
 var tooga = \\"tooga\\";
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(0);
-
 
 /***/ })
 /******/ ]);"
@@ -667,9 +649,6 @@ exports[`/webpack.js should output css to disk 1`] = `
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -697,11 +676,18 @@ exports[`/webpack.js should output css to disk 1`] = `
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(1);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
@@ -711,13 +697,6 @@ Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
     \\"wooga\\": \\"wooga\\"
 });
 var wooga = \\"wooga\\";
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(0);
-
 
 /***/ })
 /******/ ]);"
@@ -765,9 +744,6 @@ exports[`/webpack.js should output json to disk 1`] = `
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -795,11 +771,18 @@ exports[`/webpack.js should output json to disk 1`] = `
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(1);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
@@ -809,13 +792,6 @@ Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
     \\"wooga\\": \\"wooga\\"
 });
 var wooga = \\"wooga\\";
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(0);
-
 
 /***/ })
 /******/ ]);"
@@ -865,9 +841,6 @@ exports[`/webpack.js should support ES2015 default exports 1`] = `
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -895,11 +868,23 @@ exports[`/webpack.js should support ES2015 default exports 1`] = `
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+\\"use strict\\";
+Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__es2015_css__ = __webpack_require__(1);
+
+
+console.log(__WEBPACK_IMPORTED_MODULE_0__es2015_css__[\\"a\\" /* default */]);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
@@ -911,18 +896,6 @@ exports[`/webpack.js should support ES2015 default exports 1`] = `
 });
 var a = \\"a\\";
 var b = \\"b\\";
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-\\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__es2015_css__ = __webpack_require__(0);
-
-
-console.log(__WEBPACK_IMPORTED_MODULE_0__es2015_css__[\\"a\\" /* default */]);
-
 
 /***/ })
 /******/ ]);"
@@ -971,9 +944,6 @@ exports[`/webpack.js should support ES2015 named exports 1`] = `
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -1001,11 +971,23 @@ exports[`/webpack.js should support ES2015 named exports 1`] = `
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+\\"use strict\\";
+Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__es2015_css__ = __webpack_require__(1);
+
+
+console.log(__WEBPACK_IMPORTED_MODULE_0__es2015_css__[\\"a\\"]);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
@@ -1017,18 +999,6 @@ exports[`/webpack.js should support ES2015 named exports 1`] = `
 });
 var a = \\"a\\";
 var b = \\"b\\";
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-\\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__es2015_css__ = __webpack_require__(0);
-
-
-console.log(__WEBPACK_IMPORTED_MODULE_0__es2015_css__[\\"a\\"]);
-
 
 /***/ })
 /******/ ]);"
@@ -1077,9 +1047,6 @@ exports[`/webpack.js should support disabling namedExports when the option is se
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -1107,11 +1074,18 @@ exports[`/webpack.js should support disabling namedExports when the option is se
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(1);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
@@ -1119,13 +1093,6 @@ Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
 /* harmony default export */ __webpack_exports__[\\"default\\"] = ({
     \\"wooga\\": \\"wooga\\"
 });
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(0);
-
 
 /***/ })
 /******/ ]);"
@@ -1167,9 +1134,6 @@ exports[`/webpack.js should warn about using the cjs option & disable namedExpor
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -1197,11 +1161,18 @@ exports[`/webpack.js should warn about using the cjs option & disable namedExpor
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(1);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
@@ -1211,13 +1182,6 @@ Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
     \\"wooga\\": \\"wooga\\"
 });
 var wooga = \\"wooga\\";
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(0);
-
 
 /***/ })
 /******/ ]);"
