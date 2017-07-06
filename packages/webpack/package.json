@@ -20,7 +20,7 @@
   ],
   "devDependencies": {
     "test-utils": "^5.1.5",
-    "webpack": "^2.4.1"
+    "webpack": "^3.0.0"
   },
   "dependencies": {
     "esutils": "^2.0.2",
