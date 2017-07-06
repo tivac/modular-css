@@ -46,16 +46,21 @@ module.exports = (css, result) => {
     }
     
     css.walkRules(/:external/, (rule) => {
-        var externals = selector((selectors) =>
+        var externals = selector((selectors) => {
+                var found = [];
+                
                 selectors.walkPseudos((pseudo) => {
                     // Need to ensure we only process :external pseudos, see #261
                     if(pseudo.value !== ":external") {
                         return;
                     }
                     
-                    process(rule, pseudo);
-                })
-            );
+                    // Can't replace here, see postcss/postcss-selector-parser#105
+                    found.push(pseudo);
+                });
+
+                found.forEach((pseudo) => process(rule, pseudo));
+            });
         
         rule.selector = externals.process(rule.selector).result;
     });
