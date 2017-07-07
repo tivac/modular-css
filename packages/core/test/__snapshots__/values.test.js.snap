@@ -10,7 +10,11 @@ Object {
 
 exports[`/processor.js values should support simple values 1`] = `
 "/* values.css */
-.a { color: red; }"
+.a {
+    color: red;
+    font-family: Segoe UI
+    sans-serif;
+}"
 `;
 
 exports[`/processor.js values should support value composition 1`] = `
@@ -18,6 +22,7 @@ exports[`/processor.js values should support value composition 1`] = `
 /* packages/core/test/specimens/value-composition.css */
 .red {
     color: red;
+    background: blue;
 }
 "
 `;

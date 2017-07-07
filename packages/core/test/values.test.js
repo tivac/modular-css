@@ -43,8 +43,14 @@ describe("/processor.js", () => {
                 "./values.css",
                 dedent(`
                     @value a: red;
+                    @value b:
+                        Segoe UI
+                        sans-serif;
 
-                    .a { color: a; }
+                    .a {
+                        color: a;
+                        font-family: b;
+                    }
                 `)
             )
             .then(() => processor.output())
@@ -52,7 +58,7 @@ describe("/processor.js", () => {
                 expect(result.css).toMatchSnapshot()
             )
         );
-        
+
         it("should support local values in value composition", () =>
             processor.string(
                 "./packages/core/test/specimens/simple.css",

@@ -1,5 +1,7 @@
-@value a from "./values.css";
+@value a,
+       b from "./values.css";
 
 .red {
     color: a;
+    background: b;
 }
