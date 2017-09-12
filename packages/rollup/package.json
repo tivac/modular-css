@@ -18,8 +18,7 @@
     "postcss"
   ],
   "devDependencies": {
-    "rollup": "^0.43.0",
-    "rollup-watch": "^4.0.0",
+    "rollup": "^0.49.3",
     "test-utils": "^5.1.5"
   },
   "dependencies": {
