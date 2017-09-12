@@ -2,8 +2,7 @@ sudo: false
 
 language: node_js
 node_js:
-# Disabling because lerna seems busted
-# - node
+- node
 - '7'
 - '6'
 
