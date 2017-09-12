@@ -14,7 +14,7 @@
     "commitmsg": "validate-commit-msg",
     "cover": "jest --coverage",
     "danger": "danger run || true",
-    "postinstall": "lerna bootstrap",
+    "postinstall": "lerna bootstrap --hoist",
     "lint": "eslint .",
     "prerelease": "npm test",
     "release": "lerna publish --message \"chore: Publish\"",
