@@ -1,22 +1,14 @@
 "use strict";
 
-var fs = require("fs"),
+var fs = require("fs");
 
-    Graph  = require("dependency-graph").DepGraph;
-
-function copy(graph, clone, nodes, edges) {
-    Object.keys(graph[edges]).forEach((node) => {
-        clone[edges][node] = graph[edges][node].filter((edge) => nodes.indexOf(edge) !== -1);
-    });
-}
-
-function cloner(graph) {
-    var clone   = new Graph(),
+function uniqueGraph(graph) {
+    var clone   = graph.clone(),
         missing = 0,
         nodes   = {};
 
     // Unique the list of nodes by using their inode value as a key in an object
-    Object.keys(graph.nodes).forEach((node) => {
+    graph.overallOrder().forEach((node) => {
         var stat, key;
         
         try {
@@ -31,18 +23,12 @@ function cloner(graph) {
             key = `key-${missing++}`;
         }
 
-        if(!nodes[key]) {
-            nodes[key] = node;
+        if(key in nodes) {
+            clone.removeNode(node);
         }
+
+        nodes[key] = true;
     });
-
-    // Turn object back into array of valid (unduplicated) nodes
-    nodes = Object.keys(nodes).map((key) => nodes[key]);
-
-    nodes.forEach((node) => clone.addNode(node));
-    
-    copy(graph, clone, nodes, "incomingEdges");
-    copy(graph, clone, nodes, "outgoingEdges");
 
     return clone;
 }
@@ -53,7 +39,7 @@ function leaves(graph) {
 
 // Clone the graph and break the graph into tiers for further processing
 module.exports = (graph) => {
-    var clone = cloner(graph),
+    var clone = uniqueGraph(graph),
         tiers = [],
         tier;
         

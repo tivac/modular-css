@@ -94,8 +94,10 @@ module.exports = (css, result) => {
         // Save closure ref to this rule
         current = rule;
         lookup = classes;
-
-        rule.selector = parser.process(rule.selector).result;
+        
+        // TODO: Unsure why I need to specify rule.selector here, seems like the
+        // PostCSS integration should be able to handle it?
+        rule.selector = parser.processSync(rule.selector);
     });
 
     // Also scope @keyframes rules so they don't leak globally
@@ -105,7 +107,7 @@ module.exports = (css, result) => {
 
         lookup = keyframes;
 
-        rule.params = parser.process(rule.params).result;
+        rule.params = parser.processSync(rule.params);
     });
 
     if(Object.keys(keyframes).length) {

@@ -62,7 +62,7 @@ module.exports = (css, result) => {
                 found.forEach((pseudo) => process(rule, pseudo));
             });
         
-        rule.selector = externals.process(rule.selector).result;
+        externals.processSync(rule);
     });
 };
 

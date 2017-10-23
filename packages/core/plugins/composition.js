@@ -39,7 +39,7 @@ module.exports = (css, result) => {
     Object.keys(refs).forEach((key) => graph.addNode(key));
 
     // Go look up "composes" declarations and populate dependency graph
-    css.walkDecls("composes", function(decl) {
+    css.walkDecls("composes", (decl) => {
         /* eslint max-statements: "off" */
         var details   = parser.parse(decl.value),
             selectors = decl.parent.selectors.map(identifiers.parse);

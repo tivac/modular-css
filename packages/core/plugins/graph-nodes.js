@@ -52,7 +52,7 @@ module.exports = (css, result) => {
     css.walkRules(/:external/, (rule) => {
         current = rule;
         
-        externals.process(rule.selector);
+        externals.processSync(rule);
     });
 };
 

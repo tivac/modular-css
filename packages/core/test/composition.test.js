@@ -77,6 +77,20 @@ describe("/processor.js", () => {
             )
         );
 
+        it("should compose a single class", () =>
+            processor.string(
+                "./single-composes.css",
+                dedent(`
+                    .a { color: red; }
+                    .b { composes: a; }
+                `)
+            )
+            .then(() => processor.output())
+            .then((output) =>
+                expect(output.compositions).toMatchSnapshot()
+            )
+        );
+
         it("should allow comments before composes", () =>
             processor.string(
                 "./multiple-composes.css",

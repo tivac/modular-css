@@ -9,6 +9,15 @@ Object {
 }
 `;
 
+exports[`/processor.js composition should compose a single class 1`] = `
+Object {
+  "single-composes.css": Object {
+    "a": "a",
+    "b": "a b",
+  },
+}
+`;
+
 exports[`/processor.js composition should compose from globals 1`] = `
 Object {
   "global-compose.css": Object {

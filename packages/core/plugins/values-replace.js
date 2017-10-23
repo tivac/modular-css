@@ -10,7 +10,7 @@ var selector = require("postcss-selector-parser"),
     namespaced = require("./values-namespaced.js");
 
 module.exports = (css, result) => {
-    var graph  = new Graph(),
+    var graph = new Graph(),
         
         // Create local copy of values since we're going to merge in namespace stuff
         values = Object.assign(
@@ -24,7 +24,7 @@ module.exports = (css, result) => {
                     return;
                 }
 
-                tag.replaceWith(values[tag.value].value);
+                tag.replaceWith(values[tag.value]);
             })
         ),
         
@@ -111,7 +111,7 @@ module.exports = (css, result) => {
 
     // Replace values in :external() references
     css.walkRules(/:external/, (rule) =>
-        (rule.selector = external.process(rule.selector).result)
+        (rule.selector = external.processSync(rule.selector))
     );
 };
 

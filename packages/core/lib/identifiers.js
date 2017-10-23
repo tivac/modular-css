@@ -13,7 +13,7 @@ exports.parse = (selector) => {
         selectors.walkClasses((part) => values.push(part.value));
     });
     
-    parser.process(selector);
+    parser.processSync(selector);
     
     return values;
 };
