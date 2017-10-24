@@ -90,7 +90,7 @@ describe("/processor.js", () => {
             )
         );
 
-        it.only("should support value replacement in :external(...)", () =>
+        it("should support value replacement in :external(...)", () =>
             processor.file(require.resolve("./specimens/externals.css"))
             .then(() => processor.output())
             .then((result) =>
