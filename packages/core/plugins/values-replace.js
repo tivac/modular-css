@@ -111,7 +111,7 @@ module.exports = (css, result) => {
 
     // Replace values in :external() references
     css.walkRules(/:external/, (rule) => {
-        rule.selector = external.processSync(rule.selector);
+        rule.selector = external.processSync(rule);
     });
 };
 

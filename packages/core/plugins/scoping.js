@@ -95,9 +95,7 @@ module.exports = (css, result) => {
         current = rule;
         lookup = classes;
         
-        // TODO: Unsure why I need to specify rule.selector here, seems like the
-        // PostCSS integration should be able to handle it?
-        rule.selector = parser.processSync(rule.selector);
+        rule.selector = parser.processSync(rule);
     });
 
     // Also scope @keyframes rules so they don't leak globally
