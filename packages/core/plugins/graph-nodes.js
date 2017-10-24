@@ -6,7 +6,7 @@ var selector = require("postcss-selector-parser"),
 
 function parse(options, rule, value) {
     var parsed, file;
-    
+
     try {
         parsed = parser.parse(value);
     } catch(e) {
