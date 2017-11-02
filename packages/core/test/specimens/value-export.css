@@ -1,0 +1,9 @@
+@value * as colors from "./value-import.css";
+
+.red {
+    color: colors.a;
+}
+
+.green {
+    color: colors.b;
+}

@@ -1,0 +1,10 @@
+@value * from "./values.css";
+@value b: green;
+
+.red {
+    color: a;
+}
+
+.green {
+    color: b;
+}
