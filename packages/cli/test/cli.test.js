@@ -6,6 +6,9 @@ var tester = require("cli-tester/es5"),
     
     cli = require.resolve("../cli.js");
 
+// Since these tests keep failing on Travis...
+jest.setTimeout(10000);
+
 function success(out) {
     expect(out.code).toBe(0);
 
