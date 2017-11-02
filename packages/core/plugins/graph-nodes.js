@@ -6,7 +6,7 @@ var selector = require("postcss-selector-parser"),
 
 function parse(options, rule, value) {
     var parsed, file;
-    
+
     try {
         parsed = parser.parse(value);
     } catch(e) {
@@ -52,7 +52,7 @@ module.exports = (css, result) => {
     css.walkRules(/:external/, (rule) => {
         current = rule;
         
-        externals.process(rule.selector);
+        externals.processSync(rule);
     });
 };
 

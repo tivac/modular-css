@@ -9,11 +9,13 @@ exports.parse = (selector) => {
     var values = [],
         parser;
     
-    parser = createParser((selectors) => {
-        selectors.walkClasses((part) => values.push(part.value));
-    });
+    parser = createParser((selectors) =>
+        selectors.walkClasses((part) =>
+            values.push(part.value)
+        )
+    );
     
-    parser.process(selector);
+    parser.processSync(selector);
     
     return values;
 };

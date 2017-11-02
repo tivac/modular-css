@@ -94,8 +94,8 @@ module.exports = (css, result) => {
         // Save closure ref to this rule
         current = rule;
         lookup = classes;
-
-        rule.selector = parser.process(rule.selector).result;
+        
+        rule.selector = parser.processSync(rule);
     });
 
     // Also scope @keyframes rules so they don't leak globally
@@ -105,7 +105,7 @@ module.exports = (css, result) => {
 
         lookup = keyframes;
 
-        rule.params = parser.process(rule.params).result;
+        rule.params = parser.processSync(rule.params);
     });
 
     if(Object.keys(keyframes).length) {
