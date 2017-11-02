@@ -137,7 +137,7 @@ describe("/rollup.js", () => {
 
     it("should generate external source maps", () =>
         rollup({
-            entry   : require.resolve("./specimens/simple.js"),
+            input   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
                     namer,
@@ -150,7 +150,7 @@ describe("/rollup.js", () => {
         })
         .then((bundle) => bundle.write({
             format : "es",
-            dest   : "./packages/rollup/test/output/simple.js"
+            file   : "./packages/rollup/test/output/simple.js"
         }))
         .then(() => expect(read("simple.css.map")).toMatchSnapshot())
     );

@@ -42,7 +42,7 @@ console.log(css);
 "
 `;
 
-exports[`/rollup.js should generate external source maps 1`] = `"{\\"version\\":3,\\"sources\\":[\\"../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,+CAAC;AAAD;IACI,UAAW;CACd\\",\\"file\\":\\"simple.css\\",\\"sourcesContent\\":[\\".fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}"`;
+exports[`/rollup.js should generate external source maps 1`] = `"{\\"version\\":3,\\"sources\\":[\\"../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,+CAAC;AAAD;IACI,WAAW;CACd\\",\\"file\\":\\"simple.css\\",\\"sourcesContent\\":[\\".fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}"`;
 
 exports[`/rollup.js should not output sourcemaps when they are disabled 1`] = `
 "/* packages/rollup/test/specimens/simple.css */
