@@ -6,16 +6,16 @@ var tester = require("cli-tester/es5"),
     
     cli = require.resolve("../cli.js");
 
-// Since these tests keep failing on Travis...
-jest.setTimeout(10000);
-
 function success(out) {
     expect(out.code).toBe(0);
-
+    
     return out;
 }
-
+    
 describe("/cli.js", function() {
+    // Since these tests keep failing on Travis...
+    jest.setTimeout(10000);
+    
     afterAll(() => require("shelljs").rm("-rf", "./packages/cli/test/output"));
 
     it("should show help with no args", () =>
