@@ -2,77 +2,13 @@
 
 CSS Modules defines a bunch of great features, and `modular-css` supports the best of them in a straightforward and consistent way.
 
-- [Values](#values)
-  - [Namespaces](#namespaces)
-  - [Importing](#importing)
 - [Scoped Selectors](#scoped-selectors)
 - [Composition](#composition)
   - [Overriding Styles](#overriding-styles)
-
-## Values
-
-Values are useful in CSS, they're coming to the spec soon. Use them now because it'll make your life easier!
-
-```css
-/* values.css */
-@value alert: #F00;
-@value small: (max-width: 600px);
-
-@media small {
-    .alert { color: alert; }
-}
-
-/* will be output as */
-
-@media (max-width: 600px) {
-    .alert { color: #F00; }
-}
-```
-
-### Namespaces
-
-`modular-css` also supports value namespaces as a convenient shorthand way to access a bunch of shared values from a file.
-
-```css
-/* Specific values being imported */
-@value vbox, hbox, centered from "./layout.css";
-
-.content {
-    composes: vbox, centered;
-}
-
-/* Namespace to collect all imports */
-@value * as layout from "./layout.css";
-
-.content {
-    composes: layout.vbox, layout.centered;
-}
-```
-
-### Importing
-
-You can also import all the `@value` definitions from another file into the current one. The imported `@value`s will also be exported from that file, allowing for simple theming setups with overriden colors/dimensions/etc.
-
-```css
-/* colors.css */
-@value main: red;
-@value bg: white;
-```
-
-```css
-/* mobile-colors.css */
-@value * from "./colors.css";
-@value bg: gray;
-```
-
-```css
-@value * as colors from "./mobile-colors.css";
-
-body {
-    background: colors.bg; /* gray */
-    color: colors.main; /* red */
-}
-```
+- [Values](#values)
+  - [Importing Values](#importing-values)
+    - [Namespaced Imports](#namespaced-imports)
+    - [Wildcard Imports](#wildcard-imports)
 
 ## Scoped Selectors
 
@@ -112,7 +48,7 @@ These arrays of selectors can then be applied to elements using the much more ni
 You can opt out of selector scoping by wrapping your classes/ids in the `:global()` pseudo-class, this will prevent them from being renamed but they will still be available in the module's exported object.
 
 ```css
-/* styles.css */
+/* == styles.css == */
 :global(.global) { color: red; }
 ```
 ```js
@@ -133,7 +69,7 @@ Selector scoping is **only** done on simple classes/ids, any selectors containin
 Selector limitations mean that it's difficult to use complicated selectors, so to enable building anything of complexity you can compose selectors. These compositions can be within a file or even pull in classes defined in other files.
 
 ```css
-/* styles.css */
+/* == styles.css == */
 .single {
     composes: other from "./other.css";
     color: red;
@@ -198,13 +134,123 @@ Sometimes a component will need some customization for use in a specific locatio
 In this case we've got an `input` component that is normally 100% of the width of its container, but when it's within the `fieldset` component it should only be half as wide.
 
 ```css
-/* input.css */
+/* == input.css == */
 .input {
     width: 100%;
 }
 
-/* fieldset.css */
+/* == fieldset.css == */
 .fieldset :external(input from "./input.css") {
     width: 50%;
 }
 ```
+## Values
+
+Values are re-usable pieces of content that can be used instead of hardcoding colors, sizes, media queries, or most other forms of CSS values. They're automatically replaced during the build with their defined value, and can also be composed between files for further re-use or overriding.
+
+```css
+/* == values.css == */
+@value alert: #F00;
+@value small: (max-width: 600px);
+
+@media small {
+    .alert { color: alert; }
+}
+
+/* will be output as */
+
+@media (max-width: 600px) {
+    .alert { color: #F00; }
+}
+```
+
+### Importing Values
+
+`@value`s can be imported from another file by using a slightly different syntax.
+
+```css
+/* == colors.css == */
+@value main: red;
+@value bg: white;
+
+/* == site.css == */
+@value main from "./colors.css";
+
+body {
+    color: main;
+}
+```
+
+It's also possible to import multiple values at once.
+
+```css
+/* == colors.css == */
+@value main: red;
+@value bg: white;
+
+/* == site.css == */
+@value main, bg from "./colors.css";
+
+body {
+    color: main;
+    background: bg;
+}
+```
+
+#### Namespaced Imports
+
+`@value`s can be imported as a namespaceas a convenient shorthand way to access a bunch of shared values from a file.
+
+```css
+/* == colors.css == */
+@value main: red;
+@value bg: white;
+
+/* == site.css == */
+@value * as colors from "./colors.css";
+
+body {
+    color: colors.main;
+    background: colors.bg;
+}
+```
+
+#### Wildcard Imports
+
+It's possible to import all the `@value` definitions from another file into the current one. Any local `@value` declarations will override the imported values.
+
+```css
+/* == colors.css == */
+@value main: red;
+@value bg: white;
+
+/* == site.css == */
+@value * from "./colors.css";
+@value bg: black;
+
+body {
+    background: bg; /* black */
+    color: main; /* red */
+}
+```
+
+Since all files in `modular-css` with `@value` declaration make that value available to other files it's possible to use the wildcard imports feature to build complex theming systems. When using wildcard imports all the `@value`s from the source file are re-exported by the file doing the importing.
+
+```css
+/* == colors.css == */
+@value main: red;
+@value bg: white;
+
+/* == mobile-colors.css == */
+@value * from "./colors.css";
+@value bg: gray;
+
+/* == site.css == */
+@value * as colors from "./mobile-colors.css";
+
+body {
+    background: colors.bg; /* gray */
+    color: colors.main; /* red */
+}
+```
+
