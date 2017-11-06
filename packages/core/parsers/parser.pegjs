@@ -1,5 +1,6 @@
 start
-    = create_namespace
+    = import_namespace
+    / create_namespace
     / assignment
     / composition
     / namespaced
@@ -44,11 +45,20 @@ from_source
 
 // @value only
 
+// * from "./wooga"
+import_namespace
+    = _ "*" _ source:from_source {
+        return {
+            type : "import",
+            source
+        };
+    }
+
 // * as fooga from "./wooga"
 create_namespace
     = _ "*" _ "as" _ name:ident source:from_source {
         return {
-            type   : "namespace",
+            type : "namespace",
             source,
             name
         };
@@ -71,7 +81,7 @@ assignment
 composition
     = refs:references source:from_source {
         return {
-            type   : "composition",
+            type : "composition",
             source,
             refs
         };

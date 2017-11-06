@@ -4,6 +4,7 @@ CSS Modules defines a bunch of great features, and `modular-css` supports the be
 
 - [Values](#values)
   - [Namespaces](#namespaces)
+  - [Importing](#importing)
 - [Scoped Selectors](#scoped-selectors)
 - [Composition](#composition)
   - [Overriding Styles](#overriding-styles)
@@ -45,6 +46,31 @@ Values are useful in CSS, they're coming to the spec soon. Use them now because 
 
 .content {
     composes: layout.vbox, layout.centered;
+}
+```
+
+### Importing
+
+You can also import all the `@value` definitions from another file into the current one. The imported `@value`s will also be exported from that file, allowing for simple theming setups with overriden colors/dimensions/etc.
+
+```css
+/* colors.css */
+@value main: red;
+@value bg: white;
+```
+
+```css
+/* mobile-colors.css */
+@value * from "./colors.css";
+@value bg: gray;
+```
+
+```css
+@value * as colors from "./mobile-colors.css";
+
+body {
+    background: colors.bg; /* gray */
+    color: colors.main; /* red */
 }
 ```
 
