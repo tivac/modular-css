@@ -1,6 +1,6 @@
 {
   "name": "modular-css-webpack",
-  "version": "6.0.2",
+  "version": "6.1.0",
   "description": "Webpack support for modular-css",
   "main": "./index.js",
   "repository": "tivac/modular-css",
@@ -25,7 +25,7 @@
   "dependencies": {
     "esutils": "^2.0.2",
     "loader-utils": "^1.1.0",
-    "modular-css-core": "^6.0.2",
+    "modular-css-core": "^6.1.0",
     "webpack-sources": "^1.0.1"
   }
 }
