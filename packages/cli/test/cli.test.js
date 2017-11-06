@@ -8,59 +8,61 @@ var tester = require("cli-tester/es5"),
 
 function success(out) {
     expect(out.code).toBe(0);
-
+    
     return out;
 }
-
+    
 describe("/cli.js", function() {
+    // Since these tests keep failing on Travis...
+    jest.setTimeout(10000);
+    
     afterAll(() => require("shelljs").rm("-rf", "./packages/cli/test/output"));
 
-    it("should show help with no args", function() {
-        return tester(
+    it("should show help with no args", () =>
+        tester(
             cli
         )
         .then(success)
-        .then((out) => expect(out.stdout).toMatchSnapshot());
-    });
+        .then((out) => expect(out.stdout).toMatchSnapshot())
+    );
 
-    it("should default to outputting to stdout", function() {
-        return tester(
+    it("should default to outputting to stdout", () =>
+        tester(
             cli,
             "./packages/cli/test/specimens/simple.css"
         )
         .then(success)
-        .then((out) => expect(out.stdout).toMatchSnapshot());
-    });
+        .then((out) => expect(out.stdout).toMatchSnapshot())
+    );
 
-    it("should support outputting to a file", function() {
-        return tester(
+    it("should support outputting to a file", () =>
+        tester(
             cli,
             "--out=./packages/cli/test/output/simple.css",
             "./packages/cli/test/specimens/simple.css"
         )
         .then(success)
-        .then(() => expect(read("simple.css")).toMatchSnapshot());
-    });
+        .then(() => expect(read("simple.css")).toMatchSnapshot())
+    );
 
-    it("should support outputting compositions to a file", function() {
-        return tester(
+    it("should support outputting compositions to a file", () =>
+        tester(
             cli,
             "--json=./packages/cli/test/output/classes.json",
             "./packages/cli/test/specimens/simple.css"
         )
         .then(success)
-        .then(() => expect(read("classes.json")).toMatchSnapshot());
-    });
+        .then(() => expect(read("classes.json")).toMatchSnapshot())
+    );
 
-    it("should return the correct error code on invalid CSS", function() {
-        return tester(
+    it("should return the correct error code on invalid CSS", () =>
+        tester(
             cli,
             "./packages/cli/test/specimens/invalid.css"
         )
         .then((out) => {
             expect(out.code).toBe(1);
-            
             expect(out.stderr).toMatch("Invalid composes reference");
-        });
-    });
+        })
+    );
 });

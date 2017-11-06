@@ -74,6 +74,22 @@ describe("/processor.js", () => {
             )
         );
 
+        it("should support importing variables from a file", () =>
+            processor.file(require.resolve("./specimens/value-import.css"))
+            .then(() => processor.output())
+            .then((result) =>
+                expect(result.css).toMatchSnapshot()
+            )
+        );
+
+        it("should support exporting imported variables", () =>
+            processor.file(require.resolve("./specimens/value-export.css"))
+            .then(() => processor.output())
+            .then((result) =>
+                expect(result.css).toMatchSnapshot()
+            )
+        );
+
         it("should support value composition", () =>
             processor.file(require.resolve("./specimens/value-composition.css"))
             .then(() => processor.output())

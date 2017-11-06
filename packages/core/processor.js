@@ -76,6 +76,7 @@ function Processor(opts) {
 
     this._process = postcss([
         require("./plugins/values-composed.js"),
+        require("./plugins/values-imported.js"),
         require("./plugins/values-export.js"),
         require("./plugins/values-namespaced.js"),
         require("./plugins/values-replace.js"),
