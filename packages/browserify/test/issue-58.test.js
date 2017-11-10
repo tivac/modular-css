@@ -1,14 +1,25 @@
 "use strict";
 
-var from       = require("from2-string"),
+var fs = require("fs"),
+
+    from       = require("from2-string"),
     shell      = require("shelljs"),
     browserify = require("browserify"),
     watchify   = require("watchify"),
+    dedent     = require("dedent"),
     
     read = require("test-utils/read.js")(__dirname),
 
     bundle = require("./lib/bundle.js"),
     plugin = require("../browserify.js");
+
+function write(txt) {
+    fs.writeFileSync(
+        "./packages/browserify/test/specimens/issues/58/other.css",
+        dedent(txt),
+        "utf8"
+    );
+}
 
 describe("/browserify.js", () => {
     describe("/issues", () => {
@@ -21,12 +32,15 @@ describe("/browserify.js", () => {
             it("should update when CSS dependencies change", (done) => {
                 var build = browserify();
                 
-                shell.cp("-f",
-                    "./packages/browserify/test/specimens/issues/58/1.css",
-                    "./packages/browserify/test/specimens/issues/58/other.css"
-                );
+                write(`
+                    .other1 { color: red; }
+                    .other2 { color: navy; }
+                    .other3 { color: blue; }
+                `);
                 
-                build.add(from("require('./packages/browserify/test/specimens/issues/58/issue.css');"));
+                build.add(
+                    from("require('./packages/browserify/test/specimens/issues/58/issue.css');")
+                );
 
                 build.plugin(watchify);
                 build.plugin(plugin, {
@@ -34,28 +48,39 @@ describe("/browserify.js", () => {
                 });
 
                 build.on("update", () => {
-                    bundle(build)
-                        .then((out) => {
-                            expect(out).toMatchSnapshot();
+                    console.log("File change noticed");
+
+                    bundle(build).then((out) => {
+                        console.log("second build complete");
+
+                        expect(out).toMatchSnapshot();
+                    
+                        expect(read("./issues/58.css")).toMatchSnapshot();
+
+                        console.log("snapshot tests complete");
+                    
+                        build.close();
                         
-                            expect(read("./issues/58.css")).toMatchSnapshot();
-                        
-                            build.close();
-                        
-                            done();
-                        });
+                        console.log("test finished");
+
+                        done();
+                    });
                 });
 
-                bundle(build)
-                    .then((out) => {
-                        expect(out).toMatchSnapshot();
-                        
-                        shell.cp("-f",
-                            "./packages/browserify/test/specimens/issues/58/2.css",
-                            "./packages/browserify/test/specimens/issues/58/other.css"
-                        );
-                    });
-            }, 10000);
+                bundle(build).then((out) => {
+                    console.log("initial build complete");
+                    
+                    expect(out).toMatchSnapshot();
+                    
+                    write(`
+                        .other1 { color: green; }
+                        .other2 { color: yellow; }
+                        .other3 { composes: other2; background: white; }
+                    `);
+                    
+                    console.log("File overwritten");
+                });
+            });
         });
     });
 });

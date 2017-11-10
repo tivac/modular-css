@@ -13,9 +13,6 @@ function success(out) {
 }
     
 describe("/cli.js", function() {
-    // Since these tests keep failing on Travis...
-    jest.setTimeout(10000);
-    
     afterAll(() => require("shelljs").rm("-rf", "./packages/cli/test/output"));
 
     it("should show help with no args", () =>
