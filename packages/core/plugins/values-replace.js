@@ -69,6 +69,7 @@ module.exports = (css, result) => {
 
     matchRegex = new RegExp(
         Object.keys(values)
+            .sort((a, b) => b.length - a.length)
             .map((v) => `\\b${escape(v)}\\b`)
             .join("|"),
         "g"

@@ -73,6 +73,10 @@ exports[`/processor.js values should support value namespaces 1`] = `
 .blue {
     color: blue;
 }
+
+.other {
+    color: #000;
+}
 "
 `;
 

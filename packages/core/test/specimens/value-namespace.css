@@ -7,3 +7,7 @@
 .blue {
     color: colors.b;
 }
+
+.other {
+    color: colors.base-other;
+}
