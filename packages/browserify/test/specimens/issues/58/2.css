@@ -1,3 +1,0 @@
-.other1 { color: green; }
-.other2 { color: yellow; }
-.other3 { composes: other2; background: white; }
