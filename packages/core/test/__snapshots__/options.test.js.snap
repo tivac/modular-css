@@ -12,7 +12,7 @@ exports[`/processor.js options lifecycle options after should run async postcss 
 "/* packages/core/test/specimens/relative.css */
 .wooga {
     color: red;
-    background: url(\\"./folder/to.png\\");
+    background: url(\\"../specimens/folder/to.png\\");
 }
 a {}
 "
@@ -22,7 +22,7 @@ exports[`/processor.js options lifecycle options after should run sync postcss p
 "/* packages/core/test/specimens/relative.css */
 .wooga {
     color: red;
-    background: url(\\"./folder/to.png\\");
+    background: url(\\"../specimens/folder/to.png\\");
 }
 a {}
 "
@@ -107,4 +107,25 @@ Object {
     "mcb251c446_wooga",
   ],
 }
+`;
+
+exports[`/processor.js options rewrite should not rewrite url() references when falsey 1`] = `
+"/* packages/core/test/specimens/rewrite.css */
+.mc628d01b8_a {
+    background: url(\\"img.png\\");
+}"
+`;
+
+exports[`/processor.js options rewrite should pass through to postcss-url as config 1`] = `
+"/* packages/core/test/specimens/rewrite.css */
+.mc628d01b8_a {
+    background: url(\\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTnU1rJkAAAADklEQVQoU2MYBSQDBgYAATYAAWPDohgAAAAASUVORK5CYII=\\");
+}"
+`;
+
+exports[`/processor.js options rewrite should rewrite url() references by default 1`] = `
+"/* packages/core/test/specimens/rewrite.css */
+.mc628d01b8_a {
+    background: url(\\"../specimens/img.png\\");
+}"
 `;
