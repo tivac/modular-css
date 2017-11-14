@@ -119,7 +119,7 @@ exports[`/processor.js options rewrite should not rewrite url() references when 
 exports[`/processor.js options rewrite should pass through to postcss-url as config 1`] = `
 "/* packages/core/test/specimens/rewrite.css */
 .mc628d01b8_a {
-    background: url(\\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTnU1rJkAAAADklEQVQoU2MYBSQDBgYAATYAAWPDohgAAAAASUVORK5CYII=\\");
+    background: url(\\"data:image/png;base64,iVBORwoaCgAAAA1JSERSAAAACgAAAAoIAgAAAAJQWOoAAAABc1JHQgCuzhzpAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4xOdTWsmQAAAAOSURBVChTYxgFJAMGBgABNgABY8OiGAAAAABJRU5ErkJggg==\\");
 }"
 `;
 
