@@ -48,28 +48,16 @@ describe("/browserify.js", () => {
                 });
 
                 build.on("update", () => {
-                    console.log("File change noticed");
-
                     bundle(build).then((out) => {
-                        console.log("second build complete");
-
                         expect(out).toMatchSnapshot();
-                    
                         expect(read("./issues/58.css")).toMatchSnapshot();
-
-                        console.log("snapshot tests complete");
                     
                         build.close();
-                        
-                        console.log("test finished");
-
                         done();
                     });
                 });
 
                 bundle(build).then((out) => {
-                    console.log("initial build complete");
-                    
                     expect(out).toMatchSnapshot();
                     
                     write(`
@@ -77,8 +65,6 @@ describe("/browserify.js", () => {
                         .other2 { color: yellow; }
                         .other3 { composes: other2; background: white; }
                     `);
-                    
-                    console.log("File overwritten");
                 });
             });
         });
