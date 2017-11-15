@@ -32,7 +32,7 @@ describe("/cli.js", function() {
         .then((out) => expect(out.stdout).toMatchSnapshot())
     );
 
-    it("should support outputting to a file", () =>
+    it("should support outputting to a file (--out)", () =>
         tester(
             cli,
             "--out=./packages/cli/test/output/simple.css",
@@ -42,7 +42,7 @@ describe("/cli.js", function() {
         .then(() => expect(read("simple.css")).toMatchSnapshot())
     );
 
-    it("should support outputting compositions to a file", () =>
+    it("should support outputting compositions to a file (--json)", () =>
         tester(
             cli,
             "--json=./packages/cli/test/output/classes.json",
@@ -61,5 +61,16 @@ describe("/cli.js", function() {
             expect(out.code).toBe(1);
             expect(out.stderr).toMatch("Invalid composes reference");
         })
+    );
+
+    it("should support disabling url() rewriting (--no-rewrite)", () =>
+        tester(
+            cli,
+            "--rewrite=false",
+            "--out=./packages/cli/test/output/no-rewrite.css",
+            "./packages/cli/test/specimens/no-rewrite.css"
+        )
+        .then(success)
+        .then(() => expect(read("no-rewrite.css")).toMatchSnapshot())
     );
 });

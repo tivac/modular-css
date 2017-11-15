@@ -11,21 +11,27 @@ var fs   = require("fs"),
         $ modular-css [options] <glob>...
 
         Options
-        --dir,  -d <dir>    Directory to search from [process cwd]
-        --out,  -o <file>   File to write output CSS to [stdout]
-        --json, -j <file>   File to write output compositions JSON to
-        --map,  -m          Include inline source map in output
-        --help              Show this help
+        --dir,     -d <dir>    Directory to search from [process cwd]
+        --out,     -o <file>   File to write output CSS to [stdout]
+        --json,    -j <file>   File to write output compositions JSON to
+        --map,     -m          Include inline source map in output
+        --rewrite, -r          Control rewriting of url() references in CSS
+        --help                 Show this help
     `, {
         alias : {
-            dir  : "d",
-            json : "j",
-            map  : "m",
-            out  : "o"
+            dir     : "d",
+            json    : "j",
+            map     : "m",
+            out     : "o",
+            rewrite : "r"
+        },
+
+        default : {
+            rewrite : true
         },
 
         string  : [ "dir", "out", "json" ],
-        boolean : [ "map", "help" ]
+        boolean : [ "map", "rewrite", "help" ]
     });
 
 // It's not immediately obvious, but this ends the program too...
