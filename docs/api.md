@@ -54,7 +54,9 @@ new Processor({
 
 Specify an array of PostCSS plugins to be run after files are processed, but before they are combined. Plugin will be passed a `to` and `from` option.
 
-**By default** [`postcss-url`](https://www.npmjs.com/package/postcss-url) is run after any plugins defined in the `after` hook. To disable it see the [`rewrite`](#rewrite) option.
+**Default**: `[]`
+
+:warning: [`postcss-url`](https://www.npmjs.com/package/postcss-url) automatically runs after any plugins defined in the `after` hook. To disable it use the [`rewrite`](#rewrite) option.
 
 ```js
 new Processor({
@@ -75,6 +77,8 @@ new Processor({
 ### `rewrite`
 
 Enable or disable the usage of [`postcss-url`](https://www.npmjs.com/package/postcss-url) to correct any URL references within the CSS. The value of `rewrite` will be passed to `postcss-url` to allow for configuration of the plugin.
+
+**Default**: `true`
 
 ```js
 // On by default, so this will have rewritten url() references
