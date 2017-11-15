@@ -37,8 +37,9 @@ function Processor(opts) {
     this._options = Object.assign(
         Object.create(null),
         {
-            cwd : process.cwd(),
-            map : false
+            cwd     : process.cwd(),
+            map     : false,
+            rewrite : true
         },
         opts || Object.create(null)
     );
@@ -86,10 +87,13 @@ function Processor(opts) {
         require("./plugins/keyframes.js")
     ]);
     
-    this._after = postcss(this._options.after || [
-        require("postcss-url")
-    ]);
+    this._after = postcss(this._options.after || []);
     
+    // Add postcss-url to the afters if requested
+    if(this._options.rewrite) {
+        this._after.use(require("postcss-url")(this._options.rewrite));
+    }
+
     this._done = postcss(this._options.done || []);
 }
 

@@ -13,19 +13,19 @@ function sync(css) {
 }
 
 function async(css) {
-    return new Promise(function(resolve) {
-        setTimeout(function() {
+    return new Promise((resolve) =>
+        setTimeout(() => {
             sync(css);
 
             resolve();
-        }, 0);
-    });
+        }, 0)
+    );
 }
 
-describe("/processor.js", function() {
-    describe("options", function() {
-        describe("cwd", function() {
-            it("should use an absolute path", function() {
+describe("/processor.js", () => {
+    describe("options", () => {
+        describe("cwd", () => {
+            it("should use an absolute path", () => {
                 var cwd       = path.resolve("./packages/core/test/specimens/folder"),
                     processor = new Processor({
                         cwd
@@ -40,7 +40,7 @@ describe("/processor.js", function() {
                 });
             });
 
-            it("should accept a relative path but make it absolute", function() {
+            it("should accept a relative path but make it absolute", () => {
                 var cwd       = "./packages/core/test/specimens/folder",
                     processor = new Processor({
                         cwd
@@ -56,8 +56,8 @@ describe("/processor.js", function() {
             });
         });
 
-        describe("namer", function() {
-            it("should use a custom naming function", function() {
+        describe("namer", () => {
+            it("should use a custom naming function", () => {
                 var processor = new Processor({
                         namer : (filename, selector) =>
                             `${relative([ filename ])[0]}_${selector}`
@@ -75,7 +75,7 @@ describe("/processor.js", function() {
                 });
             });
 
-            it("should require a namer if a string is passed", function() {
+            it("should require a namer if a string is passed", () => {
                 var processor = new Processor({
                         namer : "modular-css-namer"
                     });
@@ -87,7 +87,7 @@ describe("/processor.js", function() {
                 .then((result) => expect(result.exports).toMatchSnapshot());
             });
 
-            it("should use the default naming function if a non-function is passed", function() {
+            it("should use the default naming function if a non-function is passed", () => {
                 var processor = new Processor({
                         namer : false
                     });
@@ -100,8 +100,8 @@ describe("/processor.js", function() {
             });
         });
 
-        describe("map", function() {
-            it("should generate source maps", function() {
+        describe("map", () => {
+            it("should generate source maps", () => {
                 var processor = new Processor({
                         namer,
                         map : true
@@ -114,7 +114,7 @@ describe("/processor.js", function() {
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
 
-            it.skip("should generate external source maps", function() {
+            it.skip("should generate external source maps", () => {
                 var processor = new Processor({
                         namer,
                         map : {
@@ -130,8 +130,8 @@ describe("/processor.js", function() {
             });
         });
 
-        describe("exportGlobals", function() {
-            it("should not export :global values when exportGlobals is false", function() {
+        describe("exportGlobals", () => {
+            it("should not export :global values when exportGlobals is false", () => {
                 var processor = new Processor({
                         exportGlobals : false
                     });
@@ -147,9 +147,60 @@ describe("/processor.js", function() {
             });
         });
 
-        describe("lifecycle options", function() {
-            describe("before", function() {
-                it("should run sync postcss plugins before processing", function() {
+        describe("rewrite", () => {
+            it("should rewrite url() references by default", () => {
+                var processor = new Processor();
+
+                return processor.string(
+                    "packages/core/test/specimens/rewrite.css",
+                    dedent(`
+                        .a {
+                            background: url("img.png");
+                        }
+                    `)
+                )
+                .then(() => processor.output({ to : "./packages/core/test/output/rewrite.css" }))
+                .then((result) => expect(result.css).toMatchSnapshot());
+            });
+
+            it("should not rewrite url() references when falsey", () => {
+                var processor = new Processor({ rewrite : false });
+
+                return processor.string(
+                    "packages/core/test/specimens/rewrite.css",
+                    dedent(`
+                        .a {
+                            background: url("img.png");
+                        }
+                    `)
+                )
+                .then(() => processor.output({ to : "./packages/core/test/output/rewrite.css" }))
+                .then((result) => expect(result.css).toMatchSnapshot());
+            });
+            
+            it("should pass through to postcss-url as config", () => {
+                var processor = new Processor({
+                    rewrite : {
+                        url : "inline"
+                    }
+                });
+                
+                return processor.string(
+                    "packages/core/test/specimens/rewrite.css",
+                    dedent(`
+                        .a {
+                            background: url("img.png");
+                        }
+                    `)
+                )
+                .then(() => processor.output({ to : "./packages/core/test/output/rewrite.css" }))
+                .then((result) => expect(result.css).toMatchSnapshot());
+            });
+        });
+
+        describe("lifecycle options", () => {
+            describe("before", () => {
+                it("should run sync postcss plugins before processing", () => {
                     var processor = new Processor({
                             namer,
                             before : [ sync ]
@@ -163,7 +214,7 @@ describe("/processor.js", function() {
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
 
-                it("should run async postcss plugins before processing", function() {
+                it("should run async postcss plugins before processing", () => {
                     var processor = new Processor({
                             namer,
                             before : [ async ]
@@ -178,8 +229,8 @@ describe("/processor.js", function() {
                 });
             });
             
-            describe("after", function() {
-                it("should use postcss-url by default", function() {
+            describe("after", () => {
+                it("should use postcss-url by default", () => {
                     var processor = new Processor();
 
                     return processor.file(
@@ -189,7 +240,7 @@ describe("/processor.js", function() {
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
                 
-                it("should run sync postcss plugins", function() {
+                it("should run sync postcss plugins", () => {
                     var processor = new Processor({
                             namer,
                             after : [ sync ]
@@ -202,7 +253,7 @@ describe("/processor.js", function() {
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
                 
-                it("should run async postcss plugins", function() {
+                it("should run async postcss plugins", () => {
                     var processor = new Processor({
                             namer,
                             after : [ async ]
@@ -216,8 +267,8 @@ describe("/processor.js", function() {
                 });
             });
             
-            describe("done", function() {
-                it("should run sync postcss plugins done processing", function() {
+            describe("done", () => {
+                it("should run sync postcss plugins done processing", () => {
                     var processor = new Processor({
                             namer,
                             done : [ sync ]
@@ -231,7 +282,7 @@ describe("/processor.js", function() {
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
                 
-                it("should run async postcss plugins done processing", function() {
+                it("should run async postcss plugins done processing", () => {
                     var processor = new Processor({
                             namer,
                             done : [ async ]

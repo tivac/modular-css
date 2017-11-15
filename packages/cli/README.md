@@ -18,10 +18,11 @@ $ npm i modular-css-cli
 ```
 usage: modular-css [options] <glob>...
 
-options:
-    -d, --dir DIR       Directory to search from [process cwd]
-    -o, --out FILE      File to write output CSS to [stdout]
-    -j, --json FILE     File to write output compositions JSON to
-    -m, --map           Include inline source map in output
-    --help              Show this help
+Options:
+    --dir,     -d <dir>    Directory to search from [process cwd]
+    --out,     -o <file>   File to write output CSS to [stdout]
+    --json,    -j <file>   File to write output compositions JSON to
+    --map,     -m          Include inline source map in output
+    --rewrite, -r          Control rewriting of url() references in CSS
+    --help                 Show this help
 ```
