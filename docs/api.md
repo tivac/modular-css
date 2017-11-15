@@ -54,7 +54,7 @@ new Processor({
 
 Specify an array of PostCSS plugins to be run after files are processed, but before they are combined. Plugin will be passed a `to` and `from` option.
 
-**By default** [`postcss-url`](https://www.npmjs.com/package/postcss-url) is used in `after` mode.
+**By default** [`postcss-url`](https://www.npmjs.com/package/postcss-url) is run after any plugins defined in the `after` hook. To disable it see the [`rewrite`](#rewrite) option.
 
 ```js
 new Processor({
@@ -69,6 +69,25 @@ Specify an array of PostCSS plugins to be run against the complete combined CSS.
 ```js
 new Processor({
     done : [ require("cssnano")()]
+});
+```
+
+### `rewrite`
+
+Enable or disable the usage of [`postcss-url`](https://www.npmjs.com/package/postcss-url) to correct any URL references within the CSS. The value of `rewrite` will be passed to `postcss-url` to allow for configuration of the plugin.
+
+```js
+// On by default, so this will have rewritten url() references
+new Processor();
+
+// A falsey value will disable the usage of postcss-url, url() references will not be changed
+new Processor({ rewrite : false });
+
+// Configure postcss-url
+new Processor({
+    rewrite : {
+        url : "inline"
+    }
 });
 ```
 
