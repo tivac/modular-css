@@ -1,4 +1,10 @@
 {
   "lerna": "2.5.1",
-  "version": "7.0.0"
+  "version": "7.0.0",
+  "command": {
+    "publish": {
+      "conventionalCommits": true,
+      "message": "chore: Publish"
+    }
+  }
 }
