@@ -23,7 +23,7 @@
     "watch": "jest --watch"
   },
   "devDependencies": {
-    "@commitlint/cli": "^4.3.0",
+    "@commitlint/cli": "^5.0.0",
     "@commitlint/config-lerna-scopes": "^4.3.0",
     "danger": "^1.1.0",
     "dedent": "^0.7.0",
