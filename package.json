@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^4.3.0",
-    "@commitlint/config-lerna-scopes": "^4.3.0",
+    "@commitlint/config-lerna-scopes": "^5.0.0",
     "danger": "^1.1.0",
     "dedent": "^0.7.0",
     "eslint": "^4.11.0",
