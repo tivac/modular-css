@@ -110,6 +110,10 @@
     "coveragePathIgnorePatterns": [
       "node_modules",
       "parsers"
+    ],
+    "watchPathIgnorePatterns": [
+      "test/output",
+      "test/specimens"
     ]
   },
   "lint-staged": {
