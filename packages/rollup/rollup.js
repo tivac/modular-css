@@ -99,9 +99,10 @@ module.exports = function(opts) {
         },
 
         onwrite : function(bundle, result) {
-            result.css.then(function(data) {
+            return result.css.then((data) => {
                 if(options.css) {
                     mkdirp.sync(path.dirname(options.css));
+                    
                     fs.writeFileSync(
                         options.css,
                         data.css
@@ -110,6 +111,7 @@ module.exports = function(opts) {
                 
                 if(options.json) {
                     mkdirp.sync(path.dirname(options.json));
+                    
                     fs.writeFileSync(
                         options.json,
                         JSON.stringify(data.compositions, null, 4)
