@@ -6,3 +6,6 @@ packages/www/** linguist-documentation
 
 # Ignore specimens
 **/specimens/** linguist-vendored
+
+# Treat package-lock.json files as opaque blobs (because they are)
+**/package-lock.json binary
