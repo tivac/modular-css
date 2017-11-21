@@ -708,6 +708,8 @@ exports[`/webpack.js should output css to disk 2`] = `
 "
 `;
 
+exports[`/webpack.js should output external source maps to disk 1`] = `"{\\"version\\":3,\\"sources\\":[\\"packages/webpack/test/specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,gDAAC;AAAD,SAAS,WAAW,EAAE\\",\\"file\\":\\"simple.css\\",\\"sourcesContent\\":[\\".wooga { color: red; }\\\\n\\"]}"`;
+
 exports[`/webpack.js should output json to disk 1`] = `
 "/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
