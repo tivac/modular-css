@@ -16,7 +16,7 @@ function error(root) {
 error.postcssPlugin = "error-plugin";
 
 describe("/rollup.js", () => {
-    afterAll(() => require("shelljs").rm("-rf", "./packages/rollup/test/output/*"));
+    afterEach(() => require("shelljs").rm("-rf", "./packages/rollup/test/output/*"));
     
     it("should be a function", () =>
         expect(typeof plugin).toBe("function")
@@ -244,6 +244,7 @@ describe("/rollup.js", () => {
             .catch(checkError)
         );
 
+        // Skipped because I can't figure out how to catch the error being thrown?
         it.skip("should throw errors in done plugins", () =>
             rollup({
                 input   : require.resolve("./specimens/simple.js"),
@@ -259,7 +260,6 @@ describe("/rollup.js", () => {
                 format : "es",
                 file   : "./packages/rollup/test/output/done-error.js"
             }))
-            .catch(checkError)
         );
     });
 
