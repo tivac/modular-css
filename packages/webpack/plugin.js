@@ -71,12 +71,19 @@ ModularCSS.prototype.apply = function(compiler) {
                 compilation.assets[this.options.css] = data.map ?
                     new sources.SourceMapSource(
                         data.css,
-                        data.map.file,
+                        this.options.css,
                         data.map
                     ) :
                     new sources.RawSource(
                         data.css
                     );
+                
+                // TODO: This is hacky beyond belief...
+                if(this.options.map && !this.options.map.inline) {
+                    compilation.assets[`${this.options.css}.map`] = new sources.RawSource(
+                        data.map.toString()
+                    );
+                }
             }
             
             if(this.options.json) {
