@@ -5,7 +5,6 @@ const fs = require("fs");
 const Processor = require("modular-css-core");
 
 module.exports = function(args) {
-    const files = Object.create(null);
     const processor = new Processor(args);
 
     return {
@@ -31,11 +30,6 @@ module.exports = function(args) {
                             return exported[key].join(" ");
                         })
                     };
-                })
-                .catch((err) => {
-                    console.error(err.toString());
-                    
-                    throw err;
                 });
             },
 
