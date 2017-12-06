@@ -12,8 +12,7 @@ module.exports = function(args) {
         preprocess : {
             markup : ({ content, filename }) => {
                 const search = /<style[\S\s]*?>([\S\s]*?)<\/style>/igm;
-                
-                const[ ignored, style ] = search.exec(content);
+                const style = search.exec(content)[1];
 
                 return processor.string(
                     filename,
@@ -22,9 +21,6 @@ module.exports = function(args) {
                 .then((result) => {
                     const exported = result.files[result.file].exports;
                     const regexp = new RegExp(`\{\{css.(${Object.keys(exported).join("|")})}}`, "gm");
-
-                    console.log(regexp.toString());
-                    
 
                     return {
                         code : content.replace(regexp, (match, key) => {

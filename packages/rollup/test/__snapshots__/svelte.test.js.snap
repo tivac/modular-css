@@ -190,12 +190,12 @@ function create_main_fragment(state, component) {
 	return {
 		c: function create() {
 			div = createElement(\\"div\\");
-			div.innerHTML = \\"<h1 class=\\\\\\"mc2fca2692_flex mc12d71625_fooga mc2fca2692_hd\\\\\\">Head</h1>\\\\n    <div class=\\\\\\"mc12d71625_fooga mce436d228_wooga mc2fca2692_bd\\\\\\">Body</div>\\";
+			div.innerHTML = \\"<h1 class=\\\\\\"flex fooga hd\\\\\\">Head</h1>\\\\n    <div class=\\\\\\"fooga wooga bd\\\\\\">Body</div>\\";
 			this.h();
 		},
 
 		h: function hydrate() {
-			div.className = \\"mc2fca2692_flex mc2fca2692_wrapper\\";
+			div.className = \\"flex wrapper\\";
 		},
 
 		m: function mount(target, anchor) {
@@ -227,5 +227,22 @@ function Svelte(options) {
 assign(Svelte.prototype, proto);
 
 export default Svelte;
+"
+`;
+
+exports[`/svelte.js should generate exports 2`] = `
+"/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+/* packages/rollup/test/specimens/dependencies.css */
+.wooga {
+
+    background: blue;
+}
+/* packages/rollup/test/specimens/svelte.html */
+.flex {
+        display: flex;
+    }
 "
 `;

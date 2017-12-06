@@ -1,8 +1,6 @@
 "use strict";
 
-var fs = require("fs"),
-
-    rollup  = require("rollup").rollup,
+var rollup  = require("rollup").rollup,
     
     read  = require("test-utils/read.js")(__dirname),
     namer = require("test-utils/namer.js"),
@@ -14,7 +12,8 @@ describe("/svelte.js", () => {
     
     it("should generate exports", () => {
         const parts = svelte({
-            css : "./packages/rollup/test/output/svelte.css"
+            css : "./packages/rollup/test/output/svelte.css",
+            namer
         });
 
         return rollup({
@@ -26,7 +25,13 @@ describe("/svelte.js", () => {
                 parts.plugin
             ]
         })
-        .then((bundle) => bundle.generate({ format : "es" }))
-        .then((result) => expect(result.code).toMatchSnapshot());
+        .then((bundle) => bundle.write({
+            format : "es",
+            file   : "./packages/rollup/test/output/svelte.js"
+        }))
+        .then(() => {
+            expect(read("svelte.js")).toMatchSnapshot();
+            expect(read("svelte.css")).toMatchSnapshot();
+        });
     });
 });
