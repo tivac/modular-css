@@ -48,7 +48,8 @@
       "no-only-tests"
     ],
     "rules": {
-      "no-only-tests/no-only-tests": "error"
+      "no-only-tests/no-only-tests": "error",
+      "one-var": [ "warn", { "var" : "always", "let": "never", "const": "never" }]
     }
   },
   "jest": {
