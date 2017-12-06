@@ -1,0 +1,25 @@
+<div class="{{@css wrapper}}">
+    <h1 class="">Head</h1>
+    <div class="">
+        Body
+    </div>
+</div>
+
+<style>
+    .flex {
+        display: flex;
+    }
+
+    .wrapper {
+        composes: flex;
+    }
+
+    .hd {
+        composes: flex;
+        composes: fooga from "./simple.css";
+    }
+
+    .bd {
+        composes: wooga from "./dependencies.css";
+    }
+</style>

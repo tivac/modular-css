@@ -19,6 +19,7 @@
   ],
   "devDependencies": {
     "rollup": "^0.51.8",
+    "rollup-plugin-svelte": "^3.2.0",
     "test-utils": "^5.1.5"
   },
   "dependencies": {
