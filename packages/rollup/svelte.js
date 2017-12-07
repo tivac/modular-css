@@ -11,7 +11,15 @@ module.exports = function(args) {
         preprocess : {
             markup : ({ content, filename }) => {
                 const search = /<style[\S\s]*?>([\S\s]*?)<\/style>/igm;
-                const style = search.exec(content)[1];
+                const matches = search.exec(content);
+
+                if(!matches) {
+                    return {
+                        code : content
+                    };
+                }
+
+                const style = matches[1];
 
                 return processor.string(
                     filename,
