@@ -19,11 +19,11 @@
   ],
   "devDependencies": {
     "rollup": "^0.51.8",
-    "rollup-plugin-svelte": "^3.2.0",
     "test-utils": "^5.1.5"
   },
   "dependencies": {
     "esutils": "^2.0.2",
+    "mkdirp": "^0.5.1",
     "modular-css-core": "^7.0.0",
     "rollup-pluginutils": "^2.0.1"
   }
