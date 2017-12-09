@@ -1,72 +1,18 @@
 "use strict";
 
-const fs = require("fs");
-
 const Processor = require("modular-css-core");
+const methods = require("./methods.js");
 
 // TODO: Remove rollup stuff, see README.md for example API
 module.exports = function(args) {
     const processor = new Processor(args);
 
     return {
+        processor,
+
         preprocess : {
-            markup : ({ content, filename }) => {
-                const search = /<style[\S\s]*?>([\S\s]*?)<\/style>/igm;
-                const matches = search.exec(content);
-
-                if(!matches) {
-                    return {
-                        code : content
-                    };
-                }
-
-                const style = matches[1];
-
-                return processor.string(
-                    filename,
-                    style
-                )
-                .then((result) => {
-                    const exported = result.files[result.file].exports;
-                    const regexp = new RegExp(`\{\{css.(${Object.keys(exported).join("|")})}}`, "gm");
-
-                    return {
-                        code : content.replace(regexp, (match, key) => {
-                            if(!exported[key]) {
-                                throw new Error(`Mismatched key: ${match}`);
-                            }
-                            
-                            return exported[key].join(" ");
-                        })
-                    };
-                });
-            },
-
-            // Remove all the CSS, we'll write it out ourselves in the plugin
-            style : () => ({
-                code : "/* replaced by modular-css */"
-            })
-        },
-
-        plugin : {
-            name : "modular-css-rollup-svelte",
-
-            ongenerate : (bundle, result) => {
-                result.css = processor.output({
-                    to : args.css
-                });
-            },
-
-            onwrite : (bundle, result) => result.css.then((data) => {
-                    if(args.css) {
-                        // mkdirp.sync(path.dirname(options.css));
-                        
-                        fs.writeFileSync(
-                            args.css,
-                            data.css
-                        );
-                    }
-                })
+            markup : methods.markup(processor),
+            style  : methods.style
         }
     };
 };

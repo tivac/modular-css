@@ -6,48 +6,15 @@ const path = require("path");
 const mkdirp = require("mkdirp");
 
 const Processor = require("modular-css-core");
+const methods = require("./methods.js");
 
 module.exports = function(args) {
     const processor = new Processor(args);
 
     return {
         preprocess : {
-            markup : ({ content, filename }) => {
-                const search = /<style[\S\s]*?>([\S\s]*?)<\/style>/igm;
-                const matches = search.exec(content);
-
-                if(!matches) {
-                    return {
-                        code : content
-                    };
-                }
-
-                const style = matches[1];
-
-                return processor.string(
-                    filename,
-                    style
-                )
-                .then((result) => {
-                    const exported = result.files[result.file].exports;
-                    const regexp = new RegExp(`\{\{css.(${Object.keys(exported).join("|")})}}`, "gm");
-
-                    return {
-                        code : content.replace(regexp, (match, key) => {
-                            if(!exported[key]) {
-                                throw new Error(`Mismatched key: ${match}`);
-                            }
-                            
-                            return exported[key].join(" ");
-                        })
-                    };
-                });
-            },
-
-            // Remove all the CSS, we'll write it out ourselves in the plugin
-            style : () => ({
-                code : "/* replaced by modular-css */"
-            })
+            markup : methods.markup(processor),
+            style  : methods.style
         },
 
         plugin : {
