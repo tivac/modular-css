@@ -22,10 +22,11 @@
   ],
   "devDependencies": {
     "rollup": "^0.51.8",
-    "rollup-plugin-svelte": "^3.2.0",
-    "test-utils": "^5.1.5"
+    "rollup-plugin-svelte": "^3.3.0",
+    "svelte": "^1.46.0"
   },
   "dependencies": {
+    "mkdirp": "^0.5.1",
     "modular-css-core": "^7.0.0"
   }
 }

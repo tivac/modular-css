@@ -1,6 +1,9 @@
 "use strict";
 
 const fs = require("fs");
+const path = require("path");
+
+const mkdirp = require("mkdirp");
 
 const Processor = require("modular-css-core");
 
@@ -56,9 +59,10 @@ module.exports = function(args) {
                 });
             },
 
-            onwrite : (bundle, result) => result.css.then((data) => {
+            onwrite : (bundle, result) =>
+                result.css.then((data) => {
                     if(args.css) {
-                        // mkdirp.sync(path.dirname(options.css));
+                        mkdirp.sync(path.dirname(args.css));
                         
                         fs.writeFileSync(
                             args.css,
