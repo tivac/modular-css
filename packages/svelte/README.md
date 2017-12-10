@@ -5,7 +5,7 @@ modular-css-svelte  [![NPM Version](https://img.shields.io/npm/v/modular-css-sve
     <a href="https://gitter.im/modular-css/modular-css"><img src="https://img.shields.io/gitter/room/modular-css/modular-css.svg" alt="Gitter" /></a>
 </p>
 
-Svelte preprocessor support for [`modular-css`](https://github.com/tivac/modular-css). Integrate `modular-css` with `svelte` at compile-time, for smaller bundles and even faster runtime!
+Svelte preprocessor support for [`modular-css`](https://github.com/tivac/modular-css). Integrate `modular-css` with `svelte` at compile-time, for smaller bundles and even faster runtime performance!
 
 ## Install
 
@@ -18,7 +18,7 @@ Svelte preprocessor support for [`modular-css`](https://github.com/tivac/modular
 ```js
 const filename = "./Component.html";
 
-const { processor, preprocess } = require("modular-css-svelte)({
+const { processor, preprocess } = require("modular-css-svelte")({
     css : "./dist/bundle.css"
 });
 
@@ -47,7 +47,7 @@ const bundle = await rollup({
     input   : "./Component.html",
     plugins : [
         require("rollup-plugin-svelte")({
-            preprocess : preprocess
+            preprocess
         }),
         plugin
     ]
@@ -75,7 +75,7 @@ module.exports = {
     },
     plugins : [
         require("rollup-plugin-svelte")({
-            preprocess : preprocess
+            preprocess
         }),
         plugin
     ]
@@ -84,5 +84,5 @@ module.exports = {
 
 ## Options
 
-All options are passed to the underlying `Processor` instance, see [Options](https://github.com/tivac/modular-css/blob/master/docs/api.md#processor-options).
+All options are passed to the underlying `Processor` instance, see [Options](https://github.com/tivac/modular-css/blob/master/docs/api.md#options).
 

@@ -26,7 +26,7 @@ Set to `false` to disable named exports, instead only the default export wll be 
 
 ### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](api.md#processor-options).
+All other options are passed to the underlying `Processor` instance, see [Options](api.md#options).
 
 ## API
 
