@@ -11,7 +11,7 @@ describe("/rollup.js", () => {
     afterEach(() => require("shelljs").rm("-rf", "./packages/svelte/test/output/*"));
     
     it("should generate exports", () => {
-        const{ preprocess, plugin } = processor({
+        const { preprocess, plugin } = processor({
             css : "./packages/svelte/test/output/svelte.css",
             namer
         });

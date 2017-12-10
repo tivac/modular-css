@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/rollup.js should generate exports 1`] = `
+"/* packages/svelte/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+/* packages/svelte/test/specimens/dependencies.css */
+.wooga {
+
+    background: blue;
+}
+/* packages/svelte/test/specimens/svelte.html */
+.flex {
+        display: flex;
+    }
+"
+`;
+
+exports[`/rollup.js should generate exports 2`] = `
+"<div class=\\"flex wrapper\\">
+    <h1 class=\\"flex fooga hd\\">Head</h1>
+    <div class=\\"fooga wooga bd\\">
+        Body
+    </div>
+</div>
+
+<style>/* replaced by modular-css */</style>
+"
+`;
