@@ -21,13 +21,7 @@ exports.markup = (processor) => ({ content, filename }) => {
             const regexp = new RegExp(`\{\{css.(${Object.keys(exported).join("|")})}}`, "gm");
 
             return {
-                code : content.replace(regexp, (match, key) => {
-                    if(!exported[key]) {
-                        throw new Error(`Mismatched key: ${match}`);
-                    }
-
-                    return exported[key].join(" ");
-                })
+                code : content.replace(regexp, (match, key) => exported[key].join(" "))
             };
         });
     };

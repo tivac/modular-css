@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/rollup.js should generate exports 1`] = `
+exports[`/svelte.js should generate exports 1`] = `
 "/* packages/svelte/test/specimens/simple.css */
 .fooga {
     color: red;
@@ -17,7 +17,7 @@ exports[`/rollup.js should generate exports 1`] = `
 "
 `;
 
-exports[`/rollup.js should generate exports 2`] = `
+exports[`/svelte.js should generate exports 2`] = `
 "<div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
@@ -27,4 +27,17 @@ exports[`/rollup.js should generate exports 2`] = `
 
 <style>/* replaced by modular-css */</style>
 "
+`;
+
+exports[`/svelte.js should ignore files without <style> blocks 1`] = `""`;
+
+exports[`/svelte.js should ignore files without <style> blocks 2`] = `
+"<h1>Hello</h1>
+<script>console.log(\\"output\\")</script>"
+`;
+
+exports[`/svelte.js should ignore invalid {{css.<key>}} 1`] = `
+"<h1 class=\\"{{css.nope}}\\">Hello</h1>
+<h2 class=\\"yup\\">World</h2>
+<style>/* replaced by modular-css */</style>"
 `;

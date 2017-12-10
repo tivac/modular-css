@@ -21,6 +21,7 @@
     "postcss"
   ],
   "devDependencies": {
+    "dedent": "^0.7.0",
     "rollup": "^0.51.8",
     "rollup-plugin-svelte": "^3.3.0",
     "svelte": "^1.46.0"

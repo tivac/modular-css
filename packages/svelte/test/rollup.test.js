@@ -34,4 +34,27 @@ describe("/rollup.js", () => {
             expect(read("svelte.css")).toMatchSnapshot();
         });
     });
+
+    it("should not generate exports", () => {
+        const { preprocess, plugin } = processor({
+            namer
+        });
+
+        return rollup({
+            input   : require.resolve("./specimens/svelte.html"),
+            plugins : [
+                require("rollup-plugin-svelte")({
+                    preprocess
+                }),
+                plugin
+            ]
+        })
+        .then((bundle) => bundle.write({
+            format : "es",
+            file   : "./packages/svelte/test/output/svelte.js"
+        }))
+        .then(() => {
+            expect(() => read("svelte.css")).toThrow();
+        });
+    });
 });
