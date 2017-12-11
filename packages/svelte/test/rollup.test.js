@@ -7,6 +7,10 @@ var rollup  = require("rollup").rollup,
     
     processor = require("../rollup.js");
 
+function cleanup(code) {
+    return code.replace(/\/\* packages.*$/gm, "");
+}
+
 describe("/rollup.js", () => {
     afterEach(() => require("shelljs").rm("-rf", "./packages/svelte/test/output/*"));
     
@@ -30,7 +34,7 @@ describe("/rollup.js", () => {
             file   : "./packages/svelte/test/output/svelte.js"
         }))
         .then(() => {
-            expect(read("svelte.js")).toMatchSnapshot();
+            expect(cleanup(read("svelte.js"))).toMatchSnapshot();
             expect(read("svelte.css")).toMatchSnapshot();
         });
     });
