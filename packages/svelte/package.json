@@ -1,8 +1,8 @@
 {
-  "name": "modular-css-rollup",
+  "name": "modular-css-svelte",
   "version": "7.0.0",
-  "description": "Add modular-css support to rollup",
-  "main": "./rollup.js",
+  "description": "Add modular-css support to svelte",
+  "main": "./svelte.js",
   "repository": "tivac/modular-css",
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
@@ -10,21 +10,24 @@
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "keywords": [
+    "svelte",
+    "svelte-preprocess",
     "rollup",
     "rollup-plugin",
+    "rollup-plugin-svelte",
     "css",
     "css-modules",
     "modular-css",
     "postcss"
   ],
   "devDependencies": {
+    "dedent": "^0.7.0",
     "rollup": "^0.51.8",
-    "test-utils": "^5.1.5"
+    "rollup-plugin-svelte": "^3.3.0",
+    "svelte": "^1.46.0"
   },
   "dependencies": {
-    "esutils": "^2.0.2",
     "mkdirp": "^0.5.1",
-    "modular-css-core": "^7.0.0",
-    "rollup-pluginutils": "^2.0.1"
+    "modular-css-core": "^7.0.0"
   }
 }

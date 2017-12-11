@@ -19,7 +19,7 @@ glob({
 
 ## Options
 
-`glob()` accepts all of the same options as a [`Processor` instance](api.md#processor-options) with the addition of the [`search`](#search) property.
+`glob()` accepts all of the same options as a [`Processor` instance](api.md#options) with the addition of the [`search`](#search) property.
 
 ### `search`
 

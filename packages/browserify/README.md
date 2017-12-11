@@ -25,7 +25,7 @@ Location to write the generated CSS file to.
 
 ### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](api.md#processor-options).
+All other options are passed to the underlying `Processor` instance, see [Options](api.md#options).
 
 ## CLI
 

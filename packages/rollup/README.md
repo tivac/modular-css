@@ -69,5 +69,5 @@ By default this plugin will create both a default export and named `export`s for
 
 ### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](https://github.com/tivac/modular-css/blob/master/docs/api.md#processor-options).
+All other options are passed to the underlying `Processor` instance, see [Options](https://github.com/tivac/modular-css/blob/master/docs/api.md#options).
 

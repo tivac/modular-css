@@ -65,4 +65,4 @@ Write the class composition data to this location on disk.
 
 ### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](/docs/api.md#processor-options).
+All other options are passed to the underlying `Processor` instance, see [Options](/docs/api.md#options).

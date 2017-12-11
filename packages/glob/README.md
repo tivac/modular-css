@@ -28,7 +28,7 @@ glob({
 
 ### Options
 
-`glob()` accepts all of the same options as a [`Processor` instance](https://github.com/tivac/modular-css/blob/master/docs/api.md#processor-options).
+`glob()` accepts all of the same options as a [`Processor` instance](https://github.com/tivac/modular-css/blob/master/docs/api.md#options).
 
 #### `search`
 
