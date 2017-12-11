@@ -14,6 +14,12 @@ exports[`/svelte.js should generate exports 1`] = `
 .flex {
         display: flex;
     }
+.text {
+        color: #000;
+    }
+.active {
+        color: #F00;
+    }
 "
 `;
 
@@ -21,7 +27,7 @@ exports[`/svelte.js should generate exports 2`] = `
 "<div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
-        Body
+        <p class=\\"{{true ? \\"text\\" : \\"active\\" }}\\">Text</p>
     </div>
 </div>
 

@@ -18,10 +18,19 @@ exports.markup = (processor) => ({ content, filename }) => {
         )
         .then((result) => {
             const exported = result.files[result.file].exports;
-            const regexp = new RegExp(`\{\{css.(${Object.keys(exported).join("|")})}}`, "gm");
 
             return {
-                code : content.replace(regexp, (match, key) => exported[key].join(" "))
+                code : content
+                    // Replace simple {{css.<key>}} values first
+                    .replace(
+                        new RegExp(`{{css.(${Object.keys(exported).join("|")})}}`, "gm"),
+                        (match, key) => exported[key].join(" ")
+                    )
+                    // Then any remaining bare css.<key> values
+                    .replace(
+                        new RegExp(`(\\b)css.(${Object.keys(exported).join("|")})(\\b)`, "gm"),
+                        (match, prefix, key, suffix) => `${prefix}"${exported[key].join(" ")}"${suffix}`
+                    )
             };
         });
     };

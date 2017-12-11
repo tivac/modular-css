@@ -1,7 +1,7 @@
 <div class="{{css.wrapper}}">
     <h1 class="{{css.hd}}">Head</h1>
     <div class="{{css.bd}}">
-        Body
+        <p class="{{true ? css.text : css.active }}">Text</p>
     </div>
 </div>
 
@@ -21,5 +21,13 @@
 
     .bd {
         composes: wooga from "./dependencies.css";
+    }
+
+    .text {
+        color: #000;
+    }
+
+    .active {
+        color: #F00;
     }
 </style>
