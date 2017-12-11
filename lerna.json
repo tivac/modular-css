@@ -4,7 +4,7 @@
   "command": {
     "publish": {
       "conventionalCommits": true,
-      "message": "chore: Publish"
+      "message": "chore: Publish %s :rocket:"
     }
   }
 }
