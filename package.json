@@ -96,11 +96,14 @@
           }
         }
       ],
-      "space-before-function-paren": [ "warn", {
-        "anonymous": "never",
-        "named": "never",
-        "asyncArrow": "always"
-      }]
+      "space-before-function-paren": [
+        "warn",
+        {
+          "anonymous": "never",
+          "named": "never",
+          "asyncArrow": "always"
+        }
+      ]
     }
   },
   "jest": {
