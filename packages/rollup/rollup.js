@@ -55,48 +55,50 @@ module.exports = function(opts) {
             }
 
             return Promise.all(
-                removed.map((file) =>
-                    processor.file(file)
+                // Run current file first since it's already in-memory
+                [ processor.string(id, code) ].concat(
+                    removed.map((file) =>
+                        processor.file(file)
+                    )
                 )
             )
-            .then(() =>
-                processor.string(id, code).then((result) => {
-                    var classes = output.join(result.exports),
-                        named   = Object.keys(classes),
-                        out     = [
-                            `export default ${JSON.stringify(classes, null, 4)};`
-                        ];
+            .then((results) => {
+                var result  = results[0],
+                    classes = output.join(result.exports),
+                    named   = Object.keys(classes),
+                    out     = [
+                        `export default ${JSON.stringify(classes, null, 4)};`
+                    ];
+                
+                // Add dependencies
+                out = out.concat(
+                    processor.dependencies(id).map((file) =>
+                        `import "${file.replace(/\\/g, "/")}";`
+                    )
+                );
                     
-                    // Add dependencies
-                    out = out.concat(
-                        processor.dependencies(id).map((file) =>
-                            `import "${file.replace(/\\/g, "/")}";`
-                        )
-                    );
-                        
-                    if(options.namedExports === false) {
-                        return {
-                            code : out.join("\n"),
-                            map
-                        };
-                    }
-
-                    named.forEach((ident) => {
-                        if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
-                            options.onwarn(`Invalid JS identifier "${ident}", unable to export`);
-                            
-                            return;
-                        }
-
-                        out.push(`export var ${ident} = "${classes[ident]}";`);
-                    });
-
+                if(options.namedExports === false) {
                     return {
                         code : out.join("\n"),
                         map
                     };
-                })
-            );
+                }
+
+                named.forEach((ident) => {
+                    if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
+                        options.onwarn(`Invalid JS identifier "${ident}", unable to export`);
+                        
+                        return;
+                    }
+
+                    out.push(`export var ${ident} = "${classes[ident]}";`);
+                });
+
+                return {
+                    code : out.join("\n"),
+                    map
+                };
+            });
         },
 
         // Hook for when bundle.generate() is called
