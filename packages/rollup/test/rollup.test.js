@@ -14,6 +14,24 @@ function error(root) {
     throw root.error("boom");
 }
 
+function watching(cb) {
+    var count = 0;
+
+    return (details) => {
+        if(details.code === "ERROR" || details.code === "FATAL") {
+            throw details.error;
+        }
+
+        if(details.code !== "END") {
+            return;
+        }
+
+        count++;
+
+        cb(count, details);
+    };
+}
+
 error.postcssPlugin = "error-plugin";
 
 describe("/rollup.js", () => {
@@ -271,8 +289,6 @@ describe("/rollup.js", () => {
         afterEach(() => watcher.close());
         
         it("should generate correct builds in watch mode when files change", (done) => {
-            var builds = 0;
-            
             // Create v1 of the file
             fs.writeFileSync(
                 "./packages/rollup/test/output/watched.css",
@@ -300,15 +316,7 @@ describe("/rollup.js", () => {
                 ".two { color: blue; }"
             ), 200);
             
-            watcher.on("event", (details) => {
-                /* eslint consistent-return:0 */
-                
-                if(details.code !== "END") {
-                    return;
-                }
-
-                builds++;
-                
+            watcher.on("event", watching((builds) => {
                 // First build
                 if(builds === 1) {
                     try {
@@ -328,12 +336,10 @@ describe("/rollup.js", () => {
 
                     return done();
                 }
-            });
+            }));
         });
 
         it("should correctly update files within the dependency graph in watch mode when files change", (done) => {
-            var builds = 0;
-            
             // Create v1 of the files
             fs.writeFileSync(
                 "./packages/rollup/test/output/one.css",
@@ -388,19 +394,7 @@ describe("/rollup.js", () => {
                 `)
             ), 200);
             
-            watcher.on("event", (details) => {
-                /* eslint consistent-return:0 */
-                
-                if(details.code === "ERROR" || details.code === "FATAL") {
-                    throw details.error;
-                }
-
-                if(details.code !== "END") {
-                    return;
-                }
-
-                builds++;
-                
+            watcher.on("event", watching((builds) => {
                 // First build
                 if(builds === 1) {
                     try {
@@ -420,7 +414,7 @@ describe("/rollup.js", () => {
 
                     return done();
                 }
-            });
+            }));
         });
     });
 });
