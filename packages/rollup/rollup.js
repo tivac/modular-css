@@ -44,9 +44,14 @@ module.exports = function(opts) {
                 return null;
             }
 
+            console.log("Rollup processing: ", id);
+            
+
             // If the file is being re-processed we need to remove it to
             // avoid cache staleness issues
             if(runs) {
+                console.log("Rollup removing: ", id);
+
                 processor.remove(id);
             }
 
