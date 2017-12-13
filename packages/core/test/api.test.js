@@ -114,6 +114,24 @@ describe("/processor.js", () => {
                     expect(processor.dependencies()).toEqual([]);
                 })
             );
+            
+            it("should return an array of removed files", () =>
+                Promise.all([
+                    processor.string("./a.css", ".a { }"),
+                    processor.string("./b.css", ".b { }"),
+                    processor.string("./c.css", ".c { }")
+                ])
+                .then(() => {
+                    expect(
+                        relative(
+                            processor.remove([
+                                "./a.css",
+                                "./b.css"
+                            ])
+                        )
+                    ).toMatchSnapshot();
+                })
+            );
         });
         
         describe(".dependencies()", () => {

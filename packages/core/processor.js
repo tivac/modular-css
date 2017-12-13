@@ -147,7 +147,7 @@ Processor.prototype = {
     // Remove a file from the dependency graph
     remove : function(input) {
         var order = this._graph.overallOrder(),
-            files;
+            files, removed;
         
         // Only want files actually in the array
         files = (Array.isArray(input) ? input : [ input ])
@@ -160,21 +160,23 @@ Processor.prototype = {
 
         // Remove everything that depends on files to be removed as well
         // since it will also have to be recalculated
-        files = files
-            .reduce(
-                (prev, curr) => prev.concat(
-                    this._graph.dependantsOf(curr)
-                        .concat(curr)
-                ),
-                []
-            )
-            .sort((a, b) => order.indexOf(a) - order.indexOf(b));
-
-        unique(files).forEach((file) => {
+        files = files.reduce((prev, curr) =>
+            prev.concat(
+                this._graph.dependantsOf(curr).concat(curr)
+            ),
+            []
+        )
+        .sort((a, b) => order.indexOf(a) - order.indexOf(b));
+        
+        removed = unique(files);
+        
+        removed.forEach((file) => {
             delete this._files[file];
 
             this._graph.removeNode(file);
         });
+
+        return removed;
     },
     
     // Get the dependency order for a file or the entire tree

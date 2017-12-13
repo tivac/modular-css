@@ -178,6 +178,13 @@ Array [
 ]
 `;
 
+exports[`/processor.js API .remove() should return an array of removed files 1`] = `
+Array [
+  "a.css",
+  "b.css",
+]
+`;
+
 exports[`/processor.js API .string() should process a string 1`] = `
 Object {
   "wooga": Array [
