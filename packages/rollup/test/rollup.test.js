@@ -2,7 +2,8 @@
 
 var fs = require("fs"),
 
-    rollup  = require("rollup").rollup,
+    rollup = require("rollup").rollup,
+    dedent = require("dedent"),
     
     read  = require("test-utils/read.js")(__dirname),
     namer = require("test-utils/namer.js"),
@@ -11,6 +12,24 @@ var fs = require("fs"),
 
 function error(root) {
     throw root.error("boom");
+}
+
+function watching(cb) {
+    var count = 0;
+
+    return (details) => {
+        if(details.code === "ERROR" || details.code === "FATAL") {
+            throw details.error;
+        }
+
+        if(details.code !== "END") {
+            return;
+        }
+
+        count++;
+
+        cb(count, details);
+    };
 }
 
 error.postcssPlugin = "error-plugin";
@@ -264,13 +283,12 @@ describe("/rollup.js", () => {
     });
 
     describe("watch", () => {
-        var watcher;
+        var watch = require("rollup").watch,
+            watcher;
 
         afterEach(() => watcher.close());
         
         it("should generate correct builds in watch mode when files change", (done) => {
-            var builds = 0;
-            
             // Create v1 of the file
             fs.writeFileSync(
                 "./packages/rollup/test/output/watched.css",
@@ -278,7 +296,7 @@ describe("/rollup.js", () => {
             );
 
             // Start watching (re-requiring rollup because it needs root obj reference)
-            watcher = require("rollup").watch({
+            watcher = watch({
                 input  : require.resolve("./specimens/watch.js"),
                 output : {
                     file   : "./packages/rollup/test/output/watch.js",
@@ -298,15 +316,7 @@ describe("/rollup.js", () => {
                 ".two { color: blue; }"
             ), 200);
             
-            watcher.on("event", (details) => {
-                /* eslint consistent-return:0 */
-                
-                if(details.code !== "END") {
-                    return;
-                }
-
-                builds++;
-                
+            watcher.on("event", watching((builds) => {
                 // First build
                 if(builds === 1) {
                     try {
@@ -326,7 +336,85 @@ describe("/rollup.js", () => {
 
                     return done();
                 }
+            }));
+        });
+
+        it("should correctly update files within the dependency graph in watch mode when files change", (done) => {
+            // Create v1 of the files
+            fs.writeFileSync(
+                "./packages/rollup/test/output/one.css",
+                dedent(`
+                    .one {
+                        color: red;
+                    }
+                `)
+            );
+
+            fs.writeFileSync(
+                "./packages/rollup/test/output/two.css",
+                dedent(`
+                    .two {
+                        composes: one from "./one.css";
+                        
+                        color: blue;
+                    }
+                `)
+            );
+            
+            fs.writeFileSync(
+                "./packages/rollup/test/output/watch.js",
+                dedent(`
+                    import css from "./two.css";
+                    console.log(css);
+                `)
+            );
+
+            // Start watching (re-requiring rollup because it needs root obj reference)
+            watcher = watch({
+                input  : require.resolve("./output/watch.js"),
+                output : {
+                    file   : "./packages/rollup/test/output/watch-output.js",
+                    format : "es"
+                },
+                plugins : [
+                    plugin({
+                        css : "./packages/rollup/test/output/watch-output.css",
+                        map : false
+                    })
+                ]
             });
+
+            // Create v2 of the file after a bit
+            setTimeout(() => fs.writeFileSync(
+                "./packages/rollup/test/output/one.css",
+                dedent(`
+                    .one {
+                        color: green;
+                    }
+                `)
+            ), 200);
+            
+            watcher.on("event", watching((builds) => {
+                // First build
+                if(builds === 1) {
+                    try {
+                        expect(read("watch-output.css")).toMatchSnapshot();
+                    } catch(e) {
+                        return done(e);
+                    }
+                }
+
+                // Second build
+                if(builds > 1) {
+                    try {
+                        expect(read("watch-output.css")).toMatchSnapshot();
+                    } catch(e) {
+                        return done(e);
+                    }
+
+                    return done();
+                }
+            }));
         });
     });
 });

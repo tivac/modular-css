@@ -92,6 +92,30 @@ console.log(css);
 }
 `;
 
+exports[`/rollup.js watch should correctly update files within the dependency graph in watch mode when files change 1`] = `
+"/* packages/rollup/test/output/one.css */
+.mc19ef5610_one {
+    color: red;
+}
+/* packages/rollup/test/output/two.css */
+.mc32dbcb4b_two {
+    
+    color: blue;
+}"
+`;
+
+exports[`/rollup.js watch should correctly update files within the dependency graph in watch mode when files change 2`] = `
+"/* packages/rollup/test/output/one.css */
+.mc19ef5610_one {
+    color: green;
+}
+/* packages/rollup/test/output/two.css */
+.mc32dbcb4b_two {
+    
+    color: blue;
+}"
+`;
+
 exports[`/rollup.js watch should generate correct builds in watch mode when files change 1`] = `
 "/* packages/rollup/test/output/watched.css */
 .mc580619a9_one { color: red; }
