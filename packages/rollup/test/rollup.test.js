@@ -1,3 +1,4 @@
+/* eslint consistent-return: off */
 "use strict";
 
 var fs = require("fs"),
@@ -317,25 +318,16 @@ describe("/rollup.js", () => {
             ), 200);
             
             watcher.on("event", watching((builds) => {
-                // First build
                 if(builds === 1) {
-                    try {
-                        expect(read("watch-output.css")).toMatchSnapshot();
-                    } catch(e) {
-                        return done(e);
-                    }
+                    expect(read("watch-output.css")).toMatchSnapshot();
+
+                    // continue watching
+                    return;
                 }
 
-                // Second build
-                if(builds > 1) {
-                    try {
-                        expect(read("watch-output.css")).toMatchSnapshot();
-                    } catch(e) {
-                        return done(e);
-                    }
+                expect(read("watch-output.css")).toMatchSnapshot();
 
-                    return done();
-                }
+                return done();
             }));
         });
 
@@ -395,25 +387,16 @@ describe("/rollup.js", () => {
             ), 200);
             
             watcher.on("event", watching((builds) => {
-                // First build
                 if(builds === 1) {
-                    try {
-                        expect(read("watch-output.css")).toMatchSnapshot();
-                    } catch(e) {
-                        return done(e);
-                    }
+                    expect(read("watch-output.css")).toMatchSnapshot();
+
+                    // continue watching
+                    return;
                 }
 
-                // Second build
-                if(builds > 1) {
-                    try {
-                        expect(read("watch-output.css")).toMatchSnapshot();
-                    } catch(e) {
-                        return done(e);
-                    }
+                expect(read("watch-output.css")).toMatchSnapshot();
 
-                    return done();
-                }
+                return done();
             }));
         });
     });
