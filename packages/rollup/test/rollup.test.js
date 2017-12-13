@@ -334,7 +334,6 @@ describe("/rollup.js", () => {
         it("should correctly update files within the dependency graph in watch mode when files change", (done) => {
             var builds = 0;
             
-            
             // Create v1 of the files
             fs.writeFileSync(
                 "./packages/rollup/test/output/one.css",

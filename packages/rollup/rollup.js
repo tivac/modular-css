@@ -40,58 +40,63 @@ module.exports = function(opts) {
         name : "modular-css",
 
         transform : function(code, id) {
+            var removed;
+
             if(!filter(id) || id.slice(slice) !== options.ext) {
                 return null;
             }
 
-            console.log("Rollup processing: ", id);
-            
-
             // If the file is being re-processed we need to remove it to
             // avoid cache staleness issues
             if(runs) {
-                console.log("Rollup removing: ", id);
-
-                processor.remove(id);
+                removed = processor.remove(id);
+            } else {
+                removed = [];
             }
 
-            // Add the file & its dependencies
-            return processor.string(id, code).then((result) => {
-                var classes = output.join(result.exports),
-                    named   = Object.keys(classes),
-                    out     = [
-                        `export default ${JSON.stringify(classes, null, 4)};`
-                    ];
-                
-                // Add dependencies
-                out = out.concat(
-                    processor.dependencies(id).map((file) =>
-                        `import "${file.replace(/\\/g, "/")}";`
-                    )
-                );
+            return Promise.all(
+                removed.map((file) =>
+                    processor.file(file)
+                )
+            )
+            .then(() =>
+                processor.string(id, code).then((result) => {
+                    var classes = output.join(result.exports),
+                        named   = Object.keys(classes),
+                        out     = [
+                            `export default ${JSON.stringify(classes, null, 4)};`
+                        ];
                     
-                if(options.namedExports === false) {
+                    // Add dependencies
+                    out = out.concat(
+                        processor.dependencies(id).map((file) =>
+                            `import "${file.replace(/\\/g, "/")}";`
+                        )
+                    );
+                        
+                    if(options.namedExports === false) {
+                        return {
+                            code : out.join("\n"),
+                            map
+                        };
+                    }
+
+                    named.forEach((ident) => {
+                        if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
+                            options.onwarn(`Invalid JS identifier "${ident}", unable to export`);
+                            
+                            return;
+                        }
+
+                        out.push(`export var ${ident} = "${classes[ident]}";`);
+                    });
+
                     return {
                         code : out.join("\n"),
                         map
                     };
-                }
-
-                named.forEach((ident) => {
-                    if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
-                        options.onwarn(`Invalid JS identifier "${ident}", unable to export`);
-                        
-                        return;
-                    }
-
-                    out.push(`export var ${ident} = "${classes[ident]}";`);
-                });
-
-                return {
-                    code : out.join("\n"),
-                    map
-                };
-            });
+                })
+            );
         },
 
         // Hook for when bundle.generate() is called
