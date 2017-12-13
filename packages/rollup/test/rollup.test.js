@@ -17,7 +17,7 @@ function error(root) {
 error.postcssPlugin = "error-plugin";
 
 describe("/rollup.js", () => {
-    // afterEach(() => require("shelljs").rm("-rf", "./packages/rollup/test/output/*"));
+    afterEach(() => require("shelljs").rm("-rf", "./packages/rollup/test/output/*"));
     
     it("should be a function", () =>
         expect(typeof plugin).toBe("function")
