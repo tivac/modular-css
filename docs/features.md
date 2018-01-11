@@ -199,7 +199,7 @@ body {
 
 #### Namespaced Imports
 
-`@value`s can be imported as a namespaceas a convenient shorthand way to access a bunch of shared values from a file.
+`@value`s can be imported as a namespace which provides a convenient shorthand way to access a bunch of shared values from a file.
 
 ```css
 /* == colors.css == */
