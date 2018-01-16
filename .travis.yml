@@ -10,7 +10,7 @@ node_js:
 matrix:
   fast_finish: true
 
-script: npm test -- --coverage
+script: npm test
 
 # Disabling because danger seems broken atm?
 # after_script:
