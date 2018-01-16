@@ -110,7 +110,10 @@ describe("/processor.js", () => {
                 return processor.file(
                     "./packages/core/test/specimens/start.css"
                 )
-                .then(() => processor.output({ to : "out.css" }))
+                .then(() => processor.output({
+                    from : "packages/core/test/specimens/rewrite.css",
+                    to   : "out.css"
+                }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
 
@@ -125,7 +128,10 @@ describe("/processor.js", () => {
                 return processor.file(
                     "./packages/core/test/specimens/start.css"
                 )
-                .then(() => processor.output({ to : "out.css" }))
+                .then(() => processor.output({
+                    from : "packages/core/test/specimens/rewrite.css",
+                    to   : "out.css"
+                }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
         });
@@ -159,7 +165,10 @@ describe("/processor.js", () => {
                         }
                     `)
                 )
-                .then(() => processor.output({ to : "./packages/core/test/output/rewrite.css" }))
+                .then(() => processor.output({
+                    from : "packages/core/test/specimens/rewrite.css",
+                    to   : "./packages/core/test/output/rewrite.css"
+                }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
 
@@ -174,7 +183,10 @@ describe("/processor.js", () => {
                         }
                     `)
                 )
-                .then(() => processor.output({ to : "./packages/core/test/output/rewrite.css" }))
+                .then(() => processor.output({
+                    from : "packages/core/test/specimens/rewrite.css",
+                    to   : "./packages/core/test/output/rewrite.css"
+                }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
             
@@ -193,7 +205,10 @@ describe("/processor.js", () => {
                         }
                     `)
                 )
-                .then(() => processor.output({ to : "./packages/core/test/output/rewrite.css" }))
+                .then(() => processor.output({
+                    from : "packages/core/test/specimens/rewrite.css",
+                    to   : "./packages/core/test/output/rewrite.css"
+                }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
         });
@@ -210,7 +225,7 @@ describe("/processor.js", () => {
                         "packages/core/test/specimens/sync-before.css",
                         ""
                     )
-                    .then(() => processor.output())
+                    .then(() => processor.output({ from : "packages/core/test/specimens/sync-before.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
 
@@ -224,7 +239,7 @@ describe("/processor.js", () => {
                         "packages/core/test/specimens/async-before.css",
                         ""
                     )
-                    .then(() => processor.output())
+                    .then(() => processor.output({ from : "packages/core/test/specimens/sync-before.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
             });
@@ -236,7 +251,10 @@ describe("/processor.js", () => {
                     return processor.file(
                         "./packages/core/test/specimens/relative.css"
                     )
-                    .then(() => processor.output({ to : "./packages/core/test/output/relative.css" }))
+                    .then(() => processor.output({
+                        from : "packages/core/test/specimens/rewrite.css",
+                        to   : "./packages/core/test/output/relative.css"
+                    }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
                 
@@ -249,7 +267,10 @@ describe("/processor.js", () => {
                     return processor.file(
                         "./packages/core/test/specimens/relative.css"
                     )
-                    .then(() => processor.output({ to : "./packages/core/test/output/relative.css" }))
+                    .then(() => processor.output({
+                        from : "packages/core/test/specimens/rewrite.css",
+                        to   : "./packages/core/test/output/relative.css"
+                    }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
                 
@@ -262,7 +283,10 @@ describe("/processor.js", () => {
                     return processor.file(
                         "./packages/core/test/specimens/relative.css"
                     )
-                    .then(() => processor.output({ to : "./packages/core/test/output/relative.css" }))
+                    .then(() => processor.output({
+                        from : "packages/core/test/specimens/rewrite.css",
+                        to   : "./packages/core/test/output/relative.css"
+                    }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
             });
@@ -278,7 +302,7 @@ describe("/processor.js", () => {
                         "packages/core/test/specimens/sync-done.css",
                         ""
                     )
-                    .then(() => processor.output())
+                    .then(() => processor.output({ from : "packages/core/test/specimens/sync-done.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
                 
@@ -292,7 +316,7 @@ describe("/processor.js", () => {
                         "packages/core/test/specimens/async-done.css",
                         ""
                     )
-                    .then(() => processor.output())
+                    .then(() => processor.output({ from : "packages/core/test/specimens/async-done.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
 
@@ -305,7 +329,10 @@ describe("/processor.js", () => {
                     return processor.file(
                         "./packages/core/test/specimens/local.css"
                     )
-                    .then(() => processor.output({ to : "./packages/core/test/output/local.css" }))
+                    .then(() => processor.output({
+                        from : "packages/core/test/specimens/rewrite.css",
+                        to   : "./packages/core/test/output/local.css"
+                    }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
 
@@ -322,7 +349,10 @@ describe("/processor.js", () => {
                     return processor.file(
                         "./packages/core/test/specimens/local.css"
                     )
-                    .then(() => processor.output({ to : "./packages/core/test/output/local.css" }))
+                    .then(() => processor.output({
+                        from : "packages/core/test/specimens/rewrite.css",
+                        to   : "./packages/core/test/output/local.css"
+                    }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
             });
