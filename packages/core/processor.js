@@ -24,7 +24,7 @@ function params(processor, args) {
             graph   : processor._graph,
             resolve : processor._resolve
         },
-        args || Object.create(null)
+        args
     );
 }
 
@@ -41,7 +41,7 @@ function Processor(opts) {
             map     : false,
             rewrite : true
         },
-        opts || Object.create(null)
+        opts
     );
 
     if(!path.isAbsolute(this._options.cwd)) {
