@@ -10,6 +10,7 @@ const methods = require("./methods.js");
 
 module.exports = function(args) {
     const processor = new Processor(args);
+    let source;
 
     return {
         preprocess : {
@@ -20,9 +21,14 @@ module.exports = function(args) {
         plugin : {
             name : "modular-css-rollup-svelte",
 
+            options : ({ input }) => {
+                source = input;
+            },
+
             ongenerate : (bundle, result) => {
                 result.css = processor.output({
-                    to : args.css
+                    from : source,
+                    to   : args.css
                 });
             },
 

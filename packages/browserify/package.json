@@ -26,9 +26,9 @@
     "watchify": "^3.9.0"
   },
   "dependencies": {
-    "lodash.foreach": "^4.5.0",
     "mkdirp": "^0.5.1",
     "modular-css-core": "^7.2.0",
+    "p-each-series": "^1.0.0",
     "sink-transform": "^2.0.0",
     "through2": "^2.0.3"
   }

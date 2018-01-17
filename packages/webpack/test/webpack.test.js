@@ -20,16 +20,16 @@ function success(err, stats) {
     }
 }
 
-describe("/webpack.js", function() {
+describe("/webpack.js", () => {
     var output = path.resolve(__dirname, "./output");
     
-    afterAll(() => require("shelljs").rm("-rf", "./packages/webpack/test/output/*"));
+    afterEach(() => require("shelljs").rm("-rf", "./packages/webpack/test/output/*"));
 
-    it("should be a function", function() {
+    it("should be a function", () => {
         expect(typeof Plugin).toBe("function");
     });
 
-    it("should output css to disk", function(done) {
+    it("should output css to disk", (done) => {
         webpack({
             entry  : "./packages/webpack/test/specimens/simple.js",
             output : {
@@ -60,7 +60,7 @@ describe("/webpack.js", function() {
         });
     });
 
-    it("should output json to disk", function(done) {
+    it("should output json to disk", (done) => {
         webpack({
             entry  : "./packages/webpack/test/specimens/simple.js",
             output : {
@@ -91,7 +91,41 @@ describe("/webpack.js", function() {
         });
     });
 
-    it("should report errors", function(done) {
+    it("should output external source maps to disk", (done) => {
+        webpack({
+            entry  : "./packages/webpack/test/specimens/simple.js",
+            output : {
+                path     : output,
+                filename : "./simple.js"
+            },
+            module : {
+                rules : [
+                    {
+                        test,
+                        use
+                    }
+                ]
+            },
+            devtool : "source-map",
+            plugins : [
+                new Plugin({
+                    namer,
+                    css : "./simple.css",
+                    map : {
+                        inline : false
+                    }
+                })
+            ]
+        }, (err, stats) => {
+            success(err, stats);
+
+            expect(read("simple.css.map")).toMatchSnapshot();
+
+            done();
+        });
+    });
+
+    it("should report errors", (done) => {
         webpack({
             entry  : "./packages/webpack/test/specimens/invalid.js",
             output : {
@@ -120,7 +154,7 @@ describe("/webpack.js", function() {
         });
     });
 
-    it("should report warnings on invalid property names", function(done) {
+    it("should report warnings on invalid property names", (done) => {
         webpack({
             entry  : "./packages/webpack/test/specimens/invalid-name.js",
             output : {
@@ -149,7 +183,7 @@ describe("/webpack.js", function() {
         });
     });
 
-    it("should handle dependencies", function(done) {
+    it("should handle dependencies", (done) => {
         webpack({
             entry  : "./packages/webpack/test/specimens/start.js",
             output : {
@@ -182,7 +216,7 @@ describe("/webpack.js", function() {
         });
     });
 
-    it("should support ES2015 default exports", function(done) {
+    it("should support ES2015 default exports", (done) => {
         webpack({
             entry  : "./packages/webpack/test/specimens/es2015-default.js",
             output : {
@@ -213,7 +247,7 @@ describe("/webpack.js", function() {
         });
     });
 
-    it("should support ES2015 named exports", function(done) {
+    it("should support ES2015 named exports", (done) => {
         webpack({
             entry  : "./packages/webpack/test/specimens/es2015-named.js",
             output : {
@@ -244,7 +278,7 @@ describe("/webpack.js", function() {
         });
     });
 
-    it("should warn about using the cjs option & disable namedExports", function(done) {
+    it("should warn about using the cjs option & disable namedExports", (done) => {
         webpack({
             entry  : "./packages/webpack/test/specimens/simple.js",
             output : {
@@ -273,7 +307,9 @@ describe("/webpack.js", function() {
         }, (err, stats) => {
             success(err, stats);
 
-            expect(stats.toJson().warnings[0]).toMatch("cjs option is deprecated, used namedExports: false instead");
+            expect(stats.toJson().warnings[0]).toMatch(
+                "cjs option is deprecated, used namedExports: false instead"
+            );
 
             expect(read("simple.js")).toMatchSnapshot();
 
@@ -281,7 +317,7 @@ describe("/webpack.js", function() {
         });
     });
 
-    it("should support disabling namedExports when the option is set", function(done) {
+    it("should support disabling namedExports when the option is set", (done) => {
         webpack({
             entry  : "./packages/webpack/test/specimens/simple.js",
             output : {
@@ -316,7 +352,7 @@ describe("/webpack.js", function() {
         });
     });
 
-    it("should generate correct builds in watch mode when files change", function(done) {
+    it("should generate correct builds in watch mode when files change", (done) => {
         var changed = 0,
             compiler, watcher;
         
@@ -348,6 +384,12 @@ describe("/webpack.js", function() {
             ],
             watch : true
         });
+
+        compiler.plugin("watch-close", () => {
+            // setTimeout is to give webpack time to shut down correctly
+            // w/o it the build freezes forever!
+            setTimeout(done, 50);
+        });
         
         watcher = compiler.watch(null, (err, stats) => {
             changed++;
@@ -364,11 +406,11 @@ describe("/webpack.js", function() {
                 );
             }
 
-            return watcher.close(done);
+            return watcher.close();
         });
     });
 
-    it("should generate correct builds when files change", function() {
+    it("should generate correct builds when files change", () => {
         var changed = "./packages/webpack/test/output/changed.css",
             compiler;
         

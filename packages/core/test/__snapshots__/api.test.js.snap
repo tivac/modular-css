@@ -79,6 +79,37 @@ exports[`/processor.js API .file() should process an absolute file 4`] = `
 "
 `;
 
+exports[`/processor.js API .output() should allow for seperate source map output 1`] = `
+Object {
+  "file": "to.css",
+  "mappings": "AAAA,oDAAC;AACD,UAAU,YAAY,EAAE;ACDxB,4CAAC;AAID,SAAS,kBAAkB,EAAE;ACJ7B,4CAAC;AAED,SDFA,WAAgB,CAChB,iBAAiB,ECCsB;AACvC,SFHA,wBAAqB,EEGe",
+  "names": Array [],
+  "sources": Array [
+    "packages/core/test/specimens/folder/folder.css",
+    "packages/core/test/specimens/local.css",
+    "packages/core/test/specimens/start.css",
+  ],
+  "sourcesContent": Array [
+    "@value folder: white;
+.folder { margin: 2px; }
+",
+    "@value one: red;
+@value two: blue;
+@value folder from \\"./folder/folder.css\\";
+
+.booga { background: green; }
+.looga { composes: booga; }
+",
+    "@value one, two, folder from \\"./local.css\\";
+.wooga { composes: booga from \\"./local.css\\"; }
+.booga { color: one; background: two; }
+.tooga { border: 1px solid folder; }
+",
+  ],
+  "version": 3,
+}
+`;
+
 exports[`/processor.js API .output() should avoid duplicating files in the output 1`] = `
 "/* packages/core/test/specimens/folder/folder.css */
 .folder { margin: 2px; }

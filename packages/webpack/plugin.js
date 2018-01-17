@@ -63,22 +63,37 @@ ModularCSS.prototype.apply = function(compiler) {
     });
 
     compiler.plugin("emit", (compilation, done) =>
-        this.processor.output()
-            .then((data) => {
-                if(this.options.css) {
-                    compilation.assets[this.options.css] = new sources.RawSource(
+        this.processor.output({
+            to : this.options.css || false
+        })
+        .then((data) => {
+            if(this.options.css) {
+                compilation.assets[this.options.css] = data.map ?
+                    new sources.SourceMapSource(
+                        data.css,
+                        this.options.css,
+                        data.map
+                    ) :
+                    new sources.RawSource(
                         data.css
                     );
-                }
                 
-                if(this.options.json) {
-                    compilation.assets[this.options.json] = new sources.RawSource(
-                        JSON.stringify(data.compositions, null, 4)
+                // TODO: This is hacky beyond belief...
+                if(this.options.map && !this.options.map.inline) {
+                    compilation.assets[`${this.options.css}.map`] = new sources.RawSource(
+                        data.map.toString()
                     );
                 }
+            }
+            
+            if(this.options.json) {
+                compilation.assets[this.options.json] = new sources.RawSource(
+                    JSON.stringify(data.compositions, null, 4)
+                );
+            }
 
-                return done();
-            })
+            return done();
+        })
     );
 };
 

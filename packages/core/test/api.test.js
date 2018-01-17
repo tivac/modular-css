@@ -234,6 +234,18 @@ describe("/processor.js", () => {
 
                 return expect(processor.output()).rejects.toMatchSnapshot();
             });
+
+            it("should allow for seperate source map output", () =>
+                processor.file(
+                    "./packages/core/test/specimens/start.css"
+                )
+                .then(() => processor.output({
+                    map : {
+                        inline : false
+                    }
+                }))
+                .then((result) => expect(result.map).toMatchSnapshot())
+            );
         });
 
         describe("._resolve()", () => {

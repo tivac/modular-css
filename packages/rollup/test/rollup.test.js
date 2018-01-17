@@ -36,6 +36,8 @@ function watching(cb) {
 error.postcssPlugin = "error-plugin";
 
 describe("/rollup.js", () => {
+    /* eslint max-statements: "off" */
+    
     afterEach(() => require("shelljs").rm("-rf", "./packages/rollup/test/output/*"));
     
     it("should be a function", () =>
@@ -131,6 +133,26 @@ describe("/rollup.js", () => {
         })
         .then((bundle) => bundle.generate({ format : "es" }))
         .then((result) => expect(result.code).toMatchSnapshot())
+    );
+
+    it("should generate external source maps", () =>
+        rollup({
+            input   : require.resolve("./specimens/simple.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    css : "./packages/rollup/test/output/simple.css",
+                    map : {
+                        inline : false
+                    }
+                })
+            ]
+        })
+        .then((bundle) => bundle.write({
+            format : "es",
+            file   : "./packages/rollup/test/output/simple.js"
+        }))
+        .then(() => expect(read("simple.css.map")).toMatchSnapshot())
     );
     
     it("should warn & not export individual keys when they are not valid identifiers", () =>
