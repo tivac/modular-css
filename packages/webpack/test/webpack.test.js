@@ -384,6 +384,12 @@ describe("/webpack.js", () => {
             ],
             watch : true
         });
+
+        compiler.plugin("watch-close", () => {
+            // setTimeout is to give webpack time to shut down correctly
+            // w/o it the build freezes forever!
+            setTimeout(done, 50);
+        });
         
         watcher = compiler.watch(null, (err, stats) => {
             changed++;
@@ -400,7 +406,7 @@ describe("/webpack.js", () => {
                 );
             }
 
-            return watcher.close(done);
+            return watcher.close();
         });
     });
 
