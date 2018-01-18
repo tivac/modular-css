@@ -1,4 +1,3 @@
-/* global jasmine */
 "use strict";
 
 var browserify = require("browserify"),
@@ -11,10 +10,10 @@ var browserify = require("browserify"),
     
     plugin = require("../browserify.js");
 
-// Because these tests keep failing CI...
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
-
 describe("/browserify.js", function() {
+    // Because these tests keep failing CI...
+    jest.setTimeout(20000);
+        
     afterAll(() => shell.rm("-rf", "./packages/browserify/test/output/browserify"));
 
     describe("basic functionality", function() {
@@ -151,6 +150,26 @@ describe("/browserify.js", function() {
             
             return bundle(build)
                 .then(() => expect(read("./browserify/source-maps.css")).toMatchSnapshot());
+        });
+
+        it("should output an external source map when the debug option is specified", function() {
+            var build = browserify({
+                    debug   : true,
+                    entries : from("require('./packages/browserify/test/specimens/start.css');")
+                });
+
+            build.plugin(plugin, {
+                css : "./packages/browserify/test/output/browserify/source-maps.css",
+                map : {
+                    inline : false
+                }
+            });
+
+            return bundle(build)
+                .then(() => {
+                    expect(read("./browserify/source-maps.css")).toMatchSnapshot();
+                    expect(read("./browserify/source-maps.css.map")).toMatchSnapshot();
+                });
         });
     });
 });

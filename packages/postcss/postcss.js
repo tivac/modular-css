@@ -12,8 +12,8 @@ module.exports = postcss.plugin("modular-css", (opts) =>
     (root, result) => {
         var processor = new Processor(Object.assign(
                 Object.create(null),
-                opts || {},
-                result.opts || {}
+                opts,
+                result.opts
             )),
             classes;
 

@@ -1,6 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/svelte.js should generate exports 1`] = `
+"<div class=\\"flex wrapper\\">
+    <h1 class=\\"flex fooga hd\\">Head</h1>
+    <div class=\\"fooga wooga bd\\">
+        <p class=\\"{{true ? \\"text\\" : \\"active\\" }}\\">Text</p>
+    </div>
+</div>
+
+<style>/* replaced by modular-css */</style>
+"
+`;
+
+exports[`/svelte.js should generate exports 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
 .fooga {
     color: red;
@@ -23,24 +35,12 @@ exports[`/svelte.js should generate exports 1`] = `
 "
 `;
 
-exports[`/svelte.js should generate exports 2`] = `
-"<div class=\\"flex wrapper\\">
-    <h1 class=\\"flex fooga hd\\">Head</h1>
-    <div class=\\"fooga wooga bd\\">
-        <p class=\\"{{true ? \\"text\\" : \\"active\\" }}\\">Text</p>
-    </div>
-</div>
-
-<style>/* replaced by modular-css */</style>
-"
-`;
-
-exports[`/svelte.js should ignore files without <style> blocks 1`] = `""`;
-
-exports[`/svelte.js should ignore files without <style> blocks 2`] = `
+exports[`/svelte.js should ignore files without <style> blocks 1`] = `
 "<h1>Hello</h1>
 <script>console.log(\\"output\\")</script>"
 `;
+
+exports[`/svelte.js should ignore files without <style> blocks 2`] = `""`;
 
 exports[`/svelte.js should ignore invalid {{css.<key>}} 1`] = `
 "<h1 class=\\"{{css.nope}}\\">Hello</h1>

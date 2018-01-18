@@ -23,88 +23,20 @@
     "watch": "jest --watch"
   },
   "devDependencies": {
-    "@commitlint/cli": "^5.2.5",
-    "@commitlint/config-lerna-scopes": "^5.2.0",
+    "@commitlint/cli": "^6.0.2",
+    "@commitlint/config-lerna-scopes": "^6.0.2",
     "danger": "^1.1.0",
     "dedent": "^0.7.0",
-    "eslint": "^4.13.0",
+    "eslint": "^4.15.0",
     "eslint-config-arenanet": "^3.3.1",
     "eslint-plugin-no-only-tests": "^2.0.0",
     "husky": "^0.14.3",
-    "jest": "^22.1.1",
-    "lerna": "^2.7.0",
+    "jest": "^22.1.2",
+    "lerna": "^2.7.1",
     "lint-staged": "^6.0.0",
     "locater": "^1.3.0",
     "pinpoint": "^1.1.0",
     "shelljs": "^0.7.8"
-  },
-  "eslintConfig": {
-    "extends": "arenanet",
-    "parserOptions": {
-      "ecmaVersion": 8
-    },
-    "env": {
-      "node": true,
-      "jest": true
-    },
-    "plugins": [
-      "no-only-tests"
-    ],
-    "rules": {
-      "no-only-tests/no-only-tests": "error",
-      "one-var": [
-        "warn",
-        {
-          "var": "always",
-          "let": "never",
-          "const": "never"
-        }
-      ],
-      "keyword-spacing": [
-        "warn",
-        {
-          "before": true,
-          "after": false,
-          "overrides": {
-            "return": {
-              "after": true
-            },
-            "else": {
-              "after": true
-            },
-            "try": {
-              "after": true
-            },
-            "case": {
-              "after": true
-            },
-            "from": {
-              "after": true
-            },
-            "import": {
-              "after": true
-            },
-            "export": {
-              "after": true
-            },
-            "const": {
-              "after": true
-            },
-            "let": {
-              "after": true
-            }
-          }
-        }
-      ],
-      "space-before-function-paren": [
-        "warn",
-        {
-          "anonymous": "never",
-          "named": "never",
-          "asyncArrow": "always"
-        }
-      ]
-    }
   },
   "jest": {
     "coveragePathIgnorePatterns": [

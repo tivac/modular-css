@@ -12,7 +12,7 @@ const plugin = require("../svelte.js");
 describe("/svelte.js", () => {
     afterEach(() => require("shelljs").rm("-rf", "./packages/svelte/test/output/*"));
     
-    it("should generate exports", async () => {
+    it("should generate exports", () => {
         const { processor, preprocess } = plugin({
             css : "./packages/svelte/test/output/svelte.css",
             namer
@@ -20,48 +20,55 @@ describe("/svelte.js", () => {
 
         const filename = require.resolve("./specimens/svelte.html");
         
-        const processed = await svelte.preprocess(
+        return svelte.preprocess(
             fs.readFileSync(filename, "utf8"),
             Object.assign({}, preprocess, { filename })
-        );
+        )
+        .then((processed) => {
+            expect(processed.toString()).toMatchSnapshot();
 
-        const output = await processor.output();
-        
-        expect(output.css).toMatchSnapshot();
-        expect(processed.toString()).toMatchSnapshot();
+            return processor.output();
+        })
+        .then((output) =>
+            expect(output.css).toMatchSnapshot()
+        );
     });
 
-    it("should ignore files without <style> blocks", async () => {
+    it("should ignore files without <style> blocks", () => {
         const { processor, preprocess } = plugin();
 
-        const processed = await svelte.preprocess(
+        return svelte.preprocess(
             dedent(`
                 <h1>Hello</h1>
                 <script>console.log("output")</script>
             `),
             preprocess
+        )
+        .then((processed) => {
+            expect(processed.toString()).toMatchSnapshot();
+            
+            return processor.output();
+        })
+        .then((output) =>
+            expect(output.css).toMatchSnapshot()
         );
-
-        const output = await processor.output();
-
-        expect(output.css).toMatchSnapshot();
-        expect(processed.toString()).toMatchSnapshot();
     });
 
-    it("should ignore invalid {{css.<key>}}", async () => {
+    it("should ignore invalid {{css.<key>}}", () => {
         const { preprocess } = plugin({
             namer
         });
 
-        const processed = await svelte.preprocess(
+        return svelte.preprocess(
             dedent(`
                 <h1 class="{{css.nope}}">Hello</h1>
                 <h2 class="{{css.yup}}">World</h2>
                 <style>.yup { color: red; }</style>
             `),
             Object.assign({}, preprocess, { filename : require.resolve("./specimens/svelte.html") })
+        )
+        .then((processed) =>
+            expect(processed.toString()).toMatchSnapshot()
         );
-        
-        expect(processed.toString()).toMatchSnapshot();
     });
 });

@@ -301,7 +301,8 @@ describe("/webpack.js", () => {
             plugins : [
                 new Plugin({
                     namer,
-                    css : "./simple.css"
+                    css : "./simple.css",
+                    cjs : true
                 })
             ]
         }, (err, stats) => {

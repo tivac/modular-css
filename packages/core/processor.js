@@ -20,6 +20,7 @@ function params(processor, args) {
         Object.create(null),
         processor._options,
         {
+            from    : null,
             files   : processor._files,
             graph   : processor._graph,
             resolve : processor._resolve
