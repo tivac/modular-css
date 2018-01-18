@@ -1,4 +1,3 @@
-/* global jasmine */
 "use strict";
 
 var browserify = require("browserify"),
