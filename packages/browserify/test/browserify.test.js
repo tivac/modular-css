@@ -11,10 +11,10 @@ var browserify = require("browserify"),
     
     plugin = require("../browserify.js");
 
-// Because these tests keep failing CI...
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
-
 describe("/browserify.js", function() {
+    // Because these tests keep failing CI...
+    jest.setTimeout(20000);
+        
     afterAll(() => shell.rm("-rf", "./packages/browserify/test/output/browserify"));
 
     describe("basic functionality", function() {
