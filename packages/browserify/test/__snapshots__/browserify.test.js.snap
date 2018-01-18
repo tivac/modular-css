@@ -77,6 +77,20 @@ exports[`/browserify.js basic functionality should not include duplicate files i
 "
 `;
 
+exports[`/browserify.js basic functionality should output an external source map when the debug option is specified 1`] = `
+"/* packages/browserify/test/specimens/folder/folder.css */
+.mcd19f1319_folder { margin: 2px; }
+/* packages/browserify/test/specimens/local.css */
+.mcc4e2a8e1_booga { background: green; }
+/* packages/browserify/test/specimens/start.css */
+.mc1c78395f_booga { color: red; background: blue; }
+.mc1c78395f_tooga { border: 1px solid white; }
+
+/*# sourceMappingURL=source-maps.css.map */"
+`;
+
+exports[`/browserify.js basic functionality should output an external source map when the debug option is specified 2`] = `"{\\"version\\":3,\\"sources\\":[\\"../../specimens/folder/folder.css\\",\\"../../specimens/local.css\\",\\"../../specimens/start.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,0DAAC;AACD,qBAAU,YAAY,EAAE;ACDxB,kDAAC;AAID,oBAAS,kBAAkB,EAAE;ACJ7B,kDAAC;AAED,oBDFA,WAAgB,CAChB,iBAAiB,ECCsB;AACvC,oBFHA,wBAAqB,EEGe\\",\\"file\\":\\"source-maps.css\\",\\"sourcesContent\\":[\\"@value folder: white;\\\\n.folder { margin: 2px; }\\\\n\\",\\"@value one: red;\\\\n@value two: blue;\\\\n@value folder from \\\\\\"./folder/folder.css\\\\\\";\\\\n\\\\n.booga { background: green; }\\\\n.looga { composes: booga; }\\\\n\\",\\"@value one, two, folder from \\\\\\"./local.css\\\\\\";\\\\n.wooga { composes: booga from \\\\\\"./local.css\\\\\\"; }\\\\n.booga { color: one; background: two; }\\\\n.tooga { border: 1px solid folder; }\\\\n\\"]}"`;
+
 exports[`/browserify.js basic functionality should output an inline source map when the debug option is specified 1`] = `
 "/* packages/browserify/test/specimens/folder/folder.css */
 .mcd19f1319_folder { margin: 2px; }

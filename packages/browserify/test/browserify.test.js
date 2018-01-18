@@ -151,5 +151,25 @@ describe("/browserify.js", function() {
             return bundle(build)
                 .then(() => expect(read("./browserify/source-maps.css")).toMatchSnapshot());
         });
+
+        it("should output an external source map when the debug option is specified", function() {
+            var build = browserify({
+                    debug   : true,
+                    entries : from("require('./packages/browserify/test/specimens/start.css');")
+                });
+
+            build.plugin(plugin, {
+                css : "./packages/browserify/test/output/browserify/source-maps.css",
+                map : {
+                    inline : false
+                }
+            });
+
+            return bundle(build)
+                .then(() => {
+                    expect(read("./browserify/source-maps.css")).toMatchSnapshot();
+                    expect(read("./browserify/source-maps.css.map")).toMatchSnapshot();
+                });
+        });
     });
 });
