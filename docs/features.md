@@ -64,6 +64,27 @@ var css = require("./styles.css");
 
 Selector scoping is **only** done on simple classes/ids, any selectors containing tags or pseudo-selectors won't be exported.
 
+`:global()` is treated the same as a CSS pseudo-class and therefore cannot wrap multiple comma seperated rules. For example if you're using a CSS reset the following is required:
+
+```css
+/* Local Scoped */
+ol, ul {
+    list-style: none;
+}
+
+/* Global Scoped (Wrong!) */
+:global(ol, ul) {
+    list-style: none;
+}
+
+/* Global Scoped (Correct!) */
+:global(ol), :global(ul) {
+    list-style: none;
+}
+```
+
+Adding `:global()` to every comma seperated rule would be tedious when using something like [Eric Meyer's CSS Reset](http://meyerweb.com/eric/tools/css/reset/). Therefore it is recommended that you seperate the reset in to its own file, and make use of the [postcss-import](https://github.com/postcss/postcss-import) module with the [after](https://github.com/tivac/modular-css/blob/master/docs/api.md#after) or [done](https://github.com/tivac/modular-css/blob/master/docs/api.md#done) hooks to include the file when modular-css has finished processing. You would then need to include `@import "reset.css";` somewhere in one of your CSS files.
+
 ## Composition
 
 Selector limitations mean that it's difficult to use complicated selectors, so to enable building anything of complexity you can compose selectors. These compositions can be within a file or even pull in classes defined in other files.
