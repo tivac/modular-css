@@ -3,11 +3,12 @@
 var fs   = require("fs"),
     path = require("path"),
     
-    Graph   = require("dependency-graph").DepGraph,
-    postcss = require("postcss"),
-    slug    = require("unique-slug"),
-    series  = require("p-each-series"),
-    unique  = require("lodash.uniq"),
+    Graph     = require("dependency-graph").DepGraph,
+    postcss   = require("postcss"),
+    slug      = require("unique-slug"),
+    series    = require("p-each-series"),
+    unique    = require("lodash.uniq"),
+    mapValues = require("lodash.mapvalues"),
 
     output   = require("./lib/output.js"),
     message  = require("./lib/message.js"),
@@ -131,7 +132,11 @@ Processor.prototype = {
                 }
                 
                 return file.processed.then((result) => {
-                    file.exports = message(result, "classes");
+                    file.exports = Object.assign(
+                        Object.create(null),
+                        mapValues(file.values, (obj) => [ obj.value ]),
+                        message(result, "classes")
+                    );
                     file.result  = result;
                 });
             });
