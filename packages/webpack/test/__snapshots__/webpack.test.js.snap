@@ -569,14 +569,23 @@ __webpack_require__(1);
 
 \\"use strict\\";
 Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"one\\", function() { return one; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"two\\", function() { return two; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"folder\\", function() { return folder; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"wooga\\", function() { return wooga; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"booga\\", function() { return booga; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"tooga\\", function() { return tooga; });
 /* harmony default export */ __webpack_exports__[\\"default\\"] = ({
+    \\"one\\": \\"red\\",
+    \\"two\\": \\"blue\\",
+    \\"folder\\": \\"white\\",
     \\"wooga\\": \\"booga wooga\\",
     \\"booga\\": \\"booga\\",
     \\"tooga\\": \\"tooga\\"
 });
+var one = \\"red\\";
+var two = \\"blue\\";
+var folder = \\"white\\";
 var wooga = \\"booga wooga\\";
 var booga = \\"booga\\";
 var tooga = \\"tooga\\";
@@ -602,10 +611,16 @@ exports[`/webpack.js should handle dependencies 3`] = `
         \\"folder\\": \\"folder\\"
     },
     \\"packages/webpack/test/specimens/local.css\\": {
+        \\"folder\\": \\"white\\",
+        \\"one\\": \\"red\\",
+        \\"two\\": \\"blue\\",
         \\"booga\\": \\"booga\\",
         \\"looga\\": \\"booga looga\\"
     },
     \\"packages/webpack/test/specimens/start.css\\": {
+        \\"one\\": \\"red\\",
+        \\"two\\": \\"blue\\",
+        \\"folder\\": \\"white\\",
         \\"wooga\\": \\"booga wooga\\",
         \\"booga\\": \\"booga\\",
         \\"tooga\\": \\"tooga\\"
