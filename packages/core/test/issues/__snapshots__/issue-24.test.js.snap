@@ -6,6 +6,9 @@ Object {
     "wooga",
     "a",
   ],
+  "simple": Array [
+    "\\"./simple.css\\"",
+  ],
 }
 `;
 

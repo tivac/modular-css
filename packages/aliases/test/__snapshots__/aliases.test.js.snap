@@ -10,6 +10,7 @@ Object {
   },
   "packages/paths/test/specimens/one/start.css": Object {
     "rule": "two rule",
+    "sub": "\\"sub\\"",
   },
 }
 `;
@@ -21,6 +22,7 @@ Object {
   },
   "packages/paths/test/specimens/one/start.css": Object {
     "rule": "two rule",
+    "sub": "\\"sub\\"",
   },
   "packages/paths/test/specimens/one/sub/sub.css": Object {
     "sub": "sub",

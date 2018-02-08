@@ -128,11 +128,17 @@ Object {
   },
   "packages/core/test/specimens/local.css": Object {
     "booga": "booga",
+    "folder": "white",
     "looga": "booga looga",
+    "one": "red",
+    "two": "blue",
   },
   "packages/core/test/specimens/start.css": Object {
     "booga": "booga",
+    "folder": "white",
+    "one": "red",
     "tooga": "tooga",
+    "two": "blue",
     "wooga": "booga wooga",
   },
 }
