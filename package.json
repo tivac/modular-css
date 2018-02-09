@@ -13,7 +13,6 @@
     "precommit": "lint-staged",
     "commitmsg": "commitlint --edit",
     "cover": "jest --coverage",
-    "danger": "danger run || true",
     "postinstall": "lerna bootstrap --hoist",
     "lint": "eslint .",
     "prerelease": "npm test",
@@ -23,20 +22,20 @@
     "watch": "jest --watch"
   },
   "devDependencies": {
-    "@commitlint/cli": "^6.0.2",
-    "@commitlint/config-lerna-scopes": "^6.0.2",
-    "danger": "^1.1.0",
+    "@commitlint/cli": "^6.1.0",
+    "@commitlint/config-lerna-scopes": "^6.1.0",
+    "danger": "^3.1.6",
     "dedent": "^0.7.0",
-    "eslint": "^4.15.0",
+    "eslint": "^4.17.0",
     "eslint-config-arenanet": "^3.3.1",
     "eslint-plugin-no-only-tests": "^2.0.0",
     "husky": "^0.14.3",
-    "jest": "^22.1.2",
-    "lerna": "^2.7.1",
-    "lint-staged": "^6.0.0",
+    "jest": "^22.2.1",
+    "lerna": "^2.8.0",
+    "lint-staged": "^6.1.0",
     "locater": "^1.3.0",
     "pinpoint": "^1.1.0",
-    "shelljs": "^0.8.0"
+    "shelljs": "^0.8.1"
   },
   "jest": {
     "coveragePathIgnorePatterns": [
