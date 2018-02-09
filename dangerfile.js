@@ -1,15 +1,15 @@
 "use strict";
 
-var fs   = require("fs"),
-    path = require("path"),
+const fs   = require("fs");
+const path = require("path");
 
-    locater  = require("locater"),
-    pinpoint = require("pinpoint"),
-    dedent  = require("dedent"),
+const locater  = require("locater");
+const pinpoint = require("pinpoint");
+const dedent   = require("dedent");
     
-    jsfiles = danger.git.created_files
-        .concat(danger.git.modified_files)
-        .filter((file) => path.extname(file) === ".js");
+const jsfiles = danger.git.created_files
+    .concat(danger.git.modified_files)
+    .filter((file) => path.extname(file) === ".js");
 
 function link(file, anchor) {
     var repo = danger.github.pr.head.repo.html_url,
@@ -54,3 +54,5 @@ jsfiles
             `))
         )
     });
+
+    
