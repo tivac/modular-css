@@ -1,6 +1,6 @@
 {
   "name": "modular-css-svelte",
-  "version": "7.2.0",
+  "version": "8.0.0",
   "description": "Add modular-css support to svelte",
   "main": "./svelte.js",
   "repository": "tivac/modular-css",
@@ -28,6 +28,6 @@
   },
   "dependencies": {
     "mkdirp": "^0.5.1",
-    "modular-css-core": "^7.2.0"
+    "modular-css-core": "^8.0.0"
   }
 }

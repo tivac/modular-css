@@ -1,6 +1,6 @@
 {
   "name": "modular-css-core",
-  "version": "7.2.0",
+  "version": "8.0.0",
   "description": "A streamlined reinterpretation of CSS Modules",
   "main": "./processor.js",
   "repository": "tivac/modular-css",
@@ -22,7 +22,7 @@
   "devDependencies": {
     "cssnano": "^4.0.0-rc.1",
     "pegjs": "^0.10.0",
-    "test-utils": "^5.1.5"
+    "test-utils": "^8.0.0"
   },
   "dependencies": {
     "dependency-graph": "^0.6.0",
