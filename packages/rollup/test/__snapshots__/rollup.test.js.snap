@@ -56,10 +56,13 @@ exports[`/rollup.js should not output sourcemaps when they are disabled 1`] = `
 `;
 
 exports[`/rollup.js should provide named exports 1`] = `
-"var val = \\"\\\\\\"value\\\\\\"\\";
+"var str = \\"\\\\\\"string\\\\\\"\\";
+var num = \\"10\\";
+var dim = \\"10px\\";
+var mix = \\"1px solid red\\";
 var a = \\"a\\";
 
-console.log(a, val);
+console.log(a, str, num, dim, mix);
 "
 `;
 

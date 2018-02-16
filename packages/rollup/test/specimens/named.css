@@ -1,4 +1,7 @@
-@value val: "value";
+@value str: "string";
+@value num: 10;
+@value dim: 10px;
+@value mix: 1px solid red;
 
 .a {
     color: red;
