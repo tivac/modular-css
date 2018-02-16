@@ -1,8 +1,6 @@
 "use strict";
 
-var fs = require("fs"),
-    
-    browserify = require("browserify"),
+var browserify = require("browserify"),
     from       = require("from2-string"),
     shell      = require("shelljs"),
     
@@ -13,7 +11,6 @@ var fs = require("fs"),
 
 describe("/browserify.js", () => {
     describe("watchify", () => {
-
         beforeAll(() => shell.mkdir("-p", "./packages/browserify/test/output/watchify"));
         afterEach(() => shell.rm("-rf", "./packages/browserify/test/output/watchify/*"));
         afterAll(() => shell.rm("-rf", "./packages/browserify/test/output/watchify"));
