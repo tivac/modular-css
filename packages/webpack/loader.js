@@ -20,10 +20,9 @@ module.exports = function(source) {
 
     return processor.string(this.resourcePath, source)
         .then((result) => {
-            var classes = output.join(result.exports),
-                named   = Object.keys(classes),
-                out     = [
-                    `export default ${JSON.stringify(classes, null, 4)};`
+            var exported = output.join(result.exports),
+                out      = [
+                    `export default ${JSON.stringify(exported, null, 4)};`
                 ];
 
             processor.dependencies(this.resourcePath).forEach(this.addDependency);
@@ -35,14 +34,14 @@ module.exports = function(source) {
             
             // Warn if any of the exported CSS wasn't able to be used as a valid JS identifier
             // and exclude from the output
-            named.forEach((ident) => {
+            Object.keys(exported).forEach((ident) => {
                 if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
                     this.emitWarning(new Error(`Invalid JS identifier "${ident}", unable to export`));
                     
                     return;
                 }
 
-                out.push(`export var ${ident} = "${classes[ident]}";`);
+                out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
             });
 
             return done(null, out.join("\n"));

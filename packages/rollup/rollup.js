@@ -67,11 +67,10 @@ module.exports = function(opts) {
                 )
             )
             .then((results) => {
-                var result  = results[0],
-                    classes = output.join(result.exports),
-                    named   = Object.keys(classes),
-                    out     = [
-                        `export default ${JSON.stringify(classes, null, 4)};`
+                var result   = results[0],
+                    exported = output.join(result.exports),
+                    out      = [
+                        `export default ${JSON.stringify(exported, null, 4)};`
                     ];
                 
                 // Add dependencies
@@ -88,14 +87,14 @@ module.exports = function(opts) {
                     };
                 }
 
-                named.forEach((ident) => {
+                Object.keys(exported).forEach((ident) => {
                     if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
                         options.onwarn(`Invalid JS identifier "${ident}", unable to export`);
                         
                         return;
                     }
 
-                    out.push(`export var ${ident} = "${classes[ident]}";`);
+                    out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
                 });
 
                 return {

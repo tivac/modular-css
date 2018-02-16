@@ -1,3 +1,3 @@
-import {a} from "./named.css";
+import { a, str, num, dim, mix } from "./named.css";
 
-console.log(a);
+console.log(a, str, num, dim, mix);

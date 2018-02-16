@@ -2,6 +2,7 @@
 
 exports[`/rollup.js should allow disabling of named exports 1`] = `
 "var css = {
+    \\"str\\": \\"\\\\\\"string\\\\\\"\\",
     \\"fooga\\": \\"fooga\\"
 };
 
@@ -22,12 +23,13 @@ exports[`/rollup.js should generate CSS 1`] = `
     color: red;
 }
 
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NwZWNpbWVucy9zaW1wbGUuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLCtDQUFDO0FBQUQ7SUFDSSxXQUFXO0NBQ2QiLCJmaWxlIjoic2ltcGxlLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5mb29nYSB7XG4gICAgY29sb3I6IHJlZDtcbn1cbiJdfQ== */"
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NwZWNpbWVucy9zaW1wbGUuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLCtDQUFDO0FBRUQ7SUFDSSxXQUFXO0NBQ2QiLCJmaWxlIjoic2ltcGxlLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIkB2YWx1ZSBzdHI6IFwic3RyaW5nXCI7XG5cbi5mb29nYSB7XG4gICAgY29sb3I6IHJlZDtcbn1cbiJdfQ== */"
 `;
 
 exports[`/rollup.js should generate JSON 1`] = `
 "{
     \\"packages/rollup/test/specimens/simple.css\\": {
+        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
         \\"fooga\\": \\"fooga\\"
     }
 }"
@@ -35,6 +37,7 @@ exports[`/rollup.js should generate JSON 1`] = `
 
 exports[`/rollup.js should generate exports 1`] = `
 "var css = {
+    \\"str\\": \\"\\\\\\"string\\\\\\"\\",
     \\"fooga\\": \\"fooga\\"
 };
 
@@ -42,7 +45,7 @@ console.log(css);
 "
 `;
 
-exports[`/rollup.js should generate external source maps 1`] = `"{\\"version\\":3,\\"sources\\":[\\"../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,+CAAC;AAAD;IACI,WAAW;CACd\\",\\"file\\":\\"simple.css\\",\\"sourcesContent\\":[\\".fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}"`;
+exports[`/rollup.js should generate external source maps 1`] = `"{\\"version\\":3,\\"sources\\":[\\"../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,+CAAC;AAED;IACI,WAAW;CACd\\",\\"file\\":\\"simple.css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}"`;
 
 exports[`/rollup.js should not output sourcemaps when they are disabled 1`] = `
 "/* packages/rollup/test/specimens/simple.css */
@@ -53,9 +56,13 @@ exports[`/rollup.js should not output sourcemaps when they are disabled 1`] = `
 `;
 
 exports[`/rollup.js should provide named exports 1`] = `
-"var a = \\"a\\";
+"var str = \\"\\\\\\"string\\\\\\"\\";
+var num = \\"10\\";
+var dim = \\"10px\\";
+var mix = \\"1px solid red\\";
+var a = \\"a\\";
 
-console.log(a);
+console.log(a, str, num, dim, mix);
 "
 `;
 
@@ -81,8 +88,8 @@ console.log(css, fooga);
 
 exports[`/rollup.js shouldn't disable sourcemap generation 1`] = `
 Object {
-  "file": null,
-  "mappings": ";;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC",
+  "file": "simple.js",
+  "mappings": ";;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC",
   "names": Array [],
   "sourcesContent": Array [
     "import css from \\"./simple.css\\";
