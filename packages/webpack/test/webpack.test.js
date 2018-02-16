@@ -4,6 +4,7 @@ var fs   = require("fs"),
     path = require("path"),
 
     webpack = require("webpack"),
+    shell   = require("shelljs"),
 
     read  = require("test-utils/read.js")(__dirname),
     namer = require("test-utils/namer.js"),
@@ -23,7 +24,7 @@ function success(err, stats) {
 describe("/webpack.js", () => {
     var output = path.resolve(__dirname, "./output");
     
-    afterEach(() => require("shelljs").rm("-rf", "./packages/webpack/test/output/*"));
+    afterEach(() => shell.rm("-rf", "./packages/webpack/test/output/*"));
 
     it("should be a function", () => {
         expect(typeof Plugin).toBe("function");

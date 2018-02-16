@@ -5,6 +5,7 @@ var fs = require("fs"),
 
     rollup = require("rollup").rollup,
     dedent = require("dedent"),
+    shell  = require("shelljs"),
     
     read  = require("test-utils/read.js")(__dirname),
     namer = require("test-utils/namer.js"),
@@ -38,7 +39,7 @@ error.postcssPlugin = "error-plugin";
 describe("/rollup.js", () => {
     /* eslint max-statements: "off" */
     
-    afterEach(() => require("shelljs").rm("-rf", "./packages/rollup/test/output/*"));
+    afterEach(() => shell.rm("-rf", "./packages/rollup/test/output/*"));
     
     it("should be a function", () =>
         expect(typeof plugin).toBe("function")
