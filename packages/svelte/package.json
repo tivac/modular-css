@@ -22,9 +22,9 @@
   ],
   "devDependencies": {
     "dedent": "^0.7.0",
-    "rollup": "^0.51.8",
-    "rollup-plugin-svelte": "^3.3.0",
-    "svelte": "^1.46.0"
+    "rollup": "^0.56.1",
+    "rollup-plugin-svelte": "^4.0.0",
+    "svelte": "^1.55.0"
   },
   "dependencies": {
     "mkdirp": "^0.5.1",
