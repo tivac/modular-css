@@ -905,12 +905,15 @@ console.log(__WEBPACK_IMPORTED_MODULE_0__es2015_css__[\\"a\\" /* default */]);
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
+/* unused harmony export val */
 /* unused harmony export a */
 /* unused harmony export b */
 /* harmony default export */ __webpack_exports__[\\"a\\"] = ({
+    \\"val\\": \\"\\\\\\"value\\\\\\"\\",
     \\"a\\": \\"a\\",
     \\"b\\": \\"b\\"
 });
+var val = \\"\\\\\\"value\\\\\\"\\";
 var a = \\"a\\";
 var b = \\"b\\";
 
@@ -1000,7 +1003,7 @@ Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__es2015_css__ = __webpack_require__(1);
 
 
-console.log(__WEBPACK_IMPORTED_MODULE_0__es2015_css__[\\"a\\"]);
+console.log(__WEBPACK_IMPORTED_MODULE_0__es2015_css__[\\"a\\"], __WEBPACK_IMPORTED_MODULE_0__es2015_css__[\\"b\\" /* val */]);
 
 
 /***/ }),
@@ -1008,12 +1011,15 @@ console.log(__WEBPACK_IMPORTED_MODULE_0__es2015_css__[\\"a\\"]);
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"b\\", function() { return val; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"a\\", function() { return a; });
 /* unused harmony export b */
 /* unused harmony default export */ var _unused_webpack_default_export = ({
+    \\"val\\": \\"\\\\\\"value\\\\\\"\\",
     \\"a\\": \\"a\\",
     \\"b\\": \\"b\\"
 });
+var val = \\"\\\\\\"value\\\\\\"\\";
 var a = \\"a\\";
 var b = \\"b\\";
 

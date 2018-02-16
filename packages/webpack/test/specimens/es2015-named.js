@@ -1,3 +1,3 @@
-import { a } from "./es2015.css";
+import { a, val } from "./es2015.css";
 
-console.log(a);
+console.log(a, val);
