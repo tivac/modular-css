@@ -3,6 +3,7 @@
 var order = [
         "modular-css-values-imported",
         "modular-css-values-local",
+        "modular-css-vars-local",
         "modular-css-values-composed"
     ];
 
