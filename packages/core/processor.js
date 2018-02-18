@@ -87,7 +87,7 @@ function Processor(opts) {
         require("./plugins/externals.js"),
         require("./plugins/composition.js"),
         require("./plugins/keyframes.js")
-    ]);
+    ].concat(this._options.during || []));
     
     this._after = postcss(this._options.after || []);
     
@@ -134,8 +134,16 @@ Processor.prototype = {
                 return file.processed.then((result) => {
                     file.exports = Object.assign(
                         Object.create(null),
-                        mapValues(file.values, (obj) => [ obj.value ]),
-                        message(result, "classes")
+                        // export @value entries
+                        mapValues(file.values, (obj) => obj.value),
+                        
+                        // export classes
+                        message(result, "classes"),
+                        
+                        // Export anything from plugins named "modular-css-export*"
+                        result.messages
+                            .filter((msg) => msg.plugin.indexOf("modular-css-export") === 0)
+                            .reduce((prev, curr) => Object.assign(prev, curr.exports), Object.create(null))
                     );
                     file.result  = result;
                 });

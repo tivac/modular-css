@@ -61,6 +61,23 @@ exports[`/processor.js options lifecycle options done should work with cssnano (
 
 exports[`/processor.js options lifecycle options done should work with cssnano (no preset) 1`] = `".folder{margin:2px}.booga{background:green}"`;
 
+exports[`/processor.js options lifecycle options during should include exports from 'modular-css-export' modules 1`] = `
+Object {
+  "a": true,
+  "b": false,
+}
+`;
+
+exports[`/processor.js options lifecycle options during should run async postcss plugins during processing 1`] = `
+"/* packages/core/test/specimens/async-during.css */
+a {}"
+`;
+
+exports[`/processor.js options lifecycle options during should run sync postcss plugins during processing 1`] = `
+"/* packages/core/test/specimens/sync-during.css */
+a {}"
+`;
+
 exports[`/processor.js options map should generate source maps 1`] = `
 "/* packages/core/test/specimens/folder/folder.css */
 .folder { margin: 2px; }
