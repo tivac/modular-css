@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 "use strict";
 
 var fs   = require("fs"),
@@ -87,6 +88,38 @@ describe("/webpack.js", () => {
 
             expect(read("simple.js")).toMatchSnapshot();
             expect(read("simple.json")).toMatchSnapshot();
+
+            done();
+        });
+    });
+
+    it("should output inline source maps", (done) => {
+        webpack({
+            entry  : "./packages/webpack/test/specimens/simple.js",
+            output : {
+                path     : output,
+                filename : "./simple.js"
+            },
+            module : {
+                rules : [
+                    {
+                        test,
+                        use
+                    }
+                ]
+            },
+            devtool : "source-map",
+            plugins : [
+                new Plugin({
+                    namer,
+                    css : "./simple.css",
+                    map : true
+                })
+            ]
+        }, (err, stats) => {
+            success(err, stats);
+
+            expect(read("simple.css")).toMatchSnapshot();
 
             done();
         });
