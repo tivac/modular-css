@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="8.0.3"></a>
+## [8.0.3](https://github.com/tivac/modular-css/compare/v8.0.2...v8.0.3) (2018-02-21)
+
+
+### Bug Fixes
+
+* webpack inline maps should work ([#406](https://github.com/tivac/modular-css/issues/406)) ([f396866](https://github.com/tivac/modular-css/commit/f396866))
+
+
+
+
 <a name="8.0.2"></a>
 ## [8.0.2](https://github.com/tivac/modular-css/compare/v8.0.0...v8.0.2) (2018-02-16)
 

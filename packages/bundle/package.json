@@ -1,6 +1,6 @@
 {
   "name": "modular-css",
-  "version": "8.0.2",
+  "version": "8.0.3",
   "description": "A streamlined reinterpretation of CSS Modules",
   "main": "./index.js",
   "bin": "./cli.js",
@@ -33,7 +33,7 @@
     "modular-css-core": "^8.0.0",
     "modular-css-glob": "^8.0.0",
     "modular-css-rollup": "^8.0.2",
-    "modular-css-webpack": "^8.0.2",
+    "modular-css-webpack": "^8.0.3",
     "modular-cssify": "^8.0.2",
     "postcss-modular-css": "^8.0.0"
   }
