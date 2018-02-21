@@ -7,11 +7,11 @@
 
 ## Usage
 
-Instantiate a new `Processor` instance, call it's `.file(<path>)` or `.string(<name>, <contents>)` methods, and then use the returned Promise to get access to the results/output.
+Instantiate a new `Processor` instance, call `.file(<path>)` or `.string(<name>, <contents>)` methods, and then use the returned Promise to get access to the results/output.
 
 ```js
-var Processor = require("modular-css"),
-    processor = new Processor({
+const Processor = require("modular-css");
+const processor = new Processor({
         // See "API Options" for valid options to pass to the Processor constructor
     });
 
@@ -39,40 +39,6 @@ Promise.all([
 ```
 
 ## Options
-
-### `before`
-
-Specify an array of PostCSS plugins to be run against each file before it is processed.
-
-```js
-new Processor({
-    before : [ require("postcss-import") ]
-});
-```
-
-### `after`
-
-Specify an array of PostCSS plugins to be run after files are processed, but before they are combined. Plugin will be passed a `to` and `from` option.
-
-**Default**: `[]`
-
-:warning: [`postcss-url`](https://www.npmjs.com/package/postcss-url) automatically runs after any plugins defined in the `after` hook. To disable it use the [`rewrite`](#rewrite) option.
-
-```js
-new Processor({
-    after : [ require("postcss-someplugin") ]
-});
-```
-
-### `done`
-
-Specify an array of PostCSS plugins to be run against the complete combined CSS.
-
-```js
-new Processor({
-    done : [ require("cssnano")()]
-});
-```
 
 ### `rewrite`
 
@@ -203,6 +169,56 @@ new Processor({
     "a" : "mc12345_a"
 }
 */
+```
+
+### Lifecycle Hooks
+
+For more information on the intended uses of the Lifecycle Hooks, see [Extending `modular-css`](extending.md).
+
+#### `before`
+
+Specify an array of PostCSS plugins to be run against each file before it is processed. Plugin will be passed a `from` option.
+
+```js
+new Processor({
+    before : [ require("postcss-import") ]
+});
+```
+
+#### `processing`
+
+Specify an array of PostCSS plugins to be run against each file during processing. Plugin will be passed a `from` option.
+
+```js
+new Processor({
+    processing : [ require("postcss-import") ]
+});
+```
+
+Plugins run during the `processing` stage can manipulate the object exported by the CSS file, see the [extending docs](#processing) for an example.
+
+#### `after`
+
+Specify an array of PostCSS plugins to be run after files are processed, but before they are combined. Plugin will be passed a `to` and `from` option.
+
+**Default**: `[]`
+
+:warning: [`postcss-url`](https://www.npmjs.com/package/postcss-url) automatically runs after any plugins defined in the `after` hook. To disable it use the [`rewrite`](#rewrite) option.
+
+```js
+new Processor({
+    after : [ require("postcss-someplugin") ]
+});
+```
+
+#### `done`
+
+Specify an array of PostCSS plugins to be run against the complete combined CSS. Plugin will be passed a `to` option.
+
+```js
+new Processor({
+    done : [ require("cssnano")()]
+});
 ```
 
 ## Properties
