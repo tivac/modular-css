@@ -1,6 +1,6 @@
 {
   "name": "modular-cssify",
-  "version": "8.0.2",
+  "version": "8.1.0",
   "description": "Browserify transform for modular-css",
   "main": "./browserify.js",
   "repository": "tivac/modular-css",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "mkdirp": "^0.5.1",
-    "modular-css-core": "^8.0.0",
+    "modular-css-core": "^8.1.0",
     "p-each-series": "^1.0.0",
     "sink-transform": "^2.0.0",
     "through2": "^2.0.3"

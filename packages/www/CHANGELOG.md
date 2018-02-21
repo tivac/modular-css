@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="8.1.0"></a>
+# [8.1.0](https://github.com/tivac/modular-css/compare/v8.0.3...v8.1.0) (2018-02-21)
+
+
+
+
+**Note:** Version bump only for package www
+
 <a name="8.0.3"></a>
 ## [8.0.3](https://github.com/tivac/modular-css/compare/v8.0.2...v8.0.3) (2018-02-21)
 
