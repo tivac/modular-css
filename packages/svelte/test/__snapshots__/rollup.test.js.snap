@@ -193,7 +193,6 @@ var proto = {
 };
 
 
-
 function create_main_fragment(state, component) {
 	var div, h1, text_1, div_1, p, p_class_value;
 

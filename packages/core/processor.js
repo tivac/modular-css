@@ -72,6 +72,7 @@ function Processor(opts) {
     
     this._before = postcss((this._options.before || []).concat(
         require("./plugins/values-local.js"),
+        require("./plugins/values-cssvar.js"),
         require("./plugins/values-export.js"),
         require("./plugins/values-replace.js"),
         require("./plugins/graph-nodes.js")
