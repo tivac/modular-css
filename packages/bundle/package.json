@@ -1,6 +1,6 @@
 {
   "name": "modular-css",
-  "version": "8.1.0",
+  "version": "8.1.1",
   "description": "A streamlined reinterpretation of CSS Modules",
   "main": "./index.js",
   "repository": "tivac/modular-css",
