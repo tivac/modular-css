@@ -243,6 +243,57 @@ describe("/processor.js", () => {
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
             });
+
+            describe("processing", () => {
+                it("should run sync postcss plugins processing processing", () => {
+                    var processor = new Processor({
+                            namer,
+                            processing : [ sync ]
+                        });
+
+                    return processor.string(
+                        "packages/core/test/specimens/sync-processing.css",
+                        ""
+                    )
+                    .then(() => processor.output({ from : "packages/core/test/specimens/sync-processing.css" }))
+                    .then((result) => expect(result.css).toMatchSnapshot());
+                });
+
+                it("should run async postcss plugins processing processing", () => {
+                    var processor = new Processor({
+                            namer,
+                            processing : [ async ]
+                        });
+
+                    return processor.string(
+                        "packages/core/test/specimens/async-processing.css",
+                        ""
+                    )
+                    .then(() => processor.output({ from : "packages/core/test/specimens/sync-processing.css" }))
+                    .then((result) => expect(result.css).toMatchSnapshot());
+                });
+
+                it("should include exports from 'modular-css-export' modules", () => {
+                    var processor = new Processor({
+                            namer,
+                            processing : [ (css, result) => {
+                                result.messages.push({
+                                    plugin  : "modular-css-exporter",
+                                    exports : {
+                                        a : true,
+                                        b : false
+                                    }
+                                });
+                            } ]
+                        });
+
+                    return processor.string(
+                        "packages/core/test/specimens/async-processing.css",
+                        ""
+                    )
+                    .then((file) => expect(file.exports).toMatchSnapshot());
+                });
+            });
             
             describe("after", () => {
                 it("should use postcss-url by default", () => {

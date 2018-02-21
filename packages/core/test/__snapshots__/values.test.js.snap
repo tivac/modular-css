@@ -41,15 +41,9 @@ Object {
   "fooga": Array [
     "fooga",
   ],
-  "local": Array [
-    "'./local.css'",
-  ],
-  "o": Array [
-    "red",
-  ],
-  "one": Array [
-    "red",
-  ],
+  "local": "'./local.css'",
+  "o": "red",
+  "one": "red",
 }
 `;
 
