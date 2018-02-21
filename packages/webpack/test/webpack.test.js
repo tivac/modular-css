@@ -12,6 +12,8 @@ var fs   = require("fs"),
     
     Plugin  = require("../plugin.js"),
 
+    records = path.join(__dirname, "__snapshots__"),
+
     use  = require.resolve("../loader.js"),
     test = /\.css$/;
 
@@ -33,8 +35,9 @@ describe("/webpack.js", () => {
 
     it("should output css to disk", (done) => {
         webpack({
-            entry  : "./packages/webpack/test/specimens/simple.js",
-            output : {
+            entry       : "./packages/webpack/test/specimens/simple.js",
+            recordsPath : path.join(records, "/simple.json"),
+            output      : {
                 path     : output,
                 filename : "./simple.js"
             },
@@ -64,8 +67,9 @@ describe("/webpack.js", () => {
 
     it("should output json to disk", (done) => {
         webpack({
-            entry  : "./packages/webpack/test/specimens/simple.js",
-            output : {
+            entry       : "./packages/webpack/test/specimens/simple.js",
+            recordsPath : path.join(records, "/simple.json"),
+            output      : {
                 path     : output,
                 filename : "./simple.js"
             },
@@ -82,7 +86,7 @@ describe("/webpack.js", () => {
                     namer,
                     json : "./simple.json"
                 })
-            ]
+            ],
         }, (err, stats) => {
             success(err, stats);
 
@@ -95,8 +99,9 @@ describe("/webpack.js", () => {
 
     it("should output inline source maps", (done) => {
         webpack({
-            entry  : "./packages/webpack/test/specimens/simple.js",
-            output : {
+            entry       : "./packages/webpack/test/specimens/simple.js",
+            recordsPath : path.join(records, "/simple.json"),
+            output      : {
                 path     : output,
                 filename : "./simple.js"
             },
@@ -115,7 +120,7 @@ describe("/webpack.js", () => {
                     css : "./simple.css",
                     map : true
                 })
-            ]
+            ],
         }, (err, stats) => {
             success(err, stats);
 
@@ -127,8 +132,9 @@ describe("/webpack.js", () => {
 
     it("should output external source maps to disk", (done) => {
         webpack({
-            entry  : "./packages/webpack/test/specimens/simple.js",
-            output : {
+            entry       : "./packages/webpack/test/specimens/simple.js",
+            recordsPath : path.join(records, "/simple.json"),
+            output      : {
                 path     : output,
                 filename : "./simple.js"
             },
@@ -149,7 +155,7 @@ describe("/webpack.js", () => {
                         inline : false
                     }
                 })
-            ]
+            ],
         }, (err, stats) => {
             success(err, stats);
 
@@ -161,8 +167,9 @@ describe("/webpack.js", () => {
 
     it("should report errors", (done) => {
         webpack({
-            entry  : "./packages/webpack/test/specimens/invalid.js",
-            output : {
+            entry       : "./packages/webpack/test/specimens/invalid.js",
+            recordsPath : path.join(records, "/invalid.json"),
+            output      : {
                 path     : output,
                 filename : "./invalid.js"
             },
@@ -178,7 +185,7 @@ describe("/webpack.js", () => {
                 new Plugin({
                     namer
                 })
-            ]
+            ],
         }, (err, stats) => {
             expect(stats.hasErrors()).toBeTruthy();
 
@@ -190,8 +197,9 @@ describe("/webpack.js", () => {
 
     it("should report warnings on invalid property names", (done) => {
         webpack({
-            entry  : "./packages/webpack/test/specimens/invalid-name.js",
-            output : {
+            entry       : "./packages/webpack/test/specimens/invalid-name.js",
+            recordsPath : path.join(records, "/name.json"),
+            output      : {
                 path     : output,
                 filename : "./invalid-name.js"
             },
@@ -207,7 +215,7 @@ describe("/webpack.js", () => {
                 new Plugin({
                     namer
                 })
-            ]
+            ],
         }, (err, stats) => {
             expect(stats.hasWarnings()).toBeTruthy();
 
@@ -219,8 +227,9 @@ describe("/webpack.js", () => {
 
     it("should handle dependencies", (done) => {
         webpack({
-            entry  : "./packages/webpack/test/specimens/start.js",
-            output : {
+            entry       : "./packages/webpack/test/specimens/start.js",
+            recordsPath : path.join(records, "/start.json"),
+            output      : {
                 path     : output,
                 filename : "./start.js"
             },
@@ -238,7 +247,7 @@ describe("/webpack.js", () => {
                     css  : "./start.css",
                     json : "./start.json"
                 })
-            ]
+            ],
         }, (err, stats) => {
             success(err, stats);
 
@@ -252,8 +261,9 @@ describe("/webpack.js", () => {
 
     it("should support ES2015 default exports", (done) => {
         webpack({
-            entry  : "./packages/webpack/test/specimens/es2015-default.js",
-            output : {
+            entry       : "./packages/webpack/test/specimens/es2015-default.js",
+            recordsPath : path.join(records, "/default.json"),
+            output      : {
                 path     : output,
                 filename : "./es2015-default.js"
             },
@@ -270,7 +280,7 @@ describe("/webpack.js", () => {
                     namer,
                     css : "./es2015-default.css"
                 })
-            ]
+            ],
         }, (err, stats) => {
             success(err, stats);
 
@@ -283,8 +293,9 @@ describe("/webpack.js", () => {
 
     it("should support ES2015 named exports", (done) => {
         webpack({
-            entry  : "./packages/webpack/test/specimens/es2015-named.js",
-            output : {
+            entry       : "./packages/webpack/test/specimens/es2015-named.js",
+            recordsPath : path.join(records, "/named.json"),
+            output      : {
                 path     : output,
                 filename : "./es2015-named.js"
             },
@@ -301,7 +312,7 @@ describe("/webpack.js", () => {
                     namer,
                     css : "./es2015-named.css"
                 })
-            ]
+            ],
         }, (err, stats) => {
             success(err, stats);
 
@@ -314,8 +325,9 @@ describe("/webpack.js", () => {
 
     it("should warn about using the cjs option & disable namedExports", (done) => {
         webpack({
-            entry  : "./packages/webpack/test/specimens/simple.js",
-            output : {
+            entry       : "./packages/webpack/test/specimens/simple.js",
+            recordsPath : path.join(records, "/simple.json"),
+            output      : {
                 path     : output,
                 filename : "./simple.js"
             },
@@ -338,7 +350,7 @@ describe("/webpack.js", () => {
                     css : "./simple.css",
                     cjs : true
                 })
-            ]
+            ],
         }, (err, stats) => {
             success(err, stats);
 
@@ -354,8 +366,9 @@ describe("/webpack.js", () => {
 
     it("should support disabling namedExports when the option is set", (done) => {
         webpack({
-            entry  : "./packages/webpack/test/specimens/simple.js",
-            output : {
+            entry       : "./packages/webpack/test/specimens/simple.js",
+            recordsPath : path.join(records, "/simple.json"),
+            output      : {
                 path     : output,
                 filename : "./simple.js"
             },
@@ -377,7 +390,7 @@ describe("/webpack.js", () => {
                     namer,
                     css : "./simple.css"
                 })
-            ]
+            ],
         }, (err, stats) => {
             success(err, stats);
 
@@ -398,8 +411,9 @@ describe("/webpack.js", () => {
         );
 
         compiler = webpack({
-            entry  : require.resolve("./specimens/watch.js"),
-            output : {
+            entry       : require.resolve("./specimens/watch.js"),
+            recordsPath : path.join(records, "/watch.json"),
+            output      : {
                 path     : output,
                 filename : "./watching.js"
             },
@@ -417,7 +431,7 @@ describe("/webpack.js", () => {
                     css : "./watching.css"
                 })
             ],
-            watch : true
+            watch : true,
         });
 
         compiler.plugin("watch-close", () => {
@@ -459,8 +473,9 @@ describe("/webpack.js", () => {
         }
 
         compiler = webpack({
-            entry  : "./packages/webpack/test/specimens/change.js",
-            output : {
+            entry       : "./packages/webpack/test/specimens/change.js",
+            recordsPath : path.join(records, "/change.json"),
+            output      : {
                 path     : output,
                 filename : "./changing.js"
             },
@@ -477,7 +492,7 @@ describe("/webpack.js", () => {
                     namer,
                     css : "./changing.css"
                 })
-            ]
+            ],
         });
         
         // Create v1 of the file

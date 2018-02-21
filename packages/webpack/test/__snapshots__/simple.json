@@ -1,0 +1,23 @@
+{
+  "modules": {
+    "byIdentifier": {
+      "packages/webpack/test/specimens/simple.js": 0,
+      "packages/webpack/loader.js!packages/webpack/test/specimens/simple.css": 1,
+      "packages/webpack/loader.js??ref--0!packages/webpack/test/specimens/simple.css": 2
+    },
+    "usedIds": {
+      "0": 0,
+      "1": 1,
+      "2": 2
+    }
+  },
+  "chunks": {
+    "byName": {
+      "main": 0
+    },
+    "byBlocks": {},
+    "usedIds": {
+      "0": 0
+    }
+  }
+}

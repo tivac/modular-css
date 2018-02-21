@@ -1,0 +1,21 @@
+{
+  "modules": {
+    "byIdentifier": {
+      "packages/webpack/test/specimens/invalid-name.js": 0,
+      "packages/webpack/loader.js!packages/webpack/test/specimens/invalid-name.css": 1
+    },
+    "usedIds": {
+      "0": 0,
+      "1": 1
+    }
+  },
+  "chunks": {
+    "byName": {
+      "main": 0
+    },
+    "byBlocks": {},
+    "usedIds": {
+      "0": 0
+    }
+  }
+}
