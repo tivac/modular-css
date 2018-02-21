@@ -87,7 +87,7 @@ function Processor(opts) {
         require("./plugins/externals.js"),
         require("./plugins/composition.js"),
         require("./plugins/keyframes.js")
-    ].concat(this._options.during || []));
+    ].concat(this._options.processing || []));
     
     this._after = postcss(this._options.after || []);
     

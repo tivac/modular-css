@@ -244,39 +244,39 @@ describe("/processor.js", () => {
                 });
             });
 
-            describe("during", () => {
-                it("should run sync postcss plugins during processing", () => {
+            describe("processing", () => {
+                it("should run sync postcss plugins processing processing", () => {
                     var processor = new Processor({
                             namer,
-                            during : [ sync ]
+                            processing : [ sync ]
                         });
 
                     return processor.string(
-                        "packages/core/test/specimens/sync-during.css",
+                        "packages/core/test/specimens/sync-processing.css",
                         ""
                     )
-                    .then(() => processor.output({ from : "packages/core/test/specimens/sync-during.css" }))
+                    .then(() => processor.output({ from : "packages/core/test/specimens/sync-processing.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
 
-                it("should run async postcss plugins during processing", () => {
+                it("should run async postcss plugins processing processing", () => {
                     var processor = new Processor({
                             namer,
-                            during : [ async ]
+                            processing : [ async ]
                         });
 
                     return processor.string(
-                        "packages/core/test/specimens/async-during.css",
+                        "packages/core/test/specimens/async-processing.css",
                         ""
                     )
-                    .then(() => processor.output({ from : "packages/core/test/specimens/sync-during.css" }))
+                    .then(() => processor.output({ from : "packages/core/test/specimens/sync-processing.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
 
                 it("should include exports from 'modular-css-export' modules", () => {
                     var processor = new Processor({
                             namer,
-                            during : [ (css, result) => {
+                            processing : [ (css, result) => {
                                 result.messages.push({
                                     plugin  : "modular-css-exporter",
                                     exports : {
@@ -288,7 +288,7 @@ describe("/processor.js", () => {
                         });
 
                     return processor.string(
-                        "packages/core/test/specimens/async-during.css",
+                        "packages/core/test/specimens/async-processing.css",
                         ""
                     )
                     .then((file) => expect(file.exports).toMatchSnapshot());
