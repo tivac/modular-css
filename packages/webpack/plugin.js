@@ -78,8 +78,8 @@ ModularCSS.prototype.apply = function(compiler) {
                         data.css
                     );
                 
-                // TODO: This is hacky beyond belief...
-                if(this.options.map && !this.options.map.inline) {
+                // Write out external source map if it exists
+                if(data.map) {
                     compilation.assets[`${this.options.css}.map`] = new sources.RawSource(
                         data.map.toString()
                     );
@@ -94,6 +94,7 @@ ModularCSS.prototype.apply = function(compiler) {
 
             return done();
         })
+        .catch(done)
     );
 };
 
