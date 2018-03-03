@@ -13,7 +13,6 @@ matrix:
 
 install:
 - npm ci
-- lerna exec "npm ci"
 
 script:
 - npm test -- --coverage --verbose --ci
