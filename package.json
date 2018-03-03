@@ -13,7 +13,6 @@
     "precommit": "lint-staged",
     "commitmsg": "commitlint --edit",
     "cover": "jest --coverage",
-    "postinstall": "lerna bootstrap --hoist",
     "lint": "eslint .",
     "prerelease": "npm test",
     "release": "lerna publish",
