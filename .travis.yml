@@ -13,8 +13,10 @@ matrix:
 
 install:
 - npm ci
+- lerna exec "npm ci"
 
-script: npm test -- --coverage --verbose --ci
+script:
+- npm test -- --coverage --verbose --ci
 
 # Disabling because danger seems broken atm?
 # after_script:
