@@ -22,7 +22,7 @@
   "devDependencies": {
     "cssnano": "^4.0.0-rc.1",
     "pegjs": "^0.10.0",
-    "test-utils": "^8.0.0"
+    "test-utils": "file:../test-utils"
   },
   "dependencies": {
     "dependency-graph": "^0.6.0",

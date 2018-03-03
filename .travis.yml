@@ -11,8 +11,16 @@ node_js:
 matrix:
   fast_finish: true
 
+install:
+- npm ci
+
 script: npm test -- --coverage --verbose --ci
 
 # Disabling because danger seems broken atm?
 # after_script:
 # - npm run danger
+
+# keep the npm cache around to speed up installs
+cache:
+  directories:
+  - "$HOME/.npm"

@@ -19,12 +19,12 @@
   ],
   "devDependencies": {
     "rollup": "^0.56.1",
-    "test-utils": "^8.0.0"
+    "test-utils": "file:../test-utils"
   },
   "dependencies": {
     "esutils": "^2.0.2",
     "mkdirp": "^0.5.1",
-    "modular-css-core": "^8.1.0",
+    "modular-css-core": "file:../core",
     "rollup-pluginutils": "^2.0.1"
   }
 }

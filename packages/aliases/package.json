@@ -18,8 +18,8 @@
   ],
   "devDependencies": {
     "dentist": "^1.0.3",
-    "modular-css-core": "^8.1.0",
-    "test-utils": "^8.0.0"
+    "modular-css-core": "file:../core",
+    "test-utils": "file:../test-utils"
   },
   "dependencies": {
     "resolve-from": "^4.0.0"
