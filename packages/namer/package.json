@@ -3,9 +3,9 @@
   "version": "8.0.0",
   "description": "Helper function to make tiny classnames for modular-css",
   "main": "index.js",
-  "repository": "tivac/modular-css-namer",
+  "repository": "tivac/modular-css",
   "bugs": {
-    "url": "https://github.com/tivac/modular-css-namer/issues"
+    "url": "https://github.com/tivac/modular-css/issues"
   },
   "keywords": [
     "modular-css",
