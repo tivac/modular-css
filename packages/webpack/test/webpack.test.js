@@ -251,34 +251,22 @@ describe("/webpack.js", () => {
         // wrap compiler.run in a promise for easier chaining
         function run() {
             return new Promise((resolve, reject) =>
-                compiler.run((err, stats) =>
-                    (stats.hasErrors() ? reject(stats) : resolve(stats))
-                )
+                compiler.run((err, stats) => {
+                    if(stats.hasErrors()) {
+                        return reject(stats);
+                    }
+                    
+                    expect(read("output.js")).toMatchSnapshot();
+                    expect(read("output.css")).toMatchSnapshot();
+                    
+                    return resolve(stats);
+                })
             );
         }
 
-        compiler = webpack({
-            entry       : "./packages/webpack/test/specimens/change.js",
-            recordsPath : path.join(records, "/change.json"),
-            output      : {
-                path     : output,
-                filename : "./changing.js"
-            },
-            module : {
-                rules : [
-                    {
-                        test,
-                        use
-                    }
-                ]
-            },
-            plugins : [
-                new Plugin({
-                    namer,
-                    css : "./changing.css"
-                })
-            ],
-        });
+        compiler = webpack(config({
+            entry : "./packages/webpack/test/specimens/change.js",
+        }));
         
         // Create v1 of the file
         fs.writeFileSync(changed, ".one { color: red; }");
@@ -286,18 +274,12 @@ describe("/webpack.js", () => {
         // Run webpack the first time
         return run()
             .then(() => {
-                expect(read("changing.js")).toMatchSnapshot();
-                expect(read("changing.css")).toMatchSnapshot();
-            
                 // v2 of the file
                 fs.writeFileSync(changed, ".two { color: blue; }");
 
                 return run();
             })
             .then(() => {
-                expect(read("changing.js")).toMatchSnapshot();
-                expect(read("changing.css")).toMatchSnapshot();
-
                 fs.unlinkSync(changed);
 
                 return run();
@@ -309,10 +291,6 @@ describe("/webpack.js", () => {
                 fs.writeFileSync(changed, ".three { color: green; }");
 
                 return run();
-            })
-            .then(() => {
-                expect(read("changing.js")).toMatchSnapshot();
-                expect(read("changing.css")).toMatchSnapshot();
             });
     });
 });
