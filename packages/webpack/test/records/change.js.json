@@ -1,0 +1,21 @@
+{
+  "modules": {
+    "byIdentifier": {
+      "packages/webpack/loader.js!packages/webpack/test/output/changed.css": "./packages/webpack/test/output/changed.css",
+      "packages/webpack/test/specimens/change.js": "./packages/webpack/test/specimens/change.js"
+    },
+    "usedIds": {
+      "./packages/webpack/test/output/changed.css": "./packages/webpack/test/output/changed.css",
+      "./packages/webpack/test/specimens/change.js": "./packages/webpack/test/specimens/change.js"
+    }
+  },
+  "chunks": {
+    "byName": {
+      "main": "main"
+    },
+    "bySource": {},
+    "usedIds": [
+      "main"
+    ]
+  }
+}

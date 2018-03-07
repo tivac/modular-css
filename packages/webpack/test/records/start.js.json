@@ -1,0 +1,21 @@
+{
+  "modules": {
+    "byIdentifier": {
+      "packages/webpack/loader.js!packages/webpack/test/specimens/start.css": "./packages/webpack/test/specimens/start.css",
+      "packages/webpack/test/specimens/start.js": "./packages/webpack/test/specimens/start.js"
+    },
+    "usedIds": {
+      "./packages/webpack/test/specimens/start.css": "./packages/webpack/test/specimens/start.css",
+      "./packages/webpack/test/specimens/start.js": "./packages/webpack/test/specimens/start.js"
+    }
+  },
+  "chunks": {
+    "byName": {
+      "main": "main"
+    },
+    "bySource": {},
+    "usedIds": [
+      "main"
+    ]
+  }
+}

@@ -47,6 +47,11 @@ exports[`/webpack.js should generate correct builds in watch mode when files cha
 /******/ 		}
 /******/ 	};
 /******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -62,35 +67,38 @@ exports[`/webpack.js should generate correct builds in watch mode when files cha
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = \\"./packages/webpack/test/specimens/watch.js\\");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ \\"./packages/webpack/test/output/watched.css\\":
+/*!**************************************************!*\\\\
+  !*** ./packages/webpack/test/output/watched.css ***!
+  \\\\**************************************************/
+/*! exports provided: default, one */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__output_watched_css__ = __webpack_require__(1);
-
-
-console.log(__WEBPACK_IMPORTED_MODULE_0__output_watched_css__[\\"a\\" /* default */]);
-
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"one\\\\\\", function() { return one; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"one\\\\\\": \\\\\\"one\\\\\\"\\\\n});\\\\nvar one = \\\\\\"one\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/output/watched.css?\\");
 
 /***/ }),
-/* 1 */
+
+/***/ \\"./packages/webpack/test/specimens/watch.js\\":
+/*!**************************************************!*\\\\
+  !*** ./packages/webpack/test/specimens/watch.js ***!
+  \\\\**************************************************/
+/*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-/* unused harmony export one */
-/* harmony default export */ __webpack_exports__[\\"a\\"] = ({
-    \\"one\\": \\"one\\"
-});
-var one = \\"one\\";
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony import */ var _output_watched_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../output/watched.css */ \\\\\\"./packages/webpack/test/output/watched.css\\\\\\");\\\\n\\\\n\\\\nconsole.log(_output_watched_css__WEBPACK_IMPORTED_MODULE_0__[\\\\\\"default\\\\\\"]);\\\\n\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/watch.js?\\");
 
 /***/ })
-/******/ ]);"
+
+/******/ });"
 `;
 
 exports[`/webpack.js should generate correct builds in watch mode when files change 2`] = `
@@ -145,6 +153,11 @@ exports[`/webpack.js should generate correct builds in watch mode when files cha
 /******/ 		}
 /******/ 	};
 /******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -160,35 +173,38 @@ exports[`/webpack.js should generate correct builds in watch mode when files cha
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = \\"./packages/webpack/test/specimens/watch.js\\");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ \\"./packages/webpack/test/output/watched.css\\":
+/*!**************************************************!*\\\\
+  !*** ./packages/webpack/test/output/watched.css ***!
+  \\\\**************************************************/
+/*! exports provided: default, two */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__output_watched_css__ = __webpack_require__(1);
-
-
-console.log(__WEBPACK_IMPORTED_MODULE_0__output_watched_css__[\\"a\\" /* default */]);
-
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"two\\\\\\", function() { return two; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"two\\\\\\": \\\\\\"two\\\\\\"\\\\n});\\\\nvar two = \\\\\\"two\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/output/watched.css?\\");
 
 /***/ }),
-/* 1 */
+
+/***/ \\"./packages/webpack/test/specimens/watch.js\\":
+/*!**************************************************!*\\\\
+  !*** ./packages/webpack/test/specimens/watch.js ***!
+  \\\\**************************************************/
+/*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-/* unused harmony export two */
-/* harmony default export */ __webpack_exports__[\\"a\\"] = ({
-    \\"two\\": \\"two\\"
-});
-var two = \\"two\\";
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony import */ var _output_watched_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../output/watched.css */ \\\\\\"./packages/webpack/test/output/watched.css\\\\\\");\\\\n\\\\n\\\\nconsole.log(_output_watched_css__WEBPACK_IMPORTED_MODULE_0__[\\\\\\"default\\\\\\"]);\\\\n\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/watch.js?\\");
 
 /***/ })
-/******/ ]);"
+
+/******/ });"
 `;
 
 exports[`/webpack.js should generate correct builds in watch mode when files change 4`] = `
@@ -537,6 +553,11 @@ exports[`/webpack.js should handle dependencies 1`] = `
 /******/ 		}
 /******/ 	};
 /******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -552,46 +573,37 @@ exports[`/webpack.js should handle dependencies 1`] = `
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = \\"./packages/webpack/test/specimens/start.js\\");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/******/ ({
 
-__webpack_require__(1);
-
-
-/***/ }),
-/* 1 */
+/***/ \\"./packages/webpack/test/specimens/start.css\\":
+/*!***************************************************!*\\\\
+  !*** ./packages/webpack/test/specimens/start.css ***!
+  \\\\***************************************************/
+/*! exports provided: default, one, two, folder, wooga, booga, tooga */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"one\\", function() { return one; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"two\\", function() { return two; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"folder\\", function() { return folder; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"wooga\\", function() { return wooga; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"booga\\", function() { return booga; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"tooga\\", function() { return tooga; });
-/* harmony default export */ __webpack_exports__[\\"default\\"] = ({
-    \\"one\\": \\"red\\",
-    \\"two\\": \\"blue\\",
-    \\"folder\\": \\"white\\",
-    \\"wooga\\": \\"booga wooga\\",
-    \\"booga\\": \\"booga\\",
-    \\"tooga\\": \\"tooga\\"
-});
-var one = \\"red\\";
-var two = \\"blue\\";
-var folder = \\"white\\";
-var wooga = \\"booga wooga\\";
-var booga = \\"booga\\";
-var tooga = \\"tooga\\";
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"one\\\\\\", function() { return one; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"two\\\\\\", function() { return two; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"folder\\\\\\", function() { return folder; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"wooga\\\\\\", function() { return wooga; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"booga\\\\\\", function() { return booga; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"tooga\\\\\\", function() { return tooga; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"one\\\\\\": \\\\\\"red\\\\\\",\\\\n    \\\\\\"two\\\\\\": \\\\\\"blue\\\\\\",\\\\n    \\\\\\"folder\\\\\\": \\\\\\"white\\\\\\",\\\\n    \\\\\\"wooga\\\\\\": \\\\\\"booga wooga\\\\\\",\\\\n    \\\\\\"booga\\\\\\": \\\\\\"booga\\\\\\",\\\\n    \\\\\\"tooga\\\\\\": \\\\\\"tooga\\\\\\"\\\\n});\\\\nvar one = \\\\\\"red\\\\\\";\\\\nvar two = \\\\\\"blue\\\\\\";\\\\nvar folder = \\\\\\"white\\\\\\";\\\\nvar wooga = \\\\\\"booga wooga\\\\\\";\\\\nvar booga = \\\\\\"booga\\\\\\";\\\\nvar tooga = \\\\\\"tooga\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/start.css?\\");
+
+/***/ }),
+
+/***/ \\"./packages/webpack/test/specimens/start.js\\":
+/*!**************************************************!*\\\\
+  !*** ./packages/webpack/test/specimens/start.js ***!
+  \\\\**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval(\\"__webpack_require__(/*! ./start.css */ \\\\\\"./packages/webpack/test/specimens/start.css\\\\\\");\\\\n\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/start.js?\\");
 
 /***/ })
-/******/ ]);"
+
+/******/ });"
 `;
 
 exports[`/webpack.js should handle dependencies 2`] = `
@@ -675,6 +687,11 @@ exports[`/webpack.js should output css to disk 1`] = `
 /******/ 		}
 /******/ 	};
 /******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -690,31 +707,37 @@ exports[`/webpack.js should output css to disk 1`] = `
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = \\"./packages/webpack/test/specimens/simple.js\\");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/******/ ({
 
-__webpack_require__(1);
-
-
-/***/ }),
-/* 1 */
+/***/ \\"./packages/webpack/test/specimens/simple.css\\":
+/*!****************************************************!*\\\\
+  !*** ./packages/webpack/test/specimens/simple.css ***!
+  \\\\****************************************************/
+/*! exports provided: default, wooga */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"wooga\\", function() { return wooga; });
-/* harmony default export */ __webpack_exports__[\\"default\\"] = ({
-    \\"wooga\\": \\"wooga\\"
-});
-var wooga = \\"wooga\\";
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"wooga\\\\\\", function() { return wooga; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"wooga\\\\\\": \\\\\\"wooga\\\\\\"\\\\n});\\\\nvar wooga = \\\\\\"wooga\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/simple.css?\\");
+
+/***/ }),
+
+/***/ \\"./packages/webpack/test/specimens/simple.js\\":
+/*!***************************************************!*\\\\
+  !*** ./packages/webpack/test/specimens/simple.js ***!
+  \\\\***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval(\\"__webpack_require__(/*! ./simple.css */ \\\\\\"./packages/webpack/test/specimens/simple.css\\\\\\");\\\\n\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/simple.js?\\");
 
 /***/ })
-/******/ ]);"
+
+/******/ });"
 `;
 
 exports[`/webpack.js should output css to disk 2`] = `
@@ -723,13 +746,13 @@ exports[`/webpack.js should output css to disk 2`] = `
 "
 `;
 
-exports[`/webpack.js should output external source maps to disk 1`] = `"{\\"version\\":3,\\"sources\\":[\\"packages/webpack/test/specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,gDAAC;AAAD,SAAS,WAAW,EAAE\\",\\"file\\":\\"simple.css\\",\\"sourcesContent\\":[\\".wooga { color: red; }\\\\n\\"]}"`;
+exports[`/webpack.js should output external source maps to disk 1`] = `"{\\"version\\":3,\\"sources\\":[\\"packages/webpack/test/specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,gDAAC;AAAD,SAAS,WAAW,EAAE\\",\\"file\\":\\"output.css\\",\\"sourcesContent\\":[\\".wooga { color: red; }\\\\n\\"]}"`;
 
 exports[`/webpack.js should output inline source maps 1`] = `
 "/* packages/webpack/test/specimens/simple.css */
 .wooga { color: red; }
 
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3dlYnBhY2svdGVzdC9zcGVjaW1lbnMvc2ltcGxlLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxnREFBQztBQUFELFNBQVMsV0FBVyxFQUFFIiwiZmlsZSI6InNpbXBsZS5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIud29vZ2EgeyBjb2xvcjogcmVkOyB9XG4iXX0= */"
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3dlYnBhY2svdGVzdC9zcGVjaW1lbnMvc2ltcGxlLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxnREFBQztBQUFELFNBQVMsV0FBVyxFQUFFIiwiZmlsZSI6Im91dHB1dC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIud29vZ2EgeyBjb2xvcjogcmVkOyB9XG4iXX0= */"
 `;
 
 exports[`/webpack.js should output json to disk 1`] = `
@@ -779,6 +802,11 @@ exports[`/webpack.js should output json to disk 1`] = `
 /******/ 		}
 /******/ 	};
 /******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -794,31 +822,37 @@ exports[`/webpack.js should output json to disk 1`] = `
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = \\"./packages/webpack/test/specimens/simple.js\\");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/******/ ({
 
-__webpack_require__(1);
-
-
-/***/ }),
-/* 1 */
+/***/ \\"./packages/webpack/test/specimens/simple.css\\":
+/*!****************************************************!*\\\\
+  !*** ./packages/webpack/test/specimens/simple.css ***!
+  \\\\****************************************************/
+/*! exports provided: default, wooga */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"wooga\\", function() { return wooga; });
-/* harmony default export */ __webpack_exports__[\\"default\\"] = ({
-    \\"wooga\\": \\"wooga\\"
-});
-var wooga = \\"wooga\\";
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"wooga\\\\\\", function() { return wooga; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"wooga\\\\\\": \\\\\\"wooga\\\\\\"\\\\n});\\\\nvar wooga = \\\\\\"wooga\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/simple.css?\\");
+
+/***/ }),
+
+/***/ \\"./packages/webpack/test/specimens/simple.js\\":
+/*!***************************************************!*\\\\
+  !*** ./packages/webpack/test/specimens/simple.js ***!
+  \\\\***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval(\\"__webpack_require__(/*! ./simple.css */ \\\\\\"./packages/webpack/test/specimens/simple.css\\\\\\");\\\\n\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/simple.js?\\");
 
 /***/ })
-/******/ ]);"
+
+/******/ });"
 `;
 
 exports[`/webpack.js should output json to disk 2`] = `
@@ -876,6 +910,11 @@ exports[`/webpack.js should support ES2015 default exports 1`] = `
 /******/ 		}
 /******/ 	};
 /******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -891,41 +930,38 @@ exports[`/webpack.js should support ES2015 default exports 1`] = `
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = \\"./packages/webpack/test/specimens/es2015-default.js\\");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ \\"./packages/webpack/test/specimens/es2015-default.js\\":
+/*!***********************************************************!*\\\\
+  !*** ./packages/webpack/test/specimens/es2015-default.js ***!
+  \\\\***********************************************************/
+/*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__es2015_css__ = __webpack_require__(1);
-
-
-console.log(__WEBPACK_IMPORTED_MODULE_0__es2015_css__[\\"a\\" /* default */]);
-
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony import */ var _es2015_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./es2015.css */ \\\\\\"./packages/webpack/test/specimens/es2015.css\\\\\\");\\\\n\\\\n\\\\nconsole.log(_es2015_css__WEBPACK_IMPORTED_MODULE_0__[\\\\\\"default\\\\\\"]);\\\\n\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/es2015-default.js?\\");
 
 /***/ }),
-/* 1 */
+
+/***/ \\"./packages/webpack/test/specimens/es2015.css\\":
+/*!****************************************************!*\\\\
+  !*** ./packages/webpack/test/specimens/es2015.css ***!
+  \\\\****************************************************/
+/*! exports provided: default, val, a, b */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-/* unused harmony export val */
-/* unused harmony export a */
-/* unused harmony export b */
-/* harmony default export */ __webpack_exports__[\\"a\\"] = ({
-    \\"val\\": \\"\\\\\\"value\\\\\\"\\",
-    \\"a\\": \\"a\\",
-    \\"b\\": \\"b\\"
-});
-var val = \\"\\\\\\"value\\\\\\"\\";
-var a = \\"a\\";
-var b = \\"b\\";
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"val\\\\\\", function() { return val; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"a\\\\\\", function() { return a; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"b\\\\\\", function() { return b; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"val\\\\\\": \\\\\\"\\\\\\\\\\\\\\"value\\\\\\\\\\\\\\"\\\\\\",\\\\n    \\\\\\"a\\\\\\": \\\\\\"a\\\\\\",\\\\n    \\\\\\"b\\\\\\": \\\\\\"b\\\\\\"\\\\n});\\\\nvar val = \\\\\\"\\\\\\\\\\\\\\"value\\\\\\\\\\\\\\"\\\\\\";\\\\nvar a = \\\\\\"a\\\\\\";\\\\nvar b = \\\\\\"b\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/es2015.css?\\");
 
 /***/ })
-/******/ ]);"
+
+/******/ });"
 `;
 
 exports[`/webpack.js should support ES2015 default exports 2`] = `
@@ -982,6 +1018,11 @@ exports[`/webpack.js should support ES2015 named exports 1`] = `
 /******/ 		}
 /******/ 	};
 /******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -997,41 +1038,38 @@ exports[`/webpack.js should support ES2015 named exports 1`] = `
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = \\"./packages/webpack/test/specimens/es2015-named.js\\");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ \\"./packages/webpack/test/specimens/es2015-named.js\\":
+/*!*********************************************************!*\\\\
+  !*** ./packages/webpack/test/specimens/es2015-named.js ***!
+  \\\\*********************************************************/
+/*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__es2015_css__ = __webpack_require__(1);
-
-
-console.log(__WEBPACK_IMPORTED_MODULE_0__es2015_css__[\\"a\\"], __WEBPACK_IMPORTED_MODULE_0__es2015_css__[\\"b\\" /* val */]);
-
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony import */ var _es2015_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./es2015.css */ \\\\\\"./packages/webpack/test/specimens/es2015.css\\\\\\");\\\\n\\\\n\\\\nconsole.log(_es2015_css__WEBPACK_IMPORTED_MODULE_0__[\\\\\\"a\\\\\\"], _es2015_css__WEBPACK_IMPORTED_MODULE_0__[\\\\\\"val\\\\\\"]);\\\\n\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/es2015-named.js?\\");
 
 /***/ }),
-/* 1 */
+
+/***/ \\"./packages/webpack/test/specimens/es2015.css\\":
+/*!****************************************************!*\\\\
+  !*** ./packages/webpack/test/specimens/es2015.css ***!
+  \\\\****************************************************/
+/*! exports provided: default, val, a, b */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"b\\", function() { return val; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"a\\", function() { return a; });
-/* unused harmony export b */
-/* unused harmony default export */ var _unused_webpack_default_export = ({
-    \\"val\\": \\"\\\\\\"value\\\\\\"\\",
-    \\"a\\": \\"a\\",
-    \\"b\\": \\"b\\"
-});
-var val = \\"\\\\\\"value\\\\\\"\\";
-var a = \\"a\\";
-var b = \\"b\\";
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"val\\\\\\", function() { return val; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"a\\\\\\", function() { return a; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"b\\\\\\", function() { return b; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"val\\\\\\": \\\\\\"\\\\\\\\\\\\\\"value\\\\\\\\\\\\\\"\\\\\\",\\\\n    \\\\\\"a\\\\\\": \\\\\\"a\\\\\\",\\\\n    \\\\\\"b\\\\\\": \\\\\\"b\\\\\\"\\\\n});\\\\nvar val = \\\\\\"\\\\\\\\\\\\\\"value\\\\\\\\\\\\\\"\\\\\\";\\\\nvar a = \\\\\\"a\\\\\\";\\\\nvar b = \\\\\\"b\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/es2015.css?\\");
 
 /***/ })
-/******/ ]);"
+
+/******/ });"
 `;
 
 exports[`/webpack.js should support ES2015 named exports 2`] = `
@@ -1088,92 +1126,9 @@ exports[`/webpack.js should support disabling namedExports when the option is se
 /******/ 		}
 /******/ 	};
 /******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = \\"\\";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(2);
-
-
-/***/ }),
-/* 1 */,
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-\\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony default export */ __webpack_exports__[\\"default\\"] = ({
-    \\"wooga\\": \\"wooga\\"
-});
-
-/***/ })
-/******/ ]);"
-`;
-
-exports[`/webpack.js should warn about using the cjs option & disable namedExports 1`] = `
-"/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -1191,30 +1146,35 @@ exports[`/webpack.js should warn about using the cjs option & disable namedExpor
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = \\"\\";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = \\"./packages/webpack/test/specimens/simple.js\\");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/******/ ({
 
-__webpack_require__(2);
-
-
-/***/ }),
-/* 1 */,
-/* 2 */
+/***/ \\"./packages/webpack/test/specimens/simple.css\\":
+/*!****************************************************!*\\\\
+  !*** ./packages/webpack/test/specimens/simple.css ***!
+  \\\\****************************************************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-Object.defineProperty(__webpack_exports__, \\"__esModule\\", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\"wooga\\", function() { return wooga; });
-/* harmony default export */ __webpack_exports__[\\"default\\"] = ({
-    \\"wooga\\": \\"wooga\\"
-});
-var wooga = \\"wooga\\";
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"wooga\\\\\\": \\\\\\"wooga\\\\\\"\\\\n});\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/simple.css?\\");
+
+/***/ }),
+
+/***/ \\"./packages/webpack/test/specimens/simple.js\\":
+/*!***************************************************!*\\\\
+  !*** ./packages/webpack/test/specimens/simple.js ***!
+  \\\\***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval(\\"__webpack_require__(/*! ./simple.css */ \\\\\\"./packages/webpack/test/specimens/simple.css\\\\\\");\\\\n\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/simple.js?\\");
 
 /***/ })
-/******/ ]);"
+
+/******/ });"
 `;
