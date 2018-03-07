@@ -5,7 +5,37 @@ modular-css-svelte  [![NPM Version](https://img.shields.io/npm/v/modular-css-sve
     <a href="https://gitter.im/modular-css/modular-css"><img src="https://img.shields.io/gitter/room/modular-css/modular-css.svg" alt="Gitter" /></a>
 </p>
 
-Svelte preprocessor support for [`modular-css`](https://github.com/tivac/modular-css). Integrate `modular-css` with `svelte` at compile-time, for smaller bundles and even faster runtime performance!
+Svelte preprocessor support for [`modular-css`](https://github.com/tivac/modular-css). Process inline `<style>`s inside your Svelte components using the full power of `modular-css` while also providing compile-time optimizations for smaller bundles and even faster runtime performance!
+
+## Example
+
+Turns this
+
+```html
+<div class="{{css.main}}">
+    <h1 class="{{css.title}}">Title</h1>
+</div>
+
+<style>
+    .main {
+        ...
+    }
+    
+    .title {
+        ...
+    }
+</style>
+```
+
+into what is effectively this
+
+```html
+<div class="abc123_main">
+    <h1 class="abc123_title">Title</h1>
+</div>
+```
+
+while allowing you to use all of the usual `modular-css` goodies.
 
 ## Install
 
