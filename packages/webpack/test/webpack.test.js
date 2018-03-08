@@ -244,7 +244,7 @@ describe("/webpack.js", () => {
         });
     });
 
-    it.skip("should generate correct builds when files change", () => {
+    it("should generate correct builds when files change", () => {
         var changed = "./packages/webpack/test/output/changed.css",
             compiler;
         
