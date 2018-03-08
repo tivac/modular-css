@@ -1,6 +1,6 @@
-# Webpack 2
+# Webpack 2/3/4
 
-`modular-css/webpack/plugin` provides a webpack 2 plugin you can use to transform imported `.css` files into lookup objects while outputting CSS to disk.
+`modular-css/webpack/plugin` provides a webpack 2/3/4 plugin you can use to transform imported `.css` files into lookup objects while outputting CSS to disk.
 
 `modular-css/webpack/loader` provides the file loader that does the actual transformation on files.
 
@@ -66,4 +66,4 @@ All other options are passed to the underlying `Processor` instance, see [Option
 
 ### `namedExports`
 
-Set to `false` to disable named exports, instead only the default export wll be used. This is useful to avoid warnings when your classes aren't valid JS identifiers.
+Set to `false` to disable named exports, instead only the default export will be used. This is useful to avoid warnings when your classes aren't valid JS identifiers.
