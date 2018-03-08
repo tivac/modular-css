@@ -3,7 +3,8 @@
     "byIdentifier": {
       "packages/webpack/test/specimens/simple.js": 0,
       "packages/webpack/loader.js!packages/webpack/test/specimens/simple.css": 1,
-      "packages/webpack/loader.js??ref--0!packages/webpack/test/specimens/simple.css": 2
+      "packages/webpack/loader.js??ref--0!packages/webpack/test/specimens/simple.css": 2,
+      "packages/webpack/loader.js??ref--4!packages/webpack/test/specimens/simple.css": 1
     },
     "usedIds": {
       "0": 0,
@@ -16,8 +17,9 @@
       "main": 0
     },
     "byBlocks": {},
-    "usedIds": {
-      "0": 0
-    }
+    "usedIds": [
+      0
+    ],
+    "bySource": {}
   }
 }

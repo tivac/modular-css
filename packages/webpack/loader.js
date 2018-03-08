@@ -8,7 +8,9 @@ var utils   = require("loader-utils"),
 module.exports = function(source) {
     var options   = utils.getOptions(this) || false,
         done      = this.async(),
-        processor = this.options.processor;
+        processor = this.options
+            ? this.options.processor // Webpack 2 & 3
+            : this._compiler.options.processor; // Webpack 4
 
     if(options.cjs) {
         this.emitWarning(
