@@ -16,11 +16,6 @@
     "paths",
     "aliases"
   ],
-  "devDependencies": {
-    "dentist": "^1.0.3",
-    "modular-css-core": "file:../core",
-    "test-utils": "file:../test-utils"
-  },
   "dependencies": {
     "resolve-from": "^4.0.0"
   }

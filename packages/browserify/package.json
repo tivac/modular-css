@@ -18,13 +18,6 @@
     "modular-css",
     "postcss"
   ],
-  "devDependencies": {
-    "browserify": "^16.1.0",
-    "factor-bundle": "^2.5.0",
-    "from2-string": "^1.1.0",
-    "test-utils": "file:../test-utils",
-    "watchify": "^3.9.0"
-  },
   "dependencies": {
     "mkdirp": "^0.5.1",
     "modular-css-core": "file:../core",

@@ -19,10 +19,6 @@
     "postcss",
     "cli"
   ],
-  "devDependencies": {
-    "cli-tester": "^2.0.0",
-    "test-utils": "file:../test-utils"
-  },
   "dependencies": {
     "meow": "^3.7.0",
     "mkdirp": "^0.5.1",
