@@ -10,12 +10,11 @@ var fs   = require("fs"),
     read  = require("test-utils/read.js")(__dirname),
     namer = require("test-utils/namer.js"),
     
-    Plugin  = require("../plugin.js"),
+    Plugin = require("../plugin.js"),
 
-    records = path.join(__dirname, "__snapshots__"),
-
-    use  = require.resolve("../loader.js"),
-    test = /\.css$/;
+    output = path.resolve(__dirname, "./output"),
+    loader = require.resolve("../loader.js"),
+    test   = /\.css$/;
 
 function success(err, stats) {
     expect(err).toBeFalsy();
@@ -24,9 +23,35 @@ function success(err, stats) {
     }
 }
 
+function config({ entry, use, plugin, watch = false }) {
+    return {
+        entry,
+        watch,
+
+        mode        : "development",
+        recordsPath : path.join(__dirname, "./records", `${path.basename(entry)}.json`),
+        output      : {
+            path     : output,
+            filename : "./output.js"
+        },
+        module : {
+            rules : [
+                {
+                    test,
+                    use : use ? use : loader
+                }
+            ]
+        },
+        plugins : [
+            new Plugin(Object.assign({
+                namer,
+                css : "./output.css"
+            }, plugin))
+        ]
+    };
+}
+
 describe("/webpack.js", () => {
-    var output = path.resolve(__dirname, "./output");
-    
     afterEach(() => shell.rm("-rf", "./packages/webpack/test/output/*"));
 
     it("should be a function", () => {
@@ -34,159 +59,70 @@ describe("/webpack.js", () => {
     });
 
     it("should output css to disk", (done) => {
-        webpack({
-            entry       : "./packages/webpack/test/specimens/simple.js",
-            recordsPath : path.join(records, "/simple.json"),
-            output      : {
-                path     : output,
-                filename : "./simple.js"
-            },
-            module : {
-                rules : [
-                    {
-                        test,
-                        use
-                    }
-                ]
-            },
-            plugins : [
-                new Plugin({
-                    namer,
-                    css : "./simple.css"
-                })
-            ]
-        }, (err, stats) => {
+        webpack(config({
+            entry : "./packages/webpack/test/specimens/simple.js"
+        }), (err, stats) => {
             success(err, stats);
 
-            expect(read("simple.js")).toMatchSnapshot();
-            expect(read("simple.css")).toMatchSnapshot();
+            expect(read("output.js")).toMatchSnapshot();
+            expect(read("output.css")).toMatchSnapshot();
 
             done();
         });
     });
 
     it("should output json to disk", (done) => {
-        webpack({
-            entry       : "./packages/webpack/test/specimens/simple.js",
-            recordsPath : path.join(records, "/simple.json"),
-            output      : {
-                path     : output,
-                filename : "./simple.js"
-            },
-            module : {
-                rules : [
-                    {
-                        test,
-                        use
-                    }
-                ]
-            },
-            plugins : [
-                new Plugin({
-                    namer,
-                    json : "./simple.json"
-                })
-            ],
-        }, (err, stats) => {
+        webpack(config({
+            entry  : "./packages/webpack/test/specimens/simple.js",
+            plugin : {
+                json : "./output.json"
+            }
+        }), (err, stats) => {
             success(err, stats);
 
-            expect(read("simple.js")).toMatchSnapshot();
-            expect(read("simple.json")).toMatchSnapshot();
+            expect(read("output.js")).toMatchSnapshot();
+            expect(read("output.json")).toMatchSnapshot();
 
             done();
         });
     });
 
     it("should output inline source maps", (done) => {
-        webpack({
-            entry       : "./packages/webpack/test/specimens/simple.js",
-            recordsPath : path.join(records, "/simple.json"),
-            output      : {
-                path     : output,
-                filename : "./simple.js"
-            },
-            module : {
-                rules : [
-                    {
-                        test,
-                        use
-                    }
-                ]
-            },
-            devtool : "source-map",
-            plugins : [
-                new Plugin({
-                    namer,
-                    css : "./simple.css",
-                    map : true
-                })
-            ],
-        }, (err, stats) => {
+        webpack(config({
+            entry  : "./packages/webpack/test/specimens/simple.js",
+            plugin : {
+                map : true
+            }
+        }), (err, stats) => {
             success(err, stats);
 
-            expect(read("simple.css")).toMatchSnapshot();
+            expect(read("output.css")).toMatchSnapshot();
 
             done();
         });
     });
 
     it("should output external source maps to disk", (done) => {
-        webpack({
-            entry       : "./packages/webpack/test/specimens/simple.js",
-            recordsPath : path.join(records, "/simple.json"),
-            output      : {
-                path     : output,
-                filename : "./simple.js"
-            },
-            module : {
-                rules : [
-                    {
-                        test,
-                        use
-                    }
-                ]
-            },
-            devtool : "source-map",
-            plugins : [
-                new Plugin({
-                    namer,
-                    css : "./simple.css",
-                    map : {
+        webpack(config({
+            entry  : "./packages/webpack/test/specimens/simple.js",
+            plugin : {
+                map : {
                         inline : false
                     }
-                })
-            ],
-        }, (err, stats) => {
+                }
+        }), (err, stats) => {
             success(err, stats);
 
-            expect(read("simple.css.map")).toMatchSnapshot();
+            expect(read("output.css.map")).toMatchSnapshot();
 
             done();
         });
     });
 
     it("should report errors", (done) => {
-        webpack({
-            entry       : "./packages/webpack/test/specimens/invalid.js",
-            recordsPath : path.join(records, "/invalid.json"),
-            output      : {
-                path     : output,
-                filename : "./invalid.js"
-            },
-            module : {
-                rules : [
-                    {
-                        test,
-                        use
-                    }
-                ]
-            },
-            plugins : [
-                new Plugin({
-                    namer
-                })
-            ],
-        }, (err, stats) => {
+        webpack(config({
+            entry : "./packages/webpack/test/specimens/invalid.js",
+        }), (err, stats) => {
             expect(stats.hasErrors()).toBeTruthy();
 
             expect(stats.toJson().errors[0]).toMatch("Invalid composes reference");
@@ -196,27 +132,9 @@ describe("/webpack.js", () => {
     });
 
     it("should report warnings on invalid property names", (done) => {
-        webpack({
-            entry       : "./packages/webpack/test/specimens/invalid-name.js",
-            recordsPath : path.join(records, "/name.json"),
-            output      : {
-                path     : output,
-                filename : "./invalid-name.js"
-            },
-            module : {
-                rules : [
-                    {
-                        test,
-                        use
-                    }
-                ]
-            },
-            plugins : [
-                new Plugin({
-                    namer
-                })
-            ],
-        }, (err, stats) => {
+        webpack(config({
+            entry : "./packages/webpack/test/specimens/invalid-name.js",
+        }), (err, stats) => {
             expect(stats.hasWarnings()).toBeTruthy();
 
             expect(stats.toJson().warnings[0]).toMatch("Invalid JS identifier");
@@ -226,175 +144,61 @@ describe("/webpack.js", () => {
     });
 
     it("should handle dependencies", (done) => {
-        webpack({
-            entry       : "./packages/webpack/test/specimens/start.js",
-            recordsPath : path.join(records, "/start.json"),
-            output      : {
-                path     : output,
-                filename : "./start.js"
-            },
-            module : {
-                rules : [
-                    {
-                        test,
-                        use
-                    }
-                ]
-            },
-            plugins : [
-                new Plugin({
-                    namer,
-                    css  : "./start.css",
-                    json : "./start.json"
-                })
-            ],
-        }, (err, stats) => {
+        webpack(config({
+            entry  : "./packages/webpack/test/specimens/start.js",
+            plugin : {
+                    json : "./output.json"
+                }
+        }), (err, stats) => {
             success(err, stats);
 
-            expect(read("start.js")).toMatchSnapshot();
-            expect(read("start.css")).toMatchSnapshot();
-            expect(read("start.json")).toMatchSnapshot();
+            expect(read("output.js")).toMatchSnapshot();
+            expect(read("output.css")).toMatchSnapshot();
+            expect(read("output.json")).toMatchSnapshot();
 
             done();
         });
     });
 
     it("should support ES2015 default exports", (done) => {
-        webpack({
-            entry       : "./packages/webpack/test/specimens/es2015-default.js",
-            recordsPath : path.join(records, "/default.json"),
-            output      : {
-                path     : output,
-                filename : "./es2015-default.js"
-            },
-            module : {
-                rules : [
-                    {
-                        test,
-                        use
-                    }
-                ]
-            },
-            plugins : [
-                new Plugin({
-                    namer,
-                    css : "./es2015-default.css"
-                })
-            ],
-        }, (err, stats) => {
+        webpack(config({
+            entry : "./packages/webpack/test/specimens/es2015-default.js",
+        }), (err, stats) => {
             success(err, stats);
 
-            expect(read("es2015-default.js")).toMatchSnapshot();
-            expect(read("es2015-default.css")).toMatchSnapshot();
+            expect(read("output.js")).toMatchSnapshot();
+            expect(read("output.css")).toMatchSnapshot();
 
             done();
         });
     });
 
     it("should support ES2015 named exports", (done) => {
-        webpack({
-            entry       : "./packages/webpack/test/specimens/es2015-named.js",
-            recordsPath : path.join(records, "/named.json"),
-            output      : {
-                path     : output,
-                filename : "./es2015-named.js"
-            },
-            module : {
-                rules : [
-                    {
-                        test,
-                        use
-                    }
-                ]
-            },
-            plugins : [
-                new Plugin({
-                    namer,
-                    css : "./es2015-named.css"
-                })
-            ],
-        }, (err, stats) => {
+        webpack(config({
+            entry : "./packages/webpack/test/specimens/es2015-named.js",
+        }), (err, stats) => {
             success(err, stats);
 
-            expect(read("es2015-named.js")).toMatchSnapshot();
-            expect(read("es2015-named.css")).toMatchSnapshot();
-
-            done();
-        });
-    });
-
-    it("should warn about using the cjs option & disable namedExports", (done) => {
-        webpack({
-            entry       : "./packages/webpack/test/specimens/simple.js",
-            recordsPath : path.join(records, "/simple.json"),
-            output      : {
-                path     : output,
-                filename : "./simple.js"
-            },
-            module : {
-                rules : [
-                    {
-                        test,
-                        use : {
-                            loader  : use,
-                            options : {
-                                cjs : true
-                            }
-                        }
-                    }
-                ]
-            },
-            plugins : [
-                new Plugin({
-                    namer,
-                    css : "./simple.css",
-                    cjs : true
-                })
-            ],
-        }, (err, stats) => {
-            success(err, stats);
-
-            expect(stats.toJson().warnings[0]).toMatch(
-                "cjs option is deprecated, used namedExports: false instead"
-            );
-
-            expect(read("simple.js")).toMatchSnapshot();
+            expect(read("output.js")).toMatchSnapshot();
+            expect(read("output.css")).toMatchSnapshot();
 
             done();
         });
     });
 
     it("should support disabling namedExports when the option is set", (done) => {
-        webpack({
-            entry       : "./packages/webpack/test/specimens/simple.js",
-            recordsPath : path.join(records, "/simple.json"),
-            output      : {
-                path     : output,
-                filename : "./simple.js"
-            },
-            module : {
-                rules : [
-                    {
-                        test,
-                        use : {
-                            loader  : use,
-                            options : {
-                                namedExports : false
-                            }
-                        }
-                    }
-                ]
-            },
-            plugins : [
-                new Plugin({
-                    namer,
-                    css : "./simple.css"
-                })
-            ],
-        }, (err, stats) => {
+        webpack(config({
+            entry : "./packages/webpack/test/specimens/simple.js",
+            use   : {
+                loader,
+                options : {
+                    namedExports : false
+                }
+            }
+        }), (err, stats) => {
             success(err, stats);
 
-            expect(read("simple.js")).toMatchSnapshot();
+            expect(read("output.js")).toMatchSnapshot();
 
             done();
         });
@@ -410,29 +214,10 @@ describe("/webpack.js", () => {
             ".one { color: red; }"
         );
 
-        compiler = webpack({
-            entry       : require.resolve("./specimens/watch.js"),
-            recordsPath : path.join(records, "/watch.json"),
-            output      : {
-                path     : output,
-                filename : "./watching.js"
-            },
-            module : {
-                rules : [
-                    {
-                        test,
-                        use
-                    }
-                ]
-            },
-            plugins : [
-                new Plugin({
-                    namer,
-                    css : "./watching.css"
-                })
-            ],
+        compiler = webpack(config({
+            entry : require.resolve("./specimens/watch.js"),
             watch : true,
-        });
+        }));
 
         compiler.plugin("watch-close", () => {
             // setTimeout is to give webpack time to shut down correctly
@@ -445,8 +230,8 @@ describe("/webpack.js", () => {
             
             success(err, stats);
 
-            expect(read("watching.js")).toMatchSnapshot();
-            expect(read("watching.css")).toMatchSnapshot();
+            expect(read("output.js")).toMatchSnapshot();
+            expect(read("output.css")).toMatchSnapshot();
 
             if(changed < 2) {
                 return fs.writeFileSync(
@@ -466,34 +251,22 @@ describe("/webpack.js", () => {
         // wrap compiler.run in a promise for easier chaining
         function run() {
             return new Promise((resolve, reject) =>
-                compiler.run((err, stats) =>
-                    (stats.hasErrors() ? reject(stats) : resolve(stats))
-                )
+                compiler.run((err, stats) => {
+                    if(stats.hasErrors()) {
+                        return reject(stats);
+                    }
+                    
+                    expect(read("output.js")).toMatchSnapshot();
+                    expect(read("output.css")).toMatchSnapshot();
+                    
+                    return resolve(stats);
+                })
             );
         }
 
-        compiler = webpack({
-            entry       : "./packages/webpack/test/specimens/change.js",
-            recordsPath : path.join(records, "/change.json"),
-            output      : {
-                path     : output,
-                filename : "./changing.js"
-            },
-            module : {
-                rules : [
-                    {
-                        test,
-                        use
-                    }
-                ]
-            },
-            plugins : [
-                new Plugin({
-                    namer,
-                    css : "./changing.css"
-                })
-            ],
-        });
+        compiler = webpack(config({
+            entry : "./packages/webpack/test/specimens/change.js",
+        }));
         
         // Create v1 of the file
         fs.writeFileSync(changed, ".one { color: red; }");
@@ -501,18 +274,12 @@ describe("/webpack.js", () => {
         // Run webpack the first time
         return run()
             .then(() => {
-                expect(read("changing.js")).toMatchSnapshot();
-                expect(read("changing.css")).toMatchSnapshot();
-            
                 // v2 of the file
                 fs.writeFileSync(changed, ".two { color: blue; }");
 
                 return run();
             })
             .then(() => {
-                expect(read("changing.js")).toMatchSnapshot();
-                expect(read("changing.css")).toMatchSnapshot();
-
                 fs.unlinkSync(changed);
 
                 return run();
@@ -524,10 +291,6 @@ describe("/webpack.js", () => {
                 fs.writeFileSync(changed, ".three { color: green; }");
 
                 return run();
-            })
-            .then(() => {
-                expect(read("changing.js")).toMatchSnapshot();
-                expect(read("changing.css")).toMatchSnapshot();
             });
     });
 });

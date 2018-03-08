@@ -1,7 +1,8 @@
 "use strict";
 
 var sources   = require("webpack-sources"),
-    Processor = require("modular-css-core");
+    Processor = require("modular-css-core"),
+    ismap     = require("lodash.ismap");
 
 // Return a list of changed/removed files based on timestamp objects
 function getChangedFiles(prev, curr) {
@@ -36,7 +37,7 @@ ModularCSS.prototype.apply = function(compiler) {
     compiler.plugin("invalid", (file) => {
         this.processor.remove(file);
     });
-    
+
     compiler.plugin("watch-run", (c, done) => {
         watching = true;
 
@@ -53,7 +54,15 @@ ModularCSS.prototype.apply = function(compiler) {
         // This code is only useful when calling .run() multiple times
         // watching handles its own invalidations
         if(!watching) {
-            files = getChangedFiles(this.prev, compilation.fileTimestamps);
+            let current;
+
+            if(ismap(compilation.fileTimestamps)) {
+                current = {};
+
+                compilation.fileTimestamps.forEach((value, key) => (current[key] = value));
+            }
+
+            files = getChangedFiles(this.prev, current || compilation.fileTimestamps);
 
             // Remove changed/removed files from processor instance
             this.processor.remove(files);
