@@ -1,6 +1,6 @@
 # Webpack 2/3/4
 
-`modular-css/webpack/plugin` provides a webpack 2/3/4 plugin you can use to transform imported `.css` files into lookup objects while outputting CSS to disk.
+`modular-css/webpack/plugin` provides a webpack plugin you can use to transform imported `.css` files into lookup objects while outputting CSS to disk.
 
 `modular-css/webpack/loader` provides the file loader that does the actual transformation on files.
 

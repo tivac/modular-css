@@ -5,11 +5,11 @@ modular-css-webpack  [![NPM Version](https://img.shields.io/npm/v/modular-css-we
     <a href="https://gitter.im/modular-css/modular-css"><img src="https://img.shields.io/gitter/room/modular-css/modular-css.svg" alt="Gitter" /></a>
 </p>
 
-Webpack2 support for [`modular-css`](https://github.com/tivac/modular-css).
+Webpack 2/3/4 support for [`modular-css`](https://github.com/tivac/modular-css).
 
 This package contains two entry points, you will need to use **both** in tandem for things to work!
 
-1. `modular-css-webpack/plugin` provides a webpack 2 plugin you can use to transform imported `.css` files into lookup objects while outputting CSS to disk.
+1. `modular-css-webpack/plugin` provides a webpack plugin you can use to transform imported `.css` files into lookup objects while outputting CSS to disk.
 
 2. `modular-css-webpack/loader` provides the file loader that does the actual transformation on files.
 
