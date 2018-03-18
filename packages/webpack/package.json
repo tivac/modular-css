@@ -18,10 +18,6 @@
     "modular-css",
     "postcss"
   ],
-  "devDependencies": {
-    "webpack": "^4.1.0",
-    "test-utils": "file:../test-utils"
-  },
   "dependencies": {
     "esutils": "^2.0.2",
     "loader-utils": "^1.1.0",

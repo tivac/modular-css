@@ -17,10 +17,6 @@
     "modular-css",
     "postcss"
   ],
-  "devDependencies": {
-    "rollup": "^0.56.1",
-    "test-utils": "file:../test-utils"
-  },
   "dependencies": {
     "esutils": "^2.0.2",
     "mkdirp": "^0.5.1",

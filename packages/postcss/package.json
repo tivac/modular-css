@@ -15,9 +15,6 @@
     "modular-css",
     "postcss"
   ],
-  "devDependencies": {
-    "test-utils": "file:../test-utils"
-  },
   "dependencies": {
     "mkdirp": "^0.5.1",
     "modular-css-core": "file:../core",
