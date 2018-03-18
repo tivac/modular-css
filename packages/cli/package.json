@@ -19,14 +19,10 @@
     "postcss",
     "cli"
   ],
-  "devDependencies": {
-    "cli-tester": "^2.0.0",
-    "test-utils": "^8.0.0"
-  },
   "dependencies": {
     "meow": "^3.7.0",
     "mkdirp": "^0.5.1",
-    "modular-css-core": "^8.1.0",
+    "modular-css-core": "file:../core",
     "modular-css-glob": "^8.1.0"
   }
 }

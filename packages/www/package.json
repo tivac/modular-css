@@ -19,7 +19,7 @@
     "codemirror": "^5.31.0",
     "memory-fs": "^0.4.1",
     "mithril": "^1.1.5",
-    "modular-css-core": "^8.1.0",
+    "modular-css-core": "file:../core",
     "path-parse": "^1.0.5",
     "throttleit": "^1.0.0"
   },

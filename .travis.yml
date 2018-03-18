@@ -1,6 +1,10 @@
 # Force a VM instead of Docker, some tests that depend on the FS fail otherwise
 sudo: required
 
+# don't build tags, it's redundant
+if: tag IS blank
+
+# Environment setup
 language: node_js
 node_js:
 - node
@@ -11,7 +15,22 @@ node_js:
 matrix:
   fast_finish: true
 
-script: npm test -- --coverage --verbose --ci
+# keep the npm cache around to speed up installs
+cache:
+  directories:
+  - "$HOME/.npm"
+
+# Set up latest npm & cipm for installs
+before_install:
+ - npm config set loglevel warn
+ - npm install --global npm@latest cipm
+
+install:
+- cipm
+- lerna exec -- cipm
+
+script:
+- npm test -- --coverage --verbose --ci
 
 # Disabling because danger seems broken atm?
 # after_script:

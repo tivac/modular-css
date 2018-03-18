@@ -19,11 +19,6 @@
     "modular-css",
     "postcss"
   ],
-  "devDependencies": {
-    "cssnano": "^4.0.0-rc.1",
-    "pegjs": "^0.10.0",
-    "test-utils": "^8.0.0"
-  },
   "dependencies": {
     "dependency-graph": "^0.6.0",
     "escape-string-regexp": "^1.0.5",

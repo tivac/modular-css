@@ -18,15 +18,11 @@
     "modular-css",
     "postcss"
   ],
-  "devDependencies": {
-    "test-utils": "^8.0.0",
-    "webpack": "^4.1.0"
-  },
   "dependencies": {
     "esutils": "^2.0.2",
     "loader-utils": "^1.1.0",
     "lodash.ismap": "^4.4.2",
-    "modular-css-core": "^8.1.0",
+    "modular-css-core": "file:../core",
     "webpack-sources": "^1.0.1"
   }
 }
