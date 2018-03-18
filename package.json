@@ -48,7 +48,7 @@
     "svelte": "^1.55.0",
     "test-utils": "file:./packages/test-utils",
     "watchify": "^3.9.0",
-    "webpack": "^3.5.6"
+    "webpack": "^4.1.0"
   },
   "jest": {
     "coveragePathIgnorePatterns": [
