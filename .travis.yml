@@ -35,3 +35,8 @@ script:
 # Disabling because danger seems broken atm?
 # after_script:
 # - npm run danger
+
+# travis buddy adds comments with travis failures to PRs
+notifications:
+  webhooks: https://www.travisbuddy.com/
+  on_success: never
