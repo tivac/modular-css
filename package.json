@@ -45,7 +45,7 @@
     "rollup": "^0.56.1",
     "rollup-plugin-svelte": "^4.0.0",
     "shelljs": "^0.8.1",
-    "svelte": "^1.55.0",
+    "svelte": "^2.0.0",
     "test-utils": "file:./packages/test-utils",
     "watchify": "^3.9.0",
     "webpack": "^4.1.0"
