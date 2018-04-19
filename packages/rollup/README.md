@@ -17,7 +17,7 @@ Rollup support for [`modular-css`](https://github.com/tivac/modular-css).
 
 ```js
 rollup({
-    entry   : "./index.js",
+    input   : "./index.js",
     plugins : [
         require("modular-css-rollup")({
             css : "./gen/index.css"
@@ -34,9 +34,11 @@ rollup({
 import css from "modular-css-rollup";
 
 export default {
-    entry   : "./index.js",
-    dest    : "./gen/bundle.js",
-    format  : "umd",
+    input   : "./index.js",
+    output  : {
+        dest    : "./gen/bundle.js",
+        format  : "umd"
+    },
     plugins : [
         css({
             css : "./gen/index.css"
