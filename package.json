@@ -42,7 +42,7 @@
     "modular-css-core": "file:./packages/core",
     "pegjs": "^0.10.0",
     "pinpoint": "^1.1.0",
-    "rollup": "^0.56.1",
+    "rollup": "^0.58.2",
     "rollup-plugin-svelte": "^4.0.0",
     "shelljs": "^0.8.1",
     "svelte": "^1.55.0",
