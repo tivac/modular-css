@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="9.0.0"></a>
+# [9.0.0](https://github.com/tivac/modular-css/compare/v8.2.0...v9.0.0) (2018-04-25)
+
+
+### Features
+
+* svelte v2 support ([9c48aef](https://github.com/tivac/modular-css/commit/9c48aef))
+
+
+### BREAKING CHANGES
+
+* svelte template syntax changed in v2, and it is now the only supported syntax.
+
+
+
+
+
 <a name="8.2.0"></a>
 # [8.2.0](https://github.com/tivac/modular-css/compare/v8.1.1...v8.2.0) (2018-03-08)
 
