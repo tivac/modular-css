@@ -13,7 +13,7 @@ const output    = require("modular-css-core/lib/output.js");
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
 const map = {
-    mappings : ""
+    mappings : "",
 };
 
 module.exports = function(opts) {
@@ -44,7 +44,7 @@ module.exports = function(opts) {
         },
 
         transform : function(code, id) {
-            var removed;
+            let removed;
 
             if(!filter(id) || id.slice(slice) !== options.ext) {
                 return null;
@@ -67,11 +67,12 @@ module.exports = function(opts) {
                 )
             )
             .then((results) => {
-                var result   = results[0],
-                    exported = output.join(result.exports),
-                    out      = [
-                        `export default ${JSON.stringify(exported, null, 4)};`
-                    ];
+                const [ result ] = results;
+                const exported = output.join(result.exports);
+                
+                let out = [
+                    `export default ${JSON.stringify(exported, null, 4)};`
+                ];
                 
                 // Add dependencies
                 out = out.concat(

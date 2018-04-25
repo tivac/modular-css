@@ -54,15 +54,15 @@ describe("/svelte.js", () => {
         );
     });
 
-    it("should ignore invalid {{css.<key>}}", () => {
+    it("should ignore invalid {css.<key>}", () => {
         const { preprocess } = plugin({
             namer
         });
 
         return svelte.preprocess(
             dedent(`
-                <h1 class="{{css.nope}}">Hello</h1>
-                <h2 class="{{css.yup}}">World</h2>
+                <h1 class="{css.nope}">Hello</h1>
+                <h2 class="{css.yup}">World</h2>
                 <style>.yup { color: red; }</style>
             `),
             Object.assign({}, preprocess, { filename : require.resolve("./specimens/svelte.html") })

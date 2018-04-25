@@ -4,7 +4,7 @@ exports[`/svelte.js should generate exports 1`] = `
 "<div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
-        <p class=\\"{{true ? \\"text\\" : \\"active\\" }}\\">Text</p>
+        <p class=\\"{true ? \\"text\\" : \\"active\\" }\\">Text</p>
     </div>
 </div>
 
@@ -42,8 +42,8 @@ exports[`/svelte.js should ignore files without <style> blocks 1`] = `
 
 exports[`/svelte.js should ignore files without <style> blocks 2`] = `""`;
 
-exports[`/svelte.js should ignore invalid {{css.<key>}} 1`] = `
-"<h1 class=\\"{{css.nope}}\\">Hello</h1>
+exports[`/svelte.js should ignore invalid {css.<key>} 1`] = `
+"<h1 class=\\"{css.nope}\\">Hello</h1>
 <h2 class=\\"yup\\">World</h2>
 <style>/* replaced by modular-css */</style>"
 `;

@@ -21,9 +21,9 @@ exports.markup = (processor) => ({ content, filename }) => {
 
             return {
                 code : content
-                    // Replace simple {{css.<key>}} values first
+                    // Replace simple {css.<key>} values first
                     .replace(
-                        new RegExp(`{{css.(${Object.keys(exported).join("|")})}}`, "gm"),
+                        new RegExp(`{css.(${Object.keys(exported).join("|")})}`, "gm"),
                         (match, key) => exported[key].join(" ")
                     )
                     // Then any remaining bare css.<key> values
