@@ -44,7 +44,7 @@ module.exports = function(opts) {
         },
 
         transform : function(code, id) {
-            let removed;
+            let removed = [];
 
             if(!filter(id) || id.slice(slice) !== options.ext) {
                 return null;
@@ -54,8 +54,6 @@ module.exports = function(opts) {
             // avoid cache staleness issues
             if(runs) {
                 removed = processor.remove(id);
-            } else {
-                removed = [];
             }
 
             return Promise.all(

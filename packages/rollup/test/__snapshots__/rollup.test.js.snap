@@ -101,6 +101,15 @@ console.log(css);
 }
 `;
 
+exports[`/rollup.js watch should correctly add new css files in watch mode when files change 1`] = `""`;
+
+exports[`/rollup.js watch should correctly add new css files in watch mode when files change 2`] = `
+"/* packages/rollup/test/output/one.css */
+.mc19ef5610_one {
+    color: red;
+}"
+`;
+
 exports[`/rollup.js watch should correctly update files within the dependency graph in watch mode when files change 1`] = `
 "/* packages/rollup/test/output/one.css */
 .mc19ef5610_one {
