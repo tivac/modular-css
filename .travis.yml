@@ -20,14 +20,14 @@ cache:
   directories:
   - "$HOME/.npm"
 
-# Set up latest npm & cipm for installs
+# Set up npm 5 for installs (npm 6 seems busted atm)
 before_install:
  - npm config set loglevel warn
- - npm install --global npm@latest cipm
+ - npm install --global npm@5
 
 install:
-- cipm
-- lerna exec -- cipm
+- npm ci
+- lerna exec -- npm ci
 
 script:
 - npm test -- --coverage --verbose --ci

@@ -422,5 +422,62 @@ describe("/rollup.js", () => {
                 return done();
             }));
         });
+
+        it("should correctly add new css files in watch mode when files change", (done) => {
+            // Create v1 of the files
+            fs.writeFileSync(
+                "./packages/rollup/test/output/one.css",
+                dedent(`
+                    .one {
+                        color: red;
+                    }
+                `)
+            );
+
+            fs.writeFileSync(
+                "./packages/rollup/test/output/watch.js",
+                dedent(`
+                    console.log("hello");
+                `)
+            );
+
+            // Start watching (re-requiring rollup because it needs root obj reference)
+            watcher = watch({
+                input  : require.resolve("./output/watch.js"),
+                output : {
+                    file   : "./packages/rollup/test/output/watch-output.js",
+                    format : "es"
+                },
+                plugins : [
+                    plugin({
+                        css : "./packages/rollup/test/output/watch-output.css",
+                        map : false
+                    })
+                ]
+            });
+
+            // Create v2 of the file after a bit
+            setTimeout(() => fs.writeFileSync(
+                "./packages/rollup/test/output/watch.js",
+                dedent(`
+                    import css from "./one.css";
+
+                    console.log(css);
+                `)
+            ), 200);
+            
+            watcher.on("event", watching((builds) => {
+                if(builds === 1) {
+                    expect(read("watch-output.css")).toMatchSnapshot();
+
+                    // continue watching
+                    return;
+                }
+
+                expect(read("watch-output.css")).toMatchSnapshot();
+
+                return done();
+            }));
+        });
     });
 });

@@ -169,7 +169,7 @@ Processor.prototype = {
             .filter((file) => this._graph.hasNode(file));
         
         if(!files.length) {
-            return;
+            return [];
         }
 
         // Remove everything that depends on files to be removed as well
