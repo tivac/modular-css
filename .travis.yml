@@ -23,11 +23,11 @@ cache:
 # Set up latest npm & cipm for installs
 before_install:
  - npm config set loglevel warn
- - npm install --global npm@latest cipm
+ - npm install --global npm@latest
 
 install:
-- cipm
-- lerna exec -- cipm
+- npm ci
+- lerna exec -- npm ci
 
 script:
 - npm test -- --coverage --verbose --ci
