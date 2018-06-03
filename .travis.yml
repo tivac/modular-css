@@ -33,12 +33,13 @@ install:
 script:
 - npm test -- --coverage --verbose --ci
 
-after_success:
-- npx codecov
-
-# Disabling because danger seems broken atm?
-# after_script:
-# - npm run danger
+# Run codecov after all builds, and only
+# on a single environment
+jobs:
+  include:
+    - stage: codecov
+      node_js: node
+      script: npx codecov
 
 # travis buddy adds comments with travis failures to PRs
 notifications:
