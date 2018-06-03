@@ -336,7 +336,7 @@ function create_main_fragment(component, ctx) {
 	return {
 		c() {
 			div = createElement(\\"div\\");
-			div.innerHTML = \\"<h1 class=\\\\\\"flex fooga hd\\\\\\">Head</h1>\\\\r\\\\n    <div class=\\\\\\"fooga wooga bd\\\\\\"><p class=undefined>Text</p></div>\\";
+			div.innerHTML = \\"<h1 class=\\\\\\"flex fooga hd\\\\\\">Head</h1>\\\\n    <div class=\\\\\\"fooga wooga bd\\\\\\"><p class=undefined>Text</p></div>\\";
 			div.className = \\"flex wrapper\\";
 		},
 
