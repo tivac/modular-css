@@ -88,7 +88,7 @@ console.log(css, fooga);
 
 exports[`/rollup.js shouldn't disable sourcemap generation 1`] = `
 SourceMap {
-  "file": undefined,
+  "file": "simple.js",
   "mappings": ";;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC",
   "names": Array [],
   "sourcesContent": Array [
