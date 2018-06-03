@@ -22,6 +22,7 @@
   ],
   "dependencies": {
     "mkdirp": "^0.5.1",
-    "modular-css-core": "file:../core"
+    "modular-css-core": "file:../core",
+    "resolve-from": "^4.0.0"
   }
 }

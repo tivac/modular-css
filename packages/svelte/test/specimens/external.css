@@ -1,0 +1,24 @@
+.flex {
+    display: flex;
+}
+
+.wrapper {
+    composes: flex;
+}
+
+.hd {
+    composes: flex;
+    composes: fooga from "./simple.css";
+}
+
+.bd {
+    composes: wooga from "./dependencies.css";
+}
+
+.text {
+    color: #000;
+}
+
+.active {
+    color: #F00;
+}
