@@ -20,17 +20,21 @@ cache:
   directories:
   - "$HOME/.npm"
 
-# Set up npm 5 for installs (npm 6 seems busted atm)
 before_install:
- - npm config set loglevel warn
- - npm install --global npm@5
+- npm config set loglevel warn
+# Set up npm 5 for installs (npm 6 seems busted atm)
+- npm install --global npm@5
 
+# Use npm ci command for all dependencies
 install:
 - npm ci
 - lerna exec -- npm ci
 
 script:
 - npm test -- --coverage --verbose --ci
+
+after_success:
+- npx codecov
 
 # Disabling because danger seems broken atm?
 # after_script:
