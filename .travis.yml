@@ -20,21 +20,28 @@ cache:
   directories:
   - "$HOME/.npm"
 
-# Set up npm 5 for installs (npm 6 seems busted atm)
 before_install:
- - npm config set loglevel warn
- - npm install --global npm@5
+- npm config set loglevel warn
+# Set up npm 5 for installs (npm 6 seems busted atm)
+- npm install --global npm@5
 
+# Use npm ci command for all dependencies
 install:
 - npm ci
 - lerna exec -- npm ci
 
 script:
-- npm test -- --coverage --verbose --ci
+- npm test -- --verbose --ci
 
-# Disabling because danger seems broken atm?
-# after_script:
-# - npm run danger
+# Run codecov after all builds, and only
+# on a single environment
+jobs:
+  include:
+    - stage: Code Coverage
+      node_js: node
+      script:
+      - npm test -- --ci --coverage
+      - npx codecov
 
 # travis buddy adds comments with travis failures to PRs
 notifications:
