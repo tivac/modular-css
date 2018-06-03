@@ -108,10 +108,16 @@ $ npm i modular-cssify
 $ npm i modular-css-rollup
 ```
 
-### [Webpack 2](/packages/webpack/#readme)
+### [Webpack](/packages/webpack/#readme)
 
 ```bash
 $ npm i modular-css-webpack
+```
+
+### [Svelte](/packages/svelte/#readme)
+
+```bash
+$ npm i modular-css-svelte
 ```
 
 ### [PostCSS Plugin](/packages/postcss/#readme)
