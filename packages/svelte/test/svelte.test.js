@@ -34,6 +34,28 @@ describe("/svelte.js", () => {
         );
     });
 
+    it("should support external css via <link>", () => {
+        const { processor, preprocess } = plugin({
+            css : "./packages/svelte/test/output/svelte.css",
+            namer
+        });
+
+        const filename = require.resolve("./specimens/svelte-external.html");
+
+        return svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        )
+        .then((processed) => {
+            expect(processed.toString()).toMatchSnapshot();
+
+            return processor.output();
+        })
+        .then((output) =>
+            expect(output.css).toMatchSnapshot()
+        );
+    });
+
     it("should ignore files without <style> blocks", () => {
         const { processor, preprocess } = plugin();
 
@@ -69,6 +91,23 @@ describe("/svelte.js", () => {
         )
         .then((processed) =>
             expect(processed.toString()).toMatchSnapshot()
+        );
+    });
+
+    it("should throw on both <style> and <link> in one file", () => {
+        const { preprocess } = plugin({
+            css : "./packages/svelte/test/output/svelte.css",
+            namer
+        });
+
+        const filename = require.resolve("./specimens/svelte-both.html");
+
+        return svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        )
+        .catch((error) =>
+            expect(error.message).toMatch("modular-css-svelte supports <style> OR <link>, but not both")
         );
     });
 });

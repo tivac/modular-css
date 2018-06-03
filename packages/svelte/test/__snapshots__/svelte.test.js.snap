@@ -47,3 +47,38 @@ exports[`/svelte.js should ignore invalid {css.<key>} 1`] = `
 <h2 class=\\"yup\\">World</h2>
 <style>/* replaced by modular-css */</style>"
 `;
+
+exports[`/svelte.js should support external css via <link> 1`] = `
+"<div class=\\"flex wrapper\\">
+    <h1 class=\\"flex fooga hd\\">Head</h1>
+    <div class=\\"fooga wooga bd\\">
+        <p class=\\"{true ? \\"text\\" : \\"active\\" }\\">Text</p>
+    </div>
+</div>
+
+
+"
+`;
+
+exports[`/svelte.js should support external css via <link> 2`] = `
+"/* packages/svelte/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+/* packages/svelte/test/specimens/dependencies.css */
+.wooga {
+
+    background: blue;
+}
+/* packages/svelte/test/specimens/external.css */
+.flex {
+    display: flex;
+}
+.text {
+    color: #000;
+}
+.active {
+    color: #F00;
+}
+"
+`;
