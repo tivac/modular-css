@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="10.1.0"></a>
+# [10.1.0](https://github.com/tivac/modular-css/compare/v10.0.0...v10.1.0) (2018-06-03)
+
+
+### Features
+
+* support <link> elements in svelte ([#426](https://github.com/tivac/modular-css/issues/426)) ([49f8f0a](https://github.com/tivac/modular-css/commit/49f8f0a))
+
+
+
+
+
 <a name="10.0.0"></a>
 # [10.0.0](https://github.com/tivac/modular-css/compare/v9.0.0...v10.0.0) (2018-05-02)
 

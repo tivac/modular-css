@@ -1,6 +1,6 @@
 {
   "name": "modular-css-namer",
-  "version": "10.0.0",
+  "version": "10.1.0",
   "description": "Helper function to make tiny classnames for modular-css",
   "main": "index.js",
   "repository": "tivac/modular-css",

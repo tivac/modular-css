@@ -1,6 +1,6 @@
 {
   "name": "modular-css-aliases",
-  "version": "10.0.0",
+  "version": "10.1.0",
   "description": "Custom file resolver supporting directory aliases for modular-css",
   "main": "./aliases.js",
   "repository": "tivac/modular-css",
