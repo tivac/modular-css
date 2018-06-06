@@ -42,7 +42,7 @@ const format = "es";
 describe("/rollup.js", () => {
     /* eslint max-statements: "off" */
     
-    // afterEach(() => shell.rm("-rf", "./packages/rollup/test/output/*"));
+    afterEach(() => shell.rm("-rf", "./packages/rollup/test/output/*"));
     
     it("should be a function", () =>
         expect(typeof plugin).toBe("function")
