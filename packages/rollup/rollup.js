@@ -18,18 +18,18 @@ const map = {
 
 module.exports = function(opts) {
     const options = Object.assign(Object.create(null), {
-        ext          : ".css",
-        json         : false,
-        map          : true,
+        json : false,
+        map  : true,
+        
+        include : "**/*.css",
+
         namedExports : true
     }, opts);
         
-    const slice = -1 * options.ext.length;
-        
     const filter = utils.createFilter(options.include, options.exclude);
         
-    let processor = new Processor(options);
     let runs = 0;
+    let processor = new Processor(options);
     let source;
         
     if(!options.onwarn) {
@@ -39,14 +39,14 @@ module.exports = function(opts) {
     return {
         name : "modular-css",
 
-        options : ({ input }) => {
+        options({ input }) {
             source = input;
         },
 
         transform : function(code, id) {
             let removed = [];
 
-            if(!filter(id) || id.slice(slice) !== options.ext) {
+            if(!filter(id)) {
                 return null;
             }
 
@@ -88,7 +88,7 @@ module.exports = function(opts) {
 
                 Object.keys(exported).forEach((ident) => {
                     if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
-                        options.onwarn(`Invalid JS identifier "${ident}", unable to export`);
+                        this.warn(`Invalid JS identifier "${ident}", unable to export`);
                         
                         return;
                     }
@@ -102,46 +102,70 @@ module.exports = function(opts) {
                 };
             });
         },
-
-        // Hook for when bundle.generate() is called
-        ongenerate : function(bundle, result) {
+        
+        buildEnd() {
             runs++;
-            
-            result.css = processor.output({
-                from : source,
-                to   : options.css
-            });
         },
 
-        onwrite : function(bundle, result) {
-            return result.css.then((data) => {
-                if(options.css) {
-                    mkdirp.sync(path.dirname(options.css));
+        generateBundle : async function(output, bundle, isWrite) {
+            await Promise.all(
+                Object.keys(bundle).map(async (entry) => {
+                    const base = path.basename(entry, path.extname(entry));
+
+                    // TODO: docs say that empty string arg to .emitAsset() shouldn't be required
+                    // https://github.com/rollup/rollup/wiki/Plugins#plugin-context
+                    const css = this.emitAsset(`${base}.css`, "");
                     
-                    fs.writeFileSync(
-                        options.css,
-                        data.css
-                    );
-                }
+                    const result = await processor.output({
+                        from : source,
+                        to   : css,
 
-                if(options.css && data.map) {
-                    mkdirp.sync(path.dirname(options.css));
+                        files : bundle[entry]
+                    });
+                    
+                    this.setAssetSource(css, result.css);
 
-                    fs.writeFileSync(
-                        `${options.css}.map`,
-                        data.map.toString()
-                    );
-                }
+                    if(options.json) {
+                        this.emitAsset(`${base}.json`, JSON.stringify(result.compositions, null, 4));
+                    }
+
+                    if(result.map) {
+                        this.emitAsset(`${base}.css.map`, result.map.toString());
+                    }
+                })
+            );
+        },
+
+        // TODO: move into generateBundle
+        // onwrite : function(bundle, result) {
+        //     return result.css.then((data) => {
+        //         if(options.css) {
+        //             mkdirp.sync(path.dirname(options.css));
+                    
+        //             fs.writeFileSync(
+        //                 options.css,
+        //                 data.css
+        //             );
+        //         }
+
+        //         if(options.css && data.map) {
+        //             mkdirp.sync(path.dirname(options.css));
+
+        //             fs.writeFileSync(
+        //                 `${options.css}.map`,
+        //                 data.map.toString()
+        //             );
+        //         }
                 
-                if(options.json) {
-                    mkdirp.sync(path.dirname(options.json));
+        //         if(options.json) {
+        //             mkdirp.sync(path.dirname(options.json));
                     
-                    fs.writeFileSync(
-                        options.json,
-                        JSON.stringify(data.compositions, null, 4)
-                    );
-                }
-            });
-        }
+        //             fs.writeFileSync(
+        //                 options.json,
+        //                 JSON.stringify(data.compositions, null, 4)
+        //             );
+        //         }
+        //     });
+        // }
     };
 };
