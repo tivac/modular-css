@@ -1,11 +1,9 @@
 "use strict";
 
-const fs   = require("fs");
 const path = require("path");
 
 const keyword = require("esutils").keyword;
 const utils   = require("rollup-pluginutils");
-const mkdirp  = require("mkdirp");
 
 const Processor = require("modular-css-core");
 const output    = require("modular-css-core/lib/output.js");
@@ -107,7 +105,7 @@ module.exports = function(opts) {
             runs++;
         },
 
-        generateBundle : async function(output, bundle, isWrite) {
+        generateBundle : async function(outputOptions, bundle) {
             await Promise.all(
                 Object.keys(bundle).map(async (entry) => {
                     const base = path.basename(entry, path.extname(entry));
@@ -135,37 +133,5 @@ module.exports = function(opts) {
                 })
             );
         },
-
-        // TODO: move into generateBundle
-        // onwrite : function(bundle, result) {
-        //     return result.css.then((data) => {
-        //         if(options.css) {
-        //             mkdirp.sync(path.dirname(options.css));
-                    
-        //             fs.writeFileSync(
-        //                 options.css,
-        //                 data.css
-        //             );
-        //         }
-
-        //         if(options.css && data.map) {
-        //             mkdirp.sync(path.dirname(options.css));
-
-        //             fs.writeFileSync(
-        //                 `${options.css}.map`,
-        //                 data.map.toString()
-        //             );
-        //         }
-                
-        //         if(options.json) {
-        //             mkdirp.sync(path.dirname(options.json));
-                    
-        //             fs.writeFileSync(
-        //                 options.json,
-        //                 JSON.stringify(data.compositions, null, 4)
-        //             );
-        //         }
-        //     });
-        // }
     };
 };
