@@ -42,7 +42,7 @@ const format = "es";
 describe("/rollup.js", () => {
     /* eslint max-statements: "off" */
     
-    afterEach(() => shell.rm("-rf", "./packages/rollup/test/output/*"));
+    // afterEach(() => shell.rm("-rf", "./packages/rollup/test/output/*"));
     
     it("should be a function", () =>
         expect(typeof plugin).toBe("function")
@@ -469,6 +469,36 @@ describe("/rollup.js", () => {
 
                 return done();
             }));
+        });
+    });
+
+    describe("code splitting", () => {
+        it("should support splitting up CSS files", async () => {
+            const bundle = await rollup({
+                experimentalCodeSplitting : true,
+                
+                input : [
+                    require.resolve("./specimens/simple.js"),
+                    require.resolve("./specimens/named.js"),
+                ],
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map : false
+                    })
+                ]
+            });
+    
+            await bundle.write({
+                format,
+                assetFileNames,
+                
+                dir : "./packages/rollup/test/output/"
+            });
+
+            expect(read("assets/simple.css")).toMatchSnapshot();
+            expect(read("assets/named.css")).toMatchSnapshot();
         });
     });
 });

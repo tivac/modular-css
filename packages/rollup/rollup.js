@@ -118,7 +118,8 @@ module.exports = function(opts) {
                         from : source,
                         to   : css,
 
-                        files : bundle[entry]
+                        // Only export for files within this bundle
+                        files : Object.keys(bundle[entry].modules).filter(filter)
                     });
                     
                     this.setAssetSource(css, result.css);
