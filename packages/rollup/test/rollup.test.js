@@ -39,6 +39,8 @@ error.postcssPlugin = "error-plugin";
 
 const assetFileNames = "assets/[name][extname]";
 const format = "es";
+const map = false;
+const sourcemap = false;
 
 describe("/rollup.js", () => {
     /* eslint max-statements: "off" */
@@ -81,7 +83,7 @@ describe("/rollup.js", () => {
             plugins : [
                 plugin({
                     namer,
-                    map : false
+                    map,
                 })
             ]
         });
@@ -240,7 +242,7 @@ describe("/rollup.js", () => {
             plugins : [
                 plugin({
                     namer,
-                    map : false,
+                    map,
                 })
             ]
         });
@@ -248,17 +250,17 @@ describe("/rollup.js", () => {
         const source = await bundle.generate({
             format,
             assetFileNames,
-            sourcemap : false
+            sourcemap,
         });
 
         expect(source.map).toBe(null);
 
         await bundle.write({
-            format,
             assetFileNames,
+            format,
+            sourcemap,
 
-            file      : "./packages/rollup/test/output/no-maps.js",
-            sourcemap : false,
+            file : "./packages/rollup/test/output/no-maps.js",
         });
         
         expect(read("assets/no-maps.css")).toMatchSnapshot();
@@ -352,7 +354,7 @@ describe("/rollup.js", () => {
                 },
                 plugins : [
                     plugin({
-                        map : false
+                        map,
                     })
                 ]
             });
@@ -408,7 +410,7 @@ describe("/rollup.js", () => {
                 },
                 plugins : [
                     plugin({
-                        map : false
+                        map,
                     })
                 ]
             });
@@ -462,7 +464,7 @@ describe("/rollup.js", () => {
                 },
                 plugins : [
                     plugin({
-                        map : false
+                        map,
                     })
                 ]
             });
@@ -493,37 +495,42 @@ describe("/rollup.js", () => {
     });
 
     describe("code splitting", () => {
+        const experimentalCodeSplitting = true;
+        const chunkFileNames = "[name].js";
+
         it("should support splitting up CSS files", async () => {
             const bundle = await rollup({
-                experimentalCodeSplitting : true,
+                experimentalCodeSplitting,
                 
                 input : [
                     require.resolve("./specimens/simple.js"),
-                    require.resolve("./specimens/named.js"),
+                    require.resolve("./specimens/dependencies.js"),
                 ],
 
                 plugins : [
                     plugin({
                         namer,
-                        map : false
+                        map,
                     })
                 ]
             });
     
             await bundle.write({
                 format,
+
                 assetFileNames,
+                chunkFileNames,
                 
                 dir : "./packages/rollup/test/output/"
             });
 
-            expect(read("assets/simple.css")).toMatchSnapshot();
-            expect(read("assets/named.css")).toMatchSnapshot();
+            expect(read("assets/chunk.css")).toMatchSnapshot();
+            expect(read("assets/dependencies.css")).toMatchSnapshot();
         });
 
         it("should support manual chunks", async () => {
             const bundle = await rollup({
-                experimentalCodeSplitting : true,
+                experimentalCodeSplitting,
 
                 input : [
                     require.resolve("./specimens/manual-chunks/a.js"),
@@ -539,16 +546,16 @@ describe("/rollup.js", () => {
                 plugins : [
                     plugin({
                         namer,
-                        map : false
+                        map,
                     })
                 ]
             });
 
             await bundle.write({
                 format,
-                assetFileNames,
 
-                chunkFileNames : "[name].js",
+                assetFileNames,
+                chunkFileNames,
 
                 dir : "./packages/rollup/test/output/"
             });

@@ -1,1 +1,6 @@
-.c { color: green; }
+@value d from "./d.css";
+
+.c {
+    color: green;
+    background: d;
+}
