@@ -564,5 +564,39 @@ describe("/rollup.js", () => {
             expect(read("assets/b.css")).toMatchSnapshot();
             expect(read("assets/shared.css")).toMatchSnapshot();
         });
+
+        it.only("should support dynamic imports", async () => {
+            const bundle = await rollup({
+                experimentalCodeSplitting,
+
+                // treeshake : false,
+
+                input : [
+                    require.resolve("./specimens/dynamic-imports/a.js"),
+                    require.resolve("./specimens/dynamic-imports/b.js"),
+                ],
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map,
+                    })
+                ]
+            });
+
+            await bundle.write({
+                format,
+
+                assetFileNames,
+                chunkFileNames,
+
+                dir : "./packages/rollup/test/output/"
+            });
+
+            expect(read("assets/a.css")).toMatchSnapshot();
+            expect(read("assets/b.css")).toMatchSnapshot();
+            expect(read("assets/c.css")).toMatchSnapshot();
+            expect(read("assets/chunk.css")).toMatchSnapshot();
+        });
     });
 });

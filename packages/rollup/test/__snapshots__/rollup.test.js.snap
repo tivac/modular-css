@@ -1,4 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
+exports[`/rollup.js code splitting should support dynamic imports 1`] = `
+"/* packages/rollup/test/specimens/dynamic-imports/a.css */
+.a {
+
+    color: aqua;
+}
+"
+`;
+
+exports[`/rollup.js code splitting should support dynamic imports 2`] = `
+"/* packages/rollup/test/specimens/dynamic-imports/b.css */
+.b {
+    color: blue;
+}
+"
+`;
+
+exports[`/rollup.js code splitting should support dynamic imports 3`] = `
+"/* packages/rollup/test/specimens/dynamic-imports/c.css */
+.c {
+    
+    color: cyan;
+}
+"
+`;
+
+exports[`/rollup.js code splitting should support dynamic imports 4`] = `
+"/* packages/rollup/test/specimens/dynamic-imports/d.css */
+.d {
+    color: darkred;
+}
+"
+`;
 
 exports[`/rollup.js code splitting should support manual chunks 1`] = `
 "/* packages/rollup/test/specimens/manual-chunks/a.css */
