@@ -15,7 +15,9 @@ const map = {
     mappings : "",
 };
 
-const extensionless = (file) => path.join(path.dirname(file), path.basename(file, path.extname(file)));
+function extensionless(file) {
+    return path.join(path.dirname(file), path.basename(file, path.extname(file)));
+}
 
 module.exports = function(opts) {
     const options = Object.assign(Object.create(null), {
@@ -139,7 +141,7 @@ module.exports = function(opts) {
             }
             
             await Promise.all(
-                bundles.map(async ({ entry, base, files }) => {
+                bundles.map(async ({ base, files }) => {
                     // TODO: docs say that empty string arg to .emitAsset() shouldn't be required
                     // https://github.com/rollup/rollup/wiki/Plugins#plugin-context
                     const css = this.emitAsset(`${base}.css`, "");

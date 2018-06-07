@@ -7,32 +7,15 @@ const rollup = require("rollup").rollup;
 const dedent = require("dedent");
 const shell  = require("shelljs");
 
-const read   = require("test-utils/read.js")(__dirname);
-const exists = require("test-utils/exists.js")(__dirname);
-const namer  = require("test-utils/namer.js");
+const read     = require("test-utils/read.js")(__dirname);
+const exists   = require("test-utils/exists.js")(__dirname);
+const namer    = require("test-utils/namer.js");
+const watching = require("test-utils/rollup-watching.js");
 
 const plugin = require("../rollup.js");
 
 function error(root) {
     throw root.error("boom");
-}
-
-function watching(cb) {
-    var count = 0;
-
-    return (details) => {
-        if(details.code === "ERROR" || details.code === "FATAL") {
-            throw details.error;
-        }
-
-        if(details.code !== "END") {
-            return;
-        }
-
-        count++;
-
-        cb(count, details);
-    };
 }
 
 error.postcssPlugin = "error-plugin";
@@ -332,8 +315,8 @@ describe("/rollup.js", () => {
     });
 
     describe("watch", () => {
-        var watch = require("rollup").watch,
-            watcher;
+        const watch = require("rollup").watch;
+        let watcher;
 
         afterEach(() => watcher.close());
         
