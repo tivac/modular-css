@@ -1,7 +1,9 @@
 "use strict";
 
 const Processor = require("modular-css-core");
-const methods = require("./methods.js");
+
+const markup = require("./src/markup.js");
+const style = require("./src/style.js");
 
 module.exports = function(args) {
     const processor = new Processor(args);
@@ -10,8 +12,8 @@ module.exports = function(args) {
         processor,
 
         preprocess : {
-            markup : methods.markup(processor),
-            style  : methods.style
+            markup : markup(processor),
+            style
         }
     };
 };

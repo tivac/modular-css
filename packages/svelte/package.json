@@ -21,8 +21,11 @@
     "postcss"
   ],
   "dependencies": {
+    "dedent": "^0.7.0",
     "mkdirp": "^0.5.1",
     "modular-css-core": "file:../core",
-    "resolve-from": "^4.0.0"
+    "resolve-from": "^4.0.0",
+    "rollup-pluginutils": "^2.3.0",
+    "slash": "^2.0.0"
   }
 }
