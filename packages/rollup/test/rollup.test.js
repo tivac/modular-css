@@ -511,6 +511,7 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         map,
+                        css : "common.css"
                     })
                 ]
             });
@@ -565,7 +566,7 @@ describe("/rollup.js", () => {
             expect(read("assets/shared.css")).toMatchSnapshot();
         });
 
-        it.only("should support dynamic imports", async () => {
+        it("should support dynamic imports", async () => {
             const bundle = await rollup({
                 experimentalCodeSplitting,
 
@@ -580,6 +581,8 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         map,
+
+                        common : "common.css"
                     })
                 ]
             });
@@ -596,7 +599,7 @@ describe("/rollup.js", () => {
             expect(read("assets/a.css")).toMatchSnapshot();
             expect(read("assets/b.css")).toMatchSnapshot();
             expect(read("assets/c.css")).toMatchSnapshot();
-            expect(read("assets/chunk.css")).toMatchSnapshot();
+            expect(read("assets/common.css")).toMatchSnapshot();
         });
     });
 });
