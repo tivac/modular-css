@@ -4,6 +4,7 @@ const path = require("path");
 
 const keyword = require("esutils").keyword;
 const utils   = require("rollup-pluginutils");
+const slash   = require("slash");
 
 const Processor = require("modular-css-core");
 const output    = require("modular-css-core/lib/output.js");
@@ -69,7 +70,7 @@ module.exports = function(opts) {
                 // Add dependencies
                 out = out.concat(
                     processor.dependencies(id).map((file) =>
-                        `import "${file.replace(/\\/g, "/")}";`
+                        `import "${slash(file)}";`
                     )
                 );
 

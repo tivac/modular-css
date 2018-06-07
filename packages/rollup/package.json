@@ -21,6 +21,7 @@
     "esutils": "^2.0.2",
     "mkdirp": "^0.5.1",
     "modular-css-core": "file:../core",
-    "rollup-pluginutils": "^2.0.1"
+    "rollup-pluginutils": "^2.0.1",
+    "slash": "^2.0.0"
   }
 }
