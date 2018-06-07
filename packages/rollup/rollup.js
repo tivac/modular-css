@@ -30,10 +30,6 @@ module.exports = function(opts) {
     let processor = new Processor(options);
     let source;
         
-    if(!options.onwarn) {
-        options.onwarn = console.warn.bind(console); // eslint-disable-line
-    }
-
     return {
         name : "modular-css",
 
@@ -109,6 +105,12 @@ module.exports = function(opts) {
             await Promise.all(
                 Object.keys(bundle).map(async (entry) => {
                     const base = path.basename(entry, path.extname(entry));
+                    const files = Object.keys(bundle[entry].modules).filter(filter);
+
+                    // No point continuing if nothing to output!
+                    if(!files.length) {
+                        return;
+                    }
 
                     // TODO: docs say that empty string arg to .emitAsset() shouldn't be required
                     // https://github.com/rollup/rollup/wiki/Plugins#plugin-context

@@ -1,5 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/rollup.js code splitting should support manual chunks 1`] = `
+"/* packages/rollup/test/specimens/manual-chunks/a.css */
+.a {
+
+    color: red;
+}
+"
+`;
+
+exports[`/rollup.js code splitting should support manual chunks 2`] = `
+"/* packages/rollup/test/specimens/manual-chunks/b.css */
+.b {
+
+    color: blue;
+}
+"
+`;
+
+exports[`/rollup.js code splitting should support manual chunks 3`] = `
+"/* packages/rollup/test/specimens/manual-chunks/c.css */
+.c { color: green; }
+"
+`;
+
 exports[`/rollup.js code splitting should support splitting up CSS files 1`] = `
 "/* packages/rollup/test/specimens/simple.css */
 .fooga {
@@ -147,9 +171,7 @@ console.log(css);
 }
 `;
 
-exports[`/rollup.js watch should correctly add new css files in watch mode when files change 1`] = `""`;
-
-exports[`/rollup.js watch should correctly add new css files in watch mode when files change 2`] = `
+exports[`/rollup.js watch should correctly add new css files in watch mode when files change 1`] = `
 "/* packages/rollup/test/output/one.css */
 .mc19ef5610_one {
     color: red;

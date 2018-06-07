@@ -1,16 +1,17 @@
 /* eslint consistent-return: off */
 "use strict";
 
-var fs = require("fs"),
+const fs = require("fs");
 
-    rollup = require("rollup").rollup,
-    dedent = require("dedent"),
-    shell  = require("shelljs"),
-    
-    read  = require("test-utils/read.js")(__dirname),
-    namer = require("test-utils/namer.js"),
-    
-    plugin = require("../rollup.js");
+const rollup = require("rollup").rollup;
+const dedent = require("dedent");
+const shell  = require("shelljs");
+
+const read   = require("test-utils/read.js")(__dirname);
+const exists = require("test-utils/exists.js")(__dirname);
+const namer  = require("test-utils/namer.js");
+
+const plugin = require("../rollup.js");
 
 function error(root) {
     throw root.error("boom");
@@ -92,6 +93,25 @@ describe("/rollup.js", () => {
         });
 
         expect(read("assets/simple.css")).toMatchSnapshot();
+    });
+
+    it("should avoid generating empty CSS", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/no-css.js"),
+            plugins : [
+                plugin({
+                    namer,
+                })
+            ]
+        });
+
+        await bundle.write({
+            format,
+            assetFileNames,
+            file : "./packages/rollup/test/output/no-css.js",
+        });
+
+        expect(exists("assets/no-css.css")).toBe(false);
     });
     
     it("should generate JSON", () =>
@@ -459,7 +479,7 @@ describe("/rollup.js", () => {
             
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(read("assets/watch-output.css")).toMatchSnapshot();
+                    expect(exists("assets/watch-output.css")).toBe(false);
 
                     // continue watching
                     return;
@@ -499,6 +519,43 @@ describe("/rollup.js", () => {
 
             expect(read("assets/simple.css")).toMatchSnapshot();
             expect(read("assets/named.css")).toMatchSnapshot();
+        });
+
+        it("should support manual chunks", async () => {
+            const bundle = await rollup({
+                experimentalCodeSplitting : true,
+
+                input : [
+                    require.resolve("./specimens/manual-chunks/a.js"),
+                    require.resolve("./specimens/manual-chunks/b.js"),
+                ],
+
+                manualChunks : {
+                    shared : [
+                        require.resolve("./specimens/manual-chunks/c.js")
+                    ]
+                },
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map : false
+                    })
+                ]
+            });
+
+            await bundle.write({
+                format,
+                assetFileNames,
+
+                chunkFileNames : "[name].js",
+
+                dir : "./packages/rollup/test/output/"
+            });
+
+            expect(read("assets/a.css")).toMatchSnapshot();
+            expect(read("assets/b.css")).toMatchSnapshot();
+            expect(read("assets/shared.css")).toMatchSnapshot();
         });
     });
 });
