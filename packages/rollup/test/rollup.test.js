@@ -1,16 +1,17 @@
 /* eslint consistent-return: off */
 "use strict";
 
-var fs = require("fs"),
+const fs = require("fs");
 
-    rollup = require("rollup").rollup,
-    dedent = require("dedent"),
-    shell  = require("shelljs"),
-    
-    read  = require("test-utils/read.js")(__dirname),
-    namer = require("test-utils/namer.js"),
-    
-    plugin = require("../rollup.js");
+const rollup = require("rollup").rollup;
+const dedent = require("dedent");
+const shell  = require("shelljs");
+
+const read   = require("test-utils/read.js")(__dirname);
+const exists = require("test-utils/exists.js")(__dirname);
+const namer  = require("test-utils/namer.js");
+
+const plugin = require("../rollup.js");
 
 function error(root) {
     throw root.error("boom");
@@ -36,6 +37,9 @@ function watching(cb) {
 
 error.postcssPlugin = "error-plugin";
 
+const assetFileNames = "assets/[name][extname]";
+const format = "es";
+
 describe("/rollup.js", () => {
     /* eslint max-statements: "off" */
     
@@ -54,7 +58,7 @@ describe("/rollup.js", () => {
                 })
             ]
         })
-        .then((bundle) => bundle.generate({ format : "es" }))
+        .then((bundle) => bundle.generate({ format }))
         .then((result) => expect(result.code).toMatchSnapshot())
     );
     
@@ -67,42 +71,48 @@ describe("/rollup.js", () => {
                 })
             ]
         })
-        .then((bundle) => bundle.generate({ format : "es" }))
+        .then((bundle) => bundle.generate({ format }))
         .then((result) => expect(result.code).toMatchSnapshot())
     );
 
-    it("should attach a promise to the bundle.generate response", () =>
-        rollup({
+    it("should generate CSS", async () => {
+        const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
                     namer,
-                    css : "./packages/rollup/test/output/simple.css"
+                    map : false
                 })
             ]
-        })
-        .then((bundle) => bundle.generate({ format : "es" }))
-        .then((result) => expect(typeof result.css.then).toBe("function"))
-    );
-    
-    it("should generate CSS", () =>
-        rollup({
-            input   : require.resolve("./specimens/simple.js"),
+        });
+
+        await bundle.write({
+            format,
+            assetFileNames,
+            file : "./packages/rollup/test/output/simple.js",
+        });
+
+        expect(read("assets/simple.css")).toMatchSnapshot();
+    });
+
+    it("should avoid generating empty CSS", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/no-css.js"),
             plugins : [
                 plugin({
                     namer,
-                    css : "./packages/rollup/test/output/simple.css"
                 })
             ]
-        })
-        .then((bundle) => bundle.write({
-            format : "es",
-            file   : "./packages/rollup/test/output/simple.js"
-        }))
-        .then(() =>
-            expect(read("simple.css")).toMatchSnapshot()
-        )
-    );
+        });
+
+        await bundle.write({
+            format,
+            assetFileNames,
+            file : "./packages/rollup/test/output/no-css.js",
+        });
+
+        expect(exists("assets/no-css.css")).toBe(false);
+    });
     
     it("should generate JSON", () =>
         rollup({
@@ -110,69 +120,82 @@ describe("/rollup.js", () => {
             plugins : [
                 plugin({
                     namer,
-                    json : "./packages/rollup/test/output/simple.json"
+                    json : true
                 })
             ]
         })
         .then((bundle) => bundle.write({
-            format : "es",
-            file   : "./packages/rollup/test/output/simple.js"
+            format,
+            assetFileNames,
+            file : "./packages/rollup/test/output/simple.js",
         }))
         .then(() =>
-            expect(read("simple.json")).toMatchSnapshot()
+            expect(read("assets/simple.json")).toMatchSnapshot()
         )
     );
 
-    it("should provide named exports", () =>
-        rollup({
+    it("should provide named exports", async () => {
+        const bundle = await rollup({
             input   : require.resolve("./specimens/named.js"),
             plugins : [
                 plugin({
                     namer
                 })
             ]
-        })
-        .then((bundle) => bundle.generate({ format : "es" }))
-        .then((result) => expect(result.code).toMatchSnapshot())
-    );
+        });
 
-    it("should generate external source maps", () =>
-        rollup({
+        const result = await bundle.generate({ format });
+
+        expect(result.code).toMatchSnapshot();
+    });
+
+    it("should generate external source maps", async () => {
+        const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
                     namer,
-                    css : "./packages/rollup/test/output/simple.css",
                     map : {
                         inline : false
                     }
                 })
             ]
-        })
-        .then((bundle) => bundle.write({
-            format : "es",
-            file   : "./packages/rollup/test/output/simple.js"
-        }))
-        .then(() => expect(read("simple.css.map")).toMatchSnapshot())
-    );
+        });
+
+        await bundle.write({
+            format,
+            assetFileNames,
+            file : "./packages/rollup/test/output/simple.js",
+        });
+
+        // Have to parse it into JSON so the propertyMatcher can exclude the file property
+        // since it is a hash value and changes constantly
+        expect(JSON.parse(read("assets/simple.css.map"))).toMatchSnapshot({
+            file : expect.any(String)
+        });
+    });
     
-    it("should warn & not export individual keys when they are not valid identifiers", () =>
-        rollup({
+    it("should warn & not export individual keys when they are not valid identifiers", async () => {
+        const bundle = await rollup({
             input   : require.resolve("./specimens/invalid-name.js"),
+            onwarn  : (msg) => expect(msg).toMatchSnapshot({ id : expect.any(String) }),
             plugins : [
                 plugin({
                     namer,
-                    onwarn : (msg) =>
-                        expect(msg).toBe("Invalid JS identifier \"fooga-wooga\", unable to export")
                 })
             ]
-        })
-        .then((bundle) => bundle.generate({ format : "es" }))
-        .then((result) => expect(result.code).toMatchSnapshot())
-    );
+        });
 
-    it("should allow disabling of named exports", () =>
-        rollup({
+        const result = await bundle.generate({
+            format,
+            assetFileNames
+        });
+
+        expect(result.code).toMatchSnapshot();
+    });
+
+    it("should allow disabling of named exports", async () => {
+        const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
@@ -180,13 +203,18 @@ describe("/rollup.js", () => {
                     namedExports : false
                 })
             ]
-        })
-        .then((bundle) => bundle.generate({ format : "es" }))
-        .then((result) => expect(result.code).toMatchSnapshot())
-    );
+        });
+
+        const result = await bundle.generate({
+            format,
+            assetFileNames
+        });
+
+        expect(result.code).toMatchSnapshot();
+    });
     
-    it("shouldn't disable sourcemap generation", () =>
-        rollup({
+    it("shouldn't disable sourcemap generation", async () => {
+        const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
@@ -194,52 +222,47 @@ describe("/rollup.js", () => {
                     sourcemap : true
                 })
             ]
-        })
-        .then((bundle) => bundle.generate({
-            format    : "es",
-            sourcemap : true
-        }))
-        .then((result) => {
-            var map = result.map;
+        });
 
-            // Sources are absolute file paths, so prevent snapshot testing
-            delete map.sources;
-            
-            expect(map).toMatchSnapshot();
-        })
-    );
+        const result = await bundle.generate({
+            format,
+            assetFileNames,
+
+            sourcemap : true
+        });
+
+        expect(result.map).toMatchSnapshot();
+    });
     
-    it("should not output sourcemaps when they are disabled", () =>
-        rollup({
+    it("should not output sourcemaps when they are disabled", async () => {
+        const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
                     namer,
                     map : false,
-                    css : "./packages/rollup/test/output/no-maps.css"
                 })
             ]
-        })
-        .then((bundle) => Promise.all([
-            bundle,
-            bundle.generate({
-                format    : "es",
-                sourcemap : false
-            })
-        ]))
-        .then((results) => {
-            expect(results[1].map).toBe(null);
+        });
 
-            return results[0].write({
-                format    : "es",
-                file      : "./packages/rollup/test/output/no-maps.js",
-                sourcemap : false
-            });
-        })
-        .then(() =>
-            expect(read("no-maps.css")).toMatchSnapshot()
-        )
-    );
+        const source = await bundle.generate({
+            format,
+            assetFileNames,
+            sourcemap : false
+        });
+
+        expect(source.map).toBe(null);
+
+        await bundle.write({
+            format,
+            assetFileNames,
+
+            file      : "./packages/rollup/test/output/no-maps.js",
+            sourcemap : false,
+        });
+        
+        expect(read("assets/no-maps.css")).toMatchSnapshot();
+    });
 
     it("should respect the CSS dependency tree", () =>
         rollup({
@@ -250,7 +273,7 @@ describe("/rollup.js", () => {
                 })
             ]
         })
-        .then((bundle) => bundle.generate({ format : "es" }))
+        .then((bundle) => bundle.generate({ format }))
         .then((result) => expect(result.code).toMatchSnapshot())
     );
 
@@ -300,8 +323,8 @@ describe("/rollup.js", () => {
                 ]
             })
             .then((bundle) => bundle.write({
-                format : "es",
-                file   : "./packages/rollup/test/output/done-error.js"
+                format,
+                file : "./packages/rollup/test/output/done-error.js"
             }))
         );
     });
@@ -319,16 +342,16 @@ describe("/rollup.js", () => {
                 ".one { color: red; }"
             );
 
-            // Start watching (re-requiring rollup because it needs root obj reference)
+            // Start watching
             watcher = watch({
                 input  : require.resolve("./specimens/watch.js"),
                 output : {
-                    file   : "./packages/rollup/test/output/watch.js",
-                    format : "es"
+                    file : "./packages/rollup/test/output/watch-output.js",
+                    format,
+                    assetFileNames,
                 },
                 plugins : [
                     plugin({
-                        css : "./packages/rollup/test/output/watch-output.css",
                         map : false
                     })
                 ]
@@ -342,13 +365,13 @@ describe("/rollup.js", () => {
             
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(read("watch-output.css")).toMatchSnapshot();
+                    expect(read("assets/watch-output.css")).toMatchSnapshot();
 
                     // continue watching
                     return;
                 }
 
-                expect(read("watch-output.css")).toMatchSnapshot();
+                expect(read("assets/watch-output.css")).toMatchSnapshot();
 
                 return done();
             }));
@@ -356,68 +379,56 @@ describe("/rollup.js", () => {
 
         it("should correctly update files within the dependency graph in watch mode when files change", (done) => {
             // Create v1 of the files
-            fs.writeFileSync(
-                "./packages/rollup/test/output/one.css",
-                dedent(`
-                    .one {
-                        color: red;
-                    }
-                `)
-            );
+            fs.writeFileSync("./packages/rollup/test/output/one.css", dedent(`
+                .one {
+                    color: red;
+                }
+            `));
 
-            fs.writeFileSync(
-                "./packages/rollup/test/output/two.css",
-                dedent(`
-                    .two {
-                        composes: one from "./one.css";
-                        
-                        color: blue;
-                    }
-                `)
-            );
+            fs.writeFileSync("./packages/rollup/test/output/two.css", dedent(`
+                .two {
+                    composes: one from "./one.css";
+                    
+                    color: blue;
+                }
+            `));
             
-            fs.writeFileSync(
-                "./packages/rollup/test/output/watch.js",
-                dedent(`
-                    import css from "./two.css";
-                    console.log(css);
-                `)
-            );
+            fs.writeFileSync("./packages/rollup/test/output/watch.js", dedent(`
+                import css from "./two.css";
+                console.log(css);
+            `));
 
-            // Start watching (re-requiring rollup because it needs root obj reference)
+            // Start watching
             watcher = watch({
                 input  : require.resolve("./output/watch.js"),
                 output : {
-                    file   : "./packages/rollup/test/output/watch-output.js",
-                    format : "es"
+                    file : "./packages/rollup/test/output/watch-output.js",
+                    format,
+                    assetFileNames,
                 },
                 plugins : [
                     plugin({
-                        css : "./packages/rollup/test/output/watch-output.css",
                         map : false
                     })
                 ]
             });
 
             // Create v2 of the file after a bit
-            setTimeout(() => fs.writeFileSync(
-                "./packages/rollup/test/output/one.css",
-                dedent(`
-                    .one {
-                        color: green;
-                    }
-                `)
-            ), 200);
+            setTimeout(() => fs.writeFileSync("./packages/rollup/test/output/one.css", dedent(`
+                .one {
+                    color: green;
+                }
+            `)), 200);
             
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(read("watch-output.css")).toMatchSnapshot();
+                    expect(read("assets/watch-output.css")).toMatchSnapshot();
 
                     // continue watching
                     return;
                 }
 
-                expect(read("watch-output.css")).toMatchSnapshot();
+                expect(read("assets/watch-output.css")).toMatchSnapshot();
 
                 return done();
             }));
@@ -441,16 +452,16 @@ describe("/rollup.js", () => {
                 `)
             );
 
-            // Start watching (re-requiring rollup because it needs root obj reference)
+            // Start watching
             watcher = watch({
                 input  : require.resolve("./output/watch.js"),
                 output : {
-                    file   : "./packages/rollup/test/output/watch-output.js",
-                    format : "es"
+                    file : "./packages/rollup/test/output/watch-output.js",
+                    format,
+                    assetFileNames,
                 },
                 plugins : [
                     plugin({
-                        css : "./packages/rollup/test/output/watch-output.css",
                         map : false
                     })
                 ]
@@ -468,16 +479,83 @@ describe("/rollup.js", () => {
             
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(read("watch-output.css")).toMatchSnapshot();
+                    expect(exists("assets/watch-output.css")).toBe(false);
 
                     // continue watching
                     return;
                 }
 
-                expect(read("watch-output.css")).toMatchSnapshot();
+                expect(read("assets/watch-output.css")).toMatchSnapshot();
 
                 return done();
             }));
+        });
+    });
+
+    describe("code splitting", () => {
+        it("should support splitting up CSS files", async () => {
+            const bundle = await rollup({
+                experimentalCodeSplitting : true,
+                
+                input : [
+                    require.resolve("./specimens/simple.js"),
+                    require.resolve("./specimens/named.js"),
+                ],
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map : false
+                    })
+                ]
+            });
+    
+            await bundle.write({
+                format,
+                assetFileNames,
+                
+                dir : "./packages/rollup/test/output/"
+            });
+
+            expect(read("assets/simple.css")).toMatchSnapshot();
+            expect(read("assets/named.css")).toMatchSnapshot();
+        });
+
+        it("should support manual chunks", async () => {
+            const bundle = await rollup({
+                experimentalCodeSplitting : true,
+
+                input : [
+                    require.resolve("./specimens/manual-chunks/a.js"),
+                    require.resolve("./specimens/manual-chunks/b.js"),
+                ],
+
+                manualChunks : {
+                    shared : [
+                        require.resolve("./specimens/manual-chunks/c.js")
+                    ]
+                },
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map : false
+                    })
+                ]
+            });
+
+            await bundle.write({
+                format,
+                assetFileNames,
+
+                chunkFileNames : "[name].js",
+
+                dir : "./packages/rollup/test/output/"
+            });
+
+            expect(read("assets/a.css")).toMatchSnapshot();
+            expect(read("assets/b.css")).toMatchSnapshot();
+            expect(read("assets/shared.css")).toMatchSnapshot();
         });
     });
 });

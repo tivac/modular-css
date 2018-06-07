@@ -1,5 +1,4 @@
-modular-css-rollup  [![NPM Version](https://img.shields.io/npm/v/modular-css-rollup.svg)](https://www.npmjs.com/package/modular-css-rollup) [![NPM License](https://img.shields.io/npm/l/modular-css-rollup.svg)](https://www.npmjs.com/package/modular-css-rollup) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-rollup.svg)](https://www.npmjs.com/package/modular-css-rollup)
-===========
+# modular-css-rollup  [![NPM Version](https://img.shields.io/npm/v/modular-css-rollup.svg)](https://www.npmjs.com/package/modular-css-rollup) [![NPM License](https://img.shields.io/npm/l/modular-css-rollup.svg)](https://www.npmjs.com/package/modular-css-rollup) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-rollup.svg)](https://www.npmjs.com/package/modular-css-rollup)
 
 <p align="center">
     <a href="https://gitter.im/modular-css/modular-css"><img src="https://img.shields.io/gitter/room/modular-css/modular-css.svg" alt="Gitter" /></a>
@@ -13,18 +12,16 @@ Rollup support for [`modular-css`](https://github.com/tivac/modular-css).
 
 ## Usage
 
+⚠️ As of `modular-css-rollup@11` this plugin will only work with `rollup@0.60.0` or higher due to plugin API changes ⚠️
+
 ### API
 
 ```js
-rollup({
+const bundle = await rollup({
     input   : "./index.js",
     plugins : [
-        require("modular-css-rollup")({
-            css : "./gen/index.css"
-        })
+        require("modular-css-rollup")()
     ]
-}).then(function(bundle) {
-    ...
 });
 ```
 
@@ -40,36 +37,35 @@ export default {
         format  : "umd"
     },
     plugins : [
-        css({
-            css : "./gen/index.css"
-        })
+        css()
     ]
 };
 ```
 
 ## Options
 
-### `ext`
-
-Extension to match on. Defaults to `.css`. Can be used in place of `include`/`exclude`.
-
 ### `include`/`exclude`
 
-A minimatch pattern, or an array of minimatch patterns, relative to `process.cwd()`. Can be used in place of `ext`.
+A minimatch pattern, or an array of minimatch patterns, relative to `process.cwd()`. `include` defaults to `**/*.css`.
 
 ### `css`
 
-Location to write the generated CSS file to.
+Boolean to determine if CSS files should be output at the end of compilation. Defaults to `true`.
 
 ### `json`
 
-Location to write out the JSON mapping file for use in server rendering.
+Boolean to determine if JSON files should be output at the end of compilation. Defaults to `false`.
 
 ### `namedExports`
 
 By default this plugin will create both a default export and named `export`s for each class in a CSS file. You can disable this by setting `namedExports` to `false`.
 
+### `map`
+
+Boolean to determine if inline source maps should be included. Defaults to `true`.
+
+To force the creation of external source maps set the value to `{ inline : false }`.
+
 ### Shared Options
 
 All other options are passed to the underlying `Processor` instance, see [Options](https://github.com/tivac/modular-css/blob/master/docs/api.md#options).
-

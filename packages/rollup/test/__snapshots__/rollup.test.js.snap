@@ -1,5 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/rollup.js code splitting should support manual chunks 1`] = `
+"/* packages/rollup/test/specimens/manual-chunks/a.css */
+.a {
+
+    color: red;
+}
+"
+`;
+
+exports[`/rollup.js code splitting should support manual chunks 2`] = `
+"/* packages/rollup/test/specimens/manual-chunks/b.css */
+.b {
+
+    color: blue;
+}
+"
+`;
+
+exports[`/rollup.js code splitting should support manual chunks 3`] = `
+"/* packages/rollup/test/specimens/manual-chunks/c.css */
+.c { color: green; }
+"
+`;
+
+exports[`/rollup.js code splitting should support splitting up CSS files 1`] = `
+"/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+"
+`;
+
+exports[`/rollup.js code splitting should support splitting up CSS files 2`] = `
+"/* packages/rollup/test/specimens/named.css */
+.a {
+    color: red;
+}
+"
+`;
+
 exports[`/rollup.js should allow disabling of named exports 1`] = `
 "var css = {
     \\"str\\": \\"\\\\\\"string\\\\\\"\\",
@@ -22,8 +62,7 @@ exports[`/rollup.js should generate CSS 1`] = `
 .fooga {
     color: red;
 }
-
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NwZWNpbWVucy9zaW1wbGUuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLCtDQUFDO0FBRUQ7SUFDSSxXQUFXO0NBQ2QiLCJmaWxlIjoic2ltcGxlLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIkB2YWx1ZSBzdHI6IFwic3RyaW5nXCI7XG5cbi5mb29nYSB7XG4gICAgY29sb3I6IHJlZDtcbn1cbiJdfQ== */"
+"
 `;
 
 exports[`/rollup.js should generate JSON 1`] = `
@@ -45,7 +84,25 @@ console.log(css);
 "
 `;
 
-exports[`/rollup.js should generate external source maps 1`] = `"{\\"version\\":3,\\"sources\\":[\\"../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,+CAAC;AAED;IACI,WAAW;CACd\\",\\"file\\":\\"simple.css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}"`;
+exports[`/rollup.js should generate external source maps 1`] = `
+Object {
+  "file": Any<String>,
+  "mappings": "AAAA,+CAAC;AAED;IACI,WAAW;CACd",
+  "names": Array [],
+  "sources": Array [
+    "packages/rollup/test/specimens/simple.css",
+  ],
+  "sourcesContent": Array [
+    "@value str: \\"string\\";
+
+.fooga {
+    color: red;
+}
+",
+  ],
+  "version": 3,
+}
+`;
 
 exports[`/rollup.js should not output sourcemaps when they are disabled 1`] = `
 "/* packages/rollup/test/specimens/simple.css */
@@ -76,6 +133,16 @@ console.log(css);
 `;
 
 exports[`/rollup.js should warn & not export individual keys when they are not valid identifiers 1`] = `
+Object {
+  "code": "PLUGIN_WARNING",
+  "id": Any<String>,
+  "message": "Invalid JS identifier \\"fooga-wooga\\", unable to export",
+  "plugin": "modular-css",
+  "toString": [Function],
+}
+`;
+
+exports[`/rollup.js should warn & not export individual keys when they are not valid identifiers 2`] = `
 "var css = {
     \\"fooga\\": \\"fooga\\",
     \\"fooga-wooga\\": \\"fooga-wooga\\"
@@ -91,6 +158,9 @@ SourceMap {
   "file": "simple.js",
   "mappings": ";;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC",
   "names": Array [],
+  "sources": Array [
+    "packages/rollup/test/specimens/simple.js",
+  ],
   "sourcesContent": Array [
     "import css from \\"./simple.css\\";
 
@@ -101,9 +171,7 @@ console.log(css);
 }
 `;
 
-exports[`/rollup.js watch should correctly add new css files in watch mode when files change 1`] = `""`;
-
-exports[`/rollup.js watch should correctly add new css files in watch mode when files change 2`] = `
+exports[`/rollup.js watch should correctly add new css files in watch mode when files change 1`] = `
 "/* packages/rollup/test/output/one.css */
 .mc19ef5610_one {
     color: red;
