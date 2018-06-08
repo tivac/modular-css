@@ -33,16 +33,12 @@ module.exports = function(opts) {
         
     const filter = utils.createFilter(options.include, options.exclude);
         
+    const processor = options.processor || new Processor(options);
+    
     let runs = 0;
-    let processor = options.processor || new Processor(options);
-    let source;
         
     return {
         name : "modular-css",
-
-        options({ input }) {
-            source = input;
-        },
 
         transform : function(code, id) {
             let removed = [];
@@ -103,7 +99,7 @@ module.exports = function(opts) {
                 };
             });
         },
-        
+
         buildEnd() {
             runs++;
         },
@@ -147,8 +143,7 @@ module.exports = function(opts) {
                     const css = this.emitAsset(`${base}.css`, "");
                     
                     const result = await processor.output({
-                        from : source,
-                        to   : css,
+                        to : css,
                         files
                     });
                     

@@ -22,6 +22,7 @@ function error(root) {
 
 error.postcssPlugin = "error-plugin";
 
+const output = "./packages/rollup/test/output";
 const assetFileNames = "assets/[name][extname]";
 const format = "es";
 const map = false;
@@ -30,7 +31,7 @@ const sourcemap = false;
 describe("/rollup.js", () => {
     /* eslint max-statements: "off" */
     
-    afterEach(() => shell.rm("-rf", "./packages/rollup/test/output/*"));
+    afterEach(() => shell.rm("-rf", `${output}/*`));
     
     it("should be a function", () =>
         expect(typeof plugin).toBe("function")
@@ -80,10 +81,30 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : "./packages/rollup/test/output/simple.js",
+            file : `${output}/simple.js`,
         });
 
         expect(read("assets/simple.css")).toMatchSnapshot();
+    });
+    
+    it("should correctly pass to/from params for relative paths", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/relative-paths.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    map,
+                })
+            ]
+        });
+
+        await bundle.write({
+            format,
+            assetFileNames,
+            file : `${output}/relative-paths.js`,
+        });
+
+        expect(read("assets/relative-paths.css")).toMatchSnapshot();
     });
 
     it("should avoid generating empty CSS", async () => {
@@ -99,7 +120,7 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : "./packages/rollup/test/output/no-css.js",
+            file : `${output}/no-css.js`,
         });
 
         expect(exists("assets/no-css.css")).toBe(false);
@@ -119,7 +140,7 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : "./packages/rollup/test/output/simple.js",
+            file : `${output}/simple.js`,
         });
         
         expect(read("assets/simple.json")).toMatchSnapshot();
@@ -156,7 +177,7 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : "./packages/rollup/test/output/simple.js",
+            file : `${output}/simple.js`,
         });
 
         // Have to parse it into JSON so the propertyMatcher can exclude the file property
@@ -249,7 +270,7 @@ describe("/rollup.js", () => {
             format,
             sourcemap,
 
-            file : "./packages/rollup/test/output/no-maps.js",
+            file : `${output}/no-maps.js`,
         });
         
         expect(read("assets/no-maps.css")).toMatchSnapshot();
@@ -298,7 +319,7 @@ describe("/rollup.js", () => {
             sourcemap,
             assetFileNames,
             
-            file : "./packages/rollup/test/output/existing-processor.js"
+            file : `${output}/existing-processor.js`
         });
 
         expect(read("assets/existing-processor.css")).toMatchSnapshot();
@@ -316,7 +337,7 @@ describe("/rollup.js", () => {
                 plugins : [
                     plugin({
                         namer,
-                        css    : "./packages/rollup/test/output/errors.css",
+                        css    : `${output}/errors.css`,
                         before : [ error ]
                     })
                 ]
@@ -330,7 +351,7 @@ describe("/rollup.js", () => {
                 plugins : [
                     plugin({
                         namer,
-                        css   : "./packages/rollup/test/output/errors.css",
+                        css   : `${output}/errors.css`,
                         after : [ error ]
                     })
                 ]
@@ -345,14 +366,14 @@ describe("/rollup.js", () => {
                 plugins : [
                     plugin({
                         namer,
-                        css  : "./packages/rollup/test/output/errors.css",
+                        css  : `${output}/errors.css`,
                         done : [ error ]
                     })
                 ]
             })
             .then((bundle) => bundle.write({
                 format,
-                file : "./packages/rollup/test/output/done-error.js"
+                file : `${output}/done-error.js`
             }))
         );
     });
@@ -366,7 +387,7 @@ describe("/rollup.js", () => {
         it("should generate correct builds in watch mode when files change", (done) => {
             // Create v1 of the file
             fs.writeFileSync(
-                "./packages/rollup/test/output/watched.css",
+                `${output}/watched.css`,
                 ".one { color: red; }"
             );
 
@@ -374,7 +395,7 @@ describe("/rollup.js", () => {
             watcher = watch({
                 input  : require.resolve("./specimens/watch.js"),
                 output : {
-                    file : "./packages/rollup/test/output/watch-output.js",
+                    file : `${output}/watch-output.js`,
                     format,
                     assetFileNames,
                 },
@@ -387,7 +408,7 @@ describe("/rollup.js", () => {
 
             // Create v2 of the file after a bit
             setTimeout(() => fs.writeFileSync(
-                "./packages/rollup/test/output/watched.css",
+                `${output}/watched.css`,
                 ".two { color: blue; }"
             ), 200);
             
@@ -407,13 +428,13 @@ describe("/rollup.js", () => {
 
         it("should correctly update files within the dependency graph in watch mode when files change", (done) => {
             // Create v1 of the files
-            fs.writeFileSync("./packages/rollup/test/output/one.css", dedent(`
+            fs.writeFileSync(`${output}/one.css`, dedent(`
                 .one {
                     color: red;
                 }
             `));
 
-            fs.writeFileSync("./packages/rollup/test/output/two.css", dedent(`
+            fs.writeFileSync(`${output}/two.css`, dedent(`
                 .two {
                     composes: one from "./one.css";
                     
@@ -421,7 +442,7 @@ describe("/rollup.js", () => {
                 }
             `));
             
-            fs.writeFileSync("./packages/rollup/test/output/watch.js", dedent(`
+            fs.writeFileSync(`${output}/watch.js`, dedent(`
                 import css from "./two.css";
                 console.log(css);
             `));
@@ -430,7 +451,7 @@ describe("/rollup.js", () => {
             watcher = watch({
                 input  : require.resolve("./output/watch.js"),
                 output : {
-                    file : "./packages/rollup/test/output/watch-output.js",
+                    file : `${output}/watch-output.js`,
                     format,
                     assetFileNames,
                 },
@@ -442,7 +463,7 @@ describe("/rollup.js", () => {
             });
 
             // Create v2 of the file after a bit
-            setTimeout(() => fs.writeFileSync("./packages/rollup/test/output/one.css", dedent(`
+            setTimeout(() => fs.writeFileSync(`${output}/one.css`, dedent(`
                 .one {
                     color: green;
                 }
@@ -465,7 +486,7 @@ describe("/rollup.js", () => {
         it("should correctly add new css files in watch mode when files change", (done) => {
             // Create v1 of the files
             fs.writeFileSync(
-                "./packages/rollup/test/output/one.css",
+                `${output}/one.css`,
                 dedent(`
                     .one {
                         color: red;
@@ -474,7 +495,7 @@ describe("/rollup.js", () => {
             );
 
             fs.writeFileSync(
-                "./packages/rollup/test/output/watch.js",
+                `${output}/watch.js`,
                 dedent(`
                     console.log("hello");
                 `)
@@ -484,7 +505,7 @@ describe("/rollup.js", () => {
             watcher = watch({
                 input  : require.resolve("./output/watch.js"),
                 output : {
-                    file : "./packages/rollup/test/output/watch-output.js",
+                    file : `${output}/watch-output.js`,
                     format,
                     assetFileNames,
                 },
@@ -497,7 +518,7 @@ describe("/rollup.js", () => {
 
             // Create v2 of the file after a bit
             setTimeout(() => fs.writeFileSync(
-                "./packages/rollup/test/output/watch.js",
+                `${output}/watch.js`,
                 dedent(`
                     import css from "./one.css";
 
@@ -549,7 +570,7 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
                 
-                dir : "./packages/rollup/test/output/"
+                dir : `${output}/`
             });
 
             expect(read("assets/chunk.css")).toMatchSnapshot();
@@ -585,7 +606,7 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
 
-                dir : "./packages/rollup/test/output/"
+                dir : `${output}/`
             });
 
             expect(read("assets/a.css")).toMatchSnapshot();
@@ -620,7 +641,7 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
 
-                dir : "./packages/rollup/test/output/"
+                dir : `${output}/`
             });
 
             expect(read("assets/a.css")).toMatchSnapshot();

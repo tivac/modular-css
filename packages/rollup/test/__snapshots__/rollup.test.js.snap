@@ -111,6 +111,15 @@ console.log(fooga);
 "
 `;
 
+exports[`/rollup.js should correctly pass to/from params for relative paths 1`] = `
+"/* packages/rollup/test/specimens/relative-paths.css */
+.wooga {
+    color: red;
+    background: url(\\"packages/rollup/test/specimens/folder/to.png\\");
+}
+"
+`;
+
 exports[`/rollup.js should generate CSS 1`] = `
 "/* packages/rollup/test/specimens/simple.css */
 .fooga {
