@@ -1,5 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/rollup.js code splitting should support dynamic imports 1`] = `
+"/* packages/rollup/test/specimens/dynamic-imports/a.css */
+.a {
+
+    color: aqua;
+}
+"
+`;
+
+exports[`/rollup.js code splitting should support dynamic imports 2`] = `
+"/* packages/rollup/test/specimens/dynamic-imports/b.css */
+.b {
+    color: blue;
+}
+"
+`;
+
+exports[`/rollup.js code splitting should support dynamic imports 3`] = `
+"/* packages/rollup/test/specimens/dynamic-imports/c.css */
+.c {
+    
+    color: cyan;
+}
+"
+`;
+
+exports[`/rollup.js code splitting should support dynamic imports 4`] = `
+"/* packages/rollup/test/specimens/dynamic-imports/d.css */
+.d {
+    color: darkred;
+}
+"
+`;
+
 exports[`/rollup.js code splitting should support manual chunks 1`] = `
 "/* packages/rollup/test/specimens/manual-chunks/a.css */
 .a {
@@ -19,8 +53,12 @@ exports[`/rollup.js code splitting should support manual chunks 2`] = `
 `;
 
 exports[`/rollup.js code splitting should support manual chunks 3`] = `
-"/* packages/rollup/test/specimens/manual-chunks/c.css */
-.c { color: green; }
+"/* packages/rollup/test/specimens/manual-chunks/d.css */
+/* packages/rollup/test/specimens/manual-chunks/c.css */
+.c {
+    color: green;
+    background: darkred;
+}
 "
 `;
 
@@ -33,11 +71,27 @@ exports[`/rollup.js code splitting should support splitting up CSS files 1`] = `
 `;
 
 exports[`/rollup.js code splitting should support splitting up CSS files 2`] = `
-"/* packages/rollup/test/specimens/named.css */
-.a {
+"/* packages/rollup/test/specimens/dependencies.css */
+.wooga {
+
+    background: blue;
+}
+"
+`;
+
+exports[`/rollup.js should accept an existing processor instance 1`] = `
+"/* packages/rollup/test/specimens/simple.css */
+.fooga {
     color: red;
 }
 "
+`;
+
+exports[`/rollup.js should accept an existing processor instance 2`] = `
+"/* packages/rollup/test/specimens/fake.css */
+.fake {
+    color: yellow;
+}"
 `;
 
 exports[`/rollup.js should allow disabling of named exports 1`] = `
@@ -54,6 +108,15 @@ exports[`/rollup.js should be able to tree-shake results 1`] = `
 "var fooga = \\"fooga\\";
 
 console.log(fooga);
+"
+`;
+
+exports[`/rollup.js should correctly pass to/from params for relative paths 1`] = `
+"/* packages/rollup/test/specimens/relative-paths.css */
+.wooga {
+    color: red;
+    background: url(\\"packages/rollup/test/specimens/folder/to.png\\");
+}
 "
 `;
 

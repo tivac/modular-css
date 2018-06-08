@@ -12,86 +12,81 @@ const plugin = require("../svelte.js");
 describe("/svelte.js", () => {
     afterEach(() => require("shelljs").rm("-rf", "./packages/svelte/test/output/*"));
     
-    it("should generate exports", () => {
+    it("should extract CSS from a <style> tag", async () => {
+        const filename = require.resolve("./specimens/style.html");
         const { processor, preprocess } = plugin({
-            css : "./packages/svelte/test/output/svelte.css",
             namer
         });
-
-        const filename = require.resolve("./specimens/svelte.html");
         
-        return svelte.preprocess(
+        const processed = await svelte.preprocess(
             fs.readFileSync(filename, "utf8"),
             Object.assign({}, preprocess, { filename })
-        )
-        .then((processed) => {
-            expect(processed.toString()).toMatchSnapshot();
-
-            return processor.output();
-        })
-        .then((output) =>
-            expect(output.css).toMatchSnapshot()
         );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        const output = await processor.output();
+        
+        expect(output.css).toMatchSnapshot();
     });
 
-    it("should support external css via <link>", () => {
+    it.each`
+        specimen | title
+        ${"external.html"} | ${"no script"}
+        ${"external-script.html"} | ${"existing script"}
+        ${"external-single.html"} | ${"single quotes"}
+        ${"external-unquoted.html"} | ${"unquoted"}
+    `("should extract CSS from a <link> tag ($title)", async ({ specimen }) => {
+        const filename = require.resolve(`./specimens/${specimen}`);
         const { processor, preprocess } = plugin({
-            css : "./packages/svelte/test/output/svelte.css",
             namer
         });
 
-        const filename = require.resolve("./specimens/svelte-external.html");
-
-        return svelte.preprocess(
+        const processed = await svelte.preprocess(
             fs.readFileSync(filename, "utf8"),
             Object.assign({}, preprocess, { filename })
-        )
-        .then((processed) => {
-            expect(processed.toString()).toMatchSnapshot();
-
-            return processor.output();
-        })
-        .then((output) =>
-            expect(output.css).toMatchSnapshot()
         );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        const output = await processor.output();
+        
+        expect(output.css).toMatchSnapshot();
     });
 
-    it("should ignore files without <style> blocks", () => {
+    it("should ignore files without <style> blocks", async () => {
         const { processor, preprocess } = plugin();
 
-        return svelte.preprocess(
+        const processed = await svelte.preprocess(
             dedent(`
                 <h1>Hello</h1>
                 <script>console.log("output")</script>
             `),
             preprocess
-        )
-        .then((processed) => {
-            expect(processed.toString()).toMatchSnapshot();
-            
-            return processor.output();
-        })
-        .then((output) =>
-            expect(output.css).toMatchSnapshot()
         );
+
+        expect(processed.toString()).toMatchSnapshot();
+            
+        const output = await processor.output();
+       
+        expect(output.css).toMatchSnapshot();
     });
 
-    it("should ignore invalid {css.<key>}", () => {
+    it("should ignore invalid {css.<key>}", async () => {
         const { preprocess } = plugin({
             namer
         });
 
-        return svelte.preprocess(
+        const processed = await svelte.preprocess(
             dedent(`
                 <h1 class="{css.nope}">Hello</h1>
                 <h2 class="{css.yup}">World</h2>
                 <style>.yup { color: red; }</style>
             `),
-            Object.assign({}, preprocess, { filename : require.resolve("./specimens/svelte.html") })
-        )
-        .then((processed) =>
-            expect(processed.toString()).toMatchSnapshot()
+            Object.assign({}, preprocess, { filename : require.resolve("./specimens/style.html") })
         );
+        
+        expect(processed.toString()).toMatchSnapshot();
     });
 
     it("should throw on both <style> and <link> in one file", () => {
@@ -100,7 +95,7 @@ describe("/svelte.js", () => {
             namer
         });
 
-        const filename = require.resolve("./specimens/svelte-both.html");
+        const filename = require.resolve("./specimens/both.html");
 
         return svelte.preprocess(
             fs.readFileSync(filename, "utf8"),

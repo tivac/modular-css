@@ -44,27 +44,27 @@ export default {
 
 ## Options
 
+### `common`
+
+File name to use in case there are any CSS dependencies that appear in multiple bundles.
+
 ### `include`/`exclude`
 
 A minimatch pattern, or an array of minimatch patterns, relative to `process.cwd()`. `include` defaults to `**/*.css`.
 
-### `css`
-
-Boolean to determine if CSS files should be output at the end of compilation. Defaults to `true`.
-
 ### `json`
 
 Boolean to determine if JSON files should be output at the end of compilation. Defaults to `false`.
-
-### `namedExports`
-
-By default this plugin will create both a default export and named `export`s for each class in a CSS file. You can disable this by setting `namedExports` to `false`.
 
 ### `map`
 
 Boolean to determine if inline source maps should be included. Defaults to `true`.
 
 To force the creation of external source maps set the value to `{ inline : false }`.
+
+### `namedExports`
+
+By default this plugin will create both a default export and named `export`s for each class in a CSS file. You can disable this by setting `namedExports` to `false`.
 
 ### Shared Options
 

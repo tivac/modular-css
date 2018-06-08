@@ -37,7 +37,7 @@ into what is effectively this
 
 while allowing you to use all of the usual `modular-css` goodies.
 
-Alternatively you can use `<link>` tags to reference CSS external to the component.
+Alternatively you can use `<link href="./file.css" />` tags to reference CSS external to the component.
 
 ## Install
 
@@ -51,7 +51,7 @@ Alternatively you can use `<link>` tags to reference CSS external to the compone
 const filename = "./Component.html";
 
 const { processor, preprocess } = require("modular-css-svelte")({
-    css : "./dist/bundle.css"
+    // Processor options
 });
 
 const processed = await svelte.preprocess(
@@ -64,24 +64,30 @@ const result = processor.output();
 fs.writeFileSync("./dist/bundle.css", result.css);
 ```
 
-### `rollup-plugin-svelte`
+### `modular-css-rollup`
 
 #### API
 
 ```js
 const rollup = require("rollup").rollup;
 
-const { preprocess, plugin } = require("modular-css-svelte/rollup")({
-    css : "./dist/bundle.css"
+const { preprocess, processor } = require("modular-css-svelte")({
+    // Processor options
 });
 
 const bundle = await rollup({
     input   : "./Component.html",
+    
     plugins : [
         require("rollup-plugin-svelte")({
-            preprocess
+            preprocess,
         }),
-        plugin
+
+        require("modular-css-rollup)({
+            processor,
+
+            common : "common.css",
+        }),
     ]
 });
 
@@ -95,21 +101,28 @@ bundle.write({
 #### `rollup.config.js`
 
 ```js
-const { preprocess, plugin } = require("modular-css-svelte/rollup")({
-    css : "./dist/bundle.css"
+const { preprocess, processor } = require("modular-css-svelte")({
+    // Processor options
 });
 
 module.exports = {
     input   : "./Component.html",
+    
     output  : {
         format : "es",
         file   : "./dist/bundle.js"
     },
+
     plugins : [
         require("rollup-plugin-svelte")({
-            preprocess
+            preprocess,
         }),
-        plugin
+        
+        require("modular-css-rollup)({
+            processor,
+
+            common : "common.css",
+        }),
     ]
 };
 ```

@@ -1,9 +1,9 @@
 coverage/
-parsers/
-node_modules/
-specimens/
-results/
-gen/
 dangerfile.js
-gen/
 dist/
+gen/
+node_modules/
+parsers/
+results/
+specimens/
+specimens/output/
