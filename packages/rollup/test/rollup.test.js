@@ -12,6 +12,8 @@ const exists   = require("test-utils/exists.js")(__dirname);
 const namer    = require("test-utils/namer.js");
 const watching = require("test-utils/rollup-watching.js");
 
+const Processor = require("modular-css-core");
+
 const plugin = require("../rollup.js");
 
 function error(root) {
@@ -34,31 +36,35 @@ describe("/rollup.js", () => {
         expect(typeof plugin).toBe("function")
     );
     
-    it("should generate exports", () =>
-        rollup({
+    it("should generate exports", async () => {
+        const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
                     namer
                 })
             ]
-        })
-        .then((bundle) => bundle.generate({ format }))
-        .then((result) => expect(result.code).toMatchSnapshot())
-    );
+        });
+        
+        const result = await bundle.generate({ format });
+        
+        expect(result.code).toMatchSnapshot();
+    });
     
-    it("should be able to tree-shake results", () =>
-        rollup({
+    it("should be able to tree-shake results", async () => {
+        const bundle = await rollup({
             input   : require.resolve("./specimens/tree-shaking.js"),
             plugins : [
                 plugin({
                     namer
                 })
             ]
-        })
-        .then((bundle) => bundle.generate({ format }))
-        .then((result) => expect(result.code).toMatchSnapshot())
-    );
+        });
+
+        const result = await bundle.generate({ format });
+        
+        expect(result.code).toMatchSnapshot();
+    });
 
     it("should generate CSS", async () => {
         const bundle = await rollup({
@@ -99,8 +105,8 @@ describe("/rollup.js", () => {
         expect(exists("assets/no-css.css")).toBe(false);
     });
     
-    it("should generate JSON", () =>
-        rollup({
+    it("should generate JSON", async () => {
+        const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
@@ -108,16 +114,16 @@ describe("/rollup.js", () => {
                     json : true
                 })
             ]
-        })
-        .then((bundle) => bundle.write({
+        });
+        
+        await bundle.write({
             format,
             assetFileNames,
             file : "./packages/rollup/test/output/simple.js",
-        }))
-        .then(() =>
-            expect(read("assets/simple.json")).toMatchSnapshot()
-        )
-    );
+        });
+        
+        expect(read("assets/simple.json")).toMatchSnapshot();
+    });
 
     it("should provide named exports", async () => {
         const bundle = await rollup({
@@ -249,18 +255,55 @@ describe("/rollup.js", () => {
         expect(read("assets/no-maps.css")).toMatchSnapshot();
     });
 
-    it("should respect the CSS dependency tree", () =>
-        rollup({
+    it("should respect the CSS dependency tree", async () => {
+        const bundle = await rollup({
             input   : require.resolve("./specimens/dependencies.js"),
             plugins : [
                 plugin({
                     namer
                 })
             ]
-        })
-        .then((bundle) => bundle.generate({ format }))
-        .then((result) => expect(result.code).toMatchSnapshot())
-    );
+        });
+
+        const result = await bundle.generate({ format });
+
+        expect(result.code).toMatchSnapshot();
+    });
+
+    it("should accept an existing processor instance", async () => {
+        const processor = new Processor({
+            namer,
+            map,
+        });
+
+        await processor.string("./packages/rollup/test/specimens/fake.css", dedent(`
+            .fake {
+                color: yellow;
+            }
+        `));
+        
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/simple.js"),
+            plugins : [
+                plugin({
+                    processor,
+
+                    common : "common.css"
+                })
+            ]
+        });
+
+        await bundle.write({
+            format,
+            sourcemap,
+            assetFileNames,
+            
+            file : "./packages/rollup/test/output/existing-processor.js"
+        });
+
+        expect(read("assets/existing-processor.css")).toMatchSnapshot();
+        expect(read("assets/common.css")).toMatchSnapshot();
+    });
 
     describe("errors", () => {
         function checkError(err) {
@@ -494,7 +537,8 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         map,
-                        css : "common.css"
+                        
+                        common : "common.css"
                     })
                 ]
             });

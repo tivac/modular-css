@@ -34,7 +34,7 @@ module.exports = function(opts) {
     const filter = utils.createFilter(options.include, options.exclude);
         
     let runs = 0;
-    let processor = new Processor(options);
+    let processor = options.processor || new Processor(options);
     let source;
         
     return {

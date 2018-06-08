@@ -1,4 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`/rollup.js code splitting should support dynamic imports 1`] = `
 "/* packages/rollup/test/specimens/dynamic-imports/a.css */
 .a {
@@ -76,6 +77,21 @@ exports[`/rollup.js code splitting should support splitting up CSS files 2`] = `
     background: blue;
 }
 "
+`;
+
+exports[`/rollup.js should accept an existing processor instance 1`] = `
+"/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+"
+`;
+
+exports[`/rollup.js should accept an existing processor instance 2`] = `
+"/* packages/rollup/test/specimens/fake.css */
+.fake {
+    color: yellow;
+}"
 `;
 
 exports[`/rollup.js should allow disabling of named exports 1`] = `
