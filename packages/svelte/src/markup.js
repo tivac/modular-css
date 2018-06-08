@@ -29,10 +29,12 @@ function updateCss({ content, result }) {
 }
 
 async function extractLink({ processor, content, filename, link }) {
+    let href = link[1] || link[2] || link[3];
+    
+    let external = slash(resolve(path.dirname(filename), href));
+
     // Remove the <link> element from the component to avoid double-loading
     content = content.replace(link[0], "");
-
-    let external = slash(resolve(path.dirname(filename), link[1] || link[2] || link[3]));
 
     const script = content.match(scriptRegex);
 
@@ -42,14 +44,14 @@ async function extractLink({ processor, content, filename, link }) {
         content = content.replace(
             script[0],
             script[0].replace(script[1], dedent(`
-                import css from ${JSON.stringify(external)};
+                import css from ${JSON.stringify(href)};
                 ${script[1]}
             `))
         );
     } else {
         content += dedent(`
             <script>
-                import css from ${JSON.stringify(external)};
+                import css from ${JSON.stringify(href)};
             </script>
         `);
     }
