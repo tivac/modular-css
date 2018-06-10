@@ -1,34 +1,34 @@
 "use strict";
 
-var selector = require("postcss-selector-parser"),
-    value    = require("postcss-value-parser"),
-    escape   = require("escape-string-regexp"),
-    each     = require("lodash.foreach"),
-    get      = require("lodash.get"),
-    Graph    = require("dependency-graph").DepGraph,
+const selector = require("postcss-selector-parser");
+const value    = require("postcss-value-parser");
+const escape   = require("escape-string-regexp");
+const each     = require("lodash.foreach");
+const get      = require("lodash.get");
+const Graph    = require("dependency-graph").DepGraph;
     
-    namespaced = require("./values-namespaced.js");
+const namespaced = require("./values-namespaced.js");
 
 module.exports = (css, result) => {
-    var graph = new Graph(),
+    const graph = new Graph();
         
-        // Create local copy of values since we're going to merge in namespace stuff
-        values = Object.assign(
-            Object.create(null),
-            get(result.opts, [ "files", result.opts.from, "values" ])
-        ),
+    // Create local copy of values since we're going to merge in namespace stuff
+    const values = Object.assign(
+        Object.create(null),
+        get(result.opts, [ "files", result.opts.from, "values" ])
+    );
 
-        external = selector((selectors) =>
-            selectors.walkTags((tag) => {
-                if(!values[tag.value]) {
-                    return;
-                }
+    const external = selector((selectors) =>
+        selectors.walkTags((tag) => {
+            if(!values[tag.value]) {
+                return;
+            }
 
-                tag.replaceWith(selector.tag(values[tag.value]));
-            })
-        ),
+            tag.replaceWith(selector.tag(values[tag.value]));
+        })
+    );
         
-        matchRegex;
+    let matchRegex;
     
     // Replace values inside specific values
     function replacer(prop) {

@@ -59,6 +59,25 @@ describe("/processor.js", () => {
             )
         );
 
+        it("should support parameterized values", () =>
+            processor.string(
+                "./values.css",
+                dedent(`
+                    @value a(one): red $one;
+                    @value params(arg): rgba($arg, $arg, $arg, 0.5);
+
+                    .a {
+                        color: a(foo);
+                        background-color: params(128);
+                    }
+                `)
+            )
+            .then(() => processor.output())
+            .then((result) =>
+                expect(result.css).toMatchSnapshot()
+            )
+        );
+
         it("should support local values in value composition", () =>
             processor.string(
                 "./packages/core/test/specimens/simple.css",

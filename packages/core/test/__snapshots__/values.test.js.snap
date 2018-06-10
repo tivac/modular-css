@@ -47,6 +47,14 @@ Object {
 }
 `;
 
+exports[`/processor.js values should support parameterized values 1`] = `
+"/* values.css */
+.a {
+    color: red foo;
+    background-color: rgba(128, 128, 128, 0.5);
+}"
+`;
+
 exports[`/processor.js values should support simple values 1`] = `
 "/* values.css */
 .a {

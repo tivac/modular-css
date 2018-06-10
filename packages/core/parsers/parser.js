@@ -211,7 +211,7 @@ function peg$parse(input, options) {
       peg$c44 = function(name, head, tail) { return [ head ].concat(tail); },
       peg$c45 = function(name, args, value) {
               return {
-                  type : "function",
+                  type : "parameterized",
                   args : args,
                   name,
                   value,

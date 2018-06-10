@@ -93,7 +93,7 @@ parameterized
       	) _
       ")" _ ":" _ value:trailing {
         return {
-            type : "function",
+            type : "parameterized",
             args : args,
             name,
             value,

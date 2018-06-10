@@ -18,14 +18,15 @@ module.exports = (css, result) => {
             return;
         }
 
-        if(parsed.type !== "assignment") {
+        if(parsed.type !== "assignment" && parsed.type !== "parameterized") {
             return;
         }
 
-        values[parsed.name] = {
-            value  : parsed.value,
-            source : rule.source
-        };
+        values[parsed.name] = Object.assign(
+            Object.create(null),
+            parsed,
+            { source : rule.source }
+        );
 
         rule.remove();
     });
