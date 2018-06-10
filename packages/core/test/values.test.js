@@ -22,7 +22,7 @@ describe("/processor.js", () => {
                 "@value foo, bar from nowhere.css"
             )
             .catch((error) =>
-                expect(error.message).toMatch(`SyntaxError: Expected source but "n" found.`)
+                expect(error.message).toMatch(`SyntaxError: Expected quoted source reference but "n" found.`)
             )
         );
 
