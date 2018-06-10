@@ -14,8 +14,10 @@
     "commitmsg": "commitlint --edit",
     "cover": "jest --coverage",
     "lint": "eslint .",
+    "parser": "pegjs packages/core/parsers/parser.pegjs",
     "prerelease": "npm test",
     "release": "lerna publish",
+    "pretest": "npm run parser",
     "test": "jest",
     "posttest": "npm run lint",
     "watch": "jest --watch"
