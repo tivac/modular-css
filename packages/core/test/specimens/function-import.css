@@ -1,0 +1,5 @@
+@value func from "./function.css";
+
+.a {
+    color: func(red);
+}

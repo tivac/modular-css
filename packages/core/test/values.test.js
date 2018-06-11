@@ -78,6 +78,24 @@ describe("/processor.js", () => {
             expect(result.css).toMatchSnapshot();
         });
 
+        it("should support parameterized values that use static values", async () => {
+            await processor.string(
+                "./values.css",
+                dedent(`
+                    @value foo: bar;
+                    @value a(one): foo $one;
+
+                    .a {
+                        color: a(bar);
+                    }
+                `)
+            );
+
+            const result = await processor.output();
+
+            expect(result.css).toMatchSnapshot();
+        });
+
         it("should support local values in value composition", async () => {
             const result = await processor.string(
                 "./packages/core/test/specimens/simple.css",
@@ -129,6 +147,22 @@ describe("/processor.js", () => {
 
             const result = await processor.output();
             
+            expect(result.css).toMatchSnapshot();
+        });
+
+        it("should support importing functions from a file", async () => {
+            await processor.file(require.resolve("./specimens/function-import.css"));
+
+            const result = await processor.output();
+
+            expect(result.css).toMatchSnapshot();
+        });
+
+        it("should support importing namespaced functions from file", async () => {
+            await processor.file(require.resolve("./specimens/function-namespace.css"));
+
+            const result = await processor.output();
+
             expect(result.css).toMatchSnapshot();
         });
     });
