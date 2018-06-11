@@ -195,6 +195,19 @@ console.log(css);
 "
 `;
 
+exports[`/rollup.js should respect the CSS dependency tree 2`] = `
+"/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+/* packages/rollup/test/specimens/dependencies.css */
+.wooga {
+
+    background: blue;
+}
+"
+`;
+
 exports[`/rollup.js should warn & not export individual keys when they are not valid identifiers 1`] = `
 Object {
   "code": "PLUGIN_WARNING",

@@ -23,10 +23,10 @@ function error(root) {
 
 error.postcssPlugin = "error-plugin";
 
-const output = "./packages/rollup/test/output";
 const assetFileNames = "assets/[name][extname]";
 const format = "es";
 const map = false;
+const output = "./packages/rollup/test/output";
 const sourcemap = false;
 
 describe("/rollup.js", () => {
@@ -283,13 +283,21 @@ describe("/rollup.js", () => {
             plugins : [
                 plugin({
                     namer,
-                }),
-            ],
+                    map,
+                })
+            ]
         });
 
-        const result = await bundle.generate({ format });
+        await bundle.write({
+            format,
+            assetFileNames,
+            sourcemap,
 
-        expect(result.code).toMatchSnapshot();
+            file : `${output}/dependencies.js`
+        });
+
+        expect(read("dependencies.js")).toMatchSnapshot();
+        expect(read("assets/dependencies.css")).toMatchSnapshot();
     });
 
     it("should accept an existing processor instance", async () => {
