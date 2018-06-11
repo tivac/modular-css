@@ -65,37 +65,27 @@ module.exports = function(opts) {
             .then((results) => {
                 const [ result ] = results;
                 const exported = output.join(result.exports);
+                const dependencies = processor.dependencies(id);
                 
-                let out = [
-                    `export default ${JSON.stringify(exported, null, 4)};`,
+                const out = [
+                    `export default ${JSON.stringify(exported, null, 4)};`
                 ];
-                
-                // Add dependencies
-                out = out.concat(
-                    processor.dependencies(id).map((file) =>
-                        `import "${slash(file)}";`
-                    )
-                );
 
-                if(options.namedExports === false) {
-                    return {
-                        code : out.join("\n"),
-                        map,
-                    };
-                }
-
-                Object.keys(exported).forEach((ident) => {
-                    if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
-                        this.warn(`Invalid JS identifier "${ident}", unable to export`);
+                if(options.namedExports) {
+                    Object.keys(exported).forEach((ident) => {
+                        if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
+                            this.warn(`Invalid JS identifier "${ident}", unable to export`);
+                            
+                            return;
+                        }
                         
-                        return;
-                    }
-
-                    out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
-                });
-
+                        out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
+                    });
+                }
+                    
                 return {
                     code : out.join("\n"),
+                    dependencies,
                     map,
                 };
             });
@@ -142,8 +132,11 @@ module.exports = function(opts) {
                     const css = this.emitAsset(`${base}.css`);
                     
                     const result = await processor.output({
-                        to : css,
-                        files,
+                        // TODO: This doesn't work until the asset has a source
+                        // but this call to processor.output() creates the source...
+                        // so now what?
+                        to : this.getAssetFileName(css),
+                        files
                     });
                     
                     this.setAssetSource(css, result.css);
