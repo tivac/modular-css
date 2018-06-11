@@ -23,6 +23,25 @@ exports[`/processor.js values should support exporting imported variables 1`] = 
 "
 `;
 
+exports[`/processor.js values should support importing functions from a file 1`] = `
+"/* packages/core/test/specimens/function.css */
+/* packages/core/test/specimens/function-import.css */
+.a {
+    color: red red;
+}
+"
+`;
+
+exports[`/processor.js values should support importing namespaced functions from file 1`] = `
+"/* packages/core/test/specimens/function.css */
+/* packages/core/test/specimens/function-namespace.css */
+.a {
+    color: blue blue;
+    background-color: green;
+}
+"
+`;
+
 exports[`/processor.js values should support importing variables from a file 1`] = `
 "/* packages/core/test/specimens/values.css */
 /* packages/core/test/specimens/value-import.css */
@@ -45,6 +64,21 @@ Object {
   "o": "red",
   "one": "red",
 }
+`;
+
+exports[`/processor.js values should support parameterized values 1`] = `
+"/* values.css */
+.a {
+    color: red foo;
+    background-color: rgba(128, 128, 128, 0.5);
+}"
+`;
+
+exports[`/processor.js values should support parameterized values that use static values 1`] = `
+"/* values.css */
+.a {
+    color: bar bar;
+}"
 `;
 
 exports[`/processor.js values should support simple values 1`] = `

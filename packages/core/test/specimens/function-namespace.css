@@ -1,0 +1,6 @@
+@value * as f from "./function.css";
+
+.a {
+    color: f.func(blue);
+    background-color: f.func2(green);
+}

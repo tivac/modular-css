@@ -1,6 +1,7 @@
 start
     = import_namespace
     / create_namespace
+    / function
     / assignment
     / composition
     / namespaced
@@ -17,28 +18,36 @@ s "string"
 // Partials
 
 // wooga
-ident "identifier"
+identifier
     = chars:[a-z0-9-_]i+ { return chars.join(""); }
 
 // wooga
 // global(wooga)
-reference "reference"
-    = "global(" _ ref:ident _ ")" { return { name : ref, global : true }; }
-    / ref:ident { return { name : ref }; }
+reference
+    = "global(" _ ref:identifier _ ")" { return { name : ref, global : true }; }
+    / ref:identifier { return { name : ref }; }
  
 // wooga
 // wooga, tooga
-references "references"
-    = _ head:reference tail:(_ "," _ ref:reference { return ref; })* _ { return [ head ].concat(tail); }
+references
+    = _ head:reference tail:(_ "," _ ref:reference { return ref; })* _ {
+            return [ head ].concat(tail);
+        }
 
 // "./wooga.css"
-source "source"
+source "quoted source reference"
     = s
 
 // from "./wooga"
 from_source
     = _ "from" _ source:source {
         return source;
+    }
+
+// (capture everything to the end of the input)
+trailing
+    = value:.+ {
+        return value.join("").trim();
     }
 
 // Patterns
@@ -50,29 +59,47 @@ import_namespace
     = _ "*" _ source:from_source {
         return {
             type : "import",
-            source
+            source,
         };
     }
 
 // * as fooga from "./wooga"
 create_namespace
-    = _ "*" _ "as" _ name:ident source:from_source {
+    = _ "*" _ "as" _ name:identifier source:from_source {
         return {
             type : "namespace",
             source,
-            name
+            name,
         };
     }
 
 // fooga: booga
-assignment
-    = ref:reference _ ":" _ value:.+ {
+assignment "@value assignment"
+    = ref:reference _ ":" _ value:trailing {
         return {
-            type  : "assignment",
-            name  : ref.name,
-            value : value.join("")
+            type : "assignment",
+            name : ref.name,
+            value,
         };
     }
+
+// fooga(a, b): booga $a
+function
+    = name:identifier "("
+    	_ args:(
+    		head:identifier
+        	tail:(_ "," _ arg:identifier { return arg; })*
+        	{ return [ head ].concat(tail); }
+      	) _
+      ")" _ ":" _ value:trailing {
+        return {
+            type : "function",
+            args : args,
+            name,
+            value,
+        }
+    }
+
 
 // @value or composes:
 
@@ -83,7 +110,7 @@ composition
         return {
             type : "composition",
             source,
-            refs
+            refs,
         };
     }
 
@@ -91,11 +118,11 @@ composition
 
 // fooga.booga
 namespaced
-    = ns:ident "." ref:ident {
+    = ns:identifier "." ref:identifier {
         return {
             type : "namespaced",
             ns,
-            ref
+            ref,
         };
     }
 
@@ -105,6 +132,6 @@ simple
     = refs:references {
         return {
             type : "simple",
-            refs
+            refs,
         };
     }

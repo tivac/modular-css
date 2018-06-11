@@ -1,8 +1,10 @@
 "use strict";
 
-var parser = require("../parsers/parser.js"),
+const escape = require("escape-string-regexp");
+
+const parser = require("../parsers/parser.js");
     
-    plugin = "modular-css-values-local";
+const plugin = "modular-css-values-local";
 
 // Find @value fooga: wooga entries & catalog/remove them
 module.exports = (css, result) => {
@@ -18,14 +20,35 @@ module.exports = (css, result) => {
             return;
         }
 
-        if(parsed.type !== "assignment") {
+        const { type } = parsed;
+
+        if(type !== "assignment" && type !== "function") {
             return;
         }
 
-        values[parsed.name] = {
-            value  : parsed.value,
-            source : rule.source
-        };
+        if(type === "assignment") {
+            values[parsed.name] = Object.assign(
+                Object.create(null),
+                parsed,
+                { source : rule.source }
+            );
+        }
+
+        if(type === "function") {
+            values[parsed.name] = Object.assign(
+                Object.create(null),
+                parsed,
+                {
+                    search : new RegExp(
+                        parsed.args
+                            .map((a) => `\\$(${escape(a)})\\b`)
+                            .join("|"),
+                        "g"
+                    ),
+                    source : rule.source,
+                }
+            );
+        }
 
         rule.remove();
     });
