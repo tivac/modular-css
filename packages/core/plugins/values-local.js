@@ -18,7 +18,7 @@ module.exports = (css, result) => {
             return;
         }
 
-        if(parsed.type !== "assignment" && parsed.type !== "parameterized") {
+        if(parsed.type !== "assignment") {
             return;
         }
 

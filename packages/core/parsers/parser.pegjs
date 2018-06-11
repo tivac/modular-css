@@ -1,7 +1,7 @@
 start
     = import_namespace
     / create_namespace
-    / parameterized
+    / function
     / assignment
     / composition
     / namespaced
@@ -84,7 +84,7 @@ assignment "@value assignment"
     }
 
 // fooga(a, b): booga $a
-parameterized
+function
     = name:identifier "("
     	_ args:(
     		head:identifier
@@ -93,7 +93,7 @@ parameterized
       	) _
       ")" _ ":" _ value:trailing {
         return {
-            type : "parameterized",
+            type : "function",
             args : args,
             name,
             value,

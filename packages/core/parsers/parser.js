@@ -211,7 +211,7 @@ function peg$parse(input, options) {
       peg$c44 = function(name, head, tail) { return [ head ].concat(tail); },
       peg$c45 = function(name, args, value) {
               return {
-                  type : "parameterized",
+                  type : "function",
                   args : args,
                   name,
                   value,
@@ -383,7 +383,7 @@ function peg$parse(input, options) {
     if (s0 === peg$FAILED) {
       s0 = peg$parsecreate_namespace();
       if (s0 === peg$FAILED) {
-        s0 = peg$parseparameterized();
+        s0 = peg$parsefunction();
         if (s0 === peg$FAILED) {
           s0 = peg$parseassignment();
           if (s0 === peg$FAILED) {
@@ -1002,7 +1002,7 @@ function peg$parse(input, options) {
     return s0;
   }
 
-  function peg$parseparameterized() {
+  function peg$parsefunction() {
     var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
 
     s0 = peg$currPos;
