@@ -135,7 +135,7 @@ module.exports = function(opts) {
                         // TODO: This doesn't work until the asset has a source
                         // but this call to processor.output() creates the source...
                         // so now what?
-                        to : this.getAssetFileName(css),
+                        to : css, // this.getAssetFileName(css),
                         files
                     });
                     
