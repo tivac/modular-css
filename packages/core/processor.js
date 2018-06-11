@@ -71,7 +71,6 @@ function Processor(opts) {
     this._graph = new Graph();
     
     this._before = postcss((this._options.before || []).concat(
-        require("./plugins/values-functions.js"),
         require("./plugins/values-local.js"),
         require("./plugins/values-export.js"),
         require("./plugins/values-replace.js"),

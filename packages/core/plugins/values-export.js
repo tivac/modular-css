@@ -2,7 +2,6 @@
 
 const order = [
     "modular-css-values-imported",
-    "modular-css-values-functions",
     "modular-css-values-local",
     "modular-css-values-composed"
 ];
