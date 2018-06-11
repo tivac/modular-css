@@ -34,19 +34,41 @@ module.exports = (css, result) => {
     function replacer(prop) {
         return (thing) => {
             var parsed = value(thing[prop]);
-            
-            parsed.walk((node) => {
-                if(node.type !== "word") {
-                    return;
+
+            parsed.walk((node, idx, nodes) => {
+                // Replace any simple value instances
+                if(node.type === "word") {
+                    node.value = node.value.replace(matchRegex, (match) => {
+                        const v = values[match];
+    
+                        // Source map support
+                        thing.source = v.source;
+                        
+                        return v.value;
+                    });
                 }
-                
-                // Replace any value instances
-                node.value = node.value.replace(matchRegex, (match) => {
-                    // Source map support
-                    thing.source = values[match].source;
-                    
-                    return values[match].value;
-                });
+
+                // function replacement
+                if(node.type === "function" && node.value in values) {
+                    const v = values[node.value];
+                    const args = {};
+
+                    // Build up map of args => values
+                    v.args.forEach((arg, pos) => {
+                        args[arg] = node.nodes[pos].value;
+                    });
+
+                    // Replace all arg instances w/ the value
+                    const updated = v.value.replace(v.search, (_, arg) => args[arg]);
+
+                    // Parse the result
+                    const replacement = value(updated);
+
+                    thing.source = v.source;
+
+                    // Splice the result over the previous value
+                    nodes.splice(idx, 1, ...replacement.nodes);
+                }
             });
 
             thing[prop] = parsed.toString();

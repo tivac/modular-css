@@ -38,8 +38,8 @@ describe("/processor.js", () => {
             )
         );
 
-        it("should support simple values", () =>
-            processor.string(
+        it("should support simple values", async () => {
+            await processor.string(
                 "./values.css",
                 dedent(`
                     @value a: red;
@@ -52,15 +52,15 @@ describe("/processor.js", () => {
                         font-family: b;
                     }
                 `)
-            )
-            .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
-            )
-        );
+            );
+            
+            const result = await processor.output();
+            
+            expect(result.css).toMatchSnapshot();
+        });
 
-        it("should support parameterized values", () =>
-            processor.string(
+        it("should support parameterized values", async () => {
+            await processor.string(
                 "./values.css",
                 dedent(`
                     @value a(one): red $one;
@@ -71,15 +71,15 @@ describe("/processor.js", () => {
                         background-color: params(128);
                     }
                 `)
-            )
-            .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
-            )
-        );
+            );
 
-        it("should support local values in value composition", () =>
-            processor.string(
+            const result = await processor.output();
+            
+            expect(result.css).toMatchSnapshot();
+        });
+
+        it("should support local values in value composition", async () => {
+            const result = await processor.string(
                 "./packages/core/test/specimens/simple.css",
                 dedent(`
                     @value o: one;
@@ -87,50 +87,49 @@ describe("/processor.js", () => {
                     @value o from local;
                     .fooga { background: one; }
                 `)
-            )
-            .then((result) =>
-                expect(result.exports).toMatchSnapshot()
-            )
-        );
+            );
+            
+            expect(result.exports).toMatchSnapshot();
+        });
 
-        it("should support importing variables from a file", () =>
-            processor.file(require.resolve("./specimens/value-import.css"))
-            .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
-            )
-        );
+        it("should support importing variables from a file", async () => {
+            await processor.file(require.resolve("./specimens/value-import.css"));
 
-        it("should support exporting imported variables", () =>
-            processor.file(require.resolve("./specimens/value-export.css"))
-            .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
-            )
-        );
+            const result = await processor.output();
+            
+            expect(result.css).toMatchSnapshot();
+        });
 
-        it("should support value composition", () =>
-            processor.file(require.resolve("./specimens/value-composition.css"))
-            .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
-            )
-        );
+        it("should support exporting imported variables", async () => {
+            await processor.file(require.resolve("./specimens/value-export.css"));
 
-        it("should support value namespaces", () =>
-            processor.file(require.resolve("./specimens/value-namespace.css"))
-            .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
-            )
-        );
+            const result = await processor.output();
+            
+            expect(result.css).toMatchSnapshot();
+        });
 
-        it("should support value replacement in :external(...)", () =>
-            processor.file(require.resolve("./specimens/externals.css"))
-            .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
-            )
-        );
+        it("should support value composition", async () => {
+            await processor.file(require.resolve("./specimens/value-composition.css"));
+
+            const result = await processor.output();
+            
+            expect(result.css).toMatchSnapshot();
+        });
+
+        it("should support value namespaces", async () => {
+            await processor.file(require.resolve("./specimens/value-namespace.css"));
+
+            const result = await processor.output();
+            
+            expect(result.css).toMatchSnapshot();
+        });
+
+        it("should support value replacement in :external(...)", async () => {
+            await processor.file(require.resolve("./specimens/externals.css"));
+
+            const result = await processor.output();
+            
+            expect(result.css).toMatchSnapshot();
+        });
     });
 });
