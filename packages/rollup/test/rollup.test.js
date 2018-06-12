@@ -28,6 +28,7 @@ const format = "es";
 const map = false;
 const output = "./packages/rollup/test/output";
 const sourcemap = false;
+const common = "common.css";
 
 describe("/rollup.js", () => {
     /* eslint max-statements: "off" */
@@ -318,9 +319,9 @@ describe("/rollup.js", () => {
                 plugin({
                     processor,
 
-                    common : "common.css",
-                }),
-            ],
+                    common,
+                })
+            ]
         });
 
         await bundle.write({
@@ -567,10 +568,9 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         map,
-                        
-                        common : "common.css",
-                    }),
-                ],
+                        common,
+                    })
+                ]
             });
     
             await bundle.write({
@@ -582,7 +582,7 @@ describe("/rollup.js", () => {
                 dir : `${output}/`,
             });
 
-            expect(read("assets/chunk.css")).toMatchSnapshot();
+            expect(read("assets/common.css")).toMatchSnapshot();
             expect(read("assets/dependencies.css")).toMatchSnapshot();
         });
 
@@ -605,8 +605,9 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         map,
-                    }),
-                ],
+                        common
+                    })
+                ]
             });
 
             await bundle.write({
@@ -620,7 +621,7 @@ describe("/rollup.js", () => {
 
             expect(read("assets/a.css")).toMatchSnapshot();
             expect(read("assets/b.css")).toMatchSnapshot();
-            expect(read("assets/shared.css")).toMatchSnapshot();
+            expect(read("assets/common.css")).toMatchSnapshot();
         });
 
         it("should support dynamic imports", async () => {
@@ -638,10 +639,9 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         map,
-
-                        common : "common.css",
-                    }),
-                ],
+                        common,
+                    })
+                ]
             });
 
             await bundle.write({

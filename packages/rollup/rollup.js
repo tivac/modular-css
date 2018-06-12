@@ -39,7 +39,7 @@ module.exports = function(opts) {
     let runs = 0;
         
     return {
-        name : "modular-css",
+        name : "modular-css-rollup",
 
         transform(code, id) {
             let removed = [];
@@ -50,9 +50,14 @@ module.exports = function(opts) {
 
             // If the file is being re-processed we need to remove it to
             // avoid cache staleness issues
+
+            // TODO: this has to REMOVE EVERYTHING, id will be the original file that
+            // was updated if ANY of its dependencies has been changed
             if(runs) {
                 removed = processor.remove(id);
             }
+
+            // console.log(removed);
 
             return Promise.all(
                 // Run current file first since it's already in-memory
@@ -65,7 +70,6 @@ module.exports = function(opts) {
             .then((results) => {
                 const [ result ] = results;
                 const exported = output.join(result.exports);
-                const dependencies = processor.dependencies(id);
                 
                 const out = [
                     `export default ${JSON.stringify(exported, null, 4)};`
@@ -82,11 +86,13 @@ module.exports = function(opts) {
                         out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
                     });
                 }
+
+                const dependencies = processor.dependencies(id);
                     
                 return {
                     code : out.join("\n"),
-                    dependencies,
                     map,
+                    dependencies,
                 };
             });
         },
@@ -95,51 +101,86 @@ module.exports = function(opts) {
             runs++;
         },
 
-        async generateBundle(outputOptions, bundle) {
-            const bundles = [];
-            const common  = processor.dependencies();
+        generateBundle : async function(outputOptions, bundles) {
+            const usage = new Map();
+            const common = new Map();
+            const files = [];
 
-            Object.keys(bundle).forEach((entry) => {
-                const files = Object.keys(bundle[entry].modules).filter(filter);
+            const entries = Object.keys(bundles);
 
-                if(!files.length) {
+            // First pass is used to calculate usage of CSS dependencies
+            entries.forEach((entry) => {
+                const file = {
+                    entry,
+                    base : extensionless(entry),
+
+                    css : [ ]
+                };
+
+                // Get CSS files being used by each entry point
+                const css = Object.keys(bundles[entry].modules).filter(filter);
+
+                if(!css.length) {
                     return;
                 }
 
-                // remove the files being exported from the common bundle
-                files.forEach((file) =>
-                    common.splice(common.indexOf(file), 1)
-                );
+                // Get dependency chains for each file
+                css.forEach((start) => {
+                    const deps = processor.dependencies(start);
 
-                bundles.push({
-                    entry,
-                    files,
-                    base : extensionless(entry),
+                    const used = deps.concat(css);
+                    
+                    file.css = file.css.concat(used);
+
+                    used.forEach((dep) => {
+                        usage.set(dep, usage.has(dep) ? usage.get(dep) + 1 : 1);
+                    });
+                });
+
+                files.push(file);
+            });
+
+            // Second pass removes any dependencies appearing in multiple bundles
+            files.forEach((file) => {
+                const { css } = file;
+
+                file.css = css.filter((dep) => {
+                    if(usage.get(dep) > 1) {
+                        common.set(dep, true);
+
+                        return false;
+                    }
+
+                    return true;
                 });
             });
 
             // Common chunk only emitted if configured & if necessary
-            if(options.common && common.length) {
-                bundles.push({
+            if(options.common && common.size) {
+                files.push({
                     entry : options.common,
                     base  : extensionless(options.common),
-                    files : common,
+                    css   : [ ...common.keys() ]
                 });
             }
             
+            // console.log(files);
+
             await Promise.all(
-                bundles.map(async ({ base, files }) => {
-                    const css = this.emitAsset(`${base}.css`);
+                files
+                .filter(({ css }) => css.length)
+                .map(async ({ base, css }) => {
+                    const dest = this.emitAsset(`${base}.css`);
                     
                     const result = await processor.output({
                         // TODO: This doesn't work until the asset has a source
                         // but this call to processor.output() creates the source...
                         // so now what?
-                        to : css, // this.getAssetFileName(css),
-                        files
+                        to    : dest, // this.getAssetFileName(css),
+                        files : css
                     });
                     
-                    this.setAssetSource(css, result.css);
+                    this.setAssetSource(dest, result.css);
 
                     if(options.json) {
                         this.emitAsset(`${base}.json`, JSON.stringify(result.compositions, null, 4));
