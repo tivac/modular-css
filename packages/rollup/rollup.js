@@ -87,6 +87,19 @@ module.exports = function(opts) {
             const usage = new Map();
             const common = new Map();
             const files = [];
+            
+            let to;
+
+            if(!outputOptions.file && !outputOptions.dir) {
+                to = path.dirname(path.join(process.cwd(), outputOptions.assetFileNames || ""));
+            } else {
+                to = path.dirname(
+                    path.join(
+                        outputOptions.dir ? outputOptions.dir : path.dirname(outputOptions.file),
+                        outputOptions.assetFileNames
+                    )
+                );
+            }
 
             // First pass is used to calculate JS usage of CSS dependencies
             Object.keys(bundles).forEach((entry) => {
@@ -153,17 +166,14 @@ module.exports = function(opts) {
                 files
                 .filter(({ css }) => css.length)
                 .map(async ({ base, css }) => {
-                    const dest = this.emitAsset(`${base}.css`);
-                    
+                    const id = this.emitAsset(`${base}.css`);
+
                     const result = await processor.output({
-                        // TODO: This doesn't work until the asset has a source
-                        // but this call to processor.output() creates the source...
-                        // so now what?
-                        to    : dest, // this.getAssetFileName(css),
+                        to,
                         files : css
                     });
                     
-                    this.setAssetSource(dest, result.css);
+                    this.setAssetSource(id, result.css);
 
                     if(options.json) {
                         this.emitAsset(`${base}.json`, JSON.stringify(result.compositions, null, 4));
