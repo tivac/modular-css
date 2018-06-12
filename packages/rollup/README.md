@@ -46,7 +46,7 @@ export default {
 
 ### `common`
 
-File name to use in case there are any CSS dependencies that appear in multiple bundles.
+File name to use in case there are any CSS dependencies that appear in multiple bundles. Defaults to "common.css".
 
 ### `include`/`exclude`
 

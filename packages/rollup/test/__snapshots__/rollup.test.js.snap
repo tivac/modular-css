@@ -213,7 +213,7 @@ Object {
   "code": "PLUGIN_WARNING",
   "id": Any<String>,
   "message": "Invalid JS identifier \\"fooga-wooga\\", unable to export",
-  "plugin": "modular-css",
+  "plugin": "modular-css-rollup",
   "toString": [Function],
 }
 `;

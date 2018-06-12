@@ -22,7 +22,7 @@ function extensionless(file) {
 
 module.exports = function(opts) {
     const options = Object.assign(Object.create(null), {
-        common : false,
+        common : "common.css",
         
         json : false,
         map  : true,
@@ -36,39 +36,25 @@ module.exports = function(opts) {
         
     const processor = options.processor || new Processor(options);
     
-    let runs = 0;
-        
     return {
         name : "modular-css-rollup",
 
         transform(code, id) {
-            let removed = [];
-
             if(!filter(id)) {
                 return null;
             }
 
             // If the file is being re-processed we need to remove it to
             // avoid cache staleness issues
+            if(id in processor.files) {
+                const dependencies = processor.dependencies(id);
 
-            // TODO: this has to REMOVE EVERYTHING, id will be the original file that
-            // was updated if ANY of its dependencies has been changed
-            if(runs) {
-                removed = processor.remove(id);
+                processor.remove(id);
+
+                dependencies.forEach((dep) => processor.remove(dep));
             }
 
-            // console.log(removed);
-
-            return Promise.all(
-                // Run current file first since it's already in-memory
-                [ processor.string(id, code) ].concat(
-                    removed.map((file) =>
-                        processor.file(file)
-                    )
-                )
-            )
-            .then((results) => {
-                const [ result ] = results;
+            return processor.string(id, code).then((result) => {
                 const exported = output.join(result.exports);
                 
                 const out = [
@@ -97,19 +83,13 @@ module.exports = function(opts) {
             });
         },
 
-        buildEnd() {
-            runs++;
-        },
-
         generateBundle : async function(outputOptions, bundles) {
             const usage = new Map();
             const common = new Map();
             const files = [];
 
-            const entries = Object.keys(bundles);
-
-            // First pass is used to calculate usage of CSS dependencies
-            entries.forEach((entry) => {
+            // First pass is used to calculate JS usage of CSS dependencies
+            Object.keys(bundles).forEach((entry) => {
                 const file = {
                     entry,
                     base : extensionless(entry),
@@ -126,9 +106,7 @@ module.exports = function(opts) {
 
                 // Get dependency chains for each file
                 css.forEach((start) => {
-                    const deps = processor.dependencies(start);
-
-                    const used = deps.concat(css);
+                    const used = processor.dependencies(start).concat(start);
                     
                     file.css = file.css.concat(used);
 
@@ -155,8 +133,15 @@ module.exports = function(opts) {
                 });
             });
 
-            // Common chunk only emitted if configured & if necessary
-            if(options.common && common.size) {
+            // Add any other files that weren't part of a bundle to the common chunk
+            Object.keys(processor.files).forEach((file) => {
+                if(!usage.has(file)) {
+                    common.set(file, true);
+                }
+            });
+
+            // Common chunk only emitted if necessary
+            if(common.size) {
                 files.push({
                     entry : options.common,
                     base  : extensionless(options.common),
@@ -164,8 +149,6 @@ module.exports = function(opts) {
                 });
             }
             
-            // console.log(files);
-
             await Promise.all(
                 files
                 .filter(({ css }) => css.length)
