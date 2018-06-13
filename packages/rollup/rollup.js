@@ -138,9 +138,7 @@ module.exports = function(opts) {
             
             await Promise.all(
                 bundles.map(async ({ base, files }) => {
-                    // TODO: docs say that empty string arg to .emitAsset() shouldn't be required
-                    // https://github.com/rollup/rollup/wiki/Plugins#plugin-context
-                    const css = this.emitAsset(`${base}.css`, "");
+                    const css = this.emitAsset(`${base}.css`);
                     
                     const result = await processor.output({
                         to : css,
