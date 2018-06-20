@@ -4,21 +4,17 @@
 
 ## Options
 
-### `ext`
-
-Extension to match on. Defaults to `.css`. Can be used in place of `include`/`exclude`.
-
 ### `include`/`exclude`
 
-A minimatch pattern, or an array of minimatch patterns, relative to `process.cwd()`. Can be used in place of `ext`.
+A minimatch pattern, or an array of minimatch patterns, relative to `process.cwd()`.
 
-### `css`
+### `common`
 
-Location to write the generated CSS file to.
+File path to write any common CSS output to.
 
 ### `json`
 
-Location to write out the JSON mapping file for use in server rendering.
+File path to write out the JSON mapping file for use in server rendering.
 
 ### `namedExports`
 
@@ -31,16 +27,14 @@ All other options are passed to the underlying `Processor` instance, see [Option
 ## API
 
 ```js
-rollup({
-    entry   : "./index.js",
+const bundle = await rollup({
+    input   : "./index.js",
     plugins : [
         // Make sure it's the first entry in your plugin list to avoid syntax errors
         require("modular-css-rollup")({
-            css : "./gen/index.css"
+            common : "./dist/common.css"
         })
     ]
-}).then(function(bundle) {
-    ...
 });
 ```
 
@@ -50,12 +44,14 @@ rollup({
 import css from "modular-css-rollup";
 
 export default {
-    entry   : "./index.js",
-    dest    : "./gen/bundle.js",
-    format  : "umd",
+    input   : "./index.js",
+    output : {
+        file   : "./dist/bundle.js",
+        format : "umd",
+    },
     plugins : [
         css({
-            css : "./gen/index.css"
+            common : "./dist/bundle.css"
         })
     ]
 };
