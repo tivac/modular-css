@@ -41,7 +41,7 @@
     "lint-staged": "^7.0.4",
     "modular-css-core": "file:./packages/core",
     "pegjs": "^0.10.0",
-    "rollup": "^0.60.4",
+    "rollup": "^0.61.0",
     "rollup-plugin-svelte": "^4.1.0",
     "shelljs": "^0.8.1",
     "svelte": "^2.1.1",
