@@ -11,6 +11,14 @@
 export default {
     data : () => ({
         bool : true
-    })
+    }),
+
+    oncreate() {
+        const keys = {
+            flex : "flex"
+        };
+
+        const style = css[keys.flex];
+    }
 };
 </script>
