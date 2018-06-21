@@ -47,11 +47,9 @@ module.exports = function(opts) {
             // If the file is being re-processed we need to remove it to
             // avoid cache staleness issues
             if(id in processor.files) {
-                const dependencies = processor.dependencies(id);
-
-                processor.remove(id);
-
-                dependencies.forEach((dep) => processor.remove(dep));
+                processor.dependencies(id)
+                    .concat(id)
+                    .forEach((file) => processor.remove(file));
             }
 
             return processor.string(id, code).then((result) => {
@@ -91,13 +89,11 @@ module.exports = function(opts) {
             let to;
 
             if(!outputOptions.file && !outputOptions.dir) {
-                to = path.dirname(path.join(process.cwd(), outputOptions.assetFileNames || ""));
+                to = path.join(process.cwd(), outputOptions.assetFileNames || "");
             } else {
-                to = path.dirname(
-                    path.join(
-                        outputOptions.dir ? outputOptions.dir : path.dirname(outputOptions.file),
-                        outputOptions.assetFileNames
-                    )
+                to = path.join(
+                    outputOptions.dir ? outputOptions.dir : path.dirname(outputOptions.file),
+                    outputOptions.assetFileNames
                 );
             }
 
