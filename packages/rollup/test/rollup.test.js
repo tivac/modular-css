@@ -32,7 +32,7 @@ const sourcemap = false;
 describe("/rollup.js", () => {
     /* eslint max-statements: "off" */
     
-    afterAll(() => shell.rm("-rf", `${output}/*`));
+    beforeAll(() => shell.rm("-rf", `${output}/*`));
     
     it("should be a function", () =>
         expect(typeof plugin).toBe("function")
