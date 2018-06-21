@@ -5,5 +5,5 @@ gen/
 node_modules/
 parsers/
 results/
-specimens/
-specimens/output/
+test/specimens/
+test/output/
