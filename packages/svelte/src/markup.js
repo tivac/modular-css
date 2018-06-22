@@ -17,12 +17,12 @@ function updateCss({ content, result }) {
         code : content
             // Replace simple {css.<key>} values first
             .replace(
-                new RegExp(`{css.(${Object.keys(exported).join("|")})}`, "gm"),
+                new RegExp(`{css\\.(${Object.keys(exported).join("|")})}`, "gm"),
                 (match, key) => exported[key].join(" ")
             )
             // Then any remaining bare css.<key> values
             .replace(
-                new RegExp(`(\\b)css.(${Object.keys(exported).join("|")})(\\b)`, "gm"),
+                new RegExp(`(\\b)css\\.(${Object.keys(exported).join("|")})(\\b)`, "gm"),
                 (match, prefix, key, suffix) => `${prefix}"${exported[key].join(" ")}"${suffix}`
             )
     };
