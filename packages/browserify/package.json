@@ -1,6 +1,6 @@
 {
   "name": "modular-cssify",
-  "version": "12.0.1",
+  "version": "12.0.2",
   "description": "Browserify transform for modular-css",
   "main": "./browserify.js",
   "repository": "tivac/modular-css",
