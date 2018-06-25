@@ -1,5 +1,5 @@
 "use strict";
 
 module.exports = () => ({
-    code : "/* replaced by modular-css */"
+    code : "/* replaced by modular-css */",
 });

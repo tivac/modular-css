@@ -5,11 +5,11 @@ var dedent = require("dedent"),
     
     Processor = require("../../processor.js");
 
-describe("/issues", function() {
-    describe("/98", function() {
-        it("should prune rules that only compose, but leave them in the exports", function() {
+describe("/issues", () => {
+    describe("/98", () => {
+        it("should prune rules that only compose, but leave them in the exports", () => {
             var processor = new Processor({
-                    namer
+                    namer,
                 });
             
             return processor.string(

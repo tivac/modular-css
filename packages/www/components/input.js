@@ -25,11 +25,11 @@ export default {
                         fs.unlink(out[0]);
 
                         state.processor.remove([
-                            file
+                            file,
                         ]);
 
                         process();
-                    }
+                    },
                 }, "✖")
             ),
             
@@ -39,22 +39,22 @@ export default {
                                 mode        : "text/css",
                                 theme       : "monokai",
                                 lineNumbers : true,
-                                autofocus   : true
+                                autofocus   : true,
                             });
 
                         editor.on("changes", () => {
                             fs.writeFileSync(file, editor.doc.getValue());
 
                             state.processor.remove([
-                                file
+                                file,
                             ]);
                             
                             throttled();
                         });
-                    }
+                    },
                 },
                 fs.readFileSync(file, "utf8")
             )
         );
-    }
+    },
 };

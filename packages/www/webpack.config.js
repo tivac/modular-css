@@ -15,7 +15,7 @@ module.exports = (env) => ({
     devtool : "cheap-source-map",
     output  : {
         path     : path.resolve("./gen"),
-        filename : "app.js"
+        filename : "app.js",
     },
     
     module : {
@@ -25,22 +25,22 @@ module.exports = (env) => ({
                 use  : {
                     loader  : "modular-css-webpack/loader",
                     options : {
-                        namedExports : false
-                    }
-                }
+                        namedExports : false,
+                    },
+                },
             },
             {
                 test : /\.js$/,
-                use  : "buble-loader"
-            }
-        ]
+                use  : "buble-loader",
+            },
+        ],
     },
     
     plugins : [
         new Cleanup({
             exclude : [
-                ".gitignore"
-            ]
+                ".gitignore",
+            ],
         }),
 
         // tree-shake ES modules
@@ -59,28 +59,28 @@ module.exports = (env) => ({
             done : env === "dist" ?
                 // can't use cssnano until v4 is out :(
                 // [ require("cssnano")() ] :
-                [] : []
+                [] : [],
         }),
 
         new HTML({
             template : "./index.ejs",
-            inject   : true
-        })
+            inject   : true,
+        }),
     ],
     
     resolve : {
         alias : {
             fs     : require.resolve("./stubs/fs.js"),
-            module : require.resolve("./stubs/generic.js")
-        }
+            module : require.resolve("./stubs/generic.js"),
+        },
     },
 
     watchOptions : {
-        ignored : /node_modules/
+        ignored : /node_modules/,
     },
 
     devServer : {
         compress   : true,
-        publicPath : "http://localhost:8080/"
-    }
+        publicPath : "http://localhost:8080/",
+    },
 });

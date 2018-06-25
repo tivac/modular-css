@@ -24,7 +24,7 @@ function params(processor, args) {
             from    : null,
             files   : processor._files,
             graph   : processor._graph,
-            resolve : processor._resolve
+            resolve : processor._resolve,
         },
         args
     );
@@ -41,7 +41,7 @@ function Processor(opts) {
         {
             cwd     : process.cwd(),
             map     : false,
-            rewrite : true
+            rewrite : true,
         },
         opts
     );
@@ -86,7 +86,7 @@ function Processor(opts) {
         require("./plugins/scoping.js"),
         require("./plugins/externals.js"),
         require("./plugins/composition.js"),
-        require("./plugins/keyframes.js")
+        require("./plugins/keyframes.js"),
     ].concat(this._options.processing || []));
     
     this._after = postcss(this._options.after || []);
@@ -101,7 +101,7 @@ function Processor(opts) {
 
 Processor.prototype = {
     // Add a file on disk to the dependency graph
-    file : function(file) {
+    file(file) {
         if(!path.isAbsolute(file)) {
             file = path.join(this._options.cwd, file);
         }
@@ -110,7 +110,7 @@ Processor.prototype = {
     },
     
     // Add a file by name + contents to the dependency graph
-    string : function(start, text) {
+    string(start, text) {
         if(!path.isAbsolute(start)) {
             start = path.join(this._options.cwd, start);
         }
@@ -126,7 +126,7 @@ Processor.prototype = {
                         file.result,
                         params(this, {
                             from  : dep,
-                            namer : this._options.namer
+                            namer : this._options.namer,
                         })
                     );
                 }
@@ -154,12 +154,12 @@ Processor.prototype = {
             file    : start,
             files   : this._files,
             details : this._files[start],
-            exports : this._files[start].exports
+            exports : this._files[start].exports,
         }));
     },
     
     // Remove a file from the dependency graph
-    remove : function(input) {
+    remove(input) {
         var order = this._graph.overallOrder(),
             files, removed;
         
@@ -194,7 +194,7 @@ Processor.prototype = {
     },
     
     // Get the dependency order for a file or the entire tree
-    dependencies : function(file) {
+    dependencies(file) {
         if(file) {
             return this._graph.dependenciesOf(
                 file
@@ -205,9 +205,9 @@ Processor.prototype = {
     },
     
     // Get the ultimate output for specific files or the entire tree
-    output : function(args) {
+    output(args) {
         var opts  = args || false,
-            files = opts.files,
+            { files } = opts,
             ready;
         
         if(!Array.isArray(files)) {
@@ -241,7 +241,7 @@ Processor.prototype = {
                 
                 params(this, {
                     from : dep,
-                    to   : opts.to
+                    to   : opts.to,
                 })
             ))
         )
@@ -268,7 +268,7 @@ Processor.prototype = {
                             {},
                             result.root.source,
                             { end : result.root.source.start }
-                        )
+                        ),
                     }),
                     idx;
 
@@ -310,7 +310,7 @@ Processor.prototype = {
 
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
-    _walk : function(name, text) {
+    _walk(name, text) {
         // No need to re-process files
         if(this._files[name]) {
             return Promise.resolve();
@@ -319,15 +319,15 @@ Processor.prototype = {
         this._graph.addNode(name);
 
         this._files[name] = {
-            text    : text,
+            text,
             exports : false,
-            values  : false
+            values  : false,
         };
         
         return this._before.process(
             text,
             params(this, {
-                from : name
+                from : name,
             })
         )
         .then((result) => {
@@ -343,7 +343,7 @@ Processor.prototype = {
                 ))
             );
         });
-    }
+    },
 };
 
 module.exports = Processor;

@@ -24,14 +24,14 @@ function updateCss({ content, result }) {
             .replace(
                 new RegExp(`(\\b)css\\.(${Object.keys(exported).join("|")})(\\b)`, "gm"),
                 (match, prefix, key, suffix) => `${prefix}"${exported[key].join(" ")}"${suffix}`
-            )
+            ),
     };
 }
 
 async function extractLink({ processor, content, filename, link }) {
-    let href = link[1] || link[2] || link[3];
+    const href = link[1] || link[2] || link[3];
     
-    let external = slash(resolve(path.dirname(filename), href));
+    const external = slash(resolve(path.dirname(filename), href));
 
     // Remove the <link> element from the component to avoid double-loading
     content = content.replace(link[0], "");
@@ -98,6 +98,6 @@ module.exports = (processor) => ({ content, filename }) => {
     }
 
     return {
-        code : content
+        code : content,
     };
 };

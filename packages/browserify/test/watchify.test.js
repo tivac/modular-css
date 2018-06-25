@@ -28,7 +28,7 @@ describe("/browserify.js", () => {
 
             build.plugin(require("watchify"));
             build.plugin(plugin, {
-                css : "./packages/browserify/test/output/watchify/caching.css"
+                css : "./packages/browserify/test/output/watchify/caching.css",
             });
 
             // File changed
@@ -68,7 +68,7 @@ describe("/browserify.js", () => {
 
             build.plugin(require("watchify"));
             build.plugin(plugin, {
-                css : "./packages/browserify/test/output/watchify/errors.css"
+                css : "./packages/browserify/test/output/watchify/errors.css",
             });
 
             // File changed
@@ -87,7 +87,6 @@ describe("/browserify.js", () => {
             // Run first bundle to start watching
             build.bundle((err) => {
                 // This one should fail, but not stop watchify from running
-                expect(err);
                 expect(err.name).toMatch(/SyntaxError|CssSyntaxError/);
                 
                 // This might re-trigger before the file has been moved, so

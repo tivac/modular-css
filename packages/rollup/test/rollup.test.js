@@ -3,7 +3,8 @@
 
 const fs = require("fs");
 
-const rollup = require("rollup").rollup;
+const { rollup } = require("rollup");
+
 const dedent = require("dedent");
 const shell  = require("shelljs");
 
@@ -42,9 +43,9 @@ describe("/rollup.js", () => {
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
                 plugin({
-                    namer
-                })
-            ]
+                    namer,
+                }),
+            ],
         });
         
         const result = await bundle.generate({ format });
@@ -57,9 +58,9 @@ describe("/rollup.js", () => {
             input   : require.resolve("./specimens/tree-shaking.js"),
             plugins : [
                 plugin({
-                    namer
-                })
-            ]
+                    namer,
+                }),
+            ],
         });
 
         const result = await bundle.generate({ format });
@@ -74,8 +75,8 @@ describe("/rollup.js", () => {
                 plugin({
                     namer,
                     map,
-                })
-            ]
+                }),
+            ],
         });
 
         await bundle.write({
@@ -94,8 +95,8 @@ describe("/rollup.js", () => {
                 plugin({
                     namer,
                     map,
-                })
-            ]
+                }),
+            ],
         });
 
         await bundle.write({
@@ -113,8 +114,8 @@ describe("/rollup.js", () => {
             plugins : [
                 plugin({
                     namer,
-                })
-            ]
+                }),
+            ],
         });
 
         await bundle.write({
@@ -132,9 +133,9 @@ describe("/rollup.js", () => {
             plugins : [
                 plugin({
                     namer,
-                    json : true
-                })
-            ]
+                    json : true,
+                }),
+            ],
         });
         
         await bundle.write({
@@ -151,9 +152,9 @@ describe("/rollup.js", () => {
             input   : require.resolve("./specimens/named.js"),
             plugins : [
                 plugin({
-                    namer
-                })
-            ]
+                    namer,
+                }),
+            ],
         });
 
         const result = await bundle.generate({ format });
@@ -168,10 +169,10 @@ describe("/rollup.js", () => {
                 plugin({
                     namer,
                     map : {
-                        inline : false
-                    }
-                })
-            ]
+                        inline : false,
+                    },
+                }),
+            ],
         });
 
         await bundle.write({
@@ -183,7 +184,7 @@ describe("/rollup.js", () => {
         // Have to parse it into JSON so the propertyMatcher can exclude the file property
         // since it is a hash value and changes constantly
         expect(JSON.parse(read("assets/simple.css.map"))).toMatchSnapshot({
-            file : expect.any(String)
+            file : expect.any(String),
         });
     });
     
@@ -194,13 +195,13 @@ describe("/rollup.js", () => {
             plugins : [
                 plugin({
                     namer,
-                })
-            ]
+                }),
+            ],
         });
 
         const result = await bundle.generate({
             format,
-            assetFileNames
+            assetFileNames,
         });
 
         expect(result.code).toMatchSnapshot();
@@ -212,14 +213,14 @@ describe("/rollup.js", () => {
             plugins : [
                 plugin({
                     namer,
-                    namedExports : false
-                })
-            ]
+                    namedExports : false,
+                }),
+            ],
         });
 
         const result = await bundle.generate({
             format,
-            assetFileNames
+            assetFileNames,
         });
 
         expect(result.code).toMatchSnapshot();
@@ -231,16 +232,16 @@ describe("/rollup.js", () => {
             plugins : [
                 plugin({
                     namer,
-                    sourcemap : true
-                })
-            ]
+                    sourcemap : true,
+                }),
+            ],
         });
 
         const result = await bundle.generate({
             format,
             assetFileNames,
 
-            sourcemap : true
+            sourcemap : true,
         });
 
         expect(result.map).toMatchSnapshot();
@@ -253,8 +254,8 @@ describe("/rollup.js", () => {
                 plugin({
                     namer,
                     map,
-                })
-            ]
+                }),
+            ],
         });
 
         const source = await bundle.generate({
@@ -281,9 +282,9 @@ describe("/rollup.js", () => {
             input   : require.resolve("./specimens/dependencies.js"),
             plugins : [
                 plugin({
-                    namer
-                })
-            ]
+                    namer,
+                }),
+            ],
         });
 
         const result = await bundle.generate({ format });
@@ -309,9 +310,9 @@ describe("/rollup.js", () => {
                 plugin({
                     processor,
 
-                    common : "common.css"
-                })
-            ]
+                    common : "common.css",
+                }),
+            ],
         });
 
         await bundle.write({
@@ -319,7 +320,7 @@ describe("/rollup.js", () => {
             sourcemap,
             assetFileNames,
             
-            file : `${output}/existing-processor.js`
+            file : `${output}/existing-processor.js`,
         });
 
         expect(read("assets/existing-processor.css")).toMatchSnapshot();
@@ -338,9 +339,9 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         css    : `${output}/errors.css`,
-                        before : [ error ]
-                    })
-                ]
+                        before : [ error ],
+                    }),
+                ],
             })
             .catch(checkError)
         );
@@ -352,9 +353,9 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         css   : `${output}/errors.css`,
-                        after : [ error ]
-                    })
-                ]
+                        after : [ error ],
+                    }),
+                ],
             })
             .catch(checkError)
         );
@@ -367,19 +368,19 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         css  : `${output}/errors.css`,
-                        done : [ error ]
-                    })
-                ]
+                        done : [ error ],
+                    }),
+                ],
             })
             .then((bundle) => bundle.write({
                 format,
-                file : `${output}/done-error.js`
+                file : `${output}/done-error.js`,
             }))
         );
     });
 
     describe("watch", () => {
-        const watch = require("rollup").watch;
+        const { watch } = require("rollup");
         let watcher;
 
         afterEach(() => watcher.close());
@@ -402,8 +403,8 @@ describe("/rollup.js", () => {
                 plugins : [
                     plugin({
                         map,
-                    })
-                ]
+                    }),
+                ],
             });
 
             // Create v2 of the file after a bit
@@ -458,8 +459,8 @@ describe("/rollup.js", () => {
                 plugins : [
                     plugin({
                         map,
-                    })
-                ]
+                    }),
+                ],
             });
 
             // Create v2 of the file after a bit
@@ -512,8 +513,8 @@ describe("/rollup.js", () => {
                 plugins : [
                     plugin({
                         map,
-                    })
-                ]
+                    }),
+                ],
             });
 
             // Create v2 of the file after a bit
@@ -559,9 +560,9 @@ describe("/rollup.js", () => {
                         namer,
                         map,
                         
-                        common : "common.css"
-                    })
-                ]
+                        common : "common.css",
+                    }),
+                ],
             });
     
             await bundle.write({
@@ -570,7 +571,7 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
                 
-                dir : `${output}/`
+                dir : `${output}/`,
             });
 
             expect(read("assets/chunk.css")).toMatchSnapshot();
@@ -588,16 +589,16 @@ describe("/rollup.js", () => {
 
                 manualChunks : {
                     shared : [
-                        require.resolve("./specimens/manual-chunks/c.js")
-                    ]
+                        require.resolve("./specimens/manual-chunks/c.js"),
+                    ],
                 },
 
                 plugins : [
                     plugin({
                         namer,
                         map,
-                    })
-                ]
+                    }),
+                ],
             });
 
             await bundle.write({
@@ -606,7 +607,7 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
 
-                dir : `${output}/`
+                dir : `${output}/`,
             });
 
             expect(read("assets/a.css")).toMatchSnapshot();
@@ -630,9 +631,9 @@ describe("/rollup.js", () => {
                         namer,
                         map,
 
-                        common : "common.css"
-                    })
-                ]
+                        common : "common.css",
+                    }),
+                ],
             });
 
             await bundle.write({
@@ -641,7 +642,7 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
 
-                dir : `${output}/`
+                dir : `${output}/`,
             });
 
             expect(read("assets/a.css")).toMatchSnapshot();

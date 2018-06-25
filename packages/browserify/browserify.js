@@ -35,7 +35,7 @@ module.exports = function(browserify, opts) {
             ext   : ".css",
             map   : browserify._options.debug,
             cwd   : browserify._options.basedir || process.cwd(),
-            cache : true
+            cache : true,
         }, opts),
         
         processor = options.cache && new Processor(options),
@@ -55,7 +55,7 @@ module.exports = function(browserify, opts) {
     function write(files, to) {
         return processor.output({
             files,
-            to
+            to,
         })
         .then((result) => {
             fs.writeFileSync(to, result.css, "utf8");
@@ -71,7 +71,7 @@ module.exports = function(browserify, opts) {
         .catch((error) => bundler.emit("error", error));
     }
 
-    browserify.transform(function(file) {
+    browserify.transform((file) => {
         if(path.extname(file) !== options.ext) {
             return through();
         }
@@ -81,7 +81,7 @@ module.exports = function(browserify, opts) {
                 real = fs.realpathSync(file);
             
             processor.string(real, buffer).then(
-                function(result) {
+                (result) => {
                     // Tell watchers about dependencies by emitting "file" events
                     // AFAIK this is only useful to watchify, to ensure that it watches
                     // everyone in the dependency graph
@@ -94,7 +94,7 @@ module.exports = function(browserify, opts) {
                     done();
                 },
 
-                function(error) {
+                (error) => {
                     // Thrown from the current bundler instance, NOT the main browserify
                     // instance. This is so that watchify won't explode.
                     bundler.emit("error", error);
@@ -108,7 +108,7 @@ module.exports = function(browserify, opts) {
     });
     
     // Splice ourselves as early as possible into the deps pipeline
-    browserify.pipeline.get("deps").splice(1, 0, through.obj(function(row, enc, done) {
+    browserify.pipeline.get("deps").splice(1, 0, through.obj((row, enc, done) => {
         if(path.extname(row.file) !== options.ext) {
             return done(null, row);
         }
@@ -125,7 +125,7 @@ module.exports = function(browserify, opts) {
         // injected into the stream of files being managed
         var push = this.push.bind(this);
         
-        processor.dependencies().forEach(function(dep) {
+        processor.dependencies().forEach((dep) => {
             if(dep in handled) {
                 return;
             }
@@ -134,7 +134,7 @@ module.exports = function(browserify, opts) {
                 id     : path.resolve(options.cwd, dep),
                 file   : path.resolve(options.cwd, dep),
                 source : exports(processor.files[dep]),
-                deps   : processor.dependencies(dep).reduce(depReducer, {})
+                deps   : processor.dependencies(dep).reduce(depReducer, {}),
             });
         });
         
@@ -142,12 +142,12 @@ module.exports = function(browserify, opts) {
     }));
     
     // Keep tabs on factor-bundle organization
-    browserify.on("factor.pipeline", function(file, pipeline) {
+    browserify.on("factor.pipeline", (file, pipeline) => {
         bundles[file] = [];
 
         // Track the files in each bundle so we can determine commonalities
         // Doesn't actually modify the file, just records it
-        pipeline.unshift(through.obj(function(obj, enc, done) {
+        pipeline.unshift(through.obj((obj, enc, done) => {
             if(path.extname(obj.file) === options.ext) {
                 bundles[file].unshift(obj.file);
             }
@@ -158,11 +158,11 @@ module.exports = function(browserify, opts) {
 
     // Watchify fires update events when files change, this tells the processor
     // to remove the changed files from its cache so they will be re-processed
-    browserify.on("update", function(files) {
+    browserify.on("update", (files) => {
         processor.remove(files);
     });
     
-    return browserify.on("bundle", function(current) {
+    return browserify.on("bundle", (current) => {
         // Calls to .bundle() means we should recreate anything tracking bundling progress
         // in case things have changed out from under us, like when using watchify
         bundles = {};
@@ -176,7 +176,7 @@ module.exports = function(browserify, opts) {
         bundler = current;
         
         // Listen for bundling to finish
-        bundler.on("end", function() {
+        bundler.on("end", () => {
             var bundling = Object.keys(bundles).length > 0,
                 common;
 
@@ -201,11 +201,10 @@ module.exports = function(browserify, opts) {
             each(
                 Object.keys(bundles).map((key) => ({
                     bundle : key,
-                    files  : bundles[key]
+                    files  : bundles[key],
                 })),
                 (details) => {
-                    var bundle = details.bundle,
-                        files  = details.files,
+                    var { bundle, files } = details,
                         dest;
 
                     if(!files.length && !options.empty) {

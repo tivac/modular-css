@@ -73,7 +73,7 @@ ModularCSS.prototype.apply = function(compiler) {
 
     compiler.plugin("emit", (compilation, done) =>
         this.processor.output({
-            to : this.options.css || false
+            to : this.options.css || false,
         })
         .then((data) => {
             if(this.options.css) {

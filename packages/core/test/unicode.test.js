@@ -10,7 +10,7 @@ describe("/processor.js", () => {
         
         beforeEach(() => {
             processor = new Processor({
-                namer
+                namer,
             });
         });
 
@@ -19,7 +19,7 @@ describe("/processor.js", () => {
                 require.resolve("./specimens/unicode.css")
             )
             .then(() => processor.output({
-                to : "./packages/core/test/output/unicode.css"
+                to : "./packages/core/test/output/unicode.css",
             }))
             .then((output) =>
                 expect(output.css).toMatchSnapshot()

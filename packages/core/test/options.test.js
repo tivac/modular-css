@@ -28,7 +28,7 @@ describe("/processor.js", () => {
             it("should use an absolute path", () => {
                 var cwd       = path.resolve("./packages/core/test/specimens/folder"),
                     processor = new Processor({
-                        cwd
+                        cwd,
                     });
                 
                 return processor.file(
@@ -43,7 +43,7 @@ describe("/processor.js", () => {
             it("should accept a relative path but make it absolute", () => {
                 var cwd       = "./packages/core/test/specimens/folder",
                     processor = new Processor({
-                        cwd
+                        cwd,
                     });
                 
                 return processor.file(
@@ -60,7 +60,7 @@ describe("/processor.js", () => {
             it("should use a custom naming function", () => {
                 var processor = new Processor({
                         namer : (filename, selector) =>
-                            `${relative([ filename ])[0]}_${selector}`
+                            `${relative([ filename ])[0]}_${selector}`,
                     });
                     
                 return processor.string(
@@ -77,7 +77,7 @@ describe("/processor.js", () => {
 
             it("should require a namer if a string is passed", () => {
                 var processor = new Processor({
-                        namer : "modular-css-namer"
+                        namer : "modular-css-namer",
                     });
                     
                 return processor.string(
@@ -89,7 +89,7 @@ describe("/processor.js", () => {
 
             it("should use the default naming function if a non-function is passed", () => {
                 var processor = new Processor({
-                        namer : false
+                        namer : false,
                     });
                     
                 return processor.string(
@@ -104,7 +104,7 @@ describe("/processor.js", () => {
             it("should generate source maps", () => {
                 var processor = new Processor({
                         namer,
-                        map : true
+                        map : true,
                     });
                 
                 return processor.file(
@@ -112,17 +112,17 @@ describe("/processor.js", () => {
                 )
                 .then(() => processor.output({
                     from : "packages/core/test/specimens/rewrite.css",
-                    to   : "out.css"
+                    to   : "out.css",
                 }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
 
-            it.skip("should generate external source maps", () => {
+            it("should generate external source maps", () => {
                 var processor = new Processor({
                         namer,
                         map : {
-                            internal : false
-                        }
+                            internal : false,
+                        },
                     });
                 
                 return processor.file(
@@ -130,7 +130,7 @@ describe("/processor.js", () => {
                 )
                 .then(() => processor.output({
                     from : "packages/core/test/specimens/rewrite.css",
-                    to   : "out.css"
+                    to   : "out.css",
                 }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
@@ -139,7 +139,7 @@ describe("/processor.js", () => {
         describe("exportGlobals", () => {
             it("should not export :global values when exportGlobals is false", () => {
                 var processor = new Processor({
-                        exportGlobals : false
+                        exportGlobals : false,
                     });
                 
                 return processor.string(
@@ -167,7 +167,7 @@ describe("/processor.js", () => {
                 )
                 .then(() => processor.output({
                     from : "packages/core/test/specimens/rewrite.css",
-                    to   : "./packages/core/test/output/rewrite.css"
+                    to   : "./packages/core/test/output/rewrite.css",
                 }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
@@ -185,7 +185,7 @@ describe("/processor.js", () => {
                 )
                 .then(() => processor.output({
                     from : "packages/core/test/specimens/rewrite.css",
-                    to   : "./packages/core/test/output/rewrite.css"
+                    to   : "./packages/core/test/output/rewrite.css",
                 }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
@@ -193,8 +193,8 @@ describe("/processor.js", () => {
             it("should pass through to postcss-url as config", () => {
                 var processor = new Processor({
                     rewrite : {
-                        url : "inline"
-                    }
+                        url : "inline",
+                    },
                 });
                 
                 return processor.string(
@@ -207,7 +207,7 @@ describe("/processor.js", () => {
                 )
                 .then(() => processor.output({
                     from : "packages/core/test/specimens/rewrite.css",
-                    to   : "./packages/core/test/output/rewrite.css"
+                    to   : "./packages/core/test/output/rewrite.css",
                 }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
@@ -218,7 +218,7 @@ describe("/processor.js", () => {
                 it("should run sync postcss plugins before processing", () => {
                     var processor = new Processor({
                             namer,
-                            before : [ sync ]
+                            before : [ sync ],
                         });
                     
                     return processor.string(
@@ -232,7 +232,7 @@ describe("/processor.js", () => {
                 it("should run async postcss plugins before processing", () => {
                     var processor = new Processor({
                             namer,
-                            before : [ async ]
+                            before : [ async ],
                         });
                     
                     return processor.string(
@@ -248,7 +248,7 @@ describe("/processor.js", () => {
                 it("should run sync postcss plugins processing processing", () => {
                     var processor = new Processor({
                             namer,
-                            processing : [ sync ]
+                            processing : [ sync ],
                         });
 
                     return processor.string(
@@ -262,7 +262,7 @@ describe("/processor.js", () => {
                 it("should run async postcss plugins processing processing", () => {
                     var processor = new Processor({
                             namer,
-                            processing : [ async ]
+                            processing : [ async ],
                         });
 
                     return processor.string(
@@ -281,10 +281,10 @@ describe("/processor.js", () => {
                                     plugin  : "modular-css-exporter",
                                     exports : {
                                         a : true,
-                                        b : false
-                                    }
+                                        b : false,
+                                    },
                                 });
-                            } ]
+                            } ],
                         });
 
                     return processor.string(
@@ -304,7 +304,7 @@ describe("/processor.js", () => {
                     )
                     .then(() => processor.output({
                         from : "packages/core/test/specimens/rewrite.css",
-                        to   : "./packages/core/test/output/relative.css"
+                        to   : "./packages/core/test/output/relative.css",
                     }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
@@ -312,7 +312,7 @@ describe("/processor.js", () => {
                 it("should run sync postcss plugins", () => {
                     var processor = new Processor({
                             namer,
-                            after : [ sync ]
+                            after : [ sync ],
                         });
 
                     return processor.file(
@@ -320,7 +320,7 @@ describe("/processor.js", () => {
                     )
                     .then(() => processor.output({
                         from : "packages/core/test/specimens/rewrite.css",
-                        to   : "./packages/core/test/output/relative.css"
+                        to   : "./packages/core/test/output/relative.css",
                     }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
@@ -328,7 +328,7 @@ describe("/processor.js", () => {
                 it("should run async postcss plugins", () => {
                     var processor = new Processor({
                             namer,
-                            after : [ async ]
+                            after : [ async ],
                         });
 
                     return processor.file(
@@ -336,7 +336,7 @@ describe("/processor.js", () => {
                     )
                     .then(() => processor.output({
                         from : "packages/core/test/specimens/rewrite.css",
-                        to   : "./packages/core/test/output/relative.css"
+                        to   : "./packages/core/test/output/relative.css",
                     }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
@@ -346,7 +346,7 @@ describe("/processor.js", () => {
                 it("should run sync postcss plugins done processing", () => {
                     var processor = new Processor({
                             namer,
-                            done : [ sync ]
+                            done : [ sync ],
                         });
                     
                     return processor.string(
@@ -360,7 +360,7 @@ describe("/processor.js", () => {
                 it("should run async postcss plugins done processing", () => {
                     var processor = new Processor({
                             namer,
-                            done : [ async ]
+                            done : [ async ],
                         });
                     
                     return processor.string(
@@ -374,7 +374,7 @@ describe("/processor.js", () => {
                 it("should work with cssnano (no preset)", () => {
                     var processor = new Processor({
                             namer,
-                            done : [ require("cssnano") ]
+                            done : [ require("cssnano") ],
                         });
 
                     return processor.file(
@@ -382,7 +382,7 @@ describe("/processor.js", () => {
                     )
                     .then(() => processor.output({
                         from : "packages/core/test/specimens/rewrite.css",
-                        to   : "./packages/core/test/output/local.css"
+                        to   : "./packages/core/test/output/local.css",
                     }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
@@ -392,9 +392,9 @@ describe("/processor.js", () => {
                             namer,
                             done : [
                                 require("cssnano")({
-                                    preset : "default"
-                                })
-                            ]
+                                    preset : "default",
+                                }),
+                            ],
                         });
 
                     return processor.file(
@@ -402,7 +402,7 @@ describe("/processor.js", () => {
                     )
                     .then(() => processor.output({
                         from : "packages/core/test/specimens/rewrite.css",
-                        to   : "./packages/core/test/output/local.css"
+                        to   : "./packages/core/test/output/local.css",
                     }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });

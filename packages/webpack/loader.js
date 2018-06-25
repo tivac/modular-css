@@ -1,7 +1,7 @@
 "use strict";
 
 var utils   = require("loader-utils"),
-    keyword = require("esutils").keyword,
+    { keyword } = require("esutils"),
     
     output = require("modular-css-core/lib/output.js");
 
@@ -24,7 +24,7 @@ module.exports = function(source) {
         .then((result) => {
             var exported = output.join(result.exports),
                 out      = [
-                    `export default ${JSON.stringify(exported, null, 4)};`
+                    `export default ${JSON.stringify(exported, null, 4)};`,
                 ];
 
             processor.dependencies(this.resourcePath).forEach(this.addDependency);

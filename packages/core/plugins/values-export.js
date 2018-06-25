@@ -3,7 +3,7 @@
 var order = [
         "modular-css-values-imported",
         "modular-css-values-local",
-        "modular-css-values-composed"
+        "modular-css-values-composed",
     ];
 
 // Find messages from other value plugins & save them to files object

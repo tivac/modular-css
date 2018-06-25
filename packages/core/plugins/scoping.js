@@ -44,7 +44,7 @@ module.exports = (css, result) => {
             // Replace the :global(...) with its contents
             node.replaceWith(processor.selector({
                 nodes  : node.nodes,
-                source : node.source
+                source : node.source,
             }));
 
             node.walk((child) => {
@@ -110,17 +110,17 @@ module.exports = (css, result) => {
 
     if(Object.keys(keyframes).length) {
         result.messages.push({
-            type      : "modular-css",
-            plugin    : plugin,
-            keyframes : keyframes
+            type : "modular-css",
+            plugin,
+            keyframes,
         });
     }
 
     if(Object.keys(classes).length) {
         result.messages.push({
-            type    : "modular-css",
-            plugin  : plugin,
-            classes : classes
+            type : "modular-css",
+            plugin,
+            classes,
         });
     }
 };

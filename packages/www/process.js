@@ -10,7 +10,7 @@ export function process() {
             JSON.stringify(
                 state.files.map((name) => ({
                     name,
-                    css : fs.readFileSync(name, "utf8")
+                    css : fs.readFileSync(name, "utf8"),
                 }))
             )
         );
@@ -39,4 +39,4 @@ export function process() {
     .then(m.redraw);
 }
 
-export let throttled = throttle(process, 200);
+export const throttled = throttle(process, 200);

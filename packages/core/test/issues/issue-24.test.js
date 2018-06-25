@@ -5,11 +5,11 @@ var dedent = require("dedent"),
 
     Processor = require("../../processor.js");
 
-describe("/issues", function() {
-    describe("/24", function() {
-        it("should be able to compose using a value", function() {
+describe("/issues", () => {
+    describe("/24", () => {
+        it("should be able to compose using a value", () => {
             var processor = new Processor({
-                    namer
+                    namer,
                 });
             
             return processor.string(

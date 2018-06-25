@@ -2,9 +2,9 @@
 
 var Processor = require("../../processor.js");
 
-describe("/issues", function() {
-    describe("/66", function() {
-        it("should ignore remove calls for unknown files", function() {
+describe("/issues", () => {
+    describe("/66", () => {
+        it("should ignore remove calls for unknown files", () => {
             var processor = new Processor();
 
             return processor.string(

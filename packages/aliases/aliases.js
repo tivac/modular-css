@@ -11,7 +11,7 @@ module.exports = function(args) {
         aliases = Object.keys(options.aliases)
             .map((alias) => ({
                 name   : alias,
-                search : new RegExp(`^${alias}\\b`)
+                search : new RegExp(`^${alias}\\b`),
             }));
     
     return (src, file) => {

@@ -2,7 +2,8 @@
 
 const path = require("path");
 
-const keyword = require("esutils").keyword;
+const { keyword } = require("esutils");
+
 const utils   = require("rollup-pluginutils");
 const slash   = require("slash");
 
@@ -28,7 +29,7 @@ module.exports = function(opts) {
         
         include : "**/*.css",
 
-        namedExports : true
+        namedExports : true,
     }, opts);
         
     const filter = utils.createFilter(options.include, options.exclude);
@@ -40,7 +41,7 @@ module.exports = function(opts) {
     return {
         name : "modular-css",
 
-        transform : function(code, id) {
+        transform(code, id) {
             let removed = [];
 
             if(!filter(id)) {
@@ -66,7 +67,7 @@ module.exports = function(opts) {
                 const exported = output.join(result.exports);
                 
                 let out = [
-                    `export default ${JSON.stringify(exported, null, 4)};`
+                    `export default ${JSON.stringify(exported, null, 4)};`,
                 ];
                 
                 // Add dependencies
@@ -79,7 +80,7 @@ module.exports = function(opts) {
                 if(options.namedExports === false) {
                     return {
                         code : out.join("\n"),
-                        map
+                        map,
                     };
                 }
 
@@ -95,7 +96,7 @@ module.exports = function(opts) {
 
                 return {
                     code : out.join("\n"),
-                    map
+                    map,
                 };
             });
         },
@@ -104,7 +105,7 @@ module.exports = function(opts) {
             runs++;
         },
 
-        generateBundle : async function(outputOptions, bundle) {
+        async generateBundle(outputOptions, bundle) {
             const bundles = [];
             const common  = processor.dependencies();
 
@@ -132,7 +133,7 @@ module.exports = function(opts) {
                 bundles.push({
                     entry : options.common,
                     base  : extensionless(options.common),
-                    files : common
+                    files : common,
                 });
             }
             
@@ -142,7 +143,7 @@ module.exports = function(opts) {
                     
                     const result = await processor.output({
                         to : css,
-                        files
+                        files,
                     });
                     
                     this.setAssetSource(css, result.css);

@@ -8,7 +8,7 @@ module.exports = function(opts) {
     var options = Object.assign(
             Object.create(null),
             {
-                search : [ "**/*.css" ]
+                search : [ "**/*.css" ],
             },
             opts || {}
         ),
@@ -18,7 +18,7 @@ module.exports = function(opts) {
         globule.find({
             src        : options.search,
             cwd        : processor.options.cwd,
-            prefixBase : true
+            prefixBase : true,
         })
         .map((file) => processor.file(file))
     )

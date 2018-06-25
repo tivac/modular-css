@@ -2,7 +2,7 @@
 
 module.exports = (build) =>
     new Promise((resolve) => {
-        build.bundle(function(err, out) {
+        build.bundle((err, out) => {
             expect(err).toBeFalsy();
 
             // CSS processing in the plugin takes non-zero amount of time,

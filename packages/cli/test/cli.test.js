@@ -12,7 +12,7 @@ function success(out) {
     return out;
 }
     
-describe("/cli.js", function() {
+describe("/cli.js", () => {
     afterAll(() => require("shelljs").rm("-rf", "./packages/cli/test/output"));
 
     it("should show help with no args", () =>

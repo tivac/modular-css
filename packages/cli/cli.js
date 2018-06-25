@@ -23,15 +23,15 @@ var fs   = require("fs"),
             json    : "j",
             map     : "m",
             out     : "o",
-            rewrite : "r"
+            rewrite : "r",
         },
 
         default : {
-            rewrite : true
+            rewrite : true,
         },
 
         string  : [ "dir", "out", "json" ],
-        boolean : [ "map", "rewrite", "help" ]
+        boolean : [ "map", "rewrite", "help" ],
     });
 
 // It's not immediately obvious, but this ends the program too...

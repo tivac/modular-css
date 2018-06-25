@@ -11,7 +11,7 @@ function parse(options, rule, value) {
         parsed = parser.parse(value);
     } catch(e) {
         throw rule.error(e.toString(), {
-            word : value.substring(e.location.start.offset, e.location.end.offset)
+            word : value.substring(e.location.start.offset, e.location.end.offset),
         });
     }
     

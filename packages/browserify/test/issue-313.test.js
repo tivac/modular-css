@@ -11,10 +11,10 @@ var fs = require("fs"),
     bundle = require("./lib/bundle.js"),
     plugin = require("../browserify.js");
 
-describe("/browserify.js", function() {
-    describe("/issues", function() {
-        describe("/313", function() {
-            it("should include all dependencies after watchify update", function(done) {
+describe("/browserify.js", () => {
+    describe("/issues", () => {
+        describe("/313", () => {
+            it("should include all dependencies after watchify update", (done) => {
                 var build = browserify(
                         from(dedent(`
                             require("./packages/browserify/test/specimens/issues/313/1.css");
@@ -22,18 +22,18 @@ describe("/browserify.js", function() {
                         `)),
                         {
                             cache        : {},
-                            packageCache : {}
+                            packageCache : {},
                         }
                     ),
                     css;
 
                 build.plugin(require("watchify"));
                 build.plugin(plugin, {
-                    css : "./packages/browserify/test/output/issues/313.css"
+                    css : "./packages/browserify/test/output/issues/313.css",
                 });
 
                 // File changed
-                build.on("update", function() {
+                build.on("update", () => {
                     bundle(build)
                         .then(() => {
                             // compare the output of the updated file with the initial bundle

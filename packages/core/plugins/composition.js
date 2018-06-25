@@ -104,15 +104,15 @@ module.exports = (css, result) => {
     graph.overallOrder().forEach((selector) =>
         graph.dependenciesOf(selector)
             .reverse()
-            .forEach(function(dep) {
+            .forEach((dep) => {
                 out[selector] = refs[dep].concat(out[selector]);
             })
     );
 
     result.messages.push({
         type    : "modular-css",
-        plugin  : plugin,
-        classes : mapvalues(out, (val) => unique(val))
+        plugin,
+        classes : mapvalues(out, (val) => unique(val)),
     });
 };
 

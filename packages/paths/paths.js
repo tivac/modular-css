@@ -6,7 +6,7 @@ module.exports = function(args) {
     var options = Object.assign(
             Object.create(null),
             {
-                paths : []
+                paths : [],
             },
             args
         );

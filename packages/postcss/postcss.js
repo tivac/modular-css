@@ -24,11 +24,11 @@ module.exports = postcss.plugin("modular-css", (opts) =>
                 return processor.output();
             })
             .then((output) => {
-                var json = processor.options.json;
+                var { json } = processor.options;
                 
                 result.messages.push({
                     type    : "modular-css-exports",
-                    exports : classes
+                    exports : classes,
                 });
                 
                 if(json) {

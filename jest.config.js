@@ -4,11 +4,11 @@ module.exports = {
     coveragePathIgnorePatterns : [
       "node_modules",
       "parsers",
-      "test-utils"
+      "test-utils",
     ],
 
     watchPathIgnorePatterns : [
         "output",
         "specimens",
-    ]
+    ],
 };

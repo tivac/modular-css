@@ -62,11 +62,11 @@ m.mount(document.body, {
             ),
             m("a", {
                     class : css.chat,
-                    href  : "https://gitter.im/modular-css/modular-css"
+                    href  : "https://gitter.im/modular-css/modular-css",
                 },
                 m("img", {
                     src : "https://img.shields.io/gitter/room/modular-css/modular-css.svg",
-                    alt : "Gitter"
+                    alt : "Gitter",
                 })
             )
         ),
@@ -77,7 +77,7 @@ m.mount(document.body, {
                     m("button", {
                         class   : css.add,
                         onclick : createFile,
-                        title   : "Add another file"
+                        title   : "Add another file",
                     }, "Add file")
                 ),
 
@@ -90,7 +90,7 @@ m.mount(document.body, {
                         class : css.copy,
                         title : "Copy all output to your clipboard",
 
-                        "data-clipboard-text" : output()
+                        "data-clipboard-text" : output(),
                     }, "Copy Details")
                 ),
                 
@@ -103,7 +103,7 @@ m.mount(document.body, {
 
                     m(Editor, {
                         mode  : "text/css",
-                        field : "css"
+                        field : "css",
                     })
                 ),
 
@@ -114,10 +114,10 @@ m.mount(document.body, {
 
                     m(Editor, {
                         mode  : "application/json",
-                        field : "json"
+                        field : "json",
                     })
                 )
             )
-        )
-    ]
+        ),
+    ],
 });

@@ -7,7 +7,7 @@ var state =  {
 
     output : {
         css : "",
-        js  : false
+        js  : false,
     },
 
     processor : new Processor({
@@ -16,13 +16,13 @@ var state =  {
                 file = file.replace(/^\.\.\/|\.\//, "");
 
                 return `/${file}`;
-            }
-        ]
+            },
+        ],
     }),
     
     tab : "CSS",
     
-    error : false
+    error : false,
 };
 
 export function createFile() {

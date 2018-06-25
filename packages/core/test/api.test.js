@@ -11,7 +11,7 @@ describe("/processor.js", () => {
 
         beforeEach(() => {
             processor = new Processor({
-                namer
+                namer,
             });
         });
 
@@ -93,12 +93,12 @@ describe("/processor.js", () => {
                 Promise.all([
                     processor.string("./a.css", ".a { }"),
                     processor.string("./b.css", ".b { }"),
-                    processor.string("./c.css", ".c { }")
+                    processor.string("./c.css", ".c { }"),
                 ])
                 .then(() => {
                     processor.remove([
                         "./a.css",
-                        "./b.css"
+                        "./b.css",
                     ]);
                     
                     expect(relative(processor.dependencies())).toMatchSnapshot();
@@ -109,7 +109,7 @@ describe("/processor.js", () => {
                 processor.file("./packages/core/test/specimens/start.css")
                 .then(() => {
                     processor.remove([
-                        "./packages/core/test/specimens/folder/folder.css"
+                        "./packages/core/test/specimens/folder/folder.css",
                     ]);
                     expect(processor.dependencies()).toEqual([]);
                 })
@@ -119,14 +119,14 @@ describe("/processor.js", () => {
                 Promise.all([
                     processor.string("./a.css", ".a { }"),
                     processor.string("./b.css", ".b { }"),
-                    processor.string("./c.css", ".c { }")
+                    processor.string("./c.css", ".c { }"),
                 ])
                 .then(() => {
                     expect(
                         relative(
                             processor.remove([
                                 "./a.css",
-                                "./b.css"
+                                "./b.css",
                             ])
                         )
                     ).toMatchSnapshot();
@@ -169,7 +169,7 @@ describe("/processor.js", () => {
             it("should generate css representing the output from all added files", () =>
                 Promise.all([
                     processor.file("./packages/core/test/specimens/start.css"),
-                    processor.file("./packages/core/test/specimens/simple.css")
+                    processor.file("./packages/core/test/specimens/simple.css"),
                 ])
                 .then(() => processor.output())
                 .then((result) => expect(result.css).toMatchSnapshot())
@@ -178,7 +178,7 @@ describe("/processor.js", () => {
             it("should avoid duplicating files in the output", () =>
                 Promise.all([
                     processor.file("./packages/core/test/specimens/start.css"),
-                    processor.file("./packages/core/test/specimens/local.css")
+                    processor.file("./packages/core/test/specimens/local.css"),
                 ])
                 .then(() => processor.output())
                 .then((result) => expect(result.css).toMatchSnapshot())
@@ -197,7 +197,7 @@ describe("/processor.js", () => {
                     processor.file("./packages/core/test/specimens/start.css"),
                     processor.file("./packages/core/test/specimens/local.css"),
                     processor.file("./packages/core/test/specimens/composes.css"),
-                    processor.file("./packages/core/test/specimens/deep.css")
+                    processor.file("./packages/core/test/specimens/deep.css"),
                 ])
                 .then(() => processor.output())
                 .then((result) => expect(result.css).toMatchSnapshot())
@@ -206,12 +206,12 @@ describe("/processor.js", () => {
             it("should support returning output for specified relative files", () =>
                 Promise.all([
                     processor.file("./packages/core/test/specimens/start.css"),
-                    processor.file("./packages/core/test/specimens/local.css")
+                    processor.file("./packages/core/test/specimens/local.css"),
                 ])
                 .then(() => processor.output({
                     files : [
-                        "./packages/core/test/specimens/start.css"
-                    ]
+                        "./packages/core/test/specimens/start.css",
+                    ],
                 }))
                 .then((result) => expect(result.css).toMatchSnapshot())
             );
@@ -219,12 +219,12 @@ describe("/processor.js", () => {
             it("should support returning output for specified absolute files", () =>
                 Promise.all([
                     processor.file("./packages/core/test/specimens/start.css"),
-                    processor.file("./packages/core/test/specimens/local.css")
+                    processor.file("./packages/core/test/specimens/local.css"),
                 ])
                 .then(() => processor.output({
                     files : [
-                        require.resolve("./specimens/start.css")
-                    ]
+                        require.resolve("./specimens/start.css"),
+                    ],
                 }))
                 .then((result) => expect(result.css).toMatchSnapshot())
             );
@@ -241,8 +241,8 @@ describe("/processor.js", () => {
                 )
                 .then(() => processor.output({
                     map : {
-                        inline : false
-                    }
+                        inline : false,
+                    },
                 }))
                 .then((result) => expect(result.map).toMatchSnapshot())
             );
@@ -256,8 +256,8 @@ describe("/processor.js", () => {
                     resolvers : [
                         () => {
                             ran = true;
-                        }
-                    ]
+                        },
+                    ],
                 });
                 
                 expect(
@@ -265,7 +265,7 @@ describe("/processor.js", () => {
                         processor._resolve(
                             require.resolve("./specimens/start.css"),
                             "./local.css"
-                        )
+                        ),
                     ])
                 )
                 .toMatchSnapshot();
@@ -276,8 +276,8 @@ describe("/processor.js", () => {
             it("should fall back to a default resolver", () => {
                 processor = new Processor({
                     resolvers : [
-                        () => undefined
-                    ]
+                        () => undefined,
+                    ],
                 });
                 
                 expect(
@@ -285,7 +285,7 @@ describe("/processor.js", () => {
                         processor._resolve(
                             require.resolve("./specimens/start.css"),
                             "./local.css"
-                        )
+                        ),
                     ])
                 )
                 .toMatchSnapshot();

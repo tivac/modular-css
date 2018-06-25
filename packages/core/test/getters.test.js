@@ -11,7 +11,7 @@ describe("/processor.js", () => {
         
         beforeEach(() => {
             processor = new Processor({
-                namer
+                namer,
             });
         });
         

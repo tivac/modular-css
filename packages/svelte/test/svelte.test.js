@@ -15,7 +15,7 @@ describe("/svelte.js", () => {
     it("should extract CSS from a <style> tag", async () => {
         const filename = require.resolve("./specimens/style.html");
         const { processor, preprocess } = plugin({
-            namer
+            namer,
         });
         
         const processed = await svelte.preprocess(
@@ -39,7 +39,7 @@ describe("/svelte.js", () => {
     `("should extract CSS from a <link> tag ($title)", async ({ specimen }) => {
         const filename = require.resolve(`./specimens/${specimen}`);
         const { processor, preprocess } = plugin({
-            namer
+            namer,
         });
 
         const processed = await svelte.preprocess(
@@ -74,7 +74,7 @@ describe("/svelte.js", () => {
 
     it("should ignore invalid {css.<key>}", async () => {
         const { preprocess } = plugin({
-            namer
+            namer,
         });
 
         const processed = await svelte.preprocess(
@@ -92,7 +92,7 @@ describe("/svelte.js", () => {
     it("should throw on both <style> and <link> in one file", () => {
         const { preprocess } = plugin({
             css : "./packages/svelte/test/output/svelte.css",
-            namer
+            namer,
         });
 
         const filename = require.resolve("./specimens/both.html");

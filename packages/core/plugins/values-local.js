@@ -24,7 +24,7 @@ module.exports = (css, result) => {
 
         values[parsed.name] = {
             value  : parsed.value,
-            source : rule.source
+            source : rule.source,
         };
 
         rule.remove();
@@ -34,7 +34,7 @@ module.exports = (css, result) => {
         result.messages.push({
             type : "modular-css",
             plugin,
-            values
+            values,
         });
     }
 };

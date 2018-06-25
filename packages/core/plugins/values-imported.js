@@ -30,7 +30,7 @@ module.exports = (css, result) => {
         result.messages.push({
             type : "modular-css",
             plugin,
-            values
+            values,
         });
     }
 };

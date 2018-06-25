@@ -1,57 +1,57 @@
 "use strict";
 
-var dedent = require("dentist").dedent,
+const { dedent } = require("dentist");
     
-    Processor = require("modular-css-core"),
-    namer     = require("test-utils/namer.js"),
+const Processor = require("modular-css-core");
+const namer     = require("test-utils/namer.js");
 
-    aliases = require("../aliases.js");
+const aliases = require("../aliases.js");
 
-describe("modular-css-aliases", function() {
-    it("should return a falsey value if a file isn't found", function() {
+describe("modular-css-aliases", () => {
+    it("should return a falsey value if a file isn't found", () => {
         var fn = aliases({
             aliases : {
-                specimens : "./packages/aliases/test/specimens"
-            }
+                specimens : "./packages/aliases/test/specimens",
+            },
         });
 
         expect(fn(".", "specimens/fooga.css")).toBeFalsy();
     });
 
-    it("should return the absolute path if a file is found", function() {
+    it("should return the absolute path if a file is found", () => {
         var fn = aliases({
             aliases : {
-                one : "./packages/aliases/test/specimens/one"
-            }
+                one : "./packages/aliases/test/specimens/one",
+            },
         });
 
         expect(fn(".", "one/one.css")).toBe(require.resolve("./specimens/one/one.css"));
     });
 
-    it("should check multiple aliases for files & return the first match", function() {
+    it("should check multiple aliases for files & return the first match", () => {
         var fn = aliases({
             aliases : {
                 one : "./packages/aliases/test/specimens/one",
                 two : "./packages/aliases/test/specimens/two",
-                sub : "./packages/aliases/test/specimens/one/sub"
-            }
+                sub : "./packages/aliases/test/specimens/one/sub",
+            },
         });
 
         expect(fn(".", "one/one.css")).toBe(require.resolve("./specimens/one/one.css"));
         expect(fn(".", "sub/sub.css")).toBe(require.resolve("./specimens/one/sub/sub.css"));
     });
 
-    it("should be usable as a modular-css resolver", function() {
+    it("should be usable as a modular-css resolver", () => {
         var processor = new Processor({
                 namer,
                 resolvers : [
                     aliases({
                         aliases : {
                             sub : "./packages/aliases/test/specimens/one/sub",
-                            two : "./packages/aliases/test/specimens/two"
-                        }
-                    })
-                ]
+                            two : "./packages/aliases/test/specimens/two",
+                        },
+                    }),
+                ],
             });
         
         return processor.string(
@@ -70,16 +70,16 @@ describe("modular-css-aliases", function() {
         );
     });
 
-    it("should fall through to the default resolver", function() {
+    it("should fall through to the default resolver", () => {
         var processor = new Processor({
                 namer,
                 resolvers : [
                     aliases({
                         aliases : {
-                            two : "./packages/aliases/test/specimens/two"
-                        }
-                    })
-                ]
+                            two : "./packages/aliases/test/specimens/two",
+                        },
+                    }),
+                ],
             });
         
         return processor.string(

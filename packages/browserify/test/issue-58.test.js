@@ -44,7 +44,7 @@ describe("/browserify.js", () => {
 
                 build.plugin(watchify);
                 build.plugin(plugin, {
-                    css : "./packages/browserify/test/output/issues/58.css"
+                    css : "./packages/browserify/test/output/issues/58.css",
                 });
 
                 build.on("update", () => {

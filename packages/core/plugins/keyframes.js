@@ -21,7 +21,7 @@ module.exports = (css, result) => {
     );
     
     // Go look up "animation" declarations and rewrite their names to scoped values
-    css.walkDecls(/animation$|animation-name$/, function(decl) {
+    css.walkDecls(/animation$|animation-name$/, (decl) => {
         decl.value = decl.value.replace(search, (match) => refs[match]);
     });
 };

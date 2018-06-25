@@ -11,5 +11,5 @@ export default {
         }
 
         return m("div", { class : css.error }, state.error);
-    }
+    },
 };

@@ -13,7 +13,7 @@ module.exports = function(args) {
 
         preprocess : {
             markup : markup(processor),
-            style
-        }
+            style,
+        },
     };
 };

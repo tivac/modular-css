@@ -18,13 +18,13 @@ export default {
                     theme       : "monokai",
                     lineNumbers : true,
                     readOnly    : "nocursor",
-                    value       : state.output[vnode.attrs.field]
+                    value       : state.output[vnode.attrs.field],
                 });
             },
 
             onupdate : (textarea) =>
                 textarea.state.editor.doc.setValue(
                     state.output[vnode.attrs.field]
-                )
-        })
+                ),
+        }),
 };

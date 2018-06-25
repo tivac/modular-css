@@ -32,7 +32,7 @@ module.exports = function() {
         if(!meta[file]) {
             meta[file] = {
                 id        : Object.keys(meta).length,
-                selectors : {}
+                selectors : {},
             };
         }
 

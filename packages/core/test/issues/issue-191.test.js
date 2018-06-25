@@ -6,8 +6,8 @@ var fs = require("fs"),
 
     Processor = require("../../processor.js");
 
-describe("/issues", function() {
-    describe("/191", function() {
+describe("/issues", () => {
+    describe("/191", () => {
         var fn = it;
         
         afterAll(() => require("shelljs").rm("-rf", "./packages/core/test/output/sensitive.txt"));
@@ -21,9 +21,9 @@ describe("/issues", function() {
             fn = it.skip;
         }
 
-        fn("should ignore case differences in file paths", function() {
+        fn("should ignore case differences in file paths", () => {
             var processor = new Processor({
-                    namer
+                    namer,
                 });
             
             return processor.file(require.resolve("./specimens/191/start.css"))

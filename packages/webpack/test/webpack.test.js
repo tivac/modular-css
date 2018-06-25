@@ -32,22 +32,22 @@ function config({ entry, use, plugin, watch = false }) {
         recordsPath : path.join(__dirname, "./records", `${path.basename(entry)}.json`),
         output      : {
             path     : output,
-            filename : "./output.js"
+            filename : "./output.js",
         },
         module : {
             rules : [
                 {
                     test,
-                    use : use ? use : loader
-                }
-            ]
+                    use : use ? use : loader,
+                },
+            ],
         },
         plugins : [
             new Plugin(Object.assign({
                 namer,
-                css : "./output.css"
-            }, plugin))
-        ]
+                css : "./output.css",
+            }, plugin)),
+        ],
     };
 }
 
@@ -60,7 +60,7 @@ describe("/webpack.js", () => {
 
     it("should output css to disk", (done) => {
         webpack(config({
-            entry : "./packages/webpack/test/specimens/simple.js"
+            entry : "./packages/webpack/test/specimens/simple.js",
         }), (err, stats) => {
             success(err, stats);
 
@@ -75,8 +75,8 @@ describe("/webpack.js", () => {
         webpack(config({
             entry  : "./packages/webpack/test/specimens/simple.js",
             plugin : {
-                json : "./output.json"
-            }
+                json : "./output.json",
+            },
         }), (err, stats) => {
             success(err, stats);
 
@@ -91,8 +91,8 @@ describe("/webpack.js", () => {
         webpack(config({
             entry  : "./packages/webpack/test/specimens/simple.js",
             plugin : {
-                map : true
-            }
+                map : true,
+            },
         }), (err, stats) => {
             success(err, stats);
 
@@ -107,9 +107,9 @@ describe("/webpack.js", () => {
             entry  : "./packages/webpack/test/specimens/simple.js",
             plugin : {
                 map : {
-                        inline : false
-                    }
-                }
+                        inline : false,
+                    },
+                },
         }), (err, stats) => {
             success(err, stats);
 
@@ -147,8 +147,8 @@ describe("/webpack.js", () => {
         webpack(config({
             entry  : "./packages/webpack/test/specimens/start.js",
             plugin : {
-                    json : "./output.json"
-                }
+                    json : "./output.json",
+                },
         }), (err, stats) => {
             success(err, stats);
 
@@ -192,9 +192,9 @@ describe("/webpack.js", () => {
             use   : {
                 loader,
                 options : {
-                    namedExports : false
-                }
-            }
+                    namedExports : false,
+                },
+            },
         }), (err, stats) => {
             success(err, stats);
 

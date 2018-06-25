@@ -15,60 +15,50 @@ function process(file, opts) {
             Object.create(null),
             {
                 from : file,
-                namer
+                namer,
             },
             opts || {}
         )
     );
 }
 
-describe("/postcss.js", function() {
+describe("/postcss.js", () => {
     afterAll(() => require("shelljs").rm("-rf", "./packages/postcss/test/output/*"));
     
-    it("should be a function", function() {
+    it("should be a function", () => {
         expect(typeof plugin).toBe("function");
     });
 
-    it("should process CSS and output the result", function() {
-        return process("./packages/postcss/test/specimens/simple.css")
-            .then((result) => expect(result.css).toMatchSnapshot());
-    });
+    it("should process CSS and output the result", () => process("./packages/postcss/test/specimens/simple.css")
+            .then((result) => expect(result.css).toMatchSnapshot()));
 
-    it("should process CSS with dependencies and output the result", function() {
-        return process("./packages/postcss/test/specimens/start.css")
-            .then((result) => expect(result.css).toMatchSnapshot());
-    });
+    it("should process CSS with dependencies and output the result", () => process("./packages/postcss/test/specimens/start.css")
+            .then((result) => expect(result.css).toMatchSnapshot()));
 
-    it("should process CSS and output exports as a message", function() {
-        return process("./packages/postcss/test/specimens/simple.css")
-            .then((result) => expect(result.messages).toMatchSnapshot());
-    });
+    it("should process CSS and output exports as a message", () => process("./packages/postcss/test/specimens/simple.css")
+            .then((result) => expect(result.messages).toMatchSnapshot()));
 
-    it("should accept normal processor options", function() {
-        return process("./packages/postcss/test/specimens/simple.css", {
+    it("should accept normal processor options", () => process("./packages/postcss/test/specimens/simple.css", {
             map : {
-                inline : true
+                inline : true,
             },
-            namer : (f, s) => `fooga_${s}`
+            namer : (f, s) => `fooga_${s}`,
         })
-        .then((result) => expect(result.css).toMatchSnapshot());
-    });
+        .then((result) => expect(result.css).toMatchSnapshot()));
 
-    it("should accept a `json` property and write exports to that file", function() {
-        return process(
+    it("should accept a `json` property and write exports to that file", () => process(
             "./packages/postcss/test/specimens/start.css",
             {
-                json : "./packages/postcss/test/output/classes.json"
+                json : "./packages/postcss/test/output/classes.json",
             }
         )
-        .then(() => expect(read("classes.json")).toMatchSnapshot());
-    });
+        .then(() => expect(read("classes.json")).toMatchSnapshot()));
 
-    it("should be usable like a normal postcss plugin", function() {
+    it("should be usable like a normal postcss plugin", () => {
         var processor = postcss([
                 plugin({
-                    namer : () => "a"
-                })
+                    namer : () => "a",
+                }),
             ]);
         
         return processor.process(
@@ -76,42 +66,42 @@ describe("/postcss.js", function() {
             {
                 from : "./packages/postcss/test/specimens/simple.css",
                 map  : {
-                    inline : true
-                }
+                    inline : true,
+                },
             }
         )
         .then((result) => expect(result.css).toMatchSnapshot());
     });
 
-    it("should output json when used within postcss", function() {
+    it("should output json when used within postcss", () => {
         var processor = postcss([
                 plugin({
-                    namer
-                })
+                    namer,
+                }),
             ]);
         
         return processor.process(
             fs.readFileSync("./packages/postcss/test/specimens/simple.css"),
             {
                 from : "./packages/postcss/test/specimens/simple.css",
-                json : "./packages/postcss/test/output/simple.json"
+                json : "./packages/postcss/test/output/simple.json",
             }
         )
         .then(() => expect(read("simple.json")).toMatchSnapshot());
     });
 
-    it("should accept json args in either position with postcss", function() {
+    it("should accept json args in either position with postcss", () => {
         var processor = postcss([
             plugin({
                 namer,
-                json : "./packages/postcss/test/output/simple.json"
-            })
+                json : "./packages/postcss/test/output/simple.json",
+            }),
         ]);
         
         return processor.process(
             fs.readFileSync("./packages/postcss/test/specimens/simple.css"),
             {
-                from : "./packages/postcss/test/specimens/simple.css"
+                from : "./packages/postcss/test/specimens/simple.css",
             }
         )
         .then(() => expect(read("simple.json")).toMatchSnapshot());
