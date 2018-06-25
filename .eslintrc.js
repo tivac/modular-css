@@ -1,5 +1,8 @@
 module.exports = {
-  "extends": "arenanet",
+  "extends": [
+    "@tivac",
+    "plugin:jest/recommended"
+  ],
   "parserOptions": {
     "ecmaVersion": 8
   },
@@ -8,10 +11,9 @@ module.exports = {
     "jest": true
   },
   "plugins": [
-    "no-only-tests"
+    "jest"
   ],
   "rules": {
-    "no-only-tests/no-only-tests": "error",
     "one-var": [
       "warn",
       {
