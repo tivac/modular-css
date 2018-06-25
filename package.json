@@ -27,7 +27,7 @@
     "cssnano": "^4.0.0-rc.1",
     "dedent": "^0.7.0",
     "dentist": "^1.0.3",
-    "eslint": "^4.19.1",
+    "eslint": "^5.0.0",
     "eslint-config-arenanet": "^3.3.1",
     "eslint-plugin-no-only-tests": "^2.0.0",
     "factor-bundle": "^2.5.0",
@@ -41,10 +41,10 @@
     "rollup": "^0.60.4",
     "rollup-plugin-svelte": "^4.1.0",
     "shelljs": "^0.8.1",
-    "svelte": "^2.1.1",
+    "svelte": "^2.8.1",
     "test-utils": "file:./packages/test-utils",
     "watchify": "^3.9.0",
-    "webpack": "^4.6.0"
+    "webpack": "^4.12.1"
   },
   "jest": {
     "coveragePathIgnorePatterns": [
