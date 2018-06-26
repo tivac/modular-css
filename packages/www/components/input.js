@@ -9,7 +9,7 @@ import css from "./input.css";
 
 export default {
     view(vnode) {
-        var idx   = vnode.attrs.idx,
+        var { idx }   = vnode.attrs,
             file  = state.files[idx];
 
         return m("div", { class : css.file },

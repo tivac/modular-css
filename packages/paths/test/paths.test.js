@@ -1,6 +1,6 @@
 "use strict";
 
-var dedent = require("dentist").dedent,
+var { dedent } = require("dentist"),
     
     Processor = require("modular-css-core"),
     namer     = require("test-utils/namer.js"),

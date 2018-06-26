@@ -32,7 +32,7 @@ function composesFirst(decl) {
 module.exports = (css, result) => {
     var refs  = message(result, "classes"),
         map   = invert(refs),
-        opts  = result.opts,
+        { opts } = result,
         graph = new Graph(),
         out   = Object.assign(Object.create(null), refs);
     
