@@ -5,7 +5,6 @@ const path = require("path");
 const { keyword } = require("esutils");
 
 const utils   = require("rollup-pluginutils");
-const slash   = require("slash");
 
 const Processor = require("modular-css-core");
 const output    = require("modular-css-core/lib/output.js");
