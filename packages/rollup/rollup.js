@@ -56,7 +56,7 @@ module.exports = function(opts) {
                 const exported = output.join(result.exports);
                 
                 const out = [
-                    `export default ${JSON.stringify(exported, null, 4)};`
+                    `export default ${JSON.stringify(exported, null, 4)};`,
                 ];
 
                 if(options.namedExports) {
@@ -81,7 +81,7 @@ module.exports = function(opts) {
             });
         },
 
-        generateBundle : async function(outputOptions, bundles) {
+        async generateBundle(outputOptions, bundles) {
             const usage = new Map();
             const common = new Map();
             const files = [];
@@ -103,7 +103,7 @@ module.exports = function(opts) {
                     entry,
                     base : extensionless(entry),
 
-                    css : [ ]
+                    css : [ ],
                 };
 
                 // Get CSS files being used by each entry point
@@ -154,7 +154,7 @@ module.exports = function(opts) {
                 files.push({
                     entry : options.common,
                     base  : extensionless(options.common),
-                    css   : [ ...common.keys() ]
+                    css   : [ ...common.keys() ],
                 });
             }
             
@@ -166,7 +166,7 @@ module.exports = function(opts) {
 
                     const result = await processor.output({
                         to,
-                        files : css
+                        files : css,
                     });
                     
                     this.setAssetSource(id, result.css);

@@ -184,7 +184,7 @@ describe("/rollup.js", () => {
         // Have to parse it into JSON so the propertyMatcher can exclude the file property
         // since it is a hash value and changes constantly
         expect(JSON.parse(read("external-source-maps/assets/simple.css.map"))).toMatchSnapshot({
-            file : expect.any(String)
+            file : expect.any(String),
         });
     });
     
@@ -284,8 +284,8 @@ describe("/rollup.js", () => {
                 plugin({
                     namer,
                     map,
-                })
-            ]
+                }),
+            ],
         });
 
         await bundle.write({
@@ -293,7 +293,7 @@ describe("/rollup.js", () => {
             assetFileNames,
             sourcemap,
 
-            file : `${output}/dependencies/dependencies.js`
+            file : `${output}/dependencies/dependencies.js`,
         });
 
         expect(read("dependencies/dependencies.js")).toMatchSnapshot();
@@ -317,8 +317,8 @@ describe("/rollup.js", () => {
             plugins : [
                 plugin({
                     processor,
-                })
-            ]
+                }),
+            ],
         });
 
         await bundle.write({
@@ -326,7 +326,7 @@ describe("/rollup.js", () => {
             sourcemap,
             assetFileNames,
             
-            file : `${output}/existing-processor/existing-processor.js`
+            file : `${output}/existing-processor/existing-processor.js`,
         });
 
         expect(read("existing-processor/assets/existing-processor.css")).toMatchSnapshot();
@@ -565,8 +565,8 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         map,
-                    })
-                ]
+                    }),
+                ],
             });
     
             await bundle.write({
@@ -575,7 +575,7 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
                 
-                dir : `${output}/splitting`
+                dir : `${output}/splitting`,
             });
 
             expect(read("splitting/assets/common.css")).toMatchSnapshot();
@@ -601,8 +601,8 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         map,
-                    })
-                ]
+                    }),
+                ],
             });
 
             await bundle.write({
@@ -611,7 +611,7 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
 
-                dir : `${output}/manual-chunks`
+                dir : `${output}/manual-chunks`,
             });
 
             expect(read("manual-chunks/assets/a.css")).toMatchSnapshot();
@@ -634,8 +634,8 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         map,
-                    })
-                ]
+                    }),
+                ],
             });
 
             await bundle.write({
@@ -644,7 +644,7 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
 
-                dir : `${output}/dynamic-imports`
+                dir : `${output}/dynamic-imports`,
             });
 
             expect(read("dynamic-imports/assets/a.css")).toMatchSnapshot();

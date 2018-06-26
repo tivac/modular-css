@@ -22,7 +22,7 @@
     "watch": "jest --watch"
   },
   "devDependencies": {
-    "@tivac/eslint-config": "^2.2.0",
+    "@tivac/eslint-config": "^2.2.1",
     "browserify": "^16.2.0",
     "cli-tester": "^2.0.0",
     "cssnano": "^4.0.0-rc.1",
