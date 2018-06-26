@@ -22,7 +22,7 @@ function extensionless(file) {
 
 module.exports = function(opts) {
     const options = Object.assign(Object.create(null), {
-        common : false,
+        common : "common.css",
         
         json : false,
         map  : true,
@@ -36,117 +36,140 @@ module.exports = function(opts) {
         
     const processor = options.processor || new Processor(options);
     
-    let runs = 0;
-        
     return {
-        name : "modular-css",
+        name : "modular-css-rollup",
 
         transform(code, id) {
-            let removed = [];
-
             if(!filter(id)) {
                 return null;
             }
 
             // If the file is being re-processed we need to remove it to
             // avoid cache staleness issues
-            if(runs) {
-                removed = processor.remove(id);
+            if(id in processor.files) {
+                processor.dependencies(id)
+                    .concat(id)
+                    .forEach((file) => processor.remove(file));
             }
 
-            return Promise.all(
-                // Run current file first since it's already in-memory
-                [ processor.string(id, code) ].concat(
-                    removed.map((file) =>
-                        processor.file(file)
-                    )
-                )
-            )
-            .then((results) => {
-                const [ result ] = results;
+            return processor.string(id, code).then((result) => {
                 const exported = output.join(result.exports);
                 
-                let out = [
+                const out = [
                     `export default ${JSON.stringify(exported, null, 4)};`,
                 ];
-                
-                // Add dependencies
-                out = out.concat(
-                    processor.dependencies(id).map((file) =>
-                        `import "${slash(file)}";`
-                    )
-                );
 
-                if(options.namedExports === false) {
-                    return {
-                        code : out.join("\n"),
-                        map,
-                    };
+                if(options.namedExports) {
+                    Object.keys(exported).forEach((ident) => {
+                        if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
+                            this.warn(`Invalid JS identifier "${ident}", unable to export`);
+                            
+                            return;
+                        }
+                        
+                        out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
+                    });
                 }
 
-                Object.keys(exported).forEach((ident) => {
-                    if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
-                        this.warn(`Invalid JS identifier "${ident}", unable to export`);
-                        
-                        return;
-                    }
-
-                    out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
-                });
-
+                const dependencies = processor.dependencies(id);
+                    
                 return {
                     code : out.join("\n"),
                     map,
+                    dependencies,
                 };
             });
         },
 
-        buildEnd() {
-            runs++;
-        },
+        async generateBundle(outputOptions, bundles) {
+            const usage = new Map();
+            const common = new Map();
+            const files = [];
+            
+            let to;
 
-        async generateBundle(outputOptions, bundle) {
-            const bundles = [];
-            const common  = processor.dependencies();
+            if(!outputOptions.file && !outputOptions.dir) {
+                to = path.join(process.cwd(), outputOptions.assetFileNames || "");
+            } else {
+                to = path.join(
+                    outputOptions.dir ? outputOptions.dir : path.dirname(outputOptions.file),
+                    outputOptions.assetFileNames
+                );
+            }
 
-            Object.keys(bundle).forEach((entry) => {
-                const files = Object.keys(bundle[entry].modules).filter(filter);
+            // First pass is used to calculate JS usage of CSS dependencies
+            Object.keys(bundles).forEach((entry) => {
+                const file = {
+                    entry,
+                    base : extensionless(entry),
 
-                if(!files.length) {
+                    css : [ ],
+                };
+
+                // Get CSS files being used by each entry point
+                const css = Object.keys(bundles[entry].modules).filter(filter);
+
+                if(!css.length) {
                     return;
                 }
 
-                // remove the files being exported from the common bundle
-                files.forEach((file) =>
-                    common.splice(common.indexOf(file), 1)
-                );
+                // Get dependency chains for each file
+                css.forEach((start) => {
+                    const used = processor.dependencies(start).concat(start);
+                    
+                    file.css = file.css.concat(used);
 
-                bundles.push({
-                    entry,
-                    files,
-                    base : extensionless(entry),
+                    used.forEach((dep) => {
+                        usage.set(dep, usage.has(dep) ? usage.get(dep) + 1 : 1);
+                    });
+                });
+
+                files.push(file);
+            });
+
+            // Second pass removes any dependencies appearing in multiple bundles
+            files.forEach((file) => {
+                const { css } = file;
+
+                file.css = css.filter((dep) => {
+                    if(usage.get(dep) > 1) {
+                        common.set(dep, true);
+
+                        return false;
+                    }
+
+                    return true;
                 });
             });
 
-            // Common chunk only emitted if configured & if necessary
-            if(options.common && common.length) {
-                bundles.push({
+            // Add any other files that weren't part of a bundle to the common chunk
+            Object.keys(processor.files).forEach((file) => {
+                if(!usage.has(file)) {
+                    common.set(file, true);
+                }
+            });
+
+            // Common chunk only emitted if necessary
+            if(common.size) {
+                files.push({
                     entry : options.common,
                     base  : extensionless(options.common),
-                    files : common,
+                    css   : [ ...common.keys() ],
                 });
             }
             
             await Promise.all(
-                bundles.map(async ({ base, files }) => {
-                    const css = this.emitAsset(`${base}.css`);
-                    
+                files
+                .filter(({ css }) => css.length)
+                .map(async ({ base, css }) => {
+                    const id = this.emitAsset(`${base}.css`);
+
                     const result = await processor.output({
-                        to : css,
-                        files,
+                        to,
+                        files : css,
                     });
                     
-                    this.setAssetSource(css, result.css);
+                    this.setAssetSource(id, result.css);
 
                     if(options.json) {
                         this.emitAsset(`${base}.json`, JSON.stringify(result.compositions, null, 4));

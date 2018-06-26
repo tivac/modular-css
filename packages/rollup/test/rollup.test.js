@@ -23,16 +23,16 @@ function error(root) {
 
 error.postcssPlugin = "error-plugin";
 
-const output = "./packages/rollup/test/output";
 const assetFileNames = "assets/[name][extname]";
 const format = "es";
 const map = false;
+const output = "./packages/rollup/test/output";
 const sourcemap = false;
 
 describe("/rollup.js", () => {
     /* eslint max-statements: "off" */
     
-    afterEach(() => shell.rm("-rf", `${output}/*`));
+    beforeAll(() => shell.rm("-rf", `${output}/*`));
     
     it("should be a function", () =>
         expect(typeof plugin).toBe("function")
@@ -82,10 +82,10 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : `${output}/simple.js`,
+            file : `${output}/css/simple.js`,
         });
 
-        expect(read("assets/simple.css")).toMatchSnapshot();
+        expect(read("css/assets/simple.css")).toMatchSnapshot();
     });
     
     it("should correctly pass to/from params for relative paths", async () => {
@@ -102,10 +102,10 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : `${output}/relative-paths.js`,
+            file : `${output}/relative-paths/relative-paths.js`,
         });
 
-        expect(read("assets/relative-paths.css")).toMatchSnapshot();
+        expect(read("relative-paths/assets/relative-paths.css")).toMatchSnapshot();
     });
 
     it("should avoid generating empty CSS", async () => {
@@ -121,12 +121,12 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : `${output}/no-css.js`,
+            file : `${output}/no-css/no-css.js`,
         });
 
-        expect(exists("assets/no-css.css")).toBe(false);
+        expect(exists("no-css/assets/no-css.css")).toBe(false);
     });
-    
+
     it("should generate JSON", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
@@ -141,10 +141,10 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : `${output}/simple.js`,
+            file : `${output}/json/simple.js`,
         });
         
-        expect(read("assets/simple.json")).toMatchSnapshot();
+        expect(read("json/assets/simple.json")).toMatchSnapshot();
     });
 
     it("should provide named exports", async () => {
@@ -178,12 +178,12 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : `${output}/simple.js`,
+            file : `${output}/external-source-maps/simple.js`,
         });
 
         // Have to parse it into JSON so the propertyMatcher can exclude the file property
         // since it is a hash value and changes constantly
-        expect(JSON.parse(read("assets/simple.css.map"))).toMatchSnapshot({
+        expect(JSON.parse(read("external-source-maps/assets/simple.css.map"))).toMatchSnapshot({
             file : expect.any(String),
         });
     });
@@ -271,10 +271,10 @@ describe("/rollup.js", () => {
             format,
             sourcemap,
 
-            file : `${output}/no-maps.js`,
+            file : `${output}/no-maps/no-maps.js`,
         });
         
-        expect(read("assets/no-maps.css")).toMatchSnapshot();
+        expect(read("no-maps/assets/no-maps.css")).toMatchSnapshot();
     });
 
     it("should respect the CSS dependency tree", async () => {
@@ -283,13 +283,21 @@ describe("/rollup.js", () => {
             plugins : [
                 plugin({
                     namer,
+                    map,
                 }),
             ],
         });
 
-        const result = await bundle.generate({ format });
+        await bundle.write({
+            format,
+            assetFileNames,
+            sourcemap,
 
-        expect(result.code).toMatchSnapshot();
+            file : `${output}/dependencies/dependencies.js`,
+        });
+
+        expect(read("dependencies/dependencies.js")).toMatchSnapshot();
+        expect(read("dependencies/assets/dependencies.css")).toMatchSnapshot();
     });
 
     it("should accept an existing processor instance", async () => {
@@ -309,8 +317,6 @@ describe("/rollup.js", () => {
             plugins : [
                 plugin({
                     processor,
-
-                    common : "common.css",
                 }),
             ],
         });
@@ -320,11 +326,11 @@ describe("/rollup.js", () => {
             sourcemap,
             assetFileNames,
             
-            file : `${output}/existing-processor.js`,
+            file : `${output}/existing-processor/existing-processor.js`,
         });
 
-        expect(read("assets/existing-processor.css")).toMatchSnapshot();
-        expect(read("assets/common.css")).toMatchSnapshot();
+        expect(read("existing-processor/assets/existing-processor.css")).toMatchSnapshot();
+        expect(read("existing-processor/assets/common.css")).toMatchSnapshot();
     });
 
     describe("errors", () => {
@@ -396,7 +402,7 @@ describe("/rollup.js", () => {
             watcher = watch({
                 input  : require.resolve("./specimens/watch.js"),
                 output : {
-                    file : `${output}/watch-output.js`,
+                    file : `${output}/watch/watch-output.js`,
                     format,
                     assetFileNames,
                 },
@@ -415,13 +421,13 @@ describe("/rollup.js", () => {
             
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(read("assets/watch-output.css")).toMatchSnapshot();
+                    expect(read("watch/assets/watch-output.css")).toMatchSnapshot();
 
                     // continue watching
                     return;
                 }
 
-                expect(read("assets/watch-output.css")).toMatchSnapshot();
+                expect(read("watch/assets/watch-output.css")).toMatchSnapshot();
 
                 return done();
             }));
@@ -452,7 +458,7 @@ describe("/rollup.js", () => {
             watcher = watch({
                 input  : require.resolve("./output/watch.js"),
                 output : {
-                    file : `${output}/watch-output.js`,
+                    file : `${output}/watch-deps/watch-output.js`,
                     format,
                     assetFileNames,
                 },
@@ -472,13 +478,13 @@ describe("/rollup.js", () => {
             
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(read("assets/watch-output.css")).toMatchSnapshot();
+                    expect(read("watch-deps/assets/watch-output.css")).toMatchSnapshot();
 
                     // continue watching
                     return;
                 }
 
-                expect(read("assets/watch-output.css")).toMatchSnapshot();
+                expect(read("watch-deps/assets/watch-output.css")).toMatchSnapshot();
 
                 return done();
             }));
@@ -506,7 +512,7 @@ describe("/rollup.js", () => {
             watcher = watch({
                 input  : require.resolve("./output/watch.js"),
                 output : {
-                    file : `${output}/watch-output.js`,
+                    file : `${output}/watch-new/watch-output.js`,
                     format,
                     assetFileNames,
                 },
@@ -529,13 +535,13 @@ describe("/rollup.js", () => {
             
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(exists("assets/watch-output.css")).toBe(false);
+                    expect(exists("watch-new/assets/watch-output.css")).toBe(false);
 
                     // continue watching
                     return;
                 }
 
-                expect(read("assets/watch-output.css")).toMatchSnapshot();
+                expect(read("watch-new/assets/watch-output.css")).toMatchSnapshot();
 
                 return done();
             }));
@@ -559,8 +565,6 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         map,
-                        
-                        common : "common.css",
                     }),
                 ],
             });
@@ -571,11 +575,11 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
                 
-                dir : `${output}/`,
+                dir : `${output}/splitting`,
             });
 
-            expect(read("assets/chunk.css")).toMatchSnapshot();
-            expect(read("assets/dependencies.css")).toMatchSnapshot();
+            expect(read("splitting/assets/common.css")).toMatchSnapshot();
+            expect(read("splitting/assets/dependencies.css")).toMatchSnapshot();
         });
 
         it("should support manual chunks", async () => {
@@ -607,12 +611,12 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
 
-                dir : `${output}/`,
+                dir : `${output}/manual-chunks`,
             });
 
-            expect(read("assets/a.css")).toMatchSnapshot();
-            expect(read("assets/b.css")).toMatchSnapshot();
-            expect(read("assets/shared.css")).toMatchSnapshot();
+            expect(read("manual-chunks/assets/a.css")).toMatchSnapshot();
+            expect(read("manual-chunks/assets/b.css")).toMatchSnapshot();
+            expect(read("manual-chunks/assets/common.css")).toMatchSnapshot();
         });
 
         it("should support dynamic imports", async () => {
@@ -630,8 +634,6 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         map,
-
-                        common : "common.css",
                     }),
                 ],
             });
@@ -642,13 +644,13 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
 
-                dir : `${output}/`,
+                dir : `${output}/dynamic-imports`,
             });
 
-            expect(read("assets/a.css")).toMatchSnapshot();
-            expect(read("assets/b.css")).toMatchSnapshot();
-            expect(read("assets/c.css")).toMatchSnapshot();
-            expect(read("assets/common.css")).toMatchSnapshot();
+            expect(read("dynamic-imports/assets/a.css")).toMatchSnapshot();
+            expect(read("dynamic-imports/assets/b.css")).toMatchSnapshot();
+            expect(read("dynamic-imports/assets/c.css")).toMatchSnapshot();
+            expect(read("dynamic-imports/assets/common.css")).toMatchSnapshot();
         });
     });
 });

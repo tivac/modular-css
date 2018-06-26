@@ -115,7 +115,7 @@ exports[`/rollup.js should correctly pass to/from params for relative paths 1`] 
 "/* packages/rollup/test/specimens/relative-paths.css */
 .wooga {
     color: red;
-    background: url(\\"packages/rollup/test/specimens/folder/to.png\\");
+    background: url(\\"../../../specimens/folder/to.png\\");
 }
 "
 `;
@@ -153,7 +153,7 @@ Object {
   "mappings": "AAAA,+CAAC;AAED;IACI,WAAW;CACd",
   "names": Array [],
   "sources": Array [
-    "packages/rollup/test/specimens/simple.css",
+    "../../../specimens/simple.css",
   ],
   "sourcesContent": Array [
     "@value str: \\"string\\";
@@ -195,12 +195,25 @@ console.log(css);
 "
 `;
 
+exports[`/rollup.js should respect the CSS dependency tree 2`] = `
+"/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+/* packages/rollup/test/specimens/dependencies.css */
+.wooga {
+
+    background: blue;
+}
+"
+`;
+
 exports[`/rollup.js should warn & not export individual keys when they are not valid identifiers 1`] = `
 Object {
   "code": "PLUGIN_WARNING",
   "id": Any<String>,
   "message": "Invalid JS identifier \\"fooga-wooga\\", unable to export",
-  "plugin": "modular-css",
+  "plugin": "modular-css-rollup",
   "toString": [Function],
 }
 `;

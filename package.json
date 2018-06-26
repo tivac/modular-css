@@ -22,7 +22,7 @@
     "watch": "jest --watch"
   },
   "devDependencies": {
-    "@tivac/eslint-config": "^2.2.0",
+    "@tivac/eslint-config": "^2.2.1",
     "browserify": "^16.2.0",
     "cli-tester": "^2.0.0",
     "cssnano": "^4.0.0-rc.1",
@@ -34,28 +34,18 @@
     "from2-string": "^1.1.0",
     "husky": "^0.14.3",
     "jest": "^23.1.0",
+    "jest-cli": "^23.1.0",
     "lerna": "^3.0.0-beta.21",
     "lint-staged": "^7.0.4",
     "modular-css-core": "file:./packages/core",
     "pegjs": "^0.10.0",
-    "rollup": "^0.60.4",
+    "rollup": "^0.61.2",
     "rollup-plugin-svelte": "^4.1.0",
     "shelljs": "^0.8.1",
     "svelte": "^2.8.1",
     "test-utils": "file:./packages/test-utils",
     "watchify": "^3.9.0",
     "webpack": "^4.12.1"
-  },
-  "jest": {
-    "coveragePathIgnorePatterns": [
-      "node_modules",
-      "parsers",
-      "test-utils"
-    ],
-    "watchPathIgnorePatterns": [
-      "test/output",
-      "test/specimens"
-    ]
   },
   "lint-staged": {
     "*.js": [
