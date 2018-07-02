@@ -299,6 +299,29 @@ describe("/rollup.js", () => {
         expect(read("dependencies/dependencies.js")).toMatchSnapshot();
         expect(read("dependencies/assets/dependencies.css")).toMatchSnapshot();
     });
+    
+    it("should exclude CSS files that were removed by treeshaking", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/file-treeshaking/a.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    map,
+                }),
+            ],
+        });
+
+        await bundle.write({
+            format,
+            assetFileNames,
+            sourcemap,
+
+            file : `${output}/file-treeshaking/file-treeshaking.js`,
+        });
+
+        expect(read("file-treeshaking/file-treeshaking.js")).toMatchSnapshot();
+        expect(read("file-treeshaking/assets/file-treeshaking.css")).toMatchSnapshot();
+    });
 
     it("should accept an existing processor instance", async () => {
         const processor = new Processor({

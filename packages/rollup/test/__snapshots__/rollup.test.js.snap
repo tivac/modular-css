@@ -120,6 +120,23 @@ exports[`/rollup.js should correctly pass to/from params for relative paths 1`] 
 "
 `;
 
+exports[`/rollup.js should exclude CSS files that were removed by treeshaking 1`] = `
+"var css = {
+    \\"a\\": \\"a\\"
+};
+
+console.log(css);
+"
+`;
+
+exports[`/rollup.js should exclude CSS files that were removed by treeshaking 2`] = `
+"/* packages/rollup/test/specimens/file-treeshaking/a.css */
+.a { color: red; }
+/* packages/rollup/test/specimens/file-treeshaking/b.css */
+.b { color: blue; }
+"
+`;
+
 exports[`/rollup.js should generate CSS 1`] = `
 "/* packages/rollup/test/specimens/simple.css */
 .fooga {
