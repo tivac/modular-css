@@ -46,9 +46,7 @@ module.exports = function(opts) {
             // If the file is being re-processed we need to remove it to
             // avoid cache staleness issues
             if(id in processor.files) {
-                processor.dependencies(id)
-                    .concat(id)
-                    .forEach((file) => processor.remove(file));
+                processor.remove(id);
             }
 
             return processor.string(id, code).then((result) => {
