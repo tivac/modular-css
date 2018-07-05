@@ -34,6 +34,8 @@ module.exports = function(opts) {
     const filter = utils.createFilter(options.include, options.exclude);
         
     const processor = options.processor || new Processor(options);
+
+    let runs = 0;
     
     return {
         name : "modular-css-rollup",
@@ -42,13 +44,20 @@ module.exports = function(opts) {
             if(!filter(id)) {
                 return null;
             }
-
+            
             // If the file is being re-processed we need to remove it to
             // avoid cache staleness issues
             if(id in processor.files) {
-                processor.dependencies(id)
-                    .concat(id)
-                    .forEach((file) => processor.remove(file));
+                let files = [ id ];
+                
+                // First time build should only remove the file and any files that depend on it
+                // but watchs update need to clear out the file, any files that depend on it,
+                // AND any files it depends on
+                if(runs) {
+                    files = processor.dependencies(id).concat(files);
+                }
+
+                files.forEach((file) => processor.remove(file));
             }
 
             return processor.string(id, code).then((result) => {
@@ -78,6 +87,11 @@ module.exports = function(opts) {
                     dependencies,
                 };
             });
+        },
+
+        // Track # of runs since remove functionality needs to change
+        buildEnd() {
+            runs++;
         },
 
         async generateBundle(outputOptions, bundles) {

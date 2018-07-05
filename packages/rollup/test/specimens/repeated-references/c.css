@@ -1,0 +1,7 @@
+.c {
+    color: cadetblue;
+}
+
+.other {
+    composes: d from "./d.css";
+}
