@@ -300,29 +300,6 @@ describe("/rollup.js", () => {
         expect(read("dependencies/assets/dependencies.css")).toMatchSnapshot();
     });
     
-    it("should exclude CSS files that were removed by treeshaking", async () => {
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/file-treeshaking/a.js"),
-            plugins : [
-                plugin({
-                    namer,
-                    map,
-                }),
-            ],
-        });
-
-        await bundle.write({
-            format,
-            assetFileNames,
-            sourcemap,
-
-            file : `${output}/file-treeshaking/file-treeshaking.js`,
-        });
-
-        expect(read("file-treeshaking/file-treeshaking.js")).toMatchSnapshot();
-        expect(read("file-treeshaking/assets/file-treeshaking.css")).toMatchSnapshot();
-    });
-
     it("should accept an existing processor instance", async () => {
         const processor = new Processor({
             namer,
@@ -354,6 +331,36 @@ describe("/rollup.js", () => {
 
         expect(read("existing-processor/assets/existing-processor.css")).toMatchSnapshot();
         expect(read("existing-processor/assets/common.css")).toMatchSnapshot();
+    });
+
+    it("shouldn't over-remove files from an existing processor instance", async () => {
+        const processor = new Processor({
+            namer,
+            map,
+        });
+
+        await processor.file(require.resolve("./specimens/repeated-references/b.css"));
+        
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/repeated-references/a.js"),
+            plugins : [
+                plugin({
+                    processor,
+                }),
+            ],
+        });
+
+        await bundle.write({
+            format,
+            sourcemap,
+            assetFileNames,
+            
+            file : `${output}/repeated-references/repeated-references.js`,
+        });
+
+        expect(read("repeated-references/repeated-references.js")).toMatchSnapshot();
+        expect(read("repeated-references/assets/repeated-references.css")).toMatchSnapshot();
+        expect(read("repeated-references/assets/common.css")).toMatchSnapshot();
     });
 
     describe("errors", () => {
