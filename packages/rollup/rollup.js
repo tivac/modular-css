@@ -47,16 +47,9 @@ module.exports = function(opts) {
             
             // If the file is being re-processed we need to remove it to
             // avoid cache staleness issues
-            if(id in processor.files) {
-                let files = [ id ];
+            if(runs && (id in processor.files)) {
+                const files = processor.dependencies(id).concat(id);
                 
-                // First time build should only remove the file and any files that depend on it
-                // but watchs update need to clear out the file, any files that depend on it,
-                // AND any files it depends on
-                if(runs) {
-                    files = processor.dependencies(id).concat(files);
-                }
-
                 files.forEach((file) => processor.remove(file));
             }
 
