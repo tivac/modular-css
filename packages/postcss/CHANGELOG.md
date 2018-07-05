@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="12.1.2"></a>
+## [12.1.2](https://github.com/tivac/modular-css/compare/v12.1.0...v12.1.2) (2018-07-05)
+
+**Note:** Version bump only for package postcss-modular-css
+
+
+
+
+
+<a name="12.1.1"></a>
+## [12.1.1](https://github.com/tivac/modular-css/compare/v12.1.0...v12.1.1) (2018-07-05)
+
+**Note:** Version bump only for package postcss-modular-css
+
+
+
+
+
 <a name="12.1.0"></a>
 # [12.1.0](https://github.com/tivac/modular-css/compare/v12.0.2...v12.1.0) (2018-06-26)
 
