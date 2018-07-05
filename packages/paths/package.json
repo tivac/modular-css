@@ -1,6 +1,6 @@
 {
   "name": "modular-css-paths",
-  "version": "12.1.2",
+  "version": "12.1.3",
   "description": "Custom file resolver supporting multiple paths for modular-css",
   "main": "./paths.js",
   "repository": "tivac/modular-css",
