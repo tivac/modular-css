@@ -72,24 +72,51 @@ describe("/svelte.js", () => {
         expect(output.css).toMatchSnapshot();
     });
 
-    it("should ignore invalid {css.<key>}", async () => {
+    it.each`
+        title         | inline   | strict   | specimen
+        ${"<script>"} | ${true}  | ${true}  | ${"invalid-inline-script.html"}
+        ${"template"} | ${true}  | ${true}  | ${"invalid-inline-template.html"}
+        ${"<script>"} | ${true}  | ${false} | ${"invalid-inline-script.html"}
+        ${"template"} | ${true}  | ${false} | ${"invalid-inline-template.html"}
+        ${"<script>"} | ${false} | ${false} | ${"invalid-external-script.html"}
+        ${"template"} | ${false} | ${false} | ${"invalid-external-template.html"}
+        ${"<script>"} | ${false} | ${true}  | ${"invalid-external-script.html"}
+        ${"template"} | ${false} | ${true}  | ${"invalid-external-template.html"}
+    `("should handle invalid references in $title (inline: $inline, strict: $strict)", async ({ strict, specimen }) => {
+        const spy = jest.spyOn(global.console, "warn");
+
+        spy.mockImplementation(() => { /* NO-OP */ });
+        
+        const filename = require.resolve(`./specimens/${specimen}`);
+
         const { preprocess } = plugin({
             namer,
+            strict,
         });
+        
+        if(strict) {
+            await expect(
+                svelte.preprocess(
+                    fs.readFileSync(filename, "utf8"),
+                    Object.assign({}, preprocess, { filename })
+                )
+            ).rejects.toThrowErrorMatchingSnapshot();
+
+            return;
+        }
 
         const processed = await svelte.preprocess(
-            dedent(`
-                <h1 class="{css.nope}">Hello</h1>
-                <h2 class="{css.yup}">World</h2>
-                <style>.yup { color: red; }</style>
-            `),
-            Object.assign({}, preprocess, { filename : require.resolve("./specimens/style.html") })
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
         );
         
+        expect(spy).toHaveBeenCalled();
+        expect(spy.mock.calls).toMatchSnapshot();
+
         expect(processed.toString()).toMatchSnapshot();
     });
 
-    it("should throw on both <style> and <link> in one file", () => {
+    it("should throw on both <style> and <link> in one file", async () => {
         const { preprocess } = plugin({
             css : "./packages/svelte/test/output/svelte.css",
             namer,
@@ -97,12 +124,11 @@ describe("/svelte.js", () => {
 
         const filename = require.resolve("./specimens/both.html");
 
-        return svelte.preprocess(
-            fs.readFileSync(filename, "utf8"),
-            Object.assign({}, preprocess, { filename })
-        )
-        .catch((error) =>
-            expect(error.message).toMatch("modular-css-svelte supports <style> OR <link>, but not both")
-        );
+        await expect(
+            svelte.preprocess(
+                fs.readFileSync(filename, "utf8"),
+                Object.assign({}, preprocess, { filename })
+            )
+        ).rejects.toThrowErrorMatchingSnapshot();
     });
 });

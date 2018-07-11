@@ -129,4 +129,10 @@ module.exports = {
 
 ## Options
 
+### `strict`
+
+If `true` whenever a missing replacement is found like `{css.doesnotexist}` an error will be throw aborting the file processing. Defaults to `false`.
+
+### Shared Options
+
 All options are passed to the underlying `Processor` instance, see [Options](https://github.com/tivac/modular-css/blob/master/docs/api.md#options).
