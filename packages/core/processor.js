@@ -160,37 +160,24 @@ Processor.prototype = {
     
     // Remove a file from the dependency graph
     remove(input) {
-        var order = this._graph.overallOrder(),
-            files, removed;
-        
         // Only want files actually in the array
-        files = (Array.isArray(input) ? input : [ input ])
+        const files = (Array.isArray(input) ? input : [ input ])
             .map(this._absolute)
             .filter((file) => this._graph.hasNode(file));
         
         if(!files.length) {
-            return [];
+            return files;
         }
 
-        // Remove everything that depends on files to be removed as well
-        // since it will also have to be recalculated
-        files = files.reduce((prev, curr) =>
-            prev.concat(
-                this._graph.dependantsOf(curr).concat(curr)
-            ),
-            []
-        )
-        .sort((a, b) => order.indexOf(a) - order.indexOf(b));
-        
-        removed = unique(files);
-        
-        removed.forEach((file) => {
+        files.forEach((file) => {
+            // console.log("Processor.remove", file);
+
             delete this._files[file];
 
             this._graph.removeNode(file);
         });
 
-        return removed;
+        return files;
     },
     
     // Get the dependency order for a file or the entire tree
@@ -315,6 +302,8 @@ Processor.prototype = {
         if(this._files[name]) {
             return Promise.resolve();
         }
+
+        // console.log("Processor._walk", name);
         
         this._graph.addNode(name);
 
