@@ -40,13 +40,13 @@ const { preprocess, processor } = require("modular-css-svelte")({
 
 const bundle = await rollup({
     input   : "./Component.html",
-    
+
     plugins : [
         require("rollup-plugin-svelte")({
             preprocess,
         }),
 
-        require("modular-css-rollup)({
+        require("modular-css-rollup")({
             processor,
 
             common : "common.css",
@@ -70,7 +70,7 @@ const { preprocess, processor } = require("modular-css-svelte")({
 
 module.exports = {
     input   : "./Component.html",
-    
+
     output  : {
         format : "es",
         file   : "./dist/bundle.js"
@@ -80,8 +80,8 @@ module.exports = {
         require("rollup-plugin-svelte")({
             preprocess,
         }),
-        
-        require("modular-css-rollup)({
+
+        require("modular-css-rollup")({
             processor,
 
             common : "common.css",
