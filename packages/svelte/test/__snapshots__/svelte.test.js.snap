@@ -205,6 +205,86 @@ exports[`/svelte.js should extract CSS from a <style> tag 2`] = `
 "
 `;
 
+exports[`/svelte.js should handle invalid references in "<script>" (inline: false, strict: false) 1`] = `
+Array [
+  Array [
+    "modular-css-svelte: Unable to find \\"css.nuhuh\\" in ./invalid.css",
+  ],
+]
+`;
+
+exports[`/svelte.js should handle invalid references in "<script>" (inline: false, strict: false) 2`] = `
+"
+
+<h2 class=\\"yup\\">Yup</h2>
+
+<script>import css from \\"./invalid.css\\";
+            
+console.log(css.nuhuh);</script>
+"
+`;
+
+exports[`/svelte.js should handle invalid references in "<script>" (inline: false, strict: true) 1`] = `"modular-css-svelte: Unable to find \\"css.nuhuh\\" in ./invalid.css"`;
+
+exports[`/svelte.js should handle invalid references in "<script>" (inline: true, strict: false) 1`] = `
+Array [
+  Array [
+    "modular-css-svelte: Unable to find \\"css.nuhuh\\" in <style>",
+  ],
+]
+`;
+
+exports[`/svelte.js should handle invalid references in "<script>" (inline: true, strict: false) 2`] = `
+"<h2 class=\\"yup\\">Yup</h2>
+
+<style>/* replaced by modular-css */</style>
+
+<script>
+    console.log(css.nuhuh);
+</script>
+"
+`;
+
+exports[`/svelte.js should handle invalid references in "<script>" (inline: true, strict: true) 1`] = `"modular-css-svelte: Unable to find \\"css.nuhuh\\" in <style>"`;
+
+exports[`/svelte.js should handle invalid references in "template" (inline: false, strict: false) 1`] = `
+Array [
+  Array [
+    "modular-css-svelte: Unable to find \\"css.nope\\" in ./invalid.css",
+  ],
+]
+`;
+
+exports[`/svelte.js should handle invalid references in "template" (inline: false, strict: false) 2`] = `
+"
+
+<h1 class=\\"{css.nope}\\">Nope</h1>
+<h2 class=\\"yup\\">Yup</h2>
+<script>
+    import css from \\"./invalid.css\\";
+</script>"
+`;
+
+exports[`/svelte.js should handle invalid references in "template" (inline: false, strict: true) 1`] = `"modular-css-svelte: Unable to find \\"css.nope\\" in ./invalid.css"`;
+
+exports[`/svelte.js should handle invalid references in "template" (inline: true, strict: false) 1`] = `
+Array [
+  Array [
+    "modular-css-svelte: Unable to find \\"css.nope\\" in <style>",
+  ],
+]
+`;
+
+exports[`/svelte.js should handle invalid references in "template" (inline: true, strict: false) 2`] = `
+"<h1 class=\\"{css.nope}\\">Nope</h1>
+<h2 class=\\"yup\\">Yup</h2>
+
+<style>/* replaced by modular-css */</style>
+"
+`;
+
+exports[`/svelte.js should handle invalid references in "template" (inline: true, strict: true) 1`] = `"modular-css-svelte: Unable to find \\"css.nope\\" in <style>"`;
+
 exports[`/svelte.js should ignore files without <style> blocks 1`] = `
 "<h1>Hello</h1>
 <script>console.log(\\"output\\")</script>"
@@ -212,8 +292,4 @@ exports[`/svelte.js should ignore files without <style> blocks 1`] = `
 
 exports[`/svelte.js should ignore files without <style> blocks 2`] = `""`;
 
-exports[`/svelte.js should ignore invalid {css.<key>} 1`] = `
-"<h1 class=\\"{css.nope}\\">Hello</h1>
-<h2 class=\\"yup\\">World</h2>
-<style>/* replaced by modular-css */</style>"
-`;
+exports[`/svelte.js should throw on both <style> and <link> in one file 1`] = `"modular-css-svelte: use <style> OR <link>, but not both"`;
