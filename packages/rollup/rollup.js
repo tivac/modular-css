@@ -44,6 +44,9 @@ module.exports = function(opts) {
             if(!filter(id)) {
                 return null;
             }
+
+            // console.log("rollup.transform", id);
+            // console.log("processor.files", Object.keys(processor.files));
             
             // If the file is being re-processed we need to remove it to
             // avoid cache staleness issues
@@ -104,6 +107,10 @@ module.exports = function(opts) {
                     assetFileNames
                 );
             }
+
+            // console.log(bundles);
+            // console.log("processor.files");
+            // console.log(Object.keys(processor.files));
 
             // First pass is used to calculate JS usage of CSS dependencies
             Object.keys(bundles).forEach((entry) => {
