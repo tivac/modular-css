@@ -1,7 +1,5 @@
-/* eslint consistent-return: off */
+/* eslint max-statements: "off" */
 "use strict";
-
-const fs = require("fs");
 
 const { rollup } = require("rollup");
 
@@ -11,7 +9,6 @@ const shell  = require("shelljs");
 const read     = require("test-utils/read.js")(__dirname);
 const exists   = require("test-utils/exists.js")(__dirname);
 const namer    = require("test-utils/namer.js");
-const watching = require("test-utils/rollup-watching.js");
 
 const Processor = require("modular-css-core");
 
@@ -30,8 +27,6 @@ const output = "./packages/rollup/test/output";
 const sourcemap = false;
 
 describe("/rollup.js", () => {
-    /* eslint max-statements: "off" */
-    
     beforeAll(() => shell.rm("-rf", `${output}/*`));
     
     it("should be a function", () =>
@@ -434,169 +429,6 @@ describe("/rollup.js", () => {
                 file : `${output}/done-error.js`,
             }))
         );
-    });
-
-    describe("watch", () => {
-        const { watch } = require("rollup");
-        let watcher;
-
-        afterEach(() => watcher.close());
-        
-        it("should generate correct builds in watch mode when files change", (done) => {
-            // Create v1 of the file
-            fs.writeFileSync(
-                `${output}/watched.css`,
-                ".one { color: red; }"
-            );
-
-            // Start watching
-            watcher = watch({
-                input  : require.resolve("./specimens/watch.js"),
-                output : {
-                    file : `${output}/watch/watch-output.js`,
-                    format,
-                    assetFileNames,
-                },
-                plugins : [
-                    plugin({
-                        map,
-                    }),
-                ],
-            });
-
-            // Create v2 of the file after a bit
-            setTimeout(() => fs.writeFileSync(
-                `${output}/watched.css`,
-                ".two { color: blue; }"
-            ), 200);
-            
-            watcher.on("event", watching((builds) => {
-                if(builds === 1) {
-                    expect(read("watch/assets/watch-output.css")).toMatchSnapshot();
-
-                    // continue watching
-                    return;
-                }
-
-                expect(read("watch/assets/watch-output.css")).toMatchSnapshot();
-
-                return done();
-            }));
-        });
-
-        it("should correctly update files within the dependency graph in watch mode when files change", (done) => {
-            // Create v1 of the files
-            fs.writeFileSync(`${output}/one.css`, dedent(`
-                .one {
-                    color: red;
-                }
-            `));
-
-            fs.writeFileSync(`${output}/two.css`, dedent(`
-                .two {
-                    composes: one from "./one.css";
-                    
-                    color: blue;
-                }
-            `));
-            
-            fs.writeFileSync(`${output}/watch.js`, dedent(`
-                import css from "./two.css";
-                console.log(css);
-            `));
-
-            // Start watching
-            watcher = watch({
-                input  : require.resolve("./output/watch.js"),
-                output : {
-                    file : `${output}/watch-deps/watch-output.js`,
-                    format,
-                    assetFileNames,
-                },
-                plugins : [
-                    plugin({
-                        map,
-                    }),
-                ],
-            });
-
-            // Create v2 of the file after a bit
-            setTimeout(() => fs.writeFileSync(`${output}/one.css`, dedent(`
-                .one {
-                    color: green;
-                }
-            `)), 200);
-            
-            watcher.on("event", watching((builds) => {
-                if(builds === 1) {
-                    expect(read("watch-deps/assets/watch-output.css")).toMatchSnapshot();
-
-                    // continue watching
-                    return;
-                }
-
-                expect(read("watch-deps/assets/watch-output.css")).toMatchSnapshot();
-
-                return done();
-            }));
-        });
-
-        it("should correctly add new css files in watch mode when files change", (done) => {
-            // Create v1 of the files
-            fs.writeFileSync(
-                `${output}/one.css`,
-                dedent(`
-                    .one {
-                        color: red;
-                    }
-                `)
-            );
-
-            fs.writeFileSync(
-                `${output}/watch.js`,
-                dedent(`
-                    console.log("hello");
-                `)
-            );
-
-            // Start watching
-            watcher = watch({
-                input  : require.resolve("./output/watch.js"),
-                output : {
-                    file : `${output}/watch-new/watch-output.js`,
-                    format,
-                    assetFileNames,
-                },
-                plugins : [
-                    plugin({
-                        map,
-                    }),
-                ],
-            });
-
-            // Create v2 of the file after a bit
-            setTimeout(() => fs.writeFileSync(
-                `${output}/watch.js`,
-                dedent(`
-                    import css from "./one.css";
-
-                    console.log(css);
-                `)
-            ), 200);
-            
-            watcher.on("event", watching((builds) => {
-                if(builds === 1) {
-                    expect(exists("watch-new/assets/watch-output.css")).toBe(false);
-
-                    // continue watching
-                    return;
-                }
-
-                expect(read("watch-new/assets/watch-output.css")).toMatchSnapshot();
-
-                return done();
-            }));
-        });
     });
 
     describe("code splitting", () => {
