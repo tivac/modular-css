@@ -189,7 +189,7 @@ Processor.prototype = {
     },
     
     // Get the dependant files for a file
-    dependants(file) {
+    dependents(file) {
         if(!file) {
             throw new Error("Must provide a file to processor.dependants()");
         }

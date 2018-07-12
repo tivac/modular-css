@@ -147,14 +147,14 @@ describe("/processor.js", () => {
             );
         });
 
-        describe(".dependants()", () => {
-            it("should return the dependants of the specified file", async () => {
+        describe(".dependents()", () => {
+            it("should return the dependents of the specified file", async () => {
                 await processor.file(
                     "./packages/core/test/specimens/start.css"
                 );
 
                 expect(
-                    relative(processor.dependants(require.resolve("./specimens/local.css")))
+                    relative(processor.dependents(require.resolve("./specimens/local.css")))
                 )
                 .toMatchSnapshot();
             });
@@ -164,7 +164,7 @@ describe("/processor.js", () => {
                     "./packages/core/test/specimens/start.css"
                 );
                 
-                expect(() => processor.dependants()).toThrowErrorMatchingSnapshot();
+                expect(() => processor.dependents()).toThrowErrorMatchingSnapshot();
             });
         });
         
