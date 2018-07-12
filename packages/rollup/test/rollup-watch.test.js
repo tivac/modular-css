@@ -75,6 +75,78 @@ describe("/rollup.js", () => {
             }));
         });
 
+        it("should generate updated output for composes changes", (done) => {
+            // Create v1 of the files
+            write(`./watch/change-composes/watched.css`, dedent(`
+                .one {
+                    color: red;
+                }
+
+                .two {
+                    composes: one;
+                    background: blue;
+                }
+
+                .three {
+                    color: teal;
+                }
+            `));
+
+            write(`./watch/change-composes/watched.js`, dedent(`
+                import css from "./watched.css";
+                console.log(css);
+            `));
+
+            // Start watching
+            watcher = watch({
+                input  : prefix(`./output/watch/change-composes/watched.js`),
+                output : {
+                    file : prefix(`./output/watch/change-composes/watch-output.js`),
+                    format,
+                    assetFileNames,
+                },
+                plugins : [
+                    plugin({
+                        map,
+                    }),
+                ],
+            });
+
+            // Create v2 of the file after a bit
+            setTimeout(() => {
+                write(`./watch/change-composes/watched.css`, dedent(`
+                    .one {
+                        color: green;
+                    }
+
+                    .two {
+                        composes: one;
+                        background: blue;
+                    }
+
+                    .three {
+                        composes: one;
+                        color: teal;
+                    }
+                `));
+            }, 200);
+
+            watcher.on("event", watching((builds) => {
+                if(builds === 1) {
+                    expect(read("./watch/change-composes/assets/watch-output.css")).toMatchSnapshot();
+                    expect(read("./watch/change-composes/watch-output.js")).toMatchSnapshot();
+
+                    // continue watching
+                    return;
+                }
+
+                expect(read("./watch/change-composes/assets/watch-output.css")).toMatchSnapshot();
+                expect(read("./watch/change-composes/watch-output.js")).toMatchSnapshot();
+
+                return done();
+            }));
+        });
+
         it("should update when a dependency changes", (done) => {
             // Create v1 of the files
             write(`./watch/dep-graph/one.css`, dedent(`

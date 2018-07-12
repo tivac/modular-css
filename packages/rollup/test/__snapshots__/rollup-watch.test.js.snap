@@ -14,6 +14,58 @@ exports[`/rollup.js watch mode should generate updated output 2`] = `
 }"
 `;
 
+exports[`/rollup.js watch mode should generate updated output for composes changes 1`] = `
+"/* packages/rollup/test/output/watch/change-composes/watched.css */
+.mc0f3c579a_one {
+    color: red;
+}
+
+.mc0f3c579a_two {
+    background: blue;
+}
+
+.mc0f3c579a_three {
+    color: teal;
+}"
+`;
+
+exports[`/rollup.js watch mode should generate updated output for composes changes 2`] = `
+"var css = {
+    \\"one\\": \\"mc0f3c579a_one\\",
+    \\"two\\": \\"mc0f3c579a_one mc0f3c579a_two\\",
+    \\"three\\": \\"mc0f3c579a_three\\"
+};
+
+console.log(css);
+"
+`;
+
+exports[`/rollup.js watch mode should generate updated output for composes changes 3`] = `
+"/* packages/rollup/test/output/watch/change-composes/watched.css */
+.mc0f3c579a_one {
+    color: green;
+}
+
+.mc0f3c579a_two {
+    background: blue;
+}
+
+.mc0f3c579a_three {
+    color: teal;
+}"
+`;
+
+exports[`/rollup.js watch mode should generate updated output for composes changes 4`] = `
+"var css = {
+    \\"one\\": \\"mc0f3c579a_one\\",
+    \\"two\\": \\"mc0f3c579a_one mc0f3c579a_two\\",
+    \\"three\\": \\"mc0f3c579a_one mc0f3c579a_three\\"
+};
+
+console.log(css);
+"
+`;
+
 exports[`/rollup.js watch mode should update when a dependency changes 1`] = `
 "/* packages/rollup/test/output/watch/dep-graph/two.css */
 .mc6f857f1c_two {
