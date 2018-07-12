@@ -1,12 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/rollup.js watch mode should correctly add new css files 1`] = `
-"/* packages/rollup/test/output/watch/new-file/one.css */
-.mc54f12712_one {
-    color: red;
-}"
-`;
-
 exports[`/rollup.js watch mode should correctly remove & re-add dependencies 1`] = `
 "/* packages/rollup/test/output/watch/watch-changed/two.css */
 .mcd26cbf72_two {
@@ -29,30 +22,6 @@ exports[`/rollup.js watch mode should correctly remove & re-add dependencies 2`]
 }"
 `;
 
-exports[`/rollup.js watch mode should correctly update files within the dependency graph 1`] = `
-"/* packages/rollup/test/output/watch/dep-graph/one.css */
-.mca3136a1b_one {
-    color: red;
-}
-/* packages/rollup/test/output/watch/dep-graph/two.css */
-.mc6f857f1c_two {
-    
-    color: blue;
-}"
-`;
-
-exports[`/rollup.js watch mode should correctly update files within the dependency graph 2`] = `
-"/* packages/rollup/test/output/watch/dep-graph/one.css */
-.mca3136a1b_one {
-    color: green;
-}
-/* packages/rollup/test/output/watch/dep-graph/two.css */
-.mc6f857f1c_two {
-    
-    color: blue;
-}"
-`;
-
 exports[`/rollup.js watch mode should generate updated output 1`] = `
 "/* packages/rollup/test/output/watch/change/watched.css */
 .mc5f9237d4_one {
@@ -64,5 +33,34 @@ exports[`/rollup.js watch mode should generate updated output 2`] = `
 "/* packages/rollup/test/output/watch/change/watched.css */
 .mc5f9237d4_two {
     color: blue;
+}"
+`;
+
+exports[`/rollup.js watch mode should update when a dependency changes 1`] = `
+"/* packages/rollup/test/output/watch/dep-graph/one.css */
+.mca3136a1b_one {
+    color: red;
+}
+/* packages/rollup/test/output/watch/dep-graph/two.css */
+.mc6f857f1c_two {
+    color: blue;
+}"
+`;
+
+exports[`/rollup.js watch mode should update when a dependency changes 2`] = `
+"/* packages/rollup/test/output/watch/dep-graph/one.css */
+.mca3136a1b_one {
+    color: green;
+}
+/* packages/rollup/test/output/watch/dep-graph/two.css */
+.mc6f857f1c_two {
+    color: blue;
+}"
+`;
+
+exports[`/rollup.js watch mode should update when adding new css files 1`] = `
+"/* packages/rollup/test/output/watch/new-file/one.css */
+.mc54f12712_one {
+    color: red;
 }"
 `;

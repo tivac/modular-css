@@ -75,7 +75,7 @@ describe("/rollup.js", () => {
             }));
         });
 
-        it("should correctly update files within the dependency graph", (done) => {
+        it("should update when a dependency changes", (done) => {
             // Create v1 of the files
             write(`./watch/dep-graph/one.css`, dedent(`
                 .one {
@@ -122,20 +122,18 @@ describe("/rollup.js", () => {
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
                     expect(read("./watch/dep-graph/assets/watch-output.css")).toMatchSnapshot();
-                    expect(read("./watch/dep-graph/assets/common.css")).toMatchSnapshot();
 
                     // continue watching
                     return;
                 }
 
                 expect(read("./watch/dep-graph/assets/watch-output.css")).toMatchSnapshot();
-                expect(read("./watch/dep-graph/assets/common.css")).toMatchSnapshot();
 
                 return done();
             }));
         });
 
-        it("should correctly add new css files", (done) => {
+        it("should update when adding new css files", (done) => {
             // Create v1 of the files
             write(`./watch/new-file/one.css`, dedent(`
                 .one {
