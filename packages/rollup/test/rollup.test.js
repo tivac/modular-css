@@ -96,10 +96,10 @@ describe("/rollup.js", () => {
 
         await bundle.write({
             format,
-            file : `${output}/assetFileNames/simple.js`,
+            file : prefix(`./output/assetFileNames/simple.js`),
         });
 
-        const [ css ] = shell.ls(`${output}/assetFileNames/assets`);
+        const [ css ] = shell.ls(prefix(`./output/assetFileNames/assets`));
 
         expect(read(`assetFileNames/assets/${css}`)).toMatchSnapshot();
     });
