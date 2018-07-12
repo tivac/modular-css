@@ -159,7 +159,13 @@ module.exports = function(browserify, opts) {
     // Watchify fires update events when files change, this tells the processor
     // to remove the changed files from its cache so they will be re-processed
     browserify.on("update", (files) => {
-        processor.remove(files);
+        files.forEach((file) => {
+            processor._graph.dependantsOf(file).forEach((dep) =>
+                processor.remove(dep)
+            );
+
+            processor.remove(file);
+        });
     });
     
     return browserify.on("bundle", (current) => {
