@@ -1,45 +1,46 @@
 "use strict";
 
-var fs = require("fs"),
-
-    from       = require("from2-string"),
-    shell      = require("shelljs"),
-    browserify = require("browserify"),
-    watchify   = require("watchify"),
-    dedent     = require("dedent"),
+const from = require("from2-string");
+const shell = require("shelljs");
+const browserify = require("browserify");
+const watchify  = require("watchify");
+const dedent = require("dedent");
     
-    read = require("test-utils/read.js")(__dirname),
+const read = require("test-utils/read.js")(__dirname);
+const write = require("test-utils/write.js")(__dirname);
 
-    bundle = require("./lib/bundle.js"),
-    plugin = require("../browserify.js");
-
-function write(txt) {
-    fs.writeFileSync(
-        "./packages/browserify/test/specimens/issues/58/other.css",
-        dedent(txt),
-        "utf8"
-    );
-}
+const bundle = require("./lib/bundle.js");
+const plugin = require("../browserify.js");
 
 describe("/browserify.js", () => {
     describe("/issues", () => {
         describe("/58", () => {
-            afterAll(() => {
-                shell.rm("-rf", "./packages/browserify/test/output/issues");
-                shell.rm("./packages/browserify/test/specimens/issues/58/other.css");
-            });
+            afterAll(() => shell.rm("-rf", "./packages/browserify/test/output/issues"));
             
             it("should update when CSS dependencies change", (done) => {
                 var build = browserify();
                 
-                write(`
+                write("./issues/58/issue.css", dedent(`
+                    .issue1 {
+                        composes: other1 from "./other.css";
+                        color: teal;
+                    }
+
+                    .issue2 {
+                        composes: issue1;
+                        composes: other3 from "./other.css";
+                        color: aqua;
+                    }
+                `));
+
+                write("./issues/58/other.css", dedent(`
                     .other1 { color: red; }
                     .other2 { color: navy; }
                     .other3 { color: blue; }
-                `);
+                `));
                 
                 build.add(
-                    from("require('./packages/browserify/test/specimens/issues/58/issue.css');")
+                    from("require('./packages/browserify/test/output/issues/58/issue.css');")
                 );
 
                 build.plugin(watchify);
@@ -60,11 +61,11 @@ describe("/browserify.js", () => {
                 bundle(build).then((out) => {
                     expect(out).toMatchSnapshot();
                     
-                    write(`
+                    write("./issues/58/other.css", dedent(`
                         .other1 { color: green; }
                         .other2 { color: yellow; }
                         .other3 { composes: other2; background: white; }
-                    `);
+                    `));
                 });
             });
         });

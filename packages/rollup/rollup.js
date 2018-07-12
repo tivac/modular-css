@@ -1,3 +1,4 @@
+/* eslint max-statements: [ 1, 20 ] */
 "use strict";
 
 const path = require("path");
@@ -40,46 +41,70 @@ module.exports = function(opts) {
     return {
         name : "modular-css-rollup",
 
-        transform(code, id) {
+        async transform(code, id) {
             if(!filter(id)) {
                 return null;
             }
-            
-            // If the file is being re-processed we need to remove it to
-            // avoid cache staleness issues
+
+            // Is this file being processed on a watch update?
             if(runs && (id in processor.files)) {
-                const files = processor.dependencies(id).concat(id);
-                
+                // Watching will call transform w/ the same entry file, even if it
+                // was one of its dependencies that changed. We need to fork the logic
+                // here to handle that case.
+                let files;
+
+                if(processor.files[id].text === code) {
+                    // Dependency changed, remove all the dependencies and all their individual
+                    // dependents and then re-process them
+                    files = processor.dependencies(id);
+
+                    files.forEach((file) => {
+                        const dependents = processor.dependents(file);
+
+                        files.push(...dependents);
+                    });
+                } else {
+                    // Entry file changed, remove all its dependents and
+                    // then re-process them
+                    files = processor.dependents(id);
+                    
+                    processor.remove(id);
+                }
+                                    
                 files.forEach((file) => processor.remove(file));
+                    
+                await Promise.all(files.map((dep) =>
+                    processor.file(dep)
+                ));
+            }
+            
+            const result = await processor.string(id, code);
+            
+            const exported = output.join(result.exports);
+            
+            const out = [
+                `export default ${JSON.stringify(exported, null, 4)};`,
+            ];
+
+            if(options.namedExports) {
+                Object.keys(exported).forEach((ident) => {
+                    if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
+                        this.warn(`Invalid JS identifier "${ident}", unable to export`);
+                        
+                        return;
+                    }
+                    
+                    out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
+                });
             }
 
-            return processor.string(id, code).then((result) => {
-                const exported = output.join(result.exports);
+            const dependencies = processor.dependencies(id);
                 
-                const out = [
-                    `export default ${JSON.stringify(exported, null, 4)};`,
-                ];
-
-                if(options.namedExports) {
-                    Object.keys(exported).forEach((ident) => {
-                        if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
-                            this.warn(`Invalid JS identifier "${ident}", unable to export`);
-                            
-                            return;
-                        }
-                        
-                        out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
-                    });
-                }
-
-                const dependencies = processor.dependencies(id);
-                    
-                return {
-                    code : out.join("\n"),
-                    map,
-                    dependencies,
-                };
-            });
+            return {
+                code : out.join("\n"),
+                map,
+                dependencies,
+            };
         },
 
         // Track # of runs since remove functionality needs to change
@@ -123,8 +148,11 @@ module.exports = function(opts) {
 
                 // Get dependency chains for each file
                 css.forEach((start) => {
-                    const used = processor.dependencies(start).concat(start);
-                    
+                    const used = [
+                        ...processor.dependencies(start),
+                        start,
+                    ];
+
                     file.css = file.css.concat(used);
 
                     used.forEach((dep) => {
@@ -165,7 +193,7 @@ module.exports = function(opts) {
                     css   : [ ...common.keys() ],
                 });
             }
-            
+
             await Promise.all(
                 files
                 .filter(({ css }) => css.length)

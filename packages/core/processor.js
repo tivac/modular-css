@@ -1,20 +1,19 @@
 "use strict";
 
-var fs   = require("fs"),
-    path = require("path"),
+const fs   = require("fs");
+const path = require("path");
     
-    Graph     = require("dependency-graph").DepGraph,
-    postcss   = require("postcss"),
-    slug      = require("unique-slug"),
-    series    = require("p-each-series"),
-    unique    = require("lodash.uniq"),
-    mapValues = require("lodash.mapvalues"),
+const Graph     = require("dependency-graph").DepGraph;
+const postcss   = require("postcss");
+const slug      = require("unique-slug");
+const series    = require("p-each-series");
+const mapValues = require("lodash.mapvalues");
 
-    output   = require("./lib/output.js"),
-    message  = require("./lib/message.js"),
-    relative = require("./lib/relative.js"),
-    tiered   = require("./lib/graph-tiers.js"),
-    resolve  = require("./lib/resolve.js");
+const output   = require("./lib/output.js");
+const message  = require("./lib/message.js");
+const relative = require("./lib/relative.js");
+const tiered   = require("./lib/graph-tiers.js");
+const resolve  = require("./lib/resolve.js");
 
 function params(processor, args) {
     return Object.assign(
@@ -160,37 +159,22 @@ Processor.prototype = {
     
     // Remove a file from the dependency graph
     remove(input) {
-        var order = this._graph.overallOrder(),
-            files, removed;
-        
         // Only want files actually in the array
-        files = (Array.isArray(input) ? input : [ input ])
+        const files = (Array.isArray(input) ? input : [ input ])
             .map(this._absolute)
             .filter((file) => this._graph.hasNode(file));
         
         if(!files.length) {
-            return [];
+            return files;
         }
 
-        // Remove everything that depends on files to be removed as well
-        // since it will also have to be recalculated
-        files = files.reduce((prev, curr) =>
-            prev.concat(
-                this._graph.dependantsOf(curr).concat(curr)
-            ),
-            []
-        )
-        .sort((a, b) => order.indexOf(a) - order.indexOf(b));
-        
-        removed = unique(files);
-        
-        removed.forEach((file) => {
+        files.forEach((file) => {
             delete this._files[file];
 
             this._graph.removeNode(file);
         });
 
-        return removed;
+        return files;
     },
     
     // Get the dependency order for a file or the entire tree
@@ -202,6 +186,17 @@ Processor.prototype = {
         }
 
         return this._graph.overallOrder();
+    },
+    
+    // Get the dependant files for a file
+    dependents(file) {
+        if(!file) {
+            throw new Error("Must provide a file to processor.dependants()");
+        }
+        
+        return this._graph.dependantsOf(
+            file
+        );
     },
     
     // Get the ultimate output for specific files or the entire tree
@@ -315,7 +310,7 @@ Processor.prototype = {
         if(this._files[name]) {
             return Promise.resolve();
         }
-        
+
         this._graph.addNode(name);
 
         this._files[name] = {

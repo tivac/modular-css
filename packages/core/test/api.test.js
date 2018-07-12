@@ -105,16 +105,6 @@ describe("/processor.js", () => {
                 })
             );
             
-            it("should remove dependant files", () =>
-                processor.file("./packages/core/test/specimens/start.css")
-                .then(() => {
-                    processor.remove([
-                        "./packages/core/test/specimens/folder/folder.css",
-                    ]);
-                    expect(processor.dependencies()).toEqual([]);
-                })
-            );
-            
             it("should return an array of removed files", () =>
                 Promise.all([
                     processor.string("./a.css", ".a { }"),
@@ -155,6 +145,27 @@ describe("/processor.js", () => {
                     expect(relative(processor.dependencies())).toMatchSnapshot()
                 )
             );
+        });
+
+        describe(".dependents()", () => {
+            it("should return the dependents of the specified file", async () => {
+                await processor.file(
+                    "./packages/core/test/specimens/start.css"
+                );
+
+                expect(
+                    relative(processor.dependents(require.resolve("./specimens/local.css")))
+                )
+                .toMatchSnapshot();
+            });
+            
+            it("should throw if no file is passed", async () => {
+                await processor.file(
+                    "./packages/core/test/specimens/start.css"
+                );
+                
+                expect(() => processor.dependents()).toThrowErrorMatchingSnapshot();
+            });
         });
         
         describe(".output()", () => {

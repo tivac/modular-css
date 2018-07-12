@@ -115,7 +115,7 @@ exports[`/rollup.js should correctly pass to/from params for relative paths 1`] 
 "/* packages/rollup/test/specimens/relative-paths.css */
 .wooga {
     color: red;
-    background: url(\\"../../../specimens/folder/to.png\\");
+    background: url(\\"../../../../specimens/folder/to.png\\");
 }
 "
 `;
@@ -153,7 +153,7 @@ Object {
   "mappings": "AAAA,+CAAC;AAED;IACI,WAAW;CACd",
   "names": Array [],
   "sources": Array [
-    "../../../specimens/simple.css",
+    "../../../../specimens/simple.css",
   ],
   "sourcesContent": Array [
     "@value str: \\"string\\";
@@ -292,53 +292,4 @@ exports[`/rollup.js shouldn't over-remove files from an existing processor insta
     color: cadetblue;
 }
 "
-`;
-
-exports[`/rollup.js watch should correctly add new css files in watch mode when files change 1`] = `
-"/* packages/rollup/test/output/one.css */
-.mc19ef5610_one {
-    color: red;
-}"
-`;
-
-exports[`/rollup.js watch should correctly update files within the dependency graph in watch mode when files change 1`] = `
-"/* packages/rollup/test/output/one.css */
-.mc19ef5610_one {
-    color: red;
-}
-/* packages/rollup/test/output/two.css */
-.mc32dbcb4b_two {
-    
-    color: blue;
-}"
-`;
-
-exports[`/rollup.js watch should correctly update files within the dependency graph in watch mode when files change 2`] = `
-"/* packages/rollup/test/output/one.css */
-.mc19ef5610_one {
-    color: green;
-}
-/* packages/rollup/test/output/two.css */
-.mc32dbcb4b_two {
-    
-    color: blue;
-}"
-`;
-
-exports[`/rollup.js watch should generate correct builds in watch mode when files change 1`] = `
-"/* packages/rollup/test/output/watched.css */
-.mc580619a9_one { color: red; }
-/* packages/rollup/test/specimens/simple.css */
-.mc12d71625_fooga {
-    color: red;
-}"
-`;
-
-exports[`/rollup.js watch should generate correct builds in watch mode when files change 2`] = `
-"/* packages/rollup/test/output/watched.css */
-.mc580619a9_two { color: blue; }
-/* packages/rollup/test/specimens/simple.css */
-.mc12d71625_fooga {
-    color: red;
-}"
 `;
