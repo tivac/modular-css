@@ -1,17 +1,13 @@
 /* eslint consistent-return: off */
 "use strict";
 
-const fs = require("fs");
-const path = require("path");
-
 const dedent = require("dedent");
-const shell  = require("shelljs");
+const shell = require("shelljs");
 
-const output = path.resolve(__dirname, "./output/watch");
-
-const read     = require("test-utils/read.js")(output);
-const write    = require("test-utils/write.js")(output);
-const exists   = require("test-utils/exists.js")(__dirname);
+const read = require("test-utils/read.js")(__dirname);
+const write = require("test-utils/write.js")(__dirname);
+const exists = require("test-utils/exists.js")(__dirname);
+const prefix = require("test-utils/prefix.js")(__dirname);
 const watching = require("test-utils/rollup-watching.js");
 
 const plugin = require("../rollup.js");
@@ -25,27 +21,27 @@ describe("/rollup.js", () => {
         const { watch } = require("rollup");
         let watcher;
         
-        beforeAll(() => shell.rm("-rf", `${output}/*`));
+        beforeAll(() => shell.rm("-rf", prefix(`./output/watch/*`)));
         afterEach(() => watcher.close());
         
         it("should generate output", (done) => {
             // Create v1 of the files
-            write(`/change/watched.css`, dedent(`
+            write(`./watch/change/watched.css`, dedent(`
                 .one {
                     color: red;
                 }
             `));
 
-            write(`/change/watched.js`, dedent(`
+            write(`./watch/change/watched.js`, dedent(`
                 import css from "./watched.css";
                 console.log(css);
             `));
 
             // Start watching
             watcher = watch({
-                input  : `${output}/change/watched.js`,
+                input  : prefix(`./output/watch/change/watched.js`),
                 output : {
-                    file : `${output}/change/watch-output.js`,
+                    file : prefix(`./output/watch/change/watch-output.js`),
                     format,
                     assetFileNames,
                 },
@@ -58,7 +54,7 @@ describe("/rollup.js", () => {
 
             // Create v2 of the file after a bit
             setTimeout(() => {
-                write(`./change/watched.css`, dedent(`
+                write(`./watch/change/watched.css`, dedent(`
                     .two {
                         color: blue;
                     }
@@ -67,13 +63,13 @@ describe("/rollup.js", () => {
             
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(read("./change/assets/watch-output.css")).toMatchSnapshot();
+                    expect(read("./watch/change/assets/watch-output.css")).toMatchSnapshot();
 
                     // continue watching
                     return;
                 }
 
-                expect(read("./change/assets/watch-output.css")).toMatchSnapshot();
+                expect(read("./watch/change/assets/watch-output.css")).toMatchSnapshot();
 
                 return done();
             }));
@@ -81,13 +77,13 @@ describe("/rollup.js", () => {
 
         it("should correctly update files within the dependency graph", (done) => {
             // Create v1 of the files
-            write(`./dep-graph/one.css`, dedent(`
+            write(`./watch/dep-graph/one.css`, dedent(`
                 .one {
                     color: red;
                 }
             `));
 
-            write(`./dep-graph/two.css`, dedent(`
+            write(`./watch/dep-graph/two.css`, dedent(`
                 .two {
                     composes: one from "./one.css";
                     
@@ -95,16 +91,16 @@ describe("/rollup.js", () => {
                 }
             `));
             
-            write(`./dep-graph/watch.js`, dedent(`
+            write(`./watch/dep-graph/watch.js`, dedent(`
                 import css from "./two.css";
                 console.log(css);
             `));
 
             // Start watching
             watcher = watch({
-                input  : require.resolve(path.join(output, "./dep-graph/watch.js")),
+                input  : require.resolve(prefix("./output/watch/dep-graph/watch.js")),
                 output : {
-                    file : `${output}/dep-graph/watch-output.js`,
+                    file : prefix(`./output/watch/dep-graph/watch-output.js`),
                     format,
                     assetFileNames,
                 },
@@ -117,7 +113,7 @@ describe("/rollup.js", () => {
 
             // Create v2 of the file after a bit
             setTimeout(() => {
-                write(`./dep-graph/one.css`, dedent(`
+                write(`./watch/dep-graph/one.css`, dedent(`
                     .one {
                         color: green;
                     }
@@ -126,13 +122,13 @@ describe("/rollup.js", () => {
             
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(read("dep-graph/assets/watch-output.css")).toMatchSnapshot();
+                    expect(read("./watch/dep-graph/assets/watch-output.css")).toMatchSnapshot();
 
                     // continue watching
                     return;
                 }
 
-                expect(read("dep-graph/assets/watch-output.css")).toMatchSnapshot();
+                expect(read("./watch/dep-graph/assets/watch-output.css")).toMatchSnapshot();
 
                 return done();
             }));
@@ -140,21 +136,21 @@ describe("/rollup.js", () => {
 
         it("should correctly add new css files", (done) => {
             // Create v1 of the files
-            write(`./new-file/one.css`, dedent(`
+            write(`./watch/new-file/one.css`, dedent(`
                 .one {
                     color: red;
                 }
             `));
 
-            write(`./new-file/watch.js`, dedent(`
+            write(`./watch/new-file/watch.js`, dedent(`
                 console.log("hello");
             `));
 
             // Start watching
             watcher = watch({
-                input  : require.resolve(path.join(output, "./new-file/watch.js")),
+                input  : require.resolve(prefix("./output/watch/new-file/watch.js")),
                 output : {
-                    file : `${output}/new-file/watch-output.js`,
+                    file : prefix(`./output/watch/new-file/watch-output.js`),
                     format,
                     assetFileNames,
                 },
@@ -166,7 +162,7 @@ describe("/rollup.js", () => {
             });
 
             // Create v2 of the file after a bit
-            setTimeout(() => write(`./new-file/watch.js`, dedent(`
+            setTimeout(() => write(`./watch/new-file/watch.js`, dedent(`
                 import css from "./one.css";
 
                 console.log(css);
@@ -180,7 +176,7 @@ describe("/rollup.js", () => {
                     return;
                 }
 
-                expect(read("./new-file/assets/watch-output.css")).toMatchSnapshot();
+                expect(read("./watch/new-file/assets/watch-output.css")).toMatchSnapshot();
 
                 return done();
             }));
@@ -188,29 +184,29 @@ describe("/rollup.js", () => {
 
         it("should correctly remove & re-add dependencies", (done) => {
             // Create v1 of the files
-            write(`./watch-changed/one.css`, dedent(`
+            write(`./watch/watch-changed/one.css`, dedent(`
                 .one {
                     composes: two from "./two.css";
                     color: red;
                 }
             `));
             
-            write(`./watch-changed/two.css`, dedent(`
+            write(`./watch/watch-changed/two.css`, dedent(`
                 .two {
                     color: red;
                 }
             `));
 
-            write(`./watch-changed/watch.js`, dedent(`
+            write(`./watch/watch-changed/watch.js`, dedent(`
                 import css from "./one.css";
                 console.log("hello");
             `));
 
             // Start watching
             watcher = watch({
-                input  : require.resolve(path.join(output, "./watch-changed/watch.js")),
+                input  : require.resolve(prefix("./output/watch/watch-changed/watch.js")),
                 output : {
-                    file : `${output}/watch-changed/watch-output.js`,
+                    file : prefix(`./output/watch/watch-changed/watch-output.js`),
                     format,
                     assetFileNames,
                 },
@@ -222,7 +218,7 @@ describe("/rollup.js", () => {
             });
 
             // Create v2 of the file after a bit
-            setTimeout(() => write(`./watch-changed/two.css`, dedent(`
+            setTimeout(() => write(`./watch/watch-changed/two.css`, dedent(`
                 .two {
                     color: blue;
                 }
@@ -230,13 +226,13 @@ describe("/rollup.js", () => {
             
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(read("./watch-changed/assets/watch-output.css")).toMatchSnapshot();
+                    expect(read("./watch/watch-changed/assets/watch-output.css")).toMatchSnapshot();
 
                     // continue watching
                     return;
                 }
 
-                expect(read("./watch-changed/assets/watch-output.css")).toMatchSnapshot();
+                expect(read("./watch/watch-changed/assets/watch-output.css")).toMatchSnapshot();
 
                 return done();
             }));
