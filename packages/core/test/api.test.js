@@ -105,16 +105,6 @@ describe("/processor.js", () => {
                 })
             );
             
-            it("should remove dependant files", () =>
-                processor.file("./packages/core/test/specimens/start.css")
-                .then(() => {
-                    processor.remove([
-                        "./packages/core/test/specimens/folder/folder.css",
-                    ]);
-                    expect(processor.dependencies()).toEqual([]);
-                })
-            );
-            
             it("should return an array of removed files", () =>
                 Promise.all([
                     processor.string("./a.css", ".a { }"),
