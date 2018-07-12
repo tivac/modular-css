@@ -48,7 +48,11 @@ module.exports = function(opts) {
             // If the file is being re-processed we need to remove it to
             // avoid cache staleness issues
             if(runs && (id in processor.files)) {
-                const files = processor.dependencies(id).concat(id);
+                const files = [
+                    ...processor.dependencies(id),
+                    ...processor.dependants(id),
+                    id,
+                ];
                 
                 files.forEach((file) => processor.remove(file));
             }
