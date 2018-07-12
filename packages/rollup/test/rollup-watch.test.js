@@ -24,7 +24,7 @@ describe("/rollup.js", () => {
         beforeAll(() => shell.rm("-rf", prefix(`./output/watch/*`)));
         afterEach(() => watcher.close());
         
-        it("should generate output", (done) => {
+        it("should generate updated output", (done) => {
             // Create v1 of the files
             write(`./watch/change/watched.css`, dedent(`
                 .one {

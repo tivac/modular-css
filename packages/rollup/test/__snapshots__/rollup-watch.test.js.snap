@@ -53,14 +53,14 @@ exports[`/rollup.js watch mode should correctly update files within the dependen
 }"
 `;
 
-exports[`/rollup.js watch mode should generate output 1`] = `
+exports[`/rollup.js watch mode should generate updated output 1`] = `
 "/* packages/rollup/test/output/watch/change/watched.css */
 .mc5f9237d4_one {
     color: red;
 }"
 `;
 
-exports[`/rollup.js watch mode should generate output 2`] = `
+exports[`/rollup.js watch mode should generate updated output 2`] = `
 "/* packages/rollup/test/output/watch/change/watched.css */
 .mc5f9237d4_two {
     color: blue;
