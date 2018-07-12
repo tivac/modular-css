@@ -130,8 +130,6 @@ module.exports = function(opts) {
                 );
             }
 
-            // console.log(bundles);
-
             // First pass is used to calculate JS usage of CSS dependencies
             Object.keys(bundles).forEach((entry) => {
                 const file = {
@@ -155,8 +153,6 @@ module.exports = function(opts) {
                         start,
                     ];
 
-                    // console.log({ start, used });
-                    
                     file.css = file.css.concat(used);
 
                     used.forEach((dep) => {
@@ -166,8 +162,6 @@ module.exports = function(opts) {
 
                 files.push(file);
             });
-
-            // console.log({ usage, files });
 
             // Second pass removes any dependencies appearing in multiple bundles
             files.forEach((file) => {
@@ -200,8 +194,6 @@ module.exports = function(opts) {
                 });
             }
 
-            // console.log({ files });
-            
             await Promise.all(
                 files
                 .filter(({ css }) => css.length)
