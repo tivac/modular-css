@@ -169,8 +169,6 @@ Processor.prototype = {
         }
 
         files.forEach((file) => {
-            // console.log("Processor.remove", file);
-
             delete this._files[file];
 
             this._graph.removeNode(file);
@@ -302,8 +300,6 @@ Processor.prototype = {
             return Promise.resolve();
         }
 
-        // console.log("Processor._walk", name);
-        
         this._graph.addNode(name);
 
         this._files[name] = {
