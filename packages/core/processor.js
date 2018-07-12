@@ -1,20 +1,19 @@
 "use strict";
 
-var fs   = require("fs"),
-    path = require("path"),
+const fs   = require("fs");
+const path = require("path");
     
-    Graph     = require("dependency-graph").DepGraph,
-    postcss   = require("postcss"),
-    slug      = require("unique-slug"),
-    series    = require("p-each-series"),
-    unique    = require("lodash.uniq"),
-    mapValues = require("lodash.mapvalues"),
+const Graph     = require("dependency-graph").DepGraph;
+const postcss   = require("postcss");
+const slug      = require("unique-slug");
+const series    = require("p-each-series");
+const mapValues = require("lodash.mapvalues");
 
-    output   = require("./lib/output.js"),
-    message  = require("./lib/message.js"),
-    relative = require("./lib/relative.js"),
-    tiered   = require("./lib/graph-tiers.js"),
-    resolve  = require("./lib/resolve.js");
+const output   = require("./lib/output.js");
+const message  = require("./lib/message.js");
+const relative = require("./lib/relative.js");
+const tiered   = require("./lib/graph-tiers.js");
+const resolve  = require("./lib/resolve.js");
 
 function params(processor, args) {
     return Object.assign(
