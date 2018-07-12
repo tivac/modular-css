@@ -160,7 +160,7 @@ module.exports = function(browserify, opts) {
     // to remove the changed files from its cache so they will be re-processed
     browserify.on("update", (files) => {
         files.forEach((file) => {
-            processor._graph.dependantsOf(file).forEach((dep) =>
+            processor.dependants(file).forEach((dep) =>
                 processor.remove(dep)
             );
 
