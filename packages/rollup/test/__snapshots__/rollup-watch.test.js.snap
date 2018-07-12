@@ -1,27 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/rollup.js watch mode should correctly remove & re-add dependencies 1`] = `
-"/* packages/rollup/test/output/watch/watch-changed/two.css */
-.mcd26cbf72_two {
-    color: red;
-}
-/* packages/rollup/test/output/watch/watch-changed/one.css */
-.mc8f47b33e_one {
-    color: red;
-}"
-`;
-
-exports[`/rollup.js watch mode should correctly remove & re-add dependencies 2`] = `
-"/* packages/rollup/test/output/watch/watch-changed/two.css */
-.mcd26cbf72_two {
-    color: blue;
-}
-/* packages/rollup/test/output/watch/watch-changed/one.css */
-.mc8f47b33e_one {
-    color: red;
-}"
-`;
-
 exports[`/rollup.js watch mode should generate updated output 1`] = `
 "/* packages/rollup/test/output/watch/change/watched.css */
 .mc5f9237d4_one {
@@ -55,6 +33,42 @@ exports[`/rollup.js watch mode should update when a dependency changes 2`] = `
 /* packages/rollup/test/output/watch/dep-graph/two.css */
 .mc6f857f1c_two {
     color: blue;
+}"
+`;
+
+exports[`/rollup.js watch mode should update when a shared dependency changes 1`] = `
+"/* packages/rollup/test/output/watch/shared-deps/one.css */
+.mca79168b9_one {
+    color: red;
+}
+/* packages/rollup/test/output/watch/shared-deps/three.css */
+.mc4ec9318b_three {
+    color: teal;
+}"
+`;
+
+exports[`/rollup.js watch mode should update when a shared dependency changes 2`] = `
+"/* packages/rollup/test/output/watch/shared-deps/two.css */
+.mc5067d789_two {
+    color: green;
+}"
+`;
+
+exports[`/rollup.js watch mode should update when a shared dependency changes 3`] = `
+/* packages/rollup/test/output/watch/shared-deps/one.css */
+.mca79168b9_one {
+    color: blue;
+}
+/* packages/rollup/test/output/watch/shared-deps/three.css */
+.mc4ec9318b_three {
+    color: teal;
+}"
+`;
+
+exports[`/rollup.js watch mode should update when a shared dependency changes 4`] = `
+"/* packages/rollup/test/output/watch/shared-deps/two.css */
+.mc5067d789_two {
+    color: green;
 }"
 `;
 

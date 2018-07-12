@@ -181,63 +181,7 @@ describe("/rollup.js", () => {
             }));
         });
 
-        it("should correctly remove & re-add dependencies", (done) => {
-            // Create v1 of the files
-            write(`./watch/watch-changed/one.css`, dedent(`
-                .one {
-                    composes: two from "./two.css";
-                    color: red;
-                }
-            `));
-            
-            write(`./watch/watch-changed/two.css`, dedent(`
-                .two {
-                    color: red;
-                }
-            `));
-
-            write(`./watch/watch-changed/watch.js`, dedent(`
-                import css from "./one.css";
-                console.log("hello");
-            `));
-
-            // Start watching
-            watcher = watch({
-                input  : require.resolve(prefix("./output/watch/watch-changed/watch.js")),
-                output : {
-                    file : prefix(`./output/watch/watch-changed/watch-output.js`),
-                    format,
-                    assetFileNames,
-                },
-                plugins : [
-                    plugin({
-                        map,
-                    }),
-                ],
-            });
-
-            // Create v2 of the file after a bit
-            setTimeout(() => write(`./watch/watch-changed/two.css`, dedent(`
-                .two {
-                    color: blue;
-                }
-            `)), 200);
-            
-            watcher.on("event", watching((builds) => {
-                if(builds === 1) {
-                    expect(read("./watch/watch-changed/assets/watch-output.css")).toMatchSnapshot();
-
-                    // continue watching
-                    return;
-                }
-
-                expect(read("./watch/watch-changed/assets/watch-output.css")).toMatchSnapshot();
-
-                return done();
-            }));
-        });
-
-        it("should correctly remove & re-add shared dependencies", (done) => {
+        it("should update when a shared dependency changes", (done) => {
             // Create v1 of the files
             write(`./watch/shared-deps/one.css`, dedent(`
                 .one {
