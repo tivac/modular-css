@@ -167,6 +167,14 @@ Object {
 }
 `;
 
+exports[`/rollup.js should handle assetFileNames being undefined 1`] = `
+"/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+"
+`;
+
 exports[`/rollup.js should not output sourcemaps when they are disabled 1`] = `
 "/* packages/rollup/test/specimens/simple.css */
 .fooga {

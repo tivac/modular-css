@@ -91,15 +91,17 @@ module.exports = function(opts) {
             const usage = new Map();
             const common = new Map();
             const files = [];
+
+            const { assetFileNames = "" } = outputOptions;
             
             let to;
 
             if(!outputOptions.file && !outputOptions.dir) {
-                to = path.join(process.cwd(), outputOptions.assetFileNames || "");
+                to = path.join(process.cwd(), assetFileNames);
             } else {
                 to = path.join(
                     outputOptions.dir ? outputOptions.dir : path.dirname(outputOptions.file),
-                    outputOptions.assetFileNames
+                    assetFileNames
                 );
             }
 

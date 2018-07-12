@@ -87,6 +87,27 @@ describe("/rollup.js", () => {
 
         expect(read("css/assets/simple.css")).toMatchSnapshot();
     });
+
+    it("should handle assetFileNames being undefined", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/simple.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    map,
+                }),
+            ],
+        });
+
+        await bundle.write({
+            format,
+            file : `${output}/assetFileNames/simple.js`,
+        });
+
+        const [ css ] = shell.ls(`${output}/assetFileNames/assets`);
+
+        expect(read(`assetFileNames/assets/${css}`)).toMatchSnapshot();
+    });
     
     it("should correctly pass to/from params for relative paths", async () => {
         const bundle = await rollup({
