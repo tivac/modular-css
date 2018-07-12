@@ -1,3 +1,4 @@
+/* eslint max-statements: [ 1, 20 ] */
 "use strict";
 
 const path = require("path");
@@ -40,54 +41,70 @@ module.exports = function(opts) {
     return {
         name : "modular-css-rollup",
 
-        transform(code, id) {
+        async transform(code, id) {
             if(!filter(id)) {
                 return null;
             }
 
-            // TODO: When dependencies are removed it breaks other node's relationships for shared deps
-            // TODO: Investigate going back to emitting import statements for css deps
-            // TODO: To see if getting more accurate transform calls from the watcher could help
-
-            // If the file is being re-processed we need to remove it to
-            // avoid cache staleness issues
+            // Is this file being processed on a watch update?
             if(runs && (id in processor.files)) {
-                const files = [
-                    ...processor.dependencies(id),
-                    id,
-                    ...processor.dependants(id),
-                ];
-                
+                // Watching will call transform w/ the same entry file, even if it
+                // was one of its dependencies that changed. We need to fork the logic
+                // here to handle that case.
+                let files;
+
+                if(processor.files[id].text === code) {
+                    // Dependency changed, remove all the dependencies and all their individual
+                    // dependents and then re-process them
+                    files = processor.dependencies(id);
+
+                    files.forEach((file) => {
+                        const dependents = processor.dependents(file);
+
+                        files.push(...dependents);
+                    });
+                } else {
+                    // Entry file changed, remove all its dependents and
+                    // then re-process them
+                    files = processor.dependents(id);
+                    
+                    processor.remove(id);
+                }
+                                    
                 files.forEach((file) => processor.remove(file));
+                    
+                await Promise.all(files.map((dep) =>
+                    processor.file(dep)
+                ));
+            }
+            
+            const result = await processor.string(id, code);
+            
+            const exported = output.join(result.exports);
+            
+            const out = [
+                `export default ${JSON.stringify(exported, null, 4)};`,
+            ];
+
+            if(options.namedExports) {
+                Object.keys(exported).forEach((ident) => {
+                    if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
+                        this.warn(`Invalid JS identifier "${ident}", unable to export`);
+                        
+                        return;
+                    }
+                    
+                    out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
+                });
             }
 
-            return processor.string(id, code).then((result) => {
-                const exported = output.join(result.exports);
+            const dependencies = processor.dependencies(id);
                 
-                const out = [
-                    `export default ${JSON.stringify(exported, null, 4)};`,
-                ];
-
-                if(options.namedExports) {
-                    Object.keys(exported).forEach((ident) => {
-                        if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
-                            this.warn(`Invalid JS identifier "${ident}", unable to export`);
-                            
-                            return;
-                        }
-                        
-                        out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
-                    });
-                }
-
-                const dependencies = processor.dependencies(id);
-                    
-                return {
-                    code : out.join("\n"),
-                    map,
-                    dependencies,
-                };
-            });
+            return {
+                code : out.join("\n"),
+                map,
+                dependencies,
+            };
         },
 
         // Track # of runs since remove functionality needs to change
@@ -113,7 +130,7 @@ module.exports = function(opts) {
                 );
             }
 
-            console.log(bundles);
+            // console.log(bundles);
 
             // First pass is used to calculate JS usage of CSS dependencies
             Object.keys(bundles).forEach((entry) => {
@@ -138,7 +155,7 @@ module.exports = function(opts) {
                         start,
                     ];
 
-                    console.log({ start, used });
+                    // console.log({ start, used });
                     
                     file.css = file.css.concat(used);
 
@@ -150,7 +167,7 @@ module.exports = function(opts) {
                 files.push(file);
             });
 
-            console.log({ usage, files });
+            // console.log({ usage, files });
 
             // Second pass removes any dependencies appearing in multiple bundles
             files.forEach((file) => {
@@ -183,7 +200,7 @@ module.exports = function(opts) {
                 });
             }
 
-            console.log({ files });
+            // console.log({ files });
             
             await Promise.all(
                 files

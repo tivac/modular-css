@@ -79,19 +79,19 @@ describe("/rollup.js", () => {
             // Create v1 of the files
             write(`./watch/dep-graph/one.css`, dedent(`
                 .one {
+                    composes: two from "./two.css";
                     color: red;
                 }
             `));
 
             write(`./watch/dep-graph/two.css`, dedent(`
                 .two {
-                    composes: one from "./one.css";
                     color: blue;
                 }
             `));
             
             write(`./watch/dep-graph/watch.js`, dedent(`
-                import css from "./two.css";
+                import css from "./one.css";
                 console.log(css);
             `));
 
@@ -112,8 +112,8 @@ describe("/rollup.js", () => {
 
             // Create v2 of the file after a bit
             setTimeout(() => {
-                write(`./watch/dep-graph/one.css`, dedent(`
-                    .one {
+                write(`./watch/dep-graph/two.css`, dedent(`
+                    .two {
                         color: green;
                     }
                 `));
