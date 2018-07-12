@@ -45,13 +45,17 @@ module.exports = function(opts) {
                 return null;
             }
 
+            // TODO: When dependencies are removed it breaks other node's relationships for shared deps
+            // TODO: Investigate going back to emitting import statements for css deps
+            // TODO: To see if getting more accurate transform calls from the watcher could help
+
             // If the file is being re-processed we need to remove it to
             // avoid cache staleness issues
             if(runs && (id in processor.files)) {
                 const files = [
                     ...processor.dependencies(id),
-                    ...processor.dependants(id),
                     id,
+                    ...processor.dependants(id),
                 ];
                 
                 files.forEach((file) => processor.remove(file));
@@ -109,6 +113,8 @@ module.exports = function(opts) {
                 );
             }
 
+            console.log(bundles);
+
             // First pass is used to calculate JS usage of CSS dependencies
             Object.keys(bundles).forEach((entry) => {
                 const file = {
@@ -127,7 +133,12 @@ module.exports = function(opts) {
 
                 // Get dependency chains for each file
                 css.forEach((start) => {
-                    const used = processor.dependencies(start).concat(start);
+                    const used = [
+                        ...processor.dependencies(start),
+                        start,
+                    ];
+
+                    console.log({ start, used });
                     
                     file.css = file.css.concat(used);
 
@@ -138,6 +149,8 @@ module.exports = function(opts) {
 
                 files.push(file);
             });
+
+            console.log({ usage, files });
 
             // Second pass removes any dependencies appearing in multiple bundles
             files.forEach((file) => {
@@ -169,6 +182,8 @@ module.exports = function(opts) {
                     css   : [ ...common.keys() ],
                 });
             }
+
+            console.log({ files });
             
             await Promise.all(
                 files
