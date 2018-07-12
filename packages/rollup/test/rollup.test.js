@@ -1,13 +1,17 @@
 /* eslint max-statements: "off" */
 "use strict";
 
+const path = require("path");
+
 const { rollup } = require("rollup");
 
 const dedent = require("dedent");
 const shell  = require("shelljs");
 
-const read     = require("test-utils/read.js")(__dirname);
-const exists   = require("test-utils/exists.js")(__dirname);
+const output = path.resolve(__dirname, "./output/rollup");
+
+const read     = require("test-utils/read.js")(output);
+const exists   = require("test-utils/exists.js")(output);
 const namer    = require("test-utils/namer.js");
 
 const Processor = require("modular-css-core");
@@ -23,7 +27,6 @@ error.postcssPlugin = "error-plugin";
 const assetFileNames = "assets/[name][extname]";
 const format = "es";
 const map = false;
-const output = "./packages/rollup/test/output";
 const sourcemap = false;
 
 describe("/rollup.js", () => {
