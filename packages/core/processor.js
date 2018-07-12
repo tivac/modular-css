@@ -188,6 +188,17 @@ Processor.prototype = {
         return this._graph.overallOrder();
     },
     
+    // Get the dependant files for a file
+    dependants(file) {
+        if(!file) {
+            throw new Error("Must provide a file to processor.dependants()");
+        }
+        
+        return this._graph.dependantsOf(
+            file
+        );
+    },
+    
     // Get the ultimate output for specific files or the entire tree
     output(args) {
         var opts  = args || false,

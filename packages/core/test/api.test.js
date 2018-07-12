@@ -146,6 +146,27 @@ describe("/processor.js", () => {
                 )
             );
         });
+
+        describe(".dependants()", () => {
+            it("should return the dependants of the specified file", async () => {
+                await processor.file(
+                    "./packages/core/test/specimens/start.css"
+                );
+
+                expect(
+                    relative(processor.dependants(require.resolve("./specimens/local.css")))
+                )
+                .toMatchSnapshot();
+            });
+            
+            it("should throw if no file is passed", async () => {
+                await processor.file(
+                    "./packages/core/test/specimens/start.css"
+                );
+                
+                expect(() => processor.dependants()).toThrowErrorMatchingSnapshot();
+            });
+        });
         
         describe(".output()", () => {
             it("should return a postcss result", () =>

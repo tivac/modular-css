@@ -12,6 +12,14 @@ Array [
 ]
 `;
 
+exports[`/processor.js API .dependants() should return the dependants of the specified file 1`] = `
+Array [
+  "packages/core/test/specimens/start.css",
+]
+`;
+
+exports[`/processor.js API .dependants() should throw if no file is passed 1`] = `"Must provide a file to processor.dependants()"`;
+
 exports[`/processor.js API .dependencies() should return the dependencies of the specified file 1`] = `
 Array [
   "packages/core/test/specimens/folder/folder.css",
