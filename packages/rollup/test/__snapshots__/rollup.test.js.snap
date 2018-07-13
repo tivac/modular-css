@@ -80,17 +80,13 @@ exports[`/rollup.js code splitting should support splitting up CSS files 2`] = `
 `;
 
 exports[`/rollup.js should accept an existing processor instance 1`] = `
-"/* packages/rollup/test/specimens/simple.css */
-.fooga {
-    color: red;
-}
-"
-`;
-
-exports[`/rollup.js should accept an existing processor instance 2`] = `
 "/* packages/rollup/test/specimens/fake.css */
 .fake {
     color: yellow;
+}
+/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
 }"
 `;
 
@@ -269,20 +265,6 @@ console.log(css, css$1);
 `;
 
 exports[`/rollup.js shouldn't over-remove files from an existing processor instance 2`] = `
-"/* packages/rollup/test/specimens/repeated-references/a.css */
-.a {
-
-    color: red;
-}
-/* packages/rollup/test/specimens/repeated-references/b.css */
-.b {
-    
-    color: blue;
-}
-"
-`;
-
-exports[`/rollup.js shouldn't over-remove files from an existing processor instance 3`] = `
 "/* packages/rollup/test/specimens/repeated-references/d.css */
 .d {
     color: darkblue;
@@ -290,6 +272,16 @@ exports[`/rollup.js shouldn't over-remove files from an existing processor insta
 /* packages/rollup/test/specimens/repeated-references/c.css */
 .c {
     color: cadetblue;
+}
+/* packages/rollup/test/specimens/repeated-references/b.css */
+.b {
+    
+    color: blue;
+}
+/* packages/rollup/test/specimens/repeated-references/a.css */
+.a {
+
+    color: red;
 }
 "
 `;

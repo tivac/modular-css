@@ -346,7 +346,6 @@ describe("/rollup.js", () => {
         });
 
         expect(read("./rollup/existing-processor/assets/existing-processor.css")).toMatchSnapshot();
-        expect(read("./rollup/existing-processor/assets/common.css")).toMatchSnapshot();
     });
 
     it("shouldn't over-remove files from an existing processor instance", async () => {
@@ -376,7 +375,6 @@ describe("/rollup.js", () => {
 
         expect(read("./rollup/repeated-references/repeated-references.js")).toMatchSnapshot();
         expect(read("./rollup/repeated-references/assets/repeated-references.css")).toMatchSnapshot();
-        expect(read("./rollup/repeated-references/assets/common.css")).toMatchSnapshot();
     });
 
     describe("errors", () => {

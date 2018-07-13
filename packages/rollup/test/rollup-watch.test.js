@@ -298,24 +298,21 @@ describe("/rollup.js", () => {
             });
 
             // Create v2 of the file after a bit
-            setTimeout(() => write(`./watch/shared-deps/one.css`, dedent(`
-                .one {
-                    composes: two from "./two.css";
-                    color: blue;
+            setTimeout(() => write(`./watch/shared-deps/two.css`, dedent(`
+                .two {
+                    color: yellow;
                 }
             `)), 200);
 
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
                     expect(read("./watch/shared-deps/assets/watch-output.css")).toMatchSnapshot();
-                    expect(read("./watch/shared-deps/assets/common.css")).toMatchSnapshot();
                     
                     // continue watching
                     return;
                 }
                 
                 expect(read("./watch/shared-deps/assets/watch-output.css")).toMatchSnapshot();
-                expect(read("./watch/shared-deps/assets/common.css")).toMatchSnapshot();
 
                 return done();
             }));

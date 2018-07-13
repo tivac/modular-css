@@ -89,7 +89,11 @@ exports[`/rollup.js watch mode should update when a dependency changes 2`] = `
 `;
 
 exports[`/rollup.js watch mode should update when a shared dependency changes 1`] = `
-"/* packages/rollup/test/output/watch/shared-deps/one.css */
+"/* packages/rollup/test/output/watch/shared-deps/two.css */
+.mc5067d789_two {
+    color: green;
+}
+/* packages/rollup/test/output/watch/shared-deps/one.css */
 .mca79168b9_one {
     color: red;
 }
@@ -102,25 +106,15 @@ exports[`/rollup.js watch mode should update when a shared dependency changes 1`
 exports[`/rollup.js watch mode should update when a shared dependency changes 2`] = `
 "/* packages/rollup/test/output/watch/shared-deps/two.css */
 .mc5067d789_two {
-    color: green;
-}"
-`;
-
-exports[`/rollup.js watch mode should update when a shared dependency changes 3`] = `
-"/* packages/rollup/test/output/watch/shared-deps/one.css */
+    color: yellow;
+}
+/* packages/rollup/test/output/watch/shared-deps/one.css */
 .mca79168b9_one {
-    color: blue;
+    color: red;
 }
 /* packages/rollup/test/output/watch/shared-deps/three.css */
 .mc4ec9318b_three {
     color: teal;
-}"
-`;
-
-exports[`/rollup.js watch mode should update when a shared dependency changes 4`] = `
-"/* packages/rollup/test/output/watch/shared-deps/two.css */
-.mc5067d789_two {
-    color: green;
 }"
 `;
 
