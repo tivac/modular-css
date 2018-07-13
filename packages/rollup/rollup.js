@@ -134,9 +134,9 @@ module.exports = function(opts) {
             Object.keys(bundles).forEach((entry) => {
                 const file = {
                     entry,
-                    base : extensionless(entry),
 
-                    css : [ ],
+                    base : extensionless(entry),
+                    css  : [],
                 };
 
                 // Get CSS files being used by each entry point
@@ -153,45 +153,51 @@ module.exports = function(opts) {
                         start,
                     ];
 
-                    file.css = file.css.concat(used);
+                    file.css.push(...used);
 
                     used.forEach((dep) => {
-                        usage.set(dep, usage.has(dep) ? usage.get(dep) + 1 : 1);
+                        usage.set(dep, (usage.get(dep) || 0) + 1);
                     });
                 });
 
                 files.push(file);
             });
 
-            // Second pass removes any dependencies appearing in multiple bundles
-            files.forEach((file) => {
-                const { css } = file;
+            if(files.length === 1) {
+                // Only one entry file means we only need one bundle.
+                files[0].css = processor.dependencies();
+            } else {
+                // Multiple bundles means ref-counting to find the shared deps
+                // Second pass removes any dependencies appearing in multiple bundles
+                files.forEach((file) => {
+                    const { css } = file;
 
-                file.css = css.filter((dep) => {
-                    if(usage.get(dep) > 1) {
-                        common.set(dep, true);
+                    file.css = css.filter((dep) => {
+                        if(usage.get(dep) > 1) {
+                            common.set(dep, true);
 
-                        return false;
+                            return false;
+                        }
+
+                        return true;
+                    });
+                });
+
+                // Add any other files that weren't part of a bundle to the common chunk
+                Object.keys(processor.files).forEach((file) => {
+                    if(!usage.has(file)) {
+                        common.set(file, true);
                     }
-
-                    return true;
                 });
-            });
 
-            // Add any other files that weren't part of a bundle to the common chunk
-            Object.keys(processor.files).forEach((file) => {
-                if(!usage.has(file)) {
-                    common.set(file, true);
+                // Common chunk only emitted if necessary
+                if(common.size) {
+                    files.push({
+                        entry : options.common,
+                        base  : extensionless(options.common),
+                        css   : [ ...common.keys() ],
+                    });
                 }
-            });
-
-            // Common chunk only emitted if necessary
-            if(common.size) {
-                files.push({
-                    entry : options.common,
-                    base  : extensionless(options.common),
-                    css   : [ ...common.keys() ],
-                });
             }
 
             await Promise.all(
