@@ -1,6 +1,6 @@
 {
   "name": "test-utils",
-  "version": "12.1.3",
+  "version": "13.0.0",
   "private": true,
   "description": "Test utilities for modular-css",
   "main": "compare.js",

@@ -1,6 +1,6 @@
 {
   "name": "modular-css-glob",
-  "version": "12.1.3",
+  "version": "13.0.0",
   "description": "Glob support for modular-css",
   "main": "./glob.js",
   "repository": "tivac/modular-css",
