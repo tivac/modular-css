@@ -156,18 +156,18 @@ module.exports = function(opts) {
                     file.css.push(...used);
 
                     used.forEach((dep) => {
-                        usage.set(dep, usage.has(dep) ? usage.get(dep) + 1 : 1);
+                        usage.set(dep, (usage.get(dep) || 0) + 1);
                     });
                 });
 
                 files.push(file);
             });
 
-            // Special case where we don't need to do any ref-counting
             if(files.length === 1) {
+                // Only one entry file means we only need one bundle.
                 files[0].css = processor.dependencies();
             } else {
-                // Only have to do this work if there's multiple bundles
+                // Multiple bundles means ref-counting to find the shared deps
                 // Second pass removes any dependencies appearing in multiple bundles
                 files.forEach((file) => {
                     const { css } = file;
