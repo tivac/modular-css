@@ -14,7 +14,7 @@
     "cover": "jest --coverage",
     "lint": "eslint .",
     "parser": "pegjs packages/core/parsers/parser.pegjs",
-    "prerelease": "npm test",
+    "prerelease": "npm test -- --ci",
     "release": "lerna publish",
     "pretest": "npm run parser",
     "test": "jest",
