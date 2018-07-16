@@ -66,6 +66,10 @@ To force the creation of external source maps set the value to `{ inline : false
 
 By default this plugin will create both a default export and named `export`s for each class in a CSS file. You can disable this by setting `namedExports` to `false`.
 
+### `styleExport`
+
+By default this plugin will extract and bundle CSS in a separate file. If you would like the styles from each imported CSS file to be exported as a string for use in JS, you can enable this by setting `styleExport` to `true`. If you are using this option, you should perform any additional CSS transformations in the `after` hook (instead of the `done` hook).
+
 ### Shared Options
 
 All other options are passed to the underlying `Processor` instance, see [Options](https://github.com/tivac/modular-css/blob/master/docs/api.md#options).

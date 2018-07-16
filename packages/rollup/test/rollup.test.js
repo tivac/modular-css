@@ -178,6 +178,22 @@ describe("/rollup.js", () => {
         expect(result.code).toMatchSnapshot();
     });
 
+    it("should provide style export", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/style-export.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    styleExport : true,
+                }),
+            ],
+        });
+
+        const result = await bundle.generate({ format });
+
+        expect(result.code).toMatchSnapshot();
+    });
+
     it("should generate external source maps", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),

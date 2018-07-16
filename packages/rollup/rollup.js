@@ -30,6 +30,8 @@ module.exports = function(opts) {
         include : "**/*.css",
 
         namedExports : true,
+
+        styleExport : false,
     }, opts);
         
     const filter = utils.createFilter(options.include, options.exclude);
@@ -96,6 +98,10 @@ module.exports = function(opts) {
                     
                     out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
                 });
+            }
+
+            if(options.styleExport) {
+              out.push(`export var styles = ${JSON.stringify(result.details.result.css)};`);
             }
 
             const dependencies = processor.dependencies(id);

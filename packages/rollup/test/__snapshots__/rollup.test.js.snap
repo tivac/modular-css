@@ -190,6 +190,13 @@ console.log(a, str, num, dim, mix);
 "
 `;
 
+exports[`/rollup.js should provide style export 1`] = `
+"var styles = \\".ooh {\\\\n    content: \\\\\\"string\\\\\\";\\\\n}\\\\n\\\\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3JvbGx1cC90ZXN0L3NwZWNpbWVucy9zdHlsZS1leHBvcnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUVBO0lBRkEsa0JBQXFCO0NBSXBCIiwiZmlsZSI6InBhY2thZ2VzL3JvbGx1cC90ZXN0L3NwZWNpbWVucy9zdHlsZS1leHBvcnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiQHZhbHVlIHN0cjogXCJzdHJpbmdcIjtcblxuLm9vaCB7XG4gICAgY29udGVudDogc3RyO1xufVxuIl19 */\\";
+
+console.log(styles);
+"
+`;
+
 exports[`/rollup.js should respect the CSS dependency tree 1`] = `
 "var css = {
     \\"wooga\\": \\"fooga wooga\\"
