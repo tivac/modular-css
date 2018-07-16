@@ -1,6 +1,6 @@
 {
   "name": "modular-css-cli",
-  "version": "14.0.0",
+  "version": "14.0.1",
   "description": "CLI for modular-css",
   "main": "./cli.js",
   "bin": {
@@ -23,6 +23,6 @@
     "meow": "^3.7.0",
     "mkdirp": "^0.5.1",
     "modular-css-core": "file:../core",
-    "modular-css-glob": "^14.0.0"
+    "modular-css-glob": "^14.0.1"
   }
 }
