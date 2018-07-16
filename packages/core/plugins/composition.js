@@ -1,17 +1,16 @@
 "use strict";
 
-var Graph = require("dependency-graph").DepGraph,
+const Graph = require("dependency-graph").DepGraph;
     
-    unique    = require("lodash.uniq"),
-    invert    = require("lodash.invert"),
-    mapvalues = require("lodash.mapvalues"),
+const invert    = require("lodash.invert");
+const mapvalues = require("lodash.mapvalues");
 
-    message     = require("../lib/message.js"),
-    identifiers = require("../lib/identifiers.js"),
+const message     = require("../lib/message.js");
+const identifiers = require("../lib/identifiers.js");
     
-    parser = require("../parsers/parser.js"),
+const parser = require("../parsers/parser.js");
     
-    plugin = "modular-css-composition";
+const plugin = "modular-css-composition";
 
 // Loop through all previous nodes in the container to ensure
 // that composes (or a comment) comes first
@@ -112,7 +111,11 @@ module.exports = (css, result) => {
     result.messages.push({
         type    : "modular-css",
         plugin,
-        classes : mapvalues(out, (val) => unique(val)),
+        classes : mapvalues(out, (val) => {
+            const classes = new Set(val);
+
+            return [ ...classes ];
+        }),
     });
 };
 
