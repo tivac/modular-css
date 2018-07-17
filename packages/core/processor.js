@@ -15,6 +15,8 @@ const relative = require("./lib/relative.js");
 const tiered   = require("./lib/graph-tiers.js");
 const resolve  = require("./lib/resolve.js");
 
+const noop = () => true;
+
 function params(processor, args) {
     return Object.assign(
         Object.create(null),
@@ -88,14 +90,14 @@ function Processor(opts) {
         require("./plugins/keyframes.js"),
     ].concat(this._options.processing || []));
     
-    this._after = postcss(this._options.after || []);
+    this._after = postcss(this._options.after || [ noop ]);
     
     // Add postcss-url to the afters if requested
     if(this._options.rewrite) {
         this._after.use(require("postcss-url")(this._options.rewrite));
     }
 
-    this._done = postcss(this._options.done || []);
+    this._done = postcss(this._options.done || [ noop ]);
 }
 
 Processor.prototype = {
