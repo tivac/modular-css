@@ -11,7 +11,6 @@
   "scripts": {
     "clean": "lerna clean",
     "cover": "jest --coverage",
-    "postinstall": "lerna exec -- npm i",
     "lint": "eslint .",
     "parser": "pegjs packages/core/parsers/parser.pegjs",
     "prerelease": "npm test -- --ci",
