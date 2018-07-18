@@ -12,7 +12,7 @@ const output    = require("modular-css-core/lib/output.js");
 
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
-const map = {
+const emptyMappings = {
     mappings : "",
 };
 
@@ -25,7 +25,6 @@ module.exports = function(opts) {
         common : "common.css",
         
         json : false,
-        map  : true,
         
         include : "**/*.css",
 
@@ -35,13 +34,32 @@ module.exports = function(opts) {
     }, opts);
         
     const filter = utils.createFilter(options.include, options.exclude);
-        
+
+    const { styleExport, done, map } = options;
+
+    if(typeof map === "undefined") {
+        // Sourcemaps don't make much sense in styleExport mode
+        // But default to true otherwise
+        options.map = !styleExport;
+    }
+    
     const processor = options.processor || new Processor(options);
 
     let runs = 0;
     
     return {
         name : "modular-css-rollup",
+
+        buildStart() {
+            // done lifecycle won't ever be called on per-component styles since
+            // it only happens at bundle compilation time
+            // Need to do this on buildStart so it has access to this.warn() o_O
+            if(styleExport && done) {
+                this.warn(
+                    `Any plugins defined during the "done" lifecycle won't run when "styleExport" is set!`
+                );
+            }
+        },
 
         async transform(code, id) {
             if(!filter(id)) {
@@ -108,7 +126,7 @@ module.exports = function(opts) {
                 
             return {
                 code : out.join("\n"),
-                map,
+                map  : emptyMappings,
                 dependencies,
             };
         },
@@ -119,6 +137,11 @@ module.exports = function(opts) {
         },
 
         async generateBundle(outputOptions, bundles) {
+            // styleExport disables all output file generation
+            if(styleExport) {
+                return;
+            }
+
             const usage = new Map();
             const common = new Map();
             const files = [];
@@ -205,7 +228,7 @@ module.exports = function(opts) {
                     });
                 }
             }
-
+            
             await Promise.all(
                 files
                 .filter(({ css }) => css.length)

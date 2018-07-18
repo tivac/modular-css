@@ -194,6 +194,28 @@ describe("/rollup.js", () => {
         expect(result.code).toMatchSnapshot();
     });
 
+    it("should warn that styleExport and done aren't compatible", async () => {
+        const spy = jest.spyOn(global.console, "warn");
+
+        spy.mockImplementation(() => { /* NO-OP */ });
+        
+        await rollup({
+            input   : require.resolve("./specimens/style-export.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    styleExport : true,
+                    done        : [
+                        () => { /* NO OP */ },
+                    ],
+                }),
+            ],
+        });
+
+        expect(spy).toHaveBeenCalled();
+        expect(spy.mock.calls).toMatchSnapshot();
+    });
+
     it("should generate external source maps", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
