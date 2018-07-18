@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="14.1.0"></a>
+# [14.1.0](https://github.com/tivac/modular-css/compare/v14.0.1...v14.1.0) (2018-07-18)
+
+
+### Features
+
+* add rollup option to export styles ([#453](https://github.com/tivac/modular-css/issues/453)) ([f0d4e43](https://github.com/tivac/modular-css/commit/f0d4e43))
+
+
+
+
+
 <a name="14.0.1"></a>
 ## [14.0.1](https://github.com/tivac/modular-css/compare/v14.0.0...v14.0.1) (2018-07-16)
 
