@@ -68,7 +68,13 @@ By default this plugin will create both a default export and named `export`s for
 
 ### `styleExport`
 
-By default this plugin will extract and bundle CSS in a separate file. If you would like the styles from each imported CSS file to be exported as a string for use in JS, you can enable this by setting `styleExport` to `true`. If you are using this option, you should perform any additional CSS transformations in the `after` hook (instead of the `done` hook).
+By default this plugin will extract and bundle CSS in a separate file. If you would like the styles from each imported CSS file to be exported as a string for use in JS, you can enable this by setting `styleExport` to `true`. If you are using this option the `done` hook **will not run**, you should perform any additional CSS transformations in the `after` hook instead.
+
+```js
+import { styles } from "./styles.css";
+```
+
+Enable `styleExport` will also disable the plugin from emitting any assets as well as sourcemaps (unless you explicitly opt-in to sourcemaps via the `map` option)
 
 ### Shared Options
 
