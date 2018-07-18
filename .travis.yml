@@ -21,6 +21,8 @@ cache:
 
 before_install:
 - npm config set loglevel warn
+# Set up npm 6 for installs since we need `npm ci` to exist
+- npm install --global npm@6
 
 # Use npm ci command for all dependencies
 install:
