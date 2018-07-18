@@ -190,6 +190,13 @@ console.log(a, str, num, dim, mix);
 "
 `;
 
+exports[`/rollup.js should provide style export 1`] = `
+"var styles = \\".ooh {\\\\n    content: \\\\\\"string\\\\\\";\\\\n}\\\\n\\";
+
+console.log(styles);
+"
+`;
+
 exports[`/rollup.js should respect the CSS dependency tree 1`] = `
 "var css = {
     \\"wooga\\": \\"fooga wooga\\"
@@ -231,6 +238,14 @@ var fooga = \\"fooga\\";
 
 console.log(css, fooga);
 "
+`;
+
+exports[`/rollup.js should warn that styleExport and done aren't compatible 1`] = `
+Array [
+  Array [
+    "Any plugins defined during the \\"done\\" lifecycle won't run when \\"styleExport\\" is set!",
+  ],
+]
 `;
 
 exports[`/rollup.js shouldn't disable sourcemap generation 1`] = `

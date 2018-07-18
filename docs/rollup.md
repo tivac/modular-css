@@ -4,25 +4,41 @@
 
 ## Options
 
-### `include`/`exclude`
-
-A minimatch pattern, or an array of minimatch patterns, relative to `process.cwd()`.
-
 ### `common`
 
-File path to write any common CSS output to.
+File name to use in case there are any CSS dependencies that appear in multiple bundles. Defaults to "common.css".
+
+### `include`/`exclude`
+
+A minimatch pattern, or an array of minimatch patterns, relative to `process.cwd()`. `include` defaults to `**/*.css`.
 
 ### `json`
 
-File path to write out the JSON mapping file for use in server rendering.
+Boolean to determine if JSON files should be output at the end of compilation. Defaults to `false`.
+
+### `map`
+
+Boolean to determine if inline source maps should be included. Defaults to `true`.
+
+To force the creation of external source maps set the value to `{ inline : false }`.
 
 ### `namedExports`
 
-Set to `false` to disable named exports, instead only the default export wll be used. This is useful to avoid warnings when your classes aren't valid JS identifiers.
+By default this plugin will create both a default export and named `export`s for each class in a CSS file. You can disable this by setting `namedExports` to `false`.
+
+### `styleExport`
+
+By default this plugin will extract and bundle CSS in a separate file. If you would like the styles from each imported CSS file to be exported as a string for use in JS, you can enable this by setting `styleExport` to `true`. If you are using this option the `done` hook **will not run**, you should perform any additional CSS transformations in the `after` hook instead.
+
+```js
+import { styles } from "./styles.css";
+```
+
+Enable `styleExport` will also disable the plugin from emitting any assets as well as sourcemaps (unless you explicitly opt-in to sourcemaps via the `map` option)
 
 ### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](api.md#options).
+All other options are passed to the underlying `Processor` instance, see [Options](https://github.com/tivac/modular-css/blob/master/docs/api.md#options).
 
 ## API
 
