@@ -240,6 +240,8 @@ describe("/rollup.js", () => {
         expect(JSON.parse(read("./rollup/external-source-maps/assets/simple.css.map"))).toMatchSnapshot({
             file : expect.any(String),
         });
+
+        expect(read("./rollup/external-source-maps/assets/simple.css")).toMatchSnapshot();
     });
     
     it("should warn & not export individual keys when they are not valid identifiers", async () => {
