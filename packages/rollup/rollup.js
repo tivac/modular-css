@@ -16,13 +16,14 @@ const emptyMappings = {
     mappings : "",
 };
 
-const parts = (file) => {
-    const name = path.basename(file, path.extname(file));
+const makeFile = (details) => {
+    const { entry } = details;
+    const name = path.basename(entry, path.extname(entry));
 
-    return {
-        base : path.join(path.dirname(file), name),
+    return Object.assign(details, {
+        base : path.join(path.dirname(entry), name),
         name,
-    };
+    });
 };
 
 module.exports = function(opts) {
@@ -166,7 +167,7 @@ module.exports = function(opts) {
 
             // First pass is used to calculate JS usage of CSS dependencies
             Object.keys(bundles).forEach((entry) => {
-                const file = Object.assign(parts(entry), {
+                const file = makeFile({
                     entry,
                     css : [],
                 });
@@ -224,7 +225,7 @@ module.exports = function(opts) {
 
                 // Common chunk only emitted if necessary
                 if(common.size) {
-                    files.push(Object.assign(parts(options.common), {
+                    files.push(makeFile({
                         entry : options.common,
                         css   : [ ...common.keys() ],
                     }));
