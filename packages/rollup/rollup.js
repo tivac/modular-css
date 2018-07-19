@@ -16,9 +16,15 @@ const emptyMappings = {
     mappings : "",
 };
 
-function extensionless(file) {
-    return path.join(path.dirname(file), path.basename(file, path.extname(file)));
-}
+const makeFile = (details) => {
+    const { entry } = details;
+    const name = path.basename(entry, path.extname(entry));
+
+    return Object.assign(details, {
+        base : path.join(path.dirname(entry), name),
+        name,
+    });
+};
 
 module.exports = function(opts) {
     const options = Object.assign(Object.create(null), {
@@ -161,12 +167,10 @@ module.exports = function(opts) {
 
             // First pass is used to calculate JS usage of CSS dependencies
             Object.keys(bundles).forEach((entry) => {
-                const file = {
+                const file = makeFile({
                     entry,
-
-                    base : extensionless(entry),
-                    css  : [],
-                };
+                    css : [],
+                });
 
                 // Get CSS files being used by each entry point
                 const css = Object.keys(bundles[entry].modules).filter(filter);
@@ -221,22 +225,24 @@ module.exports = function(opts) {
 
                 // Common chunk only emitted if necessary
                 if(common.size) {
-                    files.push({
+                    files.push(makeFile({
                         entry : options.common,
-                        base  : extensionless(options.common),
                         css   : [ ...common.keys() ],
-                    });
+                    }));
                 }
             }
             
             await Promise.all(
                 files
                 .filter(({ css }) => css.length)
-                .map(async ({ base, css }) => {
+                .map(async (details) => {
+                    const { base, name, css } = details;
                     const id = this.emitAsset(`${base}.css`);
 
                     const result = await processor.output({
-                        to,
+                        to : to.replace(/\[(name|extname)\]/g, (match, field) =>
+                            (field === "name" ? name : ".css")
+                        ),
                         files : css,
                     });
                     

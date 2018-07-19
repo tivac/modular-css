@@ -163,6 +163,15 @@ Object {
 }
 `;
 
+exports[`/rollup.js should generate external source maps 2`] = `
+"/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+
+/*# sourceMappingURL=simple.css.map */"
+`;
+
 exports[`/rollup.js should handle assetFileNames being undefined 1`] = `
 "/* packages/rollup/test/specimens/simple.css */
 .fooga {
