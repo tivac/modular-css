@@ -54,6 +54,15 @@ describe("/postcss.js", () => {
         )
         .then(() => expect(read("classes.json")).toMatchSnapshot()));
 
+    it("should use output filepath for json if a custom path isn't provided", () => process(
+            "./packages/postcss/test/specimens/start.css",
+            {
+                json : true,
+                to   : "./packages/postcss/test/output/start.css",
+            }
+        )
+        .then(() => expect(read("start.json")).toMatchSnapshot()));
+
     it("should be usable like a normal postcss plugin", () => {
         var processor = postcss([
                 plugin({

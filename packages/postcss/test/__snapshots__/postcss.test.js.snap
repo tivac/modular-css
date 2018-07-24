@@ -74,3 +74,26 @@ exports[`/postcss.js should process CSS with dependencies and output the result 
 .tooga { border: 1px solid white; }
 "
 `;
+
+exports[`/postcss.js should use output filepath for json if a custom path isn't provided 1`] = `
+"{
+    \\"packages/postcss/test/specimens/folder/folder.css\\": {
+        \\"folder\\": \\"folder\\"
+    },
+    \\"packages/postcss/test/specimens/local.css\\": {
+        \\"folder\\": \\"white\\",
+        \\"one\\": \\"red\\",
+        \\"two\\": \\"blue\\",
+        \\"booga\\": \\"booga\\",
+        \\"looga\\": \\"booga looga\\"
+    },
+    \\"packages/postcss/test/specimens/start.css\\": {
+        \\"one\\": \\"red\\",
+        \\"two\\": \\"blue\\",
+        \\"folder\\": \\"white\\",
+        \\"wooga\\": \\"booga wooga\\",
+        \\"booga\\": \\"booga\\",
+        \\"tooga\\": \\"tooga\\"
+    }
+}"
+`;
