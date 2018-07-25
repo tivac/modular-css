@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="14.2.0"></a>
+# [14.2.0](https://github.com/tivac/modular-css/compare/v14.1.0...v14.2.0) (2018-07-25)
+
+
+### Bug Fixes
+
+* External map references ([#457](https://github.com/tivac/modular-css/issues/457)) ([2d3257e](https://github.com/tivac/modular-css/commit/2d3257e)), closes [#455](https://github.com/tivac/modular-css/issues/455)
+
+
+
+
+
 <a name="14.1.0"></a>
 # [14.1.0](https://github.com/tivac/modular-css/compare/v14.0.1...v14.1.0) (2018-07-18)
 

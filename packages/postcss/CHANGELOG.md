@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="14.2.0"></a>
+# [14.2.0](https://github.com/tivac/modular-css/compare/v14.1.0...v14.2.0) (2018-07-25)
+
+
+### Features
+
+* add option to use output filepath for json ([#460](https://github.com/tivac/modular-css/issues/460)) ([037f933](https://github.com/tivac/modular-css/commit/037f933)), closes [#459](https://github.com/tivac/modular-css/issues/459)
+
+
+
+
+
 <a name="14.1.0"></a>
 # [14.1.0](https://github.com/tivac/modular-css/compare/v14.0.1...v14.1.0) (2018-07-18)
 
