@@ -27,7 +27,7 @@
     "cssnano": "^4.0.3",
     "dedent": "^0.7.0",
     "dentist": "^1.0.3",
-    "eslint": "^5.1.0",
+    "eslint": "^5.2.0",
     "eslint-plugin-jest": "^21.18.0",
     "factor-bundle": "^2.5.0",
     "from2-string": "^1.1.0",
@@ -36,13 +36,13 @@
     "lerna": "^3.0.0-beta.21",
     "modular-css-core": "file:./packages/core",
     "pegjs": "^0.10.0",
-    "rollup": "^0.62.0",
+    "rollup": "^0.63.4",
     "rollup-plugin-svelte": "^4.2.1",
     "shelljs": "^0.8.1",
-    "svelte": "^2.9.5",
+    "svelte": "^2.9.7",
     "test-utils": "file:./packages/test-utils",
     "watchify": "^3.9.0",
-    "webpack": "^4.16.1"
+    "webpack": "^4.16.2"
   },
   "lint-staged": {
     "*.js": [
