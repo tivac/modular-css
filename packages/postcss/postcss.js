@@ -25,13 +25,19 @@ module.exports = postcss.plugin("modular-css", (opts) =>
             })
             .then((output) => {
                 var { json } = processor.options;
-                
+
                 result.messages.push({
                     type    : "modular-css-exports",
                     exports : classes,
                 });
                 
                 if(json) {
+                    if(typeof json !== "string") {
+                        const { opts: { to } } = result;
+
+                        json = `${path.join(path.dirname(to), path.basename(to, path.extname(to)))}.json`;
+                    }
+
                     mkdirp.sync(path.dirname(json));
                     
                     fs.writeFileSync(
