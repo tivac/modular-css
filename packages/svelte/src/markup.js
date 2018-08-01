@@ -4,7 +4,6 @@ const path = require("path");
 
 const resolve = require("resolve-from");
 const dedent = require("dedent");
-const slash = require("slash");
 
 const styleRegex = /<style[\S\s]*?>([\S\s]*?)<\/style>/im;
 const scriptRegex = /<script[\S\s]*?>([\S\s]*?)<\/script>/im;
