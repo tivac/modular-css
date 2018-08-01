@@ -51,7 +51,12 @@ async function extractLink({ processor, content, filename, link }) {
     // This looks weird, but it's to support multiple types of quotation marks
     const href = link[1] || link[2] || link[3];
     
-    const external = slash(resolve(path.dirname(filename), href));
+    const external = resolve(path.dirname(filename), href);
+
+    // Remove any files that've already been encountered, they should be re-processed
+    if(external in processor.files) {
+        [ ...processor.dependents(external), external ].forEach((file) => processor.remove(file));
+    }
 
     // Remove the <link> element from the component to avoid double-loading
     content = content.replace(link[0], "");
