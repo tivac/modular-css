@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="14.2.1"></a>
+## [14.2.1](https://github.com/tivac/modular-css/compare/v14.2.0...v14.2.1) (2018-08-01)
+
+
+### Bug Fixes
+
+* remove files when re-preprocessing for svelte ([#463](https://github.com/tivac/modular-css/issues/463)) ([113cfa1](https://github.com/tivac/modular-css/commit/113cfa1)), closes [#462](https://github.com/tivac/modular-css/issues/462)
+
+
+
+
+
 <a name="14.2.0"></a>
 # [14.2.0](https://github.com/tivac/modular-css/compare/v14.1.0...v14.2.0) (2018-07-25)
 
