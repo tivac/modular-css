@@ -292,4 +292,32 @@ exports[`/svelte.js should ignore files without <style> blocks 1`] = `
 
 exports[`/svelte.js should ignore files without <style> blocks 2`] = `""`;
 
+exports[`/svelte.js should remove files before reprocessing in case they changed 1`] = `
+"
+<div class=\\"source\\">Source</div><script>
+    import css from \\"./source.css\\";
+</script>"
+`;
+
+exports[`/svelte.js should remove files before reprocessing in case they changed 2`] = `
+"/* packages/svelte/test/output/source.css */
+.source {
+    color: red;
+}"
+`;
+
+exports[`/svelte.js should remove files before reprocessing in case they changed 3`] = `
+"
+<div class=\\"source\\">Source</div><script>
+    import css from \\"./source.css\\";
+</script>"
+`;
+
+exports[`/svelte.js should remove files before reprocessing in case they changed 4`] = `
+"/* packages/svelte/test/output/source.css */
+.source {
+    color: blue;
+}"
+`;
+
 exports[`/svelte.js should throw on both <style> and <link> in one file 1`] = `"modular-css-svelte: use <style> OR <link>, but not both"`;

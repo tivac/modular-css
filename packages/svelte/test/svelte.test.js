@@ -1,6 +1,7 @@
 "use strict";
 
 const fs = require("fs");
+const path = require("path");
 
 const svelte = require("svelte");
 const dedent = require("dedent");
@@ -130,5 +131,51 @@ describe("/svelte.js", () => {
                 Object.assign({}, preprocess, { filename })
             )
         ).rejects.toThrowErrorMatchingSnapshot();
+    });
+
+    it("should remove files before reprocessing in case they changed", async () => {
+        // V1 of files
+        fs.writeFileSync(path.resolve(__dirname, "./output/source.html"), dedent(`
+            <link rel="stylesheet" href="./source.css" />
+            <div class="{css.source}">Source</div>
+        `));
+
+        fs.writeFileSync(path.resolve(__dirname, "./output/source.css"), dedent(`
+            .source {
+                color: red;
+            }
+        `));
+        
+        const filename = require.resolve(`./output/source.html`);
+        const { processor, preprocess } = plugin({ namer });
+
+        let processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        let output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
+        
+        // V2 of CSS
+        fs.writeFileSync(path.resolve(__dirname, "./output/source.css"), dedent(`
+        .source {
+            color: blue;
+        }
+        `));
+        
+        processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
     });
 });
