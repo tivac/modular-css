@@ -111,52 +111,54 @@ Processor.prototype = {
     },
     
     // Add a file by name + contents to the dependency graph
-    string(start, text) {
+    async string(start, text) {
         if(!path.isAbsolute(start)) {
             start = path.join(this._options.cwd, start);
         }
         
-        return this._walk(start, text).then(() => {
-            var deps = this._graph.dependenciesOf(start).concat(start);
+        await this._walk(start, text);
+        
+        const deps = this._graph.dependenciesOf(start).concat(start);
+        
+        await series(deps, async (dep) => {
+            var file = this._files[dep];
             
-            return series(deps, (dep) => {
-                var file = this._files[dep];
+            if(!file.processed) {
+                file.processed = this._process.process(
+                    file.result,
+                    params(this, {
+                        from  : dep,
+                        namer : this._options.namer,
+                    })
+                );
+            }
+            
+            const result = await file.processed;
+            
+            file.result = result;
+            
+            file.exports = Object.assign(
+                Object.create(null),
+                // export @value entries
+                mapValues(file.values, (obj) => obj.value),
                 
-                if(!file.processed) {
-                    file.processed = this._process.process(
-                        file.result,
-                        params(this, {
-                            from  : dep,
-                            namer : this._options.namer,
-                        })
-                    );
-                }
+                // export classes
+                message(result, "classes"),
                 
-                return file.processed.then((result) => {
-                    file.exports = Object.assign(
-                        Object.create(null),
-                        // export @value entries
-                        mapValues(file.values, (obj) => obj.value),
-                        
-                        // export classes
-                        message(result, "classes"),
-                        
-                        // Export anything from plugins named "modular-css-export*"
-                        result.messages
-                            .filter((msg) => msg.plugin.indexOf("modular-css-export") === 0)
-                            .reduce((prev, curr) => Object.assign(prev, curr.exports), Object.create(null))
-                    );
-                    file.result  = result;
-                });
-            });
-        })
-        .then(() => ({
+                // Export anything from plugins named "modular-css-export*"
+                result.messages
+                    .filter((msg) => msg.plugin.indexOf("modular-css-export") === 0)
+                    .reduce((prev, curr) => Object.assign(prev, curr.exports), Object.create(null))
+            );
+        });
+        
+        return {
             id      : start,
             file    : start,
             files   : this._files,
             details : this._files[start],
             exports : this._files[start].exports,
-        }));
+        };
     },
     
     // Remove a file from the dependency graph
@@ -202,7 +204,7 @@ Processor.prototype = {
     },
     
     // Get the ultimate output for specific files or the entire tree
-    output(args) {
+    async output(args) {
         var opts  = args || false,
             { files } = opts,
             ready;
@@ -228,7 +230,7 @@ Processor.prototype = {
         // Rewrite relative URLs before adding
         // Have to do this every time because target file might be different!
         //
-        return Promise.all(
+        const results = await Promise.all(
             files.map((dep) => this._after.process(
                 // NOTE: the call to .clone() is really important here, otherwise this call
                 // modifies the .result root itself and you process URLs multiple times
@@ -241,58 +243,56 @@ Processor.prototype = {
                     to   : opts.to,
                 })
             ))
-        )
-        .then((results) => {
-            // Clone the first result if available to get valid source information
-            var root = results.length ? results[0].root.clone() : postcss.root();
+        );
 
-            // Then destroy all its children before adding new ones
-            root.removeAll();
+        // Clone the first result if available to get valid source information
+        const root = results.length ? results[0].root.clone() : postcss.root();
 
-            results.forEach((result) => {
-                // Add file path comment
-                var comment = postcss.comment({
-                        text : relative(this._options.cwd, result.opts.from),
+        // Then destroy all its children before adding new ones
+        root.removeAll();
 
-                        // Add a bogus-ish source property so postcss won't make weird-looking
-                        // source-maps that break the visualizer
-                        //
-                        // https://github.com/postcss/postcss/releases/tag/5.1.0
-                        // https://github.com/postcss/postcss/pull/761
-                        // https://github.com/tivac/modular-css/pull/157
-                        //
-                        source : Object.assign(
-                            {},
-                            result.root.source,
-                            { end : result.root.source.start }
-                        ),
-                    }),
-                    idx;
+        results.forEach((result) => {
+            // Add file path comment
+            var comment = postcss.comment({
+                    text : relative(this._options.cwd, result.opts.from),
 
-                root.append([ comment ].concat(result.root.nodes));
-                
-                idx = root.index(comment);
-                
-                // Need to manually insert a newline after the comment, but can only
-                // do that via whatever comes after it for some reason?
-                // I'm not clear why comment nodes lack a `.raws.after` property
-                //
-                // https://github.com/postcss/postcss/issues/44
-                if(root.nodes[idx + 1]) {
-                    root.nodes[idx + 1].raws.before = "\n";
-                }
-            });
+                    // Add a bogus-ish source property so postcss won't make weird-looking
+                    // source-maps that break the visualizer
+                    //
+                    // https://github.com/postcss/postcss/releases/tag/5.1.0
+                    // https://github.com/postcss/postcss/pull/761
+                    // https://github.com/tivac/modular-css/pull/157
+                    //
+                    source : Object.assign(
+                        {},
+                        result.root.source,
+                        { end : result.root.source.start }
+                    ),
+                }),
+                idx;
+
+            root.append([ comment ].concat(result.root.nodes));
             
-            return this._done.process(
-                root,
-                params(this, args)
-            );
-        })
-        .then((result) => {
-            result.compositions = output.compositions(this._options.cwd, this);
+            idx = root.index(comment);
             
-            return result;
+            // Need to manually insert a newline after the comment, but can only
+            // do that via whatever comes after it for some reason?
+            // I'm not clear why comment nodes lack a `.raws.after` property
+            //
+            // https://github.com/postcss/postcss/issues/44
+            if(root.nodes[idx + 1]) {
+                root.nodes[idx + 1].raws.before = "\n";
+            }
         });
+        
+        const result = await this._done.process(
+            root,
+            params(this, args)
+        );
+
+        result.compositions = output.compositions(this._options.cwd, this);
+            
+        return result;
     },
     
     // Expose files
@@ -307,7 +307,7 @@ Processor.prototype = {
 
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
-    _walk(name, text) {
+    async _walk(name, text) {
         // No need to re-process files
         if(this._files[name]) {
             return Promise.resolve();
@@ -321,25 +321,24 @@ Processor.prototype = {
             values  : false,
         };
         
-        return this._before.process(
+        const result = await this._before.process(
             text,
             params(this, {
                 from : name,
             })
-        )
-        .then((result) => {
-            this._files[name].result = result;
+        );
 
-            // Walk this node's dependencies, reading new files from disk as necessary
-            return Promise.all(
-                this._graph.dependenciesOf(name).map((dependency) => this._walk(
-                    dependency,
-                    this._files[dependency] ?
-                        null :
-                        fs.readFileSync(dependency, "utf8")
-                ))
-            );
-        });
+        this._files[name].result = result;
+
+        // Walk this node's dependencies, reading new files from disk as necessary
+        await Promise.all(
+            this._graph.dependenciesOf(name).map((dependency) => this._walk(
+                dependency,
+                this._files[dependency] ?
+                    null :
+                    fs.readFileSync(dependency, "utf8")
+            ))
+        );
     },
 };
 
