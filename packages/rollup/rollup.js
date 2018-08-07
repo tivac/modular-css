@@ -96,6 +96,8 @@ module.exports = function(opts) {
                     
                     processor.remove(id);
                 }
+
+                console.log("[rollup]", runs, "Removing", files);
                                     
                 files.forEach((file) => processor.remove(file));
                     

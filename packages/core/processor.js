@@ -107,6 +107,8 @@ Processor.prototype = {
             file = path.join(this._options.cwd, file);
         }
 
+        console.log("[processor]", "file()", file);
+        
         return this.string(path.normalize(file), fs.readFileSync(file, "utf8"));
     },
     
@@ -116,6 +118,8 @@ Processor.prototype = {
             start = path.join(this._options.cwd, start);
         }
         
+        console.log("[processor]", "string()", start);
+        
         await this._walk(start, text);
         
         const deps = this._graph.dependenciesOf(start).concat(start);
@@ -124,6 +128,8 @@ Processor.prototype = {
             var file = this._files[dep];
             
             if(!file.processed) {
+                console.log("[processor]", "processing", dep);
+
                 file.processed = this._process.process(
                     file.result,
                     params(this, {
@@ -134,6 +140,8 @@ Processor.prototype = {
             }
             
             const result = await file.processed;
+
+            console.log("[processor]", "processed", dep);
             
             file.result = result;
             
@@ -151,6 +159,8 @@ Processor.prototype = {
                     .reduce((prev, curr) => Object.assign(prev, curr.exports), Object.create(null))
             );
         });
+
+        console.log("[processor]", "string() done", start);
         
         return {
             id      : start,
@@ -176,6 +186,8 @@ Processor.prototype = {
             delete this._files[file];
 
             this._graph.removeNode(file);
+
+            console.log("[processor]", "remove()", file);
         });
 
         return files;
