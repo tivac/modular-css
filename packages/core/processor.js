@@ -43,6 +43,7 @@ function Processor(opts) {
             cwd     : process.cwd(),
             map     : false,
             rewrite : true,
+            verbose : false,
         },
         opts
     );
@@ -63,6 +64,11 @@ function Processor(opts) {
     if(!Array.isArray(this._options.resolvers)) {
         this._options.resolvers = [];
     }
+
+    this._log = this._options.verbose ?
+        // eslint-disable-next-line no-console
+        console.log.bind(console, "[processor]") :
+        () => { /* NO-OP */ };
 
     this._resolve = resolve.resolvers(this._options.resolvers);
     
@@ -107,7 +113,7 @@ Processor.prototype = {
             file = path.join(this._options.cwd, file);
         }
 
-        console.log("[processor]", "file()", file);
+        this._log("file()", file);
         
         return this.string(path.normalize(file), fs.readFileSync(file, "utf8"));
     },
@@ -118,7 +124,7 @@ Processor.prototype = {
             start = path.join(this._options.cwd, start);
         }
         
-        console.log("[processor]", "string()", start);
+        this._log("string()", start);
         
         await this._walk(start, text);
         
@@ -128,7 +134,7 @@ Processor.prototype = {
             var file = this._files[dep];
             
             if(!file.processed) {
-                console.log("[processor]", "processing", dep);
+                this._log("processing", dep);
 
                 file.processed = this._process.process(
                     file.result,
@@ -141,7 +147,7 @@ Processor.prototype = {
             
             const result = await file.processed;
 
-            console.log("[processor]", "processed", dep);
+            this._log("processed", dep);
             
             file.result = result;
             
@@ -160,7 +166,7 @@ Processor.prototype = {
             );
         });
 
-        console.log("[processor]", "string() done", start);
+        this._log("string() done", start);
         
         return {
             id      : start,
@@ -187,7 +193,7 @@ Processor.prototype = {
 
             this._graph.removeNode(file);
 
-            console.log("[processor]", "remove()", file);
+            this._log("remove()", file);
         });
 
         return files;
