@@ -90,11 +90,8 @@ module.exports = function(opts) {
                         files.push(...dependents);
                     });
                 } else {
-                    // Entry file changed, remove all its dependents and
-                    // then re-process them
-                    files = processor.dependents(id);
-                    
-                    processor.remove(id);
+                    // Entry file changed, remove it and all its dependents
+                    files = [ id, ...processor.dependents(id) ];
                 }
 
                 console.log("[rollup]", runs, "Removing", files);
