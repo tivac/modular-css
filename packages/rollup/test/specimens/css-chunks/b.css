@@ -1,0 +1,5 @@
+.b {
+    composes: shared from "./shared.css";
+    
+    color: blue;
+}
