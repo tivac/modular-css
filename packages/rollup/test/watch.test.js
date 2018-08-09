@@ -152,6 +152,7 @@ describe("/rollup.js", () => {
             write(`./watch/dep-graph/one.css`, dedent(`
                 .one {
                     composes: two from "./two.css";
+                    composes: three from "./three.css";
                     color: red;
                 }
             `));
@@ -159,6 +160,12 @@ describe("/rollup.js", () => {
             write(`./watch/dep-graph/two.css`, dedent(`
                 .two {
                     color: blue;
+                }
+            `));
+            
+            write(`./watch/dep-graph/three.css`, dedent(`
+                .three {
+                    color: green;
                 }
             `));
             
@@ -313,6 +320,91 @@ describe("/rollup.js", () => {
                 }
                 
                 expect(read("./watch/shared-deps/assets/watch-output.css")).toMatchSnapshot();
+
+                return done();
+            }));
+        });
+        
+        it.skip("should watch when using code splitting", (done) => {
+            // Create v1 of the files
+            write(`./watch/code-splitting/one.css`, dedent(`
+                .one {
+                    composes: shared from "./shared.css";
+                    color: red;
+                }
+            `));
+
+            write(`./watch/code-splitting/two.css`, dedent(`
+                .two {
+                    color: green;
+                }
+            `));
+            
+            write(`./watch/code-splitting/shared.css`, dedent(`
+                @value baloo from "./values.css";
+
+                .shared {
+                    color: baloo;
+                }
+            `));
+            
+            write(`./watch/code-splitting/values.css`, dedent(`
+                @value baloo: blue;
+            `));
+            
+            write(`./watch/code-splitting/one.js`, dedent(`
+                import css from "./one.css";
+
+                console.log(css);
+            `));
+            
+            write(`./watch/code-splitting/two.js`, dedent(`
+                import two from "./two.css";
+                import "./shared.css";
+
+                console.log(css);
+            `));
+
+            // Start watching
+            watcher = watch({
+                experimentalCodeSplitting : true,
+
+                input : [
+                    require.resolve(prefix("./output/watch/code-splitting/one.js")),
+                    require.resolve(prefix("./output/watch/code-splitting/two.js")),
+                ],
+
+                output : {
+                    dir : prefix(`./output/watch/code-splitting`),
+                    format,
+                    assetFileNames,
+                },
+                
+                plugins : [
+                    plugin({
+                        map,
+                    }),
+                ],
+            });
+
+            watcher.on("event", watching((builds) => {
+                if(builds === 1) {
+                    expect(read("./watch/code-splitting/assets/one.css")).toMatchSnapshot();
+                    expect(read("./watch/code-splitting/assets/two.css")).toMatchSnapshot();
+                    expect(read("./watch/code-splitting/assets/common.css")).toMatchSnapshot();
+                    
+                    // Create v2 of the file we want to change
+                    write(`./watch/code-splitting/values.css`, dedent(`
+                        @value baloo: aqua;
+                    `));
+
+                    // continue watching
+                    return;
+                }
+                
+                expect(read("./watch/code-splitting/assets/one.css")).toMatchSnapshot();
+                expect(read("./watch/code-splitting/assets/two.css")).toMatchSnapshot();
+                expect(read("./watch/code-splitting/assets/common.css")).toMatchSnapshot();
 
                 return done();
             }));
