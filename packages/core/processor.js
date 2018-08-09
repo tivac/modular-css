@@ -68,7 +68,8 @@ function Processor(opts) {
     this._log = this._options.verbose ?
         // eslint-disable-next-line no-console
         console.log.bind(console, "[processor]") :
-        () => { /* NO-OP */ };
+        // eslint-disable-next-line no-empty-function
+        () => {};
 
     this._resolve = resolve.resolvers(this._options.resolvers);
     
