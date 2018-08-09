@@ -71,6 +71,10 @@ exports[`/rollup.js watch mode should update when a dependency changes 1`] = `
 .mc6f857f1c_two {
     color: blue;
 }
+/* packages/rollup/test/output/watch/dep-graph/three.css */
+.mc7228cc44_three {
+    color: green;
+}
 /* packages/rollup/test/output/watch/dep-graph/one.css */
 .mca3136a1b_one {
     color: red;
@@ -80,6 +84,10 @@ exports[`/rollup.js watch mode should update when a dependency changes 1`] = `
 exports[`/rollup.js watch mode should update when a dependency changes 2`] = `
 "/* packages/rollup/test/output/watch/dep-graph/two.css */
 .mc6f857f1c_two {
+    color: green;
+}
+/* packages/rollup/test/output/watch/dep-graph/three.css */
+.mc7228cc44_three {
     color: green;
 }
 /* packages/rollup/test/output/watch/dep-graph/one.css */
@@ -123,4 +131,56 @@ exports[`/rollup.js watch mode should update when adding new css files 1`] = `
 .mc54f12712_one {
     color: red;
 }"
+`;
+
+exports[`/rollup.js watch mode should watch when using code splitting 1`] = `
+"/* packages/rollup/test/output/watch/code-splitting/one.css */
+.mc204ad279_one {
+    color: red;
+}"
+`;
+
+exports[`/rollup.js watch mode should watch when using code splitting 2`] = `
+"/* packages/rollup/test/output/watch/code-splitting/two.css */
+.mc3861d3af_two {
+    color: green;
+}"
+`;
+
+exports[`/rollup.js watch mode should watch when using code splitting 3`] = `
+"/* packages/rollup/test/output/watch/code-splitting/values.css */
+/* packages/rollup/test/output/watch/code-splitting/shared.css */
+.mc4002e81f_shared {
+    color: blue;
+}"
+`;
+
+exports[`/rollup.js watch mode should watch when using code splitting 4`] = `
+"/* packages/rollup/test/output/watch/code-splitting/one.css */
+.mc204ad279_one {
+    color: red;
+}"
+`;
+
+exports[`/rollup.js watch mode should watch when using code splitting 5`] = `
+"/* packages/rollup/test/output/watch/code-splitting/two.css */
+.mc3861d3af_two {
+    color: green;
+}"
+`;
+
+exports[`/rollup.js watch mode should watch when using code splitting 6`] = `
+"/* packages/rollup/test/output/watch/code-splitting/one.css */
+.mc204ad279_one {
+    color: red;
+}
+/* packages/rollup/test/output/watch/code-splitting/two.css */
+.mc3861d3af_two {
+    color: green;
+}
+/* packages/rollup/test/output/watch/code-splitting/shared.css */
+.mc4002e81f_shared {
+    color: blue;
+}
+/* packages/rollup/test/output/watch/code-splitting/values.css */"
 `;

@@ -52,18 +52,15 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            // Create v2 of the file after a bit
-            setTimeout(() => {
-                write(`./watch/change/watched.css`, dedent(`
-                    .two {
-                        color: blue;
-                    }
-                `));
-            }, 200);
-            
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
                     expect(read("./watch/change/assets/watch-output.css")).toMatchSnapshot();
+
+                    setTimeout(() => write(`./watch/change/watched.css`, dedent(`
+                        .two {
+                            color: blue;
+                        }
+                    `)), 100);
 
                     // continue watching
                     return;
@@ -112,29 +109,26 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            // Create v2 of the file after a bit
-            setTimeout(() => {
-                write(`./watch/change-composes/watched.css`, dedent(`
-                    .one {
-                        color: green;
-                    }
-
-                    .two {
-                        composes: one;
-                        background: blue;
-                    }
-
-                    .three {
-                        composes: one;
-                        color: teal;
-                    }
-                `));
-            }, 200);
-
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
                     expect(read("./watch/change-composes/assets/watch-output.css")).toMatchSnapshot();
                     expect(read("./watch/change-composes/watch-output.js")).toMatchSnapshot();
+
+                    setTimeout(() => write(`./watch/change-composes/watched.css`, dedent(`
+                        .one {
+                            color: green;
+                        }
+
+                        .two {
+                            composes: one;
+                            background: blue;
+                        }
+
+                        .three {
+                            composes: one;
+                            color: teal;
+                        }
+                    `)), 100);
 
                     // continue watching
                     return;
@@ -152,6 +146,7 @@ describe("/rollup.js", () => {
             write(`./watch/dep-graph/one.css`, dedent(`
                 .one {
                     composes: two from "./two.css";
+                    composes: three from "./three.css";
                     color: red;
                 }
             `));
@@ -159,6 +154,12 @@ describe("/rollup.js", () => {
             write(`./watch/dep-graph/two.css`, dedent(`
                 .two {
                     color: blue;
+                }
+            `));
+            
+            write(`./watch/dep-graph/three.css`, dedent(`
+                .three {
+                    color: green;
                 }
             `));
             
@@ -182,18 +183,15 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            // Create v2 of the file after a bit
-            setTimeout(() => {
-                write(`./watch/dep-graph/two.css`, dedent(`
-                    .two {
-                        color: green;
-                    }
-                `));
-            }, 200);
-            
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
                     expect(read("./watch/dep-graph/assets/watch-output.css")).toMatchSnapshot();
+
+                    setTimeout(() => write(`./watch/dep-graph/two.css`, dedent(`
+                        .two {
+                            color: green;
+                        }
+                    `)), 100);
 
                     // continue watching
                     return;
@@ -232,16 +230,15 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            // Create v2 of the file after a bit
-            setTimeout(() => write(`./watch/new-file/watch.js`, dedent(`
-                import css from "./one.css";
-
-                console.log(css);
-            `)), 200);
-            
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
                     expect(exists("./new-file/assets/watch-output.css")).toBe(false);
+
+                    setTimeout(() => write(`./watch/new-file/watch.js`, dedent(`
+                        import css from "./one.css";
+
+                        console.log(css);
+                    `)), 100);
 
                     // continue watching
                     return;
@@ -297,22 +294,107 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            // Create v2 of the file after a bit
-            setTimeout(() => write(`./watch/shared-deps/two.css`, dedent(`
-                .two {
-                    color: yellow;
-                }
-            `)), 200);
-
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
                     expect(read("./watch/shared-deps/assets/watch-output.css")).toMatchSnapshot();
                     
+                    setTimeout(() => write(`./watch/shared-deps/two.css`, dedent(`
+                        .two {
+                            color: yellow;
+                        }
+                    `)), 100);
+
                     // continue watching
                     return;
                 }
                 
                 expect(read("./watch/shared-deps/assets/watch-output.css")).toMatchSnapshot();
+
+                return done();
+            }));
+        });
+        
+        // TODO: causing jest to hang but say the test has completed weirdly
+        it.skip("should watch when using code splitting", (done) => {
+            // Create v1 of the files
+            write(`./watch/code-splitting/one.css`, dedent(`
+                .one {
+                    composes: shared from "./shared.css";
+                    color: red;
+                }
+            `));
+
+            write(`./watch/code-splitting/two.css`, dedent(`
+                .two {
+                    color: green;
+                }
+            `));
+            
+            write(`./watch/code-splitting/shared.css`, dedent(`
+                @value baloo from "./values.css";
+
+                .shared {
+                    color: baloo;
+                }
+            `));
+            
+            write(`./watch/code-splitting/values.css`, dedent(`
+                @value baloo: blue;
+            `));
+            
+            write(`./watch/code-splitting/one.js`, dedent(`
+                import css from "./one.css";
+
+                console.log(css);
+            `));
+            
+            write(`./watch/code-splitting/two.js`, dedent(`
+                import two from "./two.css";
+                import "./shared.css";
+
+                console.log(css);
+            `));
+
+            // Start watching
+            watcher = watch({
+                experimentalCodeSplitting : true,
+
+                input : [
+                    require.resolve(prefix("./output/watch/code-splitting/one.js")),
+                    require.resolve(prefix("./output/watch/code-splitting/two.js")),
+                ],
+
+                output : {
+                    dir : prefix(`./output/watch/code-splitting`),
+                    format,
+                    assetFileNames,
+                },
+                
+                plugins : [
+                    plugin({
+                        map,
+                    }),
+                ],
+            });
+
+            watcher.on("event", watching((builds) => {
+                if(builds === 1) {
+                    expect(read("./watch/code-splitting/assets/one.css")).toMatchSnapshot();
+                    expect(read("./watch/code-splitting/assets/two.css")).toMatchSnapshot();
+                    expect(read("./watch/code-splitting/assets/common.css")).toMatchSnapshot();
+                    
+                    // Create v2 of the file we want to change
+                    setTimeout(() => write(`./watch/code-splitting/values.css`, dedent(`
+                        @value baloo: aqua;
+                    `)), 100);
+
+                    // continue watching
+                    return;
+                }
+                
+                expect(read("./watch/code-splitting/assets/one.css")).toMatchSnapshot();
+                expect(read("./watch/code-splitting/assets/two.css")).toMatchSnapshot();
+                expect(read("./watch/code-splitting/assets/common.css")).toMatchSnapshot();
 
                 return done();
             }));
