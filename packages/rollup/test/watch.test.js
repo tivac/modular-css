@@ -56,11 +56,11 @@ describe("/rollup.js", () => {
                 if(builds === 1) {
                     expect(read("./watch/change/assets/watch-output.css")).toMatchSnapshot();
 
-                    process.nextTick(() => write(`./watch/change/watched.css`, dedent(`
+                    setTimeout(() => write(`./watch/change/watched.css`, dedent(`
                         .two {
                             color: blue;
                         }
-                    `)));
+                    `)), 100);
 
                     // continue watching
                     return;
@@ -114,7 +114,7 @@ describe("/rollup.js", () => {
                     expect(read("./watch/change-composes/assets/watch-output.css")).toMatchSnapshot();
                     expect(read("./watch/change-composes/watch-output.js")).toMatchSnapshot();
 
-                    process.nextTick(() => write(`./watch/change-composes/watched.css`, dedent(`
+                    setTimeout(() => write(`./watch/change-composes/watched.css`, dedent(`
                         .one {
                             color: green;
                         }
@@ -128,7 +128,7 @@ describe("/rollup.js", () => {
                             composes: one;
                             color: teal;
                         }
-                    `)));
+                    `)), 100);
 
                     // continue watching
                     return;
@@ -187,11 +187,11 @@ describe("/rollup.js", () => {
                 if(builds === 1) {
                     expect(read("./watch/dep-graph/assets/watch-output.css")).toMatchSnapshot();
 
-                    process.nextTick(() => write(`./watch/dep-graph/two.css`, dedent(`
+                    setTimeout(() => write(`./watch/dep-graph/two.css`, dedent(`
                         .two {
                             color: green;
                         }
-                    `)));
+                    `)), 100);
 
                     // continue watching
                     return;
@@ -234,11 +234,11 @@ describe("/rollup.js", () => {
                 if(builds === 1) {
                     expect(exists("./new-file/assets/watch-output.css")).toBe(false);
 
-                    process.nextTick(() => write(`./watch/new-file/watch.js`, dedent(`
+                    setTimeout(() => write(`./watch/new-file/watch.js`, dedent(`
                         import css from "./one.css";
 
                         console.log(css);
-                    `)));
+                    `)), 100);
 
                     // continue watching
                     return;
@@ -298,11 +298,11 @@ describe("/rollup.js", () => {
                 if(builds === 1) {
                     expect(read("./watch/shared-deps/assets/watch-output.css")).toMatchSnapshot();
                     
-                    process.nextTick(() => write(`./watch/shared-deps/two.css`, dedent(`
+                    setTimeout(() => write(`./watch/shared-deps/two.css`, dedent(`
                         .two {
                             color: yellow;
                         }
-                    `)));
+                    `)), 100);
 
                     // continue watching
                     return;
@@ -384,9 +384,9 @@ describe("/rollup.js", () => {
                     expect(read("./watch/code-splitting/assets/common.css")).toMatchSnapshot();
                     
                     // Create v2 of the file we want to change
-                    process.nextTick(() => write(`./watch/code-splitting/values.css`, dedent(`
+                    setTimeout(() => write(`./watch/code-splitting/values.css`, dedent(`
                         @value baloo: aqua;
-                    `)));
+                    `)), 100);
 
                     // continue watching
                     return;
