@@ -1,115 +1,135 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/rollup.js code splitting should support dynamic imports 1`] = `
-"/* packages/rollup/test/specimens/dynamic-imports/a.css */
+Array [
+  Object {
+    "file": "a.css",
+    "text": "/* packages/rollup/test/specimens/dynamic-imports/a.css */
 .a {
 
     color: aqua;
 }
-"
-`;
-
-exports[`/rollup.js code splitting should support dynamic imports 2`] = `
-"/* packages/rollup/test/specimens/dynamic-imports/b.css */
+",
+  },
+  Object {
+    "file": "b.css",
+    "text": "/* packages/rollup/test/specimens/dynamic-imports/b.css */
 .b {
     color: blue;
 }
-"
-`;
-
-exports[`/rollup.js code splitting should support dynamic imports 3`] = `
-"/* packages/rollup/test/specimens/dynamic-imports/c.css */
+",
+  },
+  Object {
+    "file": "c.css",
+    "text": "/* packages/rollup/test/specimens/dynamic-imports/c.css */
 .c {
     
     color: cyan;
 }
-"
-`;
-
-exports[`/rollup.js code splitting should support dynamic imports 4`] = `
-"/* packages/rollup/test/specimens/dynamic-imports/d.css */
+",
+  },
+  Object {
+    "file": "common.css",
+    "text": "/* packages/rollup/test/specimens/dynamic-imports/d.css */
 .d {
     color: darkred;
 }
-"
+",
+  },
+]
 `;
 
 exports[`/rollup.js code splitting should support manual chunks 1`] = `
-"/* packages/rollup/test/specimens/manual-chunks/a.css */
+Array [
+  Object {
+    "file": "a.css",
+    "text": "/* packages/rollup/test/specimens/manual-chunks/a.css */
 .a {
 
     color: red;
 }
-"
-`;
-
-exports[`/rollup.js code splitting should support manual chunks 2`] = `
-"/* packages/rollup/test/specimens/manual-chunks/b.css */
+",
+  },
+  Object {
+    "file": "b.css",
+    "text": "/* packages/rollup/test/specimens/manual-chunks/b.css */
 .b {
 
     color: blue;
 }
-"
-`;
-
-exports[`/rollup.js code splitting should support manual chunks 3`] = `
-"/* packages/rollup/test/specimens/manual-chunks/d.css */
+",
+  },
+  Object {
+    "file": "common.css",
+    "text": "/* packages/rollup/test/specimens/manual-chunks/d.css */
 /* packages/rollup/test/specimens/manual-chunks/c.css */
 .c {
     color: green;
     background: darkred;
 }
-"
+",
+  },
+]
 `;
 
 exports[`/rollup.js code splitting should support splitting up CSS files 1`] = `
-"/* packages/rollup/test/specimens/simple.css */
+Array [
+  Object {
+    "file": "common.css",
+    "text": "/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }
-"
-`;
-
-exports[`/rollup.js code splitting should support splitting up CSS files 2`] = `
-"/* packages/rollup/test/specimens/dependencies.css */
+",
+  },
+  Object {
+    "file": "dependencies.css",
+    "text": "/* packages/rollup/test/specimens/dependencies.css */
 .wooga {
 
     background: blue;
 }
-"
+",
+  },
+]
 `;
 
 exports[`/rollup.js code splitting should support splitting up CSS files w/ shared assets 1`] = `
-"/* packages/rollup/test/specimens/css-chunks/a.css */
+Array [
+  Object {
+    "file": "a.css",
+    "text": "/* packages/rollup/test/specimens/css-chunks/a.css */
 .a {
 
     color: aqua;
 }
-"
-`;
-
-exports[`/rollup.js code splitting should support splitting up CSS files w/ shared assets 2`] = `
-"/* packages/rollup/test/specimens/css-chunks/b.css */
+",
+  },
+  Object {
+    "file": "b.css",
+    "text": "/* packages/rollup/test/specimens/css-chunks/b.css */
 .b {
     
     color: blue;
 }
-"
-`;
-
-exports[`/rollup.js code splitting should support splitting up CSS files w/ shared assets 3`] = `
-"/* packages/rollup/test/specimens/css-chunks/c.css */
+",
+  },
+  Object {
+    "file": "chunk.css",
+    "text": "/* packages/rollup/test/specimens/css-chunks/c.css */
 .c {
 
     color: cyan;
 }
-"
-`;
-
-exports[`/rollup.js code splitting should support splitting up CSS files w/ shared assets 4`] = `
-"/* packages/rollup/test/specimens/css-chunks/shared.css */
+",
+  },
+  Object {
+    "file": "common.css",
+    "text": "/* packages/rollup/test/specimens/css-chunks/shared.css */
 .shared {
     color: snow;
 }
-"
+",
+  },
+]
 `;

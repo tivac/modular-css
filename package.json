@@ -36,6 +36,7 @@
     "lerna": "^3.0.0-rc.0",
     "modular-css-core": "file:./packages/core",
     "pegjs": "^0.10.0",
+    "read-dir-deep": "^1.0.4",
     "rollup": "^0.63.5",
     "rollup-plugin-svelte": "^4.2.1",
     "shelljs": "^0.8.1",
