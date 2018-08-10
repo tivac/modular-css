@@ -5,7 +5,7 @@ const { rollup } = require("rollup");
 
 const shell = require("shelljs");
 
-const read = require("test-utils/read.js")(__dirname);
+const dir = require("test-utils/read-dir.js")(__dirname);
 const prefix = require("test-utils/prefix.js")(__dirname);
 const namer = require("test-utils/namer.js");
 
@@ -54,8 +54,7 @@ describe("/rollup.js", () => {
                 dir : prefix(`./output/rollup/splitting`),
             });
 
-            expect(read("./rollup/splitting/assets/common.css")).toMatchSnapshot();
-            expect(read("./rollup/splitting/assets/dependencies.css")).toMatchSnapshot();
+            expect(dir("./rollup/splitting/assets")).toMatchSnapshot();
         });
 
         it("should support splitting up CSS files w/ shared assets", async () => {
@@ -84,10 +83,36 @@ describe("/rollup.js", () => {
                 dir : prefix(`./output/rollup/css-chunking`),
             });
 
-            expect(read("./rollup/css-chunking/assets/a.css")).toMatchSnapshot();
-            expect(read("./rollup/css-chunking/assets/b.css")).toMatchSnapshot();
-            expect(read("./rollup/css-chunking/assets/chunk.css")).toMatchSnapshot();
-            expect(read("./rollup/css-chunking/assets/common.css")).toMatchSnapshot();
+            expect(dir("./rollup/css-chunking/assets")).toMatchSnapshot();
+        });
+        
+        it("shouldn't put bundle-specific CSS in common.css", async () => {
+            const bundle = await rollup({
+                experimentalCodeSplitting,
+
+                input : [
+                    require.resolve("./specimens/common-splitting/a.js"),
+                    require.resolve("./specimens/common-splitting/c.js"),
+                ],
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map,
+                    }),
+                ],
+            });
+
+            await bundle.write({
+                format,
+
+                assetFileNames,
+                chunkFileNames,
+
+                dir : prefix(`./output/rollup/common-splitting`),
+            });
+
+            expect(dir("./rollup/common-splitting/assets")).toMatchSnapshot();
         });
 
         it("should support manual chunks", async () => {
@@ -122,9 +147,7 @@ describe("/rollup.js", () => {
                 dir : prefix(`./output/rollup/manual-chunks`),
             });
 
-            expect(read("./rollup/manual-chunks/assets/a.css")).toMatchSnapshot();
-            expect(read("./rollup/manual-chunks/assets/b.css")).toMatchSnapshot();
-            expect(read("./rollup/manual-chunks/assets/common.css")).toMatchSnapshot();
+            expect(dir("./rollup/manual-chunks/assets")).toMatchSnapshot();
         });
 
         it("should support dynamic imports", async () => {
@@ -155,10 +178,7 @@ describe("/rollup.js", () => {
                 dir : prefix(`./output/rollup/dynamic-imports`),
             });
 
-            expect(read("./rollup/dynamic-imports/assets/a.css")).toMatchSnapshot();
-            expect(read("./rollup/dynamic-imports/assets/b.css")).toMatchSnapshot();
-            expect(read("./rollup/dynamic-imports/assets/c.css")).toMatchSnapshot();
-            expect(read("./rollup/dynamic-imports/assets/common.css")).toMatchSnapshot();
+            expect(dir("./rollup/dynamic-imports/assets/")).toMatchSnapshot();
         });
     });
 });

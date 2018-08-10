@@ -177,18 +177,16 @@ module.exports = function(opts) {
             }
 
             // First pass is used to calculate JS usage of CSS dependencies
-            Object.keys(bundles).forEach((entry) => {
+            Object.entries(bundles).forEach(([ entry, bundle ]) => {
                 const file = makeFile({
                     entry,
-                    css : [],
+                    css : new Set(),
                 });
 
-                // Get CSS files being used by each entry point
-                const css = Object.keys(bundles[entry].modules).filter(filter);
+                const { modules } = bundle;
 
-                if(!css.length) {
-                    return;
-                }
+                // Get CSS files being used by each entry point
+                const css = Object.keys(modules).filter(filter);
 
                 // Get dependency chains for each file
                 css.forEach((start) => {
@@ -197,10 +195,14 @@ module.exports = function(opts) {
                         start,
                     ];
 
-                    file.css.push(...used);
-
                     used.forEach((dep) => {
-                        usage.set(dep, (usage.get(dep) || 0) + 1);
+                        file.css.add(dep);
+
+                        if(!usage.has(dep)) {
+                            usage.set(dep, new Set());
+                        }
+
+                        usage.get(dep).add(entry);
                     });
                 });
 
@@ -209,22 +211,22 @@ module.exports = function(opts) {
 
             if(files.length === 1) {
                 // Only one entry file means we only need one bundle.
-                files[0].css = processor.dependencies();
+                files[0].css = new Set(processor.dependencies());
             } else {
                 // Multiple bundles means ref-counting to find the shared deps
                 // Second pass removes any dependencies appearing in multiple bundles
                 files.forEach((file) => {
                     const { css } = file;
 
-                    file.css = css.filter((dep) => {
-                        if(usage.get(dep) > 1) {
+                    file.css = new Set([ ...css ].filter((dep) => {
+                        if(usage.get(dep).size > 1) {
                             common.set(dep, true);
 
                             return false;
                         }
 
                         return true;
-                    });
+                    }));
                 });
 
                 // Add any other files that weren't part of a bundle to the common chunk
@@ -238,25 +240,24 @@ module.exports = function(opts) {
                 if(common.size) {
                     files.push(makeFile({
                         entry : options.common,
-                        css   : [ ...common.keys() ],
+                        css   : new Set([ ...common.keys() ]),
                     }));
                 }
             }
-            
+
             await Promise.all(
                 files
-                .filter(({ css }) => css.length)
-                .map(async (details) => {
-                    const { base, name, css } = details;
+                .filter(({ css }) => css.size)
+                .map(async ({ base, name, css }) => {
                     const id = this.emitAsset(`${base}.css`);
 
                     const result = await processor.output({
                         to : to.replace(/\[(name|extname)\]/g, (match, field) =>
                             (field === "name" ? name : ".css")
                         ),
-                        files : css,
+                        files : [ ...css ],
                     });
-                    
+
                     this.setAssetSource(id, result.css);
 
                     if(options.json) {
