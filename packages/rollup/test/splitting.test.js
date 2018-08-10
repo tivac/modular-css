@@ -85,6 +85,35 @@ describe("/rollup.js", () => {
 
             expect(dir("./rollup/css-chunking/assets")).toMatchSnapshot();
         });
+        
+        it("shouldn't put bundle-specific CSS in common.css", async () => {
+            const bundle = await rollup({
+                experimentalCodeSplitting,
+
+                input : [
+                    require.resolve("./specimens/common-splitting/a.js"),
+                    require.resolve("./specimens/common-splitting/c.js"),
+                ],
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map,
+                    }),
+                ],
+            });
+
+            await bundle.write({
+                format,
+
+                assetFileNames,
+                chunkFileNames,
+
+                dir : prefix(`./output/rollup/common-splitting`),
+            });
+
+            expect(dir("./rollup/common-splitting/assets")).toMatchSnapshot();
+        });
 
         it("should support manual chunks", async () => {
             const bundle = await rollup({

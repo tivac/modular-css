@@ -133,3 +133,34 @@ Array [
   },
 ]
 `;
+
+exports[`/rollup.js code splitting shouldn't put bundle-specific CSS in common.css 1`] = `
+Array [
+  Object {
+    "file": "a.css",
+    "text": "/* packages/rollup/test/specimens/common-splitting/shared.css */
+.shared {
+    color: snow;
+}
+/* packages/rollup/test/specimens/common-splitting/a.css */
+.a {
+
+    color: aqua;
+}
+/* packages/rollup/test/specimens/common-splitting/b.css */
+.b {
+
+    color: blue;
+}
+",
+  },
+  Object {
+    "file": "c.css",
+    "text": "/* packages/rollup/test/specimens/common-splitting/c.css */
+.c {
+    color: cyan;
+}
+",
+  },
+]
+`;
