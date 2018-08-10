@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="14.4.0"></a>
+# [14.4.0](https://github.com/tivac/modular-css/compare/v14.3.0...v14.4.0) (2018-08-10)
+
+
+### Features
+
+* bundle specific ref-counting ([#467](https://github.com/tivac/modular-css/issues/467)) ([3d38d46](https://github.com/tivac/modular-css/commit/3d38d46)), closes [#466](https://github.com/tivac/modular-css/issues/466)
+
+
+
+
+
 <a name="14.3.0"></a>
 # [14.3.0](https://github.com/tivac/modular-css/compare/v14.2.1...v14.3.0) (2018-08-09)
 
