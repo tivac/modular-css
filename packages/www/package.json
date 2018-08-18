@@ -15,26 +15,26 @@
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "dependencies": {
-    "clipboard": "^1.7.1",
-    "codemirror": "^5.31.0",
-    "memory-fs": "^0.4.1",
-    "mithril": "^1.1.5",
+    "clipboard": "1.7.1",
+    "codemirror": "5.39.2",
+    "memory-fs": "0.4.1",
+    "mithril": "1.1.6",
     "modular-css-core": "file:../core",
-    "path-parse": "^1.0.5",
-    "throttleit": "^1.0.0"
+    "path-parse": "1.0.6",
+    "throttleit": "1.0.0"
   },
   "devDependencies": {
-    "buble-loader": "^0.4.1",
-    "copy-webpack-plugin": "^4.2.0",
-    "cssnano-cli": "^1.0.5",
-    "html-webpack-plugin": "^2.30.1",
+    "buble-loader": "0.4.1",
+    "copy-webpack-plugin": "4.5.2",
+    "cssnano-cli": "1.0.5",
+    "html-webpack-plugin": "2.30.1",
     "modular-css-namer": "^14.4.0",
     "modular-css-webpack": "^14.4.0",
-    "surge": "^0.19.0",
-    "webpack": "^3.5.6",
-    "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-common-shake": "^1.2.0",
-    "webpack-dev-server": "^2.9.4"
+    "surge": "0.19.0",
+    "webpack": "3.12.0",
+    "webpack-cleanup-plugin": "0.5.1",
+    "webpack-common-shake": "1.5.3",
+    "webpack-dev-server": "2.11.2"
   },
   "eslintConfig": {
     "parserOptions": {
