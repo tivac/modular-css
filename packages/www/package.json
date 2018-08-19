@@ -15,7 +15,7 @@
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "dependencies": {
-    "clipboard": "1.7.1",
+    "clipboard": "2.0.1",
     "codemirror": "5.39.2",
     "memory-fs": "0.4.1",
     "mithril": "1.1.6",
