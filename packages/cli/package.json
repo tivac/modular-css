@@ -23,6 +23,6 @@
     "meow": "^3.7.0",
     "mkdirp": "^0.5.1",
     "modular-css-core": "file:../core",
-    "modular-css-glob": "^14.4.0"
+    "modular-css-glob": "file:../glob"
   }
 }

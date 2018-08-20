@@ -27,7 +27,6 @@ before_install:
 # Use npm ci command for all dependencies
 install:
 - npm ci
-- lerna exec -- npm ci
 
 script:
 - npm test -- --verbose --ci
