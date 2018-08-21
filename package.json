@@ -32,7 +32,7 @@
     "from2-string": "1.1.0",
     "jest": "23.5.0",
     "jest-cli": "23.5.0",
-    "lerna": "3.1.2",
+    "lerna": "3.1.4",
     "www": "file:packages/www",
     "pegjs": "0.10.0",
     "read-dir-deep": "1.0.4",
