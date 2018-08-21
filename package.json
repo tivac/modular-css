@@ -42,7 +42,7 @@
     "svelte": "2.11.0",
     "test-utils": "file:packages/test-utils",
     "watchify": "3.11.0",
-    "webpack": "4.16.5"
+    "webpack": "4.17.0"
   },
   "dependencies": {
     "modular-css-aliases": "file:packages/aliases",
