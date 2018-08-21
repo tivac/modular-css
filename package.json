@@ -48,7 +48,7 @@
     "www": "file:packages/www",
     "pegjs": "0.10.0",
     "read-dir-deep": "1.0.4",
-    "rollup": "0.63.5",
+    "rollup": "0.64.1",
     "rollup-plugin-svelte": "4.2.1",
     "shelljs": "0.8.2",
     "svelte": "2.11.0",
