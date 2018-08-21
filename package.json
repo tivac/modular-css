@@ -9,7 +9,6 @@
     "url": "https://github.com/tivac/modular-css/issues"
   },
   "scripts": {
-    "clean": "lerna clean",
     "cover": "jest --coverage",
     "lint": "eslint .",
     "parser": "pegjs packages/core/parsers/parser.pegjs",
@@ -34,17 +33,6 @@
     "jest": "23.5.0",
     "jest-cli": "23.5.0",
     "lerna": "3.1.2",
-    "modular-css-aliases": "file:packages/aliases",
-    "modular-css-cli": "file:packages/cli",
-    "modular-css-core": "file:packages/core",
-    "modular-css-glob": "file:packages/glob",
-    "modular-css-namer": "file:packages/namer",
-    "modular-css-paths": "file:packages/paths",
-    "modular-css-rollup": "file:packages/rollup",
-    "modular-css-svelte": "file:packages/svelte",
-    "modular-css-webpack": "file:packages/webpack",
-    "modular-cssify": "file:packages/browserify",
-    "postcss-modular-css": "file:packages/postcss",
     "www": "file:packages/www",
     "pegjs": "0.10.0",
     "read-dir-deep": "1.0.4",
@@ -55,6 +43,19 @@
     "test-utils": "file:packages/test-utils",
     "watchify": "3.11.0",
     "webpack": "4.16.5"
+  },
+  "dependencies": {
+    "modular-css-aliases": "file:packages/aliases",
+    "modular-css-cli": "file:packages/cli",
+    "modular-css-core": "file:packages/core",
+    "modular-css-glob": "file:packages/glob",
+    "modular-css-namer": "file:packages/namer",
+    "modular-css-paths": "file:packages/paths",
+    "modular-css-rollup": "file:packages/rollup",
+    "modular-css-svelte": "file:packages/svelte",
+    "modular-css-webpack": "file:packages/webpack",
+    "modular-cssify": "file:packages/browserify",
+    "postcss-modular-css": "file:packages/postcss"
   },
   "lint-staged": {
     "*.js": [
