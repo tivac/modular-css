@@ -24,7 +24,7 @@
     "throttleit": "1.0.0"
   },
   "devDependencies": {
-    "buble-loader": "0.4.1",
+    "buble-loader": "0.5.1",
     "copy-webpack-plugin": "4.5.2",
     "cssnano-cli": "1.0.5",
     "html-webpack-plugin": "2.30.1",
