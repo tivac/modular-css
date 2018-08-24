@@ -23,7 +23,7 @@
     "@tivac/eslint-config": "2.2.1",
     "browserify": "16.2.2",
     "cli-tester": "2.0.0",
-    "cssnano": "4.0.5",
+    "cssnano": "4.1.0",
     "dedent": "0.7.0",
     "dentist": "1.0.3",
     "eslint": "5.4.0",
