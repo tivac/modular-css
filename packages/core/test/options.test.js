@@ -370,42 +370,6 @@ describe("/processor.js", () => {
                     .then(() => processor.output({ from : "packages/core/test/specimens/async-done.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
-
-                it("should work with cssnano (no preset)", () => {
-                    var processor = new Processor({
-                            namer,
-                            done : [ require("cssnano") ],
-                        });
-
-                    return processor.file(
-                        "./packages/core/test/specimens/local.css"
-                    )
-                    .then(() => processor.output({
-                        from : "packages/core/test/specimens/rewrite.css",
-                        to   : "./packages/core/test/output/local.css",
-                    }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
-                });
-
-                it("should work with cssnano (default preset)", () => {
-                    var processor = new Processor({
-                            namer,
-                            done : [
-                                require("cssnano")({
-                                    preset : "default",
-                                }),
-                            ],
-                        });
-
-                    return processor.file(
-                        "./packages/core/test/specimens/local.css"
-                    )
-                    .then(() => processor.output({
-                        from : "packages/core/test/specimens/rewrite.css",
-                        to   : "./packages/core/test/output/local.css",
-                    }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
-                });
             });
         });
     });
