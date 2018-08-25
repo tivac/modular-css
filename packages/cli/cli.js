@@ -1,38 +1,38 @@
 #!/usr/bin/env node
 "use strict";
 
-var fs   = require("fs"),
-    path = require("path"),
-    
-    mkdirp = require("mkdirp"),
-    glob = require("modular-css-glob"),
-    cli = require("meow")(`
-        Usage
-        $ modular-css [options] <glob>...
+const fs   = require("fs");
+const path = require("path");
 
-        Options
-        --dir,     -d <dir>    Directory to search from [process cwd]
-        --out,     -o <file>   File to write output CSS to [stdout]
-        --json,    -j <file>   File to write output compositions JSON to
-        --map,     -m          Include inline source map in output
-        --rewrite, -r          Control rewriting of url() references in CSS
-        --help                 Show this help
-    `, {
-        alias : {
-            dir     : "d",
-            json    : "j",
-            map     : "m",
-            out     : "o",
-            rewrite : "r",
-        },
+const mkdirp = require("mkdirp");
+const glob = require("modular-css-glob");
+const cli = require("meow")(`
+    Usage
+    $ modular-css [options] <glob>...
 
-        default : {
-            rewrite : true,
-        },
+    Options
+    --dir,     -d <dir>    Directory to search from [process cwd]
+    --out,     -o <file>   File to write output CSS to [stdout]
+    --json,    -j <file>   File to write output compositions JSON to
+    --map,     -m          Include inline source map in output
+    --rewrite, -r          Control rewriting of url() references in CSS
+    --help                 Show this help
+`, {
+    alias : {
+        dir     : "d",
+        json    : "j",
+        map     : "m",
+        out     : "o",
+        rewrite : "r",
+    },
 
-        string  : [ "dir", "out", "json" ],
-        boolean : [ "map", "rewrite", "help" ],
-    });
+    default : {
+        rewrite : true,
+    },
+
+    string  : [ "dir", "out", "json" ],
+    boolean : [ "map", "rewrite", "help" ],
+});
 
 // It's not immediately obvious, but this ends the program too...
 if(!cli.input.length) {

@@ -57,10 +57,6 @@ exports[`/processor.js options lifecycle options done should run sync postcss pl
 a {}"
 `;
 
-exports[`/processor.js options lifecycle options done should work with cssnano (default preset) 1`] = `".folder{margin:2px}.booga{background:green}"`;
-
-exports[`/processor.js options lifecycle options done should work with cssnano (no preset) 1`] = `".folder{margin:2px}.booga{background:green}"`;
-
 exports[`/processor.js options lifecycle options processing should include exports from 'modular-css-export' modules 1`] = `
 Object {
   "a": true,

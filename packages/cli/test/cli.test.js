@@ -14,7 +14,7 @@ describe("/cli.js", () => {
             cli
         );
 
-        expect(out.code).toBe(0);
+        expect(out.code).toBe(2);
         expect(out.stdout).toMatchSnapshot();
     });
 
@@ -63,7 +63,7 @@ describe("/cli.js", () => {
     it("should support disabling url() rewriting (--no-rewrite)", async () => {
         const out = await tester(
             cli,
-            "--rewrite=false",
+            "--no-rewrite",
             "--out=./packages/cli/test/output/no-rewrite.css",
             "./packages/cli/test/specimens/no-rewrite.css"
         );

@@ -31,83 +31,81 @@ function params(processor, args) {
     );
 }
 
-function Processor(opts) {
-    /* eslint consistent-return: off, max-statements: off */
-    if(!(this instanceof Processor)) {
-        return new Processor(opts);
+class Processor {
+    constructor(opts) {
+        /* eslint max-statements: [ "warn", 20 ] */
+        this._options = Object.assign(
+            Object.create(null),
+            {
+                cwd     : process.cwd(),
+                map     : false,
+                rewrite : true,
+                verbose : false,
+            },
+            opts
+        );
+
+        if(!path.isAbsolute(this._options.cwd)) {
+            this._options.cwd = path.resolve(this._options.cwd);
+        }
+
+        if(typeof this._options.namer === "string") {
+            this._options.namer = require(this._options.namer)();
+        }
+
+        if(typeof this._options.namer !== "function") {
+            this._options.namer = (file, selector) =>
+                `mc${slug(relative(this._options.cwd, file))}_${selector}`;
+        }
+
+        if(!Array.isArray(this._options.resolvers)) {
+            this._options.resolvers = [];
+        }
+
+        this._log = this._options.verbose ?
+            // eslint-disable-next-line no-console
+            console.log.bind(console, "[processor]") :
+            // eslint-disable-next-line no-empty-function
+            () => {};
+
+        this._resolve = resolve.resolvers(this._options.resolvers);
+
+        this._absolute = (file) => (path.isAbsolute(file) ? file : path.join(this._options.cwd, file));
+
+        this._files = Object.create(null);
+        this._graph = new Graph();
+
+        this._before = postcss([
+            ...(this._options.before || []),
+            require("./plugins/values-local.js"),
+            require("./plugins/values-export.js"),
+            require("./plugins/values-replace.js"),
+            require("./plugins/graph-nodes.js"),
+        ]);
+
+        this._process = postcss([
+            require("./plugins/values-composed.js"),
+            require("./plugins/values-imported.js"),
+            require("./plugins/values-export.js"),
+            require("./plugins/values-namespaced.js"),
+            require("./plugins/values-replace.js"),
+            require("./plugins/scoping.js"),
+            require("./plugins/externals.js"),
+            require("./plugins/composition.js"),
+            require("./plugins/keyframes.js"),
+            ...(this._options.processing || []),
+        ]);
+
+        this._after = postcss(this._options.after || [ noop ]);
+
+        // Add postcss-url to the afters if requested
+        if(this._options.rewrite) {
+            this._after.use(require("postcss-url")(this._options.rewrite));
+        }
+
+        this._done = postcss(this._options.done || [ noop ]);
     }
-    
-    this._options = Object.assign(
-        Object.create(null),
-        {
-            cwd     : process.cwd(),
-            map     : false,
-            rewrite : true,
-            verbose : false,
-        },
-        opts
-    );
 
-    if(!path.isAbsolute(this._options.cwd)) {
-        this._options.cwd = path.resolve(this._options.cwd);
-    }
-    
-    if(typeof this._options.namer === "string") {
-        this._options.namer = require(this._options.namer)();
-    }
-
-    if(typeof this._options.namer !== "function") {
-        this._options.namer = (file, selector) =>
-            `mc${slug(relative(this._options.cwd, file))}_${selector}`;
-    }
-
-    if(!Array.isArray(this._options.resolvers)) {
-        this._options.resolvers = [];
-    }
-
-    this._log = this._options.verbose ?
-        // eslint-disable-next-line no-console
-        console.log.bind(console, "[processor]") :
-        // eslint-disable-next-line no-empty-function
-        () => {};
-
-    this._resolve = resolve.resolvers(this._options.resolvers);
-    
-    this._absolute = (file) => (path.isAbsolute(file) ? file : path.join(this._options.cwd, file));
-
-    this._files = Object.create(null);
-    this._graph = new Graph();
-    
-    this._before = postcss((this._options.before || []).concat(
-        require("./plugins/values-local.js"),
-        require("./plugins/values-export.js"),
-        require("./plugins/values-replace.js"),
-        require("./plugins/graph-nodes.js")
-    ));
-
-    this._process = postcss([
-        require("./plugins/values-composed.js"),
-        require("./plugins/values-imported.js"),
-        require("./plugins/values-export.js"),
-        require("./plugins/values-namespaced.js"),
-        require("./plugins/values-replace.js"),
-        require("./plugins/scoping.js"),
-        require("./plugins/externals.js"),
-        require("./plugins/composition.js"),
-        require("./plugins/keyframes.js"),
-    ].concat(this._options.processing || []));
-    
-    this._after = postcss(this._options.after || [ noop ]);
-    
-    // Add postcss-url to the afters if requested
-    if(this._options.rewrite) {
-        this._after.use(require("postcss-url")(this._options.rewrite));
-    }
-
-    this._done = postcss(this._options.done || [ noop ]);
-}
-
-Processor.prototype = {
     // Add a file on disk to the dependency graph
     file(file) {
         if(!path.isAbsolute(file)) {
@@ -117,7 +115,7 @@ Processor.prototype = {
         this._log("file()", file);
         
         return this.string(path.normalize(file), fs.readFileSync(file, "utf8"));
-    },
+    }
     
     // Add a file by name + contents to the dependency graph
     async string(start, text) {
@@ -132,7 +130,7 @@ Processor.prototype = {
         const deps = this._graph.dependenciesOf(start).concat(start);
         
         await series(deps, async (dep) => {
-            var file = this._files[dep];
+            const file = this._files[dep];
             
             if(!file.processed) {
                 this._log("processing", dep);
@@ -176,7 +174,7 @@ Processor.prototype = {
             details : this._files[start],
             exports : this._files[start].exports,
         };
-    },
+    }
     
     // Remove a file from the dependency graph
     remove(input) {
@@ -198,7 +196,7 @@ Processor.prototype = {
         });
 
         return files;
-    },
+    }
     
     // Get the dependency order for a file or the entire tree
     dependencies(file) {
@@ -209,7 +207,7 @@ Processor.prototype = {
         }
 
         return this._graph.overallOrder();
-    },
+    }
     
     // Get the dependant files for a file
     dependents(file) {
@@ -220,13 +218,11 @@ Processor.prototype = {
         return this._graph.dependantsOf(
             file
         );
-    },
+    }
     
     // Get the ultimate output for specific files or the entire tree
-    async output(args) {
-        var opts  = args || false,
-            { files } = opts,
-            ready;
+    async output(args = false) {
+        let { files } = args;
         
         if(!Array.isArray(files)) {
             files = tiered(this._graph);
@@ -238,7 +234,7 @@ Processor.prototype = {
         // See
         //  - https://github.com/tivac/modular-css/issues/248
         //  - https://github.com/tivac/modular-css/issues/324
-        ready = files.every((dep) =>
+        const ready = files.every((dep) =>
             dep in this._files && this._files[dep].result
         );
 
@@ -249,8 +245,12 @@ Processor.prototype = {
         // Rewrite relative URLs before adding
         // Have to do this every time because target file might be different!
         //
-        const results = await Promise.all(
-            files.map((dep) => this._after.process(
+        const results = [];
+        
+        // Use for of loop so await works correctly
+        for(const dep of files) {
+            // eslint-disable-next-line no-await-in-loop
+            const result = await this._after.process(
                 // NOTE: the call to .clone() is really important here, otherwise this call
                 // modifies the .result root itself and you process URLs multiple times
                 // See https://github.com/tivac/modular-css/issues/35
@@ -259,10 +259,12 @@ Processor.prototype = {
                 
                 params(this, {
                     from : dep,
-                    to   : opts.to,
+                    to   : args.to,
                 })
-            ))
-        );
+            );
+
+            results.push(result);
+        }
 
         // Clone the first result if available to get valid source information
         const root = results.length ? results[0].root.clone() : postcss.root();
@@ -272,27 +274,26 @@ Processor.prototype = {
 
         results.forEach((result) => {
             // Add file path comment
-            var comment = postcss.comment({
-                    text : relative(this._options.cwd, result.opts.from),
+            const comment = postcss.comment({
+                text : relative(this._options.cwd, result.opts.from),
 
-                    // Add a bogus-ish source property so postcss won't make weird-looking
-                    // source-maps that break the visualizer
-                    //
-                    // https://github.com/postcss/postcss/releases/tag/5.1.0
-                    // https://github.com/postcss/postcss/pull/761
-                    // https://github.com/tivac/modular-css/pull/157
-                    //
-                    source : Object.assign(
-                        {},
-                        result.root.source,
-                        { end : result.root.source.start }
-                    ),
-                }),
-                idx;
+                // Add a bogus-ish source property so postcss won't make weird-looking
+                // source-maps that break the visualizer
+                //
+                // https://github.com/postcss/postcss/releases/tag/5.1.0
+                // https://github.com/postcss/postcss/pull/761
+                // https://github.com/tivac/modular-css/pull/157
+                //
+                source : Object.assign(
+                    {},
+                    result.root.source,
+                    { end : result.root.source.start }
+                ),
+            });
 
             root.append([ comment ].concat(result.root.nodes));
             
-            idx = root.index(comment);
+            const idx = root.index(comment);
             
             // Need to manually insert a newline after the comment, but can only
             // do that via whatever comes after it for some reason?
@@ -312,24 +313,24 @@ Processor.prototype = {
         result.compositions = output.compositions(this._options.cwd, this);
             
         return result;
-    },
+    }
     
     // Expose files
     get files() {
         return this._files;
-    },
+    }
 
     // Expose combined options object
     get options() {
         return this._options;
-    },
+    }
 
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
     async _walk(name, text) {
         // No need to re-process files
         if(this._files[name]) {
-            return Promise.resolve();
+            return;
         }
 
         this._graph.addNode(name);
@@ -358,7 +359,7 @@ Processor.prototype = {
                     fs.readFileSync(dependency, "utf8")
             ))
         );
-    },
-};
+    }
+}
 
 module.exports = Processor;
