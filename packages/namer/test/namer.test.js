@@ -1,9 +1,9 @@
 "use strict";
 
-var namer = require("../");
+const namer = require("../namer");
 
 describe("modular-css-namer", () => {
-    var fn;
+    let fn;
     
     beforeEach(() => (fn = namer()));
     
@@ -27,10 +27,8 @@ describe("modular-css-namer", () => {
     });
     
     it("should wrap as necessary", () => {
-        var x, y;
-        
-        for(x = 0; x < 100; x++) {
-            for(y = 0; y < 100; y++) {
+        for(let x = 0; x < 100; x++) {
+            for(let y = 0; y < 100; y++) {
                 fn(`./fooga${x}`, `.fooga${y}`);
             }
         }

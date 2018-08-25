@@ -2,7 +2,7 @@
   "name": "modular-css-namer",
   "version": "14.4.0",
   "description": "Helper function to make tiny classnames for modular-css",
-  "main": "index.js",
+  "main": "namer.js",
   "repository": "tivac/modular-css",
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
