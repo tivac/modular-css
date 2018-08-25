@@ -1,26 +1,24 @@
 "use strict";
 
-var path = require("path"),
+const path = require("path");
 
-    dedent   = require("dedent"),
-    namer    = require("test-utils/namer.js"),
-    relative = require("test-utils/relative.js"),
+const dedent   = require("dedent");
+const namer    = require("test-utils/namer.js");
+const relative = require("test-utils/relative.js");
 
-    Processor = require("../processor.js");
+const Processor = require("../processor.js");
 
-function sync(css) {
-    css.append({ selector : "a" });
-}
+const sync = (css) => css.append({ selector : "a" });
 
-function async(css) {
-    return new Promise((resolve) =>
+const async = (css) => (
+    new Promise((resolve) =>
         setTimeout(() => {
             sync(css);
 
             resolve();
         }, 0)
-    );
-}
+    )
+);
 
 describe("/processor.js", () => {
     describe("options", () => {
@@ -57,46 +55,47 @@ describe("/processor.js", () => {
         });
 
         describe("namer", () => {
-            it("should use a custom naming function", () => {
-                var processor = new Processor({
-                        namer : (filename, selector) =>
-                            `${relative([ filename ])[0]}_${selector}`,
-                    });
+            it("should use a custom naming function", async () => {
+                const processor = new Processor({
+                    namer : (filename, selector) =>
+                        `${relative([ filename ])[0].replace(/[\/\.]/g, "_")}_${selector}`,
+                });
                     
-                return processor.string(
+                const result = await processor.string(
                     "./packages/core/test/specimens/simple.css",
                     ".wooga { }"
-                )
-                .then((result) => {
-                    expect(result.exports).toMatchSnapshot();
-                    expect(result.details.text).toMatchSnapshot();
-                    expect(result.details.exports).toMatchSnapshot();
-                    expect(result.details.processed.root.toResult().css).toMatchSnapshot();
-                });
+                );
+
+                expect(result.exports).toMatchSnapshot();
+                expect(result.details.text).toMatchSnapshot();
+                expect(result.details.exports).toMatchSnapshot();
+                expect(result.details.processed.root.toResult().css).toMatchSnapshot();
             });
 
-            it("should require a namer if a string is passed", () => {
-                var processor = new Processor({
-                        namer : "modular-css-namer",
-                    });
+            it("should require a namer if a string is passed", async () => {
+                const processor = new Processor({
+                    namer : "modular-css-namer",
+                });
                     
-                return processor.string(
+                const result = await processor.string(
                     "./test/specimens/simple.css",
                     ".wooga { }"
-                )
-                .then((result) => expect(result.exports).toMatchSnapshot());
+                );
+                
+                expect(result.exports).toMatchSnapshot();
             });
 
-            it("should use the default naming function if a non-function is passed", () => {
-                var processor = new Processor({
-                        namer : false,
-                    });
+            it("should use the default naming function if a non-function is passed", async () => {
+                const processor = new Processor({
+                    namer : false,
+                });
                     
-                return processor.string(
+                const result = await processor.string(
                     "./packages/core/test/specimens/simple.css",
                     ".wooga { }"
-                )
-                .then((result) => expect(result.exports).toMatchSnapshot());
+                );
+                
+                expect(result.exports).toMatchSnapshot();
             });
         });
 
