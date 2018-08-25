@@ -1,0 +1,22 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "package.json",
+        "packages/aliases/package.json",
+        "packages/browserify/package.json",
+        "packages/cli/package.json",
+        "packages/core/package.json",
+        "packages/glob/package.json",
+        "packages/namer/package.json",
+        "packages/paths/package.json",
+        "packages/postcss/package.json",
+        "packages/rollup/package.json",
+        "packages/svelte/package.json",
+        "packages/test-utils/package.json",
+        "packages/webpack/package.json",
+        "packages/www/package.json"
+      ]
+    }
+  }
+}
