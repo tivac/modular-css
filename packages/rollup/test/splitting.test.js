@@ -49,6 +49,7 @@ describe("/rollup.js", () => {
     
             await bundle.write({
                 format,
+                sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
@@ -78,6 +79,7 @@ describe("/rollup.js", () => {
 
             await bundle.write({
                 format,
+                sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
@@ -107,6 +109,7 @@ describe("/rollup.js", () => {
 
             await bundle.write({
                 format,
+                sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
@@ -142,6 +145,7 @@ describe("/rollup.js", () => {
 
             await bundle.write({
                 format,
+                sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
@@ -173,6 +177,7 @@ describe("/rollup.js", () => {
 
             await bundle.write({
                 format,
+                sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
