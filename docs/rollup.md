@@ -14,7 +14,7 @@ A minimatch pattern, or an array of minimatch patterns, relative to `process.cwd
 
 ### `json`
 
-Boolean to determine if JSON files should be output at the end of compilation. Defaults to `false`.
+Boolean/String to determine if JSON files containing all exported classes & values should be output. If set to `true` will write out to a file named `exports.json`. If a `String` will write out to that file name. Defaults to `false`.
 
 ### `map`
 

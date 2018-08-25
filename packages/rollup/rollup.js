@@ -29,15 +29,11 @@ const makeFile = (details) => {
 
 module.exports = function(opts) {
     const options = Object.assign(Object.create(null), {
-        common : "common.css",
-        
-        json : false,
-        
-        include : "**/*.css",
-
+        common       : "common.css",
+        json         : false,
+        include      : "**/*.css",
         namedExports : true,
-
-        styleExport : false,
+        styleExport  : false,
     }, opts);
         
     const filter = utils.createFilter(options.include, options.exclude);
@@ -77,7 +73,7 @@ module.exports = function(opts) {
             }
 
             // Is this file being processed on a watch update?
-            if(runs && (id in processor.files)) {
+            if(runs++ && (id in processor.files)) {
                 const files = [];
 
                 // Watching will call transform w/ the same entry file, even if it
@@ -146,11 +142,6 @@ module.exports = function(opts) {
                 map          : emptyMappings,
                 dependencies : processor.dependencies(id),
             };
-        },
-
-        // Track # of runs since remove functionality needs to change
-        buildEnd() {
-            runs++;
         },
 
         async generateBundle(outputOptions, bundles) {
@@ -248,7 +239,7 @@ module.exports = function(opts) {
             await Promise.all(
                 files
                 .filter(({ css }) => css.size)
-                .map(async ({ base, name, css }) => {
+                .map(async ({ base, name, css }, idx) => {
                     const id = this.emitAsset(`${base}.css`);
 
                     const result = await processor.output({
@@ -260,8 +251,12 @@ module.exports = function(opts) {
 
                     this.setAssetSource(id, result.css);
 
-                    if(options.json) {
-                        this.emitAsset(`${base}.json`, JSON.stringify(result.compositions, null, 4));
+                    // result.compositions always includes all the info, so it
+                    // doesn't actually matter which result we use. First one seems reasonable!
+                    if(options.json && idx === 0) {
+                        const file = typeof options.json === "string" ? options.json : "exports.json";
+
+                        this.emitAsset(file, JSON.stringify(result.compositions, null, 4));
                     }
 
                     if(result.map) {
