@@ -1,5 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/rollup.js code splitting should ouput only 1 JSON file 1`] = `
+Array [
+  Object {
+    "file": "common.css",
+    "text": "/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+",
+  },
+  Object {
+    "file": "dependencies.css",
+    "text": "/* packages/rollup/test/specimens/dependencies.css */
+.wooga {
+
+    background: blue;
+}
+",
+  },
+  Object {
+    "file": "exports.json",
+    "text": "{
+    \\"packages/rollup/test/specimens/dependencies.css\\": {
+        \\"wooga\\": \\"fooga wooga\\"
+    },
+    \\"packages/rollup/test/specimens/simple.css\\": {
+        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
+        \\"fooga\\": \\"fooga\\"
+    }
+}",
+  },
+]
+`;
+
 exports[`/rollup.js code splitting should support dynamic imports 1`] = `
 Array [
   Object {

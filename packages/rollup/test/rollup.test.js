@@ -160,7 +160,27 @@ describe("/rollup.js", () => {
             file : prefix(`./output/rollup/json/simple.js`),
         });
         
-        expect(read("./rollup/json/assets/simple.json")).toMatchSnapshot();
+        expect(read("./rollup/json/assets/exports.json")).toMatchSnapshot();
+    });
+    
+    it("should generate JSON with a custom name", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/simple.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    json : "custom.json",
+                }),
+            ],
+        });
+        
+        await bundle.write({
+            format,
+            assetFileNames,
+            file : prefix(`./output/rollup/json-named/simple.js`),
+        });
+        
+        expect(read("./rollup/json-named/assets/custom.json")).toMatchSnapshot();
     });
 
     it("should provide named exports", async () => {

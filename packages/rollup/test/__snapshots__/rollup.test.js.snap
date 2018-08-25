@@ -54,6 +54,15 @@ exports[`/rollup.js should generate JSON 1`] = `
 }"
 `;
 
+exports[`/rollup.js should generate JSON with a custom name 1`] = `
+"{
+    \\"packages/rollup/test/specimens/simple.css\\": {
+        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
+        \\"fooga\\": \\"fooga\\"
+    }
+}"
+`;
+
 exports[`/rollup.js should generate exports 1`] = `
 "var css = {
     \\"str\\": \\"\\\\\\"string\\\\\\"\\",

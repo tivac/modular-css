@@ -20,6 +20,8 @@ error.postcssPlugin = "error-plugin";
 const assetFileNames = "assets/[name][extname]";
 const format = "es";
 const map = false;
+const sourcemap = false;
+const json = true;
 
 describe("/rollup.js", () => {
     beforeAll(() => shell.rm("-rf", prefix("./output/rollup/*")));
@@ -179,6 +181,37 @@ describe("/rollup.js", () => {
             });
 
             expect(dir("./rollup/dynamic-imports/assets/")).toMatchSnapshot();
+        });
+
+        it("should ouput only 1 JSON file", async () => {
+            const bundle = await rollup({
+                experimentalCodeSplitting,
+
+                input : [
+                    require.resolve("./specimens/simple.js"),
+                    require.resolve("./specimens/dependencies.js"),
+                ],
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map,
+                        json,
+                    }),
+                ],
+            });
+
+            await bundle.write({
+                format,
+                sourcemap,
+
+                assetFileNames,
+                chunkFileNames,
+
+                dir : prefix(`./output/rollup/json-splitting`),
+            });
+
+            expect(dir("./rollup/json-splitting/assets")).toMatchSnapshot();
         });
     });
 });
