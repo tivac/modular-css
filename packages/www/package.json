@@ -15,7 +15,7 @@
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "dependencies": {
-    "clipboard": "1.7.1",
+    "clipboard": "2.0.1",
     "codemirror": "5.39.2",
     "memory-fs": "0.4.1",
     "mithril": "1.1.6",
@@ -24,17 +24,17 @@
     "throttleit": "1.0.0"
   },
   "devDependencies": {
-    "buble-loader": "0.4.1",
+    "buble-loader": "0.5.1",
     "copy-webpack-plugin": "4.5.2",
     "cssnano-cli": "1.0.5",
-    "html-webpack-plugin": "2.30.1",
+    "html-webpack-plugin": "3.2.0",
     "modular-css-namer": "^14.4.0",
     "modular-css-webpack": "^14.4.0",
-    "surge": "0.19.0",
-    "webpack": "3.12.0",
+    "surge": "0.20.1",
+    "webpack": "4.17.1",
     "webpack-cleanup-plugin": "0.5.1",
-    "webpack-common-shake": "1.5.3",
-    "webpack-dev-server": "2.11.2"
+    "webpack-common-shake": "2.0.1",
+    "webpack-dev-server": "3.1.5"
   },
   "eslintConfig": {
     "parserOptions": {
