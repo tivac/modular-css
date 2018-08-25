@@ -1,11 +1,11 @@
 "use strict";
 
-var processor = require("postcss-selector-parser"),
+const processor = require("postcss-selector-parser");
 
-    identifiers = require("../lib/identifiers.js"),
+const identifiers = require("../lib/identifiers.js");
 
-    reuse  = "Unable to re-use the same selector for global & local",
-    plugin = "modular-css-scoping";
+const reuse  = "Unable to re-use the same selector for global & local";
+const plugin = "modular-css-scoping";
 
 // Validate whether a selector should be renamed, returns the key to use
 function rename(current, thing) {
@@ -19,13 +19,15 @@ function rename(current, thing) {
 }
 
 module.exports = (css, result) => {
-    var classes   = Object.create(null),
-        keyframes = Object.create(null),
-        globals   = Object.create(null),
-        parser, current, lookup;
+    const classes   = Object.create(null);
+    const keyframes = Object.create(null);
+    const globals   = Object.create(null);
 
-    parser = processor((selectors) => {
-        var pseudos = [];
+    let current;
+    let lookup;
+
+    const parser = processor((selectors) => {
+        const pseudos = [];
 
         selectors.walkPseudos((node) => {
             if(node.value !== ":global") {
@@ -48,7 +50,7 @@ module.exports = (css, result) => {
             }));
 
             node.walk((child) => {
-                var key = rename(current, child);
+                const key = rename(current, child);
 
                 if(!key) {
                     return;
@@ -70,7 +72,7 @@ module.exports = (css, result) => {
         });
 
         selectors.walk((node) => {
-            var key = rename(current, node);
+            const key = rename(current, node);
 
             if(!key || node.ignore) {
                 return;
