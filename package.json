@@ -11,6 +11,7 @@
   "scripts": {
     "cover": "jest --coverage",
     "lint": "eslint .",
+    "outdated": "lerna exec --no-bail --stream -- npm outdated",
     "parser": "pegjs packages/core/parsers/parser.pegjs",
     "prerelease": "npm test -- --ci",
     "release": "lerna publish",
