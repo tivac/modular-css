@@ -1,6 +1,47 @@
-# Rollup
+# modular-css-rollup
 
-`modular-css-rollup` provides a rollup build plugin you can use to transform imported `.css` files into lookup objects.
+Rollup support for [`modular-css`](https://github.com/tivac/modular-css).
+
+## Install
+
+`$ npm i modular-css-rollup`
+
+## ⚠️Rollup Version support⚠️
+
+Due to API changes, certain major versions of this plugin will require a specific minimum rollup version.
+
+- `modular-css-rollup@11` requires `rollup@0.60.0`
+- `modular-css-rollup@15` requires `rollup@0.65.0`
+
+## Usage
+
+### API
+
+```js
+const bundle = await rollup({
+    input   : "./index.js",
+    plugins : [
+        require("modular-css-rollup")()
+    ]
+});
+```
+
+### Config file
+
+```js
+import css from "modular-css-rollup";
+
+export default {
+    input   : "./index.js",
+    output  : {
+        dest    : "./gen/bundle.js",
+        format  : "umd"
+    },
+    plugins : [
+        css()
+    ]
+};
+```
 
 ## Options
 
@@ -39,36 +80,3 @@ Enable `styleExport` will also disable the plugin from emitting any assets as we
 ### Shared Options
 
 All other options are passed to the underlying `Processor` instance, see [Options](https://github.com/tivac/modular-css/blob/master/docs/api.md#options).
-
-## API
-
-```js
-const bundle = await rollup({
-    input   : "./index.js",
-    plugins : [
-        // Make sure it's the first entry in your plugin list to avoid syntax errors
-        require("modular-css-rollup")({
-            common : "./dist/common.css"
-        })
-    ]
-});
-```
-
-## Config file
-
-```js
-import css from "modular-css-rollup";
-
-export default {
-    input   : "./index.js",
-    output : {
-        file   : "./dist/bundle.js",
-        format : "umd",
-    },
-    plugins : [
-        css({
-            common : "./dist/bundle.css"
-        })
-    ]
-};
-```
