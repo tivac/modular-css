@@ -1,7 +1,6 @@
 /* eslint max-statements: [ 1, 20 ] */
 "use strict";
 
-const fs = require("fs");
 const path = require("path");
 
 const { keyword } = require("esutils");
@@ -48,11 +47,6 @@ module.exports = function(opts) {
     
     const processor = options.processor || new Processor(options);
 
-    let runs = 0;
-
-    // Track which files were changed for which run to avoid excessive re-processing
-    const updated = new Map();
-
     return {
         name : "modular-css-rollup",
 
@@ -67,50 +61,21 @@ module.exports = function(opts) {
             }
         },
 
+        watchChange(file) {
+            if(!processor.files[file]) {
+                return;
+            }
+
+            processor.dependents(file).forEach((dep) =>
+                processor.remove(dep)
+            );
+
+            processor.remove(file);
+        },
+
         async transform(code, id) {
             if(!filter(id)) {
                 return null;
-            }
-
-            // Is this file being processed on a watch update?
-            if(runs++ && (id in processor.files)) {
-                const files = [];
-
-                // Watching will call transform w/ the same entry file, even if it
-                // was one of its dependencies that changed. We need to fork the logic
-                // here to handle that case.
-                if(processor.files[id].text === code) {
-                    // figure out exactly which dependency changed
-                    processor.dependencies(id).forEach((dep) => {
-                        if(fs.readFileSync(dep, "utf8") === processor.files[dep].text) {
-                            return;
-                        }
-
-                        files.push(dep, ...processor.dependents(dep));
-                    });
-                } else {
-                    // Entry file changed, remove all its dependents and
-                    // then re-process them
-                    files.push(id, ...processor.dependents(id));
-                }
-
-                files.forEach((file) => {
-                    // Don't do the remove/re-add dance for any files that
-                    // were already processed in this run
-                    if(updated.has(file) && updated.get(file) === runs) {
-                        return;
-                    }
-
-                    updated.set(file, runs);
-
-                    processor.remove(file);
-                });
-
-                // Can't filter this using updated, it's already been updated
-                // by the remove loop up above but the processing still needs to happen
-                await Promise.all([ ...files ].map((dep) =>
-                    processor.file(dep)
-                ));
             }
 
             const { details, exports } = await processor.string(id, code);
