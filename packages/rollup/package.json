@@ -1,6 +1,6 @@
 {
   "name": "modular-css-rollup",
-  "version": "14.4.0",
+  "version": "15.0.0",
   "description": "Add modular-css support to rollup",
   "main": "./rollup.js",
   "repository": "tivac/modular-css",
@@ -24,6 +24,6 @@
     "rollup-pluginutils": "^2.0.1"
   },
   "peerDependencies": {
-    "rollup":"^0.65.0"
+    "rollup": "^0.65.0"
   }
 }
