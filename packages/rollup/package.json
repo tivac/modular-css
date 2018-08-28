@@ -22,5 +22,8 @@
     "mkdirp": "^0.5.1",
     "modular-css-core": "file:../core",
     "rollup-pluginutils": "^2.0.1"
+  },
+  "peerDependencies": {
+    "rollup":"^0.65.0"
   }
 }
