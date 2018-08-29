@@ -12,18 +12,24 @@ const missedRegex = /css\.\w+/gim;
 
 function updateCss({ processor, content, result, filename }) {
     const exported = result.files[result.file].exports;
+    const keys = Object.keys(exported);
+    let code = content;
+    
+    if(keys.length) {
+        const selectors = keys.join("|");
 
-    const code = content
-        // Replace simple {css.<key>} values first
-        .replace(
-            new RegExp(`{css\\.(${Object.keys(exported).join("|")})}`, "gm"),
-            (match, key) => exported[key].join(" ")
-        )
-        // Then any remaining bare css.<key> values
-        .replace(
-            new RegExp(`(\\b)css\\.(${Object.keys(exported).join("|")})(\\b)`, "gm"),
-            (match, prefix, key, suffix) => `${prefix}"${exported[key].join(" ")}"${suffix}`
-        );
+        code = code
+            // Replace simple {css.<key>} values first
+            .replace(
+                new RegExp(`{css\\.(${selectors})}`, "gm"),
+                (match, key) => exported[key].join(" ")
+            )
+            // Then any remaining bare css.<key> values
+            .replace(
+                new RegExp(`(\\b)css\\.(${selectors})(\\b)`, "gm"),
+                (match, prefix, key, suffix) => `${prefix}"${exported[key].join(" ")}"${suffix}`
+            );
+    }
     
     // Check for any values in the template we couldn't convert
     const missed = code.match(missedRegex);
@@ -31,13 +37,15 @@ function updateCss({ processor, content, result, filename }) {
     if(missed) {
         const { strict } = processor.options;
 
+        const classes = missed.map((reference) => reference.split("css.")[1]);
+
         if(strict) {
-            throw new Error(`modular-css-svelte: Unable to find "${missed.join(", ")}" in ${filename}`);
+            throw new Error(`modular-css-svelte: Unable to find .${classes.join(", .")} in "${filename}"`);
         }
 
-        missed.forEach((key) =>
+        classes.forEach((key) =>
             // eslint-disable-next-line no-console
-            console.warn(`modular-css-svelte: Unable to find "${key}" in ${filename}`)
+            console.warn(`modular-css-svelte: Unable to find .${key} in "${filename}"`)
         );
     }
 

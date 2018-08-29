@@ -74,41 +74,41 @@ describe("/svelte.js", () => {
     });
 
     it.each`
-        title         | inline   | strict   | specimen
-        ${"<script>"} | ${true}  | ${true}  | ${"invalid-inline-script.html"}
-        ${"template"} | ${true}  | ${true}  | ${"invalid-inline-template.html"}
-        ${"<script>"} | ${true}  | ${false} | ${"invalid-inline-script.html"}
-        ${"template"} | ${true}  | ${false} | ${"invalid-inline-template.html"}
-        ${"<script>"} | ${false} | ${false} | ${"invalid-external-script.html"}
-        ${"template"} | ${false} | ${false} | ${"invalid-external-template.html"}
-        ${"<script>"} | ${false} | ${true}  | ${"invalid-external-script.html"}
-        ${"template"} | ${false} | ${true}  | ${"invalid-external-template.html"}
-    `("should handle invalid references in $title (inline: $inline, strict: $strict)", async ({ strict, specimen }) => {
+        title                                     | specimen
+        ${"invalid reference <script> - <style>"} | ${"invalid-inline-script.html"}
+        ${"invalid reference template - <style>"} | ${"invalid-inline-template.html"}
+        ${"invalid reference <script> - <link>"}  | ${"invalid-external-script.html"}
+        ${"invalid reference template - <link>"}  | ${"invalid-external-template.html"}
+        ${"empty css file - <style>"}             | ${"invalid-inline-empty.html"}
+        ${"empty css file - <link>"}              | ${"invalid-external-empty.html"}
+    `("should handle errors: $title", async ({ specimen }) => {
         const spy = jest.spyOn(global.console, "warn");
 
         spy.mockImplementation(() => { /* NO-OP */ });
         
         const filename = require.resolve(`./specimens/${specimen}`);
-
-        const { preprocess } = plugin({
+        
+        // Set up strict plugin
+        const { preprocess : strict } = plugin({
             namer,
-            strict,
+            strict : true,
         });
         
-        if(strict) {
-            await expect(
-                svelte.preprocess(
-                    fs.readFileSync(filename, "utf8"),
-                    Object.assign({}, preprocess, { filename })
-                )
-            ).rejects.toThrowErrorMatchingSnapshot();
+        await expect(
+            svelte.preprocess(
+                fs.readFileSync(filename, "utf8"),
+                Object.assign({}, strict, { filename })
+            )
+        ).rejects.toThrowErrorMatchingSnapshot();
 
-            return;
-        }
+        // Now the loose plugin
+        const { preprocess : loose } = plugin({
+            namer,
+        });
 
         const processed = await svelte.preprocess(
             fs.readFileSync(filename, "utf8"),
-            Object.assign({}, preprocess, { filename })
+            Object.assign({}, loose, { filename })
         );
         
         expect(spy).toHaveBeenCalled();
