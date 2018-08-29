@@ -14,7 +14,7 @@
     "outdated": "lerna exec --no-bail --stream -- npm outdated",
     "parser": "pegjs packages/core/parsers/parser.pegjs",
     "prerelease": "npm test -- --ci",
-    "release": "lerna publish",
+    "release": "lerna publish --skip-push",
     "pretest": "npm run parser",
     "test": "jest",
     "posttest": "npm run lint",
