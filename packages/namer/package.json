@@ -4,6 +4,11 @@
   "description": "Helper function to make tiny classnames for modular-css",
   "main": "namer.js",
   "repository": "tivac/modular-css",
+  "author": "Pat Cavit <pcavit@arena.net>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
   },
@@ -13,8 +18,6 @@
     "css",
     "build"
   ],
-  "author": "Pat Cavit <pcavit@arena.net>",
-  "license": "MIT",
   "dependencies": {
     "alphabet": "^1.0.0"
   }

@@ -12,6 +12,9 @@
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "css",
     "css-modules",
@@ -26,3 +29,4 @@
     "modular-css-glob": "file:../glob"
   }
 }
+s

@@ -9,6 +9,9 @@
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "rollup",
     "rollup-plugin",
