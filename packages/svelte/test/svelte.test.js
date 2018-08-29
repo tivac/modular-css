@@ -178,4 +178,22 @@ describe("/svelte.js", () => {
 
         expect(output.css).toMatchSnapshot();
     });
+
+    it("should handle empty CSS files w/o exploding", async () => {
+        const filename = require.resolve("./specimens/empty.html");
+        const { processor, preprocess } = plugin({
+            namer,
+        });
+
+        const processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        const output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
+    });
 });
