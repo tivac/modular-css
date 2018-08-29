@@ -25,7 +25,7 @@
   "dependencies": {
     "meow": "^5.0.0",
     "mkdirp": "^0.5.1",
-    "modular-css-core": "file:../core",
+    "modular-css-core": "file:../processor",
     "modular-css-glob": "file:../glob"
   }
 }

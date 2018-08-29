@@ -20,6 +20,6 @@
   ],
   "dependencies": {
     "globule": "^1.1.0",
-    "modular-css-core": "file:../core"
+    "modular-css-core": "file:../processor"
   }
 }

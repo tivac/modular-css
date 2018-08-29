@@ -23,7 +23,7 @@
   ],
   "dependencies": {
     "mkdirp": "^0.5.1",
-    "modular-css-core": "file:../core",
+    "modular-css-core": "file:../processor",
     "p-each-series": "^1.0.0",
     "sink-transform": "^2.0.0",
     "through2": "^2.0.3"

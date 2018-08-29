@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "mkdirp": "^0.5.1",
-    "modular-css-core": "file:../core",
+    "modular-css-core": "file:../processor",
     "postcss": "^7.0.0"
   }
 }

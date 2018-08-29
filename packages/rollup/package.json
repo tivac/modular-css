@@ -23,7 +23,7 @@
   "dependencies": {
     "esutils": "^2.0.2",
     "mkdirp": "^0.5.1",
-    "modular-css-core": "file:../core",
+    "modular-css-core": "file:../processor",
     "rollup-pluginutils": "^2.0.1"
   },
   "peerDependencies": {
