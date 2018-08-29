@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="15.0.1"></a>
+## [15.0.1](https://github.com/tivac/modular-css/compare/v15.0.0...v15.0.1) (2018-08-29)
+
+
+### Bug Fixes
+
+* modular-css-svelte handles empty CSS files ([#513](https://github.com/tivac/modular-css/issues/513)) ([78ba84b](https://github.com/tivac/modular-css/commit/78ba84b)), closes [#512](https://github.com/tivac/modular-css/issues/512)
+
+
+
+
+
 <a name="15.0.0"></a>
 # [15.0.0](https://github.com/tivac/modular-css/compare/v14.4.0...v15.0.0) (2018-08-28)
 
