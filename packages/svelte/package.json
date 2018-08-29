@@ -1,5 +1,5 @@
 {
-  "name": "modular-css-svelte",
+  "name": "@modular-css/svelte",
   "version": "15.0.1",
   "description": "Add modular-css support to svelte",
   "main": "./svelte.js",

@@ -1,5 +1,5 @@
 {
-  "name": "modular-css-glob",
+  "name": "@modular-css/glob",
   "version": "15.0.0",
   "description": "Glob support for modular-css",
   "main": "./glob.js",

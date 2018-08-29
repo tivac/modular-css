@@ -1,5 +1,5 @@
 {
-  "name": "modular-css-aliases",
+  "name": "@modular-css/path-aliases",
   "version": "15.0.0",
   "description": "Custom file resolver supporting directory aliases for modular-css",
   "main": "./aliases.js",

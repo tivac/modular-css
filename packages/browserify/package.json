@@ -1,5 +1,5 @@
 {
-  "name": "modular-cssify",
+  "name": "@modular-css/browserify",
   "version": "15.0.0",
   "description": "Browserify transform for modular-css",
   "main": "./browserify.js",

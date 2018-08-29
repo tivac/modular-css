@@ -1,5 +1,5 @@
 {
-  "name": "modular-css-namer",
+  "name": "@modular-css/shortnames",
   "version": "15.0.0",
   "description": "Helper function to make tiny classnames for modular-css",
   "main": "namer.js",

@@ -1,5 +1,5 @@
 {
-  "name": "modular-css-core",
+  "name": "@modular-css/processor",
   "version": "15.0.0",
   "description": "A streamlined reinterpretation of CSS Modules",
   "main": "./processor.js",

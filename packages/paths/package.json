@@ -1,5 +1,5 @@
 {
-  "name": "modular-css-paths",
+  "name": "@modular-css/path-resolver",
   "version": "15.0.0",
   "description": "Custom file resolver supporting multiple paths for modular-css",
   "main": "./paths.js",
