@@ -205,15 +205,61 @@ exports[`/svelte.js should extract CSS from a <style> tag 2`] = `
 "
 `;
 
-exports[`/svelte.js should handle invalid references in "<script>" (inline: false, strict: false) 1`] = `
+exports[`/svelte.js should handle errors: "empty css file - <link>" 1`] = `"modular-css-svelte: Unable to find .nope, .alsonope in \\"./empty.css\\""`;
+
+exports[`/svelte.js should handle errors: "empty css file - <link>" 2`] = `
 Array [
   Array [
-    "modular-css-svelte: Unable to find \\"css.nuhuh\\" in ./invalid.css",
+    "modular-css-svelte: Unable to find .nope in \\"./empty.css\\"",
+  ],
+  Array [
+    "modular-css-svelte: Unable to find .alsonope in \\"./empty.css\\"",
   ],
 ]
 `;
 
-exports[`/svelte.js should handle invalid references in "<script>" (inline: false, strict: false) 2`] = `
+exports[`/svelte.js should handle errors: "empty css file - <link>" 3`] = `
+"
+
+<div class=\\"{css.nope}\\">NOPE</div>
+<div class=\\"{css.alsonope}\\">STILL NOPE</div>
+<script>
+    import css from \\"./empty.css\\";
+</script>"
+`;
+
+exports[`/svelte.js should handle errors: "empty css file - <style>" 1`] = `"modular-css-svelte: Unable to find .nope, .alsonope in \\"<style>\\""`;
+
+exports[`/svelte.js should handle errors: "empty css file - <style>" 2`] = `
+Array [
+  Array [
+    "modular-css-svelte: Unable to find .nope in \\"<style>\\"",
+  ],
+  Array [
+    "modular-css-svelte: Unable to find .alsonope in \\"<style>\\"",
+  ],
+]
+`;
+
+exports[`/svelte.js should handle errors: "empty css file - <style>" 3`] = `
+"<div class=\\"{css.nope}\\">NOPE</div>
+<div class=\\"{css.alsonope}\\">STILL NOPE</div>
+
+<style>/* replaced by modular-css */</style>
+"
+`;
+
+exports[`/svelte.js should handle errors: "invalid reference <script> - <link>" 1`] = `"modular-css-svelte: Unable to find .nuhuh in \\"./invalid.css\\""`;
+
+exports[`/svelte.js should handle errors: "invalid reference <script> - <link>" 2`] = `
+Array [
+  Array [
+    "modular-css-svelte: Unable to find .nuhuh in \\"./invalid.css\\"",
+  ],
+]
+`;
+
+exports[`/svelte.js should handle errors: "invalid reference <script> - <link>" 3`] = `
 "
 
 <h2 class=\\"yup\\">Yup</h2>
@@ -224,17 +270,17 @@ console.log(css.nuhuh);</script>
 "
 `;
 
-exports[`/svelte.js should handle invalid references in "<script>" (inline: false, strict: true) 1`] = `"modular-css-svelte: Unable to find \\"css.nuhuh\\" in ./invalid.css"`;
+exports[`/svelte.js should handle errors: "invalid reference <script> - <style>" 1`] = `"modular-css-svelte: Unable to find .nuhuh in \\"<style>\\""`;
 
-exports[`/svelte.js should handle invalid references in "<script>" (inline: true, strict: false) 1`] = `
+exports[`/svelte.js should handle errors: "invalid reference <script> - <style>" 2`] = `
 Array [
   Array [
-    "modular-css-svelte: Unable to find \\"css.nuhuh\\" in <style>",
+    "modular-css-svelte: Unable to find .nuhuh in \\"<style>\\"",
   ],
 ]
 `;
 
-exports[`/svelte.js should handle invalid references in "<script>" (inline: true, strict: false) 2`] = `
+exports[`/svelte.js should handle errors: "invalid reference <script> - <style>" 3`] = `
 "<h2 class=\\"yup\\">Yup</h2>
 
 <style>/* replaced by modular-css */</style>
@@ -245,17 +291,17 @@ exports[`/svelte.js should handle invalid references in "<script>" (inline: true
 "
 `;
 
-exports[`/svelte.js should handle invalid references in "<script>" (inline: true, strict: true) 1`] = `"modular-css-svelte: Unable to find \\"css.nuhuh\\" in <style>"`;
+exports[`/svelte.js should handle errors: "invalid reference template - <link>" 1`] = `"modular-css-svelte: Unable to find .nope in \\"./invalid.css\\""`;
 
-exports[`/svelte.js should handle invalid references in "template" (inline: false, strict: false) 1`] = `
+exports[`/svelte.js should handle errors: "invalid reference template - <link>" 2`] = `
 Array [
   Array [
-    "modular-css-svelte: Unable to find \\"css.nope\\" in ./invalid.css",
+    "modular-css-svelte: Unable to find .nope in \\"./invalid.css\\"",
   ],
 ]
 `;
 
-exports[`/svelte.js should handle invalid references in "template" (inline: false, strict: false) 2`] = `
+exports[`/svelte.js should handle errors: "invalid reference template - <link>" 3`] = `
 "
 
 <h1 class=\\"{css.nope}\\">Nope</h1>
@@ -265,25 +311,23 @@ exports[`/svelte.js should handle invalid references in "template" (inline: fals
 </script>"
 `;
 
-exports[`/svelte.js should handle invalid references in "template" (inline: false, strict: true) 1`] = `"modular-css-svelte: Unable to find \\"css.nope\\" in ./invalid.css"`;
+exports[`/svelte.js should handle errors: "invalid reference template - <style>" 1`] = `"modular-css-svelte: Unable to find .nope in \\"<style>\\""`;
 
-exports[`/svelte.js should handle invalid references in "template" (inline: true, strict: false) 1`] = `
+exports[`/svelte.js should handle errors: "invalid reference template - <style>" 2`] = `
 Array [
   Array [
-    "modular-css-svelte: Unable to find \\"css.nope\\" in <style>",
+    "modular-css-svelte: Unable to find .nope in \\"<style>\\"",
   ],
 ]
 `;
 
-exports[`/svelte.js should handle invalid references in "template" (inline: true, strict: false) 2`] = `
+exports[`/svelte.js should handle errors: "invalid reference template - <style>" 3`] = `
 "<h1 class=\\"{css.nope}\\">Nope</h1>
 <h2 class=\\"yup\\">Yup</h2>
 
 <style>/* replaced by modular-css */</style>
 "
 `;
-
-exports[`/svelte.js should handle invalid references in "template" (inline: true, strict: true) 1`] = `"modular-css-svelte: Unable to find \\"css.nope\\" in <style>"`;
 
 exports[`/svelte.js should ignore files without <style> blocks 1`] = `
 "<h1>Hello</h1>
