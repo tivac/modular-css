@@ -7,8 +7,8 @@ var fs   = require("fs"),
     webpack = require("webpack"),
     shell   = require("shelljs"),
 
-    read  = require("test-utils/read.js")(__dirname),
-    namer = require("test-utils/namer.js"),
+    read  = require("@modular-css/test-utils/read.js")(__dirname),
+    namer = require("@modular-css/test-utils/namer.js"),
     
     Plugin = require("../plugin.js"),
 

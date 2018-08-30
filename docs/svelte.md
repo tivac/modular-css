@@ -1,6 +1,6 @@
 # Svelte
 
-`modular-css-svelte` provides a [svelte preprocessor](https://svelte.technology/guide#preprocessing) that can convert inline `<style>` or external `<link>` tags using `modular-css` and will also staticly replace any css references it can find for maximum speed.
+`@modular-css/svelte` provides a [svelte preprocessor](https://svelte.technology/guide#preprocessing) that can convert inline `<style>` or external `<link>` tags using `modular-css` and will also staticly replace any css references it can find for maximum speed.
 
 ### Options
 
@@ -13,7 +13,7 @@ All options are passed to the underlying `Processor` instance, see [Options](api
 ```js
 const filename = "./Component.html";
 
-const { processor, preprocess } = require("modular-css-svelte")({
+const { processor, preprocess } = require("@modular-css/svelte")({
     // Processor options
 });
 
@@ -27,14 +27,14 @@ const result = processor.output();
 fs.writeFileSync("./dist/bundle.css", result.css);
 ```
 
-### `modular-css-rollup`
+### `@modular-css/rollup`
 
 #### API
 
 ```js
 const rollup = require("rollup").rollup;
 
-const { preprocess, processor } = require("modular-css-svelte")({
+const { preprocess, processor } = require("@modular-css/svelte")({
     // Processor options
 });
 
@@ -46,7 +46,7 @@ const bundle = await rollup({
             preprocess,
         }),
 
-        require("modular-css-rollup")({
+        require("@modular-css/rollup")({
             processor,
 
             common : "common.css",
@@ -64,7 +64,7 @@ bundle.write({
 #### `rollup.config.js`
 
 ```js
-const { preprocess, processor } = require("modular-css-svelte")({
+const { preprocess, processor } = require("@modular-css/svelte")({
     // Processor options
 });
 
@@ -81,7 +81,7 @@ module.exports = {
             preprocess,
         }),
 
-        require("modular-css-rollup")({
+        require("@modular-css/rollup")({
             processor,
 
             common : "common.css",

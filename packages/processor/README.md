@@ -1,4 +1,4 @@
-modular-css-core  [![NPM Version](https://img.shields.io/npm/v/modular-css-core.svg)](https://www.npmjs.com/package/modular-css-core) [![NPM License](https://img.shields.io/npm/l/modular-css-core.svg)](https://www.npmjs.com/package/modular-css-core) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-core.svg)](https://www.npmjs.com/package/modular-css-core)
+@modular-css/processor  [![NPM Version](https://img.shields.io/npm/v/@modular-css/processor.svg)](https://www.npmjs.com/package/@modular-css/processor) [![NPM License](https://img.shields.io/npm/l/@modular-css/processor.svg)](https://www.npmjs.com/package/@modular-css/processor) [![NPM Downloads](https://img.shields.io/npm/dm/@modular-css/processor.svg)](https://www.npmjs.com/package/@modular-css/processor)
 ===========
 
 <p align="center">
@@ -9,14 +9,14 @@ The core functionality of [`modular-css`](https://npmjs.com/modular-css) exposed
 
 ## Install
 
-`$ npm i modular-css-core`
+`$ npm i @modular-css/processor`
 
 ## Usage
 
 Instantiate a new `Processor` instance, call it's `.file(<path>)` or `.string(<name>, <contents>)` methods, and then use the returned Promise to get access to the results/output.
 
 ```js
-var Processor = require("modular-css-core"),
+var Processor = require("@modular-css/processor"),
     processor = new Processor({
         // See "API Options" for valid options to pass to the Processor constructor
     });
@@ -130,7 +130,7 @@ Resolver functions should either return an absolute path or a falsey value. They
 new Processor({
     resolvers : [
         (src, file, resolve) => ...,
-        require("modular-css-resolvepaths")(
+        require("@modular-css/path-resolver")(
             "./some/other/path"
         )
     ]

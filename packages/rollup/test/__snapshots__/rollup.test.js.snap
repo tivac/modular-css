@@ -164,7 +164,7 @@ Object {
   "hook": "transform",
   "id": Any<String>,
   "message": "Invalid JS identifier \\"fooga-wooga\\", unable to export",
-  "plugin": "modular-css-rollup",
+  "plugin": "@modular-css/rollup",
   "toString": [Function],
 }
 `;

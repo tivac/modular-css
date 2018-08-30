@@ -1,6 +1,6 @@
 "use strict";
 
-var namer  = require("test-utils/namer.js"),
+var namer  = require("@modular-css/test-utils/namer.js"),
     
     Processor = require("../processor.js");
 
@@ -19,7 +19,7 @@ describe("/processor.js", () => {
                 require.resolve("./specimens/unicode.css")
             )
             .then(() => processor.output({
-                to : "./packages/core/test/output/unicode.css",
+                to : "./packages/processor/test/output/unicode.css",
             }))
             .then((output) =>
                 expect(output.css).toMatchSnapshot()

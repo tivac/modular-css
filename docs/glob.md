@@ -5,7 +5,7 @@ If you don't care about the dependency tree from your code you can also use the 
 ## Usage
 
 ```js
-var glob = require("modular-css-glob");
+var glob = require("@modular-css/glob");
 
 glob({
     search : [

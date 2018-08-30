@@ -8,8 +8,8 @@ var fs     = require("fs"),
     from       = require("from2-string"),
     shell      = require("shelljs"),
     
-    read   = require("test-utils/read.js")(__dirname),
-    prefix = require("test-utils/prefix.js")(__dirname),
+    read   = require("@modular-css/test-utils/read.js")(__dirname),
+    prefix = require("@modular-css/test-utils/prefix.js")(__dirname),
 
     bundle = require("./lib/bundle.js"),
     plugin = require("../browserify.js");

@@ -13,7 +13,7 @@ Object {
 `;
 
 exports[`/issues /98 should prune rules that only compose, but leave them in the exports 2`] = `
-"/* packages/core/test/specimens/issues/98.css */
+"/* packages/processor/test/specimens/issues/98.css */
 .booga { color: red }
 .fooga + .fooga { color: blue }"
 `;

@@ -1,4 +1,4 @@
-modular-css-svelte  [![NPM Version](https://img.shields.io/npm/v/modular-css-svelte.svg)](https://www.npmjs.com/package/modular-css-svelte) [![NPM License](https://img.shields.io/npm/l/modular-css-svelte.svg)](https://www.npmjs.com/package/modular-css-svelte) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-svelte.svg)](https://www.npmjs.com/package/modular-css-svelte)
+@modular-css/svelte  [![NPM Version](https://img.shields.io/npm/v/@modular-css/svelte.svg)](https://www.npmjs.com/package/@modular-css/svelte) [![NPM License](https://img.shields.io/npm/l/@modular-css/svelte.svg)](https://www.npmjs.com/package/@modular-css/svelte) [![NPM Downloads](https://img.shields.io/npm/dm/@modular-css/svelte.svg)](https://www.npmjs.com/package/@modular-css/svelte)
 ===========
 
 <p align="center">
@@ -41,7 +41,7 @@ Alternatively you can use `<link href="./file.css" />` tags to reference CSS ext
 
 ## Install
 
-`$ npm i modular-css-svelte`
+`$ npm i @modular-css/svelte`
 
 ## Usage
 
@@ -50,7 +50,7 @@ Alternatively you can use `<link href="./file.css" />` tags to reference CSS ext
 ```js
 const filename = "./Component.html";
 
-const { processor, preprocess } = require("modular-css-svelte")({
+const { processor, preprocess } = require("@modular-css/svelte")({
     // Processor options
 });
 
@@ -64,14 +64,14 @@ const result = processor.output();
 fs.writeFileSync("./dist/bundle.css", result.css);
 ```
 
-### `modular-css-rollup`
+### `@modular-css/rollup`
 
 #### API
 
 ```js
 const rollup = require("rollup").rollup;
 
-const { preprocess, processor } = require("modular-css-svelte")({
+const { preprocess, processor } = require("@modular-css/svelte")({
     // Processor options
 });
 
@@ -83,7 +83,7 @@ const bundle = await rollup({
             preprocess,
         }),
 
-        require("modular-css-rollup)({
+        require("@modular-css/rollup)({
             processor,
 
             common : "common.css",
@@ -101,7 +101,7 @@ bundle.write({
 #### `rollup.config.js`
 
 ```js
-const { preprocess, processor } = require("modular-css-svelte")({
+const { preprocess, processor } = require("@modular-css/svelte")({
     // Processor options
 });
 
@@ -118,7 +118,7 @@ module.exports = {
             preprocess,
         }),
         
-        require("modular-css-rollup)({
+        require("@modular-css/rollup)({
             processor,
 
             common : "common.css",

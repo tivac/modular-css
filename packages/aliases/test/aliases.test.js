@@ -2,12 +2,12 @@
 
 const { dedent } = require("dentist");
     
-const Processor = require("modular-css-core");
-const namer     = require("test-utils/namer.js");
+const Processor = require("@modular-css/processor");
+const namer     = require("@modular-css/test-utils/namer.js");
 
 const aliases = require("../aliases.js");
 
-describe("modular-css-aliases", () => {
+describe("@modular-css/path-aliases", () => {
     it("should return a falsey value if a file isn't found", () => {
         var fn = aliases({
             aliases : {

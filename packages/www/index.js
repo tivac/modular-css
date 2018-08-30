@@ -6,7 +6,7 @@ path.parse = parse;
 
 import fs from "fs";
 import m from "mithril";
-import pkg from "modular-css-core/package.json";
+import pkg from "@modular-css/processor/package.json";
 import Clipboard from "clipboard";
 
 import { default as state, createFile, output } from "./state.js";

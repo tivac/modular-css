@@ -2,7 +2,7 @@
 
 const tester = require("cli-tester");
 
-const read = require("test-utils/read.js")(__dirname);
+const read = require("@modular-css/test-utils/read.js")(__dirname);
 
 const cli = require.resolve("../cli.js");
 

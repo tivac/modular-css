@@ -1,6 +1,6 @@
 "use strict";
 
-var namer = require("test-utils/namer.js"),
+var namer = require("@modular-css/test-utils/namer.js"),
 
     glob = require("../glob.js");
 

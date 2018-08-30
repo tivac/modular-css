@@ -3,7 +3,7 @@
 ## Installation
 
 ```bash
-$ npm i modular-css-cli
+$ npm i @modular-css/cli
 ```
 
 ## Usage

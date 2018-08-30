@@ -1,4 +1,4 @@
-modular-css-webpack  [![NPM Version](https://img.shields.io/npm/v/modular-css-webpack.svg)](https://www.npmjs.com/package/modular-css-webpack) [![NPM License](https://img.shields.io/npm/l/modular-css-webpack.svg)](https://www.npmjs.com/package/modular-css-webpack) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-webpack.svg)](https://www.npmjs.com/package/modular-css-webpack)
+@modular-css/webpack  [![NPM Version](https://img.shields.io/npm/v/@modular-css/webpack.svg)](https://www.npmjs.com/package/@modular-css/webpack) [![NPM License](https://img.shields.io/npm/l/@modular-css/webpack.svg)](https://www.npmjs.com/package/@modular-css/webpack) [![NPM Downloads](https://img.shields.io/npm/dm/@modular-css/webpack.svg)](https://www.npmjs.com/package/@modular-css/webpack)
 ===========
 
 <p align="center">
@@ -9,9 +9,9 @@ Webpack 2/3/4 support for [`modular-css`](https://github.com/tivac/modular-css).
 
 This package contains two entry points, you will need to use **both** in tandem for things to work!
 
-1. `modular-css-webpack/plugin` provides a webpack plugin you can use to transform imported `.css` files into lookup objects while outputting CSS to disk.
+1. `@modular-css/webpack/plugin` provides a webpack plugin you can use to transform imported `.css` files into lookup objects while outputting CSS to disk.
 
-2. `modular-css-webpack/loader` provides the file loader that does the actual transformation on files.
+2. `@modular-css/webpack/loader` provides the file loader that does the actual transformation on files.
 
 ## Usage
 
@@ -19,7 +19,7 @@ This package contains two entry points, you will need to use **both** in tandem 
 // webpack.config.js
 var path = require("path"),
     
-    CSSPlugin = require("modular-css-webpack/plugin");
+    CSSPlugin = require("@modular-css/webpack/plugin");
 
 module.exports = {
     entry   : "./input.js",
@@ -30,7 +30,7 @@ module.exports = {
     module : {
         rules : [{
             test : /\.css$/,
-            use  : "modular-css-webpack/loader"
+            use  : "@modular-css/webpack/loader"
         }]
     },
     plugins : [
@@ -70,7 +70,7 @@ By default this plugin will create both a default export and named `export`s for
         rules : [{
             test : /\.css$/,
             use  : {
-                loader  : "modular-css-webpack/loader",
+                loader  : "@modular-css/webpack/loader",
                 options : {
                     namedExports : false
                 }

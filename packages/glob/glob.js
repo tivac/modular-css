@@ -2,7 +2,7 @@
 
 var globule = require("globule"),
     
-    Processor = require("modular-css-core");
+    Processor = require("@modular-css/processor");
 
 module.exports = function(opts) {
     var options = Object.assign(

@@ -1,4 +1,4 @@
-modular-css-namer [![NPM Version](https://img.shields.io/npm/v/modular-css-namer.svg)](https://www.npmjs.com/package/modular-css-namer) [![NPM License](https://img.shields.io/npm/l/modular-css-namer.svg)](https://www.npmjs.com/package/modular-css-namer) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-namer.svg)](https://www.npmjs.com/package/modular-css-namer)
+@modular-css/shortnames [![NPM Version](https://img.shields.io/npm/v/@modular-css/shortnames.svg)](https://www.npmjs.com/package/@modular-css/shortnames) [![NPM License](https://img.shields.io/npm/l/@modular-css/shortnames.svg)](https://www.npmjs.com/package/@modular-css/shortnames) [![NPM Downloads](https://img.shields.io/npm/dm/@modular-css/shortnames.svg)](https://www.npmjs.com/package/@modular-css/shortnames)
 =================
 
 <p align="center">
@@ -12,9 +12,9 @@ Tiny classnames for [`modular-css`](https://github.com/tivac/modular-css) produc
 ### JS API
 
 ```js
-var Processor = require("modular-css-core"),
+var Processor = require("@modular-css/processor"),
     processor = new Processor({
-        namer : require("modular-css-namer")()
+        namer : require("@modular-css/shortnames")()
     });
     
 // ...
@@ -23,9 +23,9 @@ var Processor = require("modular-css-core"),
 ### Browserify
 
 ```js
-build.plugin("modular-cssify", {
+build.plugin("@modular-css/browserify", {
     css   : "./style.css",
-    namer : require("modular-css-namer")()
+    namer : require("@modular-css/shortnames")()
 });
 
 // ...
@@ -37,9 +37,9 @@ build.plugin("modular-cssify", {
 rollup({
     entry   : "./index.js",
     plugins : [
-        require("modular-css-rollup")({
+        require("@modular-css/rollup")({
             css   : "./gen/index.css",
-            namer : require("modular-css-namer")()
+            namer : require("@modular-css/shortnames")()
         })
     ]
 });

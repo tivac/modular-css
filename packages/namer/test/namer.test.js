@@ -2,7 +2,7 @@
 
 const namer = require("../namer");
 
-describe("modular-css-namer", () => {
+describe("@modular-css/shortnames", () => {
     let fn;
     
     beforeEach(() => (fn = namer()));

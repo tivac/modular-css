@@ -111,7 +111,7 @@ new Processor({
 // or
 
 new Processor({
-    namer : "modular-css-namer"
+    namer : "@modular-css/shortnames"
 });
 ```
 
@@ -131,7 +131,7 @@ Resolver functions should either return an absolute path or a falsey value. They
 new Processor({
     resolvers : [
         (src, file, resolve) => ...,
-        require("modular-css-resolvepaths")(
+        require("@modular-css/path-resolver")(
             "./some/other/path"
         )
     ]

@@ -1,4 +1,4 @@
-modular-css-cli  [![NPM Version](https://img.shields.io/npm/v/modular-css-cli.svg)](https://www.npmjs.com/package/modular-css-cli) [![NPM License](https://img.shields.io/npm/l/modular-css-cli.svg)](https://www.npmjs.com/package/modular-css-cli) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-cli.svg)](https://www.npmjs.com/package/modular-css-cli)
+@modular-css/cli  [![NPM Version](https://img.shields.io/npm/v/@modular-css/cli.svg)](https://www.npmjs.com/package/@modular-css/cli) [![NPM License](https://img.shields.io/npm/l/@modular-css/cli.svg)](https://www.npmjs.com/package/@modular-css/cli) [![NPM Downloads](https://img.shields.io/npm/dm/@modular-css/cli.svg)](https://www.npmjs.com/package/@modular-css/cli)
 ===========
 
 <p align="center">
@@ -10,7 +10,7 @@ CLI interface to [`modular-css`](https://github.com/tivac/modular-css).
 ## Installation
 
 ```bash
-$ npm i modular-css-cli
+$ npm i @modular-css/cli
 ```
 
 ## Usage

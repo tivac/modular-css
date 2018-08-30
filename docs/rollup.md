@@ -1,17 +1,17 @@
-# modular-css-rollup
+# @modular-css/rollup
 
 Rollup support for [`modular-css`](https://github.com/tivac/modular-css).
 
 ## Install
 
-`$ npm i modular-css-rollup`
+`$ npm i @modular-css/rollup`
 
 ## ⚠️Rollup Version support⚠️
 
 Due to API changes, certain major versions of this plugin will require a specific minimum rollup version.
 
-- `modular-css-rollup@11` requires `rollup@0.60.0`
-- `modular-css-rollup@15` requires `rollup@0.65.0`
+- `@modular-css/rollup@11` requires `rollup@0.60.0`
+- `@modular-css/rollup@15` requires `rollup@0.65.0`
 
 ## Usage
 
@@ -21,7 +21,7 @@ Due to API changes, certain major versions of this plugin will require a specifi
 const bundle = await rollup({
     input   : "./index.js",
     plugins : [
-        require("modular-css-rollup")()
+        require("@modular-css/rollup")()
     ]
 });
 ```
@@ -29,7 +29,7 @@ const bundle = await rollup({
 ### Config file
 
 ```js
-import css from "modular-css-rollup";
+import css from "@modular-css/rollup";
 
 export default {
     input   : "./index.js",

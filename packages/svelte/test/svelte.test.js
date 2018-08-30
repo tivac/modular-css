@@ -6,7 +6,7 @@ const path = require("path");
 const svelte = require("svelte");
 const dedent = require("dedent");
 
-const namer = require("test-utils/namer.js");
+const namer = require("@modular-css/test-utils/namer.js");
     
 const plugin = require("../svelte.js");
 

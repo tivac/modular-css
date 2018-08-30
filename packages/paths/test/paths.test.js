@@ -2,12 +2,12 @@
 
 var { dedent } = require("dentist"),
     
-    Processor = require("modular-css-core"),
-    namer     = require("test-utils/namer.js"),
+    Processor = require("@modular-css/processor"),
+    namer     = require("@modular-css/test-utils/namer.js"),
 
     paths = require("../paths.js");
 
-describe("modular-css-paths", () => {
+describe("@modular-css/path-resolver", () => {
     it("should return a falsey value if a file isn't found", () => {
         var fn = paths({
             paths : [

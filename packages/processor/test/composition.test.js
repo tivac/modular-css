@@ -2,7 +2,7 @@
 
 var path = require("path"),
     dedent = require("dedent"),
-    namer  = require("test-utils/namer.js"),
+    namer  = require("@modular-css/test-utils/namer.js"),
     
     Processor = require("../processor.js");
 

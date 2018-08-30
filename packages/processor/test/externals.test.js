@@ -1,7 +1,7 @@
 "use strict";
 
 var dedent = require("dedent"),
-    namer  = require("test-utils/namer.js"),
+    namer  = require("@modular-css/test-utils/namer.js"),
     
     Processor = require("../processor.js");
 
@@ -48,7 +48,7 @@ describe("/processor.js", () => {
         
         it("should support overriding external values", () =>
             processor.file(
-                "./packages/core/test/specimens/externals.css"
+                "./packages/processor/test/specimens/externals.css"
             )
             .then(() => processor.output())
             .then((result) =>

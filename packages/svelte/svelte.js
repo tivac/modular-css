@@ -1,6 +1,6 @@
 "use strict";
 
-const Processor = require("modular-css-core");
+const Processor = require("@modular-css/processor");
 
 const markup = require("./src/markup.js");
 const style = require("./src/style.js");

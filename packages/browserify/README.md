@@ -1,4 +1,4 @@
-modular-cssify  [![NPM Version](https://img.shields.io/npm/v/modular-cssify.svg)](https://www.npmjs.com/package/modular-cssify) [![NPM License](https://img.shields.io/npm/l/modular-cssify.svg)](https://www.npmjs.com/package/modular-cssify) [![NPM Downloads](https://img.shields.io/npm/dm/modular-cssify.svg)](https://www.npmjs.com/package/modular-cssify)
+@modular-css/browserify  [![NPM Version](https://img.shields.io/npm/v/@modular-css/browserify.svg)](https://www.npmjs.com/package/@modular-css/browserify) [![NPM License](https://img.shields.io/npm/l/@modular-css/browserify.svg)](https://www.npmjs.com/package/@modular-css/browserify) [![NPM Downloads](https://img.shields.io/npm/dm/@modular-css/browserify.svg)](https://www.npmjs.com/package/@modular-css/browserify)
 ===========
 
 <p align="center">
@@ -9,12 +9,12 @@ Browserify support for [`modular-css`](https://github.com/tivac/modular-css).
 
 This plugin can be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
 
-`modular-cssify` will use the `basedir` passed to browserify as it's `cwd` parameter.
+`@modular-css/browserify` will use the `basedir` passed to browserify as it's `cwd` parameter.
 
 ## Installation
 
 ```bash
-$ npm i modular-cssify
+$ npm i @modular-css/browserify
 ```
 
 ## Options
@@ -30,7 +30,7 @@ All other options are passed to the underlying `Processor` instance, see [Option
 ## CLI
 
 ```
-$ browserify -p [ modular-cssify --css "./style.css" ] entry.js
+$ browserify -p [ @modular-css/browserify --css "./style.css" ] entry.js
 ```
 
 ## API
@@ -41,22 +41,22 @@ var browserify = require("browserify"),
 
 build = browserify("./entry.js");
 
-build.plugin("modular-cssify", {
+build.plugin("@modular-css/browserify", {
     css : "./style.css",
 });
 ```
 
 ## factor-bundle
 
-`modular-cssify` is fully `factor-bundle` aware and will output correctly-partitioned CSS bundles to match the JS bundles created by `factor-bundle`.
+`@modular-css/browserify` is fully `factor-bundle` aware and will output correctly-partitioned CSS bundles to match the JS bundles created by `factor-bundle`.
 
-**WARNING**: Due to how `factor-bundle` works the `modular-cssify` must be applied to the Browserify object **before** `factor-bundle`.
+**WARNING**: Due to how `factor-bundle` works the `@modular-css/browserify` must be applied to the Browserify object **before** `factor-bundle`.
 
 ### CLI
 
 ```
 $ browserify home.js account.js \
-    -p [ modular-cssify --css gen/common.css ] \
+    -p [ @modular-css/browserify --css gen/common.css ] \
     -p [ factor-bundle -o gen/home.js -o gen/account.js ] \
     -o bundle/common.js
 ```
@@ -70,7 +70,7 @@ var build = browserify([
     ]);
 
 // NOTE modular-css applied before factor-bundle, it won't work otherwise!
-build.plugin("modular-cssify", {
+build.plugin("@modular-css/browserify", {
     css : "./gen/common.css"
 });
 

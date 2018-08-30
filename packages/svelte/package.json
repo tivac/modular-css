@@ -26,7 +26,7 @@
   "dependencies": {
     "dedent": "^0.7.0",
     "mkdirp": "^0.5.1",
-    "modular-css-core": "file:../processor",
+    "@modular-css/processor": "file:../processor",
     "resolve-from": "^4.0.0",
     "rollup-pluginutils": "^2.3.0"
   }

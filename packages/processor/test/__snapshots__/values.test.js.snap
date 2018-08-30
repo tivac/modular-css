@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/processor.js values should support exporting imported variables 1`] = `
-"/* packages/core/test/specimens/values.css */
+"/* packages/processor/test/specimens/values.css */
 
-/* packages/core/test/specimens/value-import.css */
+/* packages/processor/test/specimens/value-import.css */
 .red {
     color: red;
 }
@@ -12,7 +12,7 @@ exports[`/processor.js values should support exporting imported variables 1`] = 
     color: green;
 }
 
-/* packages/core/test/specimens/value-export.css */
+/* packages/processor/test/specimens/value-export.css */
 .red {
     color: red;
 }
@@ -24,8 +24,8 @@ exports[`/processor.js values should support exporting imported variables 1`] = 
 `;
 
 exports[`/processor.js values should support importing variables from a file 1`] = `
-"/* packages/core/test/specimens/values.css */
-/* packages/core/test/specimens/value-import.css */
+"/* packages/processor/test/specimens/values.css */
+/* packages/processor/test/specimens/value-import.css */
 .red {
     color: red;
 }
@@ -57,8 +57,8 @@ exports[`/processor.js values should support simple values 1`] = `
 `;
 
 exports[`/processor.js values should support value composition 1`] = `
-"/* packages/core/test/specimens/values.css */
-/* packages/core/test/specimens/value-composition.css */
+"/* packages/processor/test/specimens/values.css */
+/* packages/processor/test/specimens/value-composition.css */
 .red {
     color: red;
     background: blue;
@@ -67,8 +67,8 @@ exports[`/processor.js values should support value composition 1`] = `
 `;
 
 exports[`/processor.js values should support value namespaces 1`] = `
-"/* packages/core/test/specimens/values.css */
-/* packages/core/test/specimens/value-namespace.css */
+"/* packages/processor/test/specimens/values.css */
+/* packages/processor/test/specimens/value-namespace.css */
 .red {
     color: red;
 }
@@ -84,13 +84,13 @@ exports[`/processor.js values should support value namespaces 1`] = `
 `;
 
 exports[`/processor.js values should support value replacement in :external(...) 1`] = `
-"/* packages/core/test/specimens/folder/folder.css */
+"/* packages/processor/test/specimens/folder/folder.css */
 .folder { margin: 2px; }
-/* packages/core/test/specimens/simple.css */
+/* packages/processor/test/specimens/simple.css */
 .wooga { color: red; }
-/* packages/core/test/specimens/local.css */
+/* packages/processor/test/specimens/local.css */
 .booga { background: green; }
-/* packages/core/test/specimens/externals.css */
+/* packages/processor/test/specimens/externals.css */
 .a .wooga {
     color: green;
 }

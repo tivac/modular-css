@@ -87,37 +87,37 @@ More detailed descriptions are available in [docs/features.md](docs/features.md)
 ### [JS API](/packages/core/#readme)
 
 ```bash
-$ npm i modular-css-core
+$ npm i @modular-css/processor
 ```
 
 ### [CLI](/packages/cli/#readme)
 
 ```bash
-$ npm i modular-css-cli
+$ npm i @modular-css/cli
 ```
 
 ### [Browserify](/packages/browserify/#readme)
 
 ```bash
-$ npm i modular-cssify
+$ npm i @modular-css/browserify
 ```
 
 ### [Rollup](/packages/rollup/#readme)
 
 ```bash
-$ npm i modular-css-rollup
+$ npm i @modular-css/rollup
 ```
 
 ### [Webpack](/packages/webpack/#readme)
 
 ```bash
-$ npm i modular-css-webpack
+$ npm i @modular-css/webpack
 ```
 
 ### [Svelte](/packages/svelte/#readme)
 
 ```bash
-$ npm i modular-css-svelte
+$ npm i @modular-css/svelte
 ```
 
 ### [PostCSS Plugin](/packages/postcss/#readme)
@@ -129,7 +129,7 @@ $ npm i postcss-modular-css
 ### [Globbing API](/packages/glob/#readme)
 
 ```bash
-$ npm i modular-css-glob
+$ npm i @modular-css/glob
 ```
 
 ## Why?

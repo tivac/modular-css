@@ -2,34 +2,34 @@
 
 exports[`/processor.js API ._resolve() should fall back to a default resolver 1`] = `
 Array [
-  "packages/core/test/specimens/local.css",
+  "packages/processor/test/specimens/local.css",
 ]
 `;
 
 exports[`/processor.js API ._resolve() should run resolvers until a match is found 1`] = `
 Array [
-  "packages/core/test/specimens/local.css",
+  "packages/processor/test/specimens/local.css",
 ]
 `;
 
 exports[`/processor.js API .dependencies() should return the dependencies of the specified file 1`] = `
 Array [
-  "packages/core/test/specimens/folder/folder.css",
-  "packages/core/test/specimens/local.css",
+  "packages/processor/test/specimens/folder/folder.css",
+  "packages/processor/test/specimens/local.css",
 ]
 `;
 
 exports[`/processor.js API .dependencies() should return the overall order of dependencies if no file is specified 1`] = `
 Array [
-  "packages/core/test/specimens/folder/folder.css",
-  "packages/core/test/specimens/local.css",
-  "packages/core/test/specimens/start.css",
+  "packages/processor/test/specimens/folder/folder.css",
+  "packages/processor/test/specimens/local.css",
+  "packages/processor/test/specimens/start.css",
 ]
 `;
 
 exports[`/processor.js API .dependents() should return the dependents of the specified file 1`] = `
 Array [
-  "packages/core/test/specimens/start.css",
+  "packages/processor/test/specimens/start.css",
 ]
 `;
 
@@ -90,12 +90,12 @@ exports[`/processor.js API .file() should process an absolute file 4`] = `
 exports[`/processor.js API .output() should allow for seperate source map output 1`] = `
 Object {
   "file": "to.css",
-  "mappings": "AAAA,oDAAC;AACD,UAAU,YAAY,EAAE;ACDxB,4CAAC;AAID,SAAS,kBAAkB,EAAE;ACJ7B,4CAAC;AAED,SDFA,WAAgB,CAChB,iBAAiB,ECCsB;AACvC,SFHA,wBAAqB,EEGe",
+  "mappings": "AAAA,yDAAC;AACD,UAAU,YAAY,EAAE;ACDxB,iDAAC;AAID,SAAS,kBAAkB,EAAE;ACJ7B,iDAAC;AAED,SDFA,WAAgB,CAChB,iBAAiB,ECCsB;AACvC,SFHA,wBAAqB,EEGe",
   "names": Array [],
   "sources": Array [
-    "packages/core/test/specimens/folder/folder.css",
-    "packages/core/test/specimens/local.css",
-    "packages/core/test/specimens/start.css",
+    "packages/processor/test/specimens/folder/folder.css",
+    "packages/processor/test/specimens/local.css",
+    "packages/processor/test/specimens/start.css",
   ],
   "sourcesContent": Array [
     "@value folder: white;
@@ -119,11 +119,11 @@ Object {
 `;
 
 exports[`/processor.js API .output() should avoid duplicating files in the output 1`] = `
-"/* packages/core/test/specimens/folder/folder.css */
+"/* packages/processor/test/specimens/folder/folder.css */
 .folder { margin: 2px; }
-/* packages/core/test/specimens/local.css */
+/* packages/processor/test/specimens/local.css */
 .booga { background: green; }
-/* packages/core/test/specimens/start.css */
+/* packages/processor/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
 "
@@ -131,17 +131,17 @@ exports[`/processor.js API .output() should avoid duplicating files in the outpu
 
 exports[`/processor.js API .output() should generate a JSON structure of all the compositions 1`] = `
 Object {
-  "packages/core/test/specimens/folder/folder.css": Object {
+  "packages/processor/test/specimens/folder/folder.css": Object {
     "folder": "folder",
   },
-  "packages/core/test/specimens/local.css": Object {
+  "packages/processor/test/specimens/local.css": Object {
     "booga": "booga",
     "folder": "white",
     "looga": "booga looga",
     "one": "red",
     "two": "blue",
   },
-  "packages/core/test/specimens/start.css": Object {
+  "packages/processor/test/specimens/start.css": Object {
     "booga": "booga",
     "folder": "white",
     "one": "red",
@@ -153,34 +153,34 @@ Object {
 `;
 
 exports[`/processor.js API .output() should generate css representing the output from all added files 1`] = `
-"/* packages/core/test/specimens/folder/folder.css */
+"/* packages/processor/test/specimens/folder/folder.css */
 .folder { margin: 2px; }
-/* packages/core/test/specimens/simple.css */
+/* packages/processor/test/specimens/simple.css */
 .wooga { color: red; }
-/* packages/core/test/specimens/local.css */
+/* packages/processor/test/specimens/local.css */
 .booga { background: green; }
-/* packages/core/test/specimens/start.css */
+/* packages/processor/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
 "
 `;
 
 exports[`/processor.js API .output() should order output by dependencies, then alphabetically 1`] = `
-"/* packages/core/test/specimens/folder/folder.css */
+"/* packages/processor/test/specimens/folder/folder.css */
 .folder { margin: 2px; }
-/* packages/core/test/specimens/folder/folder2.css */
+/* packages/processor/test/specimens/folder/folder2.css */
 .folder2 { color: green; }
-/* packages/core/test/specimens/folder/subfolder/subfolder.css */
+/* packages/processor/test/specimens/folder/subfolder/subfolder.css */
 .subfolder { color: yellow; }
-/* packages/core/test/specimens/composes.css */
-/* packages/core/test/specimens/deep.css */
+/* packages/processor/test/specimens/composes.css */
+/* packages/processor/test/specimens/deep.css */
 .deep {
     
     color: black;
 }
-/* packages/core/test/specimens/local.css */
+/* packages/processor/test/specimens/local.css */
 .booga { background: green; }
-/* packages/core/test/specimens/start.css */
+/* packages/processor/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
 "
@@ -189,25 +189,25 @@ exports[`/processor.js API .output() should order output by dependencies, then a
 exports[`/processor.js API .output() should reject if called before input has been processed 1`] = `[Error: File processing not complete]`;
 
 exports[`/processor.js API .output() should return a postcss result 1`] = `
-"/* packages/core/test/specimens/folder/folder.css */
+"/* packages/processor/test/specimens/folder/folder.css */
 .folder { margin: 2px; }
-/* packages/core/test/specimens/local.css */
+/* packages/processor/test/specimens/local.css */
 .booga { background: green; }
-/* packages/core/test/specimens/start.css */
+/* packages/processor/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
 "
 `;
 
 exports[`/processor.js API .output() should support returning output for specified absolute files 1`] = `
-"/* packages/core/test/specimens/start.css */
+"/* packages/processor/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
 "
 `;
 
 exports[`/processor.js API .output() should support returning output for specified relative files 1`] = `
-"/* packages/core/test/specimens/start.css */
+"/* packages/processor/test/specimens/start.css */
 .booga { color: red; background: blue; }
 .tooga { border: 1px solid white; }
 "

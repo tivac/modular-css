@@ -2,7 +2,7 @@
 
 var fs = require("fs"),
     
-    namer = require("test-utils/namer.js"),
+    namer = require("@modular-css/test-utils/namer.js"),
 
     Processor = require("../../processor.js");
 
@@ -10,13 +10,13 @@ describe("/issues", () => {
     describe("/191", () => {
         var fn = it;
         
-        afterAll(() => require("shelljs").rm("-rf", "./packages/core/test/output/sensitive.txt"));
+        afterAll(() => require("shelljs").rm("-rf", "./packages/processor/test/output/sensitive.txt"));
 
         // Verify that filesystem is case-insensitive before bothering
-        fs.writeFileSync("./packages/core/test/output/sensitive.txt");
+        fs.writeFileSync("./packages/processor/test/output/sensitive.txt");
 
         try {
-            fs.statSync("./packages/core/test/output/SENSITIVE.txt");
+            fs.statSync("./packages/processor/test/output/SENSITIVE.txt");
         } catch(e) {
             fn = it.skip;
         }

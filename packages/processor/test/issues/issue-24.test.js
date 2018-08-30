@@ -1,7 +1,7 @@
 "use strict";
 
 var dedent = require("dedent"),
-    namer  = require("test-utils/namer.js"),
+    namer  = require("@modular-css/test-utils/namer.js"),
 
     Processor = require("../../processor.js");
 
@@ -13,7 +13,7 @@ describe("/issues", () => {
                 });
             
             return processor.string(
-                "./packages/core/test/specimens/composition.css",
+                "./packages/processor/test/specimens/composition.css",
                 dedent(`
                     @value simple: "./simple.css";
                     

@@ -40,12 +40,12 @@ function updateCss({ processor, content, result, filename }) {
         const classes = missed.map((reference) => reference.split("css.")[1]);
 
         if(strict) {
-            throw new Error(`modular-css-svelte: Unable to find .${classes.join(", .")} in "${filename}"`);
+            throw new Error(`@modular-css/svelte: Unable to find .${classes.join(", .")} in "${filename}"`);
         }
 
         classes.forEach((key) =>
             // eslint-disable-next-line no-console
-            console.warn(`modular-css-svelte: Unable to find .${key} in "${filename}"`)
+            console.warn(`@modular-css/svelte: Unable to find .${key} in "${filename}"`)
         );
     }
 
@@ -119,7 +119,7 @@ module.exports = (processor) => ({ content, filename }) => {
     const style = content.match(styleRegex);
 
     if(link && style) {
-        throw new Error("modular-css-svelte: use <style> OR <link>, but not both");
+        throw new Error("@modular-css/svelte: use <style> OR <link>, but not both");
     }
 
     if(style) {

@@ -5,7 +5,7 @@ const fs   = require("fs");
 const path = require("path");
 
 const mkdirp = require("mkdirp");
-const glob = require("modular-css-glob");
+const glob = require("@modular-css/glob");
 const cli = require("meow")(`
     Usage
     $ modular-css [options] <glob>...

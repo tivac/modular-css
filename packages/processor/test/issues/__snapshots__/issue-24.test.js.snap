@@ -11,9 +11,9 @@ Object {
 `;
 
 exports[`/issues /24 should be able to compose using a value 2`] = `
-"/* packages/core/test/specimens/simple.css */
+"/* packages/processor/test/specimens/simple.css */
 .wooga { color: red; }
-/* packages/core/test/specimens/composition.css */
+/* packages/processor/test/specimens/composition.css */
 .a {
     background: #000;
 }

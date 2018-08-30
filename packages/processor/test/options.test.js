@@ -3,8 +3,8 @@
 const path = require("path");
 
 const dedent   = require("dedent");
-const namer    = require("test-utils/namer.js");
-const relative = require("test-utils/relative.js");
+const namer    = require("@modular-css/test-utils/namer.js");
+const relative = require("@modular-css/test-utils/relative.js");
 
 const Processor = require("../processor.js");
 
@@ -24,7 +24,7 @@ describe("/processor.js", () => {
     describe("options", () => {
         describe("cwd", () => {
             it("should use an absolute path", () => {
-                var cwd       = path.resolve("./packages/core/test/specimens/folder"),
+                var cwd       = path.resolve("./packages/processor/test/specimens/folder"),
                     processor = new Processor({
                         cwd,
                     });
@@ -39,7 +39,7 @@ describe("/processor.js", () => {
             });
 
             it("should accept a relative path but make it absolute", () => {
-                var cwd       = "./packages/core/test/specimens/folder",
+                var cwd       = "./packages/processor/test/specimens/folder",
                     processor = new Processor({
                         cwd,
                     });
@@ -62,7 +62,7 @@ describe("/processor.js", () => {
                 });
                     
                 const result = await processor.string(
-                    "./packages/core/test/specimens/simple.css",
+                    "./packages/processor/test/specimens/simple.css",
                     ".wooga { }"
                 );
 
@@ -74,7 +74,7 @@ describe("/processor.js", () => {
 
             it("should require a namer if a string is passed", async () => {
                 const processor = new Processor({
-                    namer : "modular-css-namer",
+                    namer : "@modular-css/shortnames",
                 });
                     
                 const result = await processor.string(
@@ -91,7 +91,7 @@ describe("/processor.js", () => {
                 });
                     
                 const result = await processor.string(
-                    "./packages/core/test/specimens/simple.css",
+                    "./packages/processor/test/specimens/simple.css",
                     ".wooga { }"
                 );
                 
@@ -107,10 +107,10 @@ describe("/processor.js", () => {
                     });
                 
                 return processor.file(
-                    "./packages/core/test/specimens/start.css"
+                    "./packages/processor/test/specimens/start.css"
                 )
                 .then(() => processor.output({
-                    from : "packages/core/test/specimens/rewrite.css",
+                    from : "packages/processor/test/specimens/rewrite.css",
                     to   : "out.css",
                 }))
                 .then((result) => expect(result.css).toMatchSnapshot());
@@ -125,10 +125,10 @@ describe("/processor.js", () => {
                     });
                 
                 return processor.file(
-                    "./packages/core/test/specimens/start.css"
+                    "./packages/processor/test/specimens/start.css"
                 )
                 .then(() => processor.output({
-                    from : "packages/core/test/specimens/rewrite.css",
+                    from : "packages/processor/test/specimens/rewrite.css",
                     to   : "out.css",
                 }))
                 .then((result) => expect(result.css).toMatchSnapshot());
@@ -157,7 +157,7 @@ describe("/processor.js", () => {
                 var processor = new Processor();
 
                 return processor.string(
-                    "packages/core/test/specimens/rewrite.css",
+                    "packages/processor/test/specimens/rewrite.css",
                     dedent(`
                         .a {
                             background: url("img.png");
@@ -165,8 +165,8 @@ describe("/processor.js", () => {
                     `)
                 )
                 .then(() => processor.output({
-                    from : "packages/core/test/specimens/rewrite.css",
-                    to   : "./packages/core/test/output/rewrite.css",
+                    from : "packages/processor/test/specimens/rewrite.css",
+                    to   : "./packages/processor/test/output/rewrite.css",
                 }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
@@ -175,7 +175,7 @@ describe("/processor.js", () => {
                 var processor = new Processor({ rewrite : false });
 
                 return processor.string(
-                    "packages/core/test/specimens/rewrite.css",
+                    "packages/processor/test/specimens/rewrite.css",
                     dedent(`
                         .a {
                             background: url("img.png");
@@ -183,8 +183,8 @@ describe("/processor.js", () => {
                     `)
                 )
                 .then(() => processor.output({
-                    from : "packages/core/test/specimens/rewrite.css",
-                    to   : "./packages/core/test/output/rewrite.css",
+                    from : "packages/processor/test/specimens/rewrite.css",
+                    to   : "./packages/processor/test/output/rewrite.css",
                 }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
@@ -197,7 +197,7 @@ describe("/processor.js", () => {
                 });
                 
                 return processor.string(
-                    "packages/core/test/specimens/rewrite.css",
+                    "packages/processor/test/specimens/rewrite.css",
                     dedent(`
                         .a {
                             background: url("img.png");
@@ -205,8 +205,8 @@ describe("/processor.js", () => {
                     `)
                 )
                 .then(() => processor.output({
-                    from : "packages/core/test/specimens/rewrite.css",
-                    to   : "./packages/core/test/output/rewrite.css",
+                    from : "packages/processor/test/specimens/rewrite.css",
+                    to   : "./packages/processor/test/output/rewrite.css",
                 }))
                 .then((result) => expect(result.css).toMatchSnapshot());
             });
@@ -221,10 +221,10 @@ describe("/processor.js", () => {
                         });
                     
                     return processor.string(
-                        "packages/core/test/specimens/sync-before.css",
+                        "packages/processor/test/specimens/sync-before.css",
                         ""
                     )
-                    .then(() => processor.output({ from : "packages/core/test/specimens/sync-before.css" }))
+                    .then(() => processor.output({ from : "packages/processor/test/specimens/sync-before.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
 
@@ -235,10 +235,10 @@ describe("/processor.js", () => {
                         });
                     
                     return processor.string(
-                        "packages/core/test/specimens/async-before.css",
+                        "packages/processor/test/specimens/async-before.css",
                         ""
                     )
-                    .then(() => processor.output({ from : "packages/core/test/specimens/sync-before.css" }))
+                    .then(() => processor.output({ from : "packages/processor/test/specimens/sync-before.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
             });
@@ -251,10 +251,10 @@ describe("/processor.js", () => {
                         });
 
                     return processor.string(
-                        "packages/core/test/specimens/sync-processing.css",
+                        "packages/processor/test/specimens/sync-processing.css",
                         ""
                     )
-                    .then(() => processor.output({ from : "packages/core/test/specimens/sync-processing.css" }))
+                    .then(() => processor.output({ from : "packages/processor/test/specimens/sync-processing.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
 
@@ -265,10 +265,10 @@ describe("/processor.js", () => {
                         });
 
                     return processor.string(
-                        "packages/core/test/specimens/async-processing.css",
+                        "packages/processor/test/specimens/async-processing.css",
                         ""
                     )
-                    .then(() => processor.output({ from : "packages/core/test/specimens/sync-processing.css" }))
+                    .then(() => processor.output({ from : "packages/processor/test/specimens/sync-processing.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
 
@@ -287,7 +287,7 @@ describe("/processor.js", () => {
                         });
 
                     return processor.string(
-                        "packages/core/test/specimens/async-processing.css",
+                        "packages/processor/test/specimens/async-processing.css",
                         ""
                     )
                     .then((file) => expect(file.exports).toMatchSnapshot());
@@ -299,11 +299,11 @@ describe("/processor.js", () => {
                     var processor = new Processor();
 
                     return processor.file(
-                        "./packages/core/test/specimens/relative.css"
+                        "./packages/processor/test/specimens/relative.css"
                     )
                     .then(() => processor.output({
-                        from : "packages/core/test/specimens/rewrite.css",
-                        to   : "./packages/core/test/output/relative.css",
+                        from : "packages/processor/test/specimens/rewrite.css",
+                        to   : "./packages/processor/test/output/relative.css",
                     }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
@@ -315,11 +315,11 @@ describe("/processor.js", () => {
                         });
 
                     return processor.file(
-                        "./packages/core/test/specimens/relative.css"
+                        "./packages/processor/test/specimens/relative.css"
                     )
                     .then(() => processor.output({
-                        from : "packages/core/test/specimens/rewrite.css",
-                        to   : "./packages/core/test/output/relative.css",
+                        from : "packages/processor/test/specimens/rewrite.css",
+                        to   : "./packages/processor/test/output/relative.css",
                     }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
@@ -331,11 +331,11 @@ describe("/processor.js", () => {
                         });
 
                     return processor.file(
-                        "./packages/core/test/specimens/relative.css"
+                        "./packages/processor/test/specimens/relative.css"
                     )
                     .then(() => processor.output({
-                        from : "packages/core/test/specimens/rewrite.css",
-                        to   : "./packages/core/test/output/relative.css",
+                        from : "packages/processor/test/specimens/rewrite.css",
+                        to   : "./packages/processor/test/output/relative.css",
                     }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
@@ -349,10 +349,10 @@ describe("/processor.js", () => {
                         });
                     
                     return processor.string(
-                        "packages/core/test/specimens/sync-done.css",
+                        "packages/processor/test/specimens/sync-done.css",
                         ""
                     )
-                    .then(() => processor.output({ from : "packages/core/test/specimens/sync-done.css" }))
+                    .then(() => processor.output({ from : "packages/processor/test/specimens/sync-done.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
                 
@@ -363,10 +363,10 @@ describe("/processor.js", () => {
                         });
                     
                     return processor.string(
-                        "packages/core/test/specimens/async-done.css",
+                        "packages/processor/test/specimens/async-done.css",
                         ""
                     )
-                    .then(() => processor.output({ from : "packages/core/test/specimens/async-done.css" }))
+                    .then(() => processor.output({ from : "packages/processor/test/specimens/async-done.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
                 });
             });

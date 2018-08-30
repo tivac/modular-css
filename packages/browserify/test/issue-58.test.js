@@ -6,8 +6,8 @@ const browserify = require("browserify");
 const watchify  = require("watchify");
 const dedent = require("dedent");
     
-const read = require("test-utils/read.js")(__dirname);
-const write = require("test-utils/write.js")(__dirname);
+const read = require("@modular-css/test-utils/read.js")(__dirname);
+const write = require("@modular-css/test-utils/write.js")(__dirname);
 
 const bundle = require("./lib/bundle.js");
 const plugin = require("../browserify.js");

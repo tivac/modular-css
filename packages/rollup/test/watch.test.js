@@ -4,11 +4,11 @@
 const dedent = require("dedent");
 const shell = require("shelljs");
 
-const read = require("test-utils/read.js")(__dirname);
-const write = require("test-utils/write.js")(__dirname);
-const exists = require("test-utils/exists.js")(__dirname);
-const prefix = require("test-utils/prefix.js")(__dirname);
-const watching = require("test-utils/rollup-watching.js");
+const read = require("@modular-css/test-utils/read.js")(__dirname);
+const write = require("@modular-css/test-utils/write.js")(__dirname);
+const exists = require("@modular-css/test-utils/exists.js")(__dirname);
+const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
+const watching = require("@modular-css/test-utils/rollup-watching.js");
 
 const plugin = require("../rollup.js");
 

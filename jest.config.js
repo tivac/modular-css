@@ -11,7 +11,7 @@ module.exports = {
     coveragePathIgnorePatterns : [
       "/node_modules/",
       "/parsers/",
-      "/test-utils/",
+      "/@modular-css/test-utils/",
     ],
 
     watchPathIgnorePatterns : [

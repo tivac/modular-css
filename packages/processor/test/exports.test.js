@@ -1,7 +1,7 @@
 "use strict";
 
 var dedent = require("dedent"),
-    namer  = require("test-utils/namer.js"),
+    namer  = require("@modular-css/test-utils/namer.js"),
     
     Processor = require("../processor.js");
 
@@ -31,7 +31,7 @@ describe("/processor.js", () => {
 
         it("should export identifiers and their classes", () =>
             processor.file(
-                "./packages/core/test/specimens/start.css"
+                "./packages/processor/test/specimens/start.css"
             )
             .then(() => processor.output())
             .then((output) =>

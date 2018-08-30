@@ -6,7 +6,7 @@ var fs   = require("fs"),
     postcss = require("postcss"),
     mkdirp  = require("mkdirp"),
     
-    Processor = require("modular-css-core");
+    Processor = require("@modular-css/processor");
 
 module.exports = postcss.plugin("modular-css", (opts) =>
     (root, result) => {

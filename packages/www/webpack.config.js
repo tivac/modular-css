@@ -8,7 +8,7 @@ var path = require("path"),
     HTML    = require("html-webpack-plugin"),
     Shake   = require("webpack-common-shake").Plugin,
     
-    CSS = require("modular-css-webpack/plugin");
+    CSS = require("@modular-css/webpack/plugin");
 
 module.exports = (env) => ({
     entry   : "./index.js",
@@ -23,7 +23,7 @@ module.exports = (env) => ({
             {
                 test : /\.css$/,
                 use  : {
-                    loader  : "modular-css-webpack/loader",
+                    loader  : "@modular-css/webpack/loader",
                     options : {
                         namedExports : false,
                     },
@@ -53,7 +53,7 @@ module.exports = (env) => ({
             css : "./app.css",
             
             namer : env === "dist" ?
-                 require("modular-css-namer")() :
+                 require("@modular-css/shortnames")() :
                  null,
             
             done : env === "dist" ?

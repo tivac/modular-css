@@ -7,8 +7,8 @@ const { keyword } = require("esutils");
 
 const utils   = require("rollup-pluginutils");
 
-const Processor = require("modular-css-core");
-const output    = require("modular-css-core/lib/output.js");
+const Processor = require("@modular-css/processor");
+const output    = require("@modular-css/processor/lib/output.js");
 
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
@@ -48,7 +48,7 @@ module.exports = function(opts) {
     const processor = options.processor || new Processor(options);
 
     return {
-        name : "modular-css-rollup",
+        name : "@modular-css/rollup",
 
         buildStart() {
             // done lifecycle won't ever be called on per-component styles since

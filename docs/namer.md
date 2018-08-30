@@ -1,4 +1,4 @@
-# modular-css-namer
+# @modular-css/shortnames
 
 A [`namer`](./api.md#namer) function to provide tiny classnames for production builds.
 

@@ -8,7 +8,7 @@ describe("/issues", () => {
             var processor = new Processor();
 
             return processor.string(
-                "./packages/core/test/specimens/a.css",
+                "./packages/processor/test/specimens/a.css",
                 ".aooga { }"
             )
             .then(() =>

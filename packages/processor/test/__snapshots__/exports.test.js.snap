@@ -23,17 +23,17 @@ Object {
 
 exports[`/processor.js exports should export identifiers and their classes 1`] = `
 Object {
-  "packages/core/test/specimens/folder/folder.css": Object {
+  "packages/processor/test/specimens/folder/folder.css": Object {
     "folder": "folder",
   },
-  "packages/core/test/specimens/local.css": Object {
+  "packages/processor/test/specimens/local.css": Object {
     "booga": "booga",
     "folder": "white",
     "looga": "booga looga",
     "one": "red",
     "two": "blue",
   },
-  "packages/core/test/specimens/start.css": Object {
+  "packages/processor/test/specimens/start.css": Object {
     "booga": "booga",
     "folder": "white",
     "one": "red",

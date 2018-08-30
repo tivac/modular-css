@@ -3,8 +3,8 @@
 var fs = require("fs"),
     
     postcss = require("postcss"),
-    read    = require("test-utils/read.js")(__dirname),
-    namer   = require("test-utils/namer.js"),
+    read    = require("@modular-css/test-utils/read.js")(__dirname),
+    namer   = require("@modular-css/test-utils/namer.js"),
     
     plugin  = require("../postcss.js");
 

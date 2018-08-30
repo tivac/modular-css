@@ -4,7 +4,7 @@ var browserify = require("browserify"),
     from       = require("from2-string"),
     shell      = require("shelljs"),
     
-    read = require("test-utils/read.js")(__dirname),
+    read = require("@modular-css/test-utils/read.js")(__dirname),
 
     bundle = require("./lib/bundle.js"),
     

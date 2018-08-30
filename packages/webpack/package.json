@@ -25,7 +25,7 @@
     "esutils": "^2.0.2",
     "loader-utils": "^1.1.0",
     "lodash.ismap": "^4.4.2",
-    "modular-css-core": "file:../processor",
+    "@modular-css/processor": "file:../processor",
     "webpack-sources": "^1.0.1"
   }
 }

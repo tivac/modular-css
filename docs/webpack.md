@@ -12,7 +12,7 @@ You will need to use **both** in tandem for things to work!
 // webpack.config.js
 var path = require("path"),
     
-    CSSPlugin = require("modular-css-webpack/plugin");
+    CSSPlugin = require("@modular-css/webpack/plugin");
 
 module.exports = {
     entry   : "./input.js",
@@ -24,14 +24,14 @@ module.exports = {
         rules : [
             {
                 test : /\.css$/,
-                use  : "modular-css-webpack/loader"
+                use  : "@modular-css/webpack/loader"
             },
 
             // Or with loader options
             {
                 test : /\.css$/,
                 use : {
-                    loader  : "modular-css-webpack/loader",
+                    loader  : "@modular-css/webpack/loader",
                     options : {
                         namedExports : false
                     }

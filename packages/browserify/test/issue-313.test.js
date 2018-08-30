@@ -6,7 +6,7 @@ var fs = require("fs"),
     from       = require("from2-string"),
     dedent     = require("dedent"),
     
-    read = require("test-utils/read.js")(__dirname),
+    read = require("@modular-css/test-utils/read.js")(__dirname),
 
     bundle = require("./lib/bundle.js"),
     plugin = require("../browserify.js");

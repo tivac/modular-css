@@ -1,6 +1,6 @@
 import fs from "fs";
 
-import Processor from "modular-css-core";
+import Processor from "@modular-css/processor";
 
 var state =  {
     files : [],

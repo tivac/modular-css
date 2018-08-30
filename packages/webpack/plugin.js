@@ -1,19 +1,19 @@
 "use strict";
 
-var sources   = require("webpack-sources"),
-    Processor = require("modular-css-core"),
-    ismap     = require("lodash.ismap");
+const sources   = require("webpack-sources");
+const ismap     = require("lodash.ismap");
+
+const Processor = require("@modular-css/processor");
 
 // Return a list of changed/removed files based on timestamp objects
-function getChangedFiles(prev, curr) {
-    return Object.keys(curr)
+const getChangedFiles = (prev, curr) =>
+    Object.keys(curr)
         .filter((file) =>
             !prev[file] || prev[file] < curr[file]
         )
         .concat(
             Object.keys(prev).filter((file) => !curr[file])
         );
-}
 
 function ModularCSS(args) {
     var options = Object.assign(

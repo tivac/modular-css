@@ -1,4 +1,4 @@
-modular-css-paths [![NPM Version](https://img.shields.io/npm/v/modular-css-paths.svg)](https://www.npmjs.com/package/modular-css-paths) [![NPM License](https://img.shields.io/npm/l/modular-css-paths.svg)](https://www.npmjs.com/package/modular-css-paths) [![NPM Downloads](https://img.shields.io/npm/dm/modular-css-paths.svg)](https://www.npmjs.com/package/modular-css-paths)
+@modular-css/path-resolver [![NPM Version](https://img.shields.io/npm/v/@modular-css/path-resolver.svg)](https://www.npmjs.com/package/@modular-css/path-resolver) [![NPM License](https://img.shields.io/npm/l/@modular-css/path-resolver.svg)](https://www.npmjs.com/package/@modular-css/path-resolver) [![NPM Downloads](https://img.shields.io/npm/dm/@modular-css/path-resolver.svg)](https://www.npmjs.com/package/@modular-css/path-resolver)
 ===========
 
 A resolver for `modular-css` that will let you resolve file references against arbitrary paths. Useful to avoid code like
@@ -11,15 +11,15 @@ which is annoying to write, annoying to read, and also super-brittle.
 
 ## Install
 
-`$ npm i modular-css-paths`
+`$ npm i @modular-css/path-resolver`
 
 ## Usage
 
 Pass as part of the `resolvers` array in the `modular-css` options (via JS API/Rollup/Browserify/WebPack/etc). When `modular-css` is trying to resolve `@value` or `composes` file references it'll use the default node resolution algorithm against whichever paths you specified.
 
 ```js
-var Processor = require("modular-css-core"),
-    paths     = require("modular-css-paths")
+var Processor = require("@modular-css/processor"),
+    paths     = require("@modular-css/path-resolver")
 
     processor = new Processor({
         resolvers : [

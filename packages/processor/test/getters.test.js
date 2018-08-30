@@ -1,7 +1,7 @@
 "use strict";
 
-var namer    = require("test-utils/namer.js"),
-    relative = require("test-utils/relative.js"),
+var namer    = require("@modular-css/test-utils/namer.js"),
+    relative = require("@modular-css/test-utils/relative.js"),
     
     Processor = require("../processor.js");
 
@@ -18,9 +18,9 @@ describe("/processor.js", () => {
         describe(".file", () => {
             it("should return all the files that have been added", () =>
                 processor.file(
-                    "./packages/core/test/specimens/start.css"
+                    "./packages/processor/test/specimens/start.css"
                 )
-                .then(() => processor.file("./packages/core/test/specimens/local.css"))
+                .then(() => processor.file("./packages/processor/test/specimens/local.css"))
                 .then(() =>
                     expect(
                         relative(Object.keys(processor.files))

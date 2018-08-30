@@ -8,9 +8,9 @@ var fs   = require("fs"),
     mkdirp  = require("mkdirp"),
     each    = require("p-each-series"),
     
-    Processor = require("modular-css-core"),
-    relative  = require("modular-css-core/lib/relative.js"),
-    output    = require("modular-css-core/lib/output.js"),
+    Processor = require("@modular-css/processor"),
+    relative  = require("@modular-css/processor/lib/relative.js"),
+    output    = require("@modular-css/processor/lib/output.js"),
     
     prefixRegex = /^\.\.?\//;
 

@@ -5,9 +5,9 @@ const { rollup } = require("rollup");
 
 const shell = require("shelljs");
 
-const dir = require("test-utils/read-dir.js")(__dirname);
-const prefix = require("test-utils/prefix.js")(__dirname);
-const namer = require("test-utils/namer.js");
+const dir = require("@modular-css/test-utils/read-dir.js")(__dirname);
+const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
+const namer = require("@modular-css/test-utils/namer.js");
 
 const plugin = require("../rollup.js");
 
