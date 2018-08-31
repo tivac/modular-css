@@ -59,7 +59,7 @@ const processed = await svelte.preprocess(
     Object.assign({}, preprocess, { filename })
 );
 
-const result = processor.output();
+const result = await processor.output();
 
 fs.writeFileSync("./dist/bundle.css", result.css);
 ```
@@ -83,7 +83,7 @@ const bundle = await rollup({
             preprocess,
         }),
 
-        require("@modular-css/rollup)({
+        require("@modular-css/rollup")({
             processor,
 
             common : "common.css",
@@ -118,7 +118,7 @@ module.exports = {
             preprocess,
         }),
         
-        require("@modular-css/rollup)({
+        require("@modular-css/rollup")({
             processor,
 
             common : "common.css",
