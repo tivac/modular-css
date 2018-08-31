@@ -84,7 +84,7 @@ More detailed descriptions are available in [docs/features.md](docs/features.md)
 
 ## Install
 
-### [JS API](/packages/core/#readme)
+### [JS API](/packages/processor/#readme)
 
 ```bash
 $ npm i @modular-css/processor
@@ -123,7 +123,7 @@ $ npm i @modular-css/svelte
 ### [PostCSS Plugin](/packages/postcss/#readme)
 
 ```bash
-$ npm i postcss-modular-css
+$ npm i @modular-css/postcss
 ```
 
 ### [Globbing API](/packages/glob/#readme)
