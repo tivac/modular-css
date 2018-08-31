@@ -7,7 +7,7 @@
 Rollup support for [`modular-css`](https://github.com/tivac/modular-css).
 
 - [Install](#install)
-- [⚠️Rollup Version support⚠️](#%EF%B8%8Frollup-version-support%EF%B8%8F)
+- [Rollup Version support](#%EF%B8%8Frollup-version-support%EF%B8%8F)
 - [Usage](#usage)
 - [Options](#options)
 
