@@ -87,50 +87,66 @@ More detailed descriptions are available in [docs/features.md](docs/features.md)
 ### [JS API](/packages/processor/#readme)
 
 ```bash
-$ npm i @modular-css/processor
+> npm i @modular-css/processor
 ```
+
+The core of `modular-css`, reasonably usable and powers literally everything else.
 
 ### [CLI](/packages/cli/#readme)
 
 ```bash
-$ npm i @modular-css/cli
+> npm i @modular-css/cli
 ```
 
-### [Browserify](/packages/browserify/#readme)
+`modular-css` via CLI, for those times where you need to try something really quickly.
+
+###  [Browserify](/packages/browserify/#readme)
 
 ```bash
-$ npm i @modular-css/browserify
+> npm i @modular-css/browserify
 ```
+
+The old standby, still works. Supports `factor-bundle` for painless CSS & JS bundle splitting!
 
 ### [Rollup](/packages/rollup/#readme)
 
 ```bash
-$ npm i @modular-css/rollup
+> npm i @modular-css/rollup
 ```
+
+Tiny bundles, code-splitting, and first-class `modular-css` support. 👌🏻
 
 ### [Webpack](/packages/webpack/#readme)
 
 ```bash
-$ npm i @modular-css/webpack
+> npm i @modular-css/webpack
 ```
+
+The popular choice. Not as full-featured or well-supported but should work out just fine.
 
 ### [Svelte](/packages/svelte/#readme)
 
 ```bash
-$ npm i @modular-css/svelte
+> npm i @modular-css/svelte
 ```
+
+Take your svelte components and power them up using `modular-css`! ⚡
 
 ### [PostCSS Plugin](/packages/postcss/#readme)
 
 ```bash
-$ npm i @modular-css/postcss
+> npm i @modular-css/postcss
 ```
+
+For those times when you've just gotta run some postcss inside of your postcss. 😵
 
 ### [Globbing API](/packages/glob/#readme)
 
 ```bash
-$ npm i @modular-css/glob
+> npm i @modular-css/glob
 ```
+
+Sometimes you just need to grab `**/*.css` and get a move on. The globbing API is here for you!
 
 ## Why?
 
