@@ -1,4 +1,4 @@
-postcss-modular-css [![NPM Version](https://img.shields.io/npm/v/postcss-modular-css.svg)](https://www.npmjs.com/package/postcss-modular-css) [![NPM License](https://img.shields.io/npm/l/postcss-modular-css.svg)](https://www.npmjs.com/package/postcss-modular-css) [![NPM Downloads](https://img.shields.io/npm/dm/postcss-modular-css.svg)](https://www.npmjs.com/package/postcss-modular-css)
+@modular-css/postcss [![NPM Version](https://img.shields.io/npm/v/@modular-css/postcss.svg)](https://www.npmjs.com/package/@modular-css/postcss) [![NPM License](https://img.shields.io/npm/l/@modular-css/postcss.svg)](https://www.npmjs.com/package/@modular-css/postcss) [![NPM Downloads](https://img.shields.io/npm/dm/@modular-css/postcss.svg)](https://www.npmjs.com/package/postcss-modular-css)
 ===========
 
 <p align="center">
@@ -7,44 +7,49 @@ postcss-modular-css [![NPM Version](https://img.shields.io/npm/v/postcss-modular
 
 PostCSS plugin to use [`modular-css`](https://github.com/tivac/modular-css) within a PostCSS processor instance.
 
+- [Install](#install)
+- [Usage](#usage)
+- [Options](#options)
+
 ## Install
 
-`$ npm i postcss-modular-css`
+```bash
+> npm i @modular-css/postcss
+```
 
 ## Usage
 
-`postcss-modular-css` provides a PostCSS plugin that can be used like any other. It will output a message with a `type` of `modular-css-exports` containing all the exported class compositions.
+`@modular-css/postcss` provides a PostCSS plugin that can be used like any other. It will output a message with a `type` of `modular-css-exports` containing all the exported class compositions.
 
 ### API
 
 ```js
-var postcss   = require("postcss"),
-    processor = postcss([
-        require("postcss-modular-css")({
-            json : "./path/to/output.json"
-        })
-    ]);
+const postcss = require("postcss");
+const processor = postcss([
+    require("@modular-css/postcss")({
+        json : "./path/to/output.json"
+    })
+]);
 
-processor.process("<css>")
-    .then((result) => {
-        // result.css
-        // result.map
-        // result.messages.find((msg) => msg.type === "modular-css-exports")
-        // etc
-    });
+const result = await processor.process("<css>")
+
+// result.css
+// result.map
+// result.messages.find((msg) => msg.type === "modular-css-exports")
+// etc
 ```
 
 ### Config
 
-```
-$ postcss --config postcss.json input.css
+```bash
+> postcss --config postcss.json input.css
 ```
 
 ```json
 {
     "output" : "out.css",
     
-    "postcss-modular-css": {
+    "@modular-css/postcss": {
         "json" : "./path/to/output.json"
     }
 }
@@ -53,8 +58,8 @@ $ postcss --config postcss.json input.css
 
 ### CLI
 
-```
-$ postcss --use modular-css/postcss input.css
+```bash
+> postcss --use modular-css/postcss input.css
 ```
 
 ## Options
@@ -65,4 +70,4 @@ Write the class composition data to this location on disk.
 
 ### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](/docs/api.md#options).
+All other options are passed to the underlying `Processor` instance, see [Options](../processor/readme.md#options).

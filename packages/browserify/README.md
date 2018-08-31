@@ -11,7 +11,13 @@ This plugin can be combined with the `factor-bundle` plugin to output a common C
 
 `@modular-css/browserify` will use the `basedir` passed to browserify as it's `cwd` parameter.
 
-## Installation
+- [Install](#install)
+- [Options](#options)
+- [CLI](#cli)
+- [API](#api)
+- [factor-bundle](#factor-bundle)
+
+## Install
 
 ```bash
 $ npm i @modular-css/browserify
@@ -25,7 +31,7 @@ Location to write the generated CSS file to.
 
 ### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](api.md#options).
+All other options are passed to the underlying `Processor` instance, see [Options](../processor/readme.md#options).
 
 ## CLI
 

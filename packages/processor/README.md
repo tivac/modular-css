@@ -7,6 +7,12 @@
 
 The core functionality of [`modular-css`](https://npmjs.com/modular-css) exposed as a JS API.
 
+- [Install](#install)
+- [Usage](#usage)
+- [API](#api)
+- [Options](#options)
+- [Properties](#properties)
+
 ## Install
 
 `$ npm i @modular-css/processor`
@@ -43,9 +49,33 @@ Promise.all([
 });
 ```
 
-### Processor Options
+## API
 
-#### `before`
+### `.string(file, css)`
+
+Returns a promise. Add `file` to the `Processor` instance with `css` contents.
+
+### `.file(file)`
+
+Returns a promise. Add `file` to the `Processor` instance, reads contents from disk using `fs`.
+
+### `.output([files])`
+
+Returns a promise. Finalize processing of all added CSS and create combined CSS output file. Optionally allows for combining a subset of the loaded files by passing a single file or array of files.
+
+**WARNING**: Calling `.output()` before any preceeding `.file(...)`/`.string(...)` calls have resolved their returned promises will return a rejected promise. See [usage](#usage) for an example of correct usage.
+
+### `.remove([files])`
+
+Remove files from the `Processor` instance. Accepts a single file or array of files.
+
+### `.dependencies([file])`
+
+Returns an array of file paths. Accepts a single file argument to get the dependencies for, will return entire dependency graph in order if argument is omitted.
+
+## Options
+
+### `before`
 
 Specify an array of PostCSS plugins to be run against each file before it is processed.
 
@@ -54,7 +84,8 @@ new Processor({
     before : [ require("postcss-import") ]
 });
 ```
-#### `after`
+
+### `after`
 
 Specify an array of PostCSS plugins to be run after files are processed, but before they are combined. Plugin will be passed a `to` and `from` option.
 
@@ -66,7 +97,7 @@ new Processor({
 });
 ```
 
-#### `done`
+### `done`
 
 Specify an array of PostCSS plugins to be run against the complete combined CSS.
 
@@ -76,7 +107,7 @@ new Processor({
 });
 ```
 
-#### `map`
+### `map`
 
 Enable source map generation. Can also be passed to `.output()`.
 
@@ -88,7 +119,7 @@ new Processor({
 });
 ```
 
-#### `cwd`
+### `cwd`
 
 Specify the current working directory for this Processor instance, used when resolving `composes`/`@value` rules that reference other files.
 
@@ -100,7 +131,7 @@ new Processor({
 })
 ```
 
-#### `namer`
+### `namer`
 
 Specify a function (that takes `filename` & `selector` as arguments to produce scoped selectors.
 
@@ -114,7 +145,7 @@ new Processor({
 });
 ```
 
-#### `resolvers`
+### `resolvers`
 
 If you want to provide your own file resolution logic you can pass an array of resolver functions. Each resolver function receives three arguments:
 
@@ -137,7 +168,7 @@ new Processor({
 })
 ```
 
-#### `exportGlobals`
+### `exportGlobals`
 
 Enable exporting `:global` identifiers.
 
@@ -171,3 +202,13 @@ new Processor({
 }
 */
 ```
+
+## Properties
+
+### `.files`
+
+Returns an object keyed by absolute file paths of all known files in the `Processor` instance.
+
+### `.options`
+
+Returns the options object passed to the `Processor` augmented with the defaults.

@@ -13,13 +13,17 @@ This package contains two entry points, you will need to use **both** in tandem 
 
 2. `@modular-css/webpack/loader` provides the file loader that does the actual transformation on files.
 
+- [Install](#install)
+- [Usage](#usage)
+- [Options](#options)
+
 ## Usage
 
 ```js
 // webpack.config.js
-var path = require("path"),
+const path = require("path");
     
-    CSSPlugin = require("@modular-css/webpack/plugin");
+const CSSPlugin = require("@modular-css/webpack/plugin");
 
 module.exports = {
     entry   : "./input.js",
@@ -56,7 +60,7 @@ Location to write out the JSON mapping file to, relative to `output.path` just l
 
 #### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](https://github.com/tivac/modular-css/blob/master/docs/api.md#options).
+All other options are passed to the underlying `Processor` instance, see [Options](../processor/readme.md#options).
 
 ### Loader Options
 

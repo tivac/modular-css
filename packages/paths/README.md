@@ -13,6 +13,10 @@ A resolver for [`modular-css`](https://github.com/tivac/modular-css) that will l
 
 which is annoying to write, annoying to read, and also super-brittle.
 
+- [Install](#install)
+- [Usage](#usage)
+- [Options](#options)
+
 ## Install
 
 `$ npm i @modular-css/path-resolver`
@@ -22,23 +26,23 @@ which is annoying to write, annoying to read, and also super-brittle.
 Pass as part of the `resolvers` array in the `modular-css` options (via JS API/Rollup/Browserify/WebPack/etc). When `modular-css` is trying to resolve `@value` or `composes` file references it'll use the default node resolution algorithm against whichever paths you specified.
 
 ```js
-var Processor = require("@modular-css/processor"),
-    paths     = require("@modular-css/path-resolver")
+const Processor = require("@modular-css/processor");
+const paths     = require("@modular-css/path-resolver");
 
-    processor = new Processor({
-        resolvers : [
-            paths({
-                paths : [
-                    "./path/one",
-                    "../../some/other/path"
-                ]
-            })
-        ]
-    });
+const processor = new Processor({
+    resolvers : [
+        paths({
+            paths : [
+                "./path/one",
+                "../../some/other/path"
+            ]
+        })
+    ]
+});
 ```
 
-### Options
+## Options
 
-#### `paths`
+### `paths`
 
 An array of string file paths, they can be relative to the `cwd` of the `Processor` instance or absolute paths.

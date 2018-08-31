@@ -7,15 +7,24 @@
 
 Tiny classnames for [`modular-css`](https://github.com/tivac/modular-css) production builds!
 
+- [Install](#install)
+- [Usage](#usage)
+
+## Install
+
+```bash
+> npm install @modular-css/shortnames
+```
+
 ## Usage
 
 ### JS API
 
 ```js
-var Processor = require("@modular-css/processor"),
-    processor = new Processor({
-        namer : require("@modular-css/shortnames")()
-    });
+const Processor = require("@modular-css/processor");
+const processor = new Processor({
+    namer : require("@modular-css/shortnames")()
+});
     
 // ...
 ```

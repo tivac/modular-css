@@ -6,9 +6,16 @@
 
 Rollup support for [`modular-css`](https://github.com/tivac/modular-css).
 
+- [Install](#install)
+- [⚠️Rollup Version support⚠️](#%EF%B8%8Frollup-version-support%EF%B8%8F)
+- [Usage](#usage)
+- [Options](#options)
+
 ## Install
 
-`$ npm i @modular-css/rollup`
+```bash
+> npm i @modular-css/rollup
+```
 
 ## ⚠️Rollup Version support⚠️
 
@@ -83,4 +90,4 @@ Enable `styleExport` will also disable the plugin from emitting any assets as we
 
 ### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](https://github.com/tivac/modular-css/blob/master/docs/api.md#options).
+All other options are passed to the underlying `Processor` instance, see [Options](../processor/readme.md#options).

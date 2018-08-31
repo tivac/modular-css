@@ -39,9 +39,15 @@ while allowing you to use all of the usual `modular-css` goodies.
 
 Alternatively you can use `<link href="./file.css" />` tags to reference CSS external to the component.
 
+- [Install](#install)
+- [Usage](#usage)
+- [Options](#options)
+
 ## Install
 
-`$ npm i @modular-css/svelte`
+```bash
+> npm i @modular-css/svelte -D
+```
 
 ## Usage
 
@@ -135,4 +141,4 @@ If `true` whenever a missing replacement is found like `{css.doesnotexist}` an e
 
 ### Shared Options
 
-All options are passed to the underlying `Processor` instance, see [Options](https://github.com/tivac/modular-css/blob/master/docs/api.md#options).
+All options are passed to the underlying `Processor` instance, see [Options](../processor/readme.md#options).

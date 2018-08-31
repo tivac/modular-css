@@ -7,6 +7,10 @@
 
 A JS API for using glob patterns with [`modular-css`](https://github.com/tivac/modular-css).
 
+- [Install](#install)
+- [Usage](#usage)
+- [Options](#options)
+
 ## Install
 
 `$ npm i @modular-css/glob`
@@ -26,9 +30,9 @@ glob({
 })
 ```
 
-### Options
+## Options
 
-`glob()` accepts all of the same options as a [`Processor` instance](https://github.com/tivac/modular-css/blob/master/docs/api.md#options).
+`glob()` accepts all of the same options as a [`Processor` instance](../processor/readme.md#options).
 
 #### `search`
 

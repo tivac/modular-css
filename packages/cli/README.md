@@ -7,7 +7,10 @@
 
 CLI interface to [`modular-css`](https://github.com/tivac/modular-css).
 
-## Installation
+- [Install](#install)
+- [Usage](#usage)
+
+## Install
 
 ```bash
 $ npm i @modular-css/cli
@@ -16,13 +19,13 @@ $ npm i @modular-css/cli
 ## Usage
 
 ```
-usage: modular-css [options] <glob>...
+$ modular-css [options] <glob>...
 
-Options:
-    --dir,     -d <dir>    Directory to search from [process cwd]
-    --out,     -o <file>   File to write output CSS to [stdout]
-    --json,    -j <file>   File to write output compositions JSON to
-    --map,     -m          Include inline source map in output
-    --rewrite, -r          Control rewriting of url() references in CSS
-    --help                 Show this help
+Options
+--dir,     -d <dir>    Directory to search from [process cwd]
+--out,     -o <file>   File to write output CSS to [stdout]
+--json,    -j <file>   File to write output compositions JSON to
+--map,     -m          Include inline source map in output
+--rewrite, -r          Control rewriting of url() references in CSS
+--help                 Show this help
 ```
