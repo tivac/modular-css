@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/website",
-  "version": "15.0.0",
+  "version": "16.0.0",
   "private": true,
   "description": "web site for modular-css",
   "main": "index.js",
@@ -15,21 +15,21 @@
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
   "dependencies": {
+    "@modular-css/processor": "file:../processor",
     "clipboard": "1.7.1",
     "codemirror": "5.39.2",
     "memory-fs": "0.4.1",
     "mithril": "1.1.6",
-    "@modular-css/processor": "file:../processor",
     "path-parse": "1.0.6",
     "throttleit": "1.0.0"
   },
   "devDependencies": {
+    "@modular-css/shortnames": "^16.0.0",
+    "@modular-css/webpack": "^16.0.0",
     "buble-loader": "0.4.1",
     "copy-webpack-plugin": "4.5.2",
     "cssnano-cli": "1.0.5",
     "html-webpack-plugin": "2.30.1",
-    "@modular-css/shortnames": "^15.0.0",
-    "@modular-css/webpack": "^15.0.0",
     "surge": "0.19.0",
     "webpack": "3.12.0",
     "webpack-cleanup-plugin": "0.5.1",

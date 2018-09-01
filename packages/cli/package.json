@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/cli",
-  "version": "15.0.0",
+  "version": "16.0.0",
   "description": "CLI for modular-css",
   "main": "./cli.js",
   "bin": {
@@ -23,9 +23,9 @@
     "cli"
   ],
   "dependencies": {
-    "meow": "^5.0.0",
-    "mkdirp": "^0.5.1",
+    "@modular-css/glob": "file:../glob",
     "@modular-css/processor": "file:../processor",
-    "@modular-css/glob": "file:../glob"
+    "meow": "^5.0.0",
+    "mkdirp": "^0.5.1"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/glob",
-  "version": "15.0.0",
+  "version": "16.0.0",
   "description": "Glob support for modular-css",
   "main": "./glob.js",
   "repository": "tivac/modular-css",
@@ -19,7 +19,7 @@
     "modular-css"
   ],
   "dependencies": {
-    "globule": "^1.1.0",
-    "@modular-css/processor": "file:../processor"
+    "@modular-css/processor": "file:../processor",
+    "globule": "^1.1.0"
   }
 }

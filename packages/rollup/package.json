@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/rollup",
-  "version": "15.0.0",
+  "version": "16.0.0",
   "description": "Add modular-css support to rollup",
   "main": "./rollup.js",
   "repository": "tivac/modular-css",
@@ -21,9 +21,9 @@
     "postcss"
   ],
   "dependencies": {
+    "@modular-css/processor": "file:../processor",
     "esutils": "^2.0.2",
     "mkdirp": "^0.5.1",
-    "@modular-css/processor": "file:../processor",
     "rollup-pluginutils": "^2.0.1"
   },
   "peerDependencies": {

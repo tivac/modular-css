@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/svelte",
-  "version": "15.0.1",
+  "version": "16.0.0",
   "description": "Add modular-css support to svelte",
   "main": "./svelte.js",
   "repository": "tivac/modular-css",
@@ -24,9 +24,9 @@
     "postcss"
   ],
   "dependencies": {
+    "@modular-css/processor": "file:../processor",
     "dedent": "^0.7.0",
     "mkdirp": "^0.5.1",
-    "@modular-css/processor": "file:../processor",
     "resolve-from": "^4.0.0",
     "rollup-pluginutils": "^2.3.0"
   }
