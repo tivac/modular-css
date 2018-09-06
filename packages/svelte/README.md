@@ -141,4 +141,4 @@ If `true` whenever a missing replacement is found like `{css.doesnotexist}` an e
 
 ### Shared Options
 
-All options are passed to the underlying `Processor` instance, see [Options](../processor/readme.md#options).
+All options are passed to the underlying `Processor` instance, see [Options](../processor/README.md#options).

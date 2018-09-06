@@ -32,7 +32,7 @@ glob({
 
 ## Options
 
-`glob()` accepts all of the same options as a [`Processor` instance](../processor/readme.md#options).
+`glob()` accepts all of the same options as a [`Processor` instance](../processor/README.md#options).
 
 #### `search`
 

@@ -60,7 +60,7 @@ Location to write out the JSON mapping file to, relative to `output.path` just l
 
 #### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](../processor/readme.md#options).
+All other options are passed to the underlying `Processor` instance, see [Options](../processor/README.md#options).
 
 ### Loader Options
 

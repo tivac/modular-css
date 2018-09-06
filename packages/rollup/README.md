@@ -90,4 +90,4 @@ Enable `styleExport` will also disable the plugin from emitting any assets as we
 
 ### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](../processor/readme.md#options).
+All other options are passed to the underlying `Processor` instance, see [Options](../processor/README.md#options).
