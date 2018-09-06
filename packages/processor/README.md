@@ -22,31 +22,28 @@ The core functionality of [`modular-css`](https://npmjs.com/modular-css) exposed
 Instantiate a new `Processor` instance, call it's `.file(<path>)` or `.string(<name>, <contents>)` methods, and then use the returned Promise to get access to the results/output.
 
 ```js
-var Processor = require("@modular-css/processor"),
-    processor = new Processor({
-        // See "API Options" for valid options to pass to the Processor constructor
-    });
+const Processor = require("@modular-css/processor");
+const processor = new Processor({
+    // See "API Options" for valid options to pass to the Processor constructor
+});
 
 // Add entries, either from disk using .file() or as strings with .string()
-Promise.all([
-    processor.file("./entry.css").then(function(result) {
-        // result now contains
-        //  .exports - Scoped selector mappings
-        //  .files - metadata about the file hierarchy
-    }),
-    processor.string("./fake-file.css", ".class { color: red; }")
-])
-.then(function() {
-    // Once all files are added, use .output() to get at the rewritten CSS
-    return processor.output();
-})
-.then(function(result) {
-    // Output CSS lives on the .css property
-    result.css;
-    
-    // Source map (if requested) lives on the .map property
-    result.map;
-});
+const result = await processor.file("./entry.css");
+
+// result contains
+//  .exports - Scoped selector mappings
+//  .files - metadata about the file hierarchy
+
+await processor.string("./fake-file.css", ".class { color: red; }");
+
+// Once all files are added, use .output() to get at the rewritten CSS
+const results = await processor.output();
+
+// Output CSS lives on the .css property
+results.css;
+
+// Source map (if requested) lives on the .map property
+results.map;
 ```
 
 ## API
@@ -59,9 +56,13 @@ Returns a promise. Add `file` to the `Processor` instance with `css` contents.
 
 Returns a promise. Add `file` to the `Processor` instance, reads contents from disk using `fs`.
 
-### `.output([files])`
+### `.output({ args })`
 
-Returns a promise. Finalize processing of all added CSS and create combined CSS output file. Optionally allows for combining a subset of the loaded files by passing a single file or array of files.
+Returns a promise. Finalize processing of all added CSS and create combined CSS output file.
+
+Passing `files` as part of `args` will result in getting back combined output CSS just for the listed files and their dependencies.
+
+Passing `to` as part of `args` will be passed along to teh `after` and `done` hooks for proper path adjustment in maps & any plugins that use it.
 
 **WARNING**: Calling `.output()` before any preceeding `.file(...)`/`.string(...)` calls have resolved their returned promises will return a rejected promise. See [usage](#usage) for an example of correct usage.
 
