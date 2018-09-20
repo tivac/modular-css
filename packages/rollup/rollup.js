@@ -4,8 +4,7 @@
 const path = require("path");
 
 const { keyword } = require("esutils");
-
-const utils   = require("rollup-pluginutils");
+const utils = require("rollup-pluginutils");
 
 const Processor = require("@modular-css/processor");
 const output    = require("@modular-css/processor/lib/output.js");
@@ -33,11 +32,12 @@ module.exports = function(opts) {
         include      : "**/*.css",
         namedExports : true,
         styleExport  : false,
+        dev          : false,
     }, opts);
         
     const filter = utils.createFilter(options.include, options.exclude);
 
-    const { styleExport, done, map } = options;
+    const { styleExport, done, map, dev } = options;
 
     if(typeof map === "undefined") {
         // Sourcemaps don't make much sense in styleExport mode
@@ -83,6 +83,21 @@ module.exports = function(opts) {
             const exported = output.join(exports);
 
             const out = [
+                dev ? `
+                    const data = ${JSON.stringify(exported, null, 4)};
+                    
+                    export default new Proxy(data, {
+                        get(tgt, key) {
+                            if(key in tgt) {
+                                return tgt[key];
+                            }
+
+                            throw new Error(
+                                key + " is not exported by " + ${JSON.stringify(path.relative(process.cwd(), id))}
+                            );
+                        }
+                    })
+                ` :
                 `export default ${JSON.stringify(exported, null, 4)};`,
             ];
 
