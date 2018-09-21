@@ -128,7 +128,7 @@ var css = new Proxy(data, {
         }
 
         throw new ReferenceError(
-            key + \\" is not exported by \\" + \\"packages\\\\\\\\rollup\\\\\\\\test\\\\\\\\specimens\\\\\\\\simple.css\\"
+            key + \\" is not exported by \\" + \\"packages/rollup/test/specimens/simple.css\\"
         );
     }
 });

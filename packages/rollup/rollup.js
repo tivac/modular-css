@@ -6,6 +6,7 @@ const path = require("path");
 const { keyword } = require("esutils");
 const utils = require("rollup-pluginutils");
 const dedent = require("dedent");
+const slash = require("slash");
 
 const Processor = require("@modular-css/processor");
 const output    = require("@modular-css/processor/lib/output.js");
@@ -94,7 +95,9 @@ module.exports = function(opts) {
                             }
 
                             throw new ReferenceError(
-                                key + " is not exported by " + ${JSON.stringify(path.relative(process.cwd(), id))}
+                                key + " is not exported by " + ${JSON.stringify(
+                                    slash(path.relative(process.cwd(), id))
+                                )}
                             );
                         }
                     })
