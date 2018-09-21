@@ -22,6 +22,7 @@
   ],
   "dependencies": {
     "@modular-css/processor": "file:../processor",
+    "dedent": "0.7.0",
     "esutils": "^2.0.2",
     "mkdirp": "^0.5.1",
     "rollup-pluginutils": "^2.0.1"

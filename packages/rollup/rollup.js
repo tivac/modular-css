@@ -5,6 +5,7 @@ const path = require("path");
 
 const { keyword } = require("esutils");
 const utils = require("rollup-pluginutils");
+const dedent = require("dedent");
 
 const Processor = require("@modular-css/processor");
 const output    = require("@modular-css/processor/lib/output.js");
@@ -83,21 +84,21 @@ module.exports = function(opts) {
             const exported = output.join(exports);
 
             const out = [
-                dev ? `
-                    const data = ${JSON.stringify(exported, null, 4)};
-                    
+                dev ? dedent(`
+                    const data = ${JSON.stringify(exported)};
+
                     export default new Proxy(data, {
                         get(tgt, key) {
                             if(key in tgt) {
                                 return tgt[key];
                             }
 
-                            throw new Error(
+                            throw new ReferenceError(
                                 key + " is not exported by " + ${JSON.stringify(path.relative(process.cwd(), id))}
                             );
                         }
                     })
-                ` :
+                `) :
                 `export default ${JSON.stringify(exported, null, 4)};`,
             ];
 
