@@ -22,11 +22,13 @@
   ],
   "dependencies": {
     "@modular-css/processor": "file:../processor",
+    "dedent": "0.7.0",
     "esutils": "^2.0.2",
     "mkdirp": "^0.5.1",
+    "slash": "^2.0.0",
     "rollup-pluginutils": "^2.0.1"
   },
   "peerDependencies": {
-    "rollup": "^0.65.0"
+    "rollup": ">0.65.0"
   }
 }

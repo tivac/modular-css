@@ -437,6 +437,22 @@ describe("/rollup.js", () => {
         expect(read("./rollup/repeated-references/assets/repeated-references.css")).toMatchSnapshot();
     });
 
+    it("should output a proxy in dev mode", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/simple.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    dev : true,
+                }),
+            ],
+        });
+
+        const result = await bundle.generate({ format });
+
+        expect(result.code).toMatchSnapshot();
+    });
+
     describe("errors", () => {
         function checkError(err) {
             expect(err.toString()).toMatch("error-plugin:");

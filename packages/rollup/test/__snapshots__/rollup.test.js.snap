@@ -118,6 +118,25 @@ exports[`/rollup.js should not output sourcemaps when they are disabled 1`] = `
 "
 `;
 
+exports[`/rollup.js should output a proxy in dev mode 1`] = `
+"const data = {\\"str\\":\\"\\\\\\"string\\\\\\"\\",\\"fooga\\":\\"fooga\\"};
+
+var css = new Proxy(data, {
+    get(tgt, key) {
+        if(key in tgt) {
+            return tgt[key];
+        }
+
+        throw new ReferenceError(
+            key + \\" is not exported by \\" + \\"packages/rollup/test/specimens/simple.css\\"
+        );
+    }
+});
+
+console.log(css);
+"
+`;
+
 exports[`/rollup.js should provide named exports 1`] = `
 "var str = \\"\\\\\\"string\\\\\\"\\";
 var num = \\"10\\";
