@@ -110,6 +110,110 @@ exports[`/rollup.js should handle assetFileNames being undefined 1`] = `
 "
 `;
 
+exports[`/rollup.js should log in verbose mode 1`] = `
+Array [
+  Array [
+    "[rollup]",
+    "build start",
+  ],
+  Array [
+    "[rollup]",
+    "transform",
+    "packages/rollup/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "string()",
+    "packages/rollup/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/rollup/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/rollup/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "string() done",
+    "packages/rollup/test/specimens/simple.css",
+  ],
+  Array [
+    "[rollup]",
+    "css output",
+    "40a365e7",
+  ],
+  Array [
+    "[processor]",
+    "file()",
+    "packages/processor/test/specimens/start.css",
+  ],
+  Array [
+    "[processor]",
+    "string()",
+    "packages/processor/test/specimens/start.css",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/processor/test/specimens/folder/folder.css",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/processor/test/specimens/folder/folder.css",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/processor/test/specimens/local.css",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/processor/test/specimens/local.css",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/processor/test/specimens/start.css",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/processor/test/specimens/start.css",
+  ],
+  Array [
+    "[processor]",
+    "string() done",
+    "packages/processor/test/specimens/start.css",
+  ],
+  Array [
+    "[processor]",
+    "string()",
+    "packages/processor/test/specimens/string.css",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/processor/test/specimens/string.css",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/processor/test/specimens/string.css",
+  ],
+  Array [
+    "[processor]",
+    "string() done",
+    "packages/processor/test/specimens/string.css",
+  ],
+]
+`;
+
 exports[`/rollup.js should not output sourcemaps when they are disabled 1`] = `
 "/* packages/rollup/test/specimens/simple.css */
 .fooga {

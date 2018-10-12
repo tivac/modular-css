@@ -6,10 +6,11 @@ const { rollup } = require("rollup");
 const dedent = require("dedent");
 const shell = require("shelljs");
 
-const read = require("@modular-css/test-utils/read.js")(__dirname);
+const read   = require("@modular-css/test-utils/read.js")(__dirname);
 const exists = require("@modular-css/test-utils/exists.js")(__dirname);
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
-const namer = require("@modular-css/test-utils/namer.js");
+const namer  = require("@modular-css/test-utils/namer.js");
+const logs   = require("@modular-css/test-utils/logs.js");
 
 const Processor = require("@modular-css/processor");
 
@@ -215,9 +216,7 @@ describe("/rollup.js", () => {
     });
 
     it("should warn that styleExport and done aren't compatible", async () => {
-        const spy = jest.spyOn(global.console, "warn");
-
-        spy.mockImplementation(() => { /* NO-OP */ });
+        const { logSnapshot } = logs("warn");
         
         await rollup({
             input   : require.resolve("./specimens/style-export.js"),
@@ -232,8 +231,7 @@ describe("/rollup.js", () => {
             ],
         });
 
-        expect(spy).toHaveBeenCalled();
-        expect(spy.mock.calls).toMatchSnapshot();
+        logSnapshot();
     });
 
     it("should generate external source maps", async () => {
@@ -451,6 +449,40 @@ describe("/rollup.js", () => {
         const result = await bundle.generate({ format });
 
         expect(result.code).toMatchSnapshot();
+    });
+
+    it("should log in verbose mode", async () => {
+        const { logSnapshot } = logs();
+
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/simple.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    verbose : true,
+                }),
+            ],
+        });
+
+        await bundle.generate({
+            format,
+            assetFileNames,
+        });
+        
+        const processor = new Processor({
+            namer,
+            verbose : true,
+        });
+
+        await processor.file("./packages/processor/test/specimens/start.css");
+        await processor.string(
+            "packages/processor/test/specimens/string.css",
+            ".foo { color: fuschia; }"
+        );
+
+        await processor.output();
+
+        logSnapshot();
     });
 
     describe("errors", () => {

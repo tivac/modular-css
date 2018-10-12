@@ -35,11 +35,15 @@ module.exports = function(opts) {
         namedExports : true,
         styleExport  : false,
         dev          : false,
+        verbose      : false,
     }, opts);
         
     const filter = utils.createFilter(options.include, options.exclude);
 
-    const { styleExport, done, map, dev } = options;
+    const { styleExport, done, map, dev, verbose } = options;
+
+    // eslint-disable-next-line no-console, no-empty-function
+    const log = verbose ? console.log.bind(console, "[rollup]") : () => {};
 
     if(typeof map === "undefined") {
         // Sourcemaps don't make much sense in styleExport mode
@@ -53,6 +57,8 @@ module.exports = function(opts) {
         name : "@modular-css/rollup",
 
         buildStart() {
+            log("build start");
+
             // done lifecycle won't ever be called on per-component styles since
             // it only happens at bundle compilation time
             // Need to do this on buildStart so it has access to this.warn() o_O
@@ -68,6 +74,8 @@ module.exports = function(opts) {
                 return;
             }
 
+            log("file changed", file);
+
             processor.dependents(file).forEach((dep) =>
                 processor.remove(dep)
             );
@@ -79,6 +87,8 @@ module.exports = function(opts) {
             if(!filter(id)) {
                 return null;
             }
+
+            log("transform", id);
 
             const { details, exports } = await processor.string(id, code);
 
@@ -226,6 +236,8 @@ module.exports = function(opts) {
                 .map(async ({ base, name, css }, idx) => {
                     const id = this.emitAsset(`${base}.css`);
 
+                    log("css output", id);
+
                     const result = await processor.output({
                         to : to.replace(/\[(name|extname)\]/g, (match, field) =>
                             (field === "name" ? name : ".css")
@@ -240,11 +252,17 @@ module.exports = function(opts) {
                     if(options.json && idx === 0) {
                         const file = typeof options.json === "string" ? options.json : "exports.json";
 
+                        log("json output", file);
+                        
                         this.emitAsset(file, JSON.stringify(result.compositions, null, 4));
                     }
 
                     if(result.map) {
-                        this.emitAsset(`${base}.css.map`, result.map.toString());
+                        const file = `${base}.css.map`;
+
+                        log("map output", file);
+
+                        this.emitAsset(file, result.map.toString());
                     }
                 })
             );

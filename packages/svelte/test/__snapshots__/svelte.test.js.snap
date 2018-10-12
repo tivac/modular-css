@@ -364,4 +364,122 @@ exports[`/svelte.js should remove files before reprocessing in case they changed
 }"
 `;
 
+exports[`/svelte.js should support verbose output: "<link>" 1`] = `
+Array [
+  Array [
+    "[svelte]",
+    "extract <link>",
+    "packages/svelte/test/specimens/external.html",
+    "packages/svelte/test/specimens/external.css",
+  ],
+  Array [
+    "[processor]",
+    "file()",
+    "packages/svelte/test/specimens/external.css",
+  ],
+  Array [
+    "[processor]",
+    "string()",
+    "packages/svelte/test/specimens/external.css",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/svelte/test/specimens/external.css",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/svelte/test/specimens/external.css",
+  ],
+  Array [
+    "[processor]",
+    "string() done",
+    "packages/svelte/test/specimens/external.css",
+  ],
+  Array [
+    "[svelte]",
+    "updating css references",
+    "./external.css",
+    "[\\"flex\\",\\"wrapper\\",\\"hd\\",\\"bd\\",\\"text\\",\\"active\\"]",
+  ],
+]
+`;
+
+exports[`/svelte.js should support verbose output: "<style>" 1`] = `
+Array [
+  Array [
+    "[svelte]",
+    "extract <style>",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[processor]",
+    "string()",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[processor]",
+    "string() done",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[svelte]",
+    "updating css references",
+    "<style>",
+    "[\\"flex\\",\\"wrapper\\",\\"hd\\",\\"bd\\",\\"text\\",\\"active\\"]",
+  ],
+]
+`;
+
 exports[`/svelte.js should throw on both <style> and <link> in one file 1`] = `"@modular-css/svelte: use <style> OR <link>, but not both"`;

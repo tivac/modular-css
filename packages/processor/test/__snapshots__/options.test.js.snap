@@ -74,6 +74,76 @@ exports[`/processor.js options lifecycle options processing should run sync post
 a {}"
 `;
 
+exports[`/processor.js options lifecycle options verbose should output debugging messages when verbose mode is enabled 1`] = `
+Array [
+  Array [
+    "[processor]",
+    "file()",
+    "packages/processor/test/specimens/start.css",
+  ],
+  Array [
+    "[processor]",
+    "string()",
+    "packages/processor/test/specimens/start.css",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/processor/test/specimens/folder/folder.css",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/processor/test/specimens/folder/folder.css",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/processor/test/specimens/local.css",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/processor/test/specimens/local.css",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/processor/test/specimens/start.css",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/processor/test/specimens/start.css",
+  ],
+  Array [
+    "[processor]",
+    "string() done",
+    "packages/processor/test/specimens/start.css",
+  ],
+  Array [
+    "[processor]",
+    "string()",
+    "packages/processor/test/specimens/string.css",
+  ],
+  Array [
+    "[processor]",
+    "processing",
+    "packages/processor/test/specimens/string.css",
+  ],
+  Array [
+    "[processor]",
+    "processed",
+    "packages/processor/test/specimens/string.css",
+  ],
+  Array [
+    "[processor]",
+    "string() done",
+    "packages/processor/test/specimens/string.css",
+  ],
+]
+`;
+
 exports[`/processor.js options map should generate external source maps 1`] = `
 "/* packages/processor/test/specimens/folder/folder.css */
 .folder { margin: 2px; }

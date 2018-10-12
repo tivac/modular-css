@@ -5,6 +5,7 @@ const path = require("path");
 const dedent   = require("dedent");
 const namer    = require("@modular-css/test-utils/namer.js");
 const relative = require("@modular-css/test-utils/relative.js");
+const logs     = require("@modular-css/test-utils/logs.js");
 
 const Processor = require("../processor.js");
 
@@ -368,6 +369,27 @@ describe("/processor.js", () => {
                     )
                     .then(() => processor.output({ from : "packages/processor/test/specimens/async-done.css" }))
                     .then((result) => expect(result.css).toMatchSnapshot());
+                });
+            });
+
+            describe("verbose", () => {
+                it("should output debugging messages when verbose mode is enabled", async () => {
+                    const { logSnapshot } = logs();
+
+                    const processor = new Processor({
+                        namer,
+                        verbose : true,
+                    });
+                    
+                    await processor.file("./packages/processor/test/specimens/start.css");
+                    await processor.string(
+                        "packages/processor/test/specimens/string.css",
+                        ".foo { color: fuschia; }"
+                    );
+
+                    await processor.output();
+
+                    logSnapshot();
                 });
             });
         });

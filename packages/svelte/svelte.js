@@ -8,7 +8,10 @@ const style = require("./src/style.js");
 module.exports = function(args) {
     const config = Object.assign(
         Object.create(null),
-        { strict : false },
+        {
+            strict  : false,
+            verbose : false,
+        },
         args
     );
 
@@ -18,7 +21,7 @@ module.exports = function(args) {
         processor,
 
         preprocess : {
-            markup : markup(processor),
+            markup : markup(processor, config),
             style,
         },
     };

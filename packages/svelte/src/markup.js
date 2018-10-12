@@ -10,11 +10,13 @@ const scriptRegex = /<script[\S\s]*?>([\S\s]*?)<\/script>/im;
 const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/im;
 const missedRegex = /css\.\w+/gim;
 
-function updateCss({ processor, content, result, filename }) {
+function updateCss({ processor, log, content, result, filename }) {
     const exported = result.files[result.file].exports;
     const keys = Object.keys(exported);
     let code = content;
     
+    log("updating css references", filename, JSON.stringify(keys));
+
     if(keys.length) {
         const selectors = keys.join("|");
 
@@ -54,11 +56,13 @@ function updateCss({ processor, content, result, filename }) {
     };
 }
 
-async function extractLink({ processor, content, filename, link }) {
+async function extractLink({ processor, log, content, filename, link }) {
     // This looks weird, but it's to support multiple types of quotation marks
     const href = link[1] || link[2] || link[3];
     
     const external = resolve(path.dirname(filename), href);
+
+    log("extract <link>", filename, external);
 
     // Remove any files that've already been encountered, they should be re-processed
     if(external in processor.files) {
@@ -94,13 +98,16 @@ async function extractLink({ processor, content, filename, link }) {
 
     return updateCss({
         processor,
+        log,
         content,
         result,
         filename : href,
     });
 }
 
-async function extractStyle({ processor, content, filename, style }) {
+async function extractStyle({ processor, log, content, filename, style }) {
+    log("extract <style>", filename);
+    
     const result = await processor.string(
         filename,
         style[1]
@@ -108,15 +115,19 @@ async function extractStyle({ processor, content, filename, style }) {
 
     return updateCss({
         processor,
+        log,
         content,
         result,
         filename : "<style>",
     });
 }
 
-module.exports = (processor) => ({ content, filename }) => {
+module.exports = (processor, config) => ({ content, filename }) => {
     const link = content.match(linkRegex);
     const style = content.match(styleRegex);
+
+    // eslint-disable-next-line no-console, no-empty-function
+    const log = config.verbose ? console.log.bind(console, "[svelte]") : () => {};
 
     if(link && style) {
         throw new Error("@modular-css/svelte: use <style> OR <link>, but not both");
@@ -125,6 +136,7 @@ module.exports = (processor) => ({ content, filename }) => {
     if(style) {
         return extractStyle({
             processor,
+            log,
             content,
             filename,
             style,
@@ -134,6 +146,7 @@ module.exports = (processor) => ({ content, filename }) => {
     if(link) {
         return extractLink({
             processor,
+            log,
             content,
             filename,
             link,
