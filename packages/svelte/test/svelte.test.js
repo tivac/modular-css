@@ -7,6 +7,7 @@ const svelte = require("svelte");
 const dedent = require("dedent");
 
 const namer = require("@modular-css/test-utils/namer.js");
+const logs  = require("@modular-css/test-utils/logs.js");
     
 const plugin = require("../svelte.js");
 
@@ -32,10 +33,10 @@ describe("/svelte.js", () => {
     });
 
     it.each`
-        specimen | title
-        ${"external.html"} | ${"no script"}
-        ${"external-script.html"} | ${"existing script"}
-        ${"external-single.html"} | ${"single quotes"}
+        specimen                    | title
+        ${"external.html"}          | ${"no script"}
+        ${"external-script.html"}   | ${"existing script"}
+        ${"external-single.html"}   | ${"single quotes"}
         ${"external-unquoted.html"} | ${"unquoted"}
     `("should extract CSS from a <link> tag ($title)", async ({ specimen }) => {
         const filename = require.resolve(`./specimens/${specimen}`);
@@ -177,5 +178,29 @@ describe("/svelte.js", () => {
         output = await processor.output();
 
         expect(output.css).toMatchSnapshot();
+    });
+
+    it.each`
+        title        | specimen
+        ${"<style>"} | ${"style.html"}
+        ${"<link>"}  | ${"external.html"}
+    `("should support verbose output: $title", async ({ specimen }) => {
+        const { logSnapshot } = logs();
+        
+        const filename = require.resolve(`./specimens/${specimen}`);
+        
+        const { processor, preprocess } = plugin({
+            namer,
+            verbose : true,
+        });
+
+        await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        await processor.output();
+
+        logSnapshot();
     });
 });
