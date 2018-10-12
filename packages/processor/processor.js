@@ -33,50 +33,49 @@ function params(processor, args) {
 
 class Processor {
     constructor(opts) {
-        /* eslint max-statements: [ "warn", 20 ] */
-        this._options = Object.assign(
+        /* eslint max-statements: [ "warn", 25 ] */
+        const options = Object.assign(
             Object.create(null),
             {
-                cwd     : process.cwd(),
-                map     : false,
-                rewrite : true,
-                verbose : false,
+                cwd       : process.cwd(),
+                map       : false,
+                rewrite   : true,
+                verbose   : false,
+                resolvers : [],
             },
             opts
         );
 
-        if(!path.isAbsolute(this._options.cwd)) {
-            this._options.cwd = path.resolve(this._options.cwd);
+        this._options = options;
+
+        if(!path.isAbsolute(options.cwd)) {
+            options.cwd = path.resolve(options.cwd);
         }
 
-        if(typeof this._options.namer === "string") {
-            this._options.namer = require(this._options.namer)();
+        if(typeof options.namer === "string") {
+            options.namer = require(options.namer)();
         }
 
-        if(typeof this._options.namer !== "function") {
-            this._options.namer = (file, selector) =>
-                `mc${slug(relative(this._options.cwd, file))}_${selector}`;
+        if(typeof options.namer !== "function") {
+            options.namer = (file, selector) =>
+                `mc${slug(relative(options.cwd, file))}_${selector}`;
         }
 
-        if(!Array.isArray(this._options.resolvers)) {
-            this._options.resolvers = [];
-        }
-
-        this._log = this._options.verbose ?
+        this._log = options.verbose ?
             // eslint-disable-next-line no-console
             console.log.bind(console, "[processor]") :
             // eslint-disable-next-line no-empty-function
             () => {};
 
-        this._resolve = resolve.resolvers(this._options.resolvers);
+        this._resolve = resolve.resolvers(options.resolvers);
 
-        this._absolute = (file) => (path.isAbsolute(file) ? file : path.join(this._options.cwd, file));
+        this._absolute = (file) => (path.isAbsolute(file) ? file : path.join(options.cwd, file));
 
         this._files = Object.create(null);
         this._graph = new Graph();
 
         this._before = postcss([
-            ...(this._options.before || []),
+            ...(options.before || []),
             require("./plugins/values-local.js"),
             require("./plugins/values-export.js"),
             require("./plugins/values-replace.js"),
@@ -93,17 +92,17 @@ class Processor {
             require("./plugins/externals.js"),
             require("./plugins/composition.js"),
             require("./plugins/keyframes.js"),
-            ...(this._options.processing || []),
+            ...(options.processing || []),
         ]);
 
-        this._after = postcss(this._options.after || [ noop ]);
+        this._after = postcss(options.after || [ noop ]);
 
         // Add postcss-url to the afters if requested
-        if(this._options.rewrite) {
-            this._after.use(require("postcss-url")(this._options.rewrite));
+        if(options.rewrite) {
+            this._after.use(require("postcss-url")(options.rewrite));
         }
 
-        this._done = postcss(this._options.done || [ noop ]);
+        this._done = postcss(options.done || [ noop ]);
     }
 
     // Add a file on disk to the dependency graph
