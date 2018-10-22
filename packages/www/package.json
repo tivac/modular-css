@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/website",
-  "version": "16.2.0",
+  "version": "17.0.0",
   "private": true,
   "description": "web site for modular-css",
   "main": "index.js",
@@ -24,8 +24,8 @@
     "throttleit": "1.0.0"
   },
   "devDependencies": {
-    "@modular-css/shortnames": "^16.0.0",
-    "@modular-css/webpack": "^16.2.0",
+    "@modular-css/shortnames": "^17.0.0",
+    "@modular-css/webpack": "^17.0.0",
     "buble-loader": "0.4.1",
     "copy-webpack-plugin": "4.5.2",
     "cssnano-cli": "1.0.5",
