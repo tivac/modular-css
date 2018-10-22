@@ -63,7 +63,6 @@ class Preprocessor {
         };
     }
 
-    // eslint-disable-next-line max-statements
     updateCss({ result, filename }) {
         const { log, processor, source } = this;
 
@@ -113,7 +112,7 @@ class Preprocessor {
     }
 
     async extractLink({ link }) {
-        const { filename, log, processor, source } = this;
+        const { config, filename, log, processor, source } = this;
 
         // This looks weird, but it's to support multiple types of quotation marks
         const href = link[1] || link[2] || link[3];
@@ -121,6 +120,13 @@ class Preprocessor {
         const external = resolve(path.dirname(filename), href);
 
         log("extract <link>", filename, external);
+
+        if(config.clean) {
+            // Remove any files that've already been encountered, they should be re-processed
+            if(external in processor.files) {
+                [ ...processor.dependents(external), external ].forEach((file) => processor.remove(file));
+            }
+        }
 
         // Remove the <link> element from the component to avoid double-loading
         let markup = source.replace(link[0], "");

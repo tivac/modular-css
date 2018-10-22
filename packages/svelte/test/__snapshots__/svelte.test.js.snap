@@ -336,6 +336,34 @@ exports[`/svelte.js should ignore files without <style> blocks 1`] = `
 
 exports[`/svelte.js should ignore files without <style> blocks 2`] = `""`;
 
+exports[`/svelte.js should remove files before reprocessing when config.clean is set 1`] = `
+"
+<div class=\\"source\\">Source</div><script>
+    import css from \\"./source.css\\";
+</script>"
+`;
+
+exports[`/svelte.js should remove files before reprocessing when config.clean is set 2`] = `
+"/* packages/svelte/test/output/source.css */
+.source {
+    color: red;
+}"
+`;
+
+exports[`/svelte.js should remove files before reprocessing when config.clean is set 3`] = `
+"
+<div class=\\"source\\">Source</div><script>
+    import css from \\"./source.css\\";
+</script>"
+`;
+
+exports[`/svelte.js should remove files before reprocessing when config.clean is set 4`] = `
+"/* packages/svelte/test/output/source.css */
+.source {
+    color: blue;
+}"
+`;
+
 exports[`/svelte.js should support verbose output: "<link>" 1`] = `
 Array [
   Array [
