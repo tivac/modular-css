@@ -3,9 +3,11 @@ module.exports = {
         "@tivac",
         "plugin:jest/recommended",
     ],
+
     parserOptions : {
         ecmaVersion : 8,
     },
+    
     env : {
         node : true,
         jest : true,
@@ -14,5 +16,9 @@ module.exports = {
 
     plugins : [
         "jest",
-    ]
+    ],
+
+    rules : {
+        "max-statements" : [ "warn", 25 ],
+    },
 };

@@ -134,52 +134,6 @@ describe("/svelte.js", () => {
         ).rejects.toThrowErrorMatchingSnapshot();
     });
 
-    it("should remove files before reprocessing in case they changed", async () => {
-        // V1 of files
-        fs.writeFileSync(path.resolve(__dirname, "./output/source.html"), dedent(`
-            <link rel="stylesheet" href="./source.css" />
-            <div class="{css.source}">Source</div>
-        `));
-
-        fs.writeFileSync(path.resolve(__dirname, "./output/source.css"), dedent(`
-            .source {
-                color: red;
-            }
-        `));
-        
-        const filename = require.resolve(`./output/source.html`);
-        const { processor, preprocess } = plugin({ namer });
-
-        let processed = await svelte.preprocess(
-            fs.readFileSync(filename, "utf8"),
-            Object.assign({}, preprocess, { filename })
-        );
-
-        expect(processed.toString()).toMatchSnapshot();
-
-        let output = await processor.output();
-
-        expect(output.css).toMatchSnapshot();
-        
-        // V2 of CSS
-        fs.writeFileSync(path.resolve(__dirname, "./output/source.css"), dedent(`
-        .source {
-            color: blue;
-        }
-        `));
-        
-        processed = await svelte.preprocess(
-            fs.readFileSync(filename, "utf8"),
-            Object.assign({}, preprocess, { filename })
-        );
-
-        expect(processed.toString()).toMatchSnapshot();
-
-        output = await processor.output();
-
-        expect(output.css).toMatchSnapshot();
-    });
-
     it.each`
         title        | specimen
         ${"<style>"} | ${"style.html"}
@@ -202,5 +156,55 @@ describe("/svelte.js", () => {
         await processor.output();
 
         logSnapshot();
+    });
+
+    it("should remove files before reprocessing when config.clean is set", async () => {
+        // V1 of files
+        fs.writeFileSync(path.resolve(__dirname, "./output/source.html"), dedent(`
+            <link rel="stylesheet" href="./source.css" />
+            <div class="{css.source}">Source</div>
+        `));
+
+        fs.writeFileSync(path.resolve(__dirname, "./output/source.css"), dedent(`
+            .source {
+                color: red;
+            }
+        `));
+
+        const filename = require.resolve(`./output/source.html`);
+        const { processor, preprocess } = plugin({
+            namer,
+
+            clean : true,
+        });
+
+        let processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        let output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
+
+        // V2 of CSS
+        fs.writeFileSync(path.resolve(__dirname, "./output/source.css"), dedent(`
+            .source {
+                color: blue;
+            }
+        `));
+
+        processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
     });
 });
