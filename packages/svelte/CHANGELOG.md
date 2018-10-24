@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.1.0](https://github.com/tivac/modular-css/compare/v17.0.0...v17.1.0) (2018-10-24)
+
+
+### Features
+
+* Rework svelte for race-condition fix ([#524](https://github.com/tivac/modular-css/issues/524)) ([9d465db](https://github.com/tivac/modular-css/commit/9d465db))
+
+
+
+
+
 # [17.0.0](https://github.com/tivac/modular-css/compare/v16.2.0...v17.0.0) (2018-10-22)
 
 
