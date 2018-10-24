@@ -8,18 +8,18 @@ const dedent = require("dedent");
 
 const namer = require("@modular-css/test-utils/namer.js");
 const logs  = require("@modular-css/test-utils/logs.js");
-    
+
 const plugin = require("../svelte.js");
 
 describe("/svelte.js", () => {
     afterEach(() => require("shelljs").rm("-rf", "./packages/svelte/test/output/*"));
-    
+
     it("should extract CSS from a <style> tag", async () => {
         const filename = require.resolve("./specimens/style.html");
         const { processor, preprocess } = plugin({
             namer,
         });
-        
+
         const processed = await svelte.preprocess(
             fs.readFileSync(filename, "utf8"),
             Object.assign({}, preprocess, { filename })
@@ -28,7 +28,7 @@ describe("/svelte.js", () => {
         expect(processed.toString()).toMatchSnapshot();
 
         const output = await processor.output();
-        
+
         expect(output.css).toMatchSnapshot();
     });
 
@@ -52,7 +52,7 @@ describe("/svelte.js", () => {
         expect(processed.toString()).toMatchSnapshot();
 
         const output = await processor.output();
-        
+
         expect(output.css).toMatchSnapshot();
     });
 
@@ -68,9 +68,9 @@ describe("/svelte.js", () => {
         );
 
         expect(processed.toString()).toMatchSnapshot();
-            
+
         const output = await processor.output();
-       
+
         expect(output.css).toMatchSnapshot();
     });
 
@@ -86,15 +86,15 @@ describe("/svelte.js", () => {
         const spy = jest.spyOn(global.console, "warn");
 
         spy.mockImplementation(() => { /* NO-OP */ });
-        
+
         const filename = require.resolve(`./specimens/${specimen}`);
-        
+
         // Set up strict plugin
         const { preprocess : strict } = plugin({
             namer,
             strict : true,
         });
-        
+
         await expect(
             svelte.preprocess(
                 fs.readFileSync(filename, "utf8"),
@@ -111,7 +111,7 @@ describe("/svelte.js", () => {
             fs.readFileSync(filename, "utf8"),
             Object.assign({}, loose, { filename })
         );
-        
+
         expect(spy).toHaveBeenCalled();
         expect(spy.mock.calls).toMatchSnapshot();
 
@@ -140,9 +140,9 @@ describe("/svelte.js", () => {
         ${"<link>"}  | ${"external.html"}
     `("should support verbose output: $title", async ({ specimen }) => {
         const { logSnapshot } = logs();
-        
+
         const filename = require.resolve(`./specimens/${specimen}`);
-        
+
         const { processor, preprocess } = plugin({
             namer,
             verbose : true,
