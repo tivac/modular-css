@@ -114,7 +114,7 @@ module.exports = (config = false) => {
                 // Then any remaining bare css.<key> values
                 .replace(
                     new RegExp(`(\\b)css\\.(${selectors})(\\b)`, "gm"),
-                    (match, prefix, key, suffix) => `${prefix}"${exported[key].join(" ")}"${suffix}`
+                    (match, prefix, key, suffix) => (Array.isArray(exported[key]) ? `${prefix}"${exported[key].join(" ")}"${suffix}` : exported[key])
                 );
         }
 
