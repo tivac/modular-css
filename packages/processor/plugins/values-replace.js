@@ -3,8 +3,8 @@
 var selector = require("postcss-selector-parser"),
     value    = require("postcss-value-parser"),
     escape   = require("escape-string-regexp"),
-    each     = require("lodash.foreach"),
-    get      = require("lodash.get"),
+    each     = require("lodash/foreach"),
+    get      = require("lodash/get"),
     Graph    = require("dependency-graph").DepGraph,
     
     namespaced = require("./values-namespaced.js");

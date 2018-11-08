@@ -1,6 +1,6 @@
 "use strict";
 
-var map = require("lodash.mapvalues"),
+var map = require("lodash/mapvalues"),
 
     relative = require("./relative.js");
 
