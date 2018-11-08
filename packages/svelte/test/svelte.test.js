@@ -207,4 +207,19 @@ describe("/svelte.js", () => {
 
         expect(output.css).toMatchSnapshot();
     });
+
+    it("should support exported values used standalone in components", async () => {
+        const filename = require.resolve(`./specimens/external-with-values.html`);
+        
+        const { preprocess } = plugin({
+            namer,
+        });
+
+        const processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+    });
 });

@@ -370,6 +370,35 @@ exports[`/svelte.js should remove files before reprocessing when config.clean is
 }"
 `;
 
+exports[`/svelte.js should support exported values used standalone in components 1`] = `
+"
+
+<div {style}>
+    Standalone value in the style tag
+</div>
+
+<div style=\`color: #BEEFED\`>
+    Style supplied as a template string from css
+</div>
+
+<div style=\\"color: #BEEFED\\">
+    Style supplied as a svelte-template string from css
+</div>
+
+
+<script>
+import css from \\"./external-with-values.css\\";
+
+
+    export default {
+        computed : {
+            style : () => \`color: #BEEFED\`
+        }
+    };
+</script>
+"
+`;
+
 exports[`/svelte.js should support verbose output: "<link>" 1`] = `
 Array [
   Array [

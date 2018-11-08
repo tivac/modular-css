@@ -106,15 +106,17 @@ module.exports = (config = false) => {
             const selectors = keys.join("|");
 
             source = source
-                // Replace simple {css.<key>} values first
+                // Replace {css.<key>} values
+                // And also ${css.<key>} template string values first
                 .replace(
-                    new RegExp(`{css\\.(${selectors})}`, "gm"),
-                    (match, key) => exported[key].join(" ")
+                    new RegExp(`\\$?{css\\.(${selectors})}`, "gm"),
+                    (match, key) => (Array.isArray(exported[key]) ? exported[key].join(" ") : exported[key])
                 )
+
                 // Then any remaining bare css.<key> values
                 .replace(
                     new RegExp(`(\\b)css\\.(${selectors})(\\b)`, "gm"),
-                    (match, prefix, key, suffix) => `${prefix}"${exported[key].join(" ")}"${suffix}`
+                    (match, prefix, key, suffix) => (Array.isArray(exported[key]) ? `${prefix}"${exported[key].join(" ")}"${suffix}` : exported[key])
                 );
         }
 
