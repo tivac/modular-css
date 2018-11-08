@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/webpack",
-  "version": "17.0.0",
+  "version": "17.1.1",
   "description": "Webpack support for modular-css",
   "main": "./index.js",
   "repository": "tivac/modular-css",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [17.1.1](https://github.com/tivac/modular-css/compare/v17.1.0...v17.1.1) (2018-11-08)
+
+
+### Bug Fixes
+
+* tweak value support in svelte preprocessor ([7cc0f22](https://github.com/tivac/modular-css/commit/7cc0f22))
+
+
+
+
+
 # [17.1.0](https://github.com/tivac/modular-css/compare/v17.0.0...v17.1.0) (2018-10-24)
 
 

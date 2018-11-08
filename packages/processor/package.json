@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/processor",
-  "version": "17.0.0",
+  "version": "17.1.1",
   "description": "A streamlined reinterpretation of CSS Modules",
   "main": "./processor.js",
   "repository": "tivac/modular-css",
