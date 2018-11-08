@@ -8,6 +8,7 @@ if: tag IS blank
 language: node_js
 node_js:
 - node
+- '10'
 - '8'
 
 # https://docs.travis-ci.com/user/customizing-the-build/#Fast-Finishing
@@ -21,10 +22,10 @@ cache:
 
 before_install:
 - npm config set loglevel warn
-# Set up npm 6 for installs since we need `npm ci` to exist
+# Set up npm 6 for installs since we need `npm ci` to exist in every environment
 - npm install --global npm@6
 
-# Use npm ci command for all dependencies
+# Use npm ci for faster/safer installs
 install:
 - npm ci
 
