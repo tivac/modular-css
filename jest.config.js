@@ -1,21 +1,34 @@
 "use strict";
 
 module.exports = {
-    restoreMocks : true,
-    notify       : true,
+    projects : [
+        {
+            displayName  : "tests",
+            restoreMocks : true,
+            notify       : true,
 
-    // Work around JsDOM security issue
-    // https://github.com/facebook/jest/issues/6766
-    testURL : "http://localhost/",
+            coveragePathIgnorePatterns : [
+                "/node_modules/",
+                "/parsers/",
+                "/@modular-css/test-utils/",
+            ],
 
-    coveragePathIgnorePatterns : [
-      "/node_modules/",
-      "/parsers/",
-      "/@modular-css/test-utils/",
-    ],
-
-    watchPathIgnorePatterns : [
-        "/output/",
-        "/specimens/",
+            watchPathIgnorePatterns : [
+                "/output/",
+                "/specimens/",
+            ],
+        },
+        {
+            displayName : "lint",
+            runner      : "jest-runner-eslint",
+            
+            watchPlugins : [
+                "jest-runner-eslint/watch-fix",
+            ],
+            
+            testMatch : [
+                "<rootDir>/packages/**/*.js",
+            ],
+        },
     ],
 };
