@@ -374,8 +374,17 @@ exports[`/svelte.js should support exported values used standalone in components
 "
 
 <div {style}>
-    Support standalone values 2018
+    Standalone value in the style tag
 </div>
+
+<div style=\`color: #BEEFED\`>
+    Style supplied as a template string from css
+</div>
+
+<div style=\\"color: #BEEFED\\">
+    Style supplied as a svelte-template string from css
+</div>
+
 
 <script>
 import css from \\"./external-with-values.css\\";
@@ -385,7 +394,7 @@ import css from \\"./external-with-values.css\\";
         computed : {
             style : () => \`color: #BEEFED\`
         }
-    }
+    };
 </script>
 "
 `;

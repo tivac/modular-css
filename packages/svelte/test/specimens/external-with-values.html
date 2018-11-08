@@ -1,8 +1,17 @@
 <link rel="stylesheet" href="./external-with-values.css">
 
 <div {style}>
-    Support standalone values 2018
+    Standalone value in the style tag
 </div>
+
+<div style=`color: ${css.primary}`>
+    Style supplied as a template string from css
+</div>
+
+<div style="color: {css.primary}">
+    Style supplied as a svelte-template string from css
+</div>
+
 
 <script>
     export default {
