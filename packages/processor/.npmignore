@@ -3,3 +3,4 @@ profiling/
 test/
 .*
 **/*.pegjs
+CHANGELOG.md
