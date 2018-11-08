@@ -28,6 +28,7 @@ before_install:
 # Use npm ci for faster/safer installs
 install:
 - npm ci
+- npm ls
 
 script:
 - npm test -- --verbose --ci
