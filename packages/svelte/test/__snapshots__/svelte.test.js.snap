@@ -165,6 +165,53 @@ exports[`/svelte.js should extract CSS from a <link> tag ("unquoted") 2`] = `
 "
 `;
 
+exports[`/svelte.js should extract CSS from a <link> tag ("values") 1`] = `
+"
+
+<div
+    data-simple=\\"color: #BEEFED\\"
+    data-expression=\\"{\\"color: \\" + \\"#BEEFED\\"}\\"
+    data-template=\\"{\`color: \${\\"#BEEFED\\"}\`}\\"
+>
+</div>
+
+<script>
+import css from \\"./external.css\\";
+
+
+    export default {
+        data : () => ({
+            template : \`color: \${\\"#BEEFED\\"}\`,
+            expression : \\"color: \\" + \\"#BEEFED\\",
+        })
+    };
+</script>
+"
+`;
+
+exports[`/svelte.js should extract CSS from a <link> tag ("values") 2`] = `
+"/* packages/svelte/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+/* packages/svelte/test/specimens/dependencies.css */
+.wooga {
+
+    background: blue;
+}
+/* packages/svelte/test/specimens/external.css */
+.flex {
+    display: flex;
+}
+.text {
+    color: #000;
+}
+.active {
+    color: #F00;
+}
+"
+`;
+
 exports[`/svelte.js should extract CSS from a <style> tag 1`] = `
 "<div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
@@ -370,35 +417,6 @@ exports[`/svelte.js should remove files before reprocessing when config.clean is
 }"
 `;
 
-exports[`/svelte.js should support exported values used standalone in components 1`] = `
-"
-
-<div {style}>
-    Standalone value in the style tag
-</div>
-
-<div style=\`color: #BEEFED\`>
-    Style supplied as a template string from css
-</div>
-
-<div style=\\"color: #BEEFED\\">
-    Style supplied as a svelte-template string from css
-</div>
-
-
-<script>
-import css from \\"./external-with-values.css\\";
-
-
-    export default {
-        computed : {
-            style : () => \`color: #BEEFED\`
-        }
-    };
-</script>
-"
-`;
-
 exports[`/svelte.js should support verbose output: "<link>" 1`] = `
 Array [
   Array [
@@ -463,7 +481,7 @@ Array [
   ],
   Array [
     "[svelte]",
-    "[\\"flex\\",\\"wrapper\\",\\"hd\\",\\"bd\\",\\"text\\",\\"active\\"]",
+    "[\\"color\\",\\"flex\\",\\"wrapper\\",\\"hd\\",\\"bd\\",\\"text\\",\\"active\\"]",
   ],
 ]
 `;

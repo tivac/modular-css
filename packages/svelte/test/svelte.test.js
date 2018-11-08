@@ -38,6 +38,7 @@ describe("/svelte.js", () => {
         ${"external-script.html"}   | ${"existing script"}
         ${"external-single.html"}   | ${"single quotes"}
         ${"external-unquoted.html"} | ${"unquoted"}
+        ${"external-values.html"}   | ${"values"}
     `("should extract CSS from a <link> tag ($title)", async ({ specimen }) => {
         const filename = require.resolve(`./specimens/${specimen}`);
         const { processor, preprocess } = plugin({
@@ -206,20 +207,5 @@ describe("/svelte.js", () => {
         output = await processor.output();
 
         expect(output.css).toMatchSnapshot();
-    });
-
-    it("should support exported values used standalone in components", async () => {
-        const filename = require.resolve(`./specimens/external-with-values.html`);
-        
-        const { preprocess } = plugin({
-            namer,
-        });
-
-        const processed = await svelte.preprocess(
-            fs.readFileSync(filename, "utf8"),
-            Object.assign({}, preprocess, { filename })
-        );
-
-        expect(processed.toString()).toMatchSnapshot();
     });
 });

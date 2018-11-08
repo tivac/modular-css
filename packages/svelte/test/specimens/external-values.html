@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="./external.css">
+
+<div
+    data-simple="color: {css.color}"
+    data-expression="{"color: " + css.color}"
+    data-template="{`color: ${css.color}`}"
+>
+</div>
+
+<script>
+    export default {
+        data : () => ({
+            template : `color: ${css.color}`,
+            expression : "color: " + css.color,
+        })
+    };
+</script>
