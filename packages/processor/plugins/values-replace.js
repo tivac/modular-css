@@ -1,13 +1,13 @@
 "use strict";
 
-var selector = require("postcss-selector-parser"),
-    value    = require("postcss-value-parser"),
-    escape   = require("escape-string-regexp"),
-    each     = require("lodash/foreach"),
-    get      = require("lodash/get"),
-    Graph    = require("dependency-graph").DepGraph,
+const selector = require("postcss-selector-parser");
+const value    = require("postcss-value-parser");
+const escape   = require("escape-string-regexp");
+const each     = require("lodash/forEach");
+const get      = require("lodash/get");
+const Graph    = require("dependency-graph").DepGraph;
     
-    namespaced = require("./values-namespaced.js");
+const namespaced = require("./values-namespaced.js");
 
 module.exports = (css, result) => {
     var graph = new Graph(),

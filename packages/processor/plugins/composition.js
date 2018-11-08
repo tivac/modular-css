@@ -3,7 +3,7 @@
 const Graph = require("dependency-graph").DepGraph;
     
 const invert    = require("lodash/invert");
-const mapvalues = require("lodash/mapvalues");
+const mapvalues = require("lodash/mapValues");
 
 const message     = require("../lib/message.js");
 const identifiers = require("../lib/identifiers.js");

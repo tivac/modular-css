@@ -28,7 +28,6 @@ before_install:
 # Use npm ci for faster/safer installs
 install:
 - npm ci
-- cat node_modules/lodash/package.json
 
 script:
 - npm test -- --verbose --ci

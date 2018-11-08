@@ -1,6 +1,6 @@
 "use strict";
 
-var find = require("lodash/findlast");
+var find = require("lodash/findLast");
 
 module.exports = (results, filter) => {
     var message = find(results.messages, filter);

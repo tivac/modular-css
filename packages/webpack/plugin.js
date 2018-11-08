@@ -1,7 +1,7 @@
 "use strict";
 
-const sources   = require("webpack-sources");
-const ismap     = require("lodash/ismap");
+const sources = require("webpack-sources");
+const ismap   = require("lodash/isMap");
 
 const Processor = require("@modular-css/processor");
 

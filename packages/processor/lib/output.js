@@ -1,8 +1,8 @@
 "use strict";
 
-var map = require("lodash/mapvalues"),
+const map = require("lodash/mapValues");
 
-    relative = require("./relative.js");
+const relative = require("./relative.js");
 
 exports.join = function(output) {
     return map(output, (classes) => (
