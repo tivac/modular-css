@@ -6,11 +6,12 @@ const { rollup } = require("rollup");
 const dedent = require("dedent");
 const shell = require("shelljs");
 
-const read   = require("@modular-css/test-utils/read.js")(__dirname);
-const exists = require("@modular-css/test-utils/exists.js")(__dirname);
-const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
-const namer  = require("@modular-css/test-utils/namer.js");
-const logs   = require("@modular-css/test-utils/logs.js");
+const read    = require("@modular-css/test-utils/read.js")(__dirname);
+const readdir = require("@modular-css/test-utils/read-dir.js")(__dirname);
+const exists  = require("@modular-css/test-utils/exists.js")(__dirname);
+const prefix  = require("@modular-css/test-utils/prefix.js")(__dirname);
+const namer   = require("@modular-css/test-utils/namer.js");
+const logs    = require("@modular-css/test-utils/logs.js");
 
 const Processor = require("@modular-css/processor");
 
@@ -483,6 +484,26 @@ describe("/rollup.js", () => {
         await processor.output();
 
         logSnapshot();
+    });
+
+    it.only("should remove repeated references that point at the same files", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/casing/main.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    verbose : true,
+                }),
+            ],
+        });
+
+        await bundle.write({
+            format,
+            assetFileNames,
+            file : prefix(`./output/rollup/casing/main.js`),
+        });
+
+        expect(readdir("./rollup/casing")).toMatchSnapshot();
     });
 
     describe("errors", () => {
