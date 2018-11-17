@@ -173,6 +173,8 @@ class Processor {
         
         if(!Array.isArray(files)) {
             files = tiered(this._graph);
+        } else {
+            files = files.map(this._absolute);
         }
 
         // Throw normalize values into a Set to remove dupes
@@ -339,7 +341,11 @@ class Processor {
             return;
         }
 
-        this._graph.addNode(name);
+        const { _graph, _log, _files, _before } = this;
+        
+        _log(`_walk() ${name}`);
+
+        _graph.addNode(name);
 
         const file = this._files[name] = {
             text,
@@ -367,6 +373,8 @@ class Processor {
             this._graph.addDependency(name, dep);
         });
 
+        console.log(_graph.overallOrder());
+        
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
             this._graph.dependenciesOf(name).reduce((promises, dependency) => {
