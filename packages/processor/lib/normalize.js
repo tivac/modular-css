@@ -10,5 +10,7 @@ module.exports = (cwd, file) => {
 
     file = path.normalize(file);
 
-    return filecase(file);
+    // If the file doesn't exist filecase() returns undefined, so in that
+    // instance just use whatever was sent
+    return filecase(file) || file;
 };

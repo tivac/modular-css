@@ -14,6 +14,7 @@ const message  = require("./lib/message.js");
 const relative = require("./lib/relative.js");
 const tiered   = require("./lib/graph-tiers.js");
 const resolve  = require("./lib/resolve.js");
+const normalize  = require("./lib/normalize.js");
 
 const noop = () => true;
 
@@ -107,26 +108,18 @@ class Processor {
 
     // Add a file on disk to the dependency graph
     file(file) {
-        if(!path.isAbsolute(file)) {
-            file = path.join(this._options.cwd, file);
-        }
-
         this._log("file()", file);
         
-        return this.string(path.normalize(file), fs.readFileSync(file, "utf8"));
+        return this.string(file, fs.readFileSync(file, "utf8"));
     }
     
     // Add a file by name + contents to the dependency graph
     async string(start, text) {
-        if(!path.isAbsolute(start)) {
-            start = path.join(this._options.cwd, start);
-        }
-        
         this._log("string()", start);
         
-        await this._walk(start, text);
+        const id = await this._walk(start, text);
         
-        const deps = this._graph.dependenciesOf(start).concat(start);
+        const deps = this._graph.dependenciesOf(id).concat(id);
         
         await series(deps, async (dep) => {
             const file = this._files[dep];
@@ -168,14 +161,14 @@ class Processor {
             );
         });
 
-        this._log("string() done", start);
+        this._log("string() done", id);
         
         return {
-            id      : start,
-            file    : start,
+            id,
+            file    : id,
             files   : this._files,
-            details : this._files[start],
-            exports : this._files[start].exports,
+            details : this._files[id],
+            exports : this._files[id].exports,
         };
     }
     
@@ -231,19 +224,25 @@ class Processor {
             files = tiered(this._graph);
         }
 
-        files = files.map(this._absolute);
+        // Throw normalize values into a Set to remove dupes
+        files = new Set(files.map(normalize.bind(null, this._options.cwd)));
+
+        // Then turn it back into array because the iteration story is better
+        files = [ ...files.values() ];
 
         // Verify that all requested files have been fully processed & succeeded
         // See
         //  - https://github.com/tivac/modular-css/issues/248
         //  - https://github.com/tivac/modular-css/issues/324
-        const ready = files.every((dep) =>
-            dep in this._files && this._files[dep].result
-        );
+        await Promise.all(
+            files.map((file) => {
+                if(!this._files[file]) {
+                    throw new Error(`Unknown file requested: ${file}`);
+                }
 
-        if(!ready) {
-            return Promise.reject(new Error("File processing not complete"));
-        }
+                return this._files[file].result;
+            })
+        );
 
         // Rewrite relative URLs before adding
         // Have to do this every time because target file might be different!
@@ -331,14 +330,16 @@ class Processor {
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
     async _walk(name, text) {
+        const id = normalize(this._options.cwd, name);
+
         // No need to re-process files
-        if(this._files[name]) {
-            return;
+        if(this._files[id]) {
+            return id;
         }
 
-        this._graph.addNode(name);
+        this._graph.addNode(id);
 
-        this._files[name] = {
+        this._files[id] = {
             text,
             exports : false,
             values  : false,
@@ -347,21 +348,23 @@ class Processor {
         const result = await this._before.process(
             text,
             params(this, {
-                from : name,
+                from : id,
             })
         );
 
-        this._files[name].result = result;
+        this._files[id].result = result;
 
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
-            this._graph.dependenciesOf(name).map((dependency) => this._walk(
+            this._graph.dependenciesOf(id).map((dependency) => this._walk(
                 dependency,
                 this._files[dependency] ?
                     null :
                     fs.readFileSync(dependency, "utf8")
             ))
         );
+
+        return id;
     }
 }
 

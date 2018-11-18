@@ -491,7 +491,6 @@ describe("/rollup.js", () => {
             input   : require.resolve("./specimens/casing/main.js"),
             plugins : [
                 plugin({
-                    namer,
                     map,
                     verbose : true,
                 }),
