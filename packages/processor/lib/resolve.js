@@ -1,8 +1,9 @@
 "use strict";
 
-const path = require("path");
+var path = require("path"),
 
-const resolve = require("resolve-from").silent;
+    resolve = require("resolve-from").silent,
+    fixCase = require("true-case-path");
 
 exports.resolve = (src, file) =>
     resolve(path.dirname(src), file);
@@ -21,6 +22,6 @@ exports.resolvers = (resolvers) => {
             throw new Error(`Unable to locate "${file}" from "${src}"`);
         }
 
-        return result;
+        return fixCase(result);
     };
 };

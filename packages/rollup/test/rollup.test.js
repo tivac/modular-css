@@ -492,6 +492,7 @@ describe("/rollup.js", () => {
             plugins : [
                 plugin({
                     namer,
+                    map,
                     verbose : true,
                 }),
             ],
@@ -500,6 +501,7 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
+            sourcemap,
             file : prefix(`./output/rollup/casing/main.js`),
         });
 

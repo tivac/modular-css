@@ -9,12 +9,11 @@ const slug      = require("unique-slug");
 const series    = require("p-each-series");
 const mapValues = require("lodash/mapValues");
 
-const output    = require("./lib/output.js");
-const message   = require("./lib/message.js");
-const relative  = require("./lib/relative.js");
-const tiered    = require("./lib/graph-tiers.js");
-const resolve   = require("./lib/resolve.js");
-const normalize = require("./lib/normalize.js");
+const output   = require("./lib/output.js");
+const message  = require("./lib/message.js");
+const relative = require("./lib/relative.js");
+const tiered   = require("./lib/graph-tiers.js");
+const resolve  = require("./lib/resolve.js");
 
 const noop = () => true;
 
@@ -108,30 +107,33 @@ class Processor {
 
     // Add a file on disk to the dependency graph
     file(file) {
+        if(!path.isAbsolute(file)) {
+            file = path.join(this._options.cwd, file);
+        }
+
         this._log("file()", file);
         
-        return this.string(file, fs.readFileSync(file, "utf8"));
+        return this.string(path.normalize(file), fs.readFileSync(file, "utf8"));
     }
     
     // Add a file by name + contents to the dependency graph
     async string(start, text) {
-        start = normalize(this._options.cwd, start);
+        if(!path.isAbsolute(start)) {
+            start = path.join(this._options.cwd, start);
+        }
         
         this._log("string()", start);
         
         await this._walk(start, text);
         
         const deps = this._graph.dependenciesOf(start).concat(start);
-
+        
         await series(deps, async (dep) => {
             const file = this._files[dep];
-
-            // console.log(dep, file.result);
-
+            
             if(!file.processed) {
                 this._log("processing", dep);
 
-                // TODO: This keeps breaking, it's like _walk hasn't finished yet or something
                 file.processed = this._process.process(
                     file.result,
                     params(this, {
@@ -227,11 +229,9 @@ class Processor {
         
         if(!Array.isArray(files)) {
             files = tiered(this._graph);
-        } else {
-            files = files.map(this._absolute);
         }
 
-        console.log("OUTPUT", args);
+        files = files.map(this._absolute);
 
         // Verify that all requested files have been fully processed & succeeded
         // See
@@ -336,44 +336,31 @@ class Processor {
             return;
         }
 
-        const { _graph, _log, _files, _before } = this;
-        
-        _log(`_walk() ${name}`);
+        this._graph.addNode(name);
 
-        _graph.addNode(name);
-
-        _files[name] = {
+        this._files[name] = {
             text,
             exports : false,
             values  : false,
         };
         
-        const result = await _before.process(
+        const result = await this._before.process(
             text,
             params(this, {
                 from : name,
             })
         );
 
-        // Save the result off for further processing
-        _files[name].result = result;
-        
-        // Figure out if that file had any dependencies
-        result.messages.forEach(({ type, file }) => {
-            if(type !== "modular-css-graph-nodes") {
-                return;
-            }
+        this._files[name].result = result;
 
-            console.log(name, file);
-
-            _graph.addDependency(name, normalize(file));
-        });
-
-        console.log(_graph.overallOrder());
-        
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
-            _graph.dependenciesOf(name).map((dependency) => this.file(dependency))
+            this._graph.dependenciesOf(name).map((dependency) => this._walk(
+                dependency,
+                this._files[dependency] ?
+                    null :
+                    fs.readFileSync(dependency, "utf8")
+            ))
         );
     }
 }
