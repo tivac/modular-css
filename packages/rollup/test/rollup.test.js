@@ -486,24 +486,38 @@ describe("/rollup.js", () => {
         logSnapshot();
     });
 
-    it("should remove repeated references that point at the same files", async () => {
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/casing/main.js"),
-            plugins : [
-                plugin({
-                    map,
-                }),
-            ],
-        });
+    describe("case senstivity tests", () => {
+        const fs = require("fs");
+        let fn = it;
 
-        await bundle.write({
-            format,
-            assetFileNames,
-            sourcemap,
-            file : prefix(`./output/rollup/casing/main.js`),
-        });
+        // Verify that filesystem is case-insensitive before bothering
+        fs.writeFileSync("./packages/rollup/test/output/sensitive.txt");
 
-        expect(readdir("./rollup/casing")).toMatchSnapshot();
+        try {
+            fs.statSync("./packages/rollup/test/output/SENSITIVE.txt");
+        } catch(e) {
+            fn = it.skip;
+        }
+
+        fn("should remove repeated references that point at the same files", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/casing/main.js"),
+                plugins : [
+                    plugin({
+                        map,
+                    }),
+                ],
+            });
+
+            await bundle.write({
+                format,
+                assetFileNames,
+                sourcemap,
+                file : prefix(`./output/rollup/casing/main.js`),
+            });
+
+            expect(readdir("./rollup/casing")).toMatchSnapshot();
+        });
     });
 
     describe("errors", () => {
