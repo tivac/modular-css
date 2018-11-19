@@ -334,14 +334,12 @@ class Processor {
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
     async _walk(name, text) {
-        const id = normalize(this._options.cwd, name);
-
         // No need to re-process files
-        if(this._files[id]) {
-            return id;
+        if(this._files[name]) {
+            return;
         }
 
-        this._graph.addNode(id);
+        this._graph.addNode(name);
 
         const file = this._files[name] = {
             text,
@@ -379,8 +377,6 @@ class Processor {
                 return promises;
             }, [])
         );
-
-        return id;
     }
 }
 

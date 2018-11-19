@@ -168,7 +168,7 @@ Array [
   Array [
     "[processor]",
     "file()",
-    "./packages/processor/test/specimens/start.css",
+    "packages/processor/test/specimens/start.css",
   ],
   Array [
     "[processor]",
