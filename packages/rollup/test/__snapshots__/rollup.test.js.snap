@@ -273,30 +273,6 @@ console.log(styles);
 "
 `;
 
-exports[`/rollup.js should remove repeated references that point at the same files 1`] = `
-Array [
-  Object {
-    "file": "assets\\\\main.css",
-    "text": "/* packages/rollup/test/specimens/casing/bar.css */
-.mc79ab9c62_bar {
-    display: none;
-}
-/* packages/rollup/test/specimens/casing/foo.css */",
-  },
-  Object {
-    "file": "main.js",
-    "text": "var foo$1 = \\"mc79ab9c62_bar mc3dd08d27_foo\\";
-
-var bar$1 = \\"mc79ab9c62_bar\\";
-
-var bar$3 = \\"mc79ab9c62_bar\\";
-
-console.log({ foo: foo$1, bar: bar$1, bar2: bar$3 });
-",
-  },
-]
-`;
-
 exports[`/rollup.js should respect the CSS dependency tree 1`] = `
 "var css = {
     \\"wooga\\": \\"fooga wooga\\"
