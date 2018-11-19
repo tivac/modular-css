@@ -6,7 +6,6 @@ const path = require("path");
 const Graph     = require("dependency-graph").DepGraph;
 const postcss   = require("postcss");
 const slug      = require("unique-slug");
-const series    = require("p-each-series");
 const mapValues = require("lodash/mapValues");
 
 const output   = require("./lib/output.js");
