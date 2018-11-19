@@ -83,42 +83,42 @@ Array [
   ],
   Array [
     "[processor]",
-    "string()",
+    "_add()",
     "packages/processor/test/specimens/start.css",
   ],
   Array [
     "[processor]",
-    "processing",
-    "packages/processor/test/specimens/folder/folder.css",
-  ],
-  Array [
-    "[processor]",
-    "processed",
-    "packages/processor/test/specimens/folder/folder.css",
-  ],
-  Array [
-    "[processor]",
-    "processing",
+    "file()",
     "packages/processor/test/specimens/local.css",
   ],
   Array [
     "[processor]",
-    "processed",
+    "_add()",
     "packages/processor/test/specimens/local.css",
   ],
   Array [
     "[processor]",
-    "processing",
-    "packages/processor/test/specimens/start.css",
+    "file()",
+    "packages/processor/test/specimens/folder/folder.css",
   ],
   Array [
     "[processor]",
-    "processed",
-    "packages/processor/test/specimens/start.css",
+    "_add()",
+    "packages/processor/test/specimens/folder/folder.css",
   ],
   Array [
     "[processor]",
-    "string() done",
+    "_add() processing",
+    "packages/processor/test/specimens/folder/folder.css",
+  ],
+  Array [
+    "[processor]",
+    "_add() processing",
+    "packages/processor/test/specimens/local.css",
+  ],
+  Array [
+    "[processor]",
+    "_add() processing",
     "packages/processor/test/specimens/start.css",
   ],
   Array [
@@ -128,17 +128,12 @@ Array [
   ],
   Array [
     "[processor]",
-    "processing",
+    "_add()",
     "packages/processor/test/specimens/string.css",
   ],
   Array [
     "[processor]",
-    "processed",
-    "packages/processor/test/specimens/string.css",
-  ],
-  Array [
-    "[processor]",
-    "string() done",
+    "_add() processing",
     "packages/processor/test/specimens/string.css",
   ],
 ]

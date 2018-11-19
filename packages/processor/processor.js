@@ -70,7 +70,7 @@ class Processor {
 
         this._resolve = resolve.resolvers(options.resolvers);
 
-        this._absolute = (file) => (path.isAbsolute(file) ? file : path.join(options.cwd, file));
+        this._normalize = normalize.bind(null, this._options.cwd);
 
         this._files = Object.create(null);
         this._graph = new Graph();
@@ -108,75 +108,27 @@ class Processor {
 
     // Add a file on disk to the dependency graph
     file(file) {
-        this._log("file()", file);
+        const id = this._normalize(file);
         
-        return this.string(file, fs.readFileSync(file, "utf8"));
+        this._log("file()", id);
+        
+        return this._add(id, fs.readFileSync(id, "utf8"));
     }
     
     // Add a file by name + contents to the dependency graph
-    async string(start, text) {
-        this._log("string()", start);
+    async string(file, text) {
+        const id = this._normalize(file);
         
-        const id = await this._walk(start, text);
-        
-        const deps = this._graph.dependenciesOf(id).concat(id);
-        
-        await series(deps, async (dep) => {
-            const file = this._files[dep];
-            
-            if(!file.processed) {
-                this._log("processing", dep);
+        this._log("string()", id);
 
-                file.processed = this._process.process(
-                    file.result,
-                    params(this, {
-                        from  : dep,
-                        namer : this._options.namer,
-                    })
-                );
-            }
-            
-            const result = await file.processed;
-
-            this._log("processed", dep);
-            
-            file.result = result;
-            
-            file.exports = Object.assign(
-                Object.create(null),
-                // export @value entries
-                mapValues(file.values, (obj) => obj.value),
-                
-                // export classes
-                message(result, "classes"),
-                
-                // Export anything from plugins named "modular-css-export*"
-                result.messages.reduce((out, msg) => {
-                    if(msg.plugin.indexOf("modular-css-export") !== 0) {
-                        return out;
-                    }
-
-                    return Object.assign(out, msg.exports);
-                }, Object.create(null))
-            );
-        });
-
-        this._log("string() done", id);
-        
-        return {
-            id,
-            file    : id,
-            files   : this._files,
-            details : this._files[id],
-            exports : this._files[id].exports,
-        };
+        return this._add(id, text);
     }
     
     // Remove a file from the dependency graph
     remove(input) {
         // Only want files actually in the array
         const files = (Array.isArray(input) ? input : [ input ])
-            .map(this._absolute)
+            .map(this._normalize)
             .filter((file) => this._graph.hasNode(file));
         
         if(!files.length) {
@@ -197,9 +149,9 @@ class Processor {
     // Get the dependency order for a file or the entire tree
     dependencies(file) {
         if(file) {
-            return this._graph.dependenciesOf(
-                file
-            );
+            const id = this._normalize(file);
+
+            return this._graph.dependenciesOf(id);
         }
 
         return this._graph.overallOrder();
@@ -210,10 +162,10 @@ class Processor {
         if(!file) {
             throw new Error("Must provide a file to processor.dependants()");
         }
+
+        const id = this._normalize(file);
         
-        return this._graph.dependantsOf(
-            file
-        );
+        return this._graph.dependantsOf(id);
     }
     
     // Get the ultimate output for specific files or the entire tree
@@ -225,8 +177,8 @@ class Processor {
         }
 
         // Throw normalize values into a Set to remove dupes
-        files = new Set(files.map(normalize.bind(null, this._options.cwd)));
-
+        files = new Set(files.map(this._normalize));
+        
         // Then turn it back into array because the iteration story is better
         files = [ ...files.values() ];
 
@@ -327,44 +279,109 @@ class Processor {
         return this._options;
     }
 
+    // Take a file id and some text, walk it for dependencies, then
+    // process and return details
+    async _add(id, text) {
+        this._log("_add()", id);
+
+        await this._walk(id, text);
+
+        const deps = this._graph.dependenciesOf(id).concat(id);
+
+        for(const dep of deps) {
+            const file = this._files[dep];
+
+            if(!file.processed) {
+                this._log("_add() processing", dep);
+
+                file.processed = this._process.process(
+                    file.result,
+                    params(this, {
+                        from  : dep,
+                        namer : this._options.namer,
+                    })
+                );
+            }
+
+            // eslint-disable-next-line no-await-in-loop
+            file.result = await file.processed;
+            
+            const { result } = file;
+            
+            file.exports = Object.assign(
+                Object.create(null),
+                // export @value entries
+                mapValues(file.values, (obj) => obj.value),
+
+                // export classes
+                message(result, "classes"),
+
+                // Export anything from plugins named "modular-css-export*"
+                result.messages.reduce((out, msg) => {
+                    if(msg.plugin.indexOf("modular-css-export") !== 0) {
+                        return out;
+                    }
+
+                    return Object.assign(out, msg.exports);
+                }, Object.create(null))
+            );
+        }
+
+        return {
+            id,
+            file    : id,
+            files   : this._files,
+            details : this._files[id],
+            exports : this._files[id].exports,
+        };
+    }
+
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
     async _walk(name, text) {
-        const id = normalize(this._options.cwd, name);
-
         // No need to re-process files
-        if(this._files[id]) {
-            return id;
+        if(this._files[name]) {
+            return;
         }
 
-        this._graph.addNode(id);
+        this._graph.addNode(name);
 
-        this._files[id] = {
+        const file = this._files[name] = {
             text,
             exports : false,
             values  : false,
+            result  : this._before.process(
+                text,
+                params(this, {
+                    from : name,
+                })
+            ),
         };
         
-        const result = await this._before.process(
-            text,
-            params(this, {
-                from : id,
-            })
-        );
+        await file.result;
 
-        this._files[id].result = result;
+        // Add all the found dependencies to the graph
+        file.result.messages.forEach(({ plugin, dependency }) => {
+            if(plugin !== "modular-css-graph-nodes") {
+                return;
+            }
+
+            const dep = this._normalize(dependency);
+
+            this._graph.addNode(dep);
+            this._graph.addDependency(name, dep);
+        });
 
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
-            this._graph.dependenciesOf(id).map((dependency) => this._walk(
-                dependency,
-                this._files[dependency] ?
-                    null :
-                    fs.readFileSync(dependency, "utf8")
-            ))
+            this._graph.dependenciesOf(name).reduce((promises, dependency) => {
+                if(!this._files[dependency]) {
+                    promises.push(this.file(dependency));
+                }
+                
+                return promises;
+            }, [])
         );
-
-        return id;
     }
 }
 

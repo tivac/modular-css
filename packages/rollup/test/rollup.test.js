@@ -486,13 +486,12 @@ describe("/rollup.js", () => {
         logSnapshot();
     });
 
-    it.only("should remove repeated references that point at the same files", async () => {
+    it("should remove repeated references that point at the same files", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/casing/main.js"),
             plugins : [
                 plugin({
                     map,
-                    verbose : true,
                 }),
             ],
         });
