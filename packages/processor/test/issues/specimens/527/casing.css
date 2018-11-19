@@ -1,5 +1,0 @@
-.casing {
-    composes: sibling from "./sibling.css";
-    composes: sibling from "./Sibling.css";
-    composes: sibling from "../527/Sibling.css";
-}
