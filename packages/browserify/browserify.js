@@ -21,8 +21,8 @@ const prefixed = (cwd, file) => {
     return out;
 };
 
-const outputs = (out) => `module.exports = ${
-    JSON.stringify(output.join(out.exports), null, 4)
+const outputs = ({ exports }) => `module.exports = ${
+    JSON.stringify(output.join(exports), null, 4)
 };`;
 
 module.exports = (browserify, opts) => {
@@ -53,13 +53,13 @@ module.exports = (browserify, opts) => {
             files,
             to,
         })
-        .then((result) => {
-            fs.writeFileSync(to, result.css, "utf8");
+        .then(({ css, map }) => {
+            fs.writeFileSync(to, css, "utf8");
 
-            if(result.map) {
+            if(map) {
                 fs.writeFileSync(
                     `${to}.map`,
-                    result.map.toString(),
+                    map.toString(),
                     "utf8"
                 );
             }

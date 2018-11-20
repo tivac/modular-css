@@ -83,9 +83,9 @@ describe("/browserify.js", () => {
             });
 
             // Run first bundle to start watching
-            build.bundle((err) => {
+            build.bundle(({ name }) => {
                 // This one should fail, but not stop watchify from running
-                expect(err.name).toMatch(/SyntaxError|CssSyntaxError/);
+                expect(name).toMatch(/SyntaxError|CssSyntaxError/);
                 
                 // This might re-trigger before the file has been moved, so
                 // guard against moving the file multiple times w/ this check
