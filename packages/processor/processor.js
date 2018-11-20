@@ -8,11 +8,11 @@ const postcss   = require("postcss");
 const slug      = require("unique-slug");
 const mapValues = require("lodash/mapValues");
 
-const output   = require("./lib/output.js");
-const message  = require("./lib/message.js");
-const relative = require("./lib/relative.js");
-const tiered   = require("./lib/graph-tiers.js");
-const resolve  = require("./lib/resolve.js");
+const output    = require("./lib/output.js");
+const message   = require("./lib/message.js");
+const relative  = require("./lib/relative.js");
+const tiered    = require("./lib/graph-tiers.js");
+const resolve   = require("./lib/resolve.js");
 const normalize = require("./lib/normalize.js");
 
 const noop = () => true;
