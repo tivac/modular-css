@@ -1,12 +1,11 @@
 "use strict";
 
-var namer  = require("@modular-css/test-utils/namer.js"),
-    
-    Processor = require("../processor.js");
+const namer  = require("@modular-css/test-utils/namer.js");
+const Processor = require("../processor.js");
 
 describe("/processor.js", () => {
     describe("unicode", () => {
-        var processor;
+        let processor;
         
         beforeEach(() => {
             processor = new Processor({

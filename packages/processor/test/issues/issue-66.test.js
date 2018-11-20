@@ -1,11 +1,11 @@
 "use strict";
 
-var Processor = require("../../processor.js");
+const Processor = require("../../processor.js");
 
 describe("/issues", () => {
     describe("/66", () => {
         it("should ignore remove calls for unknown files", () => {
-            var processor = new Processor();
+            const processor = new Processor();
 
             return processor.string(
                 "./packages/processor/test/specimens/a.css",

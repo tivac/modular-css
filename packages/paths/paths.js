@@ -1,9 +1,9 @@
 "use strict";
 
-var from = require("resolve-from");
+const from = require("resolve-from");
 
 module.exports = (args) => {
-    var options = Object.assign(
+    const options = Object.assign(
             Object.create(null),
             {
                 paths : [],
@@ -12,7 +12,7 @@ module.exports = (args) => {
         );
     
     return (src, file) => {
-        var result;
+        let result;
 
         options.paths.some((dir) =>
             (result = from.silent(dir, file))

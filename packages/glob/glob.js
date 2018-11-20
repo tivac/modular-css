@@ -1,19 +1,19 @@
 "use strict";
 
-var globule = require("globule"),
-    
-    Processor = require("@modular-css/processor");
+const globule = require("globule");
+const Processor = require("@modular-css/processor");
 
 module.exports = (opts) => {
-    var options = Object.assign(
+    const options = Object.assign(
             Object.create(null),
             {
                 search : [ "**/*.css" ],
             },
             opts || {}
-        ),
-        processor = new Processor(options);
-    
+        );
+
+    const processor = new Processor(options);
+
     return Promise.all(
         globule.find({
             src        : options.search,

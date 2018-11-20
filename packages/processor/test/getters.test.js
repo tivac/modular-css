@@ -1,13 +1,12 @@
 "use strict";
 
-var namer    = require("@modular-css/test-utils/namer.js"),
-    relative = require("@modular-css/test-utils/relative.js"),
-    
-    Processor = require("../processor.js");
+const namer    = require("@modular-css/test-utils/namer.js");
+const relative = require("@modular-css/test-utils/relative.js");
+const Processor = require("../processor.js");
 
 describe("/processor.js", () => {
     describe("getters", () => {
-        var processor;
+        let processor;
         
         beforeEach(() => {
             processor = new Processor({

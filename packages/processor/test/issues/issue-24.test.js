@@ -1,14 +1,13 @@
 "use strict";
 
-var dedent = require("dedent"),
-    namer  = require("@modular-css/test-utils/namer.js"),
-
-    Processor = require("../../processor.js");
+const dedent = require("dedent");
+const namer  = require("@modular-css/test-utils/namer.js");
+const Processor = require("../../processor.js");
 
 describe("/issues", () => {
     describe("/24", () => {
         it("should be able to compose using a value", () => {
-            var processor = new Processor({
+            const processor = new Processor({
                     namer,
                 });
             

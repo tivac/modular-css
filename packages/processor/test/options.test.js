@@ -25,11 +25,12 @@ describe("/processor.js", () => {
     describe("options", () => {
         describe("cwd", () => {
             it("should use an absolute path", () => {
-                var cwd       = path.resolve("./packages/processor/test/specimens/folder"),
-                    processor = new Processor({
-                        cwd,
-                    });
-                
+                const cwd       = path.resolve("./packages/processor/test/specimens/folder");
+
+                const processor = new Processor({
+                    cwd,
+                });
+
                 return processor.file(
                     "./folder.css"
                 )
@@ -40,11 +41,12 @@ describe("/processor.js", () => {
             });
 
             it("should accept a relative path but make it absolute", () => {
-                var cwd       = "./packages/processor/test/specimens/folder",
-                    processor = new Processor({
-                        cwd,
-                    });
-                
+                const cwd       = "./packages/processor/test/specimens/folder";
+
+                const processor = new Processor({
+                    cwd,
+                });
+
                 return processor.file(
                     "./folder.css"
                 )
@@ -102,7 +104,7 @@ describe("/processor.js", () => {
 
         describe("map", () => {
             it("should generate source maps", () => {
-                var processor = new Processor({
+                const processor = new Processor({
                         namer,
                         map : true,
                     });
@@ -118,7 +120,7 @@ describe("/processor.js", () => {
             });
 
             it("should generate external source maps", () => {
-                var processor = new Processor({
+                const processor = new Processor({
                         namer,
                         map : {
                             internal : false,
@@ -138,7 +140,7 @@ describe("/processor.js", () => {
 
         describe("exportGlobals", () => {
             it("should not export :global values when exportGlobals is false", () => {
-                var processor = new Processor({
+                const processor = new Processor({
                         exportGlobals : false,
                     });
                 
@@ -155,7 +157,7 @@ describe("/processor.js", () => {
 
         describe("rewrite", () => {
             it("should rewrite url() references by default", () => {
-                var processor = new Processor();
+                const processor = new Processor();
 
                 return processor.string(
                     "packages/processor/test/specimens/rewrite.css",
@@ -173,7 +175,7 @@ describe("/processor.js", () => {
             });
 
             it("should not rewrite url() references when falsey", () => {
-                var processor = new Processor({ rewrite : false });
+                const processor = new Processor({ rewrite : false });
 
                 return processor.string(
                     "packages/processor/test/specimens/rewrite.css",
@@ -191,7 +193,7 @@ describe("/processor.js", () => {
             });
             
             it("should pass through to postcss-url as config", () => {
-                var processor = new Processor({
+                const processor = new Processor({
                     rewrite : {
                         url : "inline",
                     },
@@ -216,7 +218,7 @@ describe("/processor.js", () => {
         describe("lifecycle options", () => {
             describe("before", () => {
                 it("should run sync postcss plugins before processing", () => {
-                    var processor = new Processor({
+                    const processor = new Processor({
                             namer,
                             before : [ sync ],
                         });
@@ -230,7 +232,7 @@ describe("/processor.js", () => {
                 });
 
                 it("should run async postcss plugins before processing", () => {
-                    var processor = new Processor({
+                    const processor = new Processor({
                             namer,
                             before : [ async ],
                         });
@@ -246,7 +248,7 @@ describe("/processor.js", () => {
 
             describe("processing", () => {
                 it("should run sync postcss plugins processing processing", () => {
-                    var processor = new Processor({
+                    const processor = new Processor({
                             namer,
                             processing : [ sync ],
                         });
@@ -260,7 +262,7 @@ describe("/processor.js", () => {
                 });
 
                 it("should run async postcss plugins processing processing", () => {
-                    var processor = new Processor({
+                    const processor = new Processor({
                             namer,
                             processing : [ async ],
                         });
@@ -274,7 +276,7 @@ describe("/processor.js", () => {
                 });
 
                 it("should include exports from 'modular-css-export' modules", () => {
-                    var processor = new Processor({
+                    const processor = new Processor({
                             namer,
                             processing : [ (css, result) => {
                                 result.messages.push({
@@ -297,7 +299,7 @@ describe("/processor.js", () => {
             
             describe("after", () => {
                 it("should use postcss-url by default", () => {
-                    var processor = new Processor();
+                    const processor = new Processor();
 
                     return processor.file(
                         "./packages/processor/test/specimens/relative.css"
@@ -310,7 +312,7 @@ describe("/processor.js", () => {
                 });
                 
                 it("should run sync postcss plugins", () => {
-                    var processor = new Processor({
+                    const processor = new Processor({
                             namer,
                             after : [ sync ],
                         });
@@ -326,7 +328,7 @@ describe("/processor.js", () => {
                 });
                 
                 it("should run async postcss plugins", () => {
-                    var processor = new Processor({
+                    const processor = new Processor({
                             namer,
                             after : [ async ],
                         });
@@ -344,7 +346,7 @@ describe("/processor.js", () => {
             
             describe("done", () => {
                 it("should run sync postcss plugins done processing", () => {
-                    var processor = new Processor({
+                    const processor = new Processor({
                             namer,
                             done : [ sync ],
                         });
@@ -358,7 +360,7 @@ describe("/processor.js", () => {
                 });
                 
                 it("should run async postcss plugins done processing", () => {
-                    var processor = new Processor({
+                    const processor = new Processor({
                             namer,
                             done : [ async ],
                         });

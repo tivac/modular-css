@@ -1,12 +1,10 @@
 "use strict";
 
-var fs = require("fs"),
-    
-    postcss = require("postcss"),
-    read    = require("@modular-css/test-utils/read.js")(__dirname),
-    namer   = require("@modular-css/test-utils/namer.js"),
-    
-    plugin  = require("../postcss.js");
+const fs = require("fs");
+const postcss = require("postcss");
+const read    = require("@modular-css/test-utils/read.js")(__dirname);
+const namer   = require("@modular-css/test-utils/namer.js");
+const plugin  = require("../postcss.js");
 
 function process(file, opts) {
     return plugin.process(
@@ -64,7 +62,7 @@ describe("/postcss.js", () => {
         .then(() => expect(read("start.json")).toMatchSnapshot()));
 
     it("should be usable like a normal postcss plugin", () => {
-        var processor = postcss([
+        const processor = postcss([
                 plugin({
                     namer : () => "a",
                 }),
@@ -83,7 +81,7 @@ describe("/postcss.js", () => {
     });
 
     it("should output json when used within postcss", () => {
-        var processor = postcss([
+        const processor = postcss([
                 plugin({
                     namer,
                 }),
@@ -100,7 +98,7 @@ describe("/postcss.js", () => {
     });
 
     it("should accept json args in either position with postcss", () => {
-        var processor = postcss([
+        const processor = postcss([
             plugin({
                 namer,
                 json : "./packages/postcss/test/output/simple.json",

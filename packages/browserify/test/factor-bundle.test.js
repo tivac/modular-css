@@ -1,18 +1,15 @@
 "use strict";
 
-var fs     = require("fs"),
-    assert = require("assert"),
-    
-    dedent     = require("dedent"),
-    browserify = require("browserify"),
-    from       = require("from2-string"),
-    shell      = require("shelljs"),
-    
-    read   = require("@modular-css/test-utils/read.js")(__dirname),
-    prefix = require("@modular-css/test-utils/prefix.js")(__dirname),
-
-    bundle = require("./lib/bundle.js"),
-    plugin = require("../browserify.js");
+const fs     = require("fs");
+const assert = require("assert");
+const dedent     = require("dedent");
+const browserify = require("browserify");
+const from       = require("from2-string");
+const shell      = require("shelljs");
+const read   = require("@modular-css/test-utils/read.js")(__dirname);
+const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
+const bundle = require("./lib/bundle.js");
+const plugin = require("../browserify.js");
 
 describe("/browserify.js", () => {
     describe("factor-bundle", () => {
@@ -20,7 +17,7 @@ describe("/browserify.js", () => {
         afterAll(() => shell.rm("-rf", "./packages/browserify/test/output/factor-bundle"));
         
         it("should be supported", () => {
-            var build = browserify([
+            const build = browserify([
                     from(dedent(`
                         require('./packages/browserify/test/specimens/factor-bundle/basic/common.js');
                         require('./packages/browserify/test/specimens/start.css');
@@ -51,7 +48,7 @@ describe("/browserify.js", () => {
         });
         
         it("should support files w/o commonalities", () => {
-            var build = browserify([
+            const build = browserify([
                     from(dedent(`
                         require('./packages/browserify/test/specimens/simple.css');
                     `)),
@@ -79,7 +76,7 @@ describe("/browserify.js", () => {
         });
         
         it("should properly handle files w/o dependencies", () => {
-            var build = browserify([
+            const build = browserify([
                     prefix("specimens/factor-bundle/deps/a.js"),
                     prefix("specimens/factor-bundle/deps/b.js"),
                 ]);
@@ -103,7 +100,7 @@ describe("/browserify.js", () => {
         });
 
         it("should support relative paths within factor-bundle files", () => {
-            var build = browserify([
+            const build = browserify([
                     prefix("specimens/factor-bundle/relative/a.js"),
                     prefix("specimens/factor-bundle/relative/b.js"),
                 ]);
@@ -127,7 +124,7 @@ describe("/browserify.js", () => {
         });
 
         it("should avoid outputting empty css files by default", () => {
-            var build = browserify([
+            const build = browserify([
                     prefix("specimens/factor-bundle/noempty/a.js"),
                     prefix("specimens/factor-bundle/noempty/b.js"),
                 ]);
@@ -155,7 +152,7 @@ describe("/browserify.js", () => {
         });
 
         it("should output empty css files when asked", () => {
-            var build = browserify([
+            const build = browserify([
                     prefix("specimens/factor-bundle/empty/a.js"),
                     prefix("specimens/factor-bundle/empty/b.js"),
                 ]);

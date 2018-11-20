@@ -1,14 +1,13 @@
 "use strict";
 
-var path = require("path"),
-    dedent = require("dedent"),
-    namer  = require("@modular-css/test-utils/namer.js"),
-    
-    Processor = require("../processor.js");
+const path = require("path");
+const dedent = require("dedent");
+const namer  = require("@modular-css/test-utils/namer.js");
+const Processor = require("../processor.js");
 
 describe("/processor.js", () => {
     describe("composition", () => {
-        var processor;
+        let processor;
         
         beforeEach(() => {
             processor = new Processor({

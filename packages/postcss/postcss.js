@@ -1,21 +1,20 @@
 "use strict";
 
-var fs   = require("fs"),
-    path = require("path"),
-    
-    postcss = require("postcss"),
-    mkdirp  = require("mkdirp"),
-    
-    Processor = require("@modular-css/processor");
+const fs   = require("fs");
+const path = require("path");
+const postcss = require("postcss");
+const mkdirp  = require("mkdirp");
+const Processor = require("@modular-css/processor");
 
 module.exports = postcss.plugin("modular-css", (opts) =>
     (root, result) => {
-        var processor = new Processor(Object.assign(
+        const processor = new Processor(Object.assign(
                 Object.create(null),
                 opts,
                 result.opts
-            )),
-            classes;
+            ));
+
+        let classes;
 
         return processor.string(result.opts.from, root)
             .then((output) => {
@@ -24,7 +23,7 @@ module.exports = postcss.plugin("modular-css", (opts) =>
                 return processor.output();
             })
             .then((output) => {
-                var { json } = processor.options;
+                let { json } = processor.options;
 
                 result.messages.push({
                     type    : "modular-css-exports",

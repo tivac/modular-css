@@ -1,15 +1,13 @@
 "use strict";
 
-var { dedent } = require("dentist"),
-    
-    Processor = require("@modular-css/processor"),
-    namer     = require("@modular-css/test-utils/namer.js"),
-
-    paths = require("../paths.js");
+const { dedent } = require("dentist");
+const Processor = require("@modular-css/processor");
+const namer     = require("@modular-css/test-utils/namer.js");
+const paths = require("../paths.js");
 
 describe("@modular-css/path-resolver", () => {
     it("should return a falsey value if a file isn't found", () => {
-        var fn = paths({
+        const fn = paths({
             paths : [
                 "./packages/paths/test/specimens",
             ],
@@ -19,7 +17,7 @@ describe("@modular-css/path-resolver", () => {
     });
 
     it("should return the absolute path if a file is found", () => {
-        var fn = paths({
+        const fn = paths({
             paths : [
                 "./packages/paths/test/specimens/one",
             ],
@@ -29,7 +27,7 @@ describe("@modular-css/path-resolver", () => {
     });
 
     it("should check multiple paths for files & return the first match", () => {
-        var fn = paths({
+        const fn = paths({
             paths : [
                 "./packages/paths/test/specimens/one",
                 "./packages/paths/test/specimens/one/sub",
@@ -40,7 +38,7 @@ describe("@modular-css/path-resolver", () => {
     });
 
     it("should be usable as a modular-css resolver", () => {
-        var processor = new Processor({
+        const processor = new Processor({
                 namer,
                 resolvers : [
                     paths({

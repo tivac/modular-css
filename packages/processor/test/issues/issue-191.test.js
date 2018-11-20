@@ -1,14 +1,12 @@
 "use strict";
 
-var fs = require("fs"),
-    
-    namer = require("@modular-css/test-utils/namer.js"),
-
-    Processor = require("../../processor.js");
+const fs = require("fs");
+const namer = require("@modular-css/test-utils/namer.js");
+const Processor = require("../../processor.js");
 
 describe("/issues", () => {
     describe("/191", () => {
-        var fn = it;
+        let fn = it;
         
         afterAll(() => require("shelljs").rm("-rf", "./packages/processor/test/output/sensitive.txt"));
 
@@ -22,7 +20,7 @@ describe("/issues", () => {
         }
 
         fn("should ignore case differences in file paths", () => {
-            var processor = new Processor({
+            const processor = new Processor({
                     namer,
                 });
             

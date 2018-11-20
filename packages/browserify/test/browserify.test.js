@@ -1,14 +1,11 @@
 "use strict";
 
-var browserify = require("browserify"),
-    from       = require("from2-string"),
-    shell      = require("shelljs"),
-    
-    read = require("@modular-css/test-utils/read.js")(__dirname),
-
-    bundle = require("./lib/bundle.js"),
-    
-    plugin = require("../browserify.js");
+const browserify = require("browserify");
+const from       = require("from2-string");
+const shell      = require("shelljs");
+const read = require("@modular-css/test-utils/read.js")(__dirname);
+const bundle = require("./lib/bundle.js");
+const plugin = require("../browserify.js");
 
 describe("/browserify.js", () => {
     // Because these tests keep failing CI...
@@ -18,9 +15,9 @@ describe("/browserify.js", () => {
 
     describe("basic functionality", () => {
         it("should not error if no options are supplied", () => {
-            var build = browserify(),
-                error = jest.fn();
-            
+            const build = browserify();
+            const error = jest.fn();
+
             build.on("error", error);
 
             build.plugin(plugin);
@@ -29,7 +26,7 @@ describe("/browserify.js", () => {
         });
         
         it("should error if an invalid extension is applied", (done) => {
-            var build = browserify();
+            const build = browserify();
             
             build.on("error", (err) => {
                 expect(err).toMatchSnapshot();
@@ -41,13 +38,14 @@ describe("/browserify.js", () => {
         });
 
         it("should error on invalid CSS", (done) => {
-            var build = browserify({
+            const build = browserify({
                     entries : from("require('./packages/browserify/test/specimens/invalid.css');"),
-                }),
-                errors = 0;
-            
+                });
+
+            let errors = 0;
+
             build.plugin(plugin);
-            
+
             build.bundle((err) => {
                 ++errors;
                 
@@ -64,7 +62,7 @@ describe("/browserify.js", () => {
         });
 
         it("should replace require() calls with the exported identifiers", () => {
-            var build = browserify({
+            const build = browserify({
                     entries : from("require('./packages/browserify/test/specimens/simple.css');"),
                 });
             
@@ -75,7 +73,7 @@ describe("/browserify.js", () => {
         });
 
         it("should correctly rewrite urls based on the destination file", () => {
-            var build = browserify({
+            const build = browserify({
                     entries : from("require('./packages/browserify/test/specimens/relative.css');"),
                 });
             
@@ -88,7 +86,7 @@ describe("/browserify.js", () => {
         });
 
         it("should use the specified namer function", () => {
-            var build = browserify({
+            const build = browserify({
                     entries : from("require('./packages/browserify/test/specimens/keyframes.css');"),
                 });
             
@@ -102,7 +100,7 @@ describe("/browserify.js", () => {
         });
 
         it("should include all CSS dependencies in output css", () => {
-            var build = browserify({
+            const build = browserify({
                     entries : from("require('./packages/browserify/test/specimens/start.css');"),
                 });
             
@@ -116,7 +114,7 @@ describe("/browserify.js", () => {
         });
 
         it("should write out the complete exported identifiers when `json` is specified", () => {
-            var build = browserify(from("require('./packages/browserify/test/specimens/multiple.css');"));
+            const build = browserify(from("require('./packages/browserify/test/specimens/multiple.css');"));
             
             build.plugin(plugin, {
                 json : "./packages/browserify/test/output/browserify/export-all-identifiers.json",
@@ -127,7 +125,7 @@ describe("/browserify.js", () => {
         });
 
         it("should not include duplicate files in the output multiple times", () => {
-            var build = browserify(
+            const build = browserify(
                     from("require('./packages/browserify/test/specimens/start.css'); require('./packages/browserify/test/specimens/local.css');")
                 );
             
@@ -141,7 +139,7 @@ describe("/browserify.js", () => {
         });
         
         it("should output an inline source map when the debug option is specified", () => {
-            var build = browserify({
+            const build = browserify({
                     debug   : true,
                     entries : from("require('./packages/browserify/test/specimens/start.css');"),
                 });
@@ -153,7 +151,7 @@ describe("/browserify.js", () => {
         });
 
         it("should output an external source map when the debug option is specified", () => {
-            var build = browserify({
+            const build = browserify({
                     debug   : true,
                     entries : from("require('./packages/browserify/test/specimens/start.css');"),
                 });

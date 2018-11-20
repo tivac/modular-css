@@ -1,14 +1,13 @@
 "use strict";
 
-var dedent = require("dedent"),
-    namer  = require("@modular-css/test-utils/namer.js"),
-    
-    Processor = require("../../processor.js");
+const dedent = require("dedent");
+const namer  = require("@modular-css/test-utils/namer.js");
+const Processor = require("../../processor.js");
 
 describe("/issues", () => {
     describe("/56", () => {
         it("should prune rules that only compose, but leave them in the exports", () => {
-            var processor = new Processor({
+            const processor = new Processor({
                     namer,
                 });
             

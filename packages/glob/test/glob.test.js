@@ -1,8 +1,7 @@
 "use strict";
 
-var namer = require("@modular-css/test-utils/namer.js"),
-
-    glob = require("../glob.js");
+const namer = require("@modular-css/test-utils/namer.js");
+const glob = require("../glob.js");
 
 describe("/glob.js", () => {
     it("should be a function", () => {

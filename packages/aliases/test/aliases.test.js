@@ -9,7 +9,7 @@ const aliases = require("../aliases.js");
 
 describe("@modular-css/path-aliases", () => {
     it("should return a falsey value if a file isn't found", () => {
-        var fn = aliases({
+        const fn = aliases({
             aliases : {
                 specimens : "./packages/aliases/test/specimens",
             },
@@ -19,7 +19,7 @@ describe("@modular-css/path-aliases", () => {
     });
 
     it("should return the absolute path if a file is found", () => {
-        var fn = aliases({
+        const fn = aliases({
             aliases : {
                 one : "./packages/aliases/test/specimens/one",
             },
@@ -29,7 +29,7 @@ describe("@modular-css/path-aliases", () => {
     });
 
     it("should check multiple aliases for files & return the first match", () => {
-        var fn = aliases({
+        const fn = aliases({
             aliases : {
                 one : "./packages/aliases/test/specimens/one",
                 two : "./packages/aliases/test/specimens/two",
@@ -42,7 +42,7 @@ describe("@modular-css/path-aliases", () => {
     });
 
     it("should be usable as a modular-css resolver", () => {
-        var processor = new Processor({
+        const processor = new Processor({
                 namer,
                 resolvers : [
                     aliases({
@@ -71,7 +71,7 @@ describe("@modular-css/path-aliases", () => {
     });
 
     it("should fall through to the default resolver", () => {
-        var processor = new Processor({
+        const processor = new Processor({
                 namer,
                 resolvers : [
                     aliases({

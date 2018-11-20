@@ -18,7 +18,7 @@ describe("/browserify.js", () => {
             afterAll(() => shell.rm("-rf", "./packages/browserify/test/output/issues"));
             
             it("should update when CSS dependencies change", (done) => {
-                var build = browserify();
+                const build = browserify();
                 
                 write("./issues/58/issue.css", dedent(`
                     .issue1 {

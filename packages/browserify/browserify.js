@@ -1,47 +1,43 @@
 "use strict";
 
-var fs   = require("fs"),
-    path = require("path"),
+const fs   = require("fs");
+const path = require("path");
+const through = require("through2");
+const sink    = require("sink-transform");
+const mkdirp  = require("mkdirp");
+const each    = require("p-each-series");
+const Processor = require("@modular-css/processor");
+const relative  = require("@modular-css/processor/lib/relative.js");
+const output    = require("@modular-css/processor/lib/output.js");
+const prefixRegex = /^\.\.?\//;
 
-    through = require("through2"),
-    sink    = require("sink-transform"),
-    mkdirp  = require("mkdirp"),
-    each    = require("p-each-series"),
-    
-    Processor = require("@modular-css/processor"),
-    relative  = require("@modular-css/processor/lib/relative.js"),
-    output    = require("@modular-css/processor/lib/output.js"),
-    
-    prefixRegex = /^\.\.?\//;
-
-function prefixed(cwd, file) {
-    var out = relative(cwd, file);
+const prefixed = (cwd, file) => {
+    let out = relative(cwd, file);
 
     if(!prefixRegex.test(out)) {
         out = `./${out}`;
     }
 
     return out;
-}
+};
 
-function exports(out) {
-    return `module.exports = ${
-        JSON.stringify(output.join(out.exports), null, 4)
-    };`;
-}
+const outputs = (out) => `module.exports = ${
+    JSON.stringify(output.join(out.exports), null, 4)
+};`;
 
 module.exports = (browserify, opts) => {
-    var options = Object.assign(Object.create(null), {
+    const options = Object.assign(Object.create(null), {
             ext   : ".css",
             map   : browserify._options.debug,
             cwd   : browserify._options.basedir || process.cwd(),
             cache : true,
-        }, opts),
-        
-        processor = options.cache && new Processor(options),
-        
-        bundler, bundles, handled;
-    
+        }, opts);
+
+    let processor = options.cache && new Processor(options);
+    let bundler;
+    let bundles;
+    let handled;
+
     if(!options.ext || options.ext.charAt(0) !== ".") {
         return browserify.emit("error", `Missing or invalid "ext" option: ${options.ext}`);
     }
@@ -77,9 +73,9 @@ module.exports = (browserify, opts) => {
         }
 
         return sink.str(function(buffer, done) {
-            var push = this.push.bind(this),
-                real = fs.realpathSync(file);
-            
+            const push = this.push.bind(this);
+            const real = fs.realpathSync(file);
+
             processor.string(real, buffer).then(
                 (result) => {
                     // Tell watchers about dependencies by emitting "file" events
@@ -89,7 +85,7 @@ module.exports = (browserify, opts) => {
                         browserify.emit("file", dep, dep)
                     );
                     
-                    push(exports(result));
+                    push(outputs(result));
                     
                     done();
                 },
@@ -106,7 +102,7 @@ module.exports = (browserify, opts) => {
             );
         });
     });
-    
+
     // Splice ourselves as early as possible into the deps pipeline
     browserify.pipeline.get("deps").splice(1, 0, through.obj((row, enc, done) => {
         if(path.extname(row.file) !== options.ext) {
@@ -123,7 +119,7 @@ module.exports = (browserify, opts) => {
     }, function(done) {
         // Ensure that any CSS dependencies not directly referenced are
         // injected into the stream of files being managed
-        var push = this.push.bind(this);
+        const push = this.push.bind(this);
         
         processor.dependencies().forEach((dep) => {
             if(dep in handled) {
@@ -133,14 +129,14 @@ module.exports = (browserify, opts) => {
             push({
                 id     : path.resolve(options.cwd, dep),
                 file   : path.resolve(options.cwd, dep),
-                source : exports(processor.files[dep]),
+                source : outputs(processor.files[dep]),
                 deps   : processor.dependencies(dep).reduce(depReducer, {}),
             });
         });
         
         done();
     }));
-    
+
     // Keep tabs on factor-bundle organization
     browserify.on("factor.pipeline", (file, pipeline) => {
         bundles[file] = [];
@@ -167,7 +163,7 @@ module.exports = (browserify, opts) => {
             processor.remove(file);
         });
     });
-    
+
     return browserify.on("bundle", (current) => {
         // Calls to .bundle() means we should recreate anything tracking bundling progress
         // in case things have changed out from under us, like when using watchify
@@ -183,8 +179,7 @@ module.exports = (browserify, opts) => {
         
         // Listen for bundling to finish
         bundler.on("end", () => {
-            var bundling = Object.keys(bundles).length > 0,
-                common;
+            const bundling = Object.keys(bundles).length > 0;
 
             if(options.json) {
                 mkdirp.sync(path.dirname(options.json));
@@ -194,15 +189,15 @@ module.exports = (browserify, opts) => {
                     JSON.stringify(output.compositions(options.cwd, processor), null, 4)
                 );
             }
-            
+
             if(!options.css) {
                 return;
             }
-            
-            common = processor.dependencies();
-            
+
+            const common = processor.dependencies();
+
             mkdirp.sync(path.dirname(options.css));
-            
+
             // Write out each bundle's CSS files (if they have any)
             each(
                 Object.keys(bundles).map((key) => ({
@@ -210,8 +205,7 @@ module.exports = (browserify, opts) => {
                     files  : bundles[key],
                 })),
                 (details) => {
-                    var { bundle, files } = details,
-                        dest;
+                    const { bundle, files } = details;
 
                     if(!files.length && !options.empty) {
                         return Promise.resolve();
@@ -222,7 +216,7 @@ module.exports = (browserify, opts) => {
                         common.splice(common.indexOf(file), 1)
                     );
 
-                    dest = path.join(
+                    const dest = path.join(
                         path.dirname(options.css),
                         `${path.basename(bundle, path.extname(bundle))}.css`
                     );
