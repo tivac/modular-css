@@ -5,7 +5,7 @@ const parser = require("../parsers/parser.js");
 const plugin = "modular-css-values-local";
 
 // Find @value fooga: wooga entries & catalog/remove them
-module.exports = (css, result) => {
+module.exports = (css, { messages }) => {
     const values = Object.create(null);
 
     css.walkAtRules("value", (rule) => {
@@ -31,7 +31,7 @@ module.exports = (css, result) => {
     });
     
     if(Object.keys(values).length > 0) {
-        result.messages.push({
+        messages.push({
             type : "modular-css",
             plugin,
             values,

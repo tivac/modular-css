@@ -5,7 +5,9 @@ const parser = require("../parsers/parser.js");
 const plugin = "modular-css-values-composed";
 
 // Find @value fooga: wooga entries & catalog/remove them
-module.exports = (css, result) => {
+module.exports = (css, { opts, messages }) => {
+    const { files, resolve, from } = opts;
+    
     const values = Object.create(null);
 
     css.walkAtRules("value", (rule) => {
@@ -15,19 +17,17 @@ module.exports = (css, result) => {
             return;
         }
 
-        const source = result.opts.files[
-            result.opts.resolve(result.opts.from, parsed.source)
-        ];
+        const source = files[resolve(from, parsed.source)];
 
-        parsed.refs.forEach((ref) => {
-            values[ref.name] = source.values[ref.name];
+        parsed.refs.forEach(({ name }) => {
+            values[name] = source.values[name];
         });
 
         rule.remove();
     });
     
     if(Object.keys(values).length > 0) {
-        result.messages.push({
+        messages.push({
             type : "modular-css",
             
             plugin,

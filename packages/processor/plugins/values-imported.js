@@ -5,7 +5,9 @@ const parser = require("../parsers/parser.js");
 const plugin = "modular-css-values-imported";
 
 // Find @value * from "./wooga.css" entries & catalog/remove them
-module.exports = (css, result) => {
+module.exports = (css, { opts, messages }) => {
+    const { files, resolve, from } = opts;
+    
     let values = Object.create(null);
 
     css.walkAtRules("value", (rule) => {
@@ -16,9 +18,7 @@ module.exports = (css, result) => {
             return;
         }
 
-        const source = result.opts.files[
-            result.opts.resolve(result.opts.from, parsed.source)
-        ];
+        const source = files[resolve(from, parsed.source)];
 
         values = Object.assign(values, source.values);
 
@@ -26,7 +26,7 @@ module.exports = (css, result) => {
     });
     
     if(Object.keys(values).length > 0) {
-        result.messages.push({
+        messages.push({
             type : "modular-css",
             plugin,
             values,
