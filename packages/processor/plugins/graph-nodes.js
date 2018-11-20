@@ -36,13 +36,13 @@ module.exports = (css, result) => {
     };
     
     const externals = selector((selectors) =>
-        selectors.walkPseudos((pseudo) => {
+        selectors.walkPseudos(({ value, nodes }) => {
             // Need to ensure we only process :external pseudos, see #261
-            if(pseudo.value !== ":external") {
+            if(value !== ":external") {
                 return;
             }
             
-            parse(current, pseudo.nodes.toString());
+            parse(current, nodes.toString());
         })
     );
     
