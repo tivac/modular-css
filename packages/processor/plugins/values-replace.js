@@ -9,18 +9,18 @@ const Graph    = require("dependency-graph").DepGraph;
     
 const namespaced = require("./values-namespaced.js");
 
-module.exports = (css, result) => {
+module.exports = (css, { opts, messages }) => {
     const graph = new Graph();
 
     // Create local copy of values since we're going to merge in namespace stuff
     const values = Object.assign(
         Object.create(null),
-        get(result.opts, [ "files", result.opts.from, "values" ])
+        get(opts, [ "files", opts.from, "values" ])
     );
 
     // Merge namespaced values in w/ prefixed names
-    result.messages
-        .filter((msg) => msg.plugin === namespaced.postcssPlugin)
+    messages
+        .filter(({ plugin }) => plugin === namespaced.postcssPlugin)
         .forEach((msg) =>
             each(msg.values, (children, ns) =>
                 each(children, (details, child) => (values[`${ns}.${child}`] = details))
