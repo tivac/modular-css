@@ -11,13 +11,13 @@ exports.join = (output) =>
             classes.toString()
     ));
 
-exports.compositions = (cwd, processor) => {
+exports.compositions = (cwd, { files }) => {
     const json = {};
     
-    Object.keys(processor.files)
+    Object.keys(files)
         .sort()
         .forEach((file) =>
-            (json[relative(cwd, file)] = exports.join(processor.files[file].exports))
+            (json[relative(cwd, file)] = exports.join(files[file].exports))
         );
     
     return json;

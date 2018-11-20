@@ -9,8 +9,7 @@ exports.parse = (selector) => {
     const values = [];
     
     const parser = createParser((selectors) =>
-        selectors.walkClasses((part) =>
-            values.push(part.value)
+        selectors.walkClasses(({ value }) => values.push(value)
         )
     );
     
