@@ -486,7 +486,7 @@ describe("/rollup.js", () => {
         logSnapshot();
     });
 
-    describe("case senstivity tests", () => {
+    describe("case sensitivity tests", () => {
         const fs = require("fs");
         let fn = it;
 
