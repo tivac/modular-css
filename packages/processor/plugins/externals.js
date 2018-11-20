@@ -6,7 +6,9 @@ const parser = require("../parsers/parser.js");
 
 // Find :external(<rule> from <file>) references and update them to be
 // the namespaced selector instead
-module.exports = (css, result) => {
+module.exports = (css, { opts }) => {
+    const { files, resolve, from } = opts;
+
     const process = (rule, pseudo) => {
         const params = pseudo.nodes.toString();
         const parsed = parser.parse(params);
@@ -19,21 +21,19 @@ module.exports = (css, result) => {
             );
         }
 
-        const source = result.opts.files[
-            result.opts.resolve(result.opts.from, parsed.source)
-        ];
+        const source = files[resolve(from, parsed.source)];
 
         // There will only ever be one, but this is nicer
-        parsed.refs.forEach((ref) => {
-            if(!source.exports[ref.name]) {
-                throw rule.error(`Invalid external reference: ${ref.name}`, { word : ref.name });
+        parsed.refs.forEach(({ name }) => {
+            if(!source.exports[name]) {
+                throw rule.error(`Invalid external reference: ${name}`, { word : name });
             }
 
             // This was a... poor naming choice
             const s = selector.selector();
 
-            source.exports[ref.name].forEach((name) =>
-                s.append(selector.className({ value : name }))
+            source.exports[name].forEach((value) =>
+                s.append(selector.className({ value }))
             );
             
             root.append(s);
