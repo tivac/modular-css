@@ -7,45 +7,41 @@ const mkdirp  = require("mkdirp");
 const Processor = require("@modular-css/processor");
 
 module.exports = postcss.plugin("modular-css", (opts) =>
-    (root, result) => {
+    async (root, result) => {
         const processor = new Processor(Object.assign(
-                Object.create(null),
-                opts,
-                result.opts
-            ));
+            Object.create(null),
+            opts,
+            result.opts
+        ));
 
-        let classes;
-
-        return processor.string(result.opts.from, root)
-            .then((output) => {
-                classes = output.exports;
+        const { exports : exported } = await processor.string(result.opts.from, root);
+        
+        const classes = exported;
                 
-                return processor.output();
-            })
-            .then((output) => {
-                let { json } = processor.options;
+        const output = await processor.output();
 
-                result.messages.push({
-                    type    : "modular-css-exports",
-                    exports : classes,
-                });
-                
-                if(json) {
-                    if(typeof json !== "string") {
-                        const { opts: { to } } = result;
+        let { json } = processor.options;
 
-                        json = `${path.join(path.dirname(to), path.basename(to, path.extname(to)))}.json`;
-                    }
+        result.messages.push({
+            type    : "modular-css-exports",
+            exports : classes,
+        });
+        
+        if(json) {
+            if(typeof json !== "string") {
+                const { opts: { to } } = result;
 
-                    mkdirp.sync(path.dirname(json));
-                    
-                    fs.writeFileSync(
-                        json,
-                        JSON.stringify(output.compositions, null, 4)
-                    );
-                }
+                json = `${path.join(path.dirname(to), path.basename(to, path.extname(to)))}.json`;
+            }
 
-                return output;
-            });
+            mkdirp.sync(path.dirname(json));
+            
+            fs.writeFileSync(
+                json,
+                JSON.stringify(output.compositions, null, 4)
+            );
+        }
+
+        return output;
     }
 );
