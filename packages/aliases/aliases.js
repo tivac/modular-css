@@ -16,7 +16,7 @@ module.exports = (args) => {
         }));
 
     return (src, file) => {
-        const match = aliases.find((alias) => file.search(alias.search) > -1);
+        const match = aliases.find(({ search }) => file.search(search) > -1);
 
         if(!match) {
             return false;

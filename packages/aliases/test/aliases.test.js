@@ -65,8 +65,7 @@ describe("@modular-css/path-aliases", () => {
             `)
         )
         .then(() => processor.output())
-        .then((result) =>
-            expect(result.compositions).toMatchSnapshot()
+        .then(({ compositions }) => expect(compositions).toMatchSnapshot()
         );
     });
 
@@ -93,8 +92,7 @@ describe("@modular-css/path-aliases", () => {
             `)
         )
         .then(() => processor.output())
-        .then((result) =>
-            expect(result.compositions).toMatchSnapshot()
+        .then(({ compositions }) => expect(compositions).toMatchSnapshot()
         );
     });
 });
