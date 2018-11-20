@@ -1,5 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/rollup.js case sensitivity tests should remove repeated references that point at the same files 1`] = `
+Array [
+  Object {
+    "file": "assets\\\\main.css",
+    "text": "/* packages/rollup/test/specimens/casing/bar.css */
+.mc79ab9c62_bar {
+    display: none;
+}
+/* packages/rollup/test/specimens/casing/foo.css */",
+  },
+  Object {
+    "file": "main.js",
+    "text": "var foo$1 = \\"mc79ab9c62_bar mc3dd08d27_foo\\";
+
+var bar$1 = \\"mc79ab9c62_bar\\";
+
+var bar$3 = \\"mc79ab9c62_bar\\";
+
+console.log({ foo: foo$1, bar: bar$1, bar2: bar$3 });
+",
+  },
+]
+`;
+
 exports[`/rollup.js should accept an existing processor instance 1`] = `
 "/* packages/rollup/test/specimens/fake.css */
 .fake {
@@ -128,17 +152,12 @@ Array [
   ],
   Array [
     "[processor]",
-    "processing",
+    "_add()",
     "packages/rollup/test/specimens/simple.css",
   ],
   Array [
     "[processor]",
-    "processed",
-    "packages/rollup/test/specimens/simple.css",
-  ],
-  Array [
-    "[processor]",
-    "string() done",
+    "_add() processing",
     "packages/rollup/test/specimens/simple.css",
   ],
   Array [
@@ -153,42 +172,42 @@ Array [
   ],
   Array [
     "[processor]",
-    "string()",
+    "_add()",
     "packages/processor/test/specimens/start.css",
   ],
   Array [
     "[processor]",
-    "processing",
-    "packages/processor/test/specimens/folder/folder.css",
-  ],
-  Array [
-    "[processor]",
-    "processed",
-    "packages/processor/test/specimens/folder/folder.css",
-  ],
-  Array [
-    "[processor]",
-    "processing",
+    "file()",
     "packages/processor/test/specimens/local.css",
   ],
   Array [
     "[processor]",
-    "processed",
+    "_add()",
     "packages/processor/test/specimens/local.css",
   ],
   Array [
     "[processor]",
-    "processing",
-    "packages/processor/test/specimens/start.css",
+    "file()",
+    "packages/processor/test/specimens/folder/folder.css",
   ],
   Array [
     "[processor]",
-    "processed",
-    "packages/processor/test/specimens/start.css",
+    "_add()",
+    "packages/processor/test/specimens/folder/folder.css",
   ],
   Array [
     "[processor]",
-    "string() done",
+    "_add() processing",
+    "packages/processor/test/specimens/folder/folder.css",
+  ],
+  Array [
+    "[processor]",
+    "_add() processing",
+    "packages/processor/test/specimens/local.css",
+  ],
+  Array [
+    "[processor]",
+    "_add() processing",
     "packages/processor/test/specimens/start.css",
   ],
   Array [
@@ -198,17 +217,12 @@ Array [
   ],
   Array [
     "[processor]",
-    "processing",
+    "_add()",
     "packages/processor/test/specimens/string.css",
   ],
   Array [
     "[processor]",
-    "processed",
-    "packages/processor/test/specimens/string.css",
-  ],
-  Array [
-    "[processor]",
-    "string() done",
+    "_add() processing",
     "packages/processor/test/specimens/string.css",
   ],
 ]

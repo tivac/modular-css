@@ -142,6 +142,14 @@ describe("/processor.js", () => {
         });
         
         describe(".output()", () => {
+            it("should reject unknown files", async () => {
+                await expect(processor.output({
+                    files : [
+                        "./not/a/real/file",
+                    ],
+                })).rejects.toThrow("Unknown file requested");
+            });
+            
             it("should return a postcss result", async () => {
                 await processor.file("./packages/processor/test/specimens/start.css");
                 
@@ -211,12 +219,6 @@ describe("/processor.js", () => {
                 });
 
                 expect(result.css).toMatchSnapshot();
-            });
-
-            it("should reject if called before input has been processed", () => {
-                processor.file(require.resolve("./specimens/start.css"));
-
-                return expect(processor.output()).rejects.toMatchSnapshot();
             });
 
             it("should allow for seperate source map output", async () => {

@@ -436,42 +436,42 @@ Array [
   ],
   Array [
     "[processor]",
-    "string()",
+    "_add()",
     "packages/svelte/test/specimens/external.css",
   ],
   Array [
     "[processor]",
-    "processing",
+    "file()",
     "packages/svelte/test/specimens/simple.css",
   ],
   Array [
     "[processor]",
-    "processed",
+    "_add()",
     "packages/svelte/test/specimens/simple.css",
   ],
   Array [
     "[processor]",
-    "processing",
+    "file()",
     "packages/svelte/test/specimens/dependencies.css",
   ],
   Array [
     "[processor]",
-    "processed",
+    "_add()",
     "packages/svelte/test/specimens/dependencies.css",
   ],
   Array [
     "[processor]",
-    "processing",
-    "packages/svelte/test/specimens/external.css",
+    "_add() processing",
+    "packages/svelte/test/specimens/simple.css",
   ],
   Array [
     "[processor]",
-    "processed",
-    "packages/svelte/test/specimens/external.css",
+    "_add() processing",
+    "packages/svelte/test/specimens/dependencies.css",
   ],
   Array [
     "[processor]",
-    "string() done",
+    "_add() processing",
     "packages/svelte/test/specimens/external.css",
   ],
   Array [
@@ -504,37 +504,42 @@ Array [
   ],
   Array [
     "[processor]",
-    "processing",
-    "packages/svelte/test/specimens/simple.css",
-  ],
-  Array [
-    "[processor]",
-    "processed",
-    "packages/svelte/test/specimens/simple.css",
-  ],
-  Array [
-    "[processor]",
-    "processing",
-    "packages/svelte/test/specimens/dependencies.css",
-  ],
-  Array [
-    "[processor]",
-    "processed",
-    "packages/svelte/test/specimens/dependencies.css",
-  ],
-  Array [
-    "[processor]",
-    "processing",
+    "_add()",
     "packages/svelte/test/specimens/style.html",
   ],
   Array [
     "[processor]",
-    "processed",
-    "packages/svelte/test/specimens/style.html",
+    "file()",
+    "packages/svelte/test/specimens/simple.css",
   ],
   Array [
     "[processor]",
-    "string() done",
+    "_add()",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "file()",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "_add()",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "_add() processing",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "_add() processing",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "_add() processing",
     "packages/svelte/test/specimens/style.html",
   ],
   Array [

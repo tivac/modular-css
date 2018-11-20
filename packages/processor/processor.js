@@ -6,14 +6,14 @@ const path = require("path");
 const Graph     = require("dependency-graph").DepGraph;
 const postcss   = require("postcss");
 const slug      = require("unique-slug");
-const series    = require("p-each-series");
 const mapValues = require("lodash/mapValues");
 
-const output   = require("./lib/output.js");
-const message  = require("./lib/message.js");
-const relative = require("./lib/relative.js");
-const tiered   = require("./lib/graph-tiers.js");
-const resolve  = require("./lib/resolve.js");
+const output    = require("./lib/output.js");
+const message   = require("./lib/message.js");
+const relative  = require("./lib/relative.js");
+const tiered    = require("./lib/graph-tiers.js");
+const resolve   = require("./lib/resolve.js");
+const normalize = require("./lib/normalize.js");
 
 const noop = () => true;
 
@@ -69,7 +69,7 @@ class Processor {
 
         this._resolve = resolve.resolvers(options.resolvers);
 
-        this._absolute = (file) => (path.isAbsolute(file) ? file : path.join(options.cwd, file));
+        this._normalize = normalize.bind(null, this._options.cwd);
 
         this._files = Object.create(null);
         this._graph = new Graph();
@@ -107,79 +107,27 @@ class Processor {
 
     // Add a file on disk to the dependency graph
     file(file) {
-        if(!path.isAbsolute(file)) {
-            file = path.join(this._options.cwd, file);
-        }
-
-        this._log("file()", file);
+        const id = this._normalize(file);
         
-        return this.string(path.normalize(file), fs.readFileSync(file, "utf8"));
+        this._log("file()", id);
+        
+        return this._add(id, fs.readFileSync(id, "utf8"));
     }
     
     // Add a file by name + contents to the dependency graph
-    async string(start, text) {
-        if(!path.isAbsolute(start)) {
-            start = path.join(this._options.cwd, start);
-        }
+    async string(file, text) {
+        const id = this._normalize(file);
         
-        this._log("string()", start);
-        
-        await this._walk(start, text);
-        
-        const deps = this._graph.dependenciesOf(start).concat(start);
-        
-        await series(deps, async (dep) => {
-            const file = this._files[dep];
-            
-            if(!file.processed) {
-                this._log("processing", dep);
+        this._log("string()", id);
 
-                file.processed = this._process.process(
-                    file.result,
-                    params(this, {
-                        from  : dep,
-                        namer : this._options.namer,
-                    })
-                );
-            }
-            
-            const result = await file.processed;
-
-            this._log("processed", dep);
-            
-            file.result = result;
-            
-            file.exports = Object.assign(
-                Object.create(null),
-                // export @value entries
-                mapValues(file.values, (obj) => obj.value),
-                
-                // export classes
-                message(result, "classes"),
-                
-                // Export anything from plugins named "modular-css-export*"
-                result.messages
-                    .filter((msg) => msg.plugin.indexOf("modular-css-export") === 0)
-                    .reduce((prev, curr) => Object.assign(prev, curr.exports), Object.create(null))
-            );
-        });
-
-        this._log("string() done", start);
-        
-        return {
-            id      : start,
-            file    : start,
-            files   : this._files,
-            details : this._files[start],
-            exports : this._files[start].exports,
-        };
+        return this._add(id, text);
     }
     
     // Remove a file from the dependency graph
     remove(input) {
         // Only want files actually in the array
         const files = (Array.isArray(input) ? input : [ input ])
-            .map(this._absolute)
+            .map(this._normalize)
             .filter((file) => this._graph.hasNode(file));
         
         if(!files.length) {
@@ -200,9 +148,9 @@ class Processor {
     // Get the dependency order for a file or the entire tree
     dependencies(file) {
         if(file) {
-            return this._graph.dependenciesOf(
-                file
-            );
+            const id = this._normalize(file);
+
+            return this._graph.dependenciesOf(id);
         }
 
         return this._graph.overallOrder();
@@ -213,10 +161,10 @@ class Processor {
         if(!file) {
             throw new Error("Must provide a file to processor.dependants()");
         }
+
+        const id = this._normalize(file);
         
-        return this._graph.dependantsOf(
-            file
-        );
+        return this._graph.dependantsOf(id);
     }
     
     // Get the ultimate output for specific files or the entire tree
@@ -227,33 +175,35 @@ class Processor {
             files = tiered(this._graph);
         }
 
-        files = files.map(this._absolute);
+        // Throw normalize values into a Set to remove dupes
+        files = new Set(files.map(this._normalize));
+        
+        // Then turn it back into array because the iteration story is better
+        files = [ ...files.values() ];
 
         // Verify that all requested files have been fully processed & succeeded
         // See
         //  - https://github.com/tivac/modular-css/issues/248
         //  - https://github.com/tivac/modular-css/issues/324
-        const ready = files.every((dep) =>
-            dep in this._files && this._files[dep].result
-        );
+        await Promise.all(files.map((file) => {
+            if(!this._files[file]) {
+                throw new Error(`Unknown file requested: ${file}`);
+            }
 
-        if(!ready) {
-            return Promise.reject(new Error("File processing not complete"));
-        }
+            return this._files[file].result;
+        }));
 
         // Rewrite relative URLs before adding
         // Have to do this every time because target file might be different!
         //
         const results = [];
         
-        // Use for of loop so await works correctly
         for(const dep of files) {
             // eslint-disable-next-line no-await-in-loop
             const result = await this._after.process(
                 // NOTE: the call to .clone() is really important here, otherwise this call
                 // modifies the .result root itself and you process URLs multiple times
                 // See https://github.com/tivac/modular-css/issues/35
-                //
                 this._files[dep].result.root.clone(),
                 
                 params(this, {
@@ -324,6 +274,63 @@ class Processor {
         return this._options;
     }
 
+    // Take a file id and some text, walk it for dependencies, then
+    // process and return details
+    async _add(id, text) {
+        this._log("_add()", id);
+
+        await this._walk(id, text);
+
+        const deps = this._graph.dependenciesOf(id).concat(id);
+
+        for(const dep of deps) {
+            const file = this._files[dep];
+
+            if(!file.processed) {
+                this._log("_add() processing", dep);
+
+                file.processed = this._process.process(
+                    file.result,
+                    params(this, {
+                        from  : dep,
+                        namer : this._options.namer,
+                    })
+                );
+            }
+
+            // eslint-disable-next-line no-await-in-loop
+            file.result = await file.processed;
+            
+            const { result } = file;
+            
+            file.exports = Object.assign(
+                Object.create(null),
+                // export @value entries
+                mapValues(file.values, (obj) => obj.value),
+
+                // export classes
+                message(result, "classes"),
+
+                // Export anything from plugins named "modular-css-export*"
+                result.messages.reduce((out, msg) => {
+                    if(msg.plugin.indexOf("modular-css-export") !== 0) {
+                        return out;
+                    }
+
+                    return Object.assign(out, msg.exports);
+                }, Object.create(null))
+            );
+        }
+
+        return {
+            id,
+            file    : id,
+            files   : this._files,
+            details : this._files[id],
+            exports : this._files[id].exports,
+        };
+    }
+
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
     async _walk(name, text) {
@@ -334,29 +341,41 @@ class Processor {
 
         this._graph.addNode(name);
 
-        this._files[name] = {
+        const file = this._files[name] = {
             text,
             exports : false,
             values  : false,
+            result  : this._before.process(
+                text,
+                params(this, {
+                    from : name,
+                })
+            ),
         };
         
-        const result = await this._before.process(
-            text,
-            params(this, {
-                from : name,
-            })
-        );
+        await file.result;
 
-        this._files[name].result = result;
+        // Add all the found dependencies to the graph
+        file.result.messages.forEach(({ plugin, dependency }) => {
+            if(plugin !== "modular-css-graph-nodes") {
+                return;
+            }
+
+            const dep = this._normalize(dependency);
+
+            this._graph.addNode(dep);
+            this._graph.addDependency(name, dep);
+        });
 
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
-            this._graph.dependenciesOf(name).map((dependency) => this._walk(
-                dependency,
-                this._files[dependency] ?
-                    null :
-                    fs.readFileSync(dependency, "utf8")
-            ))
+            this._graph.dependenciesOf(name).reduce((promises, dependency) => {
+                if(!this._files[dependency]) {
+                    promises.push(this.file(dependency));
+                }
+                
+                return promises;
+            }, [])
         );
     }
 }

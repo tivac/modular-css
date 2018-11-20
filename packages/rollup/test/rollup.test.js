@@ -6,11 +6,12 @@ const { rollup } = require("rollup");
 const dedent = require("dedent");
 const shell = require("shelljs");
 
-const read   = require("@modular-css/test-utils/read.js")(__dirname);
-const exists = require("@modular-css/test-utils/exists.js")(__dirname);
-const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
-const namer  = require("@modular-css/test-utils/namer.js");
-const logs   = require("@modular-css/test-utils/logs.js");
+const read    = require("@modular-css/test-utils/read.js")(__dirname);
+const readdir = require("@modular-css/test-utils/read-dir.js")(__dirname);
+const exists  = require("@modular-css/test-utils/exists.js")(__dirname);
+const prefix  = require("@modular-css/test-utils/prefix.js")(__dirname);
+const namer   = require("@modular-css/test-utils/namer.js");
+const logs    = require("@modular-css/test-utils/logs.js");
 
 const Processor = require("@modular-css/processor");
 
@@ -483,6 +484,40 @@ describe("/rollup.js", () => {
         await processor.output();
 
         logSnapshot();
+    });
+
+    describe("case sensitivity tests", () => {
+        const fs = require("fs");
+        let fn = it;
+
+        // Verify that filesystem is case-insensitive before bothering
+        fs.writeFileSync("./packages/rollup/test/output/sensitive.txt");
+
+        try {
+            fs.statSync("./packages/rollup/test/output/SENSITIVE.txt");
+        } catch(e) {
+            fn = it.skip;
+        }
+
+        fn("should remove repeated references that point at the same files", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/casing/main.js"),
+                plugins : [
+                    plugin({
+                        map,
+                    }),
+                ],
+            });
+
+            await bundle.write({
+                format,
+                assetFileNames,
+                sourcemap,
+                file : prefix(`./output/rollup/casing/main.js`),
+            });
+
+            expect(readdir("./rollup/casing")).toMatchSnapshot();
+        });
     });
 
     describe("errors", () => {
