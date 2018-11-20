@@ -4,16 +4,15 @@ const from = require("resolve-from");
 
 module.exports = (args) => {
     const options = Object.assign(
-            Object.create(null),
-            { aliases : {} },
-            args
-        );
+        Object.create(null),
+        { aliases : {} },
+        args
+    );
 
-    const aliases = Object.keys(options.aliases)
-        .map((alias) => ({
-            name   : alias,
-            search : new RegExp(`^${alias}\\b`),
-        }));
+    const aliases = Object.keys(options.aliases).map((alias) => ({
+        name   : alias,
+        search : new RegExp(`^${alias}\\b`),
+    }));
 
     return (src, file) => {
         const match = aliases.find(({ search }) => file.search(search) > -1);
