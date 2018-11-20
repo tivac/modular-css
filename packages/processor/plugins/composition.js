@@ -1,27 +1,28 @@
 "use strict";
 
 const Graph = require("dependency-graph").DepGraph;
-    
-const invert    = require("lodash/invert");
+const invert = require("lodash/invert");
 const mapvalues = require("lodash/mapValues");
 
-const message     = require("../lib/message.js");
+const message = require("../lib/message.js");
 const identifiers = require("../lib/identifiers.js");
-    
+
 const parser = require("../parsers/parser.js");
-    
+
 const plugin = "modular-css-composition";
 
 // Loop through all previous nodes in the container to ensure
 // that composes (or a comment) comes first
 function composesFirst(decl) {
-    var prev;
+    let prev;
 
     prev = decl.prev();
 
     while(prev) {
         if(prev.type !== "comment") {
-            throw decl.error("composes must be the first declaration", { word : "composes" });
+            throw decl.error("composes must be the first declaration", {
+                word : "composes",
+            });
         }
 
         prev = prev.prev();
@@ -29,27 +30,28 @@ function composesFirst(decl) {
 }
 
 module.exports = (css, result) => {
-    var refs  = message(result, "classes"),
-        map   = invert(refs),
-        { opts } = result,
-        graph = new Graph(),
-        out   = Object.assign(Object.create(null), refs);
-    
+    const refs = message(result, "classes");
+    const map = invert(refs);
+    const { opts } = result;
+    const graph = new Graph();
+    const out = Object.assign(Object.create(null), refs);
+
     Object.keys(refs).forEach((key) => graph.addNode(key));
 
     // Go look up "composes" declarations and populate dependency graph
     css.walkDecls("composes", (decl) => {
         /* eslint max-statements: "off" */
-        var details   = parser.parse(decl.value),
-            selectors = decl.parent.selectors.map(identifiers.parse);
+        const details = parser.parse(decl.value);
+        const selectors = decl.parent.selectors.map(identifiers.parse);
 
         composesFirst(decl);
 
         // https://github.com/tivac/modular-css/issues/238
         if(selectors.some((selector) => selector.length > 1)) {
             throw decl.error(
-                "Only simple singular selectors may use composition",
-                { word : decl.parent.selector }
+                "Only simple singular selectors may use composition", {
+                    word : decl.parent.selector,
+                }
             );
         }
 
@@ -59,8 +61,8 @@ module.exports = (css, result) => {
 
         // Add references and update graph
         details.refs.forEach((ref) => {
-            var scoped;
-                
+            let scoped;
+
             if(ref.global) {
                 scoped = `global-${ref.name}`;
             } else {
@@ -86,7 +88,9 @@ module.exports = (css, result) => {
             }
 
             if(!refs[scoped]) {
-                throw decl.error("Invalid composes reference", { word : ref.name });
+                throw decl.error("Invalid composes reference", {
+                    word : ref.name,
+                });
             }
         });
 
@@ -94,7 +98,7 @@ module.exports = (css, result) => {
         if(decl.parent.nodes.length > 1) {
             return decl.remove();
         }
-        
+
         // Remove the entire rule because it only contained the composes declaration
         return decl.parent.remove();
     });
@@ -102,10 +106,10 @@ module.exports = (css, result) => {
     // Update out by walking dep graph and updating classes
     graph.overallOrder().forEach((selector) =>
         graph.dependenciesOf(selector)
-            .reverse()
-            .forEach((dep) => {
-                out[selector] = refs[dep].concat(out[selector]);
-            })
+        .reverse()
+        .forEach((dep) => {
+            out[selector] = refs[dep].concat(out[selector]);
+        })
     );
 
     result.messages.push({

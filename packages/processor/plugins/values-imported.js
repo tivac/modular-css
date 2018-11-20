@@ -1,23 +1,22 @@
 "use strict";
 
-var parser  = require("../parsers/parser.js"),
-    
-    plugin = "modular-css-values-imported";
+const parser = require("../parsers/parser.js");
+
+const plugin = "modular-css-values-imported";
 
 // Find @value * from "./wooga.css" entries & catalog/remove them
 module.exports = (css, result) => {
-    var values = Object.create(null);
+    let values = Object.create(null);
 
     css.walkAtRules("value", (rule) => {
-        var parsed = parser.parse(rule.params),
-            source;
-        
+        const parsed = parser.parse(rule.params);
+
         /* istanbul ignore if */
         if(parsed.type !== "import") {
             return;
         }
 
-        source = result.opts.files[
+        const source = result.opts.files[
             result.opts.resolve(result.opts.from, parsed.source)
         ];
 

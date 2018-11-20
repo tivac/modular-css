@@ -1,15 +1,15 @@
 "use strict";
 
-var parser = require("../parsers/parser.js"),
-    
-    plugin = "modular-css-values-local";
+const parser = require("../parsers/parser.js");
+
+const plugin = "modular-css-values-local";
 
 // Find @value fooga: wooga entries & catalog/remove them
 module.exports = (css, result) => {
-    var values = Object.create(null);
+    const values = Object.create(null);
 
     css.walkAtRules("value", (rule) => {
-        var parsed;
+        let parsed;
         
         try {
             parsed = parser.parse(rule.params);

@@ -1,8 +1,7 @@
 "use strict";
 
-var path = require("path"),
-
-    sepRegex = /\\/g;
+const path = require("path");
+const sepRegex = /\\/g;
 
 // Get a relative version of an absolute path w/ cross-platform/URL-friendly
 // directory separators

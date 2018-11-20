@@ -13,7 +13,7 @@ exports.join = function(output) {
 };
 
 exports.compositions = function(cwd, processor) {
-    var json = {};
+    const json = {};
     
     Object.keys(processor.files)
         .sort()

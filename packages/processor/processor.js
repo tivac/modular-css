@@ -17,8 +17,8 @@ const normalize = require("./lib/normalize.js");
 
 const noop = () => true;
 
-function params(processor, args) {
-    return Object.assign(
+const params = (processor, args) =>
+    Object.assign(
         Object.create(null),
         processor._options,
         {
@@ -29,7 +29,6 @@ function params(processor, args) {
         },
         args
     );
-}
 
 class Processor {
     constructor(opts) {
