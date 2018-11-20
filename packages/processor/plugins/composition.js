@@ -13,10 +13,8 @@ const plugin = "modular-css-composition";
 
 // Loop through all previous nodes in the container to ensure
 // that composes (or a comment) comes first
-function composesFirst(decl) {
-    let prev;
-
-    prev = decl.prev();
+const composesFirst = (decl) => {
+    let prev = decl.prev();
 
     while(prev) {
         if(prev.type !== "comment") {
@@ -27,14 +25,16 @@ function composesFirst(decl) {
 
         prev = prev.prev();
     }
-}
+};
 
 module.exports = (css, result) => {
+    const { opts } = result;
+    
     const refs = message(result, "classes");
     const map = invert(refs);
-    const { opts } = result;
-    const graph = new Graph();
+    
     const out = Object.assign(Object.create(null), refs);
+    const graph = new Graph();
 
     Object.keys(refs).forEach((key) => graph.addNode(key));
 
@@ -47,7 +47,7 @@ module.exports = (css, result) => {
         composesFirst(decl);
 
         // https://github.com/tivac/modular-css/issues/238
-        if(selectors.some((selector) => selector.length > 1)) {
+        if(selectors.some(({ length }) => length > 1)) {
             throw decl.error(
                 "Only simple singular selectors may use composition", {
                     word : decl.parent.selector,
@@ -60,13 +60,13 @@ module.exports = (css, result) => {
         }
 
         // Add references and update graph
-        details.refs.forEach((ref) => {
+        details.refs.forEach(({ global, name }) => {
             let scoped;
 
-            if(ref.global) {
-                scoped = `global-${ref.name}`;
+            if(global) {
+                scoped = `global-${name}`;
             } else {
-                scoped = (details.source ? `${details.source}-` : "") + ref.name;
+                scoped = (details.source ? `${details.source}-` : "") + name;
             }
 
             graph.addNode(scoped);
@@ -77,19 +77,19 @@ module.exports = (css, result) => {
                 )
             );
 
-            if(ref.global) {
-                refs[scoped] = [ ref.name ];
+            if(global) {
+                refs[scoped] = [ name ];
 
                 return;
             }
 
             if(details.source) {
-                refs[scoped] = opts.files[details.source].exports[ref.name];
+                refs[scoped] = opts.files[details.source].exports[name];
             }
 
             if(!refs[scoped]) {
                 throw decl.error("Invalid composes reference", {
-                    word : ref.name,
+                    word : name,
                 });
             }
         });
@@ -106,15 +106,16 @@ module.exports = (css, result) => {
     // Update out by walking dep graph and updating classes
     graph.overallOrder().forEach((selector) =>
         graph.dependenciesOf(selector)
-        .reverse()
-        .forEach((dep) => {
-            out[selector] = refs[dep].concat(out[selector]);
-        })
+            .reverse()
+            .forEach((dep) => {
+                out[selector] = refs[dep].concat(out[selector]);
+            })
     );
 
     result.messages.push({
-        type    : "modular-css",
+        type : "modular-css",
         plugin,
+
         classes : mapvalues(out, (val) => {
             const classes = new Set(val);
 
