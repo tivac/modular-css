@@ -16,7 +16,7 @@ function value(source, count) {
     return out;
 }
 
-module.exports = function() {
+module.exports = () => {
     const meta  = new Map();
     const cache = new Map();
     

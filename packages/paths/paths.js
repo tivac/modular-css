@@ -2,7 +2,7 @@
 
 var from = require("resolve-from");
 
-module.exports = function(args) {
+module.exports = (args) => {
     var options = Object.assign(
             Object.create(null),
             {

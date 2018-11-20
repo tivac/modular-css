@@ -30,7 +30,7 @@ function exports(out) {
     };`;
 }
 
-module.exports = function(browserify, opts) {
+module.exports = (browserify, opts) => {
     var options = Object.assign(Object.create(null), {
             ext   : ".css",
             map   : browserify._options.debug,

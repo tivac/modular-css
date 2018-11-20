@@ -4,15 +4,14 @@ const map = require("lodash/mapValues");
 
 const relative = require("./relative.js");
 
-exports.join = function(output) {
-    return map(output, (classes) => (
+exports.join = (output) =>
+    map(output, (classes) => (
         Array.isArray(classes) ?
             classes.join(" ") :
             classes.toString()
     ));
-};
 
-exports.compositions = function(cwd, processor) {
+exports.compositions = (cwd, processor) => {
     const json = {};
     
     Object.keys(processor.files)
