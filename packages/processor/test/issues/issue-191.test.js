@@ -26,7 +26,7 @@ describe("/issues", () => {
             
             return processor.file(require.resolve("./specimens/191/start.css"))
                 .then(() => processor.output())
-                .then((result) => expect(result.css).toMatchSnapshot());
+                .then(({ css }) => expect(css).toMatchSnapshot());
         });
     });
 });

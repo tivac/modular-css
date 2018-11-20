@@ -21,8 +21,7 @@ describe("/processor.js", () => {
                     :external(some garbage here) { }
                 `)
             )
-            .catch((error) =>
-                expect(error.message).toMatch(`SyntaxError: Expected`)
+            .catch(({ message }) => expect(message).toMatch(`SyntaxError: Expected`)
             )
         );
 
@@ -33,15 +32,13 @@ describe("/processor.js", () => {
                     :external(a) { }
                 `)
             )
-            .catch((error) =>
-                expect(error.message).toMatch(`externals must be from another file`)
+            .catch(({ message }) => expect(message).toMatch(`externals must be from another file`)
             )
         );
 
         it("should fail on bad class references", () =>
             processor.file(require.resolve("./specimens/externals-invalid.css"))
-            .catch((error) =>
-                expect(error.message).toMatch(`Invalid external reference: nopenopenope`)
+            .catch(({ message }) => expect(message).toMatch(`Invalid external reference: nopenopenope`)
             )
         );
         
@@ -50,8 +47,7 @@ describe("/processor.js", () => {
                 "./packages/processor/test/specimens/externals.css"
             )
             .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
     });

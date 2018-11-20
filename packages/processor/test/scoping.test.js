@@ -25,13 +25,12 @@ describe("/processor.js", () => {
                     .two { }
                 `)
             )
-            .then((result) => {
-                expect(result.exports).toMatchSnapshot();
+            .then(({ exports }) => {
+                expect(exports).toMatchSnapshot();
 
                 return processor.output();
             })
-            .then((output) =>
-                expect(output.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
 
@@ -46,13 +45,12 @@ describe("/processor.js", () => {
                     .e:not(.e) {}
                 `)
             )
-            .then((result) => {
-                expect(result.exports).toMatchSnapshot();
+            .then(({ exports }) => {
+                expect(exports).toMatchSnapshot();
 
                 return processor.output();
             })
-            .then((output) =>
-                expect(output.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
 
@@ -64,8 +62,7 @@ describe("/processor.js", () => {
                     :global(.a) {}
                 `)
             )
-            .catch((error) =>
-                expect(error.message).toMatch(`Unable to re-use the same selector for global & local`)
+            .catch(({ message }) => expect(message).toMatch(`Unable to re-use the same selector for global & local`)
             )
         );
 
@@ -77,8 +74,7 @@ describe("/processor.js", () => {
                     .a {}
                 `)
             )
-            .catch((error) =>
-                expect(error.message).toMatch(`Unable to re-use the same selector for global & local`)
+            .catch(({ message }) => expect(message).toMatch(`Unable to re-use the same selector for global & local`)
             )
         );
 
@@ -87,8 +83,7 @@ describe("/processor.js", () => {
                 "./invalid/global.css",
                 ".a :global() { }"
             )
-            .catch((error) =>
-                expect(error.message).toMatch(`:global(...) must not be empty`)
+            .catch(({ message }) => expect(message).toMatch(`:global(...) must not be empty`)
             )
         );
     });

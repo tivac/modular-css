@@ -28,13 +28,13 @@ describe("/postcss.js", () => {
     });
 
     it("should process CSS and output the result", () => process("./packages/postcss/test/specimens/simple.css")
-            .then((result) => expect(result.css).toMatchSnapshot()));
+            .then(({ css }) => expect(css).toMatchSnapshot()));
 
     it("should process CSS with dependencies and output the result", () => process("./packages/postcss/test/specimens/start.css")
-            .then((result) => expect(result.css).toMatchSnapshot()));
+            .then(({ css }) => expect(css).toMatchSnapshot()));
 
     it("should process CSS and output exports as a message", () => process("./packages/postcss/test/specimens/simple.css")
-            .then((result) => expect(result.messages).toMatchSnapshot()));
+            .then(({ messages }) => expect(messages).toMatchSnapshot()));
 
     it("should accept normal processor options", () => process("./packages/postcss/test/specimens/simple.css", {
             map : {
@@ -42,7 +42,7 @@ describe("/postcss.js", () => {
             },
             namer : (f, s) => `fooga_${s}`,
         })
-        .then((result) => expect(result.css).toMatchSnapshot()));
+        .then(({ css }) => expect(css).toMatchSnapshot()));
 
     it("should accept a `json` property and write exports to that file", () => process(
             "./packages/postcss/test/specimens/start.css",
@@ -77,7 +77,7 @@ describe("/postcss.js", () => {
                 },
             }
         )
-        .then((result) => expect(result.css).toMatchSnapshot());
+        .then(({ css }) => expect(css).toMatchSnapshot());
     });
 
     it("should output json when used within postcss", () => {

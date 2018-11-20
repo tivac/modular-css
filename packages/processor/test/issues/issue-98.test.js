@@ -19,12 +19,12 @@ describe("/issues", () => {
                     .fooga + .fooga { color: blue }
                 `)
             )
-            .then((result) => {
-                expect(result.exports).toMatchSnapshot();
+            .then(({ exports }) => {
+                expect(exports).toMatchSnapshot();
 
                 return processor.output();
             })
-            .then((result) => expect(result.css).toMatchSnapshot());
+            .then(({ css }) => expect(css).toMatchSnapshot());
         });
     });
 });

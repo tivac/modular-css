@@ -23,8 +23,7 @@ describe("/processor.js", () => {
                 `)
             )
             .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
         
@@ -37,8 +36,7 @@ describe("/processor.js", () => {
                 `)
             )
             .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
 
@@ -51,8 +49,7 @@ describe("/processor.js", () => {
                 `)
             )
             .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
 
@@ -67,8 +64,7 @@ describe("/processor.js", () => {
                 `)
             )
             .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
 
@@ -81,8 +77,7 @@ describe("/processor.js", () => {
                 `)
             )
             .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
     });

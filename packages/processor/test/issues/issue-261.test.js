@@ -9,7 +9,7 @@ describe("/issues", () => {
             
             return processor.file(require.resolve("./specimens/261/2.css"))
             .then(() => processor.output())
-            .then((result) => expect(result.css).toMatchSnapshot());
+            .then(({ css }) => expect(css).toMatchSnapshot());
         });
     });
 });

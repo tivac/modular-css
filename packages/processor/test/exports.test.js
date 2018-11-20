@@ -23,8 +23,7 @@ describe("/processor.js", () => {
                     .one, .two { composes: red, black; }
                 `)
             )
-            .then((result) =>
-                expect(result.exports).toMatchSnapshot()
+            .then(({ exports }) => expect(exports).toMatchSnapshot()
             )
         );
 
@@ -33,8 +32,7 @@ describe("/processor.js", () => {
                 "./packages/processor/test/specimens/start.css"
             )
             .then(() => processor.output())
-            .then((output) =>
-                expect(output.compositions).toMatchSnapshot()
+            .then(({ compositions }) => expect(compositions).toMatchSnapshot()
             )
         );
     });

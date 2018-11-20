@@ -61,6 +61,6 @@ describe("@modular-css/path-resolver", () => {
             `)
         )
         .then(() => processor.output())
-        .then((result) => expect(result.compositions).toMatchSnapshot());
+        .then(({ compositions }) => expect(compositions).toMatchSnapshot());
     });
 });

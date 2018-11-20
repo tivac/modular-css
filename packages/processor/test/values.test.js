@@ -20,8 +20,7 @@ describe("/processor.js", () => {
                 "./invalid/value.css",
                 "@value foo, bar from nowhere.css"
             )
-            .catch((error) =>
-                expect(error.message).toMatch(`SyntaxError: Expected source but "n" found.`)
+            .catch(({ message }) => expect(message).toMatch(`SyntaxError: Expected source but "n" found.`)
             )
         );
 
@@ -30,10 +29,9 @@ describe("/processor.js", () => {
                 "./invalid/value.css",
                 "@value not-real from \"../local.css\";"
             )
-            .catch((error) =>
-                expect(error.message).toMatch(
-                    `Unable to locate "../local.css" from "${path.resolve("invalid/value.css")}"`
-                )
+            .catch(({ message }) => expect(message).toMatch(
+                `Unable to locate "../local.css" from "${path.resolve("invalid/value.css")}"`
+            )
             )
         );
 
@@ -53,8 +51,7 @@ describe("/processor.js", () => {
                 `)
             )
             .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
 
@@ -68,48 +65,42 @@ describe("/processor.js", () => {
                     .fooga { background: one; }
                 `)
             )
-            .then((result) =>
-                expect(result.exports).toMatchSnapshot()
+            .then(({ exports }) => expect(exports).toMatchSnapshot()
             )
         );
 
         it("should support importing variables from a file", () =>
             processor.file(require.resolve("./specimens/value-import.css"))
             .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
 
         it("should support exporting imported variables", () =>
             processor.file(require.resolve("./specimens/value-export.css"))
             .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
 
         it("should support value composition", () =>
             processor.file(require.resolve("./specimens/value-composition.css"))
             .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
 
         it("should support value namespaces", () =>
             processor.file(require.resolve("./specimens/value-namespace.css"))
             .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
 
         it("should support value replacement in :external(...)", () =>
             processor.file(require.resolve("./specimens/externals.css"))
             .then(() => processor.output())
-            .then((result) =>
-                expect(result.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
     });

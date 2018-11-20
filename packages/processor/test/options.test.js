@@ -34,9 +34,9 @@ describe("/processor.js", () => {
                 return processor.file(
                     "./folder.css"
                 )
-                .then((result) => {
+                .then(({ file }) => {
                     expect(processor.options.cwd).toBe(cwd);
-                    expect(result.file).toBe(require.resolve("./specimens/folder/folder.css"));
+                    expect(file).toBe(require.resolve("./specimens/folder/folder.css"));
                 });
             });
 
@@ -50,9 +50,9 @@ describe("/processor.js", () => {
                 return processor.file(
                     "./folder.css"
                 )
-                .then((result) => {
+                .then(({ file }) => {
                     expect(processor.options.cwd).toBe(path.resolve(cwd));
-                    expect(result.file).toBe(require.resolve("./specimens/folder/folder.css"));
+                    expect(file).toBe(require.resolve("./specimens/folder/folder.css"));
                 });
             });
         });
@@ -116,7 +116,7 @@ describe("/processor.js", () => {
                     from : "packages/processor/test/specimens/rewrite.css",
                     to   : "out.css",
                 }))
-                .then((result) => expect(result.css).toMatchSnapshot());
+                .then(({ css }) => expect(css).toMatchSnapshot());
             });
 
             it("should generate external source maps", () => {
@@ -134,7 +134,7 @@ describe("/processor.js", () => {
                     from : "packages/processor/test/specimens/rewrite.css",
                     to   : "out.css",
                 }))
-                .then((result) => expect(result.css).toMatchSnapshot());
+                .then(({ css }) => expect(css).toMatchSnapshot());
             });
         });
 
@@ -151,7 +151,7 @@ describe("/processor.js", () => {
                         .b {}
                     `)
                 )
-                .then((result) => expect(result.exports).toMatchSnapshot());
+                .then(({ exports }) => expect(exports).toMatchSnapshot());
             });
         });
 
@@ -171,7 +171,7 @@ describe("/processor.js", () => {
                     from : "packages/processor/test/specimens/rewrite.css",
                     to   : "./packages/processor/test/output/rewrite.css",
                 }))
-                .then((result) => expect(result.css).toMatchSnapshot());
+                .then(({ css }) => expect(css).toMatchSnapshot());
             });
 
             it("should not rewrite url() references when falsey", () => {
@@ -189,7 +189,7 @@ describe("/processor.js", () => {
                     from : "packages/processor/test/specimens/rewrite.css",
                     to   : "./packages/processor/test/output/rewrite.css",
                 }))
-                .then((result) => expect(result.css).toMatchSnapshot());
+                .then(({ css }) => expect(css).toMatchSnapshot());
             });
             
             it("should pass through to postcss-url as config", () => {
@@ -211,7 +211,7 @@ describe("/processor.js", () => {
                     from : "packages/processor/test/specimens/rewrite.css",
                     to   : "./packages/processor/test/output/rewrite.css",
                 }))
-                .then((result) => expect(result.css).toMatchSnapshot());
+                .then(({ css }) => expect(css).toMatchSnapshot());
             });
         });
 
@@ -228,7 +228,7 @@ describe("/processor.js", () => {
                         ""
                     )
                     .then(() => processor.output({ from : "packages/processor/test/specimens/sync-before.css" }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    .then(({ css }) => expect(css).toMatchSnapshot());
                 });
 
                 it("should run async postcss plugins before processing", () => {
@@ -242,7 +242,7 @@ describe("/processor.js", () => {
                         ""
                     )
                     .then(() => processor.output({ from : "packages/processor/test/specimens/sync-before.css" }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    .then(({ css }) => expect(css).toMatchSnapshot());
                 });
             });
 
@@ -258,7 +258,7 @@ describe("/processor.js", () => {
                         ""
                     )
                     .then(() => processor.output({ from : "packages/processor/test/specimens/sync-processing.css" }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    .then(({ css }) => expect(css).toMatchSnapshot());
                 });
 
                 it("should run async postcss plugins processing processing", () => {
@@ -272,14 +272,14 @@ describe("/processor.js", () => {
                         ""
                     )
                     .then(() => processor.output({ from : "packages/processor/test/specimens/sync-processing.css" }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    .then(({ css }) => expect(css).toMatchSnapshot());
                 });
 
                 it("should include exports from 'modular-css-export' modules", () => {
                     const processor = new Processor({
                             namer,
-                            processing : [ (css, result) => {
-                                result.messages.push({
+                            processing : [ (css, { messages }) => {
+                                messages.push({
                                     plugin  : "modular-css-exporter",
                                     exports : {
                                         a : true,
@@ -293,7 +293,7 @@ describe("/processor.js", () => {
                         "packages/processor/test/specimens/async-processing.css",
                         ""
                     )
-                    .then((file) => expect(file.exports).toMatchSnapshot());
+                    .then(({ exports }) => expect(exports).toMatchSnapshot());
                 });
             });
             
@@ -308,7 +308,7 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/rewrite.css",
                         to   : "./packages/processor/test/output/relative.css",
                     }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    .then(({ css }) => expect(css).toMatchSnapshot());
                 });
                 
                 it("should run sync postcss plugins", () => {
@@ -324,7 +324,7 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/rewrite.css",
                         to   : "./packages/processor/test/output/relative.css",
                     }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    .then(({ css }) => expect(css).toMatchSnapshot());
                 });
                 
                 it("should run async postcss plugins", () => {
@@ -340,7 +340,7 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/rewrite.css",
                         to   : "./packages/processor/test/output/relative.css",
                     }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    .then(({ css }) => expect(css).toMatchSnapshot());
                 });
             });
             
@@ -356,7 +356,7 @@ describe("/processor.js", () => {
                         ""
                     )
                     .then(() => processor.output({ from : "packages/processor/test/specimens/sync-done.css" }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    .then(({ css }) => expect(css).toMatchSnapshot());
                 });
                 
                 it("should run async postcss plugins done processing", () => {
@@ -370,7 +370,7 @@ describe("/processor.js", () => {
                         ""
                     )
                     .then(() => processor.output({ from : "packages/processor/test/specimens/async-done.css" }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    .then(({ css }) => expect(css).toMatchSnapshot());
                 });
             });
 

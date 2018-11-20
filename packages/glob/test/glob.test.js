@@ -13,7 +13,7 @@ describe("/glob.js", () => {
             cwd : "./packages/glob/test/specimens",
         })
         .then((processor) => processor.output())
-        .then((output) => expect(output.css).toMatchSnapshot()));
+        .then(({ css }) => expect(css).toMatchSnapshot()));
 
     it("should find files on disk & output css", () => glob({
             namer,
@@ -23,7 +23,7 @@ describe("/glob.js", () => {
             ],
         })
         .then((processor) => processor.output())
-        .then((output) => expect(output.css).toMatchSnapshot()));
+        .then(({ css }) => expect(css).toMatchSnapshot()));
 
     it("should support exclusion patterns", () => glob({
             namer,
@@ -34,5 +34,5 @@ describe("/glob.js", () => {
             ],
         })
         .then((processor) => processor.output())
-        .then((output) => expect(output.css).toMatchSnapshot()));
+        .then(({ css }) => expect(css).toMatchSnapshot()));
 });

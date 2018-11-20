@@ -20,8 +20,7 @@ describe("/processor.js", () => {
             .then(() => processor.output({
                 to : "./packages/processor/test/output/unicode.css",
             }))
-            .then((output) =>
-                expect(output.css).toMatchSnapshot()
+            .then(({ css }) => expect(css).toMatchSnapshot()
             )
         );
     });

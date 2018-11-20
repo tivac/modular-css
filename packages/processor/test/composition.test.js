@@ -20,8 +20,7 @@ describe("/processor.js", () => {
                 "./invalid/value.css",
                 ".a { composes: b from nowhere.css; }"
             )
-            .catch((error) =>
-                expect(error.message).toMatch(`SyntaxError: Expected source but "n" found.`)
+            .catch(({ message }) => expect(message).toMatch(`SyntaxError: Expected source but "n" found.`)
             )
         );
         
@@ -30,8 +29,7 @@ describe("/processor.js", () => {
                 "./invalid-composition.css",
                 ".a { composes: b; }"
             )
-            .catch((error) =>
-                expect(error.message).toMatch(`Invalid composes reference`)
+            .catch(({ message }) => expect(message).toMatch(`Invalid composes reference`)
             )
         );
         
@@ -40,10 +38,9 @@ describe("/processor.js", () => {
                 "./invalid-composition.css",
                 ".a { composes: b from \"../local.css\"; }"
             )
-            .catch((error) =>
-                expect(error.message).toMatch(
-                    `Unable to locate "../local.css" from "${path.resolve("invalid-composition.css")}"`
-                )
+            .catch(({ message }) => expect(message).toMatch(
+                `Unable to locate "../local.css" from "${path.resolve("invalid-composition.css")}"`
+            )
             )
         );
 
@@ -58,8 +55,7 @@ describe("/processor.js", () => {
                     }
                 `)
             )
-            .catch((error) =>
-                expect(error.message).toMatch(`composes must be the first declaration`)
+            .catch(({ message }) => expect(message).toMatch(`composes must be the first declaration`)
             )
         );
 
@@ -71,8 +67,7 @@ describe("/processor.js", () => {
                     .b .c { composes: a; }
                 `)
             )
-            .catch((error) =>
-                expect(error.message).toMatch(`Only simple singular selectors may use composition`)
+            .catch(({ message }) => expect(message).toMatch(`Only simple singular selectors may use composition`)
             )
         );
 
@@ -85,8 +80,7 @@ describe("/processor.js", () => {
                 `)
             )
             .then(() => processor.output())
-            .then((output) =>
-                expect(output.compositions).toMatchSnapshot()
+            .then(({ compositions }) => expect(compositions).toMatchSnapshot()
             )
         );
 
@@ -102,8 +96,7 @@ describe("/processor.js", () => {
                 `)
             )
             .then(() => processor.output())
-            .then((output) =>
-                expect(output.compositions).toMatchSnapshot()
+            .then(({ compositions }) => expect(compositions).toMatchSnapshot()
             )
         );
 
@@ -115,8 +108,7 @@ describe("/processor.js", () => {
                 `)
             )
             .then(() => processor.output())
-            .then((output) =>
-                expect(output.compositions).toMatchSnapshot()
+            .then(({ compositions }) => expect(compositions).toMatchSnapshot()
             )
         );
 
@@ -133,16 +125,14 @@ describe("/processor.js", () => {
                 `)
             )
             .then(() => processor.output())
-            .then((output) =>
-                expect(output.compositions).toMatchSnapshot()
+            .then(({ compositions }) => expect(compositions).toMatchSnapshot()
             )
         );
         
         it("should compose from other files", () =>
             processor.file(require.resolve("./specimens/composes.css"))
             .then(() => processor.output())
-            .then((output) =>
-                expect(output.compositions).toMatchSnapshot()
+            .then(({ compositions }) => expect(compositions).toMatchSnapshot()
             )
         );
     });
