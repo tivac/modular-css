@@ -8,12 +8,12 @@ const postcss   = require("postcss");
 const slug      = require("unique-slug");
 const mapValues = require("lodash/mapValues");
 
-const output   = require("./lib/output.js");
-const message  = require("./lib/message.js");
-const relative = require("./lib/relative.js");
-const tiered   = require("./lib/graph-tiers.js");
-const resolve  = require("./lib/resolve.js");
-const normalize  = require("./lib/normalize.js");
+const output    = require("./lib/output.js");
+const message   = require("./lib/message.js");
+const relative  = require("./lib/relative.js");
+const tiered    = require("./lib/graph-tiers.js");
+const resolve   = require("./lib/resolve.js");
+const normalize = require("./lib/normalize.js");
 
 const noop = () => true;
 
@@ -185,29 +185,25 @@ class Processor {
         // See
         //  - https://github.com/tivac/modular-css/issues/248
         //  - https://github.com/tivac/modular-css/issues/324
-        await Promise.all(
-            files.map((file) => {
-                if(!this._files[file]) {
-                    throw new Error(`Unknown file requested: ${file}`);
-                }
+        await Promise.all(files.map((file) => {
+            if(!this._files[file]) {
+                throw new Error(`Unknown file requested: ${file}`);
+            }
 
-                return this._files[file].result;
-            })
-        );
+            return this._files[file].result;
+        }));
 
         // Rewrite relative URLs before adding
         // Have to do this every time because target file might be different!
         //
         const results = [];
         
-        // Use for of loop so await works correctly
         for(const dep of files) {
             // eslint-disable-next-line no-await-in-loop
             const result = await this._after.process(
                 // NOTE: the call to .clone() is really important here, otherwise this call
                 // modifies the .result root itself and you process URLs multiple times
                 // See https://github.com/tivac/modular-css/issues/35
-                //
                 this._files[dep].result.root.clone(),
                 
                 params(this, {
