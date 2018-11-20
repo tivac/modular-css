@@ -45,13 +45,13 @@ glob(Object.assign(
     { search : cli.input }
 ))
 .then((processor) => processor.output({ to : cli.flags.out }))
-.then((output) => {
+.then(({ compositions, css }) => {
     if(cli.flags.json) {
         mkdirp.sync(path.dirname(cli.flags.json));
         
         fs.writeFileSync(
             cli.flags.json,
-            JSON.stringify(output.compositions, null, 4),
+            JSON.stringify(compositions, null, 4),
             "utf8"
         );
     }
@@ -59,10 +59,10 @@ glob(Object.assign(
     if(cli.flags.out) {
         mkdirp.sync(path.dirname(cli.flags.out));
         
-        return fs.writeFileSync(cli.flags.out, output.css, "utf8");
+        return fs.writeFileSync(cli.flags.out, css, "utf8");
     }
 
-    return process.stdout.write(`${output.css}\n`);
+    return process.stdout.write(`${css}\n`);
 })
 .catch((error) => {
     process.stderr.write(error.toString());
