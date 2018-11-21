@@ -10,8 +10,10 @@ module.exports = async function(source) {
     const options   = utils.getOptions(this) || false;
     const done      = this.async();
     const processor = this.options ?
-            this.options.processor : // Webpack 2 & 3
-            this._compiler.options.processor; // Webpack 4
+        // Webpack 2 & 3
+        this.options.processor :
+        // Webpack 4
+        this._compiler.options.processor;
 
     if(options.cjs) {
         this.emitWarning(
