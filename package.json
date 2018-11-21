@@ -21,12 +21,12 @@
   "devDependencies": {
     "@modular-css/test-utils": "file:packages/test-utils",
     "@modular-css/website": "file:packages/www",
-    "@tivac/eslint-config": "2.2.1",
+    "@tivac/eslint-config": "^2.2.2",
     "browserify": "^16.2.3",
     "cli-tester": "2.0.0",
     "dedent": "0.7.0",
     "dentist": "1.0.3",
-    "eslint": "^5.8.0",
+    "eslint": "^5.9.0",
     "eslint-plugin-jest": "^22.0.0",
     "factor-bundle": "2.5.0",
     "from2-string": "1.1.0",
@@ -36,12 +36,12 @@
     "lerna": "^3.4.3",
     "pegjs": "0.10.0",
     "read-dir-deep": "1.0.4",
-    "rollup": "^0.67.0",
+    "rollup": "^0.67.3",
     "rollup-plugin-svelte": "^4.3.2",
-    "shelljs": "0.8.2",
+    "shelljs": "^0.8.3",
     "svelte": "^2.15.3",
     "watchify": "3.11.0",
-    "webpack": "^4.25.1"
+    "webpack": "^4.26.0"
   },
   "dependencies": {
     "@modular-css/browserify": "file:packages/browserify",
