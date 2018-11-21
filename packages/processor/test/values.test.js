@@ -15,28 +15,32 @@ describe("/processor.js", () => {
             });
         });
         
-        it("should fail on invalid value syntax", () =>
-            processor.string(
-                "./invalid/value.css",
-                "@value foo, bar from nowhere.css"
-            )
-            .catch(({ message }) => expect(message).toMatch(`SyntaxError: Expected source but "n" found.`)
-            )
-        );
+        it("should fail on invalid value syntax", async () => {
+            try {
+                await processor.string(
+                    "./invalid/value.css",
+                    "@value foo, bar from nowhere.css"
+                );
+            } catch({ message }) {
+                expect(message).toMatch(`SyntaxError: Expected source but "n" found.`);
+            }
+        });
 
-        it("should fail if a value imports a non-existant reference", () =>
-            processor.string(
-                "./invalid/value.css",
-                "@value not-real from \"../local.css\";"
-            )
-            .catch(({ message }) => expect(message).toMatch(
-                `Unable to locate "../local.css" from "${path.resolve("invalid/value.css")}"`
-            )
-            )
-        );
+        it("should fail if a value imports a non-existant reference", async () => {
+            try {
+                await processor.string(
+                    "./invalid/value.css",
+                    "@value not-real from \"../local.css\";"
+                );
+            } catch({ message }) {
+                expect(message).toMatch(
+                    `Unable to locate "../local.css" from "${path.resolve("invalid/value.css")}"`
+                );
+            }
+        });
 
-        it("should support simple values", () =>
-            processor.string(
+        it("should support simple values", async () => {
+            await processor.string(
                 "./values.css",
                 dedent(`
                     @value a: red;
@@ -49,14 +53,15 @@ describe("/processor.js", () => {
                         font-family: b;
                     }
                 `)
-            )
-            .then(() => processor.output())
-            .then(({ css }) => expect(css).toMatchSnapshot()
-            )
-        );
+            );
 
-        it("should support local values in value composition", () =>
-            processor.string(
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
+        });
+
+        it("should support local values in value composition", async () => {
+            const { exports } = await processor.string(
                 "./packages/processor/test/specimens/simple.css",
                 dedent(`
                     @value o: one;
@@ -64,44 +69,49 @@ describe("/processor.js", () => {
                     @value o from local;
                     .fooga { background: one; }
                 `)
-            )
-            .then(({ exports }) => expect(exports).toMatchSnapshot()
-            )
-        );
+            );
 
-        it("should support importing variables from a file", () =>
-            processor.file(require.resolve("./specimens/value-import.css"))
-            .then(() => processor.output())
-            .then(({ css }) => expect(css).toMatchSnapshot()
-            )
-        );
+            expect(exports).toMatchSnapshot();
+        });
 
-        it("should support exporting imported variables", () =>
-            processor.file(require.resolve("./specimens/value-export.css"))
-            .then(() => processor.output())
-            .then(({ css }) => expect(css).toMatchSnapshot()
-            )
-        );
+        it("should support importing variables from a file", async () => {
+            await processor.file(require.resolve("./specimens/value-import.css"));
 
-        it("should support value composition", () =>
-            processor.file(require.resolve("./specimens/value-composition.css"))
-            .then(() => processor.output())
-            .then(({ css }) => expect(css).toMatchSnapshot()
-            )
-        );
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
+        });
 
-        it("should support value namespaces", () =>
-            processor.file(require.resolve("./specimens/value-namespace.css"))
-            .then(() => processor.output())
-            .then(({ css }) => expect(css).toMatchSnapshot()
-            )
-        );
+        it("should support exporting imported variables", async () => {
+            await processor.file(require.resolve("./specimens/value-export.css"));
 
-        it("should support value replacement in :external(...)", () =>
-            processor.file(require.resolve("./specimens/externals.css"))
-            .then(() => processor.output())
-            .then(({ css }) => expect(css).toMatchSnapshot()
-            )
-        );
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
+        });
+
+        it("should support value composition", async () => {
+            await processor.file(require.resolve("./specimens/value-composition.css"));
+
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
+        });
+
+        it("should support value namespaces", async () => {
+            await processor.file(require.resolve("./specimens/value-namespace.css"));
+
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
+        });
+
+        it("should support value replacement in :external(...)", async () => {
+            await processor.file(require.resolve("./specimens/externals.css"));
+
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
+        });
     });
 });

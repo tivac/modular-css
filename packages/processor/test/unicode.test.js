@@ -13,15 +13,14 @@ describe("/processor.js", () => {
             });
         });
 
-        it("should support unicode classes & ids", () =>
-            processor.file(
-                require.resolve("./specimens/unicode.css")
-            )
-            .then(() => processor.output({
+        it("should support unicode classes & ids", async () => {
+            await processor.file(require.resolve("./specimens/unicode.css"));
+
+            const { css } = await processor.output({
                 to : "./packages/processor/test/output/unicode.css",
-            }))
-            .then(({ css }) => expect(css).toMatchSnapshot()
-            )
-        );
+            });
+
+            expect(css).toMatchSnapshot();
+        });
     });
 });

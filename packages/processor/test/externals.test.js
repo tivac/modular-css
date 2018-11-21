@@ -14,41 +14,48 @@ describe("/processor.js", () => {
             });
         });
         
-        it("should fail if not a valid composition reference", () =>
-            processor.string(
-                "./invalid-external.css",
-                dedent(`
-                    :external(some garbage here) { }
-                `)
-            )
-            .catch(({ message }) => expect(message).toMatch(`SyntaxError: Expected`)
-            )
-        );
+        it("should fail if not a valid composition reference", async () => {
+            try {
+                await processor.string(
+                    "./invalid-external.css",
+                    dedent(`
+                        :external(some garbage here) { }
+                    `)
+                );
+            } catch({ message }) {
+                expect(message).toMatch(`SyntaxError: Expected`);
+            }
+        });
 
-        it("should fail if not referencing another file", () =>
-            processor.string(
-                "./invalid-external.css",
-                dedent(`
-                    :external(a) { }
-                `)
-            )
-            .catch(({ message }) => expect(message).toMatch(`externals must be from another file`)
-            )
-        );
+        it("should fail if not referencing another file", async () => {
+            try {
+                await processor.string(
+                    "./invalid-external.css",
+                    dedent(`
+                        :external(a) { }
+                    `)
+                );
+            } catch({ message }) {
+                expect(message).toMatch(`externals must be from another file`);
+            }
+        });
 
-        it("should fail on bad class references", () =>
-            processor.file(require.resolve("./specimens/externals-invalid.css"))
-            .catch(({ message }) => expect(message).toMatch(`Invalid external reference: nopenopenope`)
-            )
-        );
+        it("should fail on bad class references", async () => {
+            try {
+                await processor.file(require.resolve("./specimens/externals-invalid.css"));
+            } catch({ message }) {
+                expect(message).toMatch(`Invalid external reference: nopenopenope`);
+            }
+        });
         
-        it("should support overriding external values", () =>
-            processor.file(
+        it("should support overriding external values", async () => {
+            await processor.file(
                 "./packages/processor/test/specimens/externals.css"
-            )
-            .then(() => processor.output())
-            .then(({ css }) => expect(css).toMatchSnapshot()
-            )
-        );
+            );
+
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
+        });
     });
 });

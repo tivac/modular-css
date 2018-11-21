@@ -14,26 +14,27 @@ describe("/processor.js", () => {
             });
         });
         
-        it("should export an object of arrays containing strings", () =>
-            processor.string(
+        it("should export an object of arrays containing strings", async () => {
+            const { exports } = await processor.string(
                 "./simple.css",
                 dedent(`
                     .red { color: red; }
                     .black { background: #000; }
                     .one, .two { composes: red, black; }
                 `)
-            )
-            .then(({ exports }) => expect(exports).toMatchSnapshot()
-            )
-        );
+            );
 
-        it("should export identifiers and their classes", () =>
-            processor.file(
+            expect(exports).toMatchSnapshot();
+        });
+
+        it("should export identifiers and their classes", async () => {
+            await processor.file(
                 "./packages/processor/test/specimens/start.css"
-            )
-            .then(() => processor.output())
-            .then(({ compositions }) => expect(compositions).toMatchSnapshot()
-            )
-        );
+            );
+
+            const { compositions } = await processor.output();
+            
+            expect(compositions).toMatchSnapshot();
+        });
     });
 });

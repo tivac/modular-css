@@ -19,14 +19,15 @@ describe("/issues", () => {
             fn = it.skip;
         }
 
-        fn("should ignore case differences in file paths", () => {
+        fn("should ignore case differences in file paths", async () => {
             const processor = new Processor({
-                    namer,
-                });
+                namer,
+            });
             
-            return processor.file(require.resolve("./specimens/191/start.css"))
-                .then(() => processor.output())
-                .then(({ css }) => expect(css).toMatchSnapshot());
+            await processor.file(require.resolve("./specimens/191/start.css"));
+            const { css } = await processor.output();
+
+            expect(css).toMatchSnapshot();
         });
     });
 });

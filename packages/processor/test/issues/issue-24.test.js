@@ -6,12 +6,12 @@ const Processor = require("../../processor.js");
 
 describe("/issues", () => {
     describe("/24", () => {
-        it("should be able to compose using a value", () => {
+        it("should be able to compose using a value", async () => {
             const processor = new Processor({
-                    namer,
-                });
+                namer,
+            });
             
-            return processor.string(
+            const { exports } = await processor.string(
                 "./packages/processor/test/specimens/composition.css",
                 dedent(`
                     @value simple: "./simple.css";
@@ -21,13 +21,13 @@ describe("/issues", () => {
                         background: #000;
                     }
                 `)
-            )
-            .then(({ exports }) => {
-                expect(exports).toMatchSnapshot();
+            );
 
-                return processor.output();
-            })
-            .then(({ css }) => expect(css).toMatchSnapshot());
+            expect(exports).toMatchSnapshot();
+
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
         });
     });
 });

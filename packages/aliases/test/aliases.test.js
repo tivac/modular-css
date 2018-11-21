@@ -41,20 +41,20 @@ describe("@modular-css/path-aliases", () => {
         expect(fn(".", "sub/sub.css")).toBe(require.resolve("./specimens/one/sub/sub.css"));
     });
 
-    it("should be usable as a modular-css resolver", () => {
+    it("should be usable as a modular-css resolver", async () => {
         const processor = new Processor({
-                namer,
-                resolvers : [
-                    aliases({
-                        aliases : {
-                            sub : "./packages/aliases/test/specimens/one/sub",
-                            two : "./packages/aliases/test/specimens/two",
-                        },
-                    }),
-                ],
-            });
+            namer,
+            resolvers : [
+                aliases({
+                    aliases : {
+                        sub : "./packages/aliases/test/specimens/one/sub",
+                        two : "./packages/aliases/test/specimens/two",
+                    },
+                }),
+            ],
+        });
         
-        return processor.string(
+        await processor.string(
             "./packages/paths/test/specimens/one/start.css",
             dedent(`
                 @value sub from "sub/sub.css";
@@ -63,25 +63,26 @@ describe("@modular-css/path-aliases", () => {
                     composes: two from "two/two.css";
                 }
             `)
-        )
-        .then(() => processor.output())
-        .then(({ compositions }) => expect(compositions).toMatchSnapshot()
         );
+
+        const { compositions } = await processor.output();
+
+        expect(compositions).toMatchSnapshot();
     });
 
-    it("should fall through to the default resolver", () => {
+    it("should fall through to the default resolver", async () => {
         const processor = new Processor({
-                namer,
-                resolvers : [
-                    aliases({
-                        aliases : {
-                            two : "./packages/aliases/test/specimens/two",
-                        },
-                    }),
-                ],
-            });
+            namer,
+            resolvers : [
+                aliases({
+                    aliases : {
+                        two : "./packages/aliases/test/specimens/two",
+                    },
+                }),
+            ],
+        });
         
-        return processor.string(
+        await processor.string(
             "./packages/paths/test/specimens/one/start.css",
             dedent(`
                 @value sub from "./sub/sub.css";
@@ -90,9 +91,10 @@ describe("@modular-css/path-aliases", () => {
                     composes: two from "two/two.css";
                 }
             `)
-        )
-        .then(() => processor.output())
-        .then(({ compositions }) => expect(compositions).toMatchSnapshot()
         );
+
+        const { compositions } = await processor.output();
+        
+        expect(compositions).toMatchSnapshot();
     });
 });

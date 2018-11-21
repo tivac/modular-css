@@ -14,8 +14,8 @@ describe("/processor.js", () => {
             });
         });
 
-        it("should scope classes, ids, and keyframes", () =>
-            processor.string(
+        it("should scope classes, ids, and keyframes", async () => {
+            const { exports } = await processor.string(
                 "./simple.css",
                 dedent(`
                     @keyframes kooga { }
@@ -24,18 +24,18 @@ describe("/processor.js", () => {
                     .one,
                     .two { }
                 `)
-            )
-            .then(({ exports }) => {
-                expect(exports).toMatchSnapshot();
+            );
+            
 
-                return processor.output();
-            })
-            .then(({ css }) => expect(css).toMatchSnapshot()
-            )
-        );
+            expect(exports).toMatchSnapshot();
 
-        it("should handle pseudo classes correctly", () =>
-            processor.string(
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
+        });
+
+        it("should handle pseudo classes correctly", async () => {
+            const { exports } = await processor.string(
                 "./simple.css",
                 dedent(`
                     :global(.g1) {}
@@ -44,47 +44,53 @@ describe("/processor.js", () => {
                     .d:hover {}
                     .e:not(.e) {}
                 `)
-            )
-            .then(({ exports }) => {
-                expect(exports).toMatchSnapshot();
+            );
+            
 
-                return processor.output();
-            })
-            .then(({ css }) => expect(css).toMatchSnapshot()
-            )
-        );
+            expect(exports).toMatchSnapshot();
 
-        it("should not allow :global classes to overlap with local ones (local before global)", () =>
-            processor.string(
-                "./invalid/global.css",
-                dedent(`
-                    .a {}
-                    :global(.a) {}
-                `)
-            )
-            .catch(({ message }) => expect(message).toMatch(`Unable to re-use the same selector for global & local`)
-            )
-        );
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
+        });
 
-        it("should not allow :global classes to overlap with local ones (global before local)", () =>
-            processor.string(
-                "./invalid/global.css",
-                dedent(`
-                    :global(.a) {}
-                    .a {}
-                `)
-            )
-            .catch(({ message }) => expect(message).toMatch(`Unable to re-use the same selector for global & local`)
-            )
-        );
+        it("should not allow :global classes to overlap with local ones (local before global)", async () => {
+            try {
+                await processor.string(
+                    "./invalid/global.css",
+                    dedent(`
+                        .a {}
+                        :global(.a) {}
+                    `)
+                );
+            } catch({ message }) {
+                expect(message).toMatch(`Unable to re-use the same selector for global & local`);
+            }
+        });
 
-        it("should not allow empty :global() selectors", () =>
-            processor.string(
-                "./invalid/global.css",
-                ".a :global() { }"
-            )
-            .catch(({ message }) => expect(message).toMatch(`:global(...) must not be empty`)
-            )
-        );
+        it("should not allow :global classes to overlap with local ones (global before local)", async () => {
+            try {
+                await processor.string(
+                    "./invalid/global.css",
+                    dedent(`
+                        :global(.a) {}
+                        .a {}
+                    `)
+                );
+            } catch({ message }) {
+                expect(message).toMatch(`Unable to re-use the same selector for global & local`);
+            }
+        });
+
+        it("should not allow empty :global() selectors", async () => {
+            try {
+                await processor.string(
+                    "./invalid/global.css",
+                    ".a :global() { }"
+                );
+            } catch({ message }) {
+                expect(message).toMatch(`:global(...) must not be empty`);
+            }
+        });
     });
 });
