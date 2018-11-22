@@ -1,35 +1,35 @@
 "use strict";
 
-var parser  = require("../parsers/parser.js"),
-    
-    plugin = "modular-css-values-composed";
+const parser = require("../parsers/parser.js");
+
+const plugin = "modular-css-values-composed";
 
 // Find @value fooga: wooga entries & catalog/remove them
-module.exports = (css, result) => {
-    var values = Object.create(null);
+module.exports = (css, { opts, messages }) => {
+    const { files, resolve, from } = opts;
+    
+    const values = Object.create(null);
 
     css.walkAtRules("value", (rule) => {
-        var parsed = parser.parse(rule.params),
-            source;
-        
+        const parsed = parser.parse(rule.params);
+
         if(parsed.type !== "composition") {
             return;
         }
 
-        source = result.opts.files[
-            result.opts.resolve(result.opts.from, parsed.source)
-        ];
+        const source = files[resolve(from, parsed.source)];
 
-        parsed.refs.forEach((ref) => {
-            values[ref.name] = source.values[ref.name];
+        parsed.refs.forEach(({ name }) => {
+            values[name] = source.values[name];
         });
 
         rule.remove();
     });
     
     if(Object.keys(values).length > 0) {
-        result.messages.push({
+        messages.push({
             type : "modular-css",
+            
             plugin,
             values,
         });

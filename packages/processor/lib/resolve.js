@@ -1,18 +1,16 @@
 "use strict";
 
-var path = require("path"),
+const path = require("path");
+const resolve = require("resolve-from").silent;
+const pathcase = require("true-case-path");
 
-    resolve = require("resolve-from").silent,
-    fixCase = require("true-case-path");
-
-exports.resolve = (src, file) =>
-    resolve(path.dirname(src), file);
+exports.resolve = (src, file) => resolve(path.dirname(src), file);
 
 exports.resolvers = (resolvers) => {
     resolvers.push(exports.resolve);
     
     return (src, file) => {
-        var result;
+        let result;
 
         resolvers.some((fn) =>
             (result = fn(src, file, exports.resolve))
@@ -22,6 +20,6 @@ exports.resolvers = (resolvers) => {
             throw new Error(`Unable to locate "${file}" from "${src}"`);
         }
 
-        return fixCase(result);
+        return pathcase(result);
     };
 };

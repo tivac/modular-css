@@ -236,7 +236,7 @@ describe("/processor.js", () => {
 
         describe("._resolve()", () => {
             it("should run resolvers until a match is found", () => {
-                var ran = false;
+                let ran = false;
 
                 processor = new Processor({
                     resolvers : [

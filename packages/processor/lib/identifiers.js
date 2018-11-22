@@ -1,17 +1,15 @@
 "use strict";
 
-var createParser = require("postcss-selector-parser");
+const createParser = require("postcss-selector-parser");
 
 exports.keyframes = /keyframes$/i;
 
 // Find all classes that comprise a selector and return 'em
 exports.parse = (selector) => {
-    var values = [],
-        parser;
+    const values = [];
     
-    parser = createParser((selectors) =>
-        selectors.walkClasses((part) =>
-            values.push(part.value)
+    const parser = createParser((selectors) =>
+        selectors.walkClasses(({ value }) => values.push(value)
         )
     );
     

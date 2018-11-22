@@ -1,21 +1,18 @@
 "use strict";
 
-var fs = require("fs"),
-    
-    browserify = require("browserify"),
-    from       = require("from2-string"),
-    dedent     = require("dedent"),
-    
-    read = require("@modular-css/test-utils/read.js")(__dirname),
-
-    bundle = require("./lib/bundle.js"),
-    plugin = require("../browserify.js");
+const fs = require("fs");
+const browserify = require("browserify");
+const from       = require("from2-string");
+const dedent     = require("dedent");
+const read = require("@modular-css/test-utils/read.js")(__dirname);
+const bundle = require("./lib/bundle.js");
+const plugin = require("../browserify.js");
 
 describe("/browserify.js", () => {
     describe("/issues", () => {
         describe("/313", () => {
             it("should include all dependencies after watchify update", (done) => {
-                var build = browserify(
+                const build = browserify(
                         from(dedent(`
                             require("./packages/browserify/test/specimens/issues/313/1.css");
                             require("./packages/browserify/test/specimens/issues/313/2.css");
@@ -24,8 +21,9 @@ describe("/browserify.js", () => {
                             cache        : {},
                             packageCache : {},
                         }
-                    ),
-                    css;
+                    );
+
+                let css;
 
                 build.plugin(require("watchify"));
                 build.plugin(plugin, {

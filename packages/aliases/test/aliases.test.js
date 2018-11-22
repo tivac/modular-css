@@ -9,7 +9,7 @@ const aliases = require("../aliases.js");
 
 describe("@modular-css/path-aliases", () => {
     it("should return a falsey value if a file isn't found", () => {
-        var fn = aliases({
+        const fn = aliases({
             aliases : {
                 specimens : "./packages/aliases/test/specimens",
             },
@@ -19,7 +19,7 @@ describe("@modular-css/path-aliases", () => {
     });
 
     it("should return the absolute path if a file is found", () => {
-        var fn = aliases({
+        const fn = aliases({
             aliases : {
                 one : "./packages/aliases/test/specimens/one",
             },
@@ -29,7 +29,7 @@ describe("@modular-css/path-aliases", () => {
     });
 
     it("should check multiple aliases for files & return the first match", () => {
-        var fn = aliases({
+        const fn = aliases({
             aliases : {
                 one : "./packages/aliases/test/specimens/one",
                 two : "./packages/aliases/test/specimens/two",
@@ -41,20 +41,20 @@ describe("@modular-css/path-aliases", () => {
         expect(fn(".", "sub/sub.css")).toBe(require.resolve("./specimens/one/sub/sub.css"));
     });
 
-    it("should be usable as a modular-css resolver", () => {
-        var processor = new Processor({
-                namer,
-                resolvers : [
-                    aliases({
-                        aliases : {
-                            sub : "./packages/aliases/test/specimens/one/sub",
-                            two : "./packages/aliases/test/specimens/two",
-                        },
-                    }),
-                ],
-            });
+    it("should be usable as a modular-css resolver", async () => {
+        const processor = new Processor({
+            namer,
+            resolvers : [
+                aliases({
+                    aliases : {
+                        sub : "./packages/aliases/test/specimens/one/sub",
+                        two : "./packages/aliases/test/specimens/two",
+                    },
+                }),
+            ],
+        });
         
-        return processor.string(
+        await processor.string(
             "./packages/paths/test/specimens/one/start.css",
             dedent(`
                 @value sub from "sub/sub.css";
@@ -63,26 +63,26 @@ describe("@modular-css/path-aliases", () => {
                     composes: two from "two/two.css";
                 }
             `)
-        )
-        .then(() => processor.output())
-        .then((result) =>
-            expect(result.compositions).toMatchSnapshot()
         );
+
+        const { compositions } = await processor.output();
+
+        expect(compositions).toMatchSnapshot();
     });
 
-    it("should fall through to the default resolver", () => {
-        var processor = new Processor({
-                namer,
-                resolvers : [
-                    aliases({
-                        aliases : {
-                            two : "./packages/aliases/test/specimens/two",
-                        },
-                    }),
-                ],
-            });
+    it("should fall through to the default resolver", async () => {
+        const processor = new Processor({
+            namer,
+            resolvers : [
+                aliases({
+                    aliases : {
+                        two : "./packages/aliases/test/specimens/two",
+                    },
+                }),
+            ],
+        });
         
-        return processor.string(
+        await processor.string(
             "./packages/paths/test/specimens/one/start.css",
             dedent(`
                 @value sub from "./sub/sub.css";
@@ -91,10 +91,10 @@ describe("@modular-css/path-aliases", () => {
                     composes: two from "two/two.css";
                 }
             `)
-        )
-        .then(() => processor.output())
-        .then((result) =>
-            expect(result.compositions).toMatchSnapshot()
         );
+
+        const { compositions } = await processor.output();
+        
+        expect(compositions).toMatchSnapshot();
     });
 });

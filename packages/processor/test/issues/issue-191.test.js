@@ -1,14 +1,12 @@
 "use strict";
 
-var fs = require("fs"),
-    
-    namer = require("@modular-css/test-utils/namer.js"),
-
-    Processor = require("../../processor.js");
+const fs = require("fs");
+const namer = require("@modular-css/test-utils/namer.js");
+const Processor = require("../../processor.js");
 
 describe("/issues", () => {
     describe("/191", () => {
-        var fn = it;
+        let fn = it;
         
         afterAll(() => require("shelljs").rm("-rf", "./packages/processor/test/output/sensitive.txt"));
 
@@ -21,14 +19,15 @@ describe("/issues", () => {
             fn = it.skip;
         }
 
-        fn("should ignore case differences in file paths", () => {
-            var processor = new Processor({
-                    namer,
-                });
+        fn("should ignore case differences in file paths", async () => {
+            const processor = new Processor({
+                namer,
+            });
             
-            return processor.file(require.resolve("./specimens/191/start.css"))
-                .then(() => processor.output())
-                .then((result) => expect(result.css).toMatchSnapshot());
+            await processor.file(require.resolve("./specimens/191/start.css"));
+            const { css } = await processor.output();
+
+            expect(css).toMatchSnapshot();
         });
     });
 });

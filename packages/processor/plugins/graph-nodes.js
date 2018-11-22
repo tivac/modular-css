@@ -7,7 +7,7 @@ const parser  = require("../parsers/parser.js");
 const plugin = "modular-css-graph-nodes";
 
 module.exports = (css, result) => {
-    var externals, current;
+    let current;
 
     const parse = (rule, value) => {
         const { opts } = result;
@@ -35,14 +35,14 @@ module.exports = (css, result) => {
         });
     };
     
-    externals = selector((selectors) =>
-        selectors.walkPseudos((pseudo) => {
+    const externals = selector((selectors) =>
+        selectors.walkPseudos(({ value, nodes }) => {
             // Need to ensure we only process :external pseudos, see #261
-            if(pseudo.value !== ":external") {
+            if(value !== ":external") {
                 return;
             }
             
-            parse(current, pseudo.nodes.toString());
+            parse(current, nodes.toString());
         })
     );
     

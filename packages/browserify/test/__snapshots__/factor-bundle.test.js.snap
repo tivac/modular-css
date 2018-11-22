@@ -65,8 +65,6 @@ exports[`/browserify.js factor-bundle should output empty css files when asked 2
 "
 `;
 
-exports[`/browserify.js factor-bundle should output empty css files when asked 3`] = `""`;
-
 exports[`/browserify.js factor-bundle should properly handle files w/o dependencies 1`] = `
 "/* packages/browserify/test/specimens/folder/folder.css */
 .mcd19f1319_folder { margin: 2px; }

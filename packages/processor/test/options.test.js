@@ -24,34 +24,26 @@ const async = (css) => (
 describe("/processor.js", () => {
     describe("options", () => {
         describe("cwd", () => {
-            it("should use an absolute path", () => {
-                var cwd       = path.resolve("./packages/processor/test/specimens/folder"),
-                    processor = new Processor({
-                        cwd,
-                    });
+            it("should use an absolute path", async () => {
+                const cwd = path.resolve("./packages/processor/test/specimens/folder");
+
+                const processor = new Processor({ cwd });
+
+                const { file } = await processor.file("./folder.css");
                 
-                return processor.file(
-                    "./folder.css"
-                )
-                .then((result) => {
-                    expect(processor.options.cwd).toBe(cwd);
-                    expect(result.file).toBe(require.resolve("./specimens/folder/folder.css"));
-                });
+                expect(processor.options.cwd).toBe(cwd);
+                expect(file).toBe(require.resolve("./specimens/folder/folder.css"));
             });
 
-            it("should accept a relative path but make it absolute", () => {
-                var cwd       = "./packages/processor/test/specimens/folder",
-                    processor = new Processor({
-                        cwd,
-                    });
+            it("should accept a relative path but make it absolute", async () => {
+                const cwd = "./packages/processor/test/specimens/folder";
+
+                const processor = new Processor({ cwd });
+
+                const { file } = await processor.file("./folder.css");
                 
-                return processor.file(
-                    "./folder.css"
-                )
-                .then((result) => {
-                    expect(processor.options.cwd).toBe(path.resolve(cwd));
-                    expect(result.file).toBe(require.resolve("./specimens/folder/folder.css"));
-                });
+                expect(processor.options.cwd).toBe(path.resolve(cwd));
+                expect(file).toBe(require.resolve("./specimens/folder/folder.css"));
             });
         });
 
@@ -101,274 +93,306 @@ describe("/processor.js", () => {
         });
 
         describe("map", () => {
-            it("should generate source maps", () => {
-                var processor = new Processor({
+            it("should generate source maps", async () => {
+                const processor = new Processor({
                         namer,
                         map : true,
                     });
                 
-                return processor.file(
-                    "./packages/processor/test/specimens/start.css"
-                )
-                .then(() => processor.output({
+                await processor.file("./packages/processor/test/specimens/start.css");
+
+                const { css } = await processor.output({
                     from : "packages/processor/test/specimens/rewrite.css",
                     to   : "out.css",
-                }))
-                .then((result) => expect(result.css).toMatchSnapshot());
+                });
+
+                expect(css).toMatchSnapshot();
             });
 
-            it("should generate external source maps", () => {
-                var processor = new Processor({
+            it("should generate external source maps", async () => {
+                const processor = new Processor({
                         namer,
                         map : {
                             internal : false,
                         },
                     });
                 
-                return processor.file(
-                    "./packages/processor/test/specimens/start.css"
-                )
-                .then(() => processor.output({
+                await processor.file("./packages/processor/test/specimens/start.css");
+
+                const { css } = await processor.output({
                     from : "packages/processor/test/specimens/rewrite.css",
                     to   : "out.css",
-                }))
-                .then((result) => expect(result.css).toMatchSnapshot());
+                });
+
+                expect(css).toMatchSnapshot();
             });
         });
 
         describe("exportGlobals", () => {
-            it("should not export :global values when exportGlobals is false", () => {
-                var processor = new Processor({
+            it("should not export :global values when exportGlobals is false", async () => {
+                const processor = new Processor({
                         exportGlobals : false,
                     });
                 
-                return processor.string(
+                const { exports } = await processor.string(
                     "./exportGlobals.css",
                     dedent(`
                         :global(.a) {}
                         .b {}
                     `)
-                )
-                .then((result) => expect(result.exports).toMatchSnapshot());
+                );
+
+                expect(exports).toMatchSnapshot();
             });
         });
 
         describe("rewrite", () => {
-            it("should rewrite url() references by default", () => {
-                var processor = new Processor();
+            it("should rewrite url() references by default", async () => {
+                const processor = new Processor();
 
-                return processor.string(
+                await processor.string(
                     "packages/processor/test/specimens/rewrite.css",
                     dedent(`
                         .a {
                             background: url("img.png");
                         }
                     `)
-                )
-                .then(() => processor.output({
+                );
+                
+                const { css } = await processor.output({
                     from : "packages/processor/test/specimens/rewrite.css",
                     to   : "./packages/processor/test/output/rewrite.css",
-                }))
-                .then((result) => expect(result.css).toMatchSnapshot());
+                });
+
+                expect(css).toMatchSnapshot();
             });
 
-            it("should not rewrite url() references when falsey", () => {
-                var processor = new Processor({ rewrite : false });
+            it("should not rewrite url() references when falsey", async () => {
+                const processor = new Processor({ rewrite : false });
 
-                return processor.string(
+                await processor.string(
                     "packages/processor/test/specimens/rewrite.css",
                     dedent(`
                         .a {
                             background: url("img.png");
                         }
                     `)
-                )
-                .then(() => processor.output({
+                );
+                
+                const { css } = await processor.output({
                     from : "packages/processor/test/specimens/rewrite.css",
                     to   : "./packages/processor/test/output/rewrite.css",
-                }))
-                .then((result) => expect(result.css).toMatchSnapshot());
+                });
+
+                expect(css).toMatchSnapshot();
             });
             
-            it("should pass through to postcss-url as config", () => {
-                var processor = new Processor({
+            it("should pass through to postcss-url as config", async () => {
+                const processor = new Processor({
                     rewrite : {
                         url : "inline",
                     },
                 });
                 
-                return processor.string(
+                await processor.string(
                     "packages/processor/test/specimens/rewrite.css",
                     dedent(`
                         .a {
                             background: url("img.png");
                         }
                     `)
-                )
-                .then(() => processor.output({
+                );
+                
+                const { css } = await processor.output({
                     from : "packages/processor/test/specimens/rewrite.css",
                     to   : "./packages/processor/test/output/rewrite.css",
-                }))
-                .then((result) => expect(result.css).toMatchSnapshot());
+                });
+
+                expect(css).toMatchSnapshot();
             });
         });
 
         describe("lifecycle options", () => {
             describe("before", () => {
-                it("should run sync postcss plugins before processing", () => {
-                    var processor = new Processor({
-                            namer,
-                            before : [ sync ],
-                        });
+                it("should run sync postcss plugins before processing", async () => {
+                    const processor = new Processor({
+                        namer,
+                        before : [ sync ],
+                    });
                     
-                    return processor.string(
+                    await processor.string(
                         "packages/processor/test/specimens/sync-before.css",
                         ""
-                    )
-                    .then(() => processor.output({ from : "packages/processor/test/specimens/sync-before.css" }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    );
+
+                    const { css } = await processor.output({
+                        from : "packages/processor/test/specimens/sync-before.css",
+                    });
+
+                    expect(css).toMatchSnapshot();
                 });
 
-                it("should run async postcss plugins before processing", () => {
-                    var processor = new Processor({
-                            namer,
-                            before : [ async ],
-                        });
+                it("should run async postcss plugins before processing", async () => {
+                    const processor = new Processor({
+                        namer,
+                        before : [ async ],
+                    });
                     
-                    return processor.string(
+                    await processor.string(
                         "packages/processor/test/specimens/async-before.css",
                         ""
-                    )
-                    .then(() => processor.output({ from : "packages/processor/test/specimens/sync-before.css" }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    );
+
+                    const { css } = await processor.output({
+                        from : "packages/processor/test/specimens/sync-before.css",
+                    });
+
+                    expect(css).toMatchSnapshot();
                 });
             });
 
             describe("processing", () => {
-                it("should run sync postcss plugins processing processing", () => {
-                    var processor = new Processor({
-                            namer,
-                            processing : [ sync ],
-                        });
+                it("should run sync postcss plugins processing processing", async () => {
+                    const processor = new Processor({
+                        namer,
+                        processing : [ sync ],
+                    });
 
-                    return processor.string(
+                    await processor.string(
                         "packages/processor/test/specimens/sync-processing.css",
                         ""
-                    )
-                    .then(() => processor.output({ from : "packages/processor/test/specimens/sync-processing.css" }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    );
+
+                    const { css } = await processor.output({
+                        from : "packages/processor/test/specimens/sync-processing.css",
+                    });
+
+                    expect(css).toMatchSnapshot();
                 });
 
-                it("should run async postcss plugins processing processing", () => {
-                    var processor = new Processor({
-                            namer,
-                            processing : [ async ],
-                        });
+                it("should run async postcss plugins processing processing", async () => {
+                    const processor = new Processor({
+                        namer,
+                        processing : [ async ],
+                    });
 
-                    return processor.string(
+                    await processor.string(
                         "packages/processor/test/specimens/async-processing.css",
                         ""
-                    )
-                    .then(() => processor.output({ from : "packages/processor/test/specimens/sync-processing.css" }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    );
+
+                    const { css } = await processor.output({
+                        from : "packages/processor/test/specimens/sync-processing.css",
+                    });
+
+                    expect(css).toMatchSnapshot();
                 });
 
-                it("should include exports from 'modular-css-export' modules", () => {
-                    var processor = new Processor({
-                            namer,
-                            processing : [ (css, result) => {
-                                result.messages.push({
-                                    plugin  : "modular-css-exporter",
-                                    exports : {
-                                        a : true,
-                                        b : false,
-                                    },
-                                });
-                            } ],
-                        });
+                it("should include exports from 'modular-css-export' modules", async () => {
+                    const processor = new Processor({
+                        namer,
+                        processing : [ (css, { messages }) => {
+                            messages.push({
+                                plugin  : "modular-css-exporter",
+                                exports : {
+                                    a : true,
+                                    b : false,
+                                },
+                            });
+                        } ],
+                    });
 
-                    return processor.string(
+                    const { exports } = await processor.string(
                         "packages/processor/test/specimens/async-processing.css",
                         ""
-                    )
-                    .then((file) => expect(file.exports).toMatchSnapshot());
+                    );
+
+                    expect(exports).toMatchSnapshot();
                 });
             });
             
             describe("after", () => {
-                it("should use postcss-url by default", () => {
-                    var processor = new Processor();
+                it("should use postcss-url by default", async () => {
+                    const processor = new Processor();
 
-                    return processor.file(
-                        "./packages/processor/test/specimens/relative.css"
-                    )
-                    .then(() => processor.output({
+                    await processor.file("./packages/processor/test/specimens/relative.css");
+
+                    const { css } = await processor.output({
                         from : "packages/processor/test/specimens/rewrite.css",
                         to   : "./packages/processor/test/output/relative.css",
-                    }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    });
+
+                    expect(css).toMatchSnapshot();
                 });
                 
-                it("should run sync postcss plugins", () => {
-                    var processor = new Processor({
-                            namer,
-                            after : [ sync ],
-                        });
+                it("should run sync postcss plugins", async () => {
+                    const processor = new Processor({
+                        namer,
+                        after : [ sync ],
+                    });
 
-                    return processor.file(
-                        "./packages/processor/test/specimens/relative.css"
-                    )
-                    .then(() => processor.output({
+                    await processor.file("./packages/processor/test/specimens/relative.css");
+
+                    const { css } = await processor.output({
                         from : "packages/processor/test/specimens/rewrite.css",
                         to   : "./packages/processor/test/output/relative.css",
-                    }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    });
+
+                    expect(css).toMatchSnapshot();
                 });
                 
-                it("should run async postcss plugins", () => {
-                    var processor = new Processor({
-                            namer,
-                            after : [ async ],
-                        });
+                it("should run async postcss plugins", async () => {
+                    const processor = new Processor({
+                        namer,
+                        after : [ async ],
+                    });
 
-                    return processor.file(
-                        "./packages/processor/test/specimens/relative.css"
-                    )
-                    .then(() => processor.output({
+                    await processor.file("./packages/processor/test/specimens/relative.css");
+
+                    const { css } = await processor.output({
                         from : "packages/processor/test/specimens/rewrite.css",
                         to   : "./packages/processor/test/output/relative.css",
-                    }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    });
+
+                    expect(css).toMatchSnapshot();
                 });
             });
             
             describe("done", () => {
-                it("should run sync postcss plugins done processing", () => {
-                    var processor = new Processor({
-                            namer,
-                            done : [ sync ],
-                        });
+                it("should run sync postcss plugins done processing", async () => {
+                    const processor = new Processor({
+                        namer,
+                        done : [ sync ],
+                    });
                     
-                    return processor.string(
+                    await processor.string(
                         "packages/processor/test/specimens/sync-done.css",
                         ""
-                    )
-                    .then(() => processor.output({ from : "packages/processor/test/specimens/sync-done.css" }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    );
+
+                    const { css } = await processor.output({
+                        from : "packages/processor/test/specimens/sync-done.css",
+                    });
+
+                    expect(css).toMatchSnapshot();
                 });
                 
-                it("should run async postcss plugins done processing", () => {
-                    var processor = new Processor({
-                            namer,
-                            done : [ async ],
-                        });
+                it("should run async postcss plugins done processing", async () => {
+                    const processor = new Processor({
+                        namer,
+                        done : [ async ],
+                    });
                     
-                    return processor.string(
+                    await processor.string(
                         "packages/processor/test/specimens/async-done.css",
                         ""
-                    )
-                    .then(() => processor.output({ from : "packages/processor/test/specimens/async-done.css" }))
-                    .then((result) => expect(result.css).toMatchSnapshot());
+                    );
+
+                    const { css } = await processor.output({
+                        from : "packages/processor/test/specimens/async-done.css",
+                    });
+
+                    expect(css).toMatchSnapshot();
                 });
             });
 

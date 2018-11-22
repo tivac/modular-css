@@ -17,19 +17,17 @@ const normalize = require("./lib/normalize.js");
 
 const noop = () => true;
 
-function params(processor, args) {
-    return Object.assign(
-        Object.create(null),
-        processor._options,
-        {
-            from    : null,
-            files   : processor._files,
-            graph   : processor._graph,
-            resolve : processor._resolve,
-        },
-        args
-    );
-}
+const params = ({ _options, _files, _graph, _resolve }, args) => Object.assign(
+    Object.create(null),
+    _options,
+    {
+        from    : null,
+        files   : _files,
+        graph   : _graph,
+        resolve : _resolve,
+    },
+    args
+);
 
 class Processor {
     constructor(opts) {
@@ -306,18 +304,18 @@ class Processor {
             file.exports = Object.assign(
                 Object.create(null),
                 // export @value entries
-                mapValues(file.values, (obj) => obj.value),
+                mapValues(file.values, ({ value }) => value),
 
                 // export classes
                 message(result, "classes"),
 
                 // Export anything from plugins named "modular-css-export*"
-                result.messages.reduce((out, msg) => {
-                    if(msg.plugin.indexOf("modular-css-export") !== 0) {
+                result.messages.reduce((out, { plugin, exports : exported }) => {
+                    if(plugin.indexOf("modular-css-export") !== 0) {
                         return out;
                     }
 
-                    return Object.assign(out, msg.exports);
+                    return Object.assign(out, exported);
                 }, Object.create(null))
             );
         }

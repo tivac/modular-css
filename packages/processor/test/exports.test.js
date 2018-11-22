@@ -1,13 +1,12 @@
 "use strict";
 
-var dedent = require("dedent"),
-    namer  = require("@modular-css/test-utils/namer.js"),
-    
-    Processor = require("../processor.js");
+const dedent = require("dedent");
+const namer  = require("@modular-css/test-utils/namer.js");
+const Processor = require("../processor.js");
 
 describe("/processor.js", () => {
     describe("exports", () => {
-        var processor;
+        let processor;
         
         beforeEach(() => {
             processor = new Processor({
@@ -15,28 +14,27 @@ describe("/processor.js", () => {
             });
         });
         
-        it("should export an object of arrays containing strings", () =>
-            processor.string(
+        it("should export an object of arrays containing strings", async () => {
+            const { exports } = await processor.string(
                 "./simple.css",
                 dedent(`
                     .red { color: red; }
                     .black { background: #000; }
                     .one, .two { composes: red, black; }
                 `)
-            )
-            .then((result) =>
-                expect(result.exports).toMatchSnapshot()
-            )
-        );
+            );
 
-        it("should export identifiers and their classes", () =>
-            processor.file(
+            expect(exports).toMatchSnapshot();
+        });
+
+        it("should export identifiers and their classes", async () => {
+            await processor.file(
                 "./packages/processor/test/specimens/start.css"
-            )
-            .then(() => processor.output())
-            .then((output) =>
-                expect(output.compositions).toMatchSnapshot()
-            )
-        );
+            );
+
+            const { compositions } = await processor.output();
+            
+            expect(compositions).toMatchSnapshot();
+        });
     });
 });

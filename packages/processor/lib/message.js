@@ -1,9 +1,9 @@
 "use strict";
 
-var find = require("lodash/findLast");
+const find = require("lodash/findLast");
 
-module.exports = (results, filter) => {
-    var message = find(results.messages, filter);
+module.exports = ({ messages }, filter) => {
+    const message = find(messages, filter);
 
     // Don't get to mess w/ other plugins objects
     return Object.assign(

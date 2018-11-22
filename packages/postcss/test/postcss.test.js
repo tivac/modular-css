@@ -1,12 +1,10 @@
 "use strict";
 
-var fs = require("fs"),
-    
-    postcss = require("postcss"),
-    read    = require("@modular-css/test-utils/read.js")(__dirname),
-    namer   = require("@modular-css/test-utils/namer.js"),
-    
-    plugin  = require("../postcss.js");
+const fs = require("fs");
+const postcss = require("postcss");
+const read    = require("@modular-css/test-utils/read.js")(__dirname);
+const namer   = require("@modular-css/test-utils/namer.js");
+const plugin  = require("../postcss.js");
 
 function process(file, opts) {
     return plugin.process(
@@ -29,48 +27,66 @@ describe("/postcss.js", () => {
         expect(typeof plugin).toBe("function");
     });
 
-    it("should process CSS and output the result", () => process("./packages/postcss/test/specimens/simple.css")
-            .then((result) => expect(result.css).toMatchSnapshot()));
+    it("should process CSS and output the result", async () => {
+        const { css } = await process("./packages/postcss/test/specimens/simple.css");
+        
+        expect(css).toMatchSnapshot();
+    });
 
-    it("should process CSS with dependencies and output the result", () => process("./packages/postcss/test/specimens/start.css")
-            .then((result) => expect(result.css).toMatchSnapshot()));
+    it("should process CSS with dependencies and output the result", async () => {
+        const { css } = await process("./packages/postcss/test/specimens/start.css");
+        
+        expect(css).toMatchSnapshot();
+    });
 
-    it("should process CSS and output exports as a message", () => process("./packages/postcss/test/specimens/simple.css")
-            .then((result) => expect(result.messages).toMatchSnapshot()));
+    it("should process CSS and output exports as a message", async () => {
+        const { messages } = await process("./packages/postcss/test/specimens/simple.css");
+        
+        expect(messages).toMatchSnapshot();
+    });
 
-    it("should accept normal processor options", () => process("./packages/postcss/test/specimens/simple.css", {
+    it("should accept normal processor options", async () => {
+        const { css } = await process("./packages/postcss/test/specimens/simple.css", {
             map : {
                 inline : true,
             },
             namer : (f, s) => `fooga_${s}`,
-        })
-        .then((result) => expect(result.css).toMatchSnapshot()));
+        });
+    
+        expect(css).toMatchSnapshot();
+    });
 
-    it("should accept a `json` property and write exports to that file", () => process(
+    it("should accept a `json` property and write exports to that file", async () => {
+        await process(
             "./packages/postcss/test/specimens/start.css",
             {
                 json : "./packages/postcss/test/output/classes.json",
             }
-        )
-        .then(() => expect(read("classes.json")).toMatchSnapshot()));
+        );
+        
+        expect(read("classes.json")).toMatchSnapshot();
+    });
 
-    it("should use output filepath for json if a custom path isn't provided", () => process(
+    it("should use output filepath for json if a custom path isn't provided", async () => {
+        await process(
             "./packages/postcss/test/specimens/start.css",
             {
                 json : true,
                 to   : "./packages/postcss/test/output/start.css",
             }
-        )
-        .then(() => expect(read("start.json")).toMatchSnapshot()));
-
-    it("should be usable like a normal postcss plugin", () => {
-        var processor = postcss([
-                plugin({
-                    namer : () => "a",
-                }),
-            ]);
+        );
         
-        return processor.process(
+        expect(read("start.json")).toMatchSnapshot();
+    });
+
+    it("should be usable like a normal postcss plugin", async () => {
+        const processor = postcss([
+            plugin({
+                namer : () => "a",
+            }),
+        ]);
+        
+        const { css } = await processor.process(
             fs.readFileSync("./packages/postcss/test/specimens/simple.css"),
             {
                 from : "./packages/postcss/test/specimens/simple.css",
@@ -78,41 +94,44 @@ describe("/postcss.js", () => {
                     inline : true,
                 },
             }
-        )
-        .then((result) => expect(result.css).toMatchSnapshot());
+        );
+    
+        expect(css).toMatchSnapshot();
     });
 
-    it("should output json when used within postcss", () => {
-        var processor = postcss([
-                plugin({
-                    namer,
-                }),
-            ]);
+    it("should output json when used within postcss", async () => {
+        const processor = postcss([
+            plugin({
+                namer,
+            }),
+        ]);
         
-        return processor.process(
+        await processor.process(
             fs.readFileSync("./packages/postcss/test/specimens/simple.css"),
             {
                 from : "./packages/postcss/test/specimens/simple.css",
                 json : "./packages/postcss/test/output/simple.json",
             }
-        )
-        .then(() => expect(read("simple.json")).toMatchSnapshot());
+        );
+        
+        expect(read("simple.json")).toMatchSnapshot();
     });
 
-    it("should accept json args in either position with postcss", () => {
-        var processor = postcss([
+    it("should accept json args in either position with postcss", async () => {
+        const processor = postcss([
             plugin({
                 namer,
                 json : "./packages/postcss/test/output/simple.json",
             }),
         ]);
         
-        return processor.process(
+        await processor.process(
             fs.readFileSync("./packages/postcss/test/specimens/simple.css"),
             {
                 from : "./packages/postcss/test/specimens/simple.css",
             }
-        )
-        .then(() => expect(read("simple.json")).toMatchSnapshot());
+        );
+
+        expect(read("simple.json")).toMatchSnapshot();
     });
 });

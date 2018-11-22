@@ -1,13 +1,11 @@
 "use strict";
 
-var browserify = require("browserify"),
-    from       = require("from2-string"),
-    shell      = require("shelljs"),
-    
-    read = require("@modular-css/test-utils/read.js")(__dirname),
-
-    bundle = require("./lib/bundle.js"),
-    plugin = require("../browserify.js");
+const browserify = require("browserify");
+const from       = require("from2-string");
+const shell      = require("shelljs");
+const read = require("@modular-css/test-utils/read.js")(__dirname);
+const bundle = require("./lib/bundle.js");
+const plugin = require("../browserify.js");
 
 describe("/browserify.js", () => {
     describe("watchify", () => {
@@ -17,7 +15,7 @@ describe("/browserify.js", () => {
         
         // NOTE: Other watchify tests are in issue files
         it("shouldn't cache file contents between watchify runs", (done) => {
-            var build = browserify();
+            const build = browserify();
             
             shell.cp("-f",
                 "./packages/browserify/test/specimens/simple.css",
@@ -56,14 +54,14 @@ describe("/browserify.js", () => {
         });
 
         it("shouldn't explode on invalid CSS", (done) => {
-            var build = browserify(),
-                wait;
-            
+            const build = browserify();
+            let wait;
+
             shell.cp("-f",
                 "./packages/browserify/test/specimens/invalid.css",
                 "./packages/browserify/test/output/watchify/watched.css"
             );
-            
+
             build.add(from("require('./packages/browserify/test/output/watchify/watched.css');"));
 
             build.plugin(require("watchify"));
@@ -85,9 +83,9 @@ describe("/browserify.js", () => {
             });
 
             // Run first bundle to start watching
-            build.bundle((err) => {
+            build.bundle(({ name }) => {
                 // This one should fail, but not stop watchify from running
-                expect(err.name).toMatch(/SyntaxError|CssSyntaxError/);
+                expect(name).toMatch(/SyntaxError|CssSyntaxError/);
                 
                 // This might re-trigger before the file has been moved, so
                 // guard against moving the file multiple times w/ this check

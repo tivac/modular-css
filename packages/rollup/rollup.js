@@ -27,7 +27,7 @@ const makeFile = (details) => {
     });
 };
 
-module.exports = function(opts) {
+module.exports = (opts) => {
     const options = Object.assign(Object.create(null), {
         common       : "common.css",
         json         : false,

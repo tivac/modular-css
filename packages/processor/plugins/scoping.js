@@ -8,17 +8,19 @@ const reuse  = "Unable to re-use the same selector for global & local";
 const plugin = "modular-css-scoping";
 
 // Validate whether a selector should be renamed, returns the key to use
-function rename(current, thing) {
-    if(thing.type === "class" ||
-       thing.type === "id" ||
-       (current.name && current.name.search(identifiers.keyframes) > -1)) {
-        return thing.value;
+const rename = ({ name }, { type, value }) => {
+    if(type === "class" ||
+       type === "id" ||
+       (name && name.search(identifiers.keyframes) > -1)) {
+        return value;
     }
 
     return false;
-}
+};
 
-module.exports = (css, result) => {
+module.exports = (css, { opts, messages }) => {
+    const { exportGlobals, namer, from } = opts;
+
     const classes   = Object.create(null);
     const keyframes = Object.create(null);
     const globals   = Object.create(null);
@@ -63,7 +65,7 @@ module.exports = (css, result) => {
 
                 globals[key] = true;
                 
-                if(result.opts.exportGlobals !== false) {
+                if(exportGlobals !== false) {
                     lookup[key] = [ child.value ];
                 }
                 
@@ -83,7 +85,7 @@ module.exports = (css, result) => {
                 throw current.error(reuse, { word : key });
             }
 
-            node.value = result.opts.namer(result.opts.from, node.value);
+            node.value = namer(from, node.value);
 
             lookup[key] = [ node.value ];
 
@@ -111,7 +113,7 @@ module.exports = (css, result) => {
     });
 
     if(Object.keys(keyframes).length) {
-        result.messages.push({
+        messages.push({
             type : "modular-css",
             plugin,
             keyframes,
@@ -119,7 +121,7 @@ module.exports = (css, result) => {
     }
 
     if(Object.keys(classes).length) {
-        result.messages.push({
+        messages.push({
             type : "modular-css",
             plugin,
             classes,

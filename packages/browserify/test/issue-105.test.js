@@ -1,14 +1,11 @@
 "use strict";
 
-var browserify = require("browserify"),
-    from       = require("from2-string"),
-    
-    Processor = require("@modular-css/processor"),
-    
-    read = require("@modular-css/test-utils/read.js")(__dirname),
-
-    bundle = require("./lib/bundle.js"),
-    plugin = require("../browserify.js");
+const browserify = require("browserify");
+const from       = require("from2-string");
+const Processor = require("@modular-css/processor");
+const read = require("@modular-css/test-utils/read.js")(__dirname);
+const bundle = require("./lib/bundle.js");
+const plugin = require("../browserify.js");
 
 describe("/browserify.js", () => {
     describe("/issues", () => {
@@ -17,14 +14,14 @@ describe("/browserify.js", () => {
             
             // This test in particular is probably very broken now
             it.skip("should be able to compose using a symlink", () => {
-                var processor = new Processor();
+                const processor = new Processor();
                 
                 return processor.file("./packages/browserify/test/specimens/issues/105/1.css")
                     .then((result) => expect(result).toMatchSnapshot());
             });
             
             it.skip("should be able to reference symlinked files when running through browserify", () => {
-                var build = browserify({
+                const build = browserify({
                         entries : from("require('./packages/browserify/test/specimens/issues/105/symlink.css');"),
                     });
                 

@@ -1,26 +1,27 @@
 "use strict";
 
-var globule = require("globule"),
-    
-    Processor = require("@modular-css/processor");
+const globule = require("globule");
+const Processor = require("@modular-css/processor");
 
-module.exports = function(opts) {
-    var options = Object.assign(
+module.exports = async (opts) => {
+    const options = Object.assign(
             Object.create(null),
             {
                 search : [ "**/*.css" ],
             },
             opts || {}
-        ),
-        processor = new Processor(options);
-    
-    return Promise.all(
+        );
+
+    const processor = new Processor(options);
+
+    await Promise.all(
         globule.find({
             src        : options.search,
             cwd        : processor.options.cwd,
             prefixBase : true,
         })
         .map((file) => processor.file(file))
-    )
-    .then(() => processor);
+    );
+
+    return processor;
 };
