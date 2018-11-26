@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/postcss",
-  "version": "17.1.1",
+  "version": "17.1.2",
   "description": "Use modular-css via postcss",
   "main": "./postcss.js",
   "repository": "tivac/modular-css",
