@@ -11,14 +11,15 @@ exports.join = (output) =>
             classes.toString()
     ));
 
-exports.compositions = (cwd, { files }) => {
+exports.compositions = ({ options, files }) => {
+    const { cwd } = options;
     const json = {};
-    
+
     Object.keys(files)
         .sort()
         .forEach((file) =>
             (json[relative(cwd, file)] = exports.join(files[file].exports))
         );
-    
+
     return json;
 };

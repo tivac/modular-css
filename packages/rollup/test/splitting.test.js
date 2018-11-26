@@ -24,8 +24,8 @@ const sourcemap = false;
 const json = true;
 
 describe("/rollup.js", () => {
-    beforeAll(() => shell.rm("-rf", prefix("./output/rollup/*")));
-    
+    beforeAll(() => shell.rm("-rf", prefix("./output/*")));
+
     describe("code splitting", () => {
         const experimentalCodeSplitting = true;
         const chunkFileNames = "[name].js";
@@ -33,7 +33,7 @@ describe("/rollup.js", () => {
         it("should support splitting up CSS files", async () => {
             const bundle = await rollup({
                 experimentalCodeSplitting,
-                
+
                 input : [
                     require.resolve("./specimens/simple.js"),
                     require.resolve("./specimens/dependencies.js"),
@@ -46,18 +46,18 @@ describe("/rollup.js", () => {
                     }),
                 ],
             });
-    
+
             await bundle.write({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-                
-                dir : prefix(`./output/rollup/splitting`),
+
+                dir : prefix(`./output/splitting`),
             });
 
-            expect(dir("./rollup/splitting/assets")).toMatchSnapshot();
+            expect(dir("./splitting/assets")).toMatchSnapshot();
         });
 
         it("should support splitting up CSS files w/ shared assets", async () => {
@@ -84,12 +84,12 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
 
-                dir : prefix(`./output/rollup/css-chunking`),
+                dir : prefix(`./output/css-chunks`),
             });
 
-            expect(dir("./rollup/css-chunking/assets")).toMatchSnapshot();
+            expect(dir("./css-chunks/assets")).toMatchSnapshot();
         });
-        
+
         it("shouldn't put bundle-specific CSS in common.css", async () => {
             const bundle = await rollup({
                 experimentalCodeSplitting,
@@ -114,10 +114,10 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
 
-                dir : prefix(`./output/rollup/common-splitting`),
+                dir : prefix(`./output/common-splitting`),
             });
 
-            expect(dir("./rollup/common-splitting/assets")).toMatchSnapshot();
+            expect(dir("./common-splitting/assets")).toMatchSnapshot();
         });
 
         it("should support manual chunks", async () => {
@@ -150,13 +150,13 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
 
-                dir : prefix(`./output/rollup/manual-chunks`),
+                dir : prefix(`./output/manual-chunks`),
             });
 
-            expect(dir("./rollup/manual-chunks/assets")).toMatchSnapshot();
+            expect(dir("./manual-chunks/assets")).toMatchSnapshot();
         });
 
-        it("should support dynamic imports", async () => {
+        it.only("should support dynamic imports", async () => {
             const bundle = await rollup({
                 experimentalCodeSplitting,
 
@@ -182,10 +182,10 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
 
-                dir : prefix(`./output/rollup/dynamic-imports`),
+                dir : prefix(`./output/dynamic-imports`),
             });
 
-            expect(dir("./rollup/dynamic-imports/assets/")).toMatchSnapshot();
+            expect(dir("./dynamic-imports/assets/")).toMatchSnapshot();
         });
 
         it("should ouput only 1 JSON file", async () => {
@@ -213,10 +213,10 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
 
-                dir : prefix(`./output/rollup/json-splitting`),
+                dir : prefix(`./output/json-splitting`),
             });
 
-            expect(dir("./rollup/json-splitting/assets")).toMatchSnapshot();
+            expect(dir("./json-splitting/assets")).toMatchSnapshot();
         });
     });
 });

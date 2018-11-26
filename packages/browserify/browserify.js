@@ -44,7 +44,7 @@ module.exports = (browserify, opts) => {
 
     function depReducer(curr, next) {
         curr[prefixed(options.cwd, next)] = next;
-        
+
         return curr;
     }
 
@@ -84,9 +84,9 @@ module.exports = (browserify, opts) => {
                     processor.dependencies(result.id).forEach((dep) =>
                         browserify.emit("file", dep, dep)
                     );
-                    
+
                     push(outputs(result));
-                    
+
                     done();
                 },
 
@@ -94,9 +94,9 @@ module.exports = (browserify, opts) => {
                     // Thrown from the current bundler instance, NOT the main browserify
                     // instance. This is so that watchify won't explode.
                     bundler.emit("error", error);
-                    
+
                     push(buffer);
-                    
+
                     done();
                 }
             );
@@ -108,24 +108,24 @@ module.exports = (browserify, opts) => {
         if(path.extname(row.file) !== options.ext) {
             return done(null, row);
         }
-        
+
         handled[row.id] = true;
-        
+
         // Ensure that browserify knows about the CSS dependency tree by updating
         // any referenced entries w/ their dependencies
         row.deps = processor.dependencies(row.file).reduce(depReducer, {});
-        
+
         return done(null, row);
     }, function(done) {
         // Ensure that any CSS dependencies not directly referenced are
         // injected into the stream of files being managed
         const push = this.push.bind(this);
-        
+
         processor.dependencies().forEach((dep) => {
             if(dep in handled) {
                 return;
             }
-            
+
             push({
                 id     : path.resolve(options.cwd, dep),
                 file   : path.resolve(options.cwd, dep),
@@ -133,7 +133,7 @@ module.exports = (browserify, opts) => {
                 deps   : processor.dependencies(dep).reduce(depReducer, {}),
             });
         });
-        
+
         done();
     }));
 
@@ -169,24 +169,24 @@ module.exports = (browserify, opts) => {
         // in case things have changed out from under us, like when using watchify
         bundles = {};
         handled = {};
-        
+
         // cache set to false means we need to create a new Processor each run-through
         if(!options.cache) {
             processor = new Processor(options);
         }
 
         bundler = current;
-        
+
         // Listen for bundling to finish
         bundler.on("end", () => {
             const bundling = Object.keys(bundles).length > 0;
 
             if(options.json) {
                 mkdirp.sync(path.dirname(options.json));
-                
+
                 fs.writeFileSync(
                     options.json,
-                    JSON.stringify(output.compositions(options.cwd, processor), null, 4)
+                    JSON.stringify(output.compositions(processor), null, 4)
                 );
             }
 
@@ -231,7 +231,7 @@ module.exports = (browserify, opts) => {
                 if(!common.length && !options.empty) {
                     return Promise.resolve();
                 }
-                
+
                 return write(bundling && common, options.css);
             });
         });
