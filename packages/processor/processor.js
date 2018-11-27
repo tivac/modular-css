@@ -258,9 +258,7 @@ class Processor {
         );
 
         Object.defineProperty(result, "compositions", {
-            get() {
-                return output.compositions(this);
-            }
+            get : () => output.compositions(this)
         });
 
         return result;
