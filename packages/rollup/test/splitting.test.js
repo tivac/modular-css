@@ -156,7 +156,7 @@ describe("/rollup.js", () => {
             expect(dir("./manual-chunks/assets")).toMatchSnapshot();
         });
 
-        it.only("should support dynamic imports", async () => {
+        it("should support dynamic imports", async () => {
             const bundle = await rollup({
                 experimentalCodeSplitting,
 

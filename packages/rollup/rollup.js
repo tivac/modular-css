@@ -1,4 +1,4 @@
-/* eslint max-statements: [ 1, 30 ] */
+/* eslint-disable max-statements */
 "use strict";
 
 const path = require("path");
@@ -17,16 +17,6 @@ const emptyMappings = {
     mappings : "",
 };
 
-const makeFile = (details) => {
-    const { entry } = details;
-    const name = path.basename(entry, path.extname(entry));
-
-    return Object.assign(details, {
-        base : path.join(path.dirname(entry), name),
-        name,
-    });
-};
-
 module.exports = (opts) => {
     const options = Object.assign(Object.create(null), {
         common       : "common.css",
@@ -43,7 +33,7 @@ module.exports = (opts) => {
     const { styleExport, done, map, dev, verbose } = options;
 
     // eslint-disable-next-line no-console, no-empty-function
-    const log = verbose ? console.log.bind(console, "[rollup]") : () => { };
+    const log = verbose ? console.log.bind(console, "[rollup]") : () => {};
 
     if(typeof map === "undefined") {
         // Sourcemaps don't make much sense in styleExport mode
@@ -70,7 +60,7 @@ module.exports = (opts) => {
         },
 
         watchChange(file) {
-            if(!processor.files[ file ]) {
+            if(!processor.files[file]) {
                 return;
             }
 
@@ -128,7 +118,7 @@ module.exports = (opts) => {
                 });
             }
 
-            if(options.styleExport) {
+            if(styleExport) {
                 out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
             }
 
@@ -161,12 +151,11 @@ module.exports = (opts) => {
                 );
             }
 
-            // First pass is used to calculate JS usage of CSS dependencies
+            // calculate JS usage of CSS modules since rollup throws away most of that info
             Object.entries(bundles).forEach(([ entry, bundle ]) => {
                 const name = path.basename(entry, path.extname(entry));
 
                 const file = {
-                    entry,
                     name,
                     base : path.join(path.dirname(entry), name),
                     css  : new Set(),
@@ -205,21 +194,22 @@ module.exports = (opts) => {
             });
 
             // TODO: Ensure that all CSS files only appear in a single bundle
+            // Right now dynamic imports are breaking things
 
-            console.log("BUNDLES");
-            Object.entries(bundles).forEach(([ key, bundle ]) => {
-                console.log(key);
-                // console.log(Object.keys(modules));
-                console.log(bundle);
-            });
-            console.log("\n\n\n");
+            // console.log("BUNDLES");
+            // Object.entries(bundles).forEach(([ key, bundle ]) => {
+            //     console.log(key);
+            //     // console.log(Object.keys(modules));
+            //     console.log(bundle);
+            // });
+            // console.log("\n\n\n");
 
-            console.log("CSS");
-            console.log(files);
-            console.log("\n\n\n");
+            // console.log("CSS");
+            // console.log(files);
+            // console.log("\n\n\n");
 
-            console.log("USAGE");
-            console.log(usage);
+            // console.log("USAGE");
+            // console.log(usage);
 
             for(const [ , { base, name, css }] of files) {
                 if(!css.size) {
@@ -249,8 +239,6 @@ module.exports = (opts) => {
                 }
             }
 
-            // result.compositions always includes all the info, so it
-            // doesn't actually matter which result we use. First one seems reasonable!
             if(options.json) {
                 const dest = typeof options.json === "string" ? options.json : "exports.json";
 
