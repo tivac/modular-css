@@ -7,6 +7,7 @@ const { keyword } = require("esutils");
 const utils = require("rollup-pluginutils");
 const dedent = require("dedent");
 const slash = require("slash");
+const Graph = require("dependency-graph").DepGraph;
 
 const Processor = require("@modular-css/processor");
 const output = require("@modular-css/processor/lib/output.js");
@@ -83,26 +84,26 @@ module.exports = (opts) => {
             const { details, exports } = await processor.string(id, code);
 
             const exported = output.join(exports);
+            const relative = path.relative(processor.options.cwd, id);
 
             const out = [
                 ...processor.dependencies(id).map((dep) => `import ${JSON.stringify(dep)};`),
-                dev ? dedent(`
-                    const data = ${JSON.stringify(exported)};
+                dev ?
+                    dedent(`
+                        const data = ${JSON.stringify(exported)};
 
-                    export default new Proxy(data, {
-                        get(tgt, key) {
-                            if(key in tgt) {
-                                return tgt[key];
+                        export default new Proxy(data, {
+                            get(tgt, key) {
+                                if(key in tgt) {
+                                    return tgt[key];
+                                }
+
+                                throw new ReferenceError(
+                                    key + " is not exported by " + ${JSON.stringify(slash(relative))}
+                                );
                             }
-
-                            throw new ReferenceError(
-                                key + " is not exported by " + ${JSON.stringify(
-                        slash(path.relative(process.cwd(), id))
-                    )}
-                            );
-                        }
-                    })
-                `) :
+                        })
+                    `) :
                     `export default ${JSON.stringify(exported, null, 4)};`,
             ];
 
@@ -129,21 +130,19 @@ module.exports = (opts) => {
             };
         },
 
-        async generateBundle(outputOptions, bundles) {
+        async generateBundle(outputOptions, chunks) {
             // styleExport disables all output file generation
             if(styleExport) {
                 return;
             }
 
-            const usage = new Map();
-            const files = new Map();
-
             const { assetFileNames = "" } = outputOptions;
-
+            
+            // Determine the correct to option for PostCSS by doing a bit of a dance
             let to;
 
             if(!outputOptions.file && !outputOptions.dir) {
-                to = path.join(process.cwd(), assetFileNames);
+                to = path.join(processor.options.cwd, assetFileNames);
             } else {
                 to = path.join(
                     outputOptions.dir ? outputOptions.dir : path.dirname(outputOptions.file),
@@ -151,87 +150,83 @@ module.exports = (opts) => {
                 );
             }
 
-            // calculate JS usage of CSS modules since rollup throws away most of that info
-            Object.entries(bundles).forEach(([ entry, bundle ]) => {
-                const name = path.basename(entry, path.extname(entry));
+            // Build chunk dependency graph so it can be walked in order later to
+            // Allow for outputting CSS alongside chunks as optimally as possible
+            const usage = new Graph();
 
-                const file = {
-                    name,
-                    base : path.join(path.dirname(entry), name),
-                    css  : new Set(),
-                };
+            Object.entries(chunks).forEach(([ entry, chunk ]) => {
+                const { imports, dynamicImports } = chunk;
 
-                const { imports, modules } = bundle;
+                usage.addNode(entry, true);
 
-                // Get CSS files being used by each entry point
-                const css = Object.keys(modules).filter(filter);
-
-                // Get dependency chains for each file
-                css.forEach((start) => {
-                    const used = [
-                        ...processor.dependencies(start),
-                        start,
-                    ];
-
-                    used.forEach((dep) => {
-                        if(!usage.has(dep)) {
-                            usage.set(dep, new Set());
-                        }
-
-                        const users = usage.get(dep).add(entry);
-
-                        // CSS included in this chunk only if not already included
-                        // by one of its imports
-                        if(imports.some((f) => users.has(f))) {
-                            return;
-                        }
-
-                        file.css.add(dep);
-                    });
+                [ ...imports, ...dynamicImports ].forEach((dep) => {
+                    usage.addNode(dep, true);
+                    usage.addDependency(entry, dep);
                 });
-
-                files.set(entry, file);
             });
 
-            // TODO: Ensure that all CSS files only appear in a single bundle
-            // Right now dynamic imports are breaking things
+            // Output CSS chunks
+            const out = new Map();
 
-            // console.log("BUNDLES");
-            // Object.entries(bundles).forEach(([ key, bundle ]) => {
-            //     console.log(key);
-            //     // console.log(Object.keys(modules));
-            //     console.log(bundle);
-            // });
-            // console.log("\n\n\n");
+            // Keep track of files that are queued to be written
+            const queued = new Set();
 
-            // console.log("CSS");
-            // console.log(files);
-            // console.log("\n\n\n");
+            usage.overallOrder().forEach((entry) => {
+                const { modules } = chunks[entry];
+                const css = new Set();
 
-            // console.log("USAGE");
-            // console.log(usage);
+                // Get CSS files being used by this chunk
+                const styles = Object.keys(modules).filter(filter);
+                
+                // Get dependency chains for each css file & record them into the usage graph
+                styles.forEach((style) => {
+                    css.add(style);
 
-            for(const [ , { base, name, css }] of files) {
-                if(!css.size) {
-                    continue;
+                    processor.dependencies(style).forEach((file) => css.add(file));
+                });
+                
+                // Set up the CSS chunk to be written
+                out.set(
+                    `${path.basename(entry, path.extname(entry))}.css`,
+                    [ ...css ].filter((file) => !queued.has(file))
+                );
+
+                // Flag all the files that are queued for writing so they don't get double-output
+                css.forEach((file) => queued.add(file));
+            });
+
+            // Shove any unreferenced CSS files onto the beginning of the first chunk
+            // TODO: this is inelegant, but seems reasonable-ish
+            processor.dependencies().forEach((css) => {
+                if(queued.has(css)) {
+                    return;
                 }
 
-                const id = this.emitAsset(`${base}.css`);
+                out.values().next().value.unshift(css);
+                queued.add(css);
+            });
+
+            for(const [ css, files ] of out.entries()) {
+                if(!files.length) {
+                    continue;
+                }
+                
+                const id = this.emitAsset(css);
 
                 log("css output", id);
 
                 /* eslint-disable-next-line no-await-in-loop */
                 const result = await processor.output({
                     to : to.replace(/\[(name|extname)\]/g, (match, field) =>
-                        (field === "name" ? name : ".css")
+                        (field === "name" ? path.basename(css, path.extname(css)) : ".css")
                     ),
-                    files : [ ...css ],
+                    files,
                 });
 
                 this.setAssetSource(id, result.css);
 
                 if(result.map) {
-                    const dest = `${base}.css.map`;
+                    const dest = `${css}.map`;
 
                     log("map output", dest);
 

@@ -36,7 +36,7 @@
     "lerna": "^3.4.3",
     "pegjs": "0.10.0",
     "read-dir-deep": "1.0.4",
-    "rollup": "^0.67.3",
+    "rollup": "github:rollup/rollup#refactor-chunking",
     "rollup-plugin-svelte": "^4.3.2",
     "shelljs": "^0.8.3",
     "svelte": "^2.15.3",

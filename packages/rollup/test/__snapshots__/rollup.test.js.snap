@@ -8,17 +8,21 @@ Array [
 .mc79ab9c62_bar {
     display: none;
 }
-/* packages/rollup/test/specimens/casing/foo.css */",
+/* packages/rollup/test/specimens/casing/foo.css */
+.mc3dd08d27_foo {
+
+    color: #F00;
+}",
   },
   Object {
     "file": "main.js",
-    "text": "var foo$1 = \\"mc79ab9c62_bar mc3dd08d27_foo\\";
+    "text": "var bar$1 = \\"mc79ab9c62_bar\\";
 
-var bar$1 = \\"mc79ab9c62_bar\\";
+var foo$1 = \\"mc79ab9c62_bar mc3dd08d27_foo\\";
 
 var bar$3 = \\"mc79ab9c62_bar\\";
 
-console.log({ foo: foo$1, bar: bar$1, bar2: bar$3 });
+console.log({ foo: foo$1, bar: bar$3, bar2: bar$1 });
 ",
   },
 ]
@@ -56,7 +60,7 @@ exports[`/rollup.js should correctly pass to/from params for relative paths 1`] 
 "/* packages/rollup/test/specimens/relative-paths.css */
 .wooga {
     color: red;
-    background: url(\\"../../../../specimens/folder/to.png\\");
+    background: url(\\"../../../specimens/folder/to.png\\");
 }
 "
 `;
@@ -103,7 +107,7 @@ Object {
   "mappings": "AAAA,+CAAC;AAED;IACI,WAAW;CACd",
   "names": Array [],
   "sources": Array [
-    "../../../../specimens/simple.css",
+    "../../../specimens/simple.css",
   ],
   "sourcesContent": Array [
     "@value str: \\"string\\";
@@ -341,39 +345,4 @@ console.log(css);
   ],
   "version": 3,
 }
-`;
-
-exports[`/rollup.js shouldn't over-remove files from an existing processor instance 1`] = `
-"var css = {
-    \\"a\\": \\"c a\\"
-};
-
-var css$1 = {
-    \\"b\\": \\"c b\\"
-};
-
-console.log(css, css$1);
-"
-`;
-
-exports[`/rollup.js shouldn't over-remove files from an existing processor instance 2`] = `
-"/* packages/rollup/test/specimens/repeated-references/d.css */
-.d {
-    color: darkblue;
-}
-/* packages/rollup/test/specimens/repeated-references/c.css */
-.c {
-    color: cadetblue;
-}
-/* packages/rollup/test/specimens/repeated-references/b.css */
-.b {
-    
-    color: blue;
-}
-/* packages/rollup/test/specimens/repeated-references/a.css */
-.a {
-
-    color: red;
-}
-"
 `;

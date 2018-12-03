@@ -160,8 +160,6 @@ describe("/rollup.js", () => {
             const bundle = await rollup({
                 experimentalCodeSplitting,
 
-                // treeshake : false,
-
                 input : [
                     require.resolve("./specimens/dynamic-imports/a.js"),
                     require.resolve("./specimens/dynamic-imports/b.js"),

@@ -29,7 +29,7 @@ const map = false;
 const sourcemap = false;
 
 describe("/rollup.js", () => {
-    beforeAll(() => shell.rm("-rf", prefix("./output/rollup/*")));
+    beforeAll(() => shell.rm("-rf", prefix("./output/*")));
     
     it("should be a function", () =>
         expect(typeof plugin).toBe("function")
@@ -79,10 +79,10 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : prefix(`./output/rollup/css/simple.js`),
+            file : prefix(`./output/css/simple.js`),
         });
 
-        expect(read("./rollup/css/assets/simple.css")).toMatchSnapshot();
+        expect(read("./css/assets/simple.css")).toMatchSnapshot();
     });
 
     it("should handle assetFileNames being undefined", async () => {
@@ -120,10 +120,10 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : prefix(`./output/rollup/relative-paths/relative-paths.js`),
+            file : prefix(`./output/relative-paths/relative-paths.js`),
         });
 
-        expect(read("./rollup/relative-paths/assets/relative-paths.css")).toMatchSnapshot();
+        expect(read("./relative-paths/assets/relative-paths.css")).toMatchSnapshot();
     });
 
     it("should avoid generating empty CSS", async () => {
@@ -139,10 +139,10 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : prefix(`./output/rollup/no-css/no-css.js`),
+            file : prefix(`./output/no-css/no-css.js`),
         });
 
-        expect(exists("./output/rollup/no-css/assets/no-css.css")).toBe(false);
+        expect(exists("./output/no-css/assets/no-css.css")).toBe(false);
     });
 
     it("should generate JSON", async () => {
@@ -159,10 +159,10 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : prefix(`./output/rollup/json/simple.js`),
+            file : prefix(`./output/json/simple.js`),
         });
         
-        expect(read("./rollup/json/assets/exports.json")).toMatchSnapshot();
+        expect(read("./json/assets/exports.json")).toMatchSnapshot();
     });
     
     it("should generate JSON with a custom name", async () => {
@@ -179,10 +179,10 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : prefix(`./output/rollup/json-named/simple.js`),
+            file : prefix(`./output/json-named/simple.js`),
         });
         
-        expect(read("./rollup/json-named/assets/custom.json")).toMatchSnapshot();
+        expect(read("./json-named/assets/custom.json")).toMatchSnapshot();
     });
 
     it("should provide named exports", async () => {
@@ -251,16 +251,16 @@ describe("/rollup.js", () => {
         await bundle.write({
             format,
             assetFileNames,
-            file : prefix(`./output/rollup/external-source-maps/simple.js`),
+            file : prefix(`./output/external-source-maps/simple.js`),
         });
 
         // Have to parse it into JSON so the propertyMatcher can exclude the file property
         // since it is a hash value and changes constantly
-        expect(JSON.parse(read("./rollup/external-source-maps/assets/simple.css.map"))).toMatchSnapshot({
+        expect(JSON.parse(read("./external-source-maps/assets/simple.css.map"))).toMatchSnapshot({
             file : expect.any(String),
         });
 
-        expect(read("./rollup/external-source-maps/assets/simple.css")).toMatchSnapshot();
+        expect(read("./external-source-maps/assets/simple.css")).toMatchSnapshot();
     });
     
     it("should warn & not export individual keys when they are not valid identifiers", async () => {
@@ -346,10 +346,10 @@ describe("/rollup.js", () => {
             format,
             sourcemap,
 
-            file : prefix(`./output/rollup/no-maps/no-maps.js`),
+            file : prefix(`./output/no-maps/no-maps.js`),
         });
         
-        expect(read("./rollup/no-maps/assets/no-maps.css")).toMatchSnapshot();
+        expect(read("./no-maps/assets/no-maps.css")).toMatchSnapshot();
     });
 
     it("should respect the CSS dependency tree", async () => {
@@ -368,11 +368,11 @@ describe("/rollup.js", () => {
             assetFileNames,
             sourcemap,
 
-            file : prefix(`./output/rollup/dependencies/dependencies.js`),
+            file : prefix(`./output/dependencies/dependencies.js`),
         });
 
-        expect(read("./rollup/dependencies/dependencies.js")).toMatchSnapshot();
-        expect(read("./rollup/dependencies/assets/dependencies.css")).toMatchSnapshot();
+        expect(read("./dependencies/dependencies.js")).toMatchSnapshot();
+        expect(read("./dependencies/assets/dependencies.css")).toMatchSnapshot();
     });
     
     it("should accept an existing processor instance", async () => {
@@ -401,39 +401,10 @@ describe("/rollup.js", () => {
             sourcemap,
             assetFileNames,
             
-            file : prefix(`./output/rollup/existing-processor/existing-processor.js`),
+            file : prefix(`./output/existing-processor/existing-processor.js`),
         });
 
-        expect(read("./rollup/existing-processor/assets/existing-processor.css")).toMatchSnapshot();
-    });
-
-    it("shouldn't over-remove files from an existing processor instance", async () => {
-        const processor = new Processor({
-            namer,
-            map,
-        });
-
-        await processor.file(require.resolve("./specimens/repeated-references/b.css"));
-        
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/repeated-references/a.js"),
-            plugins : [
-                plugin({
-                    processor,
-                }),
-            ],
-        });
-
-        await bundle.write({
-            format,
-            sourcemap,
-            assetFileNames,
-            
-            file : prefix(`./output/rollup/repeated-references/repeated-references.js`),
-        });
-
-        expect(read("./rollup/repeated-references/repeated-references.js")).toMatchSnapshot();
-        expect(read("./rollup/repeated-references/assets/repeated-references.css")).toMatchSnapshot();
+        expect(read("./existing-processor/assets/existing-processor.css")).toMatchSnapshot();
     });
 
     it("should output a proxy in dev mode", async () => {
@@ -513,10 +484,10 @@ describe("/rollup.js", () => {
                 format,
                 assetFileNames,
                 sourcemap,
-                file : prefix(`./output/rollup/casing/main.js`),
+                file : prefix(`./output/casing/main.js`),
             });
 
-            expect(readdir("./rollup/casing")).toMatchSnapshot();
+            expect(readdir("./casing")).toMatchSnapshot();
         });
     });
 
@@ -531,7 +502,7 @@ describe("/rollup.js", () => {
                 plugins : [
                     plugin({
                         namer,
-                        css    : prefix(`./output/rollup/errors.css`),
+                        css    : prefix(`./output/errors.css`),
                         before : [ error ],
                     }),
                 ],
@@ -545,7 +516,7 @@ describe("/rollup.js", () => {
                 plugins : [
                     plugin({
                         namer,
-                        css   : prefix(`./output/rollup/errors.css`),
+                        css   : prefix(`./output/errors.css`),
                         after : [ error ],
                     }),
                 ],
@@ -560,14 +531,14 @@ describe("/rollup.js", () => {
                 plugins : [
                     plugin({
                         namer,
-                        css  : prefix(`./output/rollup/errors.css`),
+                        css  : prefix(`./output/errors.css`),
                         done : [ error ],
                     }),
                 ],
             })
             .then((bundle) => bundle.write({
                 format,
-                file : prefix(`./output/rollup/done-error.js`),
+                file : prefix(`./output/done-error.js`),
             }))
         );
     });
