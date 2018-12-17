@@ -204,7 +204,7 @@ Array [
 exports[`/rollup.js code splitting shouldn't use entry hashes as part of the CSS file names 1`] = `
 Array [
   Object {
-    "file": "assets\\\\simple-8d1bcf7b.css",
+    "file": "assets/simple-8d1bcf7b.css",
     "text": "/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;

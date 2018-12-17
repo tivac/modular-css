@@ -3,7 +3,7 @@
 exports[`/rollup.js case sensitivity tests should remove repeated references that point at the same files 1`] = `
 Array [
   Object {
-    "file": "assets\\\\main.css",
+    "file": "assets/main.css",
     "text": "/* packages/rollup/test/specimens/casing/bar.css */
 .mc79ab9c62_bar {
     display: none;
@@ -59,7 +59,7 @@ console.log(fooga);
 exports[`/rollup.js should correctly handle hashed output 1`] = `
 Array [
   Object {
-    "file": "assets\\\\hashes-8d1bcf7b.css",
+    "file": "assets/hashes-8d1bcf7b.css",
     "text": "/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
