@@ -172,7 +172,7 @@ module.exports = (opts) => {
             const queued = new Set();
 
             usage.overallOrder().forEach((entry) => {
-                const { modules } = chunks[entry];
+                const { modules, name } = chunks[entry];
                 const css = new Set();
 
                 // Get CSS files being used by this chunk
@@ -184,10 +184,14 @@ module.exports = (opts) => {
 
                     processor.dependencies(style).forEach((file) => css.add(file));
                 });
+
+                // Want to use source chunk name when code-splitting, otherwise match
+                // bundle name
+                const identifier = outputOptions.dir ? name : entry;
                 
                 // Set up the CSS chunk to be written
                 out.set(
-                    `${path.basename(entry, path.extname(entry))}.css`,
+                    `${path.basename(identifier, path.extname(identifier))}.css`,
                     [ ...css ].filter((file) => !queued.has(file))
                 );
 

@@ -125,6 +125,25 @@ describe("/rollup.js", () => {
 
         expect(read("./relative-paths/assets/relative-paths.css")).toMatchSnapshot();
     });
+    
+    it("should correctly handle hashed output", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/simple.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    map,
+                }),
+            ],
+        });
+
+        await bundle.write({
+            format,
+            file : prefix(`./output/hashes/hashes.js`),
+        });
+
+        expect(readdir("./hashes")).toMatchSnapshot();
+    });
 
     it("should avoid generating empty CSS", async () => {
         const bundle = await rollup({

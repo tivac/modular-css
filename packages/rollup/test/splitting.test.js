@@ -216,5 +216,34 @@ describe("/rollup.js", () => {
 
             expect(dir("./json-splitting/assets")).toMatchSnapshot();
         });
+
+        it("shouldn't use entry hashes as part of the CSS file names", async () => {
+            const bundle = await rollup({
+                experimentalCodeSplitting,
+
+                input : [
+                    require.resolve("./specimens/simple.js")
+                ],
+                
+                plugins : [
+                    plugin({
+                        namer,
+                        map,
+                    }),
+                ],
+
+            });
+
+            await bundle.write({
+                format,
+                sourcemap,
+
+                entryFileNames : "[name].[hash].js",
+                
+                dir : prefix(`./output/no-hash-names/`),
+            });
+
+            expect(dir("./no-hash-names")).toMatchSnapshot();
+        });
     });
 });
