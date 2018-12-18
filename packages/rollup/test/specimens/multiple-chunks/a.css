@@ -1,0 +1,5 @@
+.a {
+    composes: shared from "./shared.css";
+
+    color: aqua;
+}

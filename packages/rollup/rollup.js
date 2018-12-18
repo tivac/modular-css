@@ -137,7 +137,7 @@ module.exports = (opts) => {
             }
 
             const { assetFileNames = "" } = outputOptions;
-            
+
             // Determine the correct to option for PostCSS by doing a bit of a dance
             let to;
 
@@ -171,13 +171,15 @@ module.exports = (opts) => {
             // Keep track of files that are queued to be written
             const queued = new Set();
 
+
             usage.overallOrder().forEach((entry) => {
-                const { modules, name } = chunks[entry];
+                const { modules, name, fileName } = chunks[entry];
                 const css = new Set();
+                let counter = 1;
 
                 // Get CSS files being used by this chunk
                 const styles = Object.keys(modules).filter(filter);
-                
+
                 // Get dependency chains for each css file & record them into the usage graph
                 styles.forEach((style) => {
                     css.add(style);
@@ -185,13 +187,17 @@ module.exports = (opts) => {
                     processor.dependencies(style).forEach((file) => css.add(file));
                 });
 
-                // Want to use source chunk name when code-splitting, otherwise match
-                // bundle name
-                const identifier = outputOptions.dir ? name : entry;
-                
+                // Want to use source chunk name when code-splitting, otherwise match bundle name
+                let identifier = outputOptions.dir ? name : path.basename(entry, path.extname(entry));
+
+                // Replicate rollup chunk name de-duping logic here since that isn't exposed for us
+                while(out.has(identifier)) {
+                    identifier = `${identifier}${++counter}`;
+                }
+
                 // Set up the CSS chunk to be written
                 out.set(
-                    `${path.basename(identifier, path.extname(identifier))}.css`,
+                    identifier,
                     [ ...css ].filter((file) => !queued.has(file))
                 );
 
@@ -210,19 +216,19 @@ module.exports = (opts) => {
                 queued.add(css);
             });
 
-            for(const [ css, files ] of out.entries()) {
+            for(const [ name, files ] of out.entries()) {
                 if(!files.length) {
                     continue;
                 }
-                
-                const id = this.emitAsset(css);
+
+                const id = this.emitAsset(`${name}.css`);
 
                 log("css output", id);
 
                 /* eslint-disable-next-line no-await-in-loop */
                 const result = await processor.output({
                     to : to.replace(/\[(name|extname)\]/g, (match, field) =>
-                        (field === "name" ? path.basename(css, path.extname(css)) : ".css")
+                        (field === "name" ? name : ".css")
                     ),
                     files,
                 });
@@ -230,7 +236,7 @@ module.exports = (opts) => {
                 this.setAssetSource(id, result.css);
 
                 if(result.map) {
-                    const dest = `${css}.map`;
+                    const dest = `${name}.css.map`;
 
                     log("map output", dest);
 

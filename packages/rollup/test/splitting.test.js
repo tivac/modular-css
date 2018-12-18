@@ -224,7 +224,7 @@ describe("/rollup.js", () => {
                 input : [
                     require.resolve("./specimens/simple.js")
                 ],
-                
+
                 plugins : [
                     plugin({
                         namer,
@@ -239,11 +239,39 @@ describe("/rollup.js", () => {
                 sourcemap,
 
                 entryFileNames : "[name].[hash].js",
-                
+
                 dir : prefix(`./output/no-hash-names/`),
             });
 
             expect(dir("./no-hash-names")).toMatchSnapshot();
+        });
+
+        it("should dedupe chunk names using rollup's incrementing counter logic", async () => {
+            const bundle = await rollup({
+                experimentalCodeSplitting,
+
+                input : [
+                    require.resolve("./specimens/multiple-chunks/a.js"),
+                    require.resolve("./specimens/multiple-chunks/b.js"),
+                ],
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map,
+                    }),
+                ],
+
+            });
+
+            await bundle.write({
+                format,
+                sourcemap,
+
+                dir : prefix(`./output/multiple-chunks/`),
+            });
+
+            expect(dir("./multiple-chunks")).toMatchSnapshot();
         });
     });
 });

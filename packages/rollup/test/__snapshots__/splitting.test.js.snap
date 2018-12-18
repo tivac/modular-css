@@ -1,5 +1,89 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/rollup.js code splitting should dedupe chunk names using rollup's incrementing counter logic 1`] = `
+Array [
+  Object {
+    "file": "a.js",
+    "text": "import { a as common } from './chunk-c1a8c5ee.js';
+
+var css = {
+    \\"a\\": \\"shared a\\"
+};
+
+console.log(css, common);
+
+const c = import('./chunk-928a7e8e.js');
+
+c.then(console.log);
+",
+  },
+  Object {
+    "file": "assets/a-92d8d302.css",
+    "text": "/* packages/rollup/test/specimens/multiple-chunks/a.css */
+.a {
+
+    color: aqua;
+}
+",
+  },
+  Object {
+    "file": "assets/b-912c273a.css",
+    "text": "/* packages/rollup/test/specimens/multiple-chunks/b.css */
+.b {
+
+    color: blue;
+}
+",
+  },
+  Object {
+    "file": "assets/chunk-6aa4dec1.css",
+    "text": "/* packages/rollup/test/specimens/multiple-chunks/constants.css */ /* packages/rollup/test/specimens/multiple-chunks/shared.css */
+.shared { color: salmon; }
+
+.other { color: blue; }
+",
+  },
+  Object {
+    "file": "assets/chunk2-5c2ce32d.css",
+    "text": "/* packages/rollup/test/specimens/multiple-chunks/c.css */
+.c {
+
+    color: coral;
+}
+",
+  },
+  Object {
+    "file": "b.js",
+    "text": "import { a as common } from './chunk-c1a8c5ee.js';
+
+var css = {
+    \\"b\\": \\"shared b\\"
+};
+
+console.log(css, common);
+",
+  },
+  Object {
+    "file": "chunk-928a7e8e.js",
+    "text": "import { a as common } from './chunk-c1a8c5ee.js';
+
+var css = {
+    \\"c\\": \\"shared c\\"
+};
+
+console.log(css, common);
+",
+  },
+  Object {
+    "file": "chunk-c1a8c5ee.js",
+    "text": "var common = \\"common\\";
+
+export { common as a };
+",
+  },
+]
+`;
+
 exports[`/rollup.js code splitting should ouput only 1 JSON file 1`] = `
 Array [
   Object {
