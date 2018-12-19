@@ -3,22 +3,7 @@
 exports[`/rollup.js code splitting should dedupe chunk names using rollup's incrementing counter logic 1`] = `
 Array [
   Object {
-    "file": "a.js",
-    "text": "import { a as common } from './chunk-c1a8c5ee.js';
-
-var css = {
-    \\"a\\": \\"shared a\\"
-};
-
-console.log(css, common);
-
-const c = import('./chunk-928a7e8e.js');
-
-c.then(console.log);
-",
-  },
-  Object {
-    "file": "assets/a-92d8d302.css",
+    "file": "a.css",
     "text": "/* packages/rollup/test/specimens/multiple-chunks/a.css */
 .a {
 
@@ -27,7 +12,7 @@ c.then(console.log);
 ",
   },
   Object {
-    "file": "assets/b-912c273a.css",
+    "file": "b.css",
     "text": "/* packages/rollup/test/specimens/multiple-chunks/b.css */
 .b {
 
@@ -36,7 +21,7 @@ c.then(console.log);
 ",
   },
   Object {
-    "file": "assets/chunk-6aa4dec1.css",
+    "file": "chunk.css",
     "text": "/* packages/rollup/test/specimens/multiple-chunks/constants.css */ /* packages/rollup/test/specimens/multiple-chunks/shared.css */
 .shared { color: salmon; }
 
@@ -44,41 +29,12 @@ c.then(console.log);
 ",
   },
   Object {
-    "file": "assets/chunk2-5c2ce32d.css",
+    "file": "chunk2.css",
     "text": "/* packages/rollup/test/specimens/multiple-chunks/c.css */
 .c {
 
     color: coral;
 }
-",
-  },
-  Object {
-    "file": "b.js",
-    "text": "import { a as common } from './chunk-c1a8c5ee.js';
-
-var css = {
-    \\"b\\": \\"shared b\\"
-};
-
-console.log(css, common);
-",
-  },
-  Object {
-    "file": "chunk-928a7e8e.js",
-    "text": "import { a as common } from './chunk-c1a8c5ee.js';
-
-var css = {
-    \\"c\\": \\"shared c\\"
-};
-
-console.log(css, common);
-",
-  },
-  Object {
-    "file": "chunk-c1a8c5ee.js",
-    "text": "var common = \\"common\\";
-
-export { common as a };
 ",
   },
 ]

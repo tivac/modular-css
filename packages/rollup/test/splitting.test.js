@@ -18,18 +18,17 @@ function error(root) {
 error.postcssPlugin = "error-plugin";
 
 const assetFileNames = "assets/[name][extname]";
+const chunkFileNames = "[name].js";
 const format = "es";
 const map = false;
 const sourcemap = false;
 const json = true;
+const experimentalCodeSplitting = true;
 
 describe("/rollup.js", () => {
     beforeAll(() => shell.rm("-rf", prefix("./output/*")));
 
     describe("code splitting", () => {
-        const experimentalCodeSplitting = true;
-        const chunkFileNames = "[name].js";
-
         it("should support splitting up CSS files", async () => {
             const bundle = await rollup({
                 experimentalCodeSplitting,
@@ -268,10 +267,13 @@ describe("/rollup.js", () => {
                 format,
                 sourcemap,
 
+                assetFileNames,
+                chunkFileNames,
+
                 dir : prefix(`./output/multiple-chunks/`),
             });
 
-            expect(dir("./multiple-chunks")).toMatchSnapshot();
+            expect(dir("./multiple-chunks/assets")).toMatchSnapshot();
         });
     });
 });
