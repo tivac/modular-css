@@ -197,6 +197,8 @@ class Processor {
         const results = [];
 
         for(const dep of files) {
+            this._log("_after()", dep);
+
             // eslint-disable-next-line no-await-in-loop
             const result = await this._after.process(
                 // NOTE: the call to .clone() is really important here, otherwise this call
@@ -296,7 +298,7 @@ class Processor {
             const file = this._files[dep];
 
             if(!file.processed) {
-                this._log("_add() processing", dep);
+                this._log("_process()", dep);
 
                 file.processed = this._process.process(
                     file.result,
@@ -350,6 +352,8 @@ class Processor {
 
         this._graph.addNode(name);
 
+        this._log("_before()", name);
+
         const file = this._files[name] = {
             text,
             exports : false,
@@ -378,13 +382,11 @@ class Processor {
 
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
-            this._graph.dependenciesOf(name).reduce((promises, dependency) => {
-                if(!this._files[dependency]) {
-                    promises.push(this.file(dependency));
-                }
-
-                return promises;
-            }, [])
+            this._graph.dependenciesOf(name).map((dependency) => (
+                this._files[dependency] ?
+                        this._files[dependency].result :
+                        this.file(dependency)
+            ))
         );
     }
 }

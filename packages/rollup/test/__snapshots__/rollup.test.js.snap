@@ -184,7 +184,12 @@ Array [
   ],
   Array [
     "[processor]",
-    "_add() processing",
+    "_before()",
+    "packages/rollup/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "_process()",
     "packages/rollup/test/specimens/simple.css",
   ],
   Array [
@@ -194,6 +199,11 @@ Array [
   ],
   Array [
     "[processor]",
+    "_after()",
+    "packages/rollup/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
     "file()",
     "packages/processor/test/specimens/start.css",
   ],
@@ -204,6 +214,11 @@ Array [
   ],
   Array [
     "[processor]",
+    "_before()",
+    "packages/processor/test/specimens/start.css",
+  ],
+  Array [
+    "[processor]",
     "file()",
     "packages/processor/test/specimens/local.css",
   ],
@@ -214,6 +229,11 @@ Array [
   ],
   Array [
     "[processor]",
+    "_before()",
+    "packages/processor/test/specimens/local.css",
+  ],
+  Array [
+    "[processor]",
     "file()",
     "packages/processor/test/specimens/folder/folder.css",
   ],
@@ -224,17 +244,22 @@ Array [
   ],
   Array [
     "[processor]",
-    "_add() processing",
+    "_before()",
     "packages/processor/test/specimens/folder/folder.css",
   ],
   Array [
     "[processor]",
-    "_add() processing",
+    "_process()",
+    "packages/processor/test/specimens/folder/folder.css",
+  ],
+  Array [
+    "[processor]",
+    "_process()",
     "packages/processor/test/specimens/local.css",
   ],
   Array [
     "[processor]",
-    "_add() processing",
+    "_process()",
     "packages/processor/test/specimens/start.css",
   ],
   Array [
@@ -249,8 +274,33 @@ Array [
   ],
   Array [
     "[processor]",
-    "_add() processing",
+    "_before()",
     "packages/processor/test/specimens/string.css",
+  ],
+  Array [
+    "[processor]",
+    "_process()",
+    "packages/processor/test/specimens/string.css",
+  ],
+  Array [
+    "[processor]",
+    "_after()",
+    "packages/processor/test/specimens/folder/folder.css",
+  ],
+  Array [
+    "[processor]",
+    "_after()",
+    "packages/processor/test/specimens/string.css",
+  ],
+  Array [
+    "[processor]",
+    "_after()",
+    "packages/processor/test/specimens/local.css",
+  ],
+  Array [
+    "[processor]",
+    "_after()",
+    "packages/processor/test/specimens/start.css",
   ],
 ]
 `;

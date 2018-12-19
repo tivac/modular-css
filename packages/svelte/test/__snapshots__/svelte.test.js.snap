@@ -441,6 +441,11 @@ Array [
   ],
   Array [
     "[processor]",
+    "_before()",
+    "packages/svelte/test/specimens/external.css",
+  ],
+  Array [
+    "[processor]",
     "file()",
     "packages/svelte/test/specimens/simple.css",
   ],
@@ -451,6 +456,11 @@ Array [
   ],
   Array [
     "[processor]",
+    "_before()",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
     "file()",
     "packages/svelte/test/specimens/dependencies.css",
   ],
@@ -461,17 +471,22 @@ Array [
   ],
   Array [
     "[processor]",
-    "_add() processing",
-    "packages/svelte/test/specimens/simple.css",
-  ],
-  Array [
-    "[processor]",
-    "_add() processing",
+    "_before()",
     "packages/svelte/test/specimens/dependencies.css",
   ],
   Array [
     "[processor]",
-    "_add() processing",
+    "_process()",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "_process()",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "_process()",
     "packages/svelte/test/specimens/external.css",
   ],
   Array [
@@ -482,6 +497,21 @@ Array [
   Array [
     "[svelte]",
     "[\\"color\\",\\"flex\\",\\"wrapper\\",\\"hd\\",\\"bd\\",\\"text\\",\\"active\\"]",
+  ],
+  Array [
+    "[processor]",
+    "_after()",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "_after()",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "_after()",
+    "packages/svelte/test/specimens/external.css",
   ],
 ]
 `;
@@ -509,6 +539,11 @@ Array [
   ],
   Array [
     "[processor]",
+    "_before()",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[processor]",
     "file()",
     "packages/svelte/test/specimens/simple.css",
   ],
@@ -519,6 +554,11 @@ Array [
   ],
   Array [
     "[processor]",
+    "_before()",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
     "file()",
     "packages/svelte/test/specimens/dependencies.css",
   ],
@@ -529,17 +569,22 @@ Array [
   ],
   Array [
     "[processor]",
-    "_add() processing",
-    "packages/svelte/test/specimens/simple.css",
-  ],
-  Array [
-    "[processor]",
-    "_add() processing",
+    "_before()",
     "packages/svelte/test/specimens/dependencies.css",
   ],
   Array [
     "[processor]",
-    "_add() processing",
+    "_process()",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "_process()",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "_process()",
     "packages/svelte/test/specimens/style.html",
   ],
   Array [
@@ -550,6 +595,21 @@ Array [
   Array [
     "[svelte]",
     "[\\"flex\\",\\"wrapper\\",\\"hd\\",\\"bd\\",\\"text\\",\\"active\\"]",
+  ],
+  Array [
+    "[processor]",
+    "_after()",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "_after()",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "_after()",
+    "packages/svelte/test/specimens/style.html",
   ],
 ]
 `;
