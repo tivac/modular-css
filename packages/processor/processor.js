@@ -2,7 +2,7 @@
 
 const fs   = require("fs");
 const path = require("path");
-    
+
 const Graph     = require("dependency-graph").DepGraph;
 const postcss   = require("postcss");
 const slug      = require("unique-slug");
@@ -106,28 +106,28 @@ class Processor {
     // Add a file on disk to the dependency graph
     file(file) {
         const id = this._normalize(file);
-        
+
         this._log("file()", id);
-        
+
         return this._add(id, fs.readFileSync(id, "utf8"));
     }
-    
+
     // Add a file by name + contents to the dependency graph
     async string(file, text) {
         const id = this._normalize(file);
-        
+
         this._log("string()", id);
 
         return this._add(id, text);
     }
-    
+
     // Remove a file from the dependency graph
     remove(input) {
         // Only want files actually in the array
         const files = (Array.isArray(input) ? input : [ input ])
             .map(this._normalize)
             .filter((file) => this._graph.hasNode(file));
-        
+
         if(!files.length) {
             return files;
         }
@@ -142,7 +142,7 @@ class Processor {
 
         return files;
     }
-    
+
     // Get the dependency order for a file or the entire tree
     dependencies(file) {
         if(file) {
@@ -153,7 +153,7 @@ class Processor {
 
         return this._graph.overallOrder();
     }
-    
+
     // Get the dependant files for a file
     dependents(file) {
         if(!file) {
@@ -161,21 +161,21 @@ class Processor {
         }
 
         const id = this._normalize(file);
-        
+
         return this._graph.dependantsOf(id);
     }
-    
+
     // Get the ultimate output for specific files or the entire tree
     async output(args = false) {
         let { files } = args;
-        
+
         if(!Array.isArray(files)) {
             files = tiered(this._graph);
         }
 
         // Throw normalize values into a Set to remove dupes
         files = new Set(files.map(this._normalize));
-        
+
         // Then turn it back into array because the iteration story is better
         files = [ ...files.values() ];
 
@@ -195,15 +195,17 @@ class Processor {
         // Have to do this every time because target file might be different!
         //
         const results = [];
-        
+
         for(const dep of files) {
+            this._log("_after()", dep);
+
             // eslint-disable-next-line no-await-in-loop
             const result = await this._after.process(
                 // NOTE: the call to .clone() is really important here, otherwise this call
                 // modifies the .result root itself and you process URLs multiple times
                 // See https://github.com/tivac/modular-css/issues/35
                 this._files[dep].result.root.clone(),
-                
+
                 params(this, {
                     from : dep,
                     to   : args.to,
@@ -239,9 +241,9 @@ class Processor {
             });
 
             root.append([ comment ].concat(result.root.nodes));
-            
+
             const idx = root.index(comment);
-            
+
             // Need to manually insert a newline after the comment, but can only
             // do that via whatever comes after it for some reason?
             // I'm not clear why comment nodes lack a `.raws.after` property
@@ -251,17 +253,19 @@ class Processor {
                 root.nodes[idx + 1].raws.before = "\n";
             }
         });
-        
+
         const result = await this._done.process(
             root,
             params(this, args)
         );
 
-        result.compositions = output.compositions(this._options.cwd, this);
-            
+        Object.defineProperty(result, "compositions", {
+            get : () => output.compositions(this)
+        });
+
         return result;
     }
-    
+
     // Expose files
     get files() {
         return this._files;
@@ -270,6 +274,15 @@ class Processor {
     // Expose combined options object
     get options() {
         return this._options;
+    }
+
+    // Return all the compositions for the files loaded into the processor instance
+    get compositions() {
+        // Ensure all files are fully-processed first
+        return Promise.all(
+            Object.values(this._files).map(({ result }) => result)
+        )
+        .then(() => output.compositions(this));
     }
 
     // Take a file id and some text, walk it for dependencies, then
@@ -285,7 +298,7 @@ class Processor {
             const file = this._files[dep];
 
             if(!file.processed) {
-                this._log("_add() processing", dep);
+                this._log("_process()", dep);
 
                 file.processed = this._process.process(
                     file.result,
@@ -298,9 +311,9 @@ class Processor {
 
             // eslint-disable-next-line no-await-in-loop
             file.result = await file.processed;
-            
+
             const { result } = file;
-            
+
             file.exports = Object.assign(
                 Object.create(null),
                 // export @value entries
@@ -339,6 +352,8 @@ class Processor {
 
         this._graph.addNode(name);
 
+        this._log("_before()", name);
+
         const file = this._files[name] = {
             text,
             exports : false,
@@ -350,7 +365,7 @@ class Processor {
                 })
             ),
         };
-        
+
         await file.result;
 
         // Add all the found dependencies to the graph
@@ -367,13 +382,11 @@ class Processor {
 
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
-            this._graph.dependenciesOf(name).reduce((promises, dependency) => {
-                if(!this._files[dependency]) {
-                    promises.push(this.file(dependency));
-                }
-                
-                return promises;
-            }, [])
+            this._graph.dependenciesOf(name).map((dependency) => (
+                this._files[dependency] ?
+                        this._files[dependency].result :
+                        this.file(dependency)
+            ))
         );
     }
 }

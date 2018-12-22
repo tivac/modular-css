@@ -1,4 +1,6 @@
 .foo {
     composes: bar from "./bar.css";
     composes: bar from "../Casing/bar.css";
+
+    color: #F00;
 }

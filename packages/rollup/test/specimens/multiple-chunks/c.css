@@ -1,0 +1,5 @@
+.c {
+    composes: shared from "./shared.css";
+
+    color: coral;
+}

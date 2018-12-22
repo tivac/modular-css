@@ -3,10 +3,9 @@
 const selector = require("postcss-selector-parser");
 const value    = require("postcss-value-parser");
 const escape   = require("escape-string-regexp");
-const each     = require("lodash/forEach");
 const get      = require("lodash/get");
 const Graph    = require("dependency-graph").DepGraph;
-    
+
 const namespaced = require("./values-namespaced.js");
 
 module.exports = (css, { opts, messages }) => {
@@ -22,8 +21,10 @@ module.exports = (css, { opts, messages }) => {
     messages
         .filter(({ plugin }) => plugin === namespaced.postcssPlugin)
         .forEach((msg) =>
-            each(msg.values, (children, ns) =>
-                each(children, (details, child) => (values[`${ns}.${child}`] = details))
+            Object.entries(msg.values).forEach(([ ns, children ]) =>
+                Object.entries(children).forEach(([ child, details ]) =>
+                    (values[`${ns}.${child}`] = details)
+                )
             )
         );
 
@@ -54,17 +55,17 @@ module.exports = (css, { opts, messages }) => {
     const replacer = (prop) =>
         (thing) => {
             const parsed = value(thing[prop]);
-            
+
             parsed.walk((node) => {
                 if(node.type !== "word") {
                     return;
                 }
-                
+
                 // Replace any value instances
                 node.value = node.value.replace(matchRegex, (match) => {
                     // Source map support
                     thing.source = values[match].source;
-                    
+
                     return values[match].value;
                 });
             });
@@ -73,7 +74,7 @@ module.exports = (css, { opts, messages }) => {
         };
 
     // Walk through all values & build dependency graph
-    each(values, (details, name) => {
+    Object.entries(values).forEach(([ name, details ]) => {
         graph.addNode(name);
 
         value(details.value).walk((node) => {
@@ -89,7 +90,7 @@ module.exports = (css, { opts, messages }) => {
     // Walk through values in dependency order & update any inter-dependent values
     graph.overallOrder().forEach((name) => {
         const parsed = value(values[name].value);
-        
+
         parsed.walk((node) => {
             if(node.type !== "word" || !values[node.value]) {
                 return;

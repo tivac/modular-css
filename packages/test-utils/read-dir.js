@@ -11,7 +11,7 @@ module.exports = (cwd) =>
         const files = read.sync(dir);
 
         return files.sort().map((file) => ({
-            file,
+            file : file.replace(/\\/g, "/"),
             text : fs.readFileSync(path.join(dir, file), "utf8"),
         }));
     };

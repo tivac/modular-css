@@ -1,4 +1,4 @@
-/* eslint max-statements: [ 1, 20 ] */
+/* eslint-disable max-statements */
 "use strict";
 
 const path = require("path");
@@ -7,24 +7,15 @@ const { keyword } = require("esutils");
 const utils = require("rollup-pluginutils");
 const dedent = require("dedent");
 const slash = require("slash");
+const Graph = require("dependency-graph").DepGraph;
 
 const Processor = require("@modular-css/processor");
-const output    = require("@modular-css/processor/lib/output.js");
+const output = require("@modular-css/processor/lib/output.js");
 
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
 const emptyMappings = {
     mappings : "",
-};
-
-const makeFile = (details) => {
-    const { entry } = details;
-    const name = path.basename(entry, path.extname(entry));
-
-    return Object.assign(details, {
-        base : path.join(path.dirname(entry), name),
-        name,
-    });
 };
 
 module.exports = (opts) => {
@@ -37,7 +28,7 @@ module.exports = (opts) => {
         dev          : false,
         verbose      : false,
     }, opts);
-        
+
     const filter = utils.createFilter(options.include, options.exclude);
 
     const { styleExport, done, map, dev, verbose } = options;
@@ -50,7 +41,7 @@ module.exports = (opts) => {
         // But default to true otherwise
         options.map = !styleExport;
     }
-    
+
     const processor = options.processor || new Processor(options);
 
     return {
@@ -93,26 +84,27 @@ module.exports = (opts) => {
             const { details, exports } = await processor.string(id, code);
 
             const exported = output.join(exports);
+            const relative = path.relative(processor.options.cwd, id);
 
             const out = [
-                dev ? dedent(`
-                    const data = ${JSON.stringify(exported)};
+                ...processor.dependencies(id).map((dep) => `import ${JSON.stringify(dep)};`),
+                dev ?
+                    dedent(`
+                        const data = ${JSON.stringify(exported)};
 
-                    export default new Proxy(data, {
-                        get(tgt, key) {
-                            if(key in tgt) {
-                                return tgt[key];
+                        export default new Proxy(data, {
+                            get(tgt, key) {
+                                if(key in tgt) {
+                                    return tgt[key];
+                                }
+
+                                throw new ReferenceError(
+                                    key + " is not exported by " + ${JSON.stringify(slash(relative))}
+                                );
                             }
-
-                            throw new ReferenceError(
-                                key + " is not exported by " + ${JSON.stringify(
-                                    slash(path.relative(process.cwd(), id))
-                                )}
-                            );
-                        }
-                    })
-                `) :
-                `export default ${JSON.stringify(exported, null, 4)};`,
+                        })
+                    `) :
+                    `export default ${JSON.stringify(exported, null, 4)};`,
             ];
 
             if(options.namedExports) {
@@ -127,7 +119,7 @@ module.exports = (opts) => {
                 });
             }
 
-            if(options.styleExport) {
+            if(styleExport) {
                 out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
             }
 
@@ -138,22 +130,19 @@ module.exports = (opts) => {
             };
         },
 
-        async generateBundle(outputOptions, bundles) {
+        async generateBundle(outputOptions, chunks) {
             // styleExport disables all output file generation
             if(styleExport) {
                 return;
             }
 
-            const usage = new Map();
-            const common = new Map();
-            const files = [];
-
             const { assetFileNames = "" } = outputOptions;
-            
+
+            // Determine the correct to option for PostCSS by doing a bit of a dance
             let to;
 
             if(!outputOptions.file && !outputOptions.dir) {
-                to = path.join(process.cwd(), assetFileNames);
+                to = path.join(processor.options.cwd, assetFileNames);
             } else {
                 to = path.join(
                     outputOptions.dir ? outputOptions.dir : path.dirname(outputOptions.file),
@@ -161,111 +150,109 @@ module.exports = (opts) => {
                 );
             }
 
-            // First pass is used to calculate JS usage of CSS dependencies
-            Object.entries(bundles).forEach(([ entry, bundle ]) => {
-                const file = makeFile({
-                    entry,
-                    css : new Set(),
+            // Build chunk dependency graph so it can be walked in order later to
+            // Allow for outputting CSS alongside chunks as optimally as possible
+            const usage = new Graph();
+
+            Object.entries(chunks).forEach(([ entry, chunk ]) => {
+                const { imports, dynamicImports } = chunk;
+
+                usage.addNode(entry, true);
+
+                [ ...imports, ...dynamicImports ].forEach((dep) => {
+                    usage.addNode(dep, true);
+                    usage.addDependency(entry, dep);
                 });
-
-                const { modules } = bundle;
-
-                // Get CSS files being used by each entry point
-                const css = Object.keys(modules).filter(filter);
-
-                // Get dependency chains for each file
-                css.forEach((start) => {
-                    const used = [
-                        ...processor.dependencies(start),
-                        start,
-                    ];
-
-                    used.forEach((dep) => {
-                        file.css.add(dep);
-
-                        if(!usage.has(dep)) {
-                            usage.set(dep, new Set());
-                        }
-
-                        usage.get(dep).add(entry);
-                    });
-                });
-
-                files.push(file);
             });
 
-            if(files.length === 1) {
-                // Only one entry file means we only need one bundle.
-                files[0].css = new Set(processor.dependencies());
-            } else {
-                // Multiple bundles means ref-counting to find the shared deps
-                // Second pass removes any dependencies appearing in multiple bundles
-                files.forEach((file) => {
-                    const { css } = file;
+            // Output CSS chunks
+            const out = new Map();
 
-                    file.css = new Set([ ...css ].filter((dep) => {
-                        if(usage.get(dep).size > 1) {
-                            common.set(dep, true);
+            // Keep track of files that are queued to be written
+            const queued = new Set();
 
-                            return false;
-                        }
 
-                        return true;
-                    }));
+            usage.overallOrder().forEach((entry) => {
+                const { modules, name, fileName } = chunks[entry];
+                const css = new Set();
+                let counter = 1;
+
+                // Get CSS files being used by this chunk
+                const styles = Object.keys(modules).filter(filter);
+
+                // Get dependency chains for each css file & record them into the usage graph
+                styles.forEach((style) => {
+                    css.add(style);
+
+                    processor.dependencies(style).forEach((file) => css.add(file));
                 });
 
-                // Add any other files that weren't part of a bundle to the common chunk
-                Object.keys(processor.files).forEach((file) => {
-                    if(!usage.has(file)) {
-                        common.set(file, true);
-                    }
+                // Want to use source chunk name when code-splitting, otherwise match bundle name
+                let identifier = outputOptions.dir ? name : path.basename(entry, path.extname(entry));
+
+                // Replicate rollup chunk name de-duping logic here since that isn't exposed for us
+                while(out.has(identifier)) {
+                    identifier = `${identifier}${++counter}`;
+                }
+
+                // Set up the CSS chunk to be written
+                out.set(
+                    identifier,
+                    [ ...css ].filter((file) => !queued.has(file))
+                );
+
+                // Flag all the files that are queued for writing so they don't get double-output
+                css.forEach((file) => queued.add(file));
+            });
+
+            // Shove any unreferenced CSS files onto the beginning of the first chunk
+            // TODO: this is inelegant, but seems reasonable-ish
+            processor.dependencies().forEach((css) => {
+                if(queued.has(css)) {
+                    return;
+                }
+
+                out.values().next().value.unshift(css);
+                queued.add(css);
+            });
+
+            for(const [ name, files ] of out.entries()) {
+                if(!files.length) {
+                    continue;
+                }
+
+                const id = this.emitAsset(`${name}.css`);
+
+                log("css output", id);
+
+                /* eslint-disable-next-line no-await-in-loop */
+                const result = await processor.output({
+                    to : to.replace(/\[(name|extname)\]/g, (match, field) =>
+                        (field === "name" ? name : ".css")
+                    ),
+                    files,
                 });
 
-                // Common chunk only emitted if necessary
-                if(common.size) {
-                    files.push(makeFile({
-                        entry : options.common,
-                        css   : new Set([ ...common.keys() ]),
-                    }));
+                this.setAssetSource(id, result.css);
+
+                if(result.map) {
+                    const dest = `${name}.css.map`;
+
+                    log("map output", dest);
+
+                    this.emitAsset(dest, result.map.toString());
                 }
             }
 
-            await Promise.all(
-                files
-                .filter(({ css }) => css.size)
-                .map(async ({ base, name, css }, idx) => {
-                    const id = this.emitAsset(`${base}.css`);
+            if(options.json) {
+                const dest = typeof options.json === "string" ? options.json : "exports.json";
 
-                    log("css output", id);
+                log("json output", dest);
 
-                    const result = await processor.output({
-                        to : to.replace(/\[(name|extname)\]/g, (match, field) =>
-                            (field === "name" ? name : ".css")
-                        ),
-                        files : [ ...css ],
-                    });
+                const compositions = await processor.compositions;
 
-                    this.setAssetSource(id, result.css);
-
-                    // result.compositions always includes all the info, so it
-                    // doesn't actually matter which result we use. First one seems reasonable!
-                    if(options.json && idx === 0) {
-                        const file = typeof options.json === "string" ? options.json : "exports.json";
-
-                        log("json output", file);
-                        
-                        this.emitAsset(file, JSON.stringify(result.compositions, null, 4));
-                    }
-
-                    if(result.map) {
-                        const file = `${base}.css.map`;
-
-                        log("map output", file);
-
-                        this.emitAsset(file, result.map.toString());
-                    }
-                })
-            );
+                this.emitAsset(dest, JSON.stringify(compositions, null, 4));
+            }
         },
     };
 };

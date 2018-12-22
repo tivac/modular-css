@@ -1,9 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/rollup.js code splitting should dedupe chunk names using rollup's incrementing counter logic 1`] = `
+Array [
+  Object {
+    "file": "a.css",
+    "text": "/* packages/rollup/test/specimens/multiple-chunks/a.css */
+.a {
+
+    color: aqua;
+}
+",
+  },
+  Object {
+    "file": "b.css",
+    "text": "/* packages/rollup/test/specimens/multiple-chunks/b.css */
+.b {
+
+    color: blue;
+}
+",
+  },
+  Object {
+    "file": "chunk.css",
+    "text": "/* packages/rollup/test/specimens/multiple-chunks/constants.css */ /* packages/rollup/test/specimens/multiple-chunks/shared.css */
+.shared { color: salmon; }
+
+.other { color: blue; }
+",
+  },
+  Object {
+    "file": "chunk2.css",
+    "text": "/* packages/rollup/test/specimens/multiple-chunks/c.css */
+.c {
+
+    color: coral;
+}
+",
+  },
+]
+`;
+
 exports[`/rollup.js code splitting should ouput only 1 JSON file 1`] = `
 Array [
   Object {
-    "file": "common.css",
+    "file": "chunk.css",
     "text": "/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
@@ -43,30 +83,36 @@ Array [
 
     color: aqua;
 }
+/* packages/rollup/test/specimens/dynamic-imports/f.css */
+.f {
+    color: floralwhite;
+}
+/* packages/rollup/test/specimens/dynamic-imports/d.css */
+.d {
+    
+    color: darkred;
+}
 ",
   },
   Object {
     "file": "b.css",
-    "text": "/* packages/rollup/test/specimens/dynamic-imports/b.css */
+    "text": "/* packages/rollup/test/specimens/dynamic-imports/e.css */
+.e {
+    color: #EEE;
+}
+/* packages/rollup/test/specimens/dynamic-imports/b.css */
 .b {
+    
     color: blue;
 }
 ",
   },
   Object {
-    "file": "c.css",
+    "file": "chunk.css",
     "text": "/* packages/rollup/test/specimens/dynamic-imports/c.css */
 .c {
     
     color: cyan;
-}
-",
-  },
-  Object {
-    "file": "common.css",
-    "text": "/* packages/rollup/test/specimens/dynamic-imports/d.css */
-.d {
-    color: darkred;
 }
 ",
   },
@@ -94,7 +140,7 @@ Array [
 ",
   },
   Object {
-    "file": "common.css",
+    "file": "shared.css",
     "text": "/* packages/rollup/test/specimens/manual-chunks/d.css */
 /* packages/rollup/test/specimens/manual-chunks/c.css */
 .c {
@@ -109,7 +155,7 @@ Array [
 exports[`/rollup.js code splitting should support splitting up CSS files 1`] = `
 Array [
   Object {
-    "file": "common.css",
+    "file": "chunk.css",
     "text": "/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
@@ -150,18 +196,14 @@ Array [
   },
   Object {
     "file": "chunk.css",
-    "text": "/* packages/rollup/test/specimens/css-chunks/c.css */
-.c {
-
-    color: cyan;
-}
-",
-  },
-  Object {
-    "file": "common.css",
     "text": "/* packages/rollup/test/specimens/css-chunks/shared.css */
 .shared {
     color: snow;
+}
+/* packages/rollup/test/specimens/css-chunks/c.css */
+.c {
+
+    color: cyan;
 }
 ",
   },
@@ -194,6 +236,29 @@ Array [
 .c {
     color: cyan;
 }
+",
+  },
+]
+`;
+
+exports[`/rollup.js code splitting shouldn't use entry hashes as part of the CSS file names 1`] = `
+Array [
+  Object {
+    "file": "assets/simple-8d1bcf7b.css",
+    "text": "/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+",
+  },
+  Object {
+    "file": "simple.15bac60f.js",
+    "text": "var css = {
+    \\"str\\": \\"\\\\\\"string\\\\\\"\\",
+    \\"fooga\\": \\"fooga\\"
+};
+
+console.log(css);
 ",
   },
 ]
