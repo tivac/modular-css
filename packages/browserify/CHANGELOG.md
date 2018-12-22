@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [18.0.0](https://github.com/tivac/modular-css/compare/v17.1.2...v18.0.0) (2018-12-22)
+
+
+### Features
+
+* Rework rollup support ([#531](https://github.com/tivac/modular-css/issues/531)) ([fce87fe](https://github.com/tivac/modular-css/commit/fce87fe))
+
+
+### BREAKING CHANGES
+
+* changed rollup plugin CSS output so it better matches rollup output chunk format & bumped minimum rollup version to 0.68.0
+
+
+
+
+
 ## [17.1.2](https://github.com/tivac/modular-css/compare/v17.1.1...v17.1.2) (2018-11-26)
 
 **Note:** Version bump only for package @modular-css/browserify
