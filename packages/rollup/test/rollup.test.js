@@ -13,6 +13,8 @@ const prefix  = require("@modular-css/test-utils/prefix.js")(__dirname);
 const namer   = require("@modular-css/test-utils/namer.js");
 const logs    = require("@modular-css/test-utils/logs.js");
 
+require("@modular-css/test-utils/rollup-code-snapshot.js");
+
 const Processor = require("@modular-css/processor");
 
 const plugin = require("../rollup.js");
@@ -28,8 +30,6 @@ const format = "es";
 const map = false;
 const sourcemap = false;
 
-const code = (result) => result.map((chunk) => (chunk.isAsset ? false : chunk.code)).filter(Boolean);
-
 describe("/rollup.js", () => {
     beforeAll(() => shell.rm("-rf", prefix("./output/*")));
     
@@ -37,7 +37,7 @@ describe("/rollup.js", () => {
         expect(typeof plugin).toBe("function")
     );
     
-    it.only("should generate exports", async () => {
+    it("should generate exports", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
@@ -49,7 +49,7 @@ describe("/rollup.js", () => {
         
         const result = await bundle.generate({ format });
 
-        expect(code(result)).toMatchSnapshot();
+        expect(result).toMatchRollupCodeSnapshot();
     });
     
     it("should be able to tree-shake results", async () => {
@@ -64,7 +64,7 @@ describe("/rollup.js", () => {
 
         const result = await bundle.generate({ format });
         
-        expect(result.code).toMatchSnapshot();
+        expect(result).toMatchRollupCodeSnapshot();
     });
 
     it("should generate CSS", async () => {
@@ -218,7 +218,7 @@ describe("/rollup.js", () => {
 
         const result = await bundle.generate({ format });
 
-        expect(result.code).toMatchSnapshot();
+        expect(result).toMatchRollupCodeSnapshot();
     });
 
     it("should provide style export", async () => {
@@ -234,7 +234,7 @@ describe("/rollup.js", () => {
 
         const result = await bundle.generate({ format });
 
-        expect(result.code).toMatchSnapshot();
+        expect(result).toMatchRollupCodeSnapshot();
     });
 
     it("should warn that styleExport and done aren't compatible", async () => {
@@ -300,7 +300,7 @@ describe("/rollup.js", () => {
             assetFileNames,
         });
 
-        expect(result.code).toMatchSnapshot();
+        expect(result).toMatchRollupCodeSnapshot();
     });
 
     it("should allow disabling of named exports", async () => {
@@ -319,7 +319,7 @@ describe("/rollup.js", () => {
             assetFileNames,
         });
 
-        expect(result.code).toMatchSnapshot();
+        expect(result).toMatchRollupCodeSnapshot();
     });
     
     it("shouldn't disable sourcemap generation", async () => {
@@ -333,14 +333,15 @@ describe("/rollup.js", () => {
             ],
         });
 
-        const result = await bundle.generate({
+        const { output } = await bundle.generate({
             format,
             assetFileNames,
 
             sourcemap : true,
         });
 
-        expect(result.map).toMatchSnapshot();
+        // Find first chunk w/ a .map property, then compare it to snapshot
+        expect(output.find((chunk) => chunk.map).map).toMatchSnapshot();
     });
     
     it("should not output sourcemaps when they are disabled", async () => {
@@ -353,14 +354,6 @@ describe("/rollup.js", () => {
                 }),
             ],
         });
-
-        const source = await bundle.generate({
-            format,
-            assetFileNames,
-            sourcemap,
-        });
-
-        expect(source.map).toBe(null);
 
         await bundle.write({
             assetFileNames,
@@ -441,7 +434,7 @@ describe("/rollup.js", () => {
 
         const result = await bundle.generate({ format });
 
-        expect(result.code).toMatchSnapshot();
+        expect(result).toMatchRollupCodeSnapshot();
     });
 
     it("should log in verbose mode", async () => {
