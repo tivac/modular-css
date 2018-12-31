@@ -394,6 +394,8 @@ console.log(css, fooga);
 "
 `;
 
+exports[`/rollup.js should warn & not export individual keys when they are not valid identifiers 3`] = `undefined`;
+
 exports[`/rollup.js should warn that styleExport and done aren't compatible 1`] = `
 Array [
   Array [

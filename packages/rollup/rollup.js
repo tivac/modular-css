@@ -123,10 +123,12 @@ module.exports = (opts) => {
                 out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
             }
 
+            processor.dependencies(id).forEach((dependency) => this.addWatchFile(dependency));
+
             return {
-                code         : out.join("\n"),
-                map          : emptyMappings,
-                dependencies : processor.dependencies(id),
+                code : out.join("\n"),
+                map  : emptyMappings,
+                // dependencies : processor.dependencies(id),
             };
         },
 

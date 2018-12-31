@@ -28,6 +28,8 @@ const format = "es";
 const map = false;
 const sourcemap = false;
 
+const code = (result) => result.map((chunk) => (chunk.isAsset ? false : chunk.code)).filter(Boolean);
+
 describe("/rollup.js", () => {
     beforeAll(() => shell.rm("-rf", prefix("./output/*")));
     
@@ -35,7 +37,7 @@ describe("/rollup.js", () => {
         expect(typeof plugin).toBe("function")
     );
     
-    it("should generate exports", async () => {
+    it.only("should generate exports", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
@@ -46,8 +48,8 @@ describe("/rollup.js", () => {
         });
         
         const result = await bundle.generate({ format });
-        
-        expect(result.code).toMatchSnapshot();
+
+        expect(code(result)).toMatchSnapshot();
     });
     
     it("should be able to tree-shake results", async () => {
