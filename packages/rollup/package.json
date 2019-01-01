@@ -29,6 +29,6 @@
     "slash": "^2.0.0"
   },
   "peerDependencies": {
-    "rollup": ">=0.68"
+    "rollup": "^1"
   }
 }
