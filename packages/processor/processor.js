@@ -143,6 +143,27 @@ class Processor {
         return files;
     }
 
+    // Mark a file and everything that depends on it as invalid so
+    // it can be overwritten
+    invalidate(input) {
+        if(!input) {
+            throw new Error("invalidate() requires a file argument");
+        }
+        
+        // Only want files actually in the array
+        const source = this._normalize(input);
+
+        if(!this._graph.hasNode(source)) {
+            throw new Error(`Unknown file: ${input}`);
+        }
+
+        const deps = this.dependents(source);
+
+        deps.concat(source).forEach((file) => {
+            this._files[file].valid = false;
+        });
+    }
+
     // Get the dependency order for a file or the entire tree
     dependencies(file) {
         if(file) {
@@ -345,8 +366,8 @@ class Processor {
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
     async _walk(name, text) {
-        // No need to re-process files
-        if(this._files[name]) {
+        // No need to re-process files unless they've been marked invalid
+        if(this._files[name] && this._files[name].valid) {
             return;
         }
 
@@ -358,6 +379,7 @@ class Processor {
             text,
             exports : false,
             values  : false,
+            valid   : true,
             result  : this._before.process(
                 text,
                 params(this, {

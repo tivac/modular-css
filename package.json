@@ -21,7 +21,7 @@
   "devDependencies": {
     "@modular-css/test-utils": "file:packages/test-utils",
     "@modular-css/website": "file:packages/www",
-    "@tivac/eslint-config": "^2.2.2",
+    "@tivac/eslint-config": "^2.3.0",
     "browserify": "^16.2.3",
     "cli-tester": "2.0.0",
     "dedent": "0.7.0",
@@ -36,7 +36,7 @@
     "lerna": "^3.8.0",
     "pegjs": "0.10.0",
     "read-dir-deep": "1.0.4",
-    "rollup": "^0.68.1",
+    "rollup": "^1.0.0",
     "rollup-plugin-svelte": "^5.0.0",
     "shelljs": "^0.8.3",
     "svelte": "^2.16.0",

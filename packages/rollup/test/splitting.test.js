@@ -23,7 +23,6 @@ const format = "es";
 const map = false;
 const sourcemap = false;
 const json = true;
-const experimentalCodeSplitting = true;
 
 describe("/rollup.js", () => {
     beforeAll(() => shell.rm("-rf", prefix("./output/*")));
@@ -31,8 +30,6 @@ describe("/rollup.js", () => {
     describe("code splitting", () => {
         it("should support splitting up CSS files", async () => {
             const bundle = await rollup({
-                experimentalCodeSplitting,
-
                 input : [
                     require.resolve("./specimens/simple.js"),
                     require.resolve("./specimens/dependencies.js"),
@@ -61,8 +58,6 @@ describe("/rollup.js", () => {
 
         it("should support splitting up CSS files w/ shared assets", async () => {
             const bundle = await rollup({
-                experimentalCodeSplitting,
-
                 input : [
                     require.resolve("./specimens/css-chunks/a.js"),
                     require.resolve("./specimens/css-chunks/b.js"),
@@ -91,8 +86,6 @@ describe("/rollup.js", () => {
 
         it("shouldn't put bundle-specific CSS in common.css", async () => {
             const bundle = await rollup({
-                experimentalCodeSplitting,
-
                 input : [
                     require.resolve("./specimens/common-splitting/a.js"),
                     require.resolve("./specimens/common-splitting/c.js"),
@@ -121,8 +114,6 @@ describe("/rollup.js", () => {
 
         it("should support manual chunks", async () => {
             const bundle = await rollup({
-                experimentalCodeSplitting,
-
                 input : [
                     require.resolve("./specimens/manual-chunks/a.js"),
                     require.resolve("./specimens/manual-chunks/b.js"),
@@ -157,8 +148,6 @@ describe("/rollup.js", () => {
 
         it("should support dynamic imports", async () => {
             const bundle = await rollup({
-                experimentalCodeSplitting,
-
                 input : [
                     require.resolve("./specimens/dynamic-imports/a.js"),
                     require.resolve("./specimens/dynamic-imports/b.js"),
@@ -187,8 +176,6 @@ describe("/rollup.js", () => {
 
         it("should ouput only 1 JSON file", async () => {
             const bundle = await rollup({
-                experimentalCodeSplitting,
-
                 input : [
                     require.resolve("./specimens/simple.js"),
                     require.resolve("./specimens/dependencies.js"),
@@ -218,8 +205,6 @@ describe("/rollup.js", () => {
 
         it("shouldn't use entry hashes as part of the CSS file names", async () => {
             const bundle = await rollup({
-                experimentalCodeSplitting,
-
                 input : [
                     require.resolve("./specimens/simple.js")
                 ],
@@ -247,8 +232,6 @@ describe("/rollup.js", () => {
 
         it("should dedupe chunk names using rollup's incrementing counter logic", async () => {
             const bundle = await rollup({
-                experimentalCodeSplitting,
-
                 input : [
                     require.resolve("./specimens/multiple-chunks/a.js"),
                     require.resolve("./specimens/multiple-chunks/b.js"),
