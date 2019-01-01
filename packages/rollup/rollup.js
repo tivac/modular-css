@@ -175,7 +175,7 @@ module.exports = (opts) => {
 
 
             usage.overallOrder().forEach((entry) => {
-                const { modules, name, fileName } = chunks[entry];
+                const { modules, name } = chunks[entry];
                 const css = new Set();
                 let counter = 1;
 
