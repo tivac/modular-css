@@ -199,14 +199,14 @@ Array [
     "packages/rollup/test/specimens/simple.css",
   ],
   Array [
-    "[rollup]",
-    "css output",
-    "40a365e7",
-  ],
-  Array [
     "[processor]",
     "_after()",
     "packages/rollup/test/specimens/simple.css",
+  ],
+  Array [
+    "[rollup]",
+    "css output",
+    "simple.css",
   ],
   Array [
     "[processor]",

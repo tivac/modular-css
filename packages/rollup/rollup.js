@@ -67,11 +67,8 @@ module.exports = (opts) => {
 
             log("file changed", file);
 
-            processor.dependents(file).forEach((dep) =>
-                processor.remove(dep)
-            );
-
-            processor.remove(file);
+            // TODO: should the file be removed if it's gone?
+            processor.invalidate(file);
         },
 
         async transform(code, id) {
@@ -128,7 +125,6 @@ module.exports = (opts) => {
             return {
                 code : out.join("\n"),
                 map  : emptyMappings,
-                // dependencies : processor.dependencies(id),
             };
         },
 
@@ -172,7 +168,6 @@ module.exports = (opts) => {
 
             // Keep track of files that are queued to be written
             const queued = new Set();
-
 
             usage.overallOrder().forEach((entry) => {
                 const { modules, name } = chunks[entry];
@@ -225,8 +220,6 @@ module.exports = (opts) => {
 
                 const id = this.emitAsset(`${name}.css`);
 
-                log("css output", id);
-
                 /* eslint-disable-next-line no-await-in-loop */
                 const result = await processor.output({
                     to : to.replace(/\[(name|extname)\]/g, (match, field) =>
@@ -234,6 +227,8 @@ module.exports = (opts) => {
                     ),
                     files,
                 });
+
+                log("css output", `${name}.css`);
 
                 this.setAssetSource(id, result.css);
 
