@@ -87,6 +87,62 @@ exports[`/processor.js API .file() should process an absolute file 4`] = `
 "
 `;
 
+exports[`/processor.js API .invalidate() should invalidate a relative file 1`] = `
+Array [
+  Array [
+    "simple.css",
+    false,
+  ],
+]
+`;
+
+exports[`/processor.js API .invalidate() should invalidate all dependents as well 1`] = `
+Array [
+  Array [
+    "packages/processor/test/specimens/start.css",
+    false,
+  ],
+  Array [
+    "packages/processor/test/specimens/local.css",
+    false,
+  ],
+  Array [
+    "packages/processor/test/specimens/folder/folder.css",
+    false,
+  ],
+]
+`;
+
+exports[`/processor.js API .invalidate() should invalidate an absolute file 1`] = `
+Array [
+  Array [
+    "packages/processor/test/specimens/simple.css",
+    false,
+  ],
+]
+`;
+
+exports[`/processor.js API .invalidate() should reprocess invalidated files 1`] = `
+Array [
+  Array [
+    "packages/processor/test/specimens/start.css",
+    true,
+  ],
+  Array [
+    "packages/processor/test/specimens/local.css",
+    true,
+  ],
+  Array [
+    "packages/processor/test/specimens/folder/folder.css",
+    true,
+  ],
+]
+`;
+
+exports[`/processor.js API .invalidate() should throw if an invalid file is passed 1`] = `"Unknown file: nope.css"`;
+
+exports[`/processor.js API .invalidate() should throw if no file is passed 1`] = `"invalidate() requires a file argument"`;
+
 exports[`/processor.js API .output() should allow for seperate source map output 1`] = `
 Object {
   "file": "to.css",
