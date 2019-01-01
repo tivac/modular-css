@@ -19,8 +19,9 @@ Rollup support for [`modular-css`](https://github.com/tivac/modular-css).
 
 ## ⚠️Rollup Version support⚠️
 
-Due to API changes, certain major versions of this plugin will require a specific minimum rollup version.
+Due to API changes, certain major versions of this plugin will require a specific minimum rollup version. This is expressed within the `peerDependency` field in `package.json` and replicated here for ease of reference.
 
+- `@modular-css/rollup@19` requires `rollup@1.0.0`
 - `@modular-css/rollup@18` requires `rollup@0.68.0`
 - `@modular-css/rollup@15` requires `rollup@0.65.0`
 - `@modular-css/rollup@11` requires `rollup@0.60.0`
