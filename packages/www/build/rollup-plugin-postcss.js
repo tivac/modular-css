@@ -3,6 +3,8 @@
 const path = require("path");
 
 const webpack = require("webpack");
+
+// Comes with webpack, hence not in package.json :-\
 const MemoryFS = require("memory-fs");
 
 const postcss = require.resolve("postcss");
