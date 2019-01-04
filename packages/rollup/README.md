@@ -94,6 +94,10 @@ import { styles } from "./styles.css";
 
 Enable `styleExport` will also disable the plugin from emitting any assets as well as sourcemaps (unless you explicitly opt-in to sourcemaps via the `map` option)
 
+### `processor`
+
+Pass an already-instantiated `Processor` instance to the rollup plugin. It will then add any files found when traversing the modules to it and both the rollup-discovered and any already-existing files will be output in the final CSS.
+
 ### Shared Options
 
 All other options are passed to the underlying `Processor` instance, see [Options](../processor/README.md#options).
