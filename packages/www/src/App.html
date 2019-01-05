@@ -1,7 +1,7 @@
 {#each [ ...files.entries() ] as [ file, text ] (file)}
 <div>
     <h2>{file}</h2>
-    <textarea on:input="ontextinput(file, this.value)">{text}</textarea>
+    <textarea on:input="writefile(file, this.value)">{text}</textarea>
 </div>
 {/each}
 <br />
@@ -10,6 +10,8 @@
 <code><pre>{JSON.stringify(json, null, 4)}</pre></code>
 
 <script>
+import fs from "fs";
+
 import Processor from "@modular-css/processor";
 import debounce from "p-debounce";
 
@@ -27,10 +29,12 @@ export default {
     }),
 
     methods : {
-        ontextinput(file, text) {
+        writefile(file, text) {
             const { files } = this.get();
 
             files.set(file, text);
+
+            fs.writeFileSync(file, text, "utf8");
 
             if(file in processor.files) {
                 processor.invalidate(file);
@@ -67,7 +71,9 @@ export default {
 
         const { files } = this.get();
 
-        files.forEach((text, file) => this.process(file, text));
+        files.forEach((text, file) => {
+            this.writefile(file, text);
+        });
     },
 };
 </script>
