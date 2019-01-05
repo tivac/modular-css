@@ -66,13 +66,29 @@ Passing `to` as part of `args` will be passed along to teh `after` and `done` ho
 
 **WARNING**: Calling `.output()` before any preceeding `.file(...)`/`.string(...)` calls have resolved their returned promises will return a rejected promise. See [usage](#usage) for an example of correct usage.
 
+Includes the following keys that you probably care about:
+
+- `.css`, the generated CSS representing the files being output
+- `.map`, the (optional) source map for the files being output
+- `.compositions`, the selector hierarchies for all the files being output
+
 ### `.remove([files])`
 
 Remove files from the `Processor` instance. Accepts a single file or array of files.
 
+### `.invalidate(file)`
+
+Mark a file (and any files that depend on it) as invalid. If any of those files are then re-added via either `.string()` or `.file()` they will be replaced with the new values instead of using the cached results from the previous run.
+
 ### `.dependencies([file])`
 
 Returns an array of file paths. Accepts a single file argument to get the dependencies for, will return entire dependency graph in order if argument is omitted.
+
+### `.dependents(file)`
+
+Returns an array of file paths. Accepts a single file argument to get dependents for.
+
+###
 
 ## Options
 
