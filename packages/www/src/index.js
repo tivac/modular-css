@@ -1,3 +1,5 @@
-import Processor from "@modular-css/processor";
+import App from "./App.html";
 
-window.p = new Processor({ cwd : "/" });
+new App({
+    target : document.body
+});

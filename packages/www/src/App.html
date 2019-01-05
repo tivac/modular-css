@@ -1,0 +1,73 @@
+{#each [ ...files.entries() ] as [ file, text ] (file)}
+<div>
+    <h2>{file}</h2>
+    <textarea on:input="ontextinput(file, this.value)">{text}</textarea>
+</div>
+{/each}
+<br />
+<code><pre>{css}</pre></code>
+<br />
+<code><pre>{JSON.stringify(json, null, 4)}</pre></code>
+
+<script>
+import Processor from "@modular-css/processor";
+import debounce from "p-debounce";
+
+const processor = new Processor({ cwd : "/" });
+
+let process;
+
+export default {
+    data : () => ({
+        files : new Map([
+            [ "/styles.css", `.foo { color: red; }` ],
+        ]),
+        css  : "",
+        json : "",
+    }),
+
+    methods : {
+        ontextinput(file, text) {
+            const { files } = this.get();
+
+            files.set(file, text);
+
+            if(file in processor.files) {
+                processor.invalidate(file);
+            }
+
+            // Purposefully NOT awaiting here, it'll finish processing eventually
+            // and do the right thing when it finishes, we don't need to worry about it
+            this.process(file, text);
+
+            // trigger reactivity by re-assigning the map over top of itself
+            this.set({
+                files,
+            });
+        }
+    },
+
+    oncreate() {
+        const process = async (...args) => {
+            try {
+                await processor.string(...args);
+
+                const { css, compositions : json } = await processor.output();
+    
+                this.set({
+                    css,
+                    json,
+                });
+            } catch(e) {
+                console.log(e);
+            }
+        };
+
+        this.process = debounce(process, 250);
+
+        const { files } = this.get();
+
+        files.forEach((text, file) => this.process(file, text));
+    },
+};
+</script>

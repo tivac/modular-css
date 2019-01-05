@@ -27,6 +27,7 @@ module.exports = {
         require("rollup-plugin-node-globals")(),
         require("rollup-plugin-node-builtins")(),
         require("rollup-plugin-json")(),
+        require("rollup-plugin-svelte")(),
         
         require("./build/rollup-plugin-html")(),
 
