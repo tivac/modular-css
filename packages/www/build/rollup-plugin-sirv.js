@@ -5,10 +5,6 @@ const polka = require("polka");
 const getport = require("get-port");
 
 module.exports = () => {
-    if(!process.env.ROLLUP_WATCH) {
-        return {};
-    }
-
     let started = false;
     
     return {
@@ -29,6 +25,7 @@ module.exports = () => {
                 .use(assets)
                 .listen(port);
             
+            // eslint-disable-next-line no-console
             console.log(`Server listening on localhost:${port}`);
         }
     };

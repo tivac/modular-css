@@ -36,6 +36,11 @@ module.exports = {
         require("./build/rollup-plugin-html")(),
 
         // Start a local server if in watch mode
-        require("./build/rollup-plugin-sirv.js")(),
+        process.env.ROLLUP_WATCH && require("./build/rollup-plugin-sirv.js")(),
+
+        // Autoreload code injected into bundle if watching
+        process.env.ROLLUP_WATCH && require("rollup-plugin-livereload")({
+            watch : "./dist",
+        }),
     ],
 };
