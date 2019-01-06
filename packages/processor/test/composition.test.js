@@ -50,6 +50,25 @@ describe("/processor.js", () => {
             }
         });
 
+        it("should fail if a composition references a non-existant file from a custom resolver", async () => {
+            processor = new Processor({
+                namer,
+                resolvers : [
+                    (from, file, resolve) => `${resolve(from, file)}a`,
+                ],
+            });
+
+            const file = require.resolve("./specimens/composes.css");
+            
+            try {
+                await processor.file(file);
+            } catch({ message }) {
+                expect(message).toMatch(
+                    `Unable to locate "./folder/folder2.css" from "${file}"`
+                );
+            }
+        });
+
         it("should fail if composes isn't the first property", async () => {
             try {
                 await processor.string(

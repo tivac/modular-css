@@ -27,6 +27,13 @@ module.exports = (css, result) => {
 
         const dependency = opts.resolve(opts.from, parsed.source);
 
+        if(!dependency) {
+            throw rule.error(
+                `Unable to locate "${parsed.source}" from "${opts.from}"`,
+                { word : parsed.source }
+            );
+        }
+
         result.messages.push({
             type : "modular-css",
 
