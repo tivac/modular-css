@@ -5,24 +5,12 @@
   "description": "web site for modular-css",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "predeploy": "npm run dist",
-    "deploy": "surge --project ./gen --domain m-css.com",
-    "dist": "webpack --env=dist --optimize-minimize --define process.env.NODE_ENV=\"'production'\"",
-    "start": "webpack-dev-server",
+    "build": "rollup --config",
+    "start": "rollup --config --watch",
     "test": "echo \"no tests ¯\\_(ツ)_/¯\""
   },
   "author": "Pat Cavit <npm@patcavit.com>",
   "license": "MIT",
-  "dependencies": {
-    "@modular-css/processor": "file:../processor",
-    "clipboard": "1.7.1",
-    "codemirror": "5.39.2",
-    "memory-fs": "0.4.1",
-    "mithril": "1.1.6",
-    "path-parse": "1.0.6",
-    "throttleit": "1.0.0"
-  },
   "devDependencies": {
     "@modular-css/shortnames": "^21.1.1",
     "@modular-css/webpack": "^21.2.0",
