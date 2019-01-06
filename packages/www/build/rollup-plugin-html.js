@@ -10,8 +10,8 @@ const template = `
         <meta charset="utf-8">
         <title>modular-css</title>
 
-        <link href="https://unpkg.com/normalize.css@5.0.0" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Droid+Sans+Mono" rel="stylesheet">
+        <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto" rel="stylesheet">
         <link href="https://unpkg.com/codemirror@5.24.2/lib/codemirror.css" rel="stylesheet" />
         <link href="https://unpkg.com/codemirror@5.24.2/theme/monokai.css" rel="stylesheet" />
 
@@ -35,17 +35,29 @@ module.exports = () => ({
         const styles = [];
         const scripts = [];
 
-        Object.entries(chunks).forEach(([ file, { isAsset }]) => {
+        Object.entries(chunks).forEach(([ file, { isAsset, isEntry }]) => {
             if(isAsset && path.extname(file) === ".css") {
                 return styles.push(file);
             }
 
-            return scripts.push(file);
+            if(isEntry) {
+                return scripts.push(file);
+            }
         });
 
         const html = template
-            .replace("<!-- STYLES -->", styles.map((style) => `<link rel="stylesheet" href="${style} />`).join("\n"))
-            .replace("<!-- SCRIPTS -->", scripts.map((script) => `<script src="${script}"></script>`).join("\n"));
+            .replace(
+                "<!-- STYLES -->",
+                styles.map((style) =>
+                    `<link rel="stylesheet" href="${style}" />`
+                ).join("\n")
+            )
+            .replace(
+                "<!-- SCRIPTS -->",
+                scripts.map((script) =>
+                    `<script src="${script}" type="module"></script>`
+                ).join("\n")
+            );
         
         fs.writeFileSync(path.resolve(__dirname, "../dist/index.html"), html, "utf8");
     },

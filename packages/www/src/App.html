@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="./app.css" />
+
 {#if error}
 <div>
     <code><pre>{error.toString()}</pre></code>
@@ -41,6 +43,8 @@ import path from "path";
 
 import Processor from "@modular-css/processor";
 import debounce from "p-debounce";
+
+import codemirror from "./codemirror.js";
 
 const processor = new Processor({
     cwd : "/",
@@ -120,7 +124,7 @@ export default {
         }
     },
 
-    oncreate() {
+    async oncreate() {
         const output = async (...args) => {
             try {
                 const { css, compositions } = await processor.output();
@@ -145,6 +149,10 @@ export default {
         files.forEach((text, file) => {
             this.updatefile(file, text);
         });
+
+        const CodeMirror = await codemirror();
+
+        console.log(CodeMirror);
     },
 
     onstate({ changed, current, previous }) {
