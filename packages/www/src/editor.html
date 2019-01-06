@@ -1,0 +1,61 @@
+<div class="editor">
+    <textarea bind:value="content"></textarea>
+</div>
+
+<script>
+import fs from "fs";
+
+export default {
+    data : () => ({
+        content : "",
+
+        file : false,
+    }),
+
+    methods : {
+        oninput(content) {
+            const { file } = this.get();
+
+            fs.writeFileSync(file, content, "utf8");
+
+            this.set({
+                content,
+            });
+        },
+    },
+
+    // Read file contents on creation
+    oncreate() {
+        const { file } = this.get();
+
+        try {
+            const content = fs.readFileSync(file, "utf8");
+            
+            this.set({
+                content,
+            });
+        } catch(e) {
+            // NO-OP
+        }
+    },
+
+    onstate({ changed, current, previous }) {
+        if(!changed.content || !previous) {
+            return;
+        }
+
+        const { file, content } = current;
+
+        fs.writeFileSync(file, content, "utf8");
+
+        this.fire("input");
+    },
+
+    // Delete the file on editor destruction
+    ondestroy() {
+        const { file } = this.get();
+
+        fs.unlinkSync(file);
+    },
+};
+</script>

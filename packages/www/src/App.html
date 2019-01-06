@@ -10,11 +10,9 @@
     <button on:click="addfile()">➕</button>
 </div>
 
-{#each [ ...files.entries() ] as [ file, text ] (file)}
-<div>
+{#each [ ...files.values() ] as file (file)}
     <h2>{file} <button on:click="deletefile(file)">♻</button></h2>
-    <textarea on:input="updatefile(file, this.value)">{text}</textarea>
-</div>
+    <Editor {file} on:input="oninput(file)"/>
 {/each}
 
 <div>
@@ -24,7 +22,8 @@
 
 <div>
     <h2>Compositions</h2>
-    {#each Object.entries(compositions) as [ file, props ] (file)}
+    <!-- This is silly, need a better story here... -->
+    {#each Object.entries(compositions).reverse() as [ file, props ] (file)}
     <h4>{file}</h4>
     <dl>
         {#each Object.entries(props) as [ key, value ]}
@@ -44,8 +43,6 @@ import path from "path";
 import Processor from "@modular-css/processor";
 import debounce from "p-debounce";
 
-import codemirror from "./codemirror.js";
-
 const processor = new Processor({
     cwd : "/",
 
@@ -58,10 +55,13 @@ const processor = new Processor({
 let process;
 
 export default {
+    components : {
+        Editor : "./editor.html",
+    },
+
     data : () => ({
-        files : new Map([
-            [ "/styles.css", `.foo { color: red; }` ],
-            [ "/other.css", `.foo { composes: foo from "styles.css"; }` ],
+        files : new Set([
+            "/styles.css",
         ]),
         
         css  : "",
@@ -71,67 +71,40 @@ export default {
     }),
 
     methods : {
+        oninput(file) {
+            this.update(file);
+        },
+
         deletefile(file) {
             const { files } = this.get();
 
             files.delete(file);
 
-            fs.unlinkSync(file);
-
             processor.remove(file);
 
-            this.set({
-                // Trigger redraw
-                files,
+            this.output();
 
-                // Hope for the best!
-                error : false,
-            });
+            // Trigger redraw
+            this.set({ files });
         },
-
-        updatefile(file, text) {
-            const { files } = this.get();
-
-            files.set(file, text);
-
-            fs.writeFileSync(file, text, "utf8");
-
-            if(file in processor.files) {
-                processor.invalidate(file);
-            }
-
-            // Purposefully NOT awaiting here, it'll finish processing eventually
-            // and do the right thing when it finishes, we don't need to worry about it
-            processor.file(file);
-
-            this.set({
-                // trigger reactivity by re-assigning the map over top of itself
-                files,
-
-                // Hope for the best
-                error : false
-            });
-        },
-
+        
         addfile() {
             const { files } = this.get();
 
-            files.set(`/${files.size + 1}.css`, "");
+            files.add(`/${files.size + 1}.css`);
 
-            this.set({
-                files,
-            });
+            this.set({ files });
         }
     },
 
     async oncreate() {
-        const output = async (...args) => {
+        this.output = debounce(async (...args) => {
             try {
                 const { css, compositions } = await processor.output();
-
-                
     
                 return this.set({
+                    error : false,
+
                     css,
                     compositions,
                 });
@@ -140,19 +113,23 @@ export default {
 
                 return this.set({ error });
             }
-        };
+        }, 250);
 
-        this.output = debounce(output, 250);
+        this.update = debounce(async (file) => {
+            if(file in processor.files) {
+                processor.invalidate(file);
+            }
 
-        const { files } = this.get();
+            try {
+                await processor.file(file);
+            } catch(error) {
+                console.error(error);
 
-        files.forEach((text, file) => {
-            this.updatefile(file, text);
-        });
+                return this.set({ error });
+            }
 
-        const CodeMirror = await codemirror();
-
-        console.log(CodeMirror);
+            return this.output();
+        }, 250);
     },
 
     onstate({ changed, current, previous }) {
