@@ -167,7 +167,7 @@ new Processor({
 If you want to provide your own file resolution logic you can pass an array of resolver functions. Each resolver function receives three arguments:
 
 - `src`, the file that included `file`
-- `file, the file path being included by `src`
+- `file`, the file path being included by `src`
 - `resolve`, the default resolver function
 
 Resolver functions should either return an absolute path or a falsey value. They must also be synchronous.
