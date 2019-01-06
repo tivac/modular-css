@@ -12,6 +12,8 @@ Array [
 ]
 `;
 
+exports[`/processor.js API .compositions should return compositions for loaded files 1`] = `Promise {}`;
+
 exports[`/processor.js API .dependencies() should return the dependencies of the specified file 1`] = `
 Array [
   "packages/processor/test/specimens/folder/folder.css",

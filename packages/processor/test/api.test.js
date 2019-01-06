@@ -293,6 +293,14 @@ describe("/processor.js", () => {
             });
         });
 
+        describe(".compositions", () => {
+            it("should return compositions for loaded files", async () => {
+                await processor.file(require.resolve("./specimens/start.css"));
+
+                expect(processor.compositions).toMatchSnapshot();
+            });
+        });
+
         describe("._resolve()", () => {
             it("should run resolvers until a match is found", () => {
                 let ran = false;
