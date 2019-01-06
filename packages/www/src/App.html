@@ -1,3 +1,9 @@
+{#if error}
+<div>
+    <code><pre>{error.toString()}</pre></code>
+</div>
+{/if}
+
 {#each [ ...files.entries() ] as [ file, text ] (file)}
 <div>
     <h2>{file}</h2>
@@ -11,11 +17,19 @@
 
 <script>
 import fs from "fs";
+import path from "path";
 
 import Processor from "@modular-css/processor";
 import debounce from "p-debounce";
 
-const processor = new Processor({ cwd : "/" });
+const processor = new Processor({
+    cwd : "/",
+
+    // Custom file resolver to work around gaps in fake node environment
+    resolvers : [
+        (src, file, resolve) => path.resolve(`/${file}`),
+    ],
+});
 
 let process;
 
@@ -23,9 +37,13 @@ export default {
     data : () => ({
         files : new Map([
             [ "/styles.css", `.foo { color: red; }` ],
+            [ "/other.css", `.foo { composes: foo from "styles.css"; }` ],
         ]),
+        
         css  : "",
         json : "",
+
+        error : false,
     }),
 
     methods : {
@@ -44,9 +62,12 @@ export default {
             // and do the right thing when it finishes, we don't need to worry about it
             this.process(file, text);
 
-            // trigger reactivity by re-assigning the map over top of itself
             this.set({
+                // trigger reactivity by re-assigning the map over top of itself
                 files,
+
+                // Hope for the best
+                error : false
             });
         }
     },
@@ -58,12 +79,14 @@ export default {
 
                 const { css, compositions : json } = await processor.output();
     
-                this.set({
+                return this.set({
                     css,
                     json,
                 });
-            } catch(e) {
-                console.log(e);
+            } catch(error) {
+                console.error(error);
+
+                return this.set({ error });
             }
         };
 
