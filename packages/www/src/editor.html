@@ -13,8 +13,6 @@
 <script>
 import fs from "fs";
 
-const noop = () => {};
-
 export default {
     data : () => ({
         content : "",
@@ -56,14 +54,11 @@ export default {
             this.cm = codemirror.fromTextArea(this.refs.textarea, {
                 lineNumbers : true,
                 lineWrapping : true,
-                indentWithTabs : false,
                 indentUnit : 4,
                 value : content,
                 theme : "mdn-like",
                 mode : "text/css",
             });
-
-            window.cm = this.cm;
 
             this.cm.on("change", () =>
                 this.set({
@@ -83,16 +78,15 @@ export default {
 
             fs.writeFileSync(file, content, "utf8");
 
-            return this.fire("input");
+            this.fire("input");
         }
 
         if(changed.error) {
             const { error : prev } = previous;
             const { error : curr } = current;
             
-            if(prev) {
-                this.cm.removeLineClass(prev.line - 1, "wrap", css.errorLine);
-                this.clear();
+            if(this.clearError) {
+                this.clearError();
             }
 
             if(!curr) {
@@ -100,16 +94,23 @@ export default {
             }
 
             const { line, column, source } = curr;
+            
+            // Mark the offending line
+            this.cm.addLineClass(line - 1, "wrap", css.errorLine);
 
+            // And underline the offending text as best we can
             const marker = this.cm.markText(
                 { line : line - 1, ch : column - 1 },
                 { line : line - 1, ch : column - 1 + source.trimEnd().length },
                 { className : css.errorLocation }
             );
 
-            this.clear = () => marker.clear();
+            // Save a function to clear all the error markers
+            this.clearError = () => {
+                this.cm.removeLineClass(line - 1, "wrap", css.errorLine);
 
-            return this.cm.addLineClass(line - 1, "wrap", css.errorLine);
+                marker.clear();
+            };
         }
     },
 
