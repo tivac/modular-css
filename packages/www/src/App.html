@@ -17,8 +17,16 @@
 {/each}
 
 <div>
-    <h2>CSS</h2>
-    <code><pre>{css}</pre></code>
+    <h2>CSS Output</h2>
+    {#await loading}
+        <div class="loading">Loading editor...</div>
+    {:then _}
+        <div class="output">
+            <textarea ref:output></textarea>
+        </div>
+    {:catch err}
+        <div class="loaderror">Unable to load editor</div>
+    {/await}
 </div>
 
 <div>
@@ -67,6 +75,8 @@ export default {
         compositions : [],
 
         error : false,
+
+        loading : import("./codemirror.js").then((m) => m.default),
     }),
 
     methods : {
@@ -96,7 +106,7 @@ export default {
         }
     },
 
-    async oncreate() {
+    oncreate() {
         this.output = debounce(async (...args) => {
             try {
                 const { css, compositions } = await processor.output();
@@ -108,7 +118,7 @@ export default {
                     compositions,
                 });
             } catch(error) {
-                console.error(error);
+                console.warn("Error generating output", error);
 
                 return this.set({ error });
             }
@@ -122,21 +132,44 @@ export default {
             try {
                 await processor.file(file);
             } catch(error) {
-                console.error(error);
+                console.warn(`Error parsing "${error.file}"`, error);
 
                 return this.set({ error });
             }
 
             return this.output();
         }, 250);
+
+        const { loading } = this.get();
+
+        // Instantiate codemirror once it's loaded
+        loading.then((codemirror) => {
+            this.cm = codemirror.fromTextArea(this.refs.output, {
+                lineNumbers : true,
+                lineWrapping : true,
+                indentUnit : 4,
+                value : "",
+                readOnly : true,
+                theme : "mdn-like",
+                mode : "text/css",
+            });
+        });
     },
 
     onstate({ changed, current, previous }) {
-        if(!changed.files || !previous) {
+        if(!previous) {
             return;
         }
 
-        this.output();
+        if(changed.files) {
+            this.output();
+        }
+
+        if(changed.css) {
+            const { css } = current;
+
+            this.cm.setValue(css);
+        }
     }
 };
 </script>
