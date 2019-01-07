@@ -44,6 +44,8 @@ export default {
         try {
             content = fs.readFileSync(file, "utf8");
             
+            console.log(file, content);
+
             this.set({ content });
         } catch(e) {
             // NO-OP
@@ -51,6 +53,7 @@ export default {
 
         // Instantiate codemirror once it's loaded
         loading.then((codemirror) => {
+            // TODO: why isn't this updating w/ content?
             this.cm = codemirror.fromTextArea(this.refs.textarea, {
                 lineNumbers : true,
                 lineWrapping : true,
@@ -59,6 +62,8 @@ export default {
                 theme : "mdn-like",
                 mode : "text/css",
             });
+
+            console.log(content, this.cm.getValue());
 
             this.cm.on("change", () =>
                 this.set({
@@ -74,6 +79,8 @@ export default {
         }
 
         if(changed.content) {
+            console.log("content changed", current);
+
             const { file, content } = current;
 
             fs.writeFileSync(file, content, "utf8");

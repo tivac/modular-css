@@ -82,12 +82,14 @@ if(location.hash) {
             initialFiles.add(file);
 
             fs.writeFileSync(file, css, "utf8");
-
-            processor.file(file);
         });
     } catch(e) {
         console.warn("Unable to parse state", hash);
     }
+} else {
+    initialFiles = new Set([ "/styles.css "]);
+
+    fs.writeFileSync("/styles.css", "", "utf8");
 }
 
 export default {
@@ -96,9 +98,7 @@ export default {
     },
 
     data : () => ({
-        files : initialFiles || new Set([
-            "/styles.css",
-        ]),
+        files : initialFiles,
         
         css  : "",
         compositions : [],
@@ -162,7 +162,9 @@ export default {
             }
         }, 250);
 
-        this.update = debounce(async (file) => {
+        this.update = async (file) => {
+            console.log("update", file);
+
             if(file in processor.files) {
                 processor.invalidate(file);
             }
@@ -176,9 +178,12 @@ export default {
             }
 
             return this.output();
-        }, 250);
+        };
 
-        const { loading } = this.get();
+        const { files, loading } = this.get();
+
+        // Load files into the processor
+        files.forEach(this.update);
 
         // Instantiate codemirror once it's loaded
         loading.then((codemirror) => {
