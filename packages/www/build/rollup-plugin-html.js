@@ -3,6 +3,8 @@
 const fs = require("fs");
 const path = require("path");
 
+const shell = require("shelljs");
+
 const template = `
 <!DOCTYPE html>
 <html>
@@ -59,6 +61,8 @@ module.exports = () => ({
                 ).join("\n")
             );
         
+        shell.mkdir("-p", path.resolve(__dirname, "../dist"));
+
         fs.writeFileSync(path.resolve(__dirname, "../dist/index.html"), html, "utf8");
     },
 });
