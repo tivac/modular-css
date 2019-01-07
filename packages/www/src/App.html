@@ -49,8 +49,11 @@
 import fs from "fs";
 import path from "path";
 
+window.fs = fs;
+
 import Processor from "@modular-css/processor";
 import debounce from "p-debounce";
+import lz from "lznext";
 
 const processor = new Processor({
     cwd : "/",
@@ -61,13 +64,39 @@ const processor = new Processor({
     ],
 });
 
+let initialFiles;
+
+if(location.hash) {
+    const hash = location.hash.substring(1);
+
+    try {
+        const data = JSON.parse(lz.decompressFromBase64(hash));
+
+        console.log(data);
+
+        initialFiles = new Set();
+
+        // TODO: since .update is never called the editor doesn't know about the file on disk
+        // TODO: Need to solve before persistence can work :(
+        data.forEach(([ file, css ]) => {
+            initialFiles.add(file);
+
+            fs.writeFileSync(file, css, "utf8");
+
+            processor.file(file);
+        });
+    } catch(e) {
+        console.warn("Unable to parse state", hash);
+    }
+}
+
 export default {
     components : {
         Editor : "./editor.html",
     },
 
     data : () => ({
-        files : new Set([
+        files : initialFiles || new Set([
             "/styles.css",
         ]),
         
@@ -109,7 +138,16 @@ export default {
     oncreate() {
         this.output = debounce(async (...args) => {
             try {
+                const { files } = this.get();
                 const { css, compositions } = await processor.output();
+
+                // Update location.hash with fs state
+                const hash = [ ...files.values() ].map((file) => ([
+                    file,
+                    fs.readFileSync(file, "utf8")
+                ]));
+
+                location.hash = lz.compressToBase64(JSON.stringify(hash));
     
                 return this.set({
                     error : false,
