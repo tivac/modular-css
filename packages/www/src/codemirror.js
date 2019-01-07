@@ -1,13 +1,12 @@
 import loadcss from "lazyload-css";
 
-const codemirror = async () => {
-    const [ , , CodeMirror ] = await Promise.all([
-        loadcss("https://unpkg.com/codemirror@5.42.2/lib/codemirror.css"),
-        loadcss("https://unpkg.com/codemirror@5.42.2/theme/mdn-like.css"),
-        import("codemirror"),
-    ]);
+import CodeMirror from "codemirror";
+import "codemirror/mode/css/css.js";
 
-    return CodeMirror.default;
-};
+Promise.all([
+    loadcss("https://unpkg.com/codemirror@5.42.2/lib/codemirror.css"),
+    loadcss("https://unpkg.com/codemirror@5.42.2/theme/mdn-like.css"),
+]);
 
-export default codemirror;
+// Why .default? Who knows
+export default CodeMirror;

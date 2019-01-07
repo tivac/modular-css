@@ -1,15 +1,28 @@
-<div class="editor">
-    <textarea bind:value="content"></textarea>
-</div>
+<link rel="stylesheet" href="./editor.css" />
+
+{#await loading}
+    <div class="loading">Loading editor...</div>
+{:then _}
+    <div class="editor">
+        <textarea ref:textarea></textarea>
+    </div>
+{:catch err}
+    <div class="loaderror">Unable to load editor</div>
+{/await}
 
 <script>
 import fs from "fs";
+
+const noop = () => {};
 
 export default {
     data : () => ({
         content : "",
 
         file : false,
+        error : false,
+
+        loading : import("./codemirror.js").then((m) => m.default),
     }),
 
     methods : {
@@ -26,36 +39,88 @@ export default {
 
     // Read file contents on creation
     oncreate() {
-        const { file } = this.get();
+        const { file, loading } = this.get();
+
+        let content;
 
         try {
-            const content = fs.readFileSync(file, "utf8");
+            content = fs.readFileSync(file, "utf8");
             
-            this.set({
-                content,
-            });
+            this.set({ content });
         } catch(e) {
             // NO-OP
         }
+
+        // Instantiate codemirror once it's loaded
+        loading.then((codemirror) => {
+            this.cm = codemirror.fromTextArea(this.refs.textarea, {
+                lineNumbers : true,
+                lineWrapping : true,
+                indentWithTabs : false,
+                indentUnit : 4,
+                value : content,
+                theme : "mdn-like",
+                mode : "text/css",
+            });
+
+            window.cm = this.cm;
+
+            this.cm.on("change", () =>
+                this.set({
+                    content : this.cm.getValue()
+                })
+            );
+        });
     },
 
     onstate({ changed, current, previous }) {
-        if(!changed.content || !previous) {
+        if(!previous) {
             return;
         }
 
-        const { file, content } = current;
+        if(changed.content) {
+            const { file, content } = current;
 
-        fs.writeFileSync(file, content, "utf8");
+            fs.writeFileSync(file, content, "utf8");
 
-        this.fire("input");
+            return this.fire("input");
+        }
+
+        if(changed.error) {
+            const { error : prev } = previous;
+            const { error : curr } = current;
+            
+            if(prev) {
+                this.cm.removeLineClass(prev.line - 1, "wrap", css.errorLine);
+                this.clear();
+            }
+
+            if(!curr) {
+                return;
+            }
+
+            const { line, column, source } = curr;
+
+            const marker = this.cm.markText(
+                { line : line - 1, ch : column - 1 },
+                { line : line - 1, ch : column - 1 + source.trimEnd().length },
+                { className : css.errorLocation }
+            );
+
+            this.clear = () => marker.clear();
+
+            return this.cm.addLineClass(line - 1, "wrap", css.errorLine);
+        }
     },
 
-    // Delete the file on editor destruction
     ondestroy() {
         const { file } = this.get();
 
+        // Delete the file on editor destruction
         fs.unlinkSync(file);
+
+        // And blow up the code mirror instance for good measure
+        this.cm.toTextArea();
     },
 };
 </script>

@@ -12,7 +12,8 @@
 
 {#each [ ...files.values() ] as file (file)}
     <h2>{file} <button on:click="deletefile(file)">♻</button></h2>
-    <Editor {file} on:input="oninput(file)"/>
+
+    <Editor {file} error="{error.file === file ? error : false}" on:input="oninput(file)"/>
 {/each}
 
 <div>
@@ -51,8 +52,6 @@ const processor = new Processor({
         (src, file, resolve) => path.resolve(`/${file}`),
     ],
 });
-
-let process;
 
 export default {
     components : {
