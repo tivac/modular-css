@@ -37,19 +37,27 @@ export default {
     oncreate() {
         const { file, loading } = this.get();
 
-        const content = fs.readFileSync(file, "utf8");
+        let content;
+
+        try {
+            content = fs.readFileSync(file, "utf8");
+        } catch(e) {
+            content = "";
+        }
         
         // Instantiate codemirror once it's loaded
         loading.then((codemirror) => {
-            // TODO: why isn't this updating w/ content?
             this.cm = codemirror.fromTextArea(this.refs.textarea, {
                 lineNumbers : true,
                 lineWrapping : true,
                 indentUnit : 4,
-                value : content,
                 theme : "mdn-like",
                 mode : "text/css",
             });
+
+            // .fromTextArea defaults to using <texarea>.value, so need
+            // to call this immediately afterwards to get content into it
+            this.cm.setValue(content);
 
             this.cm.on("change", () => {
                 const { file } = this.get();
