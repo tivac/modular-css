@@ -1,7 +1,19 @@
 "use strict";
 
-// TODO: what processor options are necessary?
-const { processor, preprocess } = require("@modular-css/svelte")();
+const isProduction = process.env.NODE_ENV === "production";
+// const isProduction = true;
+const isWatch = process.env.ROLLUP_WATCH;
+
+// eslint-disable-next-line no-empty-function
+const noop = () => {};
+
+const { processor, preprocess } = require("@modular-css/svelte")({
+    namer : isProduction && require("@modular-css/shortnames")(),
+
+    done : [
+        isProduction ? require("cssnano")() : noop,
+    ]
+});
 
 module.exports = {
     input : [ "./src/index.js" ],
@@ -51,6 +63,9 @@ module.exports = {
         require("./build/rollup-plugin-html")(),
 
         // Start a local server if in watch mode
-        process.env.ROLLUP_WATCH && require("./build/rollup-plugin-sirv.js")(),
+        isWatch && require("./build/rollup-plugin-sirv.js")(),
+
+        // Compress JS in production mode
+        isProduction && require("rollup-plugin-terser").terser(),
     ],
 };
