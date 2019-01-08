@@ -19,7 +19,7 @@ export default {
     store : () => store,
 
     data : () => ({
-        file : false,
+        file  : false,
         error : false,
 
         loading : import("./codemirror.js"),
@@ -53,48 +53,48 @@ export default {
             // to call this immediately afterwards to get content into it
             this.cm.setValue(content);
 
-            this.cm.on("change", () =>
+            this.cm.on("change", () => {
+                const { file } = this.get();
+
                 this.store.update(file, this.cm.getValue())
-            );
+            });
         });
     },
 
     onstate({ changed, current, previous }) {
-        if(!previous) {
+        if(!changed.error || !this.cm || !previous) {
             return;
         }
 
-        if(changed.error) {
-            const { error : prev } = previous;
-            const { error : curr } = current;
-            
-            if(this.clearError) {
-                this.clearError();
-            }
-
-            if(!curr) {
-                return;
-            }
-
-            const { line, column, source } = curr;
-            
-            // Mark the offending line
-            this.cm.addLineClass(line - 1, "wrap", css.errorLine);
-
-            // And underline the offending text as best we can
-            const marker = this.cm.markText(
-                { line : line - 1, ch : column - 1 },
-                { line : line - 1, ch : column - 1 + source.trimEnd().length },
-                { className : css.errorLocation }
-            );
-
-            // Save a function to clear all the error markers
-            this.clearError = () => {
-                this.cm.removeLineClass(line - 1, "wrap", css.errorLine);
-
-                marker.clear();
-            };
+        const { error : prev } = previous;
+        const { error : curr } = current;
+        
+        if(this.clearError) {
+            this.clearError();
         }
+
+        if(!curr) {
+            return;
+        }
+
+        const { line, column, source } = curr;
+        
+        // Mark the offending line
+        this.cm.addLineClass(line - 1, "wrap", css.errorLine);
+
+        // And underline the offending text as best we can
+        const marker = this.cm.markText(
+            { line : line - 1, ch : column - 1 },
+            { line : line - 1, ch : column - 1 + source.trimEnd().length },
+            { className : css.errorLocation }
+        );
+
+        // Save a function to clear all the error markers
+        this.clearError = () => {
+            this.cm.removeLineClass(line - 1, "wrap", css.errorLine);
+
+            marker.clear();
+        };
     },
 
     ondestroy() {

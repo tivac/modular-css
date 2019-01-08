@@ -2,6 +2,37 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-textarea, pre {
+pre,
+textarea,
+:global(.CodeMirror) {
     font-family: 'Inconsolata', monospace;
 }
+
+.page {}
+
+.input {}
+
+.tabs {}
+
+.tab {}
+
+.tabon {
+    composes: tab;
+}
+
+.add {}
+
+.file {}
+
+.remove {}
+
+.output {}
+
+.error {}
+
+.erroron {}
+
+.result {}
+
+.compositions {}
+

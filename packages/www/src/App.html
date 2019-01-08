@@ -1,48 +1,55 @@
 <link rel="stylesheet" href="./app.css" />
 
-{#if error}
-<div>
-    <code><pre>{error.toString()}</pre></code>
-</div>
-{/if}
-
-<div>
-    <button on:click="$add()">➕</button>
-</div>
-
-{#each [ ...$files.values() ] as file (file)}
-    <h2>{file} <button on:click="$remove(file)">♻</button></h2>
-
-    <Editor {file} error="{$error.file === file ? $error : false}" />
-{/each}
-
-<div>
-    <h2>CSS Output</h2>
-    {#await loading}
-        <div class="loading">Loading editor...</div>
-    {:then _}
-        <div class="output">
-            <textarea ref:output></textarea>
+<div class="{css.page}">
+    <div class="{css.input}">
+        <div class="{css.tabs}">
+            <button class="{css.add}" on:click="$add()">➕</button>
+            
+            {#each [ ...$files.values() ] as file (file)}
+            <div class="{tab === file ? css.tabon : css.tab}">
+                <button class="{css.file}" on:click="this.set({ tab : file })">{file}</button>
+                <button class="{css.remove}" on:click="$remove(file)">♻</button>
+            </div>
+            {/each}
         </div>
-    {:catch err}
-        <div class="loaderror">Unable to load editor</div>
-    {/await}
-</div>
 
-<div>
-    <h2>Compositions</h2>
-    <!-- This is silly, need a better story here... -->
-    {#each Object.entries($compositions).reverse() as [ file, props ] (file)}
-    <h4>{file}</h4>
-    <dl>
-        {#each Object.entries(props) as [ key, value ]}
-        <dt>.{key}</dt>
-        <dd>"{value}"</dd>
-        {/each}
-    </dl>
-    {:else}
-    No data yet
-    {/each}
+        <Editor file={tab} error={$error.file === tab ? $error : false} />
+    </div>
+
+    <div class="{css.output}">
+        <div class="{error ? css.erroron : css.error}">
+            {error ? error.toString() : ""}
+        </div>
+
+        <div class="{css.result}">
+        {#await loading}
+            <div class="loading">Loading editor...</div>
+        {:then _}
+            <div class="output">
+                <textarea ref:output></textarea>
+            </div>
+        {:catch err}
+            <div class="loaderror">Unable to load editor</div>
+        {/await}
+        </div>
+
+        <div class="{css.compositions}">
+            <!-- This is silly, need a better story here... -->
+            <!--
+            {#each Object.entries($compositions).reverse() as [ file, props ] (file)}
+            <h4>{file}</h4>
+            <dl>
+                {#each Object.entries(props) as [ key, value ]}
+                <dt>.{key}</dt>
+                <dd>"{value}"</dd>
+                {/each}
+            </dl>
+            {:else}
+            No data yet
+            {/each}
+            -->
+        </div>
+    </div>
 </div>
 
 <script>
@@ -55,9 +62,16 @@ export default {
 
     store : () => store,
 
-    data : () => ({
-        loading : import("./codemirror.js"),
-    }),
+    data : () => {
+        const { files } = store.get();
+
+        return {
+            loading : import("./codemirror.js"),
+
+            // iterators are so much fun
+            tab : files.values().next().value,
+        };
+    },
 
     oncreate() {
         const { loading } = this.get();
