@@ -20,8 +20,20 @@ const template = `
         <!-- STYLES -->
     </head>
     <body>
+    <script>
+    function shimport(src) {
+        try {
+            new Function('import("' + src + '")')();
+        } catch (e) {
+            var s = document.createElement('script');
+            s.src = 'https://unpkg.com/shimport';
+            s.dataset.main = src;
+            document.head.appendChild(s);
+        }
+    }
 
     <!-- SCRIPTS -->
+    </script>
     </body>
 </html>
 `;
@@ -57,7 +69,7 @@ module.exports = () => ({
             .replace(
                 "<!-- SCRIPTS -->",
                 scripts.map((script) =>
-                    `<script src="${script}" type="module"></script>`
+                    `shimport("./${script}");`
                 ).join("\n")
             );
         
