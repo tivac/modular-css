@@ -13,25 +13,17 @@
 <script>
 import fs from "fs";
 
+import store from "./store.js";
+
 export default {
+    store : () => store,
+
     data : () => ({
         file : false,
         error : false,
 
-        loading : import("./codemirror.js").then((m) => m.default),
+        loading : import("./codemirror.js"),
     }),
-
-    methods : {
-        oninput(content) {
-            const { file } = this.get();
-
-            fs.writeFileSync(file, content, "utf8");
-
-            this.set({
-                content,
-            });
-        },
-    },
 
     // Read file contents on creation
     oncreate() {
@@ -46,26 +38,24 @@ export default {
         }
         
         // Instantiate codemirror once it's loaded
-        loading.then((codemirror) => {
+        loading.then((mod) => {
+            const { codemirror, theme } = mod;
+
             this.cm = codemirror.fromTextArea(this.refs.textarea, {
                 lineNumbers : true,
                 lineWrapping : true,
                 indentUnit : 4,
-                theme : "mdn-like",
                 mode : "text/css",
+                theme,
             });
 
             // .fromTextArea defaults to using <texarea>.value, so need
             // to call this immediately afterwards to get content into it
             this.cm.setValue(content);
 
-            this.cm.on("change", () => {
-                const { file } = this.get();
-
-                fs.writeFileSync(file, this.cm.getValue(), "utf8");
-
-                this.fire("input");
-            });
+            this.cm.on("change", () =>
+                this.store.update(file, this.cm.getValue())
+            );
         });
     },
 
@@ -108,13 +98,10 @@ export default {
     },
 
     ondestroy() {
-        const { file } = this.get();
-
-        // Delete the file on editor destruction
-        fs.unlinkSync(file);
-
-        // And blow up the code mirror instance for good measure
+        // Blow up the code mirror instance
         this.cm.toTextArea();
+
+        this.cm = null;
     },
 };
 </script>

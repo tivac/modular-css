@@ -7,13 +7,13 @@
 {/if}
 
 <div>
-    <button on:click="addfile()">➕</button>
+    <button on:click="$add()">➕</button>
 </div>
 
-{#each [ ...files.values() ] as file (file)}
-    <h2>{file} <button on:click="deletefile(file)">♻</button></h2>
+{#each [ ...$files.values() ] as file (file)}
+    <h2>{file} <button on:click="$remove(file)">♻</button></h2>
 
-    <Editor {file} error="{error.file === file ? error : false}" on:input="oninput(file)"/>
+    <Editor {file} error="{$error.file === file ? $error : false}" />
 {/each}
 
 <div>
@@ -32,7 +32,7 @@
 <div>
     <h2>Compositions</h2>
     <!-- This is silly, need a better story here... -->
-    {#each Object.entries(compositions).reverse() as [ file, props ] (file)}
+    {#each Object.entries($compositions).reverse() as [ file, props ] (file)}
     <h4>{file}</h4>
     <dl>
         {#each Object.entries(props) as [ key, value ]}
@@ -46,172 +46,49 @@
 </div>
 
 <script>
-import fs from "fs";
-import path from "path";
-
-window.fs = fs;
-
-import Processor from "@modular-css/processor";
-import debounce from "p-debounce";
-import lz from "lznext";
-
-const processor = new Processor({
-    cwd : "/",
-
-    // Custom file resolver to work around gaps in fake node environment
-    resolvers : [
-        (src, file, resolve) => path.resolve(`/${file}`),
-    ],
-});
-
-let initialFiles;
-
-if(location.hash) {
-    const hash = location.hash.substring(1);
-
-    try {
-        const data = JSON.parse(lz.decompressFromBase64(hash));
-
-        console.log(data);
-
-        initialFiles = new Set();
-
-        // TODO: since .update is never called the editor doesn't know about the file on disk
-        // TODO: Need to solve before persistence can work :(
-        data.forEach(([ file, css ]) => {
-            initialFiles.add(file);
-
-            fs.writeFileSync(file, css, "utf8");
-        });
-    } catch(e) {
-        console.warn("Unable to parse state", hash);
-    }
-} else {
-    initialFiles = new Set([ "/styles.css "]);
-
-    fs.writeFileSync("/styles.css", "", "utf8");
-}
+import store from "./store.js";
 
 export default {
     components : {
         Editor : "./editor.html",
     },
 
+    store : () => store,
+
     data : () => ({
-        files : initialFiles,
-        
-        css  : "",
-        compositions : [],
-
-        error : false,
-
-        loading : import("./codemirror.js").then((m) => m.default),
+        loading : import("./codemirror.js"),
     }),
 
-    methods : {
-        oninput(file) {
-            this.update(file);
-        },
-
-        deletefile(file) {
-            const { files } = this.get();
-
-            files.delete(file);
-
-            processor.remove(file);
-
-            this.output();
-
-            // Trigger redraw
-            this.set({ files });
-        },
-        
-        addfile() {
-            const { files } = this.get();
-
-            files.add(`/${files.size + 1}.css`);
-
-            this.set({ files });
-        }
-    },
-
     oncreate() {
-        this.output = debounce(async (...args) => {
-            try {
-                const { files } = this.get();
-                const { css, compositions } = await processor.output();
-
-                // Update location.hash with fs state
-                const hash = [ ...files.values() ].map((file) => ([
-                    file,
-                    fs.readFileSync(file, "utf8")
-                ]));
-
-                location.hash = lz.compressToBase64(JSON.stringify(hash));
-    
-                return this.set({
-                    error : false,
-
-                    css,
-                    compositions,
-                });
-            } catch(error) {
-                console.warn("Error generating output", error);
-
-                return this.set({ error });
-            }
-        }, 250);
-
-        this.update = async (file) => {
-            console.log("update", file);
-
-            if(file in processor.files) {
-                processor.invalidate(file);
-            }
-
-            try {
-                await processor.file(file);
-            } catch(error) {
-                console.warn(`Error parsing "${error.file}"`, error);
-
-                return this.set({ error });
-            }
-
-            return this.output();
-        };
-
-        const { files, loading } = this.get();
-
-        // Load files into the processor
-        files.forEach(this.update);
+        const { loading } = this.get();
 
         // Instantiate codemirror once it's loaded
-        loading.then((codemirror) => {
+        loading.then((mod) => {
+            const { codemirror, theme } = mod;
+
             this.cm = codemirror.fromTextArea(this.refs.output, {
                 lineNumbers : true,
                 lineWrapping : true,
                 indentUnit : 4,
                 readOnly : true,
-                theme : "mdn-like",
                 mode : "text/css",
+                theme,
             });
+
+            const { css } = this.store.get();
+
+            this.cm.setValue(css);
         });
-    },
 
-    onstate({ changed, current, previous }) {
-        if(!previous) {
-            return;
-        }
+        this.store.on("state", ({ changed, current }) => {
+            if(!changed.css || !this.cm) {
+                return;
+            }
 
-        if(changed.files) {
-            this.output();
-        }
-
-        if(changed.css) {
             const { css } = current;
 
             this.cm.setValue(css);
-        }
-    }
+        });
+    },
 };
 </script>
