@@ -1,12 +1,20 @@
 import loadcss from "lazyload-css";
 
-import CodeMirror from "codemirror";
+import codemirror from "codemirror";
 import "codemirror/mode/css/css.js";
 
+import { dependencies } from "../package.json";
+
+const theme = "base16-light";
+
 Promise.all([
-    loadcss("https://unpkg.com/codemirror@5.42.2/lib/codemirror.css"),
-    loadcss("https://unpkg.com/codemirror@5.42.2/theme/mdn-like.css"),
+    loadcss(`https://unpkg.com/codemirror@${dependencies.codemirror}/lib/codemirror.css`),
+    loadcss(`https://unpkg.com/codemirror@${dependencies.codemirror}/theme/${theme}.css`),
 ]);
 
-// Why .default? Who knows
-export default CodeMirror;
+export default codemirror;
+
+export {
+    codemirror,
+    theme,
+};
