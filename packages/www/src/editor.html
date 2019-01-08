@@ -15,8 +15,6 @@ import fs from "fs";
 
 export default {
     data : () => ({
-        content : "",
-
         file : false,
         error : false,
 
@@ -39,18 +37,8 @@ export default {
     oncreate() {
         const { file, loading } = this.get();
 
-        let content;
-
-        try {
-            content = fs.readFileSync(file, "utf8");
-            
-            console.log(file, content);
-
-            this.set({ content });
-        } catch(e) {
-            // NO-OP
-        }
-
+        const content = fs.readFileSync(file, "utf8");
+        
         // Instantiate codemirror once it's loaded
         loading.then((codemirror) => {
             // TODO: why isn't this updating w/ content?
@@ -63,29 +51,19 @@ export default {
                 mode : "text/css",
             });
 
-            console.log(content, this.cm.getValue());
+            this.cm.on("change", () => {
+                const { file } = this.get();
 
-            this.cm.on("change", () =>
-                this.set({
-                    content : this.cm.getValue()
-                })
-            );
+                fs.writeFileSync(file, this.cm.getValue(), "utf8");
+
+                this.fire("input");
+            });
         });
     },
 
     onstate({ changed, current, previous }) {
         if(!previous) {
             return;
-        }
-
-        if(changed.content) {
-            console.log("content changed", current);
-
-            const { file, content } = current;
-
-            fs.writeFileSync(file, content, "utf8");
-
-            this.fire("input");
         }
 
         if(changed.error) {
