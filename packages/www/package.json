@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rollup --config",
+    "production": "rollup --config --environment=NODE_ENV:production",
     "start": "rollup --config --watch",
     "test": "echo \"no tests ¯\\_(ツ)_/¯\""
   },
@@ -33,5 +34,31 @@
       "browser": true,
       "node": true
     }
+  },
+  "dependencies": {
+    "@modular-css/processor": "file:../processor",
+    "@modular-css/rollup": "file:../rollup",
+    "@modular-css/shortnames": "file:../namer",
+    "@modular-css/svelte": "file:../svelte",
+    "@purtuga/esm-webpack-plugin": "^1.0.1",
+    "babel-eslint": "^10.0.1",
+    "codemirror": "^5.42.2",
+    "cssnano": "^4.1.8",
+    "get-port": "^4.1.0",
+    "lazyload-css": "^1.0.5",
+    "lznext": "^0.1.0",
+    "node-browserfs": "^3.0.1",
+    "p-debounce": "^1.0.0",
+    "path-parse": "^1.0.6",
+    "polka": "^0.5.1",
+    "rollup-plugin-alias": "^1.5.1",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-livereload": "^0.6.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-terser": "^4.0.1",
+    "sirv": "^0.2.2"
   }
 }
