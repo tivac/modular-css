@@ -1,5 +1,5 @@
-import App from "./app.html";
+import Repl from "./repl.html";
 
-new App({
+new Repl({
     target : document.body
 });

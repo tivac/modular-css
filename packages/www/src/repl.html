@@ -1,4 +1,7 @@
 <style type="text/css">
+@value buttonLinkCss: "./button-link.css";
+@value borderColor: #EEEEEE;
+
 body {
     font-family: 'Roboto', sans-serif;
 
@@ -14,19 +17,19 @@ textarea,
     font-family: 'Inconsolata', monospace;
 }
 
-.page {
+.repl {
     width: 100%;
     height: 100%;
 
     display: grid;
 
-    grid:
-        "input output";
-    grid-gap: 0 5%;
+    grid: "input output";
 }
 
 .input {
     grid-area: "input";
+
+    border-right: 1px solid borderColor;
 }
 
 .tabs {
@@ -34,19 +37,55 @@ textarea,
     flex-direction: row;
     justify-content: flex-start;
     align-items: stretch;
+
+    border-bottom: 1px solid borderColor;
 }
 
-.tab {}
+.add {
+    composes: button from buttonLinkCss;
+
+    align-self: center;
+}
+
+.tab {
+    padding: 5px 25px 5px 5px;
+
+    position: relative;
+}
+
+.tab + .tab {
+    margin-left: 10px;
+}
 
 .tabon {
     composes: tab;
+
+    border-bottom: 1px solid black;
 }
 
-.add {}
+.file {
+    composes: button from buttonLinkCss;
 
-.file {}
+    text-decoration: none;
+    color: #777;
+}
 
-.remove {}
+.tabon .file {
+    color: #444;
+}
+
+.remove {
+    composes: button from buttonLinkCss;
+
+    position: absolute;
+
+    top: 50%;
+    right: 0%;
+
+    width: 20px;
+
+    transform: translateY(-50%);
+}
 
 .output {
     grid-area: "output";
@@ -62,16 +101,22 @@ textarea,
 
 </style>
 
-<div class="{css.page}">
+<div class="{css.repl}">
     <div class="{css.input}">
         <div class="{css.tabs}">
             <button class="{css.add}" on:click="$add()">➕</button>
             
             {#each [ ...$files.values() ] as file (file)}
-            <div class="{tab === file ? css.tabon : css.tab}">
-                <button class="{css.file}" on:click="this.set({ tab : file })">{file}</button>
-                <button class="{css.remove}" on:click="$remove(file)">♻</button>
-            </div>
+                {#if tab === file}
+                <div class="{css.tabon}">
+                    <button class="{css.file}">{file}</button>
+                    <button class="{css.remove}" on:click="$remove(file)">❌</button>
+                </div>
+                {:else}
+                <div class="{css.tab}">
+                    <button class="{css.file}" on:click="set({ tab : file })">{file}</button>
+                </div>
+                {/if}
             {/each}
         </div>
 
@@ -155,16 +200,26 @@ export default {
 
             this.cm.setValue(css);
         });
+    },
 
-        this.store.on("state", ({ changed, current }) => {
-            if(!changed.css || !this.cm) {
-                return;
-            }
+    onstate({ changed, current }) {
+        console.log(changed, current);
 
-            const { css } = current;
+        if(changed.$css && this.cm) {
+            const { $css } = current;
 
-            this.cm.setValue(css);
-        });
+            this.cm.setValue($css);
+        }
+
+        const { tab } = this.get();
+        const { $files } = current;
+
+        if(changed.$files && !$files.has(tab)) {
+            this.set({
+                // iterators are so much fun
+                tab : $files.values().next().value,
+            });
+        }
     },
 };
 </script>
