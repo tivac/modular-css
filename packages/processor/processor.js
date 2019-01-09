@@ -113,7 +113,7 @@ class Processor {
     }
 
     // Add a file by name + contents to the dependency graph
-    async string(file, text) {
+    string(file, text) {
         const id = this._normalize(file);
 
         this._log("string()", id);
