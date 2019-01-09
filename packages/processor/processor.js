@@ -143,6 +143,13 @@ class Processor {
         return files;
     }
 
+    // Check if a file exists in the currently-processed set
+    has(input) {
+        const file = this._normalize(input);
+
+        return file in this._files;
+    }
+
     // Mark a file and everything that depends on it as invalid so
     // it can be overwritten
     invalidate(input) {
