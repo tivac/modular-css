@@ -7,7 +7,7 @@ const shell = require("shelljs");
 
 const template = `
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <title>modular-css</title>
