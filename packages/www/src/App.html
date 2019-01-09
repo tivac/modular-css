@@ -1,4 +1,66 @@
-<link rel="stylesheet" href="./app.css" />
+<style type="text/css">
+body {
+    font-family: 'Roboto', sans-serif;
+
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+pre,
+textarea,
+:global(.CodeMirror) {
+    font-family: 'Inconsolata', monospace;
+}
+
+.page {
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+
+    grid:
+        "input output";
+    grid-gap: 0 5%;
+}
+
+.input {
+    grid-area: "input";
+}
+
+.tabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.tab {}
+
+.tabon {
+    composes: tab;
+}
+
+.add {}
+
+.file {}
+
+.remove {}
+
+.output {
+    grid-area: "output";
+}
+
+.error {}
+
+.erroron {}
+
+.result {}
+
+.compositions {}
+
+</style>
 
 <div class="{css.page}">
     <div class="{css.input}">
