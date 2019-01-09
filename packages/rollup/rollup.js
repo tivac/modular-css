@@ -61,14 +61,13 @@ module.exports = (opts) => {
         },
 
         watchChange(file) {
-            if(!processor.files[file]) {
-                return;
-            }
-
             log("file changed", file);
 
-            // TODO: should the file be removed if it's gone?
-            processor.invalidate(file);
+            try {
+                processor.invalidate(file);
+            } catch(e) {
+                log("Unable to invalidate", file);
+            }
         },
 
         async transform(code, id) {
