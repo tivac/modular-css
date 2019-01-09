@@ -62,6 +62,11 @@ export default {
     },
 
     onstate({ changed, current, previous }) {
+        // TODO: broken
+        if(changed.file && this.cm) {
+            this.cm.setValue(fs.readFileSync(file, "utf8"));
+        }
+
         if(!changed.error || !this.cm || !previous) {
             return;
         }
