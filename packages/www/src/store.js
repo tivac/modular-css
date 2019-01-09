@@ -29,15 +29,13 @@ class CssStore extends Store {
 
     // Grab initial state from location.hash, or create it from nothing
     _initialFiles() {
-        let files;
+        const { files } = this.get();
 
         if(location.hash) {
             const hash = location.hash.substring(1);
 
             try {
                 const data = JSON.parse(lz.decompressFromBase64(hash));
-
-                files = new Set();
 
                 data.forEach(([ file, css ]) => {
                     files.add(file);
@@ -50,11 +48,12 @@ class CssStore extends Store {
         } else {
             const initial = "/main.css";
 
-            files = new Set([ initial ]);
+            files.add(initial);
 
             fs.writeFileSync(initial, "", "utf8");
         }
 
+        // trigger downstream processing
         this.set({ files });
 
         return files;
@@ -64,14 +63,6 @@ class CssStore extends Store {
         try {
             const { files } = this.get();
             const { css, compositions } = await processor.output();
-
-            // Update location.hash with fs state
-            const hash = [ ...files.values() ].map((file) => ([
-                file,
-                fs.readFileSync(file, "utf8")
-            ]));
-
-            location.hash = lz.compressToBase64(JSON.stringify(hash));
 
             return this.set({
                 error : false,
@@ -122,7 +113,18 @@ class CssStore extends Store {
     add() {
         const { files } = this.get();
 
-        files.add(`/${files.size + 1}.css`);
+        let idx = files.size + 1;
+        let file;
+
+        // TODO: fix keyword-spacing rule to include `do`
+        do{
+            idx++;
+            file = `/file${idx}.css`;
+        } while(files.has(file));
+
+        files.add(file);
+
+        fs.writeFileSync(file, "", "utf8");
 
         // Trigger downstream updates
         this.set({ files });
@@ -130,17 +132,30 @@ class CssStore extends Store {
 }
 
 const store = new CssStore({
-    files : [],
+    files : new Set(),
     css   : "",
     error : false,
 
     compositions : [],
 });
 
-store.on("state", ({ changed }) => {
-    if(changed.files) {
-        store.output();
+store.on("state", ({ changed, current }) => {
+    if(!changed.files) {
+        return;
     }
+
+    const { files } = current;
+
+    // Update location.hash with fs state
+    const hash = [ ...files.values() ].map((value) => ([
+        value,
+        fs.readFileSync(value, "utf8")
+    ]));
+
+    location.hash = lz.compressToBase64(JSON.stringify(hash));
+
+    // Calculate new output
+    store.output();
 });
 
 export default store;
