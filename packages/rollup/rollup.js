@@ -175,13 +175,15 @@ module.exports = (opts) => {
                 let counter = 1;
 
                 // Get CSS files being used by this chunk
-                const styles = Object.keys(modules).filter(filter);
+                const styles = Object.keys(modules).filter((file) => processor.has(file));
 
                 // Get dependency chains for each css file & record them into the usage graph
                 styles.forEach((style) => {
+                    processor
+                        .dependencies(style)
+                        .forEach((file) => css.add(file));
+                    
                     css.add(style);
-
-                    processor.dependencies(style).forEach((file) => css.add(file));
                 });
 
                 // Want to use source chunk name when code-splitting, otherwise match bundle name
