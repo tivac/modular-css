@@ -2,10 +2,10 @@
 
 const shell = require("shelljs");
 
-module.exports = () => ({
-    name : "rollup-plugin-clean",
-
-    buildStart() {
-        shell.rm("-rf", "./dist/*");
-    },
-});
+module.exports = () => {
+    shell.rm("-rf", "./dist/*");
+    
+    return {
+        name : "rollup-plugin-clean",
+    };
+};
