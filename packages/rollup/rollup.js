@@ -61,7 +61,7 @@ module.exports = (opts) => {
         },
 
         watchChange(file) {
-            if(!processor.files[file]) {
+            if(!processor.has(file)) {
                 return;
             }
 
