@@ -73,8 +73,8 @@ module.exports = () => ({
                 ).join("\n")
             );
         
-        shell.mkdir("-p", path.resolve(__dirname, "../dist"));
+        shell.mkdir("-p", path.resolve(__dirname, "../dist/repl/"));
 
-        fs.writeFileSync(path.resolve(__dirname, "../dist/index.html"), html, "utf8");
+        fs.writeFileSync(path.resolve(__dirname, "../dist/repl/index.html"), html, "utf8");
     },
 });

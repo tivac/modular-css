@@ -16,10 +16,10 @@ const { processor, preprocess } = require("@modular-css/svelte")({
 });
 
 module.exports = {
-    input : [ "./src/index.js" ],
+    input : [ "./src/repl/index.js" ],
 
     output : {
-        dir    : "./dist",
+        dir    : "./dist/repl",
         format : "esm",
 
         sourcemap : true,

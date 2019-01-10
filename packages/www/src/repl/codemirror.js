@@ -3,7 +3,7 @@ import loadcss from "lazyload-css";
 import codemirror from "codemirror";
 import "codemirror/mode/css/css.js";
 
-import { dependencies } from "../package.json";
+import { dependencies } from "../../package.json";
 
 const theme = "base16-light";
 
