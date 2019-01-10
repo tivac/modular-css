@@ -1,5 +1,6 @@
 @value textColor: hsl(0, 0%, 94%);
 @value borderColor: #EEEEEE;
+@value opacityTime: 125ms;
 
 html {
     box-sizing: border-box;
@@ -78,4 +79,12 @@ a:hover {
     display: flex;
     flex-direction: column;
     align-items: stretch;
+
+    position: relative;
+
+    border-top: 2px solid borderColor;
+}
+
+.column + .column {
+    border-left: 2px solid borderColor;
 }

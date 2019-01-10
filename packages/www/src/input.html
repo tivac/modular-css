@@ -5,84 +5,12 @@
     composes: column from "./repl.css";
 
     grid-area: input;
-
-    border-right: 1px solid borderColor;
-}
-
-.tabs {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: stretch;
-
-    border-bottom: 1px solid borderColor;
-}
-
-.add {
-    composes: button from "./repl.css";
-
-    align-self: center;
-}
-
-.tab {
-    padding: 5px 25px 5px 5px;
-
-    position: relative;
-}
-
-.tab + .tab {
-    margin-left: 10px;
-}
-
-.tabon {
-    composes: tab;
-
-    border-bottom: 1px solid black;
-}
-
-.file {
-    composes: button from "./repl.css";
-
-    text-decoration: none;
-    color: #777;
-}
-
-.tabon .file {
-    color: #444;
-}
-
-.remove {
-    composes: button from "./repl.css";
-
-    position: absolute;
-
-    top: 50%;
-    right: 0%;
-
-    width: 20px;
-
-    transform: translateY(-50%);
 }
 </style>
 
-<div class="{css.input}">
-    <div class="{css.tabs}">
-        <button class="{css.add}" on:click="$add()">➕</button>
-        
-        {#each [ ...$files.values() ] as file (file)}
-            {#if $file === file}
-            <div class="{css.tabon}">
-                <button class="{css.file}">{file}</button>
-                <button class="{css.remove}" on:click="$remove(file)">❌</button>
-            </div>
-            {:else}
-            <div class="{css.tab}">
-                <button class="{css.file}" on:click="$set({ file })">{file}</button>
-            </div>
-            {/if}
-        {/each}
-    </div>
+<Tabs />
 
+<div class="{css.input}">
     <Editor />
 </div>
 
@@ -92,8 +20,7 @@ import store from "./store.js";
 export default {
     components : {
         Editor : "./editor.html",
+        Tabs : "./tabs.html",
     },
-
-    store : () => store,
 };
 </script>

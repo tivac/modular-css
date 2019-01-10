@@ -1,5 +1,7 @@
 <style>
 @value textColor from "./repl.css";
+@value headerHeight: 4rem;
+@value tabHeight: 2.5rem;
 
 body {
     width: 100%;
@@ -8,12 +10,14 @@ body {
     display: grid;
 
     grid-template:
-        " header header "
-        " input  output ";
+        " header header " headerHeight
+        "  tabs   tabs  " tabHeight
+        " input  output " calc(100vh - headerHeight - tabHeight) /
+        50% 50%;
 }
 
 .header {
-    grid-area: "header";
+    grid-area: header;
 
     display: flex;
     flex-direction: row;
@@ -92,10 +96,16 @@ body {
 
 <slot />
 
+<Error />
+
 <script>
 import { version } from "../package.json";
 
 export default {
+    components : {
+        Error : "./error.html"
+    },
+
     data : () => ({
         version,
 
