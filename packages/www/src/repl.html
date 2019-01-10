@@ -104,7 +104,7 @@ textarea,
 <div class="{css.repl}">
     <div class="{css.input}">
         <div class="{css.tabs}">
-            <button class="{css.add}" on:click="$add()">➕</button>
+            <button class="{css.add}" on:click="add()">➕</button>
             
             {#each [ ...$files.values() ] as file (file)}
                 {#if tab === file}
@@ -124,8 +124,8 @@ textarea,
     </div>
 
     <div class="{css.output}">
-        <div class="{error ? css.erroron : css.error}">
-            {error ? error.toString() : ""}
+        <div class="{$error ? css.erroron : css.error}">
+            {$error ? $error.toString() : ""}
         </div>
 
         <div class="{css.result}">
@@ -161,6 +161,7 @@ textarea,
 
 <script>
 import store from "./store.js";
+import listen from "./listen.js";
 
 export default {
     components : {
@@ -178,6 +179,16 @@ export default {
             // iterators are so much fun
             tab : files.values().next().value,
         };
+    },
+
+    methods : {
+        add() {
+            const tab = this.store.add();
+
+            this.set({
+                tab,
+            });
+        },
     },
 
     oncreate() {
@@ -199,27 +210,26 @@ export default {
             const { css } = this.store.get();
 
             this.cm.setValue(css);
+
+            // Update output editor when css changes
+            listen(this.store, "css", ({ css }) => {
+                this.cm.setValue(css);
+            });
         });
-    },
 
-    onstate({ changed, current }) {
-        console.log(changed, current);
+        // Change to first file if current tab is removed from the Set
+        listen(this.store, "files", ({ files }) => {
+            const { tab } = this.get();
 
-        if(changed.$css && this.cm) {
-            const { $css } = current;
+            if(files.has(tab)) {
+                return;
+            }
 
-            this.cm.setValue($css);
-        }
-
-        const { tab } = this.get();
-        const { $files } = current;
-
-        if(changed.$files && !$files.has(tab)) {
             this.set({
                 // iterators are so much fun
-                tab : $files.values().next().value,
+                tab : files.values().next().value,
             });
-        }
+        });
     },
 };
 </script>
