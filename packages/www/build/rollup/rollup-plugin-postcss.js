@@ -18,6 +18,7 @@ module.exports = () => ({
         }
 
         const memfs = new MemoryFS();
+        
         const compiler = webpack({
             entry : "postcss",
 

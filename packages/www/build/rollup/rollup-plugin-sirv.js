@@ -4,6 +4,8 @@ const sirv = require("sirv");
 const polka = require("polka");
 const getport = require("get-port");
 
+const { dest } = require("../environment.js");
+
 module.exports = () => {
     let started = false;
     
@@ -17,7 +19,7 @@ module.exports = () => {
 
             started = true;
 
-            const assets = sirv("./dist", { dev : true });
+            const assets = sirv(dest, { dev : true });
 
             const port = await getport({ port : 3000 });
 

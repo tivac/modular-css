@@ -1,8 +1,8 @@
 "use strict";
 
-const isProduction = process.env.NODE_ENV === "production";
-// const isProduction = true;
-const isWatch = process.env.ROLLUP_WATCH;
+const path = require("path");
+
+const { isProduction, isWatch, dest } = require("./build/environment.js");
 
 // eslint-disable-next-line no-empty-function
 const noop = () => {};
@@ -19,7 +19,7 @@ module.exports = {
     input : [ "./src/repl/index.js" ],
 
     output : {
-        dir    : "./dist/repl",
+        dir    : path.join(dest, "/repl"),
         format : "esm",
 
         sourcemap : true,
@@ -29,7 +29,7 @@ module.exports = {
 
     plugins : [
         // Wipe the destination dir on each rebuild
-        require("./build/rollup-plugin-clean")(),
+        require("./build/rollup/rollup-plugin-clean")(),
         
         require("rollup-plugin-alias")({
             fs   : require.resolve("./stubs/fs.js"),
@@ -45,12 +45,13 @@ module.exports = {
         }),
         
         // Run webpack INSIDE ROLLUP to bundle postcss because it's fuckered otherwise
-        require("./build/rollup-plugin-postcss.js")(),
+        require("./build/rollup/rollup-plugin-postcss.js")(),
         
         require("rollup-plugin-commonjs")(),
         require("rollup-plugin-node-globals")(),
         require("rollup-plugin-node-builtins")(),
         require("rollup-plugin-json")(),
+        
         require("rollup-plugin-svelte")({
             preprocess,
         }),
@@ -60,10 +61,10 @@ module.exports = {
         }),
         
         // Generate HTML skeleton including built files
-        require("./build/rollup-plugin-html")(),
+        require("./build/rollup/rollup-plugin-html")(),
 
         // Start a local server if in watch mode
-        isWatch && require("./build/rollup-plugin-sirv.js")(),
+        isWatch && require("./build/rollup/rollup-plugin-sirv.js")(),
 
         // Compress JS in production mode
         isProduction && require("rollup-plugin-terser").terser(),
