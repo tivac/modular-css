@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [19.1.0](https://github.com/tivac/modular-css/compare/v19.0.0...v19.1.0) (2019-01-10)
+
+
+### Bug Fixes
+
+* check for files via processor.has() ([b5a539b](https://github.com/tivac/modular-css/commit/b5a539b)), closes [#533](https://github.com/tivac/modular-css/issues/533)
+* rollup outputs non .css files in the correct order ([2b8fec6](https://github.com/tivac/modular-css/commit/2b8fec6))
+
+
+
+
+
 # [19.0.0](https://github.com/tivac/modular-css/compare/v18.0.0...v19.0.0) (2019-01-01)
 
 
