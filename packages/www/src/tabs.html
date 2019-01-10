@@ -1,5 +1,5 @@
 <style type="text/css">
-@value borderColor, opacityTime from "./repl.css";
+@value opacityTime from "./repl.css";
 
 .tabs {
     grid-area: tabs;
@@ -27,22 +27,24 @@
 }
 
 .tab {
-    padding: 5px 25px 5px 5px;
+    padding: 0 5px;
 
     display: flex;
     flex-direction: row;
-    align-items: stretch;
+    align-items: center;
+
+    border-bottom: 1px solid transparent;
 }
 
 .add + .tab,
 .tab + .tab {
-    margin-left: 1rem;
+    margin-left: 0.25rem;
 }
 
 .tabon {
     composes: tab;
 
-    border-bottom: 1px solid black;
+    border-bottom-color: hsl(0, 0%, 0%);
 }
 
 .file {
@@ -50,26 +52,33 @@
 
     flex: 1;
 
+    height: 100%;
+    margin-right: 10px;
+
     text-decoration: none;
-    color: #777;
+    color: hsl(0, 0%, 60%);
 }
 
 .tabon .file {
-    color: #444;
+    color: hsl(0, 0%, 20%);
 }
 
 .remove {
     composes: button from "./repl.css";
 
-    justify-self: flex-end;
-
     width: 20px;
 
-    transform: translateY(-50%);
     filter: grayscale();
-    opacity: 0.2;
-
+    
     transition: opacity opacityTime ease-in;
+}
+
+.tab .remove {
+    opacity: 0.1;
+}
+
+.tabon .remove {
+    opacity: 0.3;
 }
 
 .remove:hover {
@@ -82,16 +91,10 @@
     <button class="{css.add}" on:click="$add()">➕</button>
     
     {#each [ ...$files.values() ] as file (file)}
-        {#if $file === file}
-        <div class="{css.tabon}">
-            <button class="{css.file}">{file}</button>
-            <button class="{css.remove}" on:click="$remove(file)">❌</button>
-        </div>
-        {:else}
-        <div class="{css.tab}">
-            <button class="{css.file}" on:click="$set({ file })">{file}</button>
-        </div>
-        {/if}
+    <div class="{$file === file ? css.tabon : css.tab}">
+        <button class="{css.file}" on:click="$set({ file })">{file}</button>
+        <button class="{css.remove}" on:click="$remove(file)">❌</button>
+    </div>
     {/each}
 </div>
 
