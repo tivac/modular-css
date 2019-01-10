@@ -8,6 +8,8 @@ import { Store } from "svelte/store";
 import Processor from "@modular-css/processor";
 import lz from "lznext";
 
+import listen from "./listen.js";
+
 const processor = new Processor({
     cwd : "/",
 
@@ -80,6 +82,8 @@ class CssStore extends Store {
     async update(file, contents) {
         fs.writeFileSync(file, contents, "utf8");
 
+        this.hash();
+
         if(file in processor.files) {
             processor.invalidate(file);
         }
@@ -128,6 +132,20 @@ class CssStore extends Store {
 
         // Trigger downstream updates
         this.set({ files });
+
+        return file;
+    }
+
+    hash() {
+        const { files } = this.get();
+
+        // Update location.hash with fs state
+        const hash = [ ...files.values() ].map((value) => ([
+            value,
+            fs.readFileSync(value, "utf8")
+        ]));
+
+        location.hash = lz.compressToBase64(JSON.stringify(hash));
     }
 }
 
@@ -139,23 +157,6 @@ const store = new CssStore({
     compositions : [],
 });
 
-store.on("state", ({ changed, current }) => {
-    if(!changed.files) {
-        return;
-    }
-
-    const { files } = current;
-
-    // Update location.hash with fs state
-    const hash = [ ...files.values() ].map((value) => ([
-        value,
-        fs.readFileSync(value, "utf8")
-    ]));
-
-    location.hash = lz.compressToBase64(JSON.stringify(hash));
-
-    // Calculate new output
-    store.output();
-});
+listen(store, "files", () => store.hash());
 
 export default store;
