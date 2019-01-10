@@ -1,20 +1,23 @@
 /* eslint-disable max-statements */
 "use strict";
 
-var fs   = require("fs"),
-    path = require("path"),
+const fs   = require("fs");
+const path = require("path");
 
-    webpack = require("webpack"),
-    shell   = require("shelljs"),
+const webpack = require("webpack");
+const shell   = require("shelljs");
+const dedent  = require("dedent");
 
-    read  = require("test-utils/read.js")(__dirname),
-    namer = require("test-utils/namer.js"),
-    
-    Plugin = require("../plugin.js"),
+const read  = require("test-utils/read.js")(__dirname);
+const namer = require("test-utils/namer.js");
 
-    output = path.resolve(__dirname, "./output"),
-    loader = require.resolve("../loader.js"),
-    test   = /\.css$/;
+const Processor = require("modular-css-core");
+
+const Plugin = require("../plugin.js");
+
+const output = path.resolve(__dirname, "./output");
+const loader = require.resolve("../loader.js");
+const test   = /\.css$/;
 
 function success(err, stats) {
     expect(err).toBeFalsy();
@@ -207,7 +210,7 @@ describe("/webpack.js", () => {
     it("should generate correct builds in watch mode when files change", (done) => {
         var changed = 0,
             compiler, watcher;
-        
+
         // Create v1 of the file
         fs.writeFileSync(
             path.join(__dirname, "./output/watched.css"),
@@ -224,10 +227,10 @@ describe("/webpack.js", () => {
             // w/o it the build freezes forever!
             setTimeout(done, 50);
         });
-        
+
         watcher = compiler.watch(null, (err, stats) => {
             changed++;
-            
+
             success(err, stats);
 
             expect(read("output.js")).toMatchSnapshot();
@@ -247,7 +250,7 @@ describe("/webpack.js", () => {
     it("should generate correct builds when files change", () => {
         var changed = "./packages/webpack/test/output/changed.css",
             compiler;
-        
+
         // wrap compiler.run in a promise for easier chaining
         function run() {
             return new Promise((resolve, reject) =>
@@ -255,10 +258,10 @@ describe("/webpack.js", () => {
                     if(stats.hasErrors()) {
                         return reject(stats);
                     }
-                    
+
                     expect(read("output.js")).toMatchSnapshot();
                     expect(read("output.css")).toMatchSnapshot();
-                    
+
                     return resolve(stats);
                 })
             );
@@ -267,7 +270,7 @@ describe("/webpack.js", () => {
         compiler = webpack(config({
             entry : "./packages/webpack/test/specimens/change.js",
         }));
-        
+
         // Create v1 of the file
         fs.writeFileSync(changed, ".one { color: red; }");
 
@@ -287,10 +290,34 @@ describe("/webpack.js", () => {
             // This build fails because the file is missing
             .catch((stats) => {
                 expect(stats.toJson().errors[0]).toMatch("no such file or directory");
-                
+
                 fs.writeFileSync(changed, ".three { color: green; }");
 
                 return run();
             });
+    });
+
+    it("should accept an existing processor instance", async (done) => {
+        const processor = new Processor();
+
+        await processor.string("./packages/webpack/test/specimens/fake.css", dedent(`
+            .fake {
+                color: yellow;
+            }
+        `));
+
+        webpack(config({
+            entry  : "./packages/webpack/test/specimens/simple.js",
+            plugin : {
+                processor,
+            },
+        }), (err, stats) => {
+            success(err, stats);
+
+            expect(read("output.js")).toMatchSnapshot();
+            expect(read("output.css")).toMatchSnapshot();
+
+            done();
+        });
     });
 });
