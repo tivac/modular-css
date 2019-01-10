@@ -75,7 +75,7 @@ export default {
                 });
             }, 100));
 
-            // Update editor contents when new file target is passed in
+            // Update editor contents when new input attr is passed in
             listen(this, "input", ({ input }) => {
                 this.cm.setValue(input);
             });
