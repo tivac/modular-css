@@ -113,8 +113,6 @@ class CssStore extends Store {
 
         fs.unlinkSync(name);
 
-        this.output();
-
         this.set({
             files,
             file : name === file ? first(files) : file,
@@ -136,6 +134,8 @@ class CssStore extends Store {
         files.add(name);
 
         fs.writeFileSync(name, "", "utf8");
+
+        processor.file(name);
 
         // Trigger downstream updates
         this.set({
@@ -167,6 +167,9 @@ const store = new CssStore({
     compositions : {},
 });
 
-listen(store, "files", () => store.hash());
+listen(store, "files", () => {
+    store.hash();
+    store.output();
+});
 
 export default store;
