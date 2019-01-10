@@ -9,7 +9,7 @@
 }
 </style>
 
-<CodeMirror bind:output=content ref:codemirror/>
+<CodeMirror {input} ref:codemirror/>
 
 <script>
 import fs from "fs";
@@ -25,10 +25,9 @@ export default {
     store : () => store,
 
     data : () => ({
-        content : "",
+        input : "",
     }),
 
-    // Read file contents on creation
     oncreate() {
         listen(this.store, "file", ({ file }) => {
             let input;
@@ -39,10 +38,10 @@ export default {
                 input = "";
             }
 
-            this.refs.codemirror.set({ input });
+            this.set({ input });
         });
         
-        listen(this, "content", ({ content }) => {
+        this.refs.codemirror.on("change", ({ content }) => {
             const { file } = this.store.get();
 
             this.store.update(file, content);

@@ -9,14 +9,14 @@
 </style>
 
 <div class="{css.output}">
-    <CodeMirror config={cmconfig} ref:codemirror/>
+    <CodeMirror config={cmconfig} {input} ref:codemirror/>
 </div>
 
 <script>
-import { dedent } from "dentist";
-
 import store from "./store.js";
 import listen from "./listen.js";
+
+const header = "/* CSS OUTPUT */";
 
 export default {
     components : {
@@ -26,6 +26,7 @@ export default {
     store : () => store,
 
     data : () => ({
+        input : header,
         cmconfig : {
             readOnly : true,
         }
@@ -34,18 +35,20 @@ export default {
     oncreate() {
         const { loading } = this.get();
 
+        // Update output editor when css changes
         listen(this.refs.codemirror, "codemirror", ({ codemirror }) => {
-            // Update output editor when css changes
             listen(this.store, [ "css", "compositions" ], ({ css, compositions }) => {
-                codemirror.setValue(dedent(`
-                    /* CSS OUTPUT */
-                    ${css}
-                    
-                    /* CLASS COMPOSITIONS */
-                    /**
-                    ${JSON.stringify(compositions, null, 4)}
-                    **/
-                `));
+                this.set({
+                    input : [
+                        header,
+                        css,
+                        "",
+                        "/* CLASS COMPOSITIONS */",
+                        "/**",
+                        JSON.stringify(compositions, null, 4),
+                        "**/",
+                    ].join("\n")
+                });
             });
         }, { init : false });
     },

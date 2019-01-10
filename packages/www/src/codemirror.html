@@ -34,7 +34,6 @@ export default {
     data : () => ({
         loading : import("./codemirror.js"),
         input   : "",
-        output  : "",
         config  : {
             lineNumbers : true,
             lineWrapping : true,
@@ -71,10 +70,10 @@ export default {
             });
 
             this.cm.on("change", debounce(() => {
-                this.set({
-                    output : this.cm.getValue(),
+                this.fire("change", {
+                    content : this.cm.getValue(),
                 });
-            }), 100);
+            }, 100));
 
             // Update editor contents when new file target is passed in
             listen(this, "input", ({ input }) => {
