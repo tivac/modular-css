@@ -78,12 +78,7 @@ exports[`/rollup.js code splitting should support dynamic imports 1`] = `
 Array [
   Object {
     "file": "a.css",
-    "text": "/* packages/rollup/test/specimens/dynamic-imports/a.css */
-.a {
-
-    color: aqua;
-}
-/* packages/rollup/test/specimens/dynamic-imports/f.css */
+    "text": "/* packages/rollup/test/specimens/dynamic-imports/f.css */
 .f {
     color: floralwhite;
 }
@@ -91,6 +86,11 @@ Array [
 .d {
     
     color: darkred;
+}
+/* packages/rollup/test/specimens/dynamic-imports/a.css */
+.a {
+
+    color: aqua;
 }
 ",
   },
