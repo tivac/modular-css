@@ -1,8 +1,0 @@
-.errorLocation {
-    position: relative;
-    border-bottom: 2px solid rgb(200, 0, 0);
-}
-
-.errorLine {
-    background-color: rgba(200, 0, 0, 0.05);
-}

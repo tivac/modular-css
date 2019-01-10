@@ -19,6 +19,9 @@ const processor = new Processor({
     ],
 });
 
+// iterators are so much fun
+const first = (set) => set.values().next().value;
+
 class CssStore extends Store {
     constructor(...args) {
         super(...args);
@@ -56,14 +59,16 @@ class CssStore extends Store {
         }
 
         // trigger downstream processing
-        this.set({ files });
+        this.set({
+            files,
+            file : first(files),
+        });
 
         return files;
     }
 
     async output() {
         try {
-            const { files } = this.get();
             const { css, compositions } = await processor.output();
 
             return this.set({
@@ -79,17 +84,17 @@ class CssStore extends Store {
         }
     }
 
-    async update(file, contents) {
-        fs.writeFileSync(file, contents, "utf8");
+    async update(name, contents) {
+        fs.writeFileSync(name, contents, "utf8");
 
         this.hash();
 
-        if(file in processor.files) {
-            processor.invalidate(file);
+        if(processor.has(name)) {
+            processor.invalidate(name);
         }
 
         try {
-            await processor.file(file);
+            await processor.file(name);
             
             this.output();
         } catch(error) {
@@ -99,41 +104,44 @@ class CssStore extends Store {
         }
     }
 
-    remove(file) {
-        const { files } = this.get();
+    remove(name) {
+        const { file, files } = this.get();
 
-        files.delete(file);
+        files.delete(name);
 
-        processor.remove(file);
+        processor.remove(name);
 
-        fs.unlinkSync(file);
+        fs.unlinkSync(name);
 
         this.output();
 
-        // Trigger downstream updates
-        this.set({ files });
+        this.set({
+            files,
+            file : name === file ? first(files) : file,
+        });
     }
     
     add() {
         const { files } = this.get();
 
         let idx = files.size + 1;
-        let file;
+        let name;
 
         // TODO: fix keyword-spacing rule to include `do`
         do{
             idx++;
-            file = `/file${idx}.css`;
-        } while(files.has(file));
+            name = `/file${idx}.css`;
+        } while(files.has(name));
 
-        files.add(file);
+        files.add(name);
 
-        fs.writeFileSync(file, "", "utf8");
+        fs.writeFileSync(name, "", "utf8");
 
         // Trigger downstream updates
-        this.set({ files });
-
-        return file;
+        this.set({
+            files,
+            file : name,
+        });
     }
 
     hash() {
@@ -151,10 +159,12 @@ class CssStore extends Store {
 
 const store = new CssStore({
     files : new Set(),
-    css   : "",
-    error : false,
+    file  : false,
 
-    compositions : [],
+    error : false,
+    
+    css          : "",
+    compositions : {},
 });
 
 listen(store, "files", () => store.hash());

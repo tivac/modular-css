@@ -1,0 +1,93 @@
+<style>
+.editor {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.editor :global(.CodeMirror) {
+    flex: 1;
+}
+
+.loading {}
+.loaderror {}
+</style>
+
+{#await loading}
+    <div class="{css.loading}">Loading editor...</div>
+{:then _}
+    <div class="{css.editor}">
+        <textarea ref:textarea></textarea>
+    </div>
+{:catch err}
+    <div class="{css.loaderror}">Unable to load editor</div>
+{/await}
+
+<script>
+import debounce from "debounce";
+
+import listen from "./listen.js";
+
+export default {
+    data : () => ({
+        loading : import("./codemirror.js"),
+        input   : "",
+        output  : "",
+        config  : {
+            lineNumbers : true,
+            lineWrapping : true,
+            indentUnit : 4,
+            mode : "text/css",
+        },
+        
+        codemirror : false,
+    }),
+
+    // Read file contents on creation
+    oncreate() {
+        const { loading } = this.get();
+
+        // Instantiate codemirror once it's loaded
+        loading.then((mod) => {
+            const { config } = this.get();
+            const { codemirror, theme } = mod;
+
+            this.cm = codemirror.fromTextArea(
+                this.refs.textarea,
+                Object.assign({
+                    lineNumbers : true,
+                    lineWrapping : true,
+                    indentUnit : 4,
+                    mode : "text/css",
+                    theme,
+                },
+                config,
+            ));
+
+            this.set({
+                codemirror : this.cm,
+            });
+
+            this.cm.on("change", debounce(() => {
+                this.set({
+                    output : this.cm.getValue(),
+                });
+            }), 100);
+
+            // Update editor contents when new file target is passed in
+            listen(this, "input", ({ input }) => {
+                this.cm.setValue(input);
+            });
+        });
+    },
+    
+    ondestroy() {
+        // Blow up the code mirror instance
+        this.cm.toTextArea();
+
+        this.cm = null;
+    },
+};
+</script>

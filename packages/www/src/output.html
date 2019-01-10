@@ -1,0 +1,85 @@
+<style>
+.output {
+    composes: column from "./repl.css";
+
+    grid-area: output;
+
+    position: relative;
+}
+
+.error {
+    /* lol */
+    z-index: 1000;
+
+    position: absolute;
+
+    top: 0;
+    right: 0;
+    left: 0;
+
+    background: hsl(6, 93%, 71%);
+    color: hsl(0, 0%, 94%);
+
+    height: 0;
+
+    transition: height 250ms ease-out;
+}
+
+.erroron {
+    composes: error;
+
+    height: auto;
+}
+
+.result {}
+</style>
+
+<div class="{css.output}">
+    <div class="{$error ? css.erroron : css.error}">
+        {$error ? $error.toString() : ""}
+    </div>
+
+    <div class="{css.result}">
+        <CodeMirror bind:content bind:codemirror config={cmconfig} />
+    </div>
+</div>
+
+<script>
+import dedent from "dedent";
+
+import store from "./store.js";
+import listen from "./listen.js";
+
+export default {
+    components : {
+        CodeMirror : "./codemirror.html",
+    },
+
+    store : () => store,
+
+    data : () => ({
+        codemirror : false,
+        cmconfig : {
+            readOnly : true,
+        }
+    }),
+
+    oncreate() {
+        const { loading } = this.get();
+
+        listen(this, "codemirror", ({ codemirror }) => {
+            // Update output editor when css changes
+            listen(this.store, [ "css", "compositions" ], ({ css, compositions }) => {
+                codemirror.setValue(dedent(`
+                    ${css}
+                    
+                    /* Compositions */
+                    /**
+                    ${JSON.stringify(compositions, null, 4)}
+                    **/
+                `));
+            });
+        }, { init : false });
+    },
+};
+</script>
