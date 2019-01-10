@@ -5,7 +5,7 @@
     box-sizing: content-box;
     color: rgb(0, 0, 238);
     cursor: pointer;
-    display: inline flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     font: inherit;
@@ -16,7 +16,6 @@
     text-decoration: none;
     transform-origin: 0 0;
     width: auto;
-    outline: 1 solid red;
     -moz-appearance: none;
     -webkit-logical-height: 1em;
     -webkit-logical-width: auto;
