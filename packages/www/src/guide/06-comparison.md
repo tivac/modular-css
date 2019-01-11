@@ -2,6 +2,8 @@
 
 While `modular-css` has been built directly off the CSS Modules spec during the course of development some decisions have been made that have broken 100% compatibility. In general these changes have been made in an attempt to try and add consistency to the spec. There have also been a few feature additions that enable solving new classes of problems or fix pain points in the spec.
 
+@[toc]
+
 ## `:global` requires parentheses
 
 In CSS Modules the `:global` pseudo-class allows usage with or without parentheses around its arguments.

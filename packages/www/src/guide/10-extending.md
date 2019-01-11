@@ -2,12 +2,7 @@
 
 There are 4 built-in ways to extend the functionality of `modular-css`, the lifecycle hooks. They all can be used to add any number of [PostCSS Plugins](https://github.com/postcss/postcss/blob/master/docs/plugins.md) to `modular-css` at specific points in the processing cycle.
 
-The lifecycle hooks are:
-
-1. [`before`](#before)
-1. [`processing`](#processing)
-1. [`after`](#after)
-1. [`done`](#done)
+@[toc]
 
 ## `before`
 

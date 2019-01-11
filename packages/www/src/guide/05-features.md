@@ -1,14 +1,8 @@
 # Features
 
-CSS Modules defines a bunch of great features, and `modular-css` supports the best of them in a straightforward and consistent way.
+`modular-css` implements the best features of the CSS Modules spec and then adds on several extra features to make for a smoother developer experience.
 
-- [Scoped Selectors](#scoped-selectors)
-- [Composition](#composition)
-  - [Overriding Styles](#overriding-styles)
-- [Values](#values)
-  - [Importing Values](#importing-values)
-    - [Namespaced Imports](#namespaced-imports)
-    - [Wildcard Imports](#wildcard-imports)
+@[toc]
 
 ## Scoped Selectors
 
