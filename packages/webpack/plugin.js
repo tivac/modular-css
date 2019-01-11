@@ -26,7 +26,7 @@ function ModularCSS(args) {
     }
 
     this.prev = {};
-    this.processor = new Processor(options);
+    this.processor = options.processor || new Processor(options);
     this.options = options;
 }
 
@@ -47,10 +47,10 @@ ModularCSS.prototype.apply = function(compiler) {
     // Runs before compilation begins
     compiler.plugin("this-compilation", (compilation) => {
         var files;
-        
+
         // Make processor instance available to the loader
         compilation.options.processor = this.processor;
-        
+
         // This code is only useful when calling .run() multiple times
         // watching handles its own invalidations
         if(!watching) {
@@ -66,7 +66,7 @@ ModularCSS.prototype.apply = function(compiler) {
 
             // Remove changed/removed files from processor instance
             this.processor.remove(files);
-            
+
             this.prev = compilation.fileTimestamps;
         }
     });
@@ -86,7 +86,7 @@ ModularCSS.prototype.apply = function(compiler) {
                     new sources.RawSource(
                         data.css
                     );
-                
+
                 // Write out external source map if it exists
                 if(data.map) {
                     compilation.assets[`${this.options.css}.map`] = new sources.RawSource(
@@ -94,7 +94,7 @@ ModularCSS.prototype.apply = function(compiler) {
                     );
                 }
             }
-            
+
             if(this.options.json) {
                 compilation.assets[this.options.json] = new sources.RawSource(
                     JSON.stringify(data.compositions, null, 4)
