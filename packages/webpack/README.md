@@ -17,6 +17,12 @@ This package contains two entry points, you will need to use **both** in tandem 
 - [Usage](#usage)
 - [Options](#options)
 
+## Install
+
+```bash
+> npm i @modular-css/webpack
+```
+
 ## Usage
 
 ```js
@@ -57,6 +63,10 @@ Location to write the generated CSS file to, relative to `output.path` just like
 #### `json`
 
 Location to write out the JSON mapping file to, relative to `output.path` just like `output.filename`
+
+#### `processor`
+
+Pass an already-instantiated `Processor` instance to the Webpack plugin. It will then add any files found when traversing the modules to it and both the Webpack-discovered and any already-existing files will be output in the final CSS.
 
 #### Shared Options
 
