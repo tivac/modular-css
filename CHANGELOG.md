@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [19.2.0](https://github.com/tivac/modular-css/compare/v19.1.0...v19.2.0) (2019-01-11)
+
+
+### Features
+
+* Update Webpack plugin to accept existing processor ([#535](https://github.com/tivac/modular-css/issues/535)) ([15f1e15](https://github.com/tivac/modular-css/commit/15f1e15))
+
+
+
+
+
 # [19.1.0](https://github.com/tivac/modular-css/compare/v19.0.0...v19.1.0) (2019-01-10)
 
 

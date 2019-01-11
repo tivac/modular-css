@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [19.2.0](https://github.com/tivac/modular-css/compare/v19.1.0...v19.2.0) (2019-01-11)
+
+**Note:** Version bump only for package @modular-css/website
+
+
+
+
+
 # [19.1.0](https://github.com/tivac/modular-css/compare/v19.0.0...v19.1.0) (2019-01-10)
 
 **Note:** Version bump only for package @modular-css/website
