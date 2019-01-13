@@ -4,7 +4,7 @@ const sirv = require("sirv");
 const polka = require("polka");
 const getport = require("get-port");
 
-const { dest } = require("../environment.js");
+const { dest } = require("./environment.js");
 
 module.exports = () => {
     let started = false;

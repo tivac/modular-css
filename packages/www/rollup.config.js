@@ -29,7 +29,7 @@ module.exports = {
 
     plugins : [
         // Wipe the destination dir on each rebuild
-        require("./build/rollup/rollup-plugin-clean")(),
+        require("./build/rollup-plugin-clean")(),
         
         require("rollup-plugin-alias")({
             fs   : require.resolve("./stubs/fs.js"),
@@ -45,7 +45,7 @@ module.exports = {
         }),
         
         // Run webpack INSIDE ROLLUP to bundle postcss because it's fuckered otherwise
-        require("./build/rollup/rollup-plugin-postcss.js")(),
+        require("./build/rollup-plugin-postcss.js")(),
         
         require("rollup-plugin-commonjs")(),
         require("rollup-plugin-node-globals")(),
@@ -60,11 +60,16 @@ module.exports = {
             processor,
         }),
         
-        // Generate HTML skeleton including built files
-        require("./build/rollup/rollup-plugin-html")(),
+        // Generate HTML for the REPL including refernces to CSS/JS
+        require("./build/rollup-plugin-repl-html.js")(),
+
+        // Generate static pages from markdown content
+        require("./build/rollup-plugin-markdown-html.js")({
+            preprocess,
+        }),
 
         // Start a local server if in watch mode
-        isWatch && require("./build/rollup/rollup-plugin-sirv.js")(),
+        isWatch && require("./build/rollup-plugin-sirv.js")(),
 
         // Compress JS in production mode
         isProduction && require("rollup-plugin-terser").terser(),

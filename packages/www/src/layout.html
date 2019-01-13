@@ -1,5 +1,5 @@
 <style>
-@value textColor from "./repl.css";
+@value textColor from "./site.css";
 @value headerHeight: 4rem;
 @value tabHeight: 2.5rem;
 
@@ -94,20 +94,17 @@ body {
     </ul>
 </div>
 
+{#if content}
+    {@html content}
+{/if}
+
 <slot />
 
-<Error />
-
 <script>
-import { version } from "../../package.json";
-
 export default {
-    components : {
-        Error : "./error.html"
-    },
-
     data : () => ({
-        version,
+        version : false,
+        content : false,
 
         links : [
             {
