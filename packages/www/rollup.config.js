@@ -1,7 +1,5 @@
 "use strict";
 
-const path = require("path");
-
 const { isProduction, isWatch, dest } = require("./build/environment.js");
 
 // eslint-disable-next-line no-empty-function
@@ -19,7 +17,7 @@ module.exports = {
     input : [ "./src/repl/index.js" ],
 
     output : {
-        dir    : path.join(dest, "/repl"),
+        dir    : dest,
         format : "esm",
 
         sourcemap : true,
@@ -60,11 +58,8 @@ module.exports = {
             processor,
         }),
         
-        // Generate HTML for the REPL including refernces to CSS/JS
-        require("./build/rollup-plugin-repl-html.js")(),
-
-        // Generate static pages from markdown content
-        require("./build/rollup-plugin-markdown-html.js")({
+        // Generate HTML for all the static pages
+        require("./build/rollup-plugin-generate-html.js")({
             preprocess,
         }),
 

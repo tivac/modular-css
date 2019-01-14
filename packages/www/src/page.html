@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>modular-css | {title}</title>
+    {#if title}
+        <title>modular-css | {title}</title>
+    {:else}
+        <title>modular-css</title>
+    {/if}
 
     <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto" rel="stylesheet">
