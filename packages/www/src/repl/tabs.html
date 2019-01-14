@@ -93,7 +93,9 @@
     {#each [ ...$files.values() ] as file (file)}
     <div class="{$file === file ? css.tabon : css.tab}">
         <button class="{css.file}" on:click="$set({ file })">{file}</button>
+        {#if $files.size > 1}
         <button class="{css.remove}" on:click="$remove(file)">❌</button>
+        {/if}
     </div>
     {/each}
 </div>
