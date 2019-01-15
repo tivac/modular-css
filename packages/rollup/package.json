@@ -26,7 +26,8 @@
     "esutils": "^2.0.2",
     "mkdirp": "^0.5.1",
     "rollup-pluginutils": "^2.0.1",
-    "slash": "^2.0.0"
+    "slash": "^2.0.0",
+    "xregexp": "^4.2.4"
   },
   "peerDependencies": {
     "rollup": "^1"

@@ -1,6 +1,7 @@
-/* eslint-disable max-statements */
+/* eslint-disable max-statements, complexity */
 "use strict";
 
+const fs = require("fs");
 const path = require("path");
 
 const { keyword } = require("esutils");
@@ -12,6 +13,8 @@ const Graph = require("dependency-graph").DepGraph;
 const Processor = require("@modular-css/processor");
 const output = require("@modular-css/processor/lib/output.js");
 
+const { parse } = require("./parser.js");
+
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
 const emptyMappings = {
@@ -20,7 +23,7 @@ const emptyMappings = {
 
 module.exports = (opts) => {
     const options = Object.assign(Object.create(null), {
-        common       : "common.css",
+        common       : "common",
         json         : false,
         include      : "**/*.css",
         namedExports : true,
@@ -31,7 +34,14 @@ module.exports = (opts) => {
 
     const filter = utils.createFilter(options.include, options.exclude);
 
-    const { styleExport, done, map, dev, verbose } = options;
+    const {
+        common,
+        dev,
+        done,
+        map,
+        styleExport,
+        verbose,
+    } = options;
 
     // eslint-disable-next-line no-console, no-empty-function
     const log = verbose ? console.log.bind(console, "[rollup]") : () => {};
@@ -43,6 +53,10 @@ module.exports = (opts) => {
     }
 
     const processor = options.processor || new Processor(options);
+
+    // random values that need to be shared between hooks (ugh)
+    const maps = [];
+    let assetFileNames;
 
     return {
         name : "@modular-css/rollup",
@@ -134,8 +148,14 @@ module.exports = (opts) => {
                 return;
             }
 
-            const { assetFileNames = "" } = outputOptions;
-
+            // Really wish rollup would provide this default...
+            assetFileNames = outputOptions.assetFileNames || "assets/[name]-[hash][extname]";
+            
+            const {
+                chunkFileNames = "[name]-[hash].js",
+                entryFileNames = "[name].js",
+            } = outputOptions;
+            
             // Determine the correct to option for PostCSS by doing a bit of a dance
             let to;
 
@@ -164,15 +184,14 @@ module.exports = (opts) => {
             });
 
             // Output CSS chunks
-            const out = new Map();
+            const out = [];
 
             // Keep track of files that are queued to be written
             const queued = new Set();
 
             usage.overallOrder().forEach((entry) => {
-                const { modules, name } = chunks[entry];
+                const { modules, name, fileName, isEntry } = chunks[entry];
                 const css = new Set();
-                let counter = 1;
 
                 // Get CSS files being used by this chunk
                 const styles = Object.keys(modules).filter((file) => processor.has(file));
@@ -182,51 +201,86 @@ module.exports = (opts) => {
                     processor
                         .dependencies(style)
                         .forEach((file) => css.add(file));
-                    
+
                     css.add(style);
                 });
 
-                // Want to use source chunk name when code-splitting, otherwise match bundle name
-                let identifier = outputOptions.dir ? name : path.basename(entry, path.extname(entry));
+                const included = [ ...css ].filter((file) => !queued.has(file));
 
-                // Replicate rollup chunk name de-duping logic here since that isn't exposed for us
-                while(out.has(identifier)) {
-                    identifier = `${identifier}${++counter}`;
+                if(!included.length) {
+                    return;
                 }
 
-                // Set up the CSS chunk to be written
-                out.set(
-                    identifier,
-                    [ ...css ].filter((file) => !queued.has(file))
-                );
+                // Parse out the name part from the resulting filename,
+                // based on the module's template (either entry or chunk)
+                let dest;
+                const template = isEntry ? entryFileNames : chunkFileNames;
+                
+                if(template.includes("[hash]")) {
+                    const parts = parse(template, fileName);
+
+                    dest = parts.name;
+                } else {
+                    // Want to use source chunk name when code-splitting, otherwise match bundle name
+                    dest = outputOptions.dir ? name : path.basename(entry, path.extname(entry));
+                }
+
+                out.push([
+                    dest,
+                    included,
+                ]);
 
                 // Flag all the files that are queued for writing so they don't get double-output
                 css.forEach((file) => queued.add(file));
             });
 
-            // Shove any unreferenced CSS files onto the beginning of the first chunk
-            // TODO: this is inelegant, but seems reasonable-ish
+            // Figure out if there were any CSS files that the JS didn't reference
+            const unused = [];
+
             processor.dependencies().forEach((css) => {
                 if(queued.has(css)) {
                     return;
                 }
 
-                out.values().next().value.unshift(css);
                 queued.add(css);
+
+                unused.push(css);
             });
 
-            for(const [ name, files ] of out.entries()) {
-                if(!files.length) {
-                    continue;
+            // Shove any unreferenced CSS files onto the beginning of the first chunk
+            if(unused.length) {
+                if(out.length) {
+                    out[0][1].unshift(...unused);
+                } else {
+                    out.push([
+                        common,
+                        unused
+                    ]);
                 }
+            }
 
+            // If assets are being hashed then the automatic annotation has to be disabled
+            // because it won't include the hashed value and will lead to badness
+            let mapOpt = map;
+
+            if(assetFileNames.includes("[hash]") && typeof mapOpt === "object") {
+                mapOpt = Object.assign(
+                    Object.create(null),
+                    mapOpt,
+                    { annotation : false }
+                );
+            }
+
+            for(const [ name, files ] of out) {
                 const id = this.emitAsset(`${name}.css`);
 
                 /* eslint-disable-next-line no-await-in-loop */
                 const result = await processor.output({
-                    to : to.replace(/\[(name|extname)\]/g, (match, field) =>
-                        (field === "name" ? name : ".css")
-                    ),
+                    // Can't use this.getAssetFileName() here, because the source hasn't been set yet
+                    // Have to do our best to come up with a valid final location though...
+                    to  : to.replace(/\[(name|extname)\]/g, (match, field) => (field === "name" ? name : ".css")),
+                    map : mapOpt,
+
                     files,
                 });
 
@@ -234,12 +288,17 @@ module.exports = (opts) => {
 
                 this.setAssetSource(id, result.css);
 
+                // Maps can't be written out via the asset APIs becuase they shouldn't ever be hashed.
+                // They shouldn't be hashed because they simply follow the name of their parent .css asset.
+                // So push them onto an array and write them out in the writeBundle hook below
                 if(result.map) {
-                    const dest = `${name}.css.map`;
+                    const file = this.getAssetFileName(id);
 
-                    log("map output", dest);
-
-                    this.emitAsset(dest, result.map.toString());
+                    maps.push({
+                        to,
+                        file,
+                        content : result.map
+                    });
                 }
             }
 
@@ -253,5 +312,39 @@ module.exports = (opts) => {
                 this.emitAsset(dest, JSON.stringify(compositions, null, 4));
             }
         },
+
+        writeBundle() {
+            if(!maps.length) {
+                return;
+            }
+
+            maps.forEach(({ to, file, content }) => {
+                // Make sure to use the rollup name as the base, otherwise it won't
+                // automatically handle duplicate names correctly
+                const target = file.replace(".css", ".css.map");
+                const dest = path.join(
+                    path.dirname(to),
+                    path.basename(target)
+                );
+                
+                log("map output", target);
+
+                fs.writeFileSync(dest, content.toString(), "utf8");
+                
+                if(!assetFileNames.includes("hash")) {
+                    return;
+                }
+
+                // Re-add the correct annotations to the end of the source files
+                const css = path.join(
+                    path.dirname(to),
+                    path.basename(file)
+                );
+
+                const source = fs.readFileSync(css, "utf8");
+
+                fs.writeFileSync(css, `${source}\n/*# sourceMappingURL=${path.basename(target)} */`);
+            });
+        }
     };
 };

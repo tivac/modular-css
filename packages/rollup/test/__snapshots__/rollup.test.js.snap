@@ -28,6 +28,13 @@ console.log({ foo: foo$1, bar: bar$3, bar2: bar$1 });
 ]
 `;
 
+exports[`/rollup.js should accept an existing processor instance (no css in bundle) 1`] = `
+"/* packages/rollup/test/specimens/fake.css */
+.fake {
+    color: yellow;
+}"
+`;
+
 exports[`/rollup.js should accept an existing processor instance 1`] = `
 "/* packages/rollup/test/specimens/fake.css */
 .fake {
@@ -69,6 +76,43 @@ Array [
     color: red;
 }
 ",
+  },
+  Object {
+    "file": "hashes.js",
+    "text": "var css = {
+    \\"str\\": \\"\\\\\\"string\\\\\\"\\",
+    \\"fooga\\": \\"fooga\\"
+};
+
+console.log(css);
+",
+  },
+]
+`;
+
+exports[`/rollup.js should correctly handle hashed output with external source maps & json files 1`] = `
+Array [
+  Object {
+    "file": "assets/exports-24307d7d.json",
+    "text": "{
+    \\"packages/rollup/test/specimens/simple.css\\": {
+        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
+        \\"fooga\\": \\"fooga\\"
+    }
+}",
+  },
+  Object {
+    "file": "assets/hashes-8d1bcf7b.css",
+    "text": "/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+
+/*# sourceMappingURL=hashes-8d1bcf7b.css.map */",
+  },
+  Object {
+    "file": "assets/hashes-8d1bcf7b.css.map",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,+CAAC;AAED;IACI,WAAW;CACd\\",\\"file\\":\\"hashes-[hash].css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
   },
   Object {
     "file": "hashes.js",

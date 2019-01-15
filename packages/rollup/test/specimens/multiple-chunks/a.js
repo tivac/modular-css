@@ -3,6 +3,10 @@ import common from "./common.js";
 
 console.log(css, common);
 
-const c = import("./c.js");
+const d = import("./d.js");
 
-c.then(console.log);
+d.then(console.log);
+
+const e = import("./e.js");
+
+e.then(console.log);
