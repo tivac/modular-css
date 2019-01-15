@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [20.0.0](https://github.com/tivac/modular-css/compare/v19.2.0...v20.0.0) (2019-01-15)
+
+
+### Bug Fixes
+
+* clean up rollup chunk naming & source maps ([#537](https://github.com/tivac/modular-css/issues/537)) ([dfef6ba](https://github.com/tivac/modular-css/commit/dfef6ba)), closes [#536](https://github.com/tivac/modular-css/issues/536)
+* package fixes ([e03d3b7](https://github.com/tivac/modular-css/commit/e03d3b7))
+
+
+### BREAKING CHANGES
+
+* Source maps are written directly to the filesystem now, instead of going through rollup's asset pipeline. This is due to some limitations inherent in how the asset pipeline works and may be changed back once those can be resolved.
+
+
+
+
+
 # [19.1.0](https://github.com/tivac/modular-css/compare/v19.0.0...v19.1.0) (2019-01-10)
 
 
