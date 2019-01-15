@@ -260,5 +260,33 @@ describe("/rollup.js", () => {
 
             expect(dir("./multiple-chunks/assets")).toMatchSnapshot();
         });
+        
+        it("should dedupe chunk names using rollup's incrementing counter logic (hashed)", async () => {
+            const bundle = await rollup({
+                input : [
+                    require.resolve("./specimens/multiple-chunks/a.js"),
+                    require.resolve("./specimens/multiple-chunks/b.js"),
+                ],
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map : {
+                            inline : false,
+                        },
+                    }),
+                ],
+
+            });
+
+            await bundle.write({
+                format,
+                sourcemap,
+
+                dir : prefix(`./output/multiple-chunks-hashed/`),
+            });
+
+            expect(dir("./multiple-chunks-hashed/assets")).toMatchSnapshot();
+        });
     });
 });
