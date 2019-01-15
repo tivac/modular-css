@@ -100,11 +100,12 @@ Array [
 .fooga {
     color: red;
 }
-",
+
+/*# sourceMappingURL=hashes-8d1bcf7b.css.map */",
   },
   Object {
     "file": "assets/hashes-8d1bcf7b.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,+CAAC;AAED;IACI,WAAW;CACd\\",\\"file\\":\\"hashes\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,+CAAC;AAED;IACI,WAAW;CACd\\",\\"file\\":\\"hashes-[hash].css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
   },
   Object {
     "file": "hashes.js",

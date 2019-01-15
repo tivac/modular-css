@@ -13,9 +13,6 @@ const Graph = require("dependency-graph").DepGraph;
 const Processor = require("@modular-css/processor");
 const output = require("@modular-css/processor/lib/output.js");
 
-const hashRegex = /[a-f0-9]{8}/i;
-const extnameRegex = /
-
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
 const emptyMappings = {
@@ -56,6 +53,8 @@ module.exports = (opts) => {
     const processor = options.processor || new Processor(options);
 
     const maps = [];
+
+    let template;
 
     return {
         name : "@modular-css/rollup",
@@ -150,15 +149,17 @@ module.exports = (opts) => {
             // Really wish rollup would provide this default...
             const { assetFileNames = "assets/[name]-[hash][extname]" } = outputOptions;
 
+            template = assetFileNames;
+            
             // Determine the correct to option for PostCSS by doing a bit of a dance
             let to;
 
             if(!outputOptions.file && !outputOptions.dir) {
-                to = path.join(processor.options.cwd, assetFileNames);
+                to = path.join(processor.options.cwd, template);
             } else {
                 to = path.join(
                     outputOptions.dir ? outputOptions.dir : path.dirname(outputOptions.file),
-                    assetFileNames
+                    template
                 );
             }
 
@@ -234,24 +235,24 @@ module.exports = (opts) => {
                 }
             }
 
+            // If assets are being hashed then the automatic annotation has to be disabled
+            // because it won't include the hashed value and will lead to badness
+            let mapOpt = map;
+
+            if(template.includes("[hash]") && typeof mapOpt === "object") {
+                mapOpt = Object.assign(
+                    Object.create(null),
+                    mapOpt,
+                    { annotation : false }
+                );
+            }
+
             for(const [ name, files ] of out) {
                 if(!files.length) {
                     continue;
                 }
 
                 const id = this.emitAsset(`${name}.css`);
-
-                let mapOpt = map;
-
-                // Ensure that files don't have a source map annotation at the end, it'd be wrong
-                // due to rollup hashing after the output is generated anyways
-                if(typeof mapOpt === "object") {
-                    mapOpt = Object.assign(
-                        Object.create(null),
-                        mapOpt,
-                        { annotation : false }
-                    );
-                }
 
                 /* eslint-disable-next-line no-await-in-loop */
                 const result = await processor.output({
@@ -271,9 +272,11 @@ module.exports = (opts) => {
                 // They shouldn't be hashed because they simply follow the name of their parent .css asset.
                 // So push them onto an array and write them out in the writeBundle hook below
                 if(result.map) {
+                    const file = this.getAssetFileName(id);
+
                     maps.push({
                         to,
-                        src     : path.basename(this.getAssetFileName(id)),
+                        file,
                         content : result.map
                     });
                 }
@@ -295,16 +298,32 @@ module.exports = (opts) => {
                 return;
             }
 
-            console.log(maps);
-
-            maps.forEach(({ to, src, content }) => {
+            maps.forEach(({ to, file, content }) => {
                 // Make sure to use the rollup name as the base, otherwise it won't
                 // automatically handle duplicate names correctly
-                const dest = src.replace(".css", ".css.map");
+                const target = file.replace(".css", ".css.map");
+                const dest = path.join(
+                    path.dirname(to),
+                    path.basename(target)
+                );
+                
+                log("map output", target);
 
-                log("map output", dest);
+                fs.writeFileSync(dest, content.toString(), "utf8");
+                
+                if(!template.includes("hash")) {
+                    return;
+                }
 
-                fs.writeFileSync(path.join(path.dirname(to), dest), content.toString(), "utf8");
+                // Re-add the correct annotations to the end of the source files
+                const css = path.join(
+                    path.dirname(to),
+                    path.basename(file)
+                );
+
+                const source = fs.readFileSync(css, "utf8");
+
+                fs.writeFileSync(css, `${source}\n/*# sourceMappingURL=${path.basename(target)} */`);
             });
         }
     };

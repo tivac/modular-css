@@ -147,7 +147,7 @@ describe("/rollup.js", () => {
         expect(readdir("./hashes")).toMatchSnapshot();
     });
 
-    it.only("should correctly handle hashed output with external source maps & json files", async () => {
+    it("should correctly handle hashed output with external source maps & json files", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
@@ -276,7 +276,7 @@ describe("/rollup.js", () => {
         logSnapshot();
     });
 
-    it.only("should generate external source maps", async () => {
+    it("should generate external source maps", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
