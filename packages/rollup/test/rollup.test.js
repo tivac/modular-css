@@ -470,7 +470,7 @@ describe("/rollup.js", () => {
             file : prefix(`./output/existing-processor-no-css/existing-processor-no-css.js`),
         });
 
-        expect(read("./existing-processor-no-css/assets/existing-processor-no-css.css")).toMatchSnapshot();
+        expect(read("./existing-processor-no-css/assets/common.css")).toMatchSnapshot();
     });
 
     it("should output a proxy in dev mode", async () => {
