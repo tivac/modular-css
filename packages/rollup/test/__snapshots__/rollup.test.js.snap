@@ -83,6 +83,42 @@ console.log(css);
 ]
 `;
 
+exports[`/rollup.js should correctly handle hashed output with external source maps & json files 1`] = `
+Array [
+  Object {
+    "file": "assets/exports-24307d7d.json",
+    "text": "{
+    \\"packages/rollup/test/specimens/simple.css\\": {
+        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
+        \\"fooga\\": \\"fooga\\"
+    }
+}",
+  },
+  Object {
+    "file": "assets/hashes-8d1bcf7b.css",
+    "text": "/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+",
+  },
+  Object {
+    "file": "assets/hashes-8d1bcf7b.css.map",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,+CAAC;AAED;IACI,WAAW;CACd\\",\\"file\\":\\"hashes\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
+  },
+  Object {
+    "file": "hashes.js",
+    "text": "var css = {
+    \\"str\\": \\"\\\\\\"string\\\\\\"\\",
+    \\"fooga\\": \\"fooga\\"
+};
+
+console.log(css);
+",
+  },
+]
+`;
+
 exports[`/rollup.js should correctly pass to/from params for relative paths 1`] = `
 "/* packages/rollup/test/specimens/relative-paths.css */
 .wooga {

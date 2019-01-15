@@ -1,6 +1,7 @@
 /* eslint-disable max-statements */
 "use strict";
 
+const fs = require("fs");
 const path = require("path");
 
 const { keyword } = require("esutils");
@@ -11,6 +12,9 @@ const Graph = require("dependency-graph").DepGraph;
 
 const Processor = require("@modular-css/processor");
 const output = require("@modular-css/processor/lib/output.js");
+
+const hashRegex = /[a-f0-9]{8}/i;
+const extnameRegex = /
 
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
@@ -31,7 +35,14 @@ module.exports = (opts) => {
 
     const filter = utils.createFilter(options.include, options.exclude);
 
-    const { styleExport, done, map, dev, verbose } = options;
+    const {
+        common,
+        dev,
+        done,
+        map,
+        styleExport,
+        verbose,
+    } = options;
 
     // eslint-disable-next-line no-console, no-empty-function
     const log = verbose ? console.log.bind(console, "[rollup]") : () => {};
@@ -43,6 +54,8 @@ module.exports = (opts) => {
     }
 
     const processor = options.processor || new Processor(options);
+
+    const maps = [];
 
     return {
         name : "@modular-css/rollup",
@@ -134,7 +147,8 @@ module.exports = (opts) => {
                 return;
             }
 
-            const { assetFileNames = "" } = outputOptions;
+            // Really wish rollup would provide this default...
+            const { assetFileNames = "assets/[name]-[hash][extname]" } = outputOptions;
 
             // Determine the correct to option for PostCSS by doing a bit of a dance
             let to;
@@ -164,7 +178,7 @@ module.exports = (opts) => {
             });
 
             // Output CSS chunks
-            const out = new Map();
+            const out = [];
 
             // Keep track of files that are queued to be written
             const queued = new Set();
@@ -172,7 +186,6 @@ module.exports = (opts) => {
             usage.overallOrder().forEach((entry) => {
                 const { modules, name } = chunks[entry];
                 const css = new Set();
-                let counter = 1;
 
                 // Get CSS files being used by this chunk
                 const styles = Object.keys(modules).filter((file) => processor.has(file));
@@ -182,51 +195,71 @@ module.exports = (opts) => {
                     processor
                         .dependencies(style)
                         .forEach((file) => css.add(file));
-                    
+
                     css.add(style);
                 });
 
-                // Want to use source chunk name when code-splitting, otherwise match bundle name
-                let identifier = outputOptions.dir ? name : path.basename(entry, path.extname(entry));
-
-                // Replicate rollup chunk name de-duping logic here since that isn't exposed for us
-                while(out.has(identifier)) {
-                    identifier = `${identifier}${++counter}`;
-                }
-
-                // Set up the CSS chunk to be written
-                out.set(
-                    identifier,
+                out.push([
+                    // Want to use source chunk name when code-splitting, otherwise match bundle name
+                    outputOptions.dir ? name : path.basename(entry, path.extname(entry)),
                     [ ...css ].filter((file) => !queued.has(file))
-                );
+                ]);
 
                 // Flag all the files that are queued for writing so they don't get double-output
                 css.forEach((file) => queued.add(file));
             });
 
-            // Shove any unreferenced CSS files onto the beginning of the first chunk
-            // TODO: this is inelegant, but seems reasonable-ish
+            // Figure out if there were any CSS files that the JS didn't reference
+            const unused = [];
+
             processor.dependencies().forEach((css) => {
                 if(queued.has(css)) {
                     return;
                 }
 
-                out.values().next().value.unshift(css);
                 queued.add(css);
+
+                unused.push(css);
             });
 
-            for(const [ name, files ] of out.entries()) {
+            // Shove any unreferenced CSS files onto the beginning of the first chunk
+            if(unused.length) {
+                if(out.length) {
+                    out[0][1].unshift(...unused);
+                } else {
+                    out.push(
+                        common,
+                        unused
+                    );
+                }
+            }
+
+            for(const [ name, files ] of out) {
                 if(!files.length) {
                     continue;
                 }
 
                 const id = this.emitAsset(`${name}.css`);
 
+                let mapOpt = map;
+
+                // Ensure that files don't have a source map annotation at the end, it'd be wrong
+                // due to rollup hashing after the output is generated anyways
+                if(typeof mapOpt === "object") {
+                    mapOpt = Object.assign(
+                        Object.create(null),
+                        mapOpt,
+                        { annotation : false }
+                    );
+                }
+
                 /* eslint-disable-next-line no-await-in-loop */
                 const result = await processor.output({
-                    to : to.replace(/\[(name|extname)\]/g, (match, field) =>
-                        (field === "name" ? name : ".css")
-                    ),
+                    // Can't use this.getAssetFileName() here, because the source hasn't been set yet
+                    // Have to do our best to come up with a valid final location though...
+                    to  : to.replace(/\[(name|extname)\]/g, (match, field) => (field === "name" ? name : ".css")),
+                    map : mapOpt,
+
                     files,
                 });
 
@@ -234,12 +267,15 @@ module.exports = (opts) => {
 
                 this.setAssetSource(id, result.css);
 
+                // Maps can't be written out via the asset APIs becuase they shouldn't ever be hashed.
+                // They shouldn't be hashed because they simply follow the name of their parent .css asset.
+                // So push them onto an array and write them out in the writeBundle hook below
                 if(result.map) {
-                    const dest = `${name}.css.map`;
-
-                    log("map output", dest);
-
-                    this.emitAsset(dest, result.map.toString());
+                    maps.push({
+                        to,
+                        src     : path.basename(this.getAssetFileName(id)),
+                        content : result.map
+                    });
                 }
             }
 
@@ -253,5 +289,23 @@ module.exports = (opts) => {
                 this.emitAsset(dest, JSON.stringify(compositions, null, 4));
             }
         },
+
+        writeBundle() {
+            if(!maps.length) {
+                return;
+            }
+
+            console.log(maps);
+
+            maps.forEach(({ to, src, content }) => {
+                // Make sure to use the rollup name as the base, otherwise it won't
+                // automatically handle duplicate names correctly
+                const dest = src.replace(".css", ".css.map");
+
+                log("map output", dest);
+
+                fs.writeFileSync(path.join(path.dirname(to), dest), content.toString(), "utf8");
+            });
+        }
     };
 };
