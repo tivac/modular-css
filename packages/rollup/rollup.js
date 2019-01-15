@@ -1,4 +1,4 @@
-/* eslint-disable max-statements */
+/* eslint-disable max-statements, complexity */
 "use strict";
 
 const fs = require("fs");
@@ -13,6 +13,8 @@ const Graph = require("dependency-graph").DepGraph;
 const Processor = require("@modular-css/processor");
 const output = require("@modular-css/processor/lib/output.js");
 
+const { parse } = require("./parser.js");
+
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
 const emptyMappings = {
@@ -21,7 +23,7 @@ const emptyMappings = {
 
 module.exports = (opts) => {
     const options = Object.assign(Object.create(null), {
-        common       : "common.css",
+        common       : "common",
         json         : false,
         include      : "**/*.css",
         namedExports : true,
@@ -52,9 +54,9 @@ module.exports = (opts) => {
 
     const processor = options.processor || new Processor(options);
 
+    // random values that need to be shared between hooks (ugh)
     const maps = [];
-
-    let template;
+    let assetFileNames;
 
     return {
         name : "@modular-css/rollup",
@@ -147,19 +149,22 @@ module.exports = (opts) => {
             }
 
             // Really wish rollup would provide this default...
-            const { assetFileNames = "assets/[name]-[hash][extname]" } = outputOptions;
-
-            template = assetFileNames;
+            assetFileNames = outputOptions.assetFileNames || "assets/[name]-[hash][extname]";
+            
+            const {
+                chunkFileNames = "[name]-[hash].js",
+                entryFileNames = "[name].js",
+            } = outputOptions;
             
             // Determine the correct to option for PostCSS by doing a bit of a dance
             let to;
 
             if(!outputOptions.file && !outputOptions.dir) {
-                to = path.join(processor.options.cwd, template);
+                to = path.join(processor.options.cwd, assetFileNames);
             } else {
                 to = path.join(
                     outputOptions.dir ? outputOptions.dir : path.dirname(outputOptions.file),
-                    template
+                    assetFileNames
                 );
             }
 
@@ -185,7 +190,7 @@ module.exports = (opts) => {
             const queued = new Set();
 
             usage.overallOrder().forEach((entry) => {
-                const { modules, name } = chunks[entry];
+                const { modules, name, fileName, isEntry } = chunks[entry];
                 const css = new Set();
 
                 // Get CSS files being used by this chunk
@@ -200,10 +205,29 @@ module.exports = (opts) => {
                     css.add(style);
                 });
 
-                out.push([
+                const included = [ ...css ].filter((file) => !queued.has(file));
+
+                if(!included.length) {
+                    return;
+                }
+
+                // Parse out the name part from the resulting filename,
+                // based on the module's template (either entry or chunk)
+                let dest;
+                const template = isEntry ? entryFileNames : chunkFileNames;
+                
+                if(template.includes("[hash]")) {
+                    const parts = parse(template, fileName);
+
+                    dest = parts.name;
+                } else {
                     // Want to use source chunk name when code-splitting, otherwise match bundle name
-                    outputOptions.dir ? name : path.basename(entry, path.extname(entry)),
-                    [ ...css ].filter((file) => !queued.has(file))
+                    dest = outputOptions.dir ? name : path.basename(entry, path.extname(entry));
+                }
+
+                out.push([
+                    dest,
+                    included,
                 ]);
 
                 // Flag all the files that are queued for writing so they don't get double-output
@@ -228,10 +252,10 @@ module.exports = (opts) => {
                 if(out.length) {
                     out[0][1].unshift(...unused);
                 } else {
-                    out.push(
+                    out.push([
                         common,
                         unused
-                    );
+                    ]);
                 }
             }
 
@@ -239,7 +263,7 @@ module.exports = (opts) => {
             // because it won't include the hashed value and will lead to badness
             let mapOpt = map;
 
-            if(template.includes("[hash]") && typeof mapOpt === "object") {
+            if(assetFileNames.includes("[hash]") && typeof mapOpt === "object") {
                 mapOpt = Object.assign(
                     Object.create(null),
                     mapOpt,
@@ -248,10 +272,6 @@ module.exports = (opts) => {
             }
 
             for(const [ name, files ] of out) {
-                if(!files.length) {
-                    continue;
-                }
-
                 const id = this.emitAsset(`${name}.css`);
 
                 /* eslint-disable-next-line no-await-in-loop */
@@ -311,7 +331,7 @@ module.exports = (opts) => {
 
                 fs.writeFileSync(dest, content.toString(), "utf8");
                 
-                if(!template.includes("hash")) {
+                if(!assetFileNames.includes("hash")) {
                     return;
                 }
 
