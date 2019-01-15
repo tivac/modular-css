@@ -241,7 +241,7 @@ describe("/rollup.js", () => {
                     plugin({
                         namer,
                         map : {
-                            inline : false,npm tes
+                            inline : false,
                         },
                     }),
                 ],
