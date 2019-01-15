@@ -28,6 +28,13 @@ console.log({ foo: foo$1, bar: bar$3, bar2: bar$1 });
 ]
 `;
 
+exports[`/rollup.js should accept an existing processor instance (no css in bundle) 1`] = `
+"/* packages/rollup/test/specimens/fake.css */
+.fake {
+    color: yellow;
+}"
+`;
+
 exports[`/rollup.js should accept an existing processor instance 1`] = `
 "/* packages/rollup/test/specimens/fake.css */
 .fake {

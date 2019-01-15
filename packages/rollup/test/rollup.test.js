@@ -440,6 +440,38 @@ describe("/rollup.js", () => {
 
         expect(read("./existing-processor/assets/existing-processor.css")).toMatchSnapshot();
     });
+    
+    it("should accept an existing processor instance (no css in bundle)", async () => {
+        const processor = new Processor({
+            namer,
+            map,
+        });
+
+        await processor.string("./packages/rollup/test/specimens/fake.css", dedent(`
+            .fake {
+                color: yellow;
+            }
+        `));
+
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/no-css.js"),
+            plugins : [
+                plugin({
+                    processor,
+                }),
+            ],
+        });
+
+        await bundle.write({
+            format,
+            sourcemap,
+            assetFileNames,
+
+            file : prefix(`./output/existing-processor-no-css/existing-processor-no-css.js`),
+        });
+
+        expect(read("./existing-processor-no-css/assets/existing-processor-no-css.css")).toMatchSnapshot();
+    });
 
     it("should output a proxy in dev mode", async () => {
         const bundle = await rollup({
