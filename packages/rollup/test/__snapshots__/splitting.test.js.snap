@@ -30,6 +30,15 @@ Array [
   },
   Object {
     "file": "chunk2.css",
+    "text": "/* packages/rollup/test/specimens/multiple-chunks/d.css */
+.c {
+
+    color: deepskyblue;
+}
+",
+  },
+  Object {
+    "file": "chunk3.css",
     "text": "/* packages/rollup/test/specimens/multiple-chunks/c.css */
 .c {
 
