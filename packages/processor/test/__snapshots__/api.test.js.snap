@@ -148,7 +148,7 @@ exports[`/processor.js API .invalidate() should throw if no file is passed 1`] =
 exports[`/processor.js API .output() should allow for seperate source map output 1`] = `
 Object {
   "file": "to.css",
-  "mappings": "AAAA,yDAAC;AACD,UAAU,YAAY,EAAE;ACDxB,iDAAC;AAID,SAAS,kBAAkB,EAAE;ACJ7B,iDAAC;AAED,SDFA,WAAgB,CAChB,iBAAiB,ECCsB;AACvC,SFHA,wBAAqB,EEGe",
+  "mappings": "AAAA,wDAAA;AACA,UAAU,WAAW,EAAE;ACDvB,gDAAA;AAIA,SAAS,iBAAiB,EAAE;ACJ5B,gDAAA;AAEA,SDFA,UAAe,EACf,gBAAgB,ECCsB;AACtC,SFHA,uBAAoB,EEGe",
   "names": Array [],
   "sources": Array [
     "packages/processor/test/specimens/folder/folder.css",

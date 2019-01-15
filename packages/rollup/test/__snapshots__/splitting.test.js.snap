@@ -14,7 +14,7 @@ Array [
   },
   Object {
     "file": "a-14363c2f.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,0DAAC;AAAD;;IAGI,YAAY;CACf\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: aqua;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,WAAW;AACf\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: aqua;\\\\n}\\\\n\\"]}",
   },
   Object {
     "file": "b-b31885ac.css",
@@ -28,7 +28,7 @@ Array [
   },
   Object {
     "file": "b-b31885ac.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,0DAAC;AAAD;;IAGI,YAAY;CACf\\",\\"file\\":\\"b-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,WAAW;AACf\\",\\"file\\":\\"b-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
   },
   Object {
     "file": "chunk-23649ca7.css",
@@ -42,7 +42,7 @@ Array [
   },
   Object {
     "file": "chunk-23649ca7.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,0DAAA;AAAA;;IAGI,mBAAY;CACf\\",\\"file\\":\\"chunk-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,kBAAW;AACf\\",\\"file\\":\\"chunk-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
   },
   Object {
     "file": "chunk-2f7464a0.css",
@@ -55,7 +55,7 @@ Array [
   },
   Object {
     "file": "chunk-2f7464a0.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/constants.css\\",\\"../../../specimens/multiple-chunks/shared.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,kEAAC,CCAD,+DAAC;AAED,UAAU,cAAc,EAAE;;AAE1B,SDJA,YAAkB,ECIK\\",\\"file\\":\\"chunk-[hash].css\\",\\"sourcesContent\\":[\\"@value main: blue;\\\\n\\",\\"@value main from \\\\\\"./constants.css\\\\\\";\\\\n\\\\n.shared { color: salmon; }\\\\n\\\\n.other { color: main; }\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/constants.css\\",\\"../../../specimens/multiple-chunks/shared.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,iEAAA,ECAA,8DAAA;AAEA,UAAU,aAAa,EAAE;;AAEzB,SDJA,WAAiB,ECIK\\",\\"file\\":\\"chunk-[hash].css\\",\\"sourcesContent\\":[\\"@value main: blue;\\\\n\\",\\"@value main from \\\\\\"./constants.css\\\\\\";\\\\n\\\\n.shared { color: salmon; }\\\\n\\\\n.other { color: main; }\\\\n\\"]}",
   },
   Object {
     "file": "chunk-57d5c038.css",
@@ -69,7 +69,7 @@ Array [
   },
   Object {
     "file": "chunk-57d5c038.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,0DAAA;AAAA;;IAGI,aAAY;CACf\\",\\"file\\":\\"chunk-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,YAAW;AACf\\",\\"file\\":\\"chunk-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
   },
 ]
 `;
@@ -88,7 +88,7 @@ Array [
   },
   Object {
     "file": "a.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,0DAAC;AAAD;;IAGI,YAAY;CACf\\",\\"file\\":\\"a.css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: aqua;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,WAAW;AACf\\",\\"file\\":\\"a.css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: aqua;\\\\n}\\\\n\\"]}",
   },
   Object {
     "file": "b.css",
@@ -102,7 +102,7 @@ Array [
   },
   Object {
     "file": "b.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,0DAAC;AAAD;;IAGI,YAAY;CACf\\",\\"file\\":\\"b.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,WAAW;AACf\\",\\"file\\":\\"b.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
   },
   Object {
     "file": "chunk.css",
@@ -115,7 +115,7 @@ Array [
   },
   Object {
     "file": "chunk.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/constants.css\\",\\"../../../specimens/multiple-chunks/shared.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,kEAAC,CCAD,+DAAC;AAED,UAAU,cAAc,EAAE;;AAE1B,SDJA,YAAkB,ECIK\\",\\"file\\":\\"chunk.css\\",\\"sourcesContent\\":[\\"@value main: blue;\\\\n\\",\\"@value main from \\\\\\"./constants.css\\\\\\";\\\\n\\\\n.shared { color: salmon; }\\\\n\\\\n.other { color: main; }\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/constants.css\\",\\"../../../specimens/multiple-chunks/shared.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,iEAAA,ECAA,8DAAA;AAEA,UAAU,aAAa,EAAE;;AAEzB,SDJA,WAAiB,ECIK\\",\\"file\\":\\"chunk.css\\",\\"sourcesContent\\":[\\"@value main: blue;\\\\n\\",\\"@value main from \\\\\\"./constants.css\\\\\\";\\\\n\\\\n.shared { color: salmon; }\\\\n\\\\n.other { color: main; }\\\\n\\"]}",
   },
   Object {
     "file": "chunk2.css",
@@ -128,7 +128,7 @@ Array [
   },
   Object {
     "file": "chunk2.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,0DAAA;AAAA;;IAGI,mBAAY;CACf\\",\\"file\\":\\"chunk.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,kBAAW;AACf\\",\\"file\\":\\"chunk.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
   },
   Object {
     "file": "chunk3.css",
@@ -141,7 +141,7 @@ Array [
   },
   Object {
     "file": "chunk3.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,0DAAA;AAAA;;IAGI,aAAY;CACf\\",\\"file\\":\\"chunk.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,YAAW;AACf\\",\\"file\\":\\"chunk.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
   },
 ]
 `;
