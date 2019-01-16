@@ -150,12 +150,12 @@ module.exports = (opts) => {
 
             // Really wish rollup would provide this default...
             assetFileNames = outputOptions.assetFileNames || "assets/[name]-[hash][extname]";
-            
+
             const {
                 chunkFileNames = "[name]-[hash].js",
                 entryFileNames = "[name].js",
             } = outputOptions;
-            
+
             // Determine the correct to option for PostCSS by doing a bit of a dance
             let to;
 
@@ -178,6 +178,11 @@ module.exports = (opts) => {
                 usage.addNode(entry, true);
 
                 [ ...imports, ...dynamicImports ].forEach((dep) => {
+                    // Need to filter out invalid deps, see rollup/rollup#2659
+                    if(!dep) {
+                        return;
+                    }
+
                     usage.addNode(dep, true);
                     usage.addDependency(entry, dep);
                 });
@@ -215,7 +220,7 @@ module.exports = (opts) => {
                 // based on the module's template (either entry or chunk)
                 let dest;
                 const template = isEntry ? entryFileNames : chunkFileNames;
-                
+
                 if(template.includes("[hash]")) {
                     const parts = parse(template, fileName);
 
@@ -326,11 +331,11 @@ module.exports = (opts) => {
                     path.dirname(to),
                     path.basename(target)
                 );
-                
+
                 log("map output", target);
 
                 fs.writeFileSync(dest, content.toString(), "utf8");
-                
+
                 if(!assetFileNames.includes("hash")) {
                     return;
                 }
