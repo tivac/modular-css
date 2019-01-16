@@ -174,6 +174,33 @@ describe("/rollup.js", () => {
             expect(dir("./dynamic-imports/assets/")).toMatchSnapshot();
         });
 
+        it("shouldn't break when dynamic imports are tree-shaken away (rollup/rollup#2659)", async () => {
+            const bundle = await rollup({
+                input : [
+                    require.resolve("./specimens/stripped-dynamic-imports/a.js"),
+                ],
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map,
+                    }),
+                ],
+            });
+
+            await bundle.write({
+                format,
+                sourcemap,
+
+                assetFileNames,
+                chunkFileNames,
+
+                dir : prefix(`./output/stripped-dynamic-imports`),
+            });
+
+            expect(dir("./stripped-dynamic-imports/assets/")).toMatchSnapshot();
+        });
+
         it("should ouput only 1 JSON file", async () => {
             const bundle = await rollup({
                 input : [
@@ -260,7 +287,7 @@ describe("/rollup.js", () => {
 
             expect(dir("./multiple-chunks/assets")).toMatchSnapshot();
         });
-        
+
         it("should dedupe chunk names using rollup's incrementing counter logic (hashed)", async () => {
             const bundle = await rollup({
                 input : [
