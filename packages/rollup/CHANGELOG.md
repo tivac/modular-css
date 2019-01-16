@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [20.0.1](https://github.com/tivac/modular-css/compare/v20.0.0...v20.0.1) (2019-01-16)
+
+
+### Bug Fixes
+
+* handle dynamic imports removed by tree-shaking ([#538](https://github.com/tivac/modular-css/issues/538)) ([c2a09e1](https://github.com/tivac/modular-css/commit/c2a09e1))
+
+
+
+
+
 # [20.0.0](https://github.com/tivac/modular-css/compare/v19.2.0...v20.0.0) (2019-01-15)
 
 
