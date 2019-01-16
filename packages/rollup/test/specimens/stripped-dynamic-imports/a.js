@@ -1,3 +1,1 @@
-if(false) {
-    import("./b.js").then(console.log);
-}
+export default false ? import('./b.js') : null;
