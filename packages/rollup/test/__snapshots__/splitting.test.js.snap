@@ -316,6 +316,8 @@ Array [
 ]
 `;
 
+exports[`/rollup.js code splitting shouldn't break when dynamic imports are tree-shaken away (rollup/rollup#2659) 1`] = `Array []`;
+
 exports[`/rollup.js code splitting shouldn't put bundle-specific CSS in common.css 1`] = `
 Array [
   Object {
