@@ -9,7 +9,7 @@
 </style>
 
 <div class="{css.output}">
-    <CodeMirror config={cmconfig} {input} ref:codemirror/>
+    <CodeMirror config={cmconfig} ref:codemirror/>
 </div>
 
 <script>
@@ -26,31 +26,29 @@ export default {
     store : () => store,
 
     data : () => ({
-        input : header,
         cmconfig : {
             readOnly : true,
         }
     }),
 
     oncreate() {
-        const { loading } = this.get();
+        // Default to just the header
+        this.refs.codemirror.input({ content : header });
 
-        // Update output editor when css changes
-        listen(this.refs.codemirror, "codemirror", ({ codemirror }) => {
-            listen(this.store, [ "css", "compositions" ], ({ css, compositions }) => {
-                this.set({
-                    input : [
-                        header,
-                        css,
-                        "",
-                        "/* CLASS COMPOSITIONS */",
-                        "/**",
-                        JSON.stringify(compositions, null, 4),
-                        "**/",
-                    ].join("\n")
-                });
+        // Then update whenever the store values change
+        listen(this.store, [ "css", "compositions" ], ({ css, compositions }) => {
+            this.refs.codemirror.input({
+                content : [
+                    header,
+                    css,
+                    "",
+                    "/* CLASS COMPOSITIONS */",
+                    "/**",
+                    JSON.stringify(compositions, null, 4),
+                    "**/",
+                ].join("\n")
             });
-        }, { init : false });
+        });
     },
 };
 </script>

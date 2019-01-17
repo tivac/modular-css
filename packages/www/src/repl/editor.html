@@ -1,15 +1,4 @@
-<style>
-.errorLocation {
-    position: relative;
-    border-bottom: 2px solid rgb(200, 0, 0);
-}
-
-.errorLine {
-    background-color: rgba(200, 0, 0, 0.05);
-}
-</style>
-
-<CodeMirror {input} ref:codemirror/>
+<CodeMirror ref:codemirror/>
 
 <script>
 import fs from "fs";
@@ -17,6 +6,7 @@ import fs from "fs";
 import store from "./store.js";
 import listen from "./listen.js";
 
+// Thin wrapper around the store <-> codemirror communication
 export default {
     components : {
         CodeMirror : "./codemirror.html",
@@ -25,20 +15,20 @@ export default {
     store : () => store,
 
     data : () => ({
-        input : "",
+        file : false,
     }),
 
     oncreate() {
         listen(this.store, "file", ({ file }) => {
-            let input;
+            let content;
 
             try {
-                input = fs.readFileSync(file, "utf8");
+                content = fs.readFileSync(file, "utf8");
             } catch(e) {
-                input = "";
+                content = "";
             }
 
-            this.set({ input });
+            this.refs.codemirror.input({ content });
         });
         
         this.refs.codemirror.on("change", ({ content }) => {
@@ -48,36 +38,14 @@ export default {
         });
         
         // Mark text in the editor when an error occurs
-        listen(this.store, "error", ({ error : curr }, { error : prev }) => {
-            if(this.clearError) {
-                this.clearError();
-            }
-            
+        listen(this.store, "error", ({ error }) => {
             const { file } = this.get();
-            const { codemirror } = this.refs.codemirror.get();
 
-            if(!curr || curr.file !== file || !codemirror) {
+            if(!error || error.file !== file) {
                 return;
             }
 
-            const { line, column, source } = curr;
-            
-            // Mark the offending line
-            codemirror.addLineClass(line - 1, "wrap", css.errorLine);
-
-            // And underline the offending text as best we can
-            const marker = codemirror.markText(
-                { line : line - 1, ch : column - 1 },
-                { line : line - 1, ch : column - 1 + source.trimEnd().length },
-                { className : css.errorLocation }
-            );
-
-            // Save a function to clear all the error markers
-            this.clearError = () => {
-                codemirror.removeLineClass(line - 1, "wrap", css.errorLine);
-
-                marker.clear();
-            };
+            this.refs.codemirror.error({ error });
         });
     },
 };

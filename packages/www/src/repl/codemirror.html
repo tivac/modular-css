@@ -11,6 +11,15 @@
     flex: 1;
 }
 
+.errorLocation {
+    position: relative;
+    border-bottom: 2px solid rgb(200, 0, 0);
+}
+
+.errorLine {
+    background-color: rgba(200, 0, 0, 0.05);
+}
+
 .loading {}
 .loaderror {}
 </style>
@@ -33,7 +42,7 @@ import listen from "./listen.js";
 export default {
     data : () => ({
         loading : import("./codemirror.js"),
-        input   : "",
+        
         config  : {
             lineNumbers : true,
             lineWrapping : true,
@@ -43,6 +52,47 @@ export default {
         
         codemirror : false,
     }),
+
+    methods : {
+        // Give consumers ability to forcibly update the editor's content
+        // (assuming it's loaded, of course)
+        async input({ content = "" } = false) {
+            const { loading } = this.get();
+            
+            await loading;
+            
+            this.cm.setValue(content);
+        },
+
+        async error({ error }) {
+            const { loading } = this.get();
+
+            await loading;
+            
+            if(this.clearError) {
+                this.clearError();
+            }
+            
+            const { line, column, source } = error;
+            
+            // Mark the offending line
+            this.cm.addLineClass(line - 1, "wrap", css.errorLine);
+
+            // And underline the offending text as best we can
+            const marker = this.cm.markText(
+                { line : line - 1, ch : column - 1 },
+                { line : line - 1, ch : column - 1 + source.trimEnd().length },
+                { className : css.errorLocation }
+            );
+
+            // Save a function to clear all the error markers
+            this.clearError = () => {
+                this.cm.removeLineClass(line - 1, "wrap", css.errorLine);
+
+                marker.clear();
+            };
+        }
+    },
 
     // Read file contents on creation
     oncreate() {
@@ -65,6 +115,7 @@ export default {
                 config,
             ));
 
+            // Make codemirror instance externally-accessible, for some reason
             this.set({
                 codemirror : this.cm,
             });
@@ -74,11 +125,6 @@ export default {
                     content : this.cm.getValue(),
                 });
             }, 100));
-
-            // Update editor contents when new input attr is passed in
-            listen(this, "input", ({ input }) => {
-                this.cm.setValue(input);
-            });
         });
     },
     
