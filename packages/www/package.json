@@ -37,6 +37,7 @@
     "lazyload-css": "^1.0.5",
     "lznext": "^0.1.0",
     "markdown-it": "^8.4.2",
+    "markdown-it-prism": "^2.0.1",
     "markdown-it-toc-and-anchor": "^4.2.0",
     "node-browserfs": "^3.0.1",
     "p-debounce": "^1.0.0",
