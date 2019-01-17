@@ -1,14 +1,12 @@
 import fs from "fs";
 import path from "path";
 
-// TODO: remove debugging
-window.fs = fs;
-
 import { Store } from "svelte/store";
 import Processor from "@modular-css/processor";
 import lz from "lznext";
 
 import listen from "./listen.js";
+import { prompt } from "./data/prompt.js";
 
 const processor = new Processor({
     cwd : "/",
@@ -22,49 +20,67 @@ const processor = new Processor({
 // iterators are so much fun
 const first = (set) => set.values().next().value;
 
+
 class CssStore extends Store {
     constructor(...args) {
         super(...args);
 
-        const files = this._initialFiles();
+        this._parseHash();
 
-        // Load files into the processor
-        files.forEach((file) => this.update(file, fs.readFileSync(file, "utf8")));
+        listen(this, "files", () => {
+            this.hash();
+            this.output();
+        });
     }
 
     // Grab initial state from location.hash, or create it from nothing
-    _initialFiles() {
+    _parseHash() {
         const { files } = this.get();
 
-        if(location.hash) {
-            const hash = location.hash.substring(1);
+        const hash = location.hash.substring(1);
 
-            try {
-                const data = JSON.parse(lz.decompressFromBase64(hash));
+        try {
+            const data = JSON.parse(lz.decompressFromEncodedURIComponent(hash));
 
-                data.forEach(([ file, css ]) => {
-                    files.add(file);
+            data.forEach(([ file, css ]) => {
+                files.add(file);
 
-                    fs.writeFileSync(file, css, "utf8");
-                });
-            } catch(e) {
-                console.warn("Unable to parse state", hash);
+                fs.writeFileSync(file, css, "utf8");
+            });
+
+            // Add all the files to the processor once they've been written to disk
+            files.forEach((file) => processor.file(file));
+
+            // trigger downstream processing
+            this.set({
+                files,
+                file : first(files),
+            });
+        } catch(e) {
+            if(hash.length) {
+                // eslint-disable-next-line no-console
+                console.warn("Unable to parse hash:", e);
             }
-        } else {
-            const initial = "/main.css";
 
-            files.add(initial);
-
-            fs.writeFileSync(initial, "", "utf8");
+            this.initial({ content : prompt });
         }
+    }
 
-        // trigger downstream processing
+    async initial({ content = "" } = false) {
+        const { files } = this.get();
+
+        const initial = "/main.css";
+
+        files.add(initial);
+
+        fs.writeFileSync(initial, content, "utf8");
+
+        await processor.file(initial);
+
         this.set({
             files,
             file : first(files),
         });
-
-        return files;
     }
 
     async output() {
@@ -126,7 +142,7 @@ class CssStore extends Store {
         let name;
 
         // TODO: fix keyword-spacing rule to include `do`
-        do{
+        do {
             idx++;
             name = `/file${idx}.css`;
         } while(files.has(name));
@@ -144,6 +160,25 @@ class CssStore extends Store {
         });
     }
 
+    async clear() {
+        const { files } = this.get();
+
+        files.forEach((file) => processor.remove(file));
+
+        files.clear();
+
+        // Force an update of the UI to clear everything out
+        this.set({
+            files,
+            file : false,
+        });
+    }
+
+    async reset(...args) {
+        await this.clear();
+        await this.initial(...args);
+    }
+
     hash() {
         const { files } = this.get();
 
@@ -153,7 +188,7 @@ class CssStore extends Store {
             fs.readFileSync(value, "utf8")
         ]));
 
-        location.hash = lz.compressToBase64(JSON.stringify(hash));
+        location.hash = lz.compressToEncodedURIComponent(JSON.stringify(hash));
     }
 }
 
@@ -165,11 +200,6 @@ const store = new CssStore({
     
     css          : "",
     compositions : {},
-});
-
-listen(store, "files", () => {
-    store.hash();
-    store.output();
 });
 
 export default store;
