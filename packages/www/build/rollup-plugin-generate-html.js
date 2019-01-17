@@ -7,15 +7,15 @@ const shell = require("shelljs");
 const MD = require("markdown-it");
 const { default : toc } = require("markdown-it-toc-and-anchor");
 
-const { dest } = require("./environment.js");
 const svelte = require("./svelte.js");
 const { version } = require("../package.json");
 
-module.exports = ({ preprocess }) => {
-    let page;
-    let layout;
+const type = "md";
 
+module.exports = ({ preprocess }) => {
     const outputs = new Map();
+
+    let guides;
 
     // Set up markdown renderer
     const md = new MD({
@@ -33,18 +33,23 @@ module.exports = ({ preprocess }) => {
         name : "rollup-plugin-generate-html",
 
         async buildStart() {
-            if(page || layout) {
-                return;
-            }
-            
-            page = await svelte({ file : require.resolve("../src/page.html") });
-            layout = await svelte({
+            guides = shell.find(path.resolve(__dirname, `../src/guide/*.md`));
+
+            // Watch guide markdown files for changes
+            guides.forEach((guide) => this.addWatchFile(guide));
+
+            // Also watch home page markdown
+            this.addWatchFile(require.resolve("../src/index.md"));
+        },
+
+        async generateBundle({ dir }, chunks) {
+            const page = await svelte({ file : require.resolve("../src/page.html") });
+            const layout = await svelte({
                 file : require.resolve("../src/layout.html"),
                 preprocess,
             });
-        },
-        
-        generateBundle({ dir }, chunks) {
+
+
             const styles = [];
             const scripts = [];
             
@@ -90,40 +95,39 @@ module.exports = ({ preprocess }) => {
             );
 
             // Write out guide page
-            const guides = shell
-                .find(path.resolve(__dirname, `../src/guide/*.md`))
-                .map((file) => {
-                    let text = fs.readFileSync(file, "utf8");
-                
-                    // Prefix headers to decrement them all down a level
-                    text = text.replace(/^#/gm, "##");
-                    
-                    return md.render(text);
-                });
-        
             outputs.set(
                 path.join(dir, "./guide/index.html"),
                 page.render({
                     styles,
                     title   : "Guide",
                     content : layout.render({
-                        content : guides.join("\n"),
                         version,
+                        type,
+                        content : guides
+                            .map((file) => {
+                                let text = fs.readFileSync(file, "utf8");
+                            
+                                // Prefix headers to decrement them all down a level
+                                text = text.replace(/^#/gm, "##");
+                                
+                                return md.render(text);
+                            })
+                            .join("\n"),
                     }),
                 })
             );
-
 
             // Write out home page
             outputs.set(
                 path.join(dir, "./index.html"),
                 page.render({
                     styles,
+                    type,
                     content : layout.render({
+                        version,
                         content : md.render(
                             fs.readFileSync(require.resolve("../src/index.md"), "utf8")
                         ),
-                        version,
                     }),
                 }),
             );
