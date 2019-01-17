@@ -1,3 +1,9 @@
+---
+name: 🐞 Bug Report
+about: Something went awry and you'd like to tell us about it.
+
+---
+
 <!--- Provide a general summary of the issue in the Title above -->
 
 ## Expected Behavior
