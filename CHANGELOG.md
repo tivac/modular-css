@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [21.0.1](https://github.com/tivac/modular-css/compare/v21.0.0...v21.0.1) (2019-01-18)
+
+
+### Bug Fixes
+
+* support chunks that don't depend on css ([#544](https://github.com/tivac/modular-css/issues/544)) ([10074e3](https://github.com/tivac/modular-css/commit/10074e3)), closes [#543](https://github.com/tivac/modular-css/issues/543)
+
+
+
+
+
 # [21.0.0](https://github.com/tivac/modular-css/compare/v20.0.1...v21.0.0) (2019-01-18)
 
 
