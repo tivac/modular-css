@@ -29,21 +29,35 @@ console.log({ foo: foo$1, bar: bar$3, bar2: bar$1 });
 `;
 
 exports[`/rollup.js should accept an existing processor instance (no css in bundle) 1`] = `
-"/* packages/rollup/test/specimens/fake.css */
+Array [
+  Object {
+    "file": "common.css",
+    "text": "/* packages/rollup/test/specimens/fake.css */
 .fake {
     color: yellow;
-}"
+}",
+  },
+]
 `;
 
 exports[`/rollup.js should accept an existing processor instance 1`] = `
-"/* packages/rollup/test/specimens/fake.css */
+Array [
+  Object {
+    "file": "common.css",
+    "text": "/* packages/rollup/test/specimens/fake.css */
 .fake {
     color: yellow;
-}
-/* packages/rollup/test/specimens/simple.css */
+}",
+  },
+  Object {
+    "file": "existing-processor.css",
+    "text": "/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
-}"
+}
+",
+  },
+]
 `;
 
 exports[`/rollup.js should allow disabling of named exports 1`] = `
@@ -426,6 +440,26 @@ exports[`/rollup.js should respect the CSS dependency tree 2`] = `
     background: blue;
 }
 "
+`;
+
+exports[`/rollup.js should use the common arg for unreferenced CSS 1`] = `
+Array [
+  Object {
+    "file": "simple.css",
+    "text": "/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+",
+  },
+  Object {
+    "file": "unreferenced.css",
+    "text": "/* packages/rollup/test/specimens/fake.css */
+.fake {
+    color: yellow;
+}",
+  },
+]
 `;
 
 exports[`/rollup.js should warn & not export individual keys when they are not valid identifiers 1`] = `

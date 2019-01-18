@@ -23,7 +23,7 @@ const emptyMappings = {
 
 module.exports = (opts) => {
     const options = Object.assign(Object.create(null), {
-        common       : "common",
+        common       : "common.css",
         json         : false,
         include      : "**/*.css",
         namedExports : true,
@@ -189,7 +189,7 @@ module.exports = (opts) => {
             });
 
             // Output CSS chunks
-            const out = [];
+            const out = new Map();
 
             // Keep track of files that are queued to be written
             const queued = new Set();
@@ -230,7 +230,7 @@ module.exports = (opts) => {
                     dest = outputOptions.dir ? name : path.basename(entry, path.extname(entry));
                 }
 
-                out.push([
+                out.set(entry, [
                     dest,
                     included,
                 ]);
@@ -254,14 +254,11 @@ module.exports = (opts) => {
 
             // Shove any unreferenced CSS files onto the beginning of the first chunk
             if(unused.length) {
-                if(out.length) {
-                    out[0][1].unshift(...unused);
-                } else {
-                    out.push([
-                        common,
-                        unused
-                    ]);
-                }
+                out.set("unused", [
+                    // Add .css automatically down below, so strip in case it was specified
+                    common.replace(path.extname(common), ""),
+                    unused
+                ]);
             }
 
             // If assets are being hashed then the automatic annotation has to be disabled
@@ -276,7 +273,7 @@ module.exports = (opts) => {
                 );
             }
 
-            for(const [ name, files ] of out) {
+            for(const [ name, files ] of out.values()) {
                 const id = this.emitAsset(`${name}.css`);
 
                 /* eslint-disable-next-line no-await-in-loop */

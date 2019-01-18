@@ -10,6 +10,7 @@ const read    = require("@modular-css/test-utils/read.js")(__dirname);
 const readdir = require("@modular-css/test-utils/read-dir.js")(__dirname);
 const exists  = require("@modular-css/test-utils/exists.js")(__dirname);
 const prefix  = require("@modular-css/test-utils/prefix.js")(__dirname);
+const dir     = require("@modular-css/test-utils/read-dir.js")(__dirname);
 const namer   = require("@modular-css/test-utils/namer.js");
 const logs    = require("@modular-css/test-utils/logs.js");
 
@@ -226,6 +227,38 @@ describe("/rollup.js", () => {
         expect(read("./json-named/assets/custom.json")).toMatchSnapshot();
     });
 
+    it("should use the common arg for unreferenced CSS", async () => {
+        const processor = new Processor({
+            namer,
+            map,
+        });
+
+        await processor.string("./packages/rollup/test/specimens/fake.css", dedent(`
+            .fake {
+                color: yellow;
+            }
+        `));
+        
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/simple.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    processor,
+                    common : "unreferenced.css",
+                }),
+            ],
+        });
+
+        await bundle.write({
+            format,
+            assetFileNames,
+            file : prefix(`./output/common-option/simple.js`),
+        });
+
+        expect(dir("./common-option/assets/")).toMatchSnapshot();
+    });
+
     it("should provide named exports", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/named.js"),
@@ -438,7 +471,7 @@ describe("/rollup.js", () => {
             file : prefix(`./output/existing-processor/existing-processor.js`),
         });
 
-        expect(read("./existing-processor/assets/existing-processor.css")).toMatchSnapshot();
+        expect(dir("./existing-processor/assets/")).toMatchSnapshot();
     });
     
     it("should accept an existing processor instance (no css in bundle)", async () => {
@@ -470,7 +503,7 @@ describe("/rollup.js", () => {
             file : prefix(`./output/existing-processor-no-css/existing-processor-no-css.js`),
         });
 
-        expect(read("./existing-processor-no-css/assets/common.css")).toMatchSnapshot();
+        expect(dir("./existing-processor-no-css/assets/")).toMatchSnapshot();
     });
 
     it("should output a proxy in dev mode", async () => {
