@@ -170,7 +170,7 @@ module.exports = (opts) => {
 
             // Build chunk dependency graph so it can be walked in order later to
             // Allow for outputting CSS alongside chunks as optimally as possible
-            const usage = new Graph();
+            const usage = new Graph({ circular : true });
 
             Object.entries(chunks).forEach(([ entry, chunk ]) => {
                 const { imports, dynamicImports } = chunk;

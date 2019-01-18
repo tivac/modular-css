@@ -315,5 +315,41 @@ describe("/rollup.js", () => {
 
             expect(dir("./multiple-chunks-hashed/assets")).toMatchSnapshot();
         });
+
+        it("should support circular JS dependencies", async () => {
+            const bundle = await rollup({
+                onwarn(warning, handler) {
+                    if(warning.code === "CIRCULAR_DEPENDENCY") {
+                        return;
+                    }
+
+                    handler(warning);
+                },
+
+                input : [
+                    require.resolve("./specimens/circular-dependencies/a.js"),
+                    require.resolve("./specimens/circular-dependencies/b.js"),
+                ],
+                
+                plugins : [
+                    plugin({
+                        namer,
+                        map,
+                    }),
+                ],
+            });
+    
+            await bundle.write({
+                format,
+                sourcemap,
+
+                assetFileNames,
+                chunkFileNames,
+
+                dir : prefix(`./output/circular-dependencies`)
+            });
+    
+            expect(dir(`./circular-dependencies`)).toMatchSnapshot();
+        });
     });
 });
