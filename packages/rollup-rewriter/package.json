@@ -1,0 +1,28 @@
+{
+  "name": "@modular-css/rollup-rewriter",
+  "version": "20.0.1",
+  "description": "Rewrite dynamic imports to include all their CSS dependencies",
+  "main": "./rewriter.js",
+  "repository": "tivac/modular-css",
+  "bugs": {
+    "url": "https://github.com/tivac/modular-css/issues"
+  },
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "rollup",
+    "rollup-plugin",
+    "css",
+    "css-modules",
+    "modular-css",
+    "postcss"
+  ],
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "@modular-css/rollup": "^21"
+  }
+}
