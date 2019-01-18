@@ -339,9 +339,14 @@ describe("/rollup.js", () => {
                 ],
             });
     
-            const result = await bundle.generate({ format });
+            await bundle.write({
+                format,
+                sourcemap,
+
+                dir : prefix(`./output/circular-dependencies`)
+            });
     
-            expect(result).toMatchRollupCodeSnapshot();
+            expect(dir(`./circular-dependencies`)).toMatchSnapshot();
         });
     });
 });
