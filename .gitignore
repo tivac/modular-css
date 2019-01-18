@@ -84,3 +84,5 @@ $RECYCLE.BIN/
 
 # Profiler Output
 profiling
+
+dist/
