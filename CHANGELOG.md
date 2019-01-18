@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [21.0.0](https://github.com/tivac/modular-css/compare/v20.0.1...v21.0.0) (2019-01-18)
+
+
+### Bug Fixes
+
+* support circular dependencies ([#541](https://github.com/tivac/modular-css/issues/541)) ([b8dce99](https://github.com/tivac/modular-css/commit/b8dce99)), closes [#539](https://github.com/tivac/modular-css/issues/539)
+
+
+### Features
+
+* add metadata output option ([#542](https://github.com/tivac/modular-css/issues/542)) ([e42e997](https://github.com/tivac/modular-css/commit/e42e997))
+
+
+### BREAKING CHANGES
+
+* The previous release would stick all unreferenced CSS at the beginning of the first bundle. This was a mistake, and has been rectified.
+
+
+
+
+
 ## [20.0.1](https://github.com/tivac/modular-css/compare/v20.0.0...v20.0.1) (2019-01-16)
 
 
