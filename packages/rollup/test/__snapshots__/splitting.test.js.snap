@@ -198,7 +198,7 @@ export default a$1;
 ",
   },
   Object {
-    "file": "assets/common-b079108b.css",
+    "file": "assets/common.css",
     "text": "/* packages/rollup/test/specimens/circular-dependencies/a.css */
 .a { color: aqua; }
 /* packages/rollup/test/specimens/circular-dependencies/b.css */

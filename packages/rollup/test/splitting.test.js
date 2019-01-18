@@ -343,6 +343,9 @@ describe("/rollup.js", () => {
                 format,
                 sourcemap,
 
+                assetFileNames,
+                chunkFileNames,
+
                 dir : prefix(`./output/circular-dependencies`)
             });
     
