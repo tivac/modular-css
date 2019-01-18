@@ -80,6 +80,12 @@ Boolean to determine if inline source maps should be included. Defaults to `true
 
 To force the creation of external source maps set the value to `{ inline : false }`.
 
+### `meta`
+
+Boolean/String to determine if chunk metadata should be output. If set to true will write out a file named `metadata.json`. If a `String` will write out to that file name. Defaults to `false`.
+
+Currently the only metadata being written is CSS dependencies, but that may change in the future.
+
 ### `namedExports`
 
 By default this plugin will create both a default export and named `export`s for each class in a CSS file. You can disable this by setting `namedExports` to `false`.

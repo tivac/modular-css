@@ -301,6 +301,44 @@ Array [
 ]
 `;
 
+exports[`/rollup.js code splitting should support outputting metadata about CSS dependencies 1`] = `
+Array [
+  Object {
+    "file": "chunk.css",
+    "text": "/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+",
+  },
+  Object {
+    "file": "dependencies.css",
+    "text": "/* packages/rollup/test/specimens/dependencies.css */
+.wooga {
+
+    background: blue;
+}
+",
+  },
+  Object {
+    "file": "metadata.json",
+    "text": "{
+    \\"chunk.js\\": {
+        \\"dependencies\\": [
+            \\"assets/chunk.css\\"
+        ]
+    },
+    \\"dependencies.js\\": {
+        \\"dependencies\\": [
+            \\"assets/dependencies.css\\",
+            \\"assets/chunk.css\\"
+        ]
+    }
+}",
+  },
+]
+`;
+
 exports[`/rollup.js code splitting should support splitting up CSS files 1`] = `
 Array [
   Object {
