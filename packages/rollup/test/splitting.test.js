@@ -55,12 +55,12 @@ describe("/rollup.js", () => {
 
             expect(dir("./splitting/assets")).toMatchSnapshot();
         });
-        
+
         it("should support outputting metadata about CSS dependencies", async () => {
             const bundle = await rollup({
                 input : [
-                    require.resolve("./specimens/simple.js"),
-                    require.resolve("./specimens/dependencies.js"),
+                    require.resolve("./specimens/metadata/a.js"),
+                    require.resolve("./specimens/metadata/b.js"),
                 ],
 
                 plugins : [
@@ -359,7 +359,7 @@ describe("/rollup.js", () => {
                     require.resolve("./specimens/circular-dependencies/a.js"),
                     require.resolve("./specimens/circular-dependencies/b.js"),
                 ],
-                
+
                 plugins : [
                     plugin({
                         namer,
@@ -367,7 +367,7 @@ describe("/rollup.js", () => {
                     }),
                 ],
             });
-    
+
             await bundle.write({
                 format,
                 sourcemap,
@@ -377,7 +377,7 @@ describe("/rollup.js", () => {
 
                 dir : prefix(`./output/circular-dependencies`)
             });
-    
+
             expect(dir(`./circular-dependencies`)).toMatchSnapshot();
         });
     });
