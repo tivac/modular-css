@@ -85,6 +85,35 @@ describe("/rollup.js", () => {
             expect(dir("./css-metadata/assets")).toMatchSnapshot();
         });
 
+        it("should support outputting metadata about CSS dependencies to a named file ", async () => {
+            const bundle = await rollup({
+                input : [
+                    require.resolve("./specimens/metadata/a.js"),
+                    require.resolve("./specimens/metadata/b.js"),
+                ],
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map,
+                        meta : "chunks.json",
+                    }),
+                ],
+            });
+
+            await bundle.write({
+                format,
+                sourcemap,
+
+                assetFileNames,
+                chunkFileNames,
+
+                dir : prefix(`./output/css-metadata-named`),
+            });
+
+            expect(dir("./css-metadata-named/assets")).toMatchSnapshot();
+        });
+
         it("should support splitting up CSS files w/ shared assets", async () => {
             const bundle = await rollup({
                 input : [

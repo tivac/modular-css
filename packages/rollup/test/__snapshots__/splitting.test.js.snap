@@ -333,6 +333,38 @@ Array [
 ]
 `;
 
+exports[`/rollup.js code splitting should support outputting metadata about CSS dependencies to a named file  1`] = `
+Array [
+  Object {
+    "file": "a.css",
+    "text": "/* packages/rollup/test/specimens/metadata/a.css */
+.a { color: aqua; }
+",
+  },
+  Object {
+    "file": "b.css",
+    "text": "/* packages/rollup/test/specimens/metadata/b.css */
+.b { color: blue; }
+",
+  },
+  Object {
+    "file": "chunks.json",
+    "text": "{
+    \\"a.js\\": {
+        \\"dependencies\\": [
+            \\"assets/a.css\\"
+        ]
+    },
+    \\"b.js\\": {
+        \\"dependencies\\": [
+            \\"assets/b.css\\"
+        ]
+    }
+}",
+  },
+]
+`;
+
 exports[`/rollup.js code splitting should support splitting up CSS files 1`] = `
 Array [
   Object {
