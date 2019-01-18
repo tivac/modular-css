@@ -24,11 +24,12 @@ const emptyMappings = {
 module.exports = (opts) => {
     const options = Object.assign(Object.create(null), {
         common       : "common.css",
-        json         : false,
+        dev          : false,
         include      : "**/*.css",
+        json         : false,
+        meta         : false,
         namedExports : true,
         styleExport  : false,
-        dev          : false,
         verbose      : false,
     }, opts);
 
@@ -230,10 +231,11 @@ module.exports = (opts) => {
                     dest = outputOptions.dir ? name : path.basename(entry, path.extname(entry));
                 }
 
-                out.set(entry, [
-                    dest,
-                    included,
-                ]);
+                out.set(entry, {
+                    name         : dest,
+                    files        : included,
+                    dependencies : usage.dependenciesOf(entry),
+                });
 
                 // Flag all the files that are queued for writing so they don't get double-output
                 css.forEach((file) => queued.add(file));
@@ -254,11 +256,12 @@ module.exports = (opts) => {
 
             // Shove any unreferenced CSS files onto the beginning of the first chunk
             if(unused.length) {
-                out.set("unused", [
+                out.set("unused", {
                     // Add .css automatically down below, so strip in case it was specified
-                    common.replace(path.extname(common), ""),
-                    unused
-                ]);
+                    name         : common.replace(path.extname(common), ""),
+                    files        : unused,
+                    dependencies : false
+                });
             }
 
             // If assets are being hashed then the automatic annotation has to be disabled
@@ -273,7 +276,9 @@ module.exports = (opts) => {
                 );
             }
 
-            for(const [ name, files ] of out.values()) {
+            for(const [ entry, value ] of out.entries()) {
+                const { name, files } = value;
+
                 const id = this.emitAsset(`${name}.css`);
 
                 /* eslint-disable-next-line no-await-in-loop */
@@ -290,20 +295,25 @@ module.exports = (opts) => {
 
                 this.setAssetSource(id, result.css);
 
+                const dest = this.getAssetFileName(id);
+
+                // Update output data with the resulting filename from rollup
+                out.set(entry, Object.assign(value, {
+                    dest,
+                }));
+
                 // Maps can't be written out via the asset APIs becuase they shouldn't ever be hashed.
                 // They shouldn't be hashed because they simply follow the name of their parent .css asset.
                 // So push them onto an array and write them out in the writeBundle hook below
                 if(result.map) {
-                    const file = this.getAssetFileName(id);
-
                     maps.push({
                         to,
-                        file,
+                        file    : dest,
                         content : result.map
                     });
                 }
             }
-
+            
             if(options.json) {
                 const dest = typeof options.json === "string" ? options.json : "exports.json";
 
@@ -312,6 +322,22 @@ module.exports = (opts) => {
                 const compositions = await processor.compositions;
 
                 this.emitAsset(dest, JSON.stringify(compositions, null, 4));
+            }
+
+            if(options.meta) {
+                const dest = typeof options.meta === "string" ? options.meta : "metadata.json";
+
+                log("metadata output", dest);
+
+                const meta = {};
+
+                out.forEach(({ dest : file, dependencies }, entry) => {
+                    meta[entry] = {
+                        dependencies : [ file, ...dependencies.map((key) => out.get(key).dest) ]
+                    };
+                });
+
+                this.emitAsset(dest, JSON.stringify(meta, null, 4));
             }
         },
 
