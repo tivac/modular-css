@@ -316,16 +316,29 @@ Array [
 ",
   },
   Object {
+    "file": "chunk.css",
+    "text": "/* packages/rollup/test/specimens/metadata/d.css */
+.d { color: darkkhaki; }
+",
+  },
+  Object {
     "file": "metadata.json",
     "text": "{
+    \\"chunk2.js\\": {
+        \\"dependencies\\": [
+            \\"assets/chunk.css\\"
+        ]
+    },
     \\"a.js\\": {
         \\"dependencies\\": [
-            \\"assets/a.css\\"
+            \\"assets/a.css\\",
+            \\"assets/chunk.css\\"
         ]
     },
     \\"b.js\\": {
         \\"dependencies\\": [
-            \\"assets/b.css\\"
+            \\"assets/b.css\\",
+            \\"assets/chunk.css\\"
         ]
     }
 }",
@@ -348,16 +361,29 @@ Array [
 ",
   },
   Object {
+    "file": "chunk.css",
+    "text": "/* packages/rollup/test/specimens/metadata/d.css */
+.d { color: darkkhaki; }
+",
+  },
+  Object {
     "file": "chunks.json",
     "text": "{
+    \\"chunk2.js\\": {
+        \\"dependencies\\": [
+            \\"assets/chunk.css\\"
+        ]
+    },
     \\"a.js\\": {
         \\"dependencies\\": [
-            \\"assets/a.css\\"
+            \\"assets/a.css\\",
+            \\"assets/chunk.css\\"
         ]
     },
     \\"b.js\\": {
         \\"dependencies\\": [
-            \\"assets/b.css\\"
+            \\"assets/b.css\\",
+            \\"assets/chunk.css\\"
         ]
     }
 }",
