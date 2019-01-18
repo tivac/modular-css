@@ -313,7 +313,7 @@ module.exports = (opts) => {
                     });
                 }
             }
-            
+
             if(options.json) {
                 const dest = typeof options.json === "string" ? options.json : "exports.json";
 
@@ -333,7 +333,12 @@ module.exports = (opts) => {
 
                 out.forEach(({ dest : file, dependencies }, entry) => {
                     meta[entry] = {
-                        dependencies : [ file, ...dependencies.map((key) => out.get(key).dest) ]
+                        dependencies : [
+                            file,
+                            ...dependencies
+                                .filter((key) => out.has(key))
+                                .map((key) => out.get(key).dest),
+                        ]
                     };
                 });
 

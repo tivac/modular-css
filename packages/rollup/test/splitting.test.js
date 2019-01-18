@@ -55,12 +55,12 @@ describe("/rollup.js", () => {
 
             expect(dir("./splitting/assets")).toMatchSnapshot();
         });
-        
+
         it("should support outputting metadata about CSS dependencies", async () => {
             const bundle = await rollup({
                 input : [
-                    require.resolve("./specimens/simple.js"),
-                    require.resolve("./specimens/dependencies.js"),
+                    require.resolve("./specimens/metadata/a.js"),
+                    require.resolve("./specimens/metadata/b.js"),
                 ],
 
                 plugins : [
@@ -83,6 +83,35 @@ describe("/rollup.js", () => {
             });
 
             expect(dir("./css-metadata/assets")).toMatchSnapshot();
+        });
+
+        it("should support outputting metadata about CSS dependencies to a named file ", async () => {
+            const bundle = await rollup({
+                input : [
+                    require.resolve("./specimens/metadata/a.js"),
+                    require.resolve("./specimens/metadata/b.js"),
+                ],
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map,
+                        meta : "chunks.json",
+                    }),
+                ],
+            });
+
+            await bundle.write({
+                format,
+                sourcemap,
+
+                assetFileNames,
+                chunkFileNames,
+
+                dir : prefix(`./output/css-metadata-named`),
+            });
+
+            expect(dir("./css-metadata-named/assets")).toMatchSnapshot();
         });
 
         it("should support splitting up CSS files w/ shared assets", async () => {
@@ -359,7 +388,7 @@ describe("/rollup.js", () => {
                     require.resolve("./specimens/circular-dependencies/a.js"),
                     require.resolve("./specimens/circular-dependencies/b.js"),
                 ],
-                
+
                 plugins : [
                     plugin({
                         namer,
@@ -367,7 +396,7 @@ describe("/rollup.js", () => {
                     }),
                 ],
             });
-    
+
             await bundle.write({
                 format,
                 sourcemap,
@@ -377,7 +406,7 @@ describe("/rollup.js", () => {
 
                 dir : prefix(`./output/circular-dependencies`)
             });
-    
+
             expect(dir(`./circular-dependencies`)).toMatchSnapshot();
         });
     });

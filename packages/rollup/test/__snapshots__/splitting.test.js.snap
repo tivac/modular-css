@@ -304,33 +304,85 @@ Array [
 exports[`/rollup.js code splitting should support outputting metadata about CSS dependencies 1`] = `
 Array [
   Object {
-    "file": "chunk.css",
-    "text": "/* packages/rollup/test/specimens/simple.css */
-.fooga {
-    color: red;
-}
+    "file": "a.css",
+    "text": "/* packages/rollup/test/specimens/metadata/a.css */
+.a { color: aqua; }
 ",
   },
   Object {
-    "file": "dependencies.css",
-    "text": "/* packages/rollup/test/specimens/dependencies.css */
-.wooga {
-
-    background: blue;
-}
+    "file": "b.css",
+    "text": "/* packages/rollup/test/specimens/metadata/b.css */
+.b { color: blue; }
+",
+  },
+  Object {
+    "file": "chunk.css",
+    "text": "/* packages/rollup/test/specimens/metadata/d.css */
+.d { color: darkkhaki; }
 ",
   },
   Object {
     "file": "metadata.json",
     "text": "{
-    \\"chunk.js\\": {
+    \\"chunk2.js\\": {
         \\"dependencies\\": [
             \\"assets/chunk.css\\"
         ]
     },
-    \\"dependencies.js\\": {
+    \\"a.js\\": {
         \\"dependencies\\": [
-            \\"assets/dependencies.css\\",
+            \\"assets/a.css\\",
+            \\"assets/chunk.css\\"
+        ]
+    },
+    \\"b.js\\": {
+        \\"dependencies\\": [
+            \\"assets/b.css\\",
+            \\"assets/chunk.css\\"
+        ]
+    }
+}",
+  },
+]
+`;
+
+exports[`/rollup.js code splitting should support outputting metadata about CSS dependencies to a named file  1`] = `
+Array [
+  Object {
+    "file": "a.css",
+    "text": "/* packages/rollup/test/specimens/metadata/a.css */
+.a { color: aqua; }
+",
+  },
+  Object {
+    "file": "b.css",
+    "text": "/* packages/rollup/test/specimens/metadata/b.css */
+.b { color: blue; }
+",
+  },
+  Object {
+    "file": "chunk.css",
+    "text": "/* packages/rollup/test/specimens/metadata/d.css */
+.d { color: darkkhaki; }
+",
+  },
+  Object {
+    "file": "chunks.json",
+    "text": "{
+    \\"chunk2.js\\": {
+        \\"dependencies\\": [
+            \\"assets/chunk.css\\"
+        ]
+    },
+    \\"a.js\\": {
+        \\"dependencies\\": [
+            \\"assets/a.css\\",
+            \\"assets/chunk.css\\"
+        ]
+    },
+    \\"b.js\\": {
+        \\"dependencies\\": [
+            \\"assets/b.css\\",
             \\"assets/chunk.css\\"
         ]
     }
