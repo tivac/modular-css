@@ -276,8 +276,11 @@ module.exports = (opts) => {
                 );
             }
 
+            // Track filename each CSS file will be written to
+            const filenames = new Map();
+
             for(const [ entry, value ] of out.entries()) {
-                const { name, files } = value;
+                const { name, files, dependencies } = value;
 
                 const id = this.emitAsset(`${name}.css`);
 
@@ -295,12 +298,18 @@ module.exports = (opts) => {
 
                 this.setAssetSource(id, result.css);
 
+                // Save off the final name of this asset for later use
                 const dest = this.getAssetFileName(id);
 
-                // Update output data with the resulting filename from rollup
-                out.set(entry, Object.assign(value, {
-                    dest,
-                }));
+                filenames.set(entry, dest);
+
+                // If this bundle has CSS dependencies, tag it with the filenames
+                if(dependencies) {
+                    chunks[entry].assets = [
+                        ...dependencies.map((dep) => filenames.get(dep)),
+                        dest,
+                    ];
+                }
 
                 // Maps can't be written out via the asset APIs becuase they shouldn't ever be hashed.
                 // They shouldn't be hashed because they simply follow the name of their parent .css asset.
