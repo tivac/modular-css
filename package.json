@@ -52,6 +52,7 @@
     "@modular-css/postcss": "file:packages/postcss",
     "@modular-css/processor": "file:packages/processor",
     "@modular-css/rollup": "file:packages/rollup",
+    "@modular-css/rollup-rewriter": "file:packages/rollup-rewriter",
     "@modular-css/shortnames": "file:packages/namer",
     "@modular-css/svelte": "file:packages/svelte",
     "@modular-css/webpack": "file:packages/webpack"
