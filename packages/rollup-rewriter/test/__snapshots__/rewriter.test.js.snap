@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rollup-rewriter should rewrite dynamic imports 1`] = `
+Array [
+  Object {
+    "file": "a.js",
+    "text": "var css = {
+    \\"a\\": \\"f d a\\"
+};
+
+console.log(css);
+",
+  },
+  Object {
+    "file": "assets/a.css",
+    "text": "/* packages/rollup-rewriter/test/specimens/dynamic-imports/f.css */
+.f {
+    color: floralwhite;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
+.d {
+    
+    color: darkred;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
+.a {
+
+    color: aqua;
+}
+",
+  },
+  Object {
+    "file": "assets/b.css",
+    "text": "/* packages/rollup-rewriter/test/specimens/dynamic-imports/e.css */
+.e {
+    color: #EEE;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
+.b {
+    
+    color: blue;
+}
+",
+  },
+  Object {
+    "file": "assets/chunk.css",
+    "text": "/* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
+.c {
+    
+    color: cyan;
+}
+",
+  },
+  Object {
+    "file": "b.js",
+    "text": "var css = {
+    \\"b\\": \\"e b\\"
+};
+
+function b$1() {
+    console.log(css);
+    
+    Promise.all([
+        lazyload("./chunk.css"),
+        import('./chunk.js')
+    ]).then((results) => results[1]).then(console.log);
+}
+
+export default b$1;
+",
+  },
+  Object {
+    "file": "chunk.js",
+    "text": "var css = {
+    \\"c\\": \\"f d c\\"
+};
+
+console.log(css);
+
+export default css;
+",
+  },
+]
+`;
