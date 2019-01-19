@@ -35,87 +35,84 @@ module.exports = (opts) => {
             // chunks need rewriting later
             graph = new Graph({ circular : true });
 
-            Object.entries(chunks).forEach(([ entry, { dynamicImports = [] }]) => {
-                // See https://github.com/rollup/rollup/issues/2659
-                const deps = dynamicImports.filter(Boolean);
-                
-                if(!deps.length) {
+            Object.entries(chunks).forEach(([ entry, { isAsset = false, dynamicImports = [] }]) => {
+                if(isAsset) {
                     return;
                 }
 
                 graph.addNode(entry);
-
-                deps.forEach((dep) => {
-                    graph.addNode(dep);
-                    graph.addDependency(entry, dep);
-                });
+                
+                dynamicImports
+                    .filter(Boolean)
+                    .forEach((dep) => {
+                        graph.addNode(dep);
+                        graph.addDependency(entry, dep);
+                    });
             });
         },
 
         // Have to write the updated files out to disk manually in the writeBundle step
         writeBundle(chunks) {
-            const chunk = Object.entries(chunks).find(([ entry, { isAsset = false }]) => (
-                isAsset && entry.endsWith(options.meta || "metadata.json")
-            ));
+            Object.entries(chunks).forEach(([ entry, info ]) => {
+                const {
+                    isAsset = false,
+                    assets = [],
+                    code = ""
+                } = info;
 
-            if(!chunk) {
-                throw new Error("Unable to find CSS metadata, did you set meta : true in @modular-css/rollup options?");
-            }
+                if(isAsset || !assets.length) {
+                    return;
+                }
 
-            const { source : json } = chunk;
+                const deps = graph.dependenciesOf(entry);
 
-            const entries = Object.keys(json);
-            
-            // Figure out which files will need to be rewritten
-            const files = new Set();
+                if(!deps.length) {
+                    return;
+                }
 
-            entries.forEach((entry) =>
-                graph.dependantsOf(entry).forEach((dep) => files.add(dep))
-            );
+                // Yeah, I'm doing this via a regexp. What?
+                const search = new RegExp(
+                    `import\\(['"]\\.\\/(${deps.map(escape).join("|")})['"]\\)`,
+                    "g"
+                );
 
-            // Yeah, I'm doing this via a regexp. What?
-            const search = new RegExp(
-                `import\\(['"](${entries.map(escape).join("|")})['"]\\)`,
-                "g"
-            );
-
-            files.forEach((file) => {
-                const source = chunks[file].code;
-                const str = new MagicString(source);
+                const str = new MagicString(code.toString());
 
                 // TODO: make configurable
-                str.prepend(`import lazyload from "./css.js";\n`);
+                // str.prepend(`import lazyload from "./css.js";\n`);
 
                 // Yay stateful regexes
                 search.lastIndex = 0;
 
-                let result = search.exec(source);
+                let result = search.exec(code);
 
                 while(result) {
                     // Pull useful values out of the regex result
-                    const [ statement, entry ] = result;
+                    const [ statement, file ] = result;
                     const { index } = result;
 
                     const imports = [
                         // TODO: probably needs to be configurable...
-                        ...json[entry].dependencies.map((dep) => `lazyload("./${dep}")`),
+                        ...chunks[file].assets.map((dep) => `lazyload("./${dep}")`),
                         statement,
                     ];
 
-                    str.overwrite(index, statement.length, dedent(`
-                        Promise.all([
-                            ${imports.join(",\n")}
-                        ])
-                        .then((results) => results[${imports.length - 1}])
-                    `));
+                    // TODO: failing for some reason, maybe because I'm using code instad of
+                    // reading from fs?
+                    // str.overwrite(index, statement.length, dedent(`
+                    //     Promise.all([
+                    //         ${imports.join(",\n")}
+                    //     ])
+                    //     .then((results) => results[${imports.length - 1}])
+                    // `));
 
-                    result = search.exec(source);
+                    result = search.exec(code);
                 }
 
-                log("Overwriting", file);
+                log("Overwriting", entry);
 
                 // Write out updated value over the original
-                fs.writeFileSync(path.join(dest, file), str.tostring(), "utf8");
+                fs.writeFileSync(path.join(dest, entry), str.toString(), "utf8");
             });
         }
     };
