@@ -14,9 +14,14 @@ const supported = new Set([ "amd", "es", "esm", "system" ]);
 
 module.exports = (opts) => {
     const options = Object.assign(Object.create(null), {
-        meta    : false,
+        loader  : false,
+        loadfn  : false,
         verbose : false,
     }, opts);
+
+    if(!options.loadfn) {
+        throw new Error("options.loadfn must be configured");
+    }
 
     // eslint-disable-next-line no-console, no-empty-function
     const log = options.verbose ? console.log.bind(console, "[rewriter]") : () => {};
@@ -27,6 +32,8 @@ module.exports = (opts) => {
         generateBundle({ format }, chunks) {
             if(!supported.has(format)) {
                 this.error(`Unsupported format: ${format}. Supported formats are ${JSON.stringify([ ...supported.values() ])}`);
+
+                return;
             }
 
             Object.entries(chunks).forEach(([ entry, chunk ]) => {
@@ -44,14 +51,15 @@ module.exports = (opts) => {
                     return;
                 }
 
-                const { regex, prepend, load } = formats[format] || formats.es;
+                const { regex, loader, load } = formats[format] || formats.es;
 
                 const search = regex(deps.map(escape).join("|"));
         
                 const str = new MagicString(code);
                 
-                // TODO: make configurable
-                prepend(options, str);
+                if(options.loader) {
+                    loader(options, str);
+                }
         
                 // Yay stateful regexes
                 search.lastIndex = 0;
@@ -63,15 +71,14 @@ module.exports = (opts) => {
                     const [ statement, file ] = result;
                     const { index } = result;
         
-                    const imports = [
-                        // TODO: make configurable
-                        ...chunks[file].assets.map((dep) => `lazyload("./${dep}")`),
-                    ].join(",\n");
+                    const imports = chunks[file].assets.map((dep) =>
+                        `${options.loadfn}("./${dep}")`
+                    );
         
                     str.overwrite(
                         index,
                         index + statement.length,
-                        dedent(load(options, imports, statement))
+                        dedent(load(options, imports.join(",\n"), statement))
                     );
         
                     result = search.exec(code);

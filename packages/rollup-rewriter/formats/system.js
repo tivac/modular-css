@@ -5,7 +5,7 @@ exports.regex = (deps) => new RegExp(
     "g"
 );
 
-exports.prepend = (options, str) => {
+exports.loader = (options, str) => {
     const s = str.toString();
     const i = s.indexOf(search);
 

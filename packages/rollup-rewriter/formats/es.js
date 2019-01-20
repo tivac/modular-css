@@ -3,7 +3,7 @@ exports.regex = (deps) => new RegExp(
     "g"
 );
 
-exports.prepend = (options, str) => str.prepend(
+exports.loader = (options, str) => str.prepend(
     `import lazyload from "./css.js";\n`
 );
 
