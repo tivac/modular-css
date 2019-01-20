@@ -301,7 +301,9 @@ module.exports = (opts) => {
                 // If this bundle has CSS dependencies, tag it with the filenames
                 if(dependencies) {
                     bundle[entry].assets = [
-                        ...dependencies.map((dep) => filenames.get(dep)),
+                        ...dependencies
+                            .filter((dep) => out.has(dep))
+                            .map((dep) => filenames.get(dep)),
                         dest,
                     ];
                 }
@@ -353,12 +355,7 @@ module.exports = (opts) => {
                     }
                     
                     meta[entry] = {
-                        dependencies : [
-                            file,
-                            ...dependencies
-                                .filter((key) => out.has(key))
-                                .map((key) => out.get(key).dest),
-                        ]
+                        dependencies : assets,
                     };
                 });
 
