@@ -1,20 +1,14 @@
-/* eslint max-statements: "off" */
+/* eslint-disable max-statements, no-await-in-loop */
 "use strict";
 
 const { rollup } = require("rollup");
 
-const dedent = require("dedent");
 const shell = require("shelljs");
 
-const read    = require("@modular-css/test-utils/read.js")(__dirname);
-const readdir = require("@modular-css/test-utils/read-dir.js")(__dirname);
-const exists  = require("@modular-css/test-utils/exists.js")(__dirname);
 const prefix  = require("@modular-css/test-utils/prefix.js")(__dirname);
-const dir     = require("@modular-css/test-utils/read-dir.js")(__dirname);
 const namer   = require("@modular-css/test-utils/namer.js");
-const logs    = require("@modular-css/test-utils/logs.js");
 
-require("@modular-css/test-utils/rollup-code-snapshot.js");
+require("@modular-css/test-utils/rollup-build-snapshot.js");
 
 const css = require("@modular-css/rollup");
 
@@ -22,9 +16,10 @@ const rewriter = require("../rewriter.js");
 
 const assetFileNames = "assets/[name][extname]";
 const chunkFileNames = "[name].js";
-const format = "es";
 const map = false;
 const sourcemap = false;
+
+const formats = [ "amd", "es", "esm", "system" ];
 
 describe("rollup-rewriter", () => {
     beforeAll(() => shell.rm("-rf", prefix("./output/*")));
@@ -40,22 +35,20 @@ describe("rollup-rewriter", () => {
                     namer,
                     map,
                 }),
-                rewriter({
-                    verbose : true,
-                }),
+                rewriter(),
             ],
         });
 
-        await bundle.write({
-            format,
-            sourcemap,
-
-            assetFileNames,
-            chunkFileNames,
-
-            dir : prefix(`./output/dynamic-imports`),
-        });
-
-        expect(dir("./dynamic-imports/")).toMatchSnapshot();
+        for(const format of formats) {
+            const result = await bundle.generate({
+                format,
+                sourcemap,
+    
+                assetFileNames,
+                chunkFileNames,
+            });
+    
+            expect(result).toMatchRollupSnapshot(format);
+        }
     });
 });
