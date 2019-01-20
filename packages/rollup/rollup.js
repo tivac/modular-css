@@ -55,10 +55,6 @@ module.exports = (opts) => {
 
     const processor = options.processor || new Processor(options);
 
-    // random values that need to be shared between hooks (ugh)
-    const maps = [];
-    let assetFileNames;
-
     return {
         name : "@modular-css/rollup",
 
@@ -143,18 +139,17 @@ module.exports = (opts) => {
             };
         },
 
-        async generateBundle(outputOptions, chunks) {
+        async generateBundle(outputOptions, bundle) {
             // styleExport disables all output file generation
             if(styleExport) {
                 return;
             }
 
-            // Really wish rollup would provide this default...
-            assetFileNames = outputOptions.assetFileNames || "assets/[name]-[hash][extname]";
-
+            // Really wish rollup would provide these defaults somehow
             const {
                 chunkFileNames = "[name]-[hash].js",
                 entryFileNames = "[name].js",
+                assetFileNames = "assets/[name]-[hash][extname]",
             } = outputOptions;
 
             // Determine the correct to option for PostCSS by doing a bit of a dance
@@ -173,7 +168,7 @@ module.exports = (opts) => {
             // Allow for outputting CSS alongside chunks as optimally as possible
             const usage = new Graph({ circular : true });
 
-            Object.entries(chunks).forEach(([ entry, chunk ]) => {
+            Object.entries(bundle).forEach(([ entry, chunk ]) => {
                 const { imports, dynamicImports } = chunk;
 
                 usage.addNode(entry, true);
@@ -196,7 +191,7 @@ module.exports = (opts) => {
             const queued = new Set();
 
             usage.overallOrder().forEach((entry) => {
-                const { modules, name, fileName, isEntry } = chunks[entry];
+                const { modules, name, fileName, isEntry } = bundle[entry];
                 const css = new Set();
 
                 // Get CSS files being used by this chunk
@@ -305,7 +300,7 @@ module.exports = (opts) => {
 
                 // If this bundle has CSS dependencies, tag it with the filenames
                 if(dependencies) {
-                    chunks[entry].assets = [
+                    bundle[entry].assets = [
                         ...dependencies.map((dep) => filenames.get(dep)),
                         dest,
                     ];
@@ -313,13 +308,25 @@ module.exports = (opts) => {
 
                 // Maps can't be written out via the asset APIs becuase they shouldn't ever be hashed.
                 // They shouldn't be hashed because they simply follow the name of their parent .css asset.
-                // So push them onto an array and write them out in the writeBundle hook below
+                // So add them to the bundle directly.
                 if(result.map) {
-                    maps.push({
-                        to,
-                        file    : dest,
-                        content : result.map
-                    });
+                    // Make sure to use the rollup name as the base, otherwise it won't
+                    // automatically handle duplicate names correctly
+                    const fileName = dest.replace(".css", ".css.map");
+
+                    log("map output", fileName);
+
+                    bundle[fileName] = {
+                        isAsset : true,
+                        source  : result.map.toString(),
+                        fileName,
+                    };
+
+                    // Had to re-add the map annotation to the end of the source files
+                    // if the filename had a hash, since we stripped it out up above
+                    if(assetFileNames.includes("hash")) {
+                        bundle[dest].source += `\n/*# sourceMappingURL=${path.basename(fileName)} */`;
+                    }
                 }
             }
 
@@ -340,7 +347,11 @@ module.exports = (opts) => {
 
                 const meta = {};
 
-                out.forEach(({ dest : file, dependencies }, entry) => {
+                Object.entries(bundle).forEach(([ entry, { assets }]) => {
+                    if(!assets) {
+                        return;
+                    }
+                    
                     meta[entry] = {
                         dependencies : [
                             file,
@@ -354,39 +365,5 @@ module.exports = (opts) => {
                 this.emitAsset(dest, JSON.stringify(meta, null, 4));
             }
         },
-
-        writeBundle() {
-            if(!maps.length) {
-                return;
-            }
-
-            maps.forEach(({ to, file, content }) => {
-                // Make sure to use the rollup name as the base, otherwise it won't
-                // automatically handle duplicate names correctly
-                const target = file.replace(".css", ".css.map");
-                const dest = path.join(
-                    path.dirname(to),
-                    path.basename(target)
-                );
-
-                log("map output", target);
-
-                fs.writeFileSync(dest, content.toString(), "utf8");
-
-                if(!assetFileNames.includes("hash")) {
-                    return;
-                }
-
-                // Re-add the correct annotations to the end of the source files
-                const css = path.join(
-                    path.dirname(to),
-                    path.basename(file)
-                );
-
-                const source = fs.readFileSync(css, "utf8");
-
-                fs.writeFileSync(css, `${source}\n/*# sourceMappingURL=${path.basename(target)} */`);
-            });
-        }
     };
 };

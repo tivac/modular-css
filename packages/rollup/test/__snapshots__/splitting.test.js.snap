@@ -382,8 +382,8 @@ Array [
     },
     \\"b.js\\": {
         \\"dependencies\\": [
-            \\"assets/b.css\\",
-            \\"assets/chunk.css\\"
+            \\"assets/chunk.css\\",
+            \\"assets/dependencies.css\\"
         ]
     }
 }",
