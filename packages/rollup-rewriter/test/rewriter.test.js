@@ -24,7 +24,11 @@ const formats = [ "amd", "es", "esm", "system" ];
 describe("rollup-rewriter", () => {
     beforeAll(() => shell.rm("-rf", prefix("./output/*")));
 
-    it("should rewrite dynamic imports", async () => {
+    it("should require a loadfn", async () => {
+        expect(() => rewriter({})).toThrow();
+    });
+
+    it("shouldn't require a loader", async () => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/dynamic-imports/a.js"),
@@ -35,7 +39,40 @@ describe("rollup-rewriter", () => {
                     namer,
                     map,
                 }),
-                rewriter(),
+                rewriter({
+                    loadfn : "lazyload",
+                }),
+            ],
+        });
+
+        for(const format of formats) {
+            const result = await bundle.generate({
+                format,
+                sourcemap,
+    
+                assetFileNames,
+                chunkFileNames,
+            });
+    
+            expect(result).toMatchRollupSnapshot(format);
+        }
+    });
+
+    it("should support loader & loadfn", async () => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/dynamic-imports/a.js"),
+                require.resolve("./specimens/dynamic-imports/b.js"),
+            ],
+            plugins : [
+                css({
+                    namer,
+                    map,
+                }),
+                rewriter({
+                    loader : `import lazyload from "./css.js";`,
+                    loadfn : "lazyload",
+                }),
             ],
         });
 
