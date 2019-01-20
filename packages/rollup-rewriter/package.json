@@ -22,11 +22,11 @@
   ],
   "dependencies": {
     "dedent": "^0.7.0",
-    "dependency-graph": "^0.8.0",
     "escape-string-regexp": "^1.0.5",
     "magic-string": "^0.25.1"
   },
   "peerDependencies": {
-    "@modular-css/rollup": "^21"
+    "@modular-css/rollup": "^21",
+    "rollup": "^1.1.1"
   }
 }
