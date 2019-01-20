@@ -23,7 +23,7 @@ const module = await Promise.all([
 ```
 
 - [Install](#install)
-- [⚠ Limitations ⚠](#-limitations-)
+- [Limitations](#-limitations-)
 - [Usage](#usage)
 - [Options](#options)
 
