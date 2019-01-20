@@ -4,9 +4,26 @@
     <a href="https://gitter.im/modular-css/modular-css"><img src="https://img.shields.io/gitter/room/modular-css/modular-css.svg" alt="Gitter" /></a>
 </p>
 
-Rewrite dynamic imports so they automatically load their CSS dependencies using JS chunk -> CSS chunk dependency information from [`modular-css`](https://github.com/tivac/modular-css).
+Rewrite dynamic imports so they automatically load their CSS dependencies using JS chunk -> CSS chunk dependency information from [`modular-css`](https://github.com/tivac/modular-css). Avoid the dreaded [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content) automatically without having to manually juggle CSS files & JS chunks.
+
+Turn this:
+
+```js
+const module = await import("./expensive-styled-module.js");
+```
+
+into this
+
+```js
+const module = await Promise.all([
+    lazyload("./expensive-styled-module.css"),
+    import("./expensive-styled-module.js")
+])
+.then((result) => result[result.length - 1]);
+```
 
 - [Install](#install)
+- [⚠ Limitations ⚠](#limitations)
 - [Usage](#usage)
 - [Options](#options)
 
@@ -16,15 +33,54 @@ Rewrite dynamic imports so they automatically load their CSS dependencies using 
 > npm i @modular-css/rollup-rewriter
 ```
 
+## ⚠ Limitations ⚠
+
+This plugin does not yet do everything for you instantly and perfectly. Maybe someday! Here's a list of current limitations:
+
+- Only supports some of the rollup output [`format`](https://rollupjs.org/guide/en#output-format) values.
+    - Currently `es`, `esm`, `amd`, and `system`.
+- Doesn't dynamically add the `loader` option into the module so it can be inlined or extracted by rollup.
+    - It's just injected at the top of the module scope, so you can't depend on packaging yet. Can't be injected earlier because the full module dependency tree & chunks must be known first.
+    - Probably easier to ensure it's available globally and only use `loadfn`.
+- Doesn't allow for adjusting URLs to add a CDN-prefix or anything else.
+    - This would be straightforward, just not implemented yet. A PR would be very welcome!
+
 ## Usage
 
 ### API
 
-**TBD**
+```js
+const bundle = await rollup({
+    input   : "./index.js",
+    plugins : [
+        require("@modular-css/rollup")(),
+        require("@modular-css/rollup-rewriter")({
+            loadfn : "...",
+        }),
+    ],
+});
+```
 
 ### Config file
 
-**TBD**
+```js
+import css from "@modular-css/rollup";
+import rewrite from "@modular-css/rollup-rewriter";
+
+export default {
+    input   : "./index.js",
+    output  : {
+        dest    : "./gen/bundle.js",
+        format  : "umd"
+    },
+    plugins : [
+        css(),
+        rewrite({
+            loadfn : "...",
+        }),
+    ],
+};
+```
 
 ## Options
 
