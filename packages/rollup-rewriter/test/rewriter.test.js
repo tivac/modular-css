@@ -76,11 +76,11 @@ describe("rollup-rewriter", () => {
             const result = await bundle.generate({
                 format,
                 sourcemap,
-    
+
                 assetFileNames,
                 chunkFileNames,
             });
-    
+
             expect(result).toMatchRollupSnapshot(format);
         }
     });
@@ -107,18 +107,48 @@ describe("rollup-rewriter", () => {
             const result = await bundle.generate({
                 format,
                 sourcemap,
-    
+
                 assetFileNames,
                 chunkFileNames,
             });
-    
+
+            expect(result).toMatchRollupSnapshot(format);
+        }
+    });
+
+    it("should only rewrite when necessary", async () => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/no-asset-imports/a.js"),
+                require.resolve("./specimens/no-asset-imports/b.js"),
+            ],
+            plugins : [
+                css({
+                    namer,
+                    map,
+                }),
+                rewriter({
+                    loadfn : "lazyload",
+                }),
+            ],
+        });
+
+        for(const format of formats) {
+            const result = await bundle.generate({
+                format,
+                sourcemap,
+
+                assetFileNames,
+                chunkFileNames,
+            });
+
             expect(result).toMatchRollupSnapshot(format);
         }
     });
 
     it("should log details in verbose mode", async () => {
         const { logSnapshot } = logs();
-        
+
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/dynamic-imports/a.js"),
@@ -143,7 +173,7 @@ describe("rollup-rewriter", () => {
             assetFileNames,
             chunkFileNames,
         });
-    
+
         logSnapshot();
     });
 });

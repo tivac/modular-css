@@ -8,7 +8,7 @@ const formats = {
     es     : require("./formats/es.js"),
     amd    : require("./formats/amd.js"),
     system : require("./formats/system.js"),
-    
+
     // Just an alias...
     esm : require("./formats/es.js"),
 };
@@ -45,10 +45,10 @@ module.exports = (opts) => {
                     code = "",
                     dynamicImports = [],
                 } = chunk;
-                
+
                 // Guard against https://github.com/rollup/rollup/issues/2659
                 const deps = dynamicImports.filter(Boolean);
-                
+
                 if(isAsset || !deps.length || !assets.length) {
                     return;
                 }
@@ -56,38 +56,40 @@ module.exports = (opts) => {
                 const { regex, loader, load } = formats[format];
 
                 const search = regex(deps.map(escape).join("|"));
-        
+
                 const str = new MagicString(code);
-                
+
                 if(options.loader) {
                     loader(options, str);
                 }
-        
+
                 // Yay stateful regexes
                 search.lastIndex = 0;
-        
+
                 let result = search.exec(code);
-        
+
                 while(result) {
                     // Pull useful values out of the regex result
                     const [ statement, file ] = result;
                     const { index } = result;
-        
-                    const imports = chunks[file].assets.map((dep) =>
-                        `${options.loadfn}("./${dep}")`
-                    );
-        
-                    str.overwrite(
-                        index,
-                        index + statement.length,
-                        dedent(load(options, imports.join(",\n"), statement))
-                    );
-        
+
+                    if(chunks[file].assets) {
+                        const imports = chunks[file].assets.map((dep) =>
+                            `${options.loadfn}("./${dep}")`
+                        );
+
+                        str.overwrite(
+                            index,
+                            index + statement.length,
+                            dedent(load(options, imports.join(",\n"), statement))
+                        );
+                    }
+
                     result = search.exec(code);
                 }
-        
+
                 log("Updating", entry);
-                
+
                 chunk.code = str.toString();
             });
         },
