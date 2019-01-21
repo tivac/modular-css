@@ -237,25 +237,17 @@ module.exports = (opts) => {
             });
 
             // Figure out if there were any CSS files that the JS didn't reference
-            const unused = [];
-
-            processor.dependencies().forEach((css) => {
-                if(queued.has(css)) {
-                    return;
-                }
-
-                queued.add(css);
-
-                unused.push(css);
-            });
+            const unused = processor
+                .dependencies()
+                .filter((css) => !queued.has(css));
 
             // Shove any unreferenced CSS files onto the beginning of the first chunk
             if(unused.length) {
                 out.set("unused", {
-                    // Add .css automatically down below, so strip in case it was specified
+                    // .css extension is added automatically down below, so strip in case it was specified
                     name         : common.replace(path.extname(common), ""),
                     files        : unused,
-                    dependencies : false
+                    dependencies : [],
                 });
             }
 
@@ -275,7 +267,7 @@ module.exports = (opts) => {
             const filenames = new Map();
 
             for(const [ entry, value ] of out.entries()) {
-                const { name, files, dependencies } = value;
+                const { name, files } = value;
 
                 const id = this.emitAsset(`${name}.css`);
 
@@ -297,16 +289,6 @@ module.exports = (opts) => {
                 const dest = this.getAssetFileName(id);
 
                 filenames.set(entry, dest);
-
-                // If this bundle has CSS dependencies, tag it with the filenames
-                if(dependencies) {
-                    bundle[entry].assets = [
-                        ...dependencies
-                            .filter((dep) => out.has(dep))
-                            .map((dep) => filenames.get(dep)),
-                        dest,
-                    ];
-                }
 
                 // Maps can't be written out via the asset APIs becuase they shouldn't ever be hashed.
                 // They shouldn't be hashed because they simply follow the name of their parent .css asset.
@@ -332,6 +314,24 @@ module.exports = (opts) => {
                 }
             }
 
+            // If this bundle has CSS dependencies, stick them on the object for other plugins to reference
+            // Has to happen in a second loop to ensure that all filenames are correctly resolved
+            for(const [ entry, { dependencies }] of out.entries()) {
+                // unused CSS doesn't correspond to a bundle, so don't bother
+                if(!bundle[entry]) {
+                    continue;
+                }
+
+                log("attaching assets", entry);
+
+                bundle[entry].assets = [
+                    ...dependencies
+                        .filter((dep) => out.has(dep))
+                        .map((dep) => filenames.get(dep)),
+                    filenames.get(entry),
+                ];
+            }
+
             if(options.json) {
                 const dest = typeof options.json === "string" ? options.json : "exports.json";
 
@@ -353,7 +353,7 @@ module.exports = (opts) => {
                     if(!assets) {
                         return;
                     }
-                    
+
                     meta[entry] = {
                         dependencies : assets,
                     };
