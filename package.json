@@ -36,12 +36,12 @@
     "lerna": "^3.10.5",
     "pegjs": "0.10.0",
     "read-dir-deep": "^4.0.1",
-    "rollup": "^1.1.0",
+    "rollup": "^1.1.2",
     "rollup-plugin-svelte": "^5.0.1",
     "shelljs": "^0.8.3",
     "svelte": "^2.16.0",
     "watchify": "3.11.0",
-    "webpack": "^4.28.4"
+    "webpack": "^4.29.0"
   },
   "dependencies": {
     "@modular-css/browserify": "file:packages/browserify",
