@@ -1,7 +1,6 @@
 /* eslint-disable max-statements, complexity */
 "use strict";
 
-const fs = require("fs");
 const path = require("path");
 
 const { keyword } = require("esutils");
