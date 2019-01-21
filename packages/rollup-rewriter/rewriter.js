@@ -8,9 +8,12 @@ const formats = {
     es     : require("./formats/es.js"),
     amd    : require("./formats/amd.js"),
     system : require("./formats/system.js"),
+    
+    // Just an alias...
+    esm : require("./formats/es.js"),
 };
 
-const supported = new Set([ "amd", "es", "esm", "system" ]);
+const supported = new Set(Object.keys(formats).sort());
 
 module.exports = (opts) => {
     const options = Object.assign(Object.create(null), {
@@ -31,9 +34,8 @@ module.exports = (opts) => {
 
         generateBundle({ format }, chunks) {
             if(!supported.has(format)) {
+                // This throws, so execution stops here even though it doesn't look like it
                 this.error(`Unsupported format: ${format}. Supported formats are ${JSON.stringify([ ...supported.values() ])}`);
-
-                return;
             }
 
             Object.entries(chunks).forEach(([ entry, chunk ]) => {
@@ -51,7 +53,7 @@ module.exports = (opts) => {
                     return;
                 }
 
-                const { regex, loader, load } = formats[format] || formats.es;
+                const { regex, loader, load } = formats[format];
 
                 const search = regex(deps.map(escape).join("|"));
         
@@ -84,7 +86,7 @@ module.exports = (opts) => {
                     result = search.exec(code);
                 }
         
-                log("Overwriting", entry);
+                log("Updating", entry);
                 
                 chunk.code = str.toString();
             });
