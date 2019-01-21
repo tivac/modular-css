@@ -1,0 +1,671 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rollup-rewriter should error on unsupported formats 1`] = `"Unsupported format: cjs. Supported formats are [\\"amd\\",\\"es\\",\\"esm\\",\\"system\\"]"`;
+
+exports[`rollup-rewriter should log details in verbose mode 1`] = `
+Array [
+  Array [
+    "[rewriter]",
+    "Updating",
+    "b.js",
+  ],
+]
+`;
+
+exports[`rollup-rewriter should support loader & loadfn: amd 1`] = `
+Object {
+  "a.js": "
+define(function () { 'use strict';
+
+    var css = {
+        \\"a\\": \\"f d a\\"
+    };
+
+    console.log(css);
+
+});
+",
+  "assets/a.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/f.css */
+.f {
+    color: floralwhite;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
+.d {
+    
+    color: darkred;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
+.a {
+
+    color: aqua;
+}
+",
+  "assets/b.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/e.css */
+.e {
+    color: #EEE;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
+.b {
+    
+    color: blue;
+}
+",
+  "assets/chunk.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
+.c {
+    
+    color: cyan;
+}
+",
+  "b.js": "
+define(['require'], function (require) { 'use strict';
+import lazyload from \\"./css.js\\";
+
+    var css = {
+        \\"b\\": \\"e b\\"
+    };
+
+    function b$1() {
+        console.log(css);
+        
+        new Promise(function (resolve, reject) { Promise.all([
+    lazyload(\\"./assets/chunk.css\\"),
+    new Promise(function (resolve, reject) { require(['./chunk.js'], resolve, reject) })
+])
+.then((results) => resolve(results[results.length - 1]))
+.catch(reject) }).then(console.log);
+    }
+
+    return b$1;
+
+});
+",
+  "chunk.js": "
+define(['exports'], function (exports) { 'use strict';
+
+    var css = {
+        \\"c\\": \\"f d c\\"
+    };
+
+    console.log(css);
+
+    exports.default = css;
+
+});
+",
+}
+`;
+
+exports[`rollup-rewriter should support loader & loadfn: es 1`] = `
+Object {
+  "a.js": "
+var css = {
+    \\"a\\": \\"f d a\\"
+};
+
+console.log(css);
+",
+  "assets/a.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/f.css */
+.f {
+    color: floralwhite;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
+.d {
+    
+    color: darkred;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
+.a {
+
+    color: aqua;
+}
+",
+  "assets/b.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/e.css */
+.e {
+    color: #EEE;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
+.b {
+    
+    color: blue;
+}
+",
+  "assets/chunk.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
+.c {
+    
+    color: cyan;
+}
+",
+  "b.js": "
+import lazyload from \\"./css.js\\";
+var css = {
+    \\"b\\": \\"e b\\"
+};
+
+function b$1() {
+    console.log(css);
+    
+    Promise.all([
+    lazyload(\\"./assets/chunk.css\\"),
+    import('./chunk.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+}
+
+export default b$1;
+",
+  "chunk.js": "
+var css = {
+    \\"c\\": \\"f d c\\"
+};
+
+console.log(css);
+
+export default css;
+",
+}
+`;
+
+exports[`rollup-rewriter should support loader & loadfn: esm 1`] = `
+Object {
+  "a.js": "
+var css = {
+    \\"a\\": \\"f d a\\"
+};
+
+console.log(css);
+",
+  "assets/a.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/f.css */
+.f {
+    color: floralwhite;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
+.d {
+    
+    color: darkred;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
+.a {
+
+    color: aqua;
+}
+",
+  "assets/b.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/e.css */
+.e {
+    color: #EEE;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
+.b {
+    
+    color: blue;
+}
+",
+  "assets/chunk.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
+.c {
+    
+    color: cyan;
+}
+",
+  "b.js": "
+import lazyload from \\"./css.js\\";
+var css = {
+    \\"b\\": \\"e b\\"
+};
+
+function b$1() {
+    console.log(css);
+    
+    Promise.all([
+    lazyload(\\"./assets/chunk.css\\"),
+    import('./chunk.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+}
+
+export default b$1;
+",
+  "chunk.js": "
+var css = {
+    \\"c\\": \\"f d c\\"
+};
+
+console.log(css);
+
+export default css;
+",
+}
+`;
+
+exports[`rollup-rewriter should support loader & loadfn: system 1`] = `
+Object {
+  "a.js": "
+System.register([], function (exports, module) {
+    'use strict';
+    return {
+        execute: function () {
+
+            var css = {
+                \\"a\\": \\"f d a\\"
+            };
+
+            console.log(css);
+
+        }
+    };
+});
+",
+  "assets/a.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/f.css */
+.f {
+    color: floralwhite;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
+.d {
+    
+    color: darkred;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
+.a {
+
+    color: aqua;
+}
+",
+  "assets/b.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/e.css */
+.e {
+    color: #EEE;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
+.b {
+    
+    color: blue;
+}
+",
+  "assets/chunk.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
+.c {
+    
+    color: cyan;
+}
+",
+  "b.js": "
+System.register([], function (exports, module) {
+    'use strict';
+import lazyload from \\"./css.js\\";
+    return {
+        execute: function () {
+
+            exports('default', b$1);
+
+            var css = {
+                \\"b\\": \\"e b\\"
+            };
+
+            function b$1() {
+                console.log(css);
+                
+                Promise.all([
+    lazyload(\\"./assets/chunk.css\\"),
+    module.import('./chunk.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+            }
+
+        }
+    };
+});
+",
+  "chunk.js": "
+System.register([], function (exports, module) {
+    'use strict';
+    return {
+        execute: function () {
+
+            var css = {
+                \\"c\\": \\"f d c\\"
+            };
+
+            console.log(css);
+            exports('default', css);
+
+        }
+    };
+});
+",
+}
+`;
+
+exports[`rollup-rewriter shouldn't require a loader: amd 1`] = `
+Object {
+  "a.js": "
+define(function () { 'use strict';
+
+    var css = {
+        \\"a\\": \\"f d a\\"
+    };
+
+    console.log(css);
+
+});
+",
+  "assets/a.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/f.css */
+.f {
+    color: floralwhite;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
+.d {
+    
+    color: darkred;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
+.a {
+
+    color: aqua;
+}
+",
+  "assets/b.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/e.css */
+.e {
+    color: #EEE;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
+.b {
+    
+    color: blue;
+}
+",
+  "assets/chunk.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
+.c {
+    
+    color: cyan;
+}
+",
+  "b.js": "
+define(['require'], function (require) { 'use strict';
+
+    var css = {
+        \\"b\\": \\"e b\\"
+    };
+
+    function b$1() {
+        console.log(css);
+        
+        new Promise(function (resolve, reject) { Promise.all([
+    lazyload(\\"./assets/chunk.css\\"),
+    new Promise(function (resolve, reject) { require(['./chunk.js'], resolve, reject) })
+])
+.then((results) => resolve(results[results.length - 1]))
+.catch(reject) }).then(console.log);
+    }
+
+    return b$1;
+
+});
+",
+  "chunk.js": "
+define(['exports'], function (exports) { 'use strict';
+
+    var css = {
+        \\"c\\": \\"f d c\\"
+    };
+
+    console.log(css);
+
+    exports.default = css;
+
+});
+",
+}
+`;
+
+exports[`rollup-rewriter shouldn't require a loader: es 1`] = `
+Object {
+  "a.js": "
+var css = {
+    \\"a\\": \\"f d a\\"
+};
+
+console.log(css);
+",
+  "assets/a.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/f.css */
+.f {
+    color: floralwhite;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
+.d {
+    
+    color: darkred;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
+.a {
+
+    color: aqua;
+}
+",
+  "assets/b.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/e.css */
+.e {
+    color: #EEE;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
+.b {
+    
+    color: blue;
+}
+",
+  "assets/chunk.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
+.c {
+    
+    color: cyan;
+}
+",
+  "b.js": "
+var css = {
+    \\"b\\": \\"e b\\"
+};
+
+function b$1() {
+    console.log(css);
+    
+    Promise.all([
+    lazyload(\\"./assets/chunk.css\\"),
+    import('./chunk.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+}
+
+export default b$1;
+",
+  "chunk.js": "
+var css = {
+    \\"c\\": \\"f d c\\"
+};
+
+console.log(css);
+
+export default css;
+",
+}
+`;
+
+exports[`rollup-rewriter shouldn't require a loader: esm 1`] = `
+Object {
+  "a.js": "
+var css = {
+    \\"a\\": \\"f d a\\"
+};
+
+console.log(css);
+",
+  "assets/a.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/f.css */
+.f {
+    color: floralwhite;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
+.d {
+    
+    color: darkred;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
+.a {
+
+    color: aqua;
+}
+",
+  "assets/b.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/e.css */
+.e {
+    color: #EEE;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
+.b {
+    
+    color: blue;
+}
+",
+  "assets/chunk.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
+.c {
+    
+    color: cyan;
+}
+",
+  "b.js": "
+var css = {
+    \\"b\\": \\"e b\\"
+};
+
+function b$1() {
+    console.log(css);
+    
+    Promise.all([
+    lazyload(\\"./assets/chunk.css\\"),
+    import('./chunk.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+}
+
+export default b$1;
+",
+  "chunk.js": "
+var css = {
+    \\"c\\": \\"f d c\\"
+};
+
+console.log(css);
+
+export default css;
+",
+}
+`;
+
+exports[`rollup-rewriter shouldn't require a loader: system 1`] = `
+Object {
+  "a.js": "
+System.register([], function (exports, module) {
+    'use strict';
+    return {
+        execute: function () {
+
+            var css = {
+                \\"a\\": \\"f d a\\"
+            };
+
+            console.log(css);
+
+        }
+    };
+});
+",
+  "assets/a.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/f.css */
+.f {
+    color: floralwhite;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
+.d {
+    
+    color: darkred;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
+.a {
+
+    color: aqua;
+}
+",
+  "assets/b.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/e.css */
+.e {
+    color: #EEE;
+}
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
+.b {
+    
+    color: blue;
+}
+",
+  "assets/chunk.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
+.c {
+    
+    color: cyan;
+}
+",
+  "b.js": "
+System.register([], function (exports, module) {
+    'use strict';
+    return {
+        execute: function () {
+
+            exports('default', b$1);
+
+            var css = {
+                \\"b\\": \\"e b\\"
+            };
+
+            function b$1() {
+                console.log(css);
+                
+                Promise.all([
+    lazyload(\\"./assets/chunk.css\\"),
+    module.import('./chunk.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+            }
+
+        }
+    };
+});
+",
+  "chunk.js": "
+System.register([], function (exports, module) {
+    'use strict';
+    return {
+        execute: function () {
+
+            var css = {
+                \\"c\\": \\"f d c\\"
+            };
+
+            console.log(css);
+            exports('default', css);
+
+        }
+    };
+});
+",
+}
+`;

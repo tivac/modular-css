@@ -1,0 +1,5 @@
+.d {
+    composes: f from "./f.css";
+    
+    color: darkred;
+}

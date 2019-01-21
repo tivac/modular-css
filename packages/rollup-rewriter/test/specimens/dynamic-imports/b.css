@@ -1,0 +1,5 @@
+.b {
+    composes: e from "./e.css";
+    
+    color: blue;
+}

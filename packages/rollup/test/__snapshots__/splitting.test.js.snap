@@ -324,20 +324,20 @@ Array [
   Object {
     "file": "metadata.json",
     "text": "{
-    \\"chunk2.js\\": {
-        \\"dependencies\\": [
-            \\"assets/chunk.css\\"
-        ]
-    },
     \\"a.js\\": {
         \\"dependencies\\": [
-            \\"assets/a.css\\",
-            \\"assets/chunk.css\\"
+            \\"assets/chunk.css\\",
+            \\"assets/a.css\\"
         ]
     },
     \\"b.js\\": {
         \\"dependencies\\": [
-            \\"assets/b.css\\",
+            \\"assets/chunk.css\\",
+            \\"assets/b.css\\"
+        ]
+    },
+    \\"chunk2.js\\": {
+        \\"dependencies\\": [
             \\"assets/chunk.css\\"
         ]
     }
@@ -369,20 +369,20 @@ Array [
   Object {
     "file": "chunks.json",
     "text": "{
-    \\"chunk2.js\\": {
-        \\"dependencies\\": [
-            \\"assets/chunk.css\\"
-        ]
-    },
     \\"a.js\\": {
         \\"dependencies\\": [
-            \\"assets/a.css\\",
-            \\"assets/chunk.css\\"
+            \\"assets/chunk.css\\",
+            \\"assets/a.css\\"
         ]
     },
     \\"b.js\\": {
         \\"dependencies\\": [
-            \\"assets/b.css\\",
+            \\"assets/chunk.css\\",
+            \\"assets/b.css\\"
+        ]
+    },
+    \\"chunk2.js\\": {
+        \\"dependencies\\": [
             \\"assets/chunk.css\\"
         ]
     }

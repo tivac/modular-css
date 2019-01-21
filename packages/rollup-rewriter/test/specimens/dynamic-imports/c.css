@@ -1,0 +1,5 @@
+.c {
+    composes: d from "./d.css";
+    
+    color: cyan;
+}
