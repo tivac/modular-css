@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [21.1.1](https://github.com/tivac/modular-css/compare/v21.1.0...v21.1.1) (2019-01-21)
+
+
+### Bug Fixes
+
+* move bundle asset tagging later ([#546](https://github.com/tivac/modular-css/issues/546)) ([2fef785](https://github.com/tivac/modular-css/commit/2fef785))
+
+
+
+
+
 # [21.1.0](https://github.com/tivac/modular-css/compare/v21.0.1...v21.1.0) (2019-01-21)
 
 
