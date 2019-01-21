@@ -7,6 +7,7 @@ const shell = require("shelljs");
 
 const prefix  = require("@modular-css/test-utils/prefix.js")(__dirname);
 const namer   = require("@modular-css/test-utils/namer.js");
+const logs    = require("@modular-css/test-utils/logs.js");
 
 require("@modular-css/test-utils/rollup-build-snapshot.js");
 
@@ -26,6 +27,32 @@ describe("rollup-rewriter", () => {
 
     it("should require a loadfn", async () => {
         expect(() => rewriter({})).toThrow();
+    });
+
+    it("should error on unsupported formats", async () => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/dynamic-imports/a.js"),
+                require.resolve("./specimens/dynamic-imports/b.js"),
+            ],
+            plugins : [
+                css({
+                    namer,
+                    map,
+                }),
+                rewriter({
+                    loadfn : "lazyload",
+                }),
+            ],
+        });
+
+        await expect(bundle.generate({
+            format : "cjs",
+            sourcemap,
+
+            assetFileNames,
+            chunkFileNames,
+        })).rejects.toThrowErrorMatchingSnapshot();
     });
 
     it("shouldn't require a loader", async () => {
@@ -87,5 +114,36 @@ describe("rollup-rewriter", () => {
     
             expect(result).toMatchRollupSnapshot(format);
         }
+    });
+
+    it("should log details in verbose mode", async () => {
+        const { logSnapshot } = logs();
+        
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/dynamic-imports/a.js"),
+                require.resolve("./specimens/dynamic-imports/b.js"),
+            ],
+            plugins : [
+                css({
+                    namer,
+                    map,
+                }),
+                rewriter({
+                    loadfn  : "lazyload",
+                    verbose : true,
+                }),
+            ],
+        });
+
+        await bundle.generate({
+            format : "es",
+
+            sourcemap,
+            assetFileNames,
+            chunkFileNames,
+        });
+    
+        logSnapshot();
     });
 });

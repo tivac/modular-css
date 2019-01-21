@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`rollup-rewriter should error on unsupported formats 1`] = `"Unsupported format: cjs. Supported formats are [\\"amd\\",\\"es\\",\\"esm\\",\\"system\\"]"`;
+
+exports[`rollup-rewriter should log details in verbose mode 1`] = `
+Array [
+  Array [
+    "[rewriter]",
+    "Updating",
+    "b.js",
+  ],
+]
+`;
+
 exports[`rollup-rewriter should support loader & loadfn: amd 1`] = `
 Object {
   "a.js": "
