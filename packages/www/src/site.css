@@ -4,17 +4,25 @@
 
 html {
     box-sizing: border-box;
+    
+    font-family: 'Roboto', sans-serif;
+    
+    width: 100%;
+    height: 100%;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
     box-sizing: inherit;
 }
 
-html {
-    font-family: 'Roboto', sans-serif;
-
+body {
     width: 100%;
     height: 100%;
+
+    display: flex;
+    flex-flow: column nowrap;
 }
 
 pre,

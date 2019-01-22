@@ -1,10 +1,8 @@
-# Differences between CSS Modules & `modular-css`
+# vs CSS Modules
 
 While `modular-css` has been built directly off the CSS Modules spec during the course of development some decisions have been made that have broken 100% compatibility. In general these changes have been made in an attempt to try and add consistency to the spec. There have also been a few feature additions that enable solving new classes of problems or fix pain points in the spec.
 
-@[toc]
-
-## `:global` requires parentheses
+## :global
 
 In CSS Modules the `:global` pseudo-class allows usage with or without parentheses around its arguments.
 
@@ -21,7 +19,7 @@ In `modular-css` only the parenthesized form is allowed to reduce ambiguity arou
 :global(.one) { ... }
 ```
 
-## Local scope by default
+## Scope
 
 In CSS Modules it is possible to switch back and forth from local and global scope using `:global` and `:local`.
 
@@ -37,7 +35,7 @@ In `modular-css` all CSS is local by default, and since `:global()` is [required
 .localA :global(.global-b .global-c) .localD.localE :global(.global-d) { ... }
 ```
 
-## `:external(...)` support
+## Style overriding
 
 In CSS Modules there is no support for modifying styles in rules that aren't direct ancestors via `composes`.
 
@@ -56,7 +54,8 @@ Discussion around potential solutions is happening here, [css-modules/css-module
     width: 50%;
 }
 ```
-## Namespace support
+
+## Namespaces
 
 CSS Modules allows for importing multiple values from an external file.
 

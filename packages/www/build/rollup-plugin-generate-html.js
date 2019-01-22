@@ -23,7 +23,6 @@ const prismTheme = "https://unpkg.com/prismjs@1.15.0/themes/prism-tomorrow.css";
 module.exports = ({ preprocess }) => {
     const outputs = new Map();
     let guides;
-    const tocs = [];
 
     // Set up markdown plugins
     md.use(toc, {
@@ -53,7 +52,10 @@ module.exports = ({ preprocess }) => {
                 file : require.resolve("../src/layout.html"),
                 preprocess,
             });
-
+            const sidebar = await svelte({
+                file : require.resolve("../src/guide/sidebar.html"),
+                preprocess,
+            });
 
             const styles = [];
             const scripts = [];
@@ -99,6 +101,10 @@ module.exports = ({ preprocess }) => {
                 })
             );
 
+
+            const tocs = new Map();
+
+            // TODO: combine all guide markdown first, THEN render
             const html = guides
                 .map((file) => {
                     let text = fs.readFileSync(file, "utf8");
@@ -107,11 +113,14 @@ module.exports = ({ preprocess }) => {
                     text = text.replace(/^#/gm, "##");
                     
                     return md.render(text, {
-                        tocCallback : (tocmd, headings, tochtml) =>
-                            tocs.push(
-                                `<li class="doc"><a href="#${headings[0].anchor}">${headings[0].content}</a></li>`,
-                                tochtml
-                            )
+                        tocCallback : (tocmd, headings, tochtml) => {
+                            const [{ anchor, content }] = headings;
+
+                            tocs.set({
+                                anchor,
+                                content,
+                            }, tochtml);
+                        },
                     });
                 })
                 .join("\n");
@@ -127,8 +136,10 @@ module.exports = ({ preprocess }) => {
                     content : layout.render({
                         version,
                         type    : "guide",
-                        content : html,
-                        sidebar : tocs.join("\n"),
+                        content : `<div class="guide">${html}</div>`,
+                        sidebar : sidebar.render({
+                            tocs,
+                        }),
                     }),
                 })
             );

@@ -1,0 +1,55 @@
+<style>
+.sidebar,
+.sidebar ul {
+    margin: 1rem;
+    padding: 0;
+
+    list-style: square;
+
+    font-size: 85%;
+}
+
+.sidebar {
+    position: fixed;
+    width: 12rem;
+    height: 100%;
+    overflow-y: auto;
+
+    list-style: none;
+}
+
+.doc + .doc {
+    margin-top: 1rem;
+}
+
+.doc > ul {
+    margin: 0.5rem;
+    padding-left: 0.75rem;
+    
+    font-size: 95%;
+}
+
+:global(.toc) {
+    font-size: 85%;
+}
+</style>
+
+<ul class="{css.sidebar}">
+{#each [ ...tocs.entries() ] as [ { anchor, content }, html ]}
+<li class="{css.doc}">
+    <a href="#{anchor}">{content}</a>
+
+    {#if html}
+    {@html html}
+    {/if}
+</li>
+{/each}
+</ul>
+
+<script>
+export default {
+    data : () => ({
+        tocs : new Map(),
+    }),
+};
+</script>

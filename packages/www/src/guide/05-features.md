@@ -2,8 +2,6 @@
 
 `modular-css` implements the best features of the CSS Modules spec and then adds on several extra features to make for a smoother developer experience.
 
-@[toc]
-
 ## Scoped Selectors
 
 By default all CSS selectors live in the global scope of the page and are chosen based on specificity rules. This has proven to be a model that makes it difficult to succeed and incredibly easy to blow off your own foot. `modular-css` scopes all selectors to the local file by default, ensuring that your CSS is always exactly as specific as it should be.
@@ -142,7 +140,7 @@ You can also get access to variables defined in other files for simple sharing o
 @value first, second from "./somewhere-else.css";
 ```
 
-### Overriding Styles
+## Overriding Styles
 
 Sometimes a component will need some customization for use in a specific location/design, but you don't want to bake that customization into the component.`:external(...)` helps you solve that problem.
 
@@ -179,7 +177,7 @@ Values are re-usable pieces of content that can be used instead of hardcoding co
 }
 ```
 
-### Importing Values
+## Importing Values
 
 `@value`s can be imported from another file by using a slightly different syntax.
 
@@ -212,7 +210,7 @@ body {
 }
 ```
 
-#### Namespaced Imports
+## Namespaced Imports
 
 `@value`s can be imported as a namespace which provides a convenient shorthand way to access a bunch of shared values from a file.
 
@@ -230,7 +228,7 @@ body {
 }
 ```
 
-#### Wildcard Imports
+## Wildcard Imports
 
 It's possible to import all the `@value` definitions from another file into the current one. Any local `@value` declarations will override the imported values.
 

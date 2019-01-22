@@ -3,15 +3,9 @@
 @value headerHeight: 4rem;
 @value tabHeight: 2.5rem;
 
-body {
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-    flex-flow: column nowrap;
-}
-
 .header {
+    width: 100%;
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -76,6 +70,9 @@ body {
 }
 
 .content[type="repl"] {
+    width: 100%;
+    max-width: 100%;
+
     display: grid;
 
     grid-template:
@@ -86,13 +83,19 @@ body {
 
 .content[type="home"] {
     padding: 2rem 1rem;
+    max-width: 950px;
+    align-self: center;
 }
 
-/* TODO: this should be its own layout file */
 .content[type="guide"] {
     display: flex;
     flex-flow: row nowrap;
     align-items: stretch;
+}
+
+:global(.guide) {
+    max-width: 950px;
+    margin-left: 13rem;
 }
 </style>
 
@@ -112,6 +115,10 @@ body {
 </div>
 
 <div class="{css.content}" {type}>
+    {#if sidebar}
+    {@html sidebar}
+    {/if}
+
     {#if content}
     {@html content}
     {/if}

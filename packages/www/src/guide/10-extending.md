@@ -1,20 +1,30 @@
-# Extending `modular-css`
+# Extending
 
 There are 4 built-in ways to extend the functionality of `modular-css`, the lifecycle hooks. They all can be used to add any number of [PostCSS Plugins](https://github.com/postcss/postcss/blob/master/docs/plugins.md) to `modular-css` at specific points in the processing cycle.
 
-@[toc]
+## before
 
-## `before`
+Specify an array of PostCSS plugins to be run against each file before it is processed. Plugin will be passed a `from` option.
 
-[API](api.md#before)
+```js
+new Processor({
+    before : [ require("postcss-import") ]
+});
+```
 
 ---
 
 The `before` hook is run before a CSS file is ever processed by `modular-css`, so it provides access to rewrite files if they aren't actually CSS or contain non-standard syntax. Plugins like [`postcss-nested`](https://github.com/postcss/postcss-nested) go well here.
 
-## `processing`
+## processing
 
-[API](api.md#processing)
+Specify an array of PostCSS plugins to be run against each file during processing. Plugin will be passed a `from` option.
+
+```js
+new Processor({
+    processing : [ require("postcss-import") ]
+});
+```
 
 ---
 
@@ -40,7 +50,7 @@ new Processor({
 
 The `plugin` field must begin with "modular-css-export", and the `exports` field should be the object to be mixed into the exports of the CSS file. It will be added last, so it can be used to override the default exports if desired.
 
-## `after`
+## after
 
 [API](api.md#after)
 
@@ -59,7 +69,7 @@ Since all manipulations on the file are complete at this point it is a good plac
 }
 ```
 
-## `done`
+## done
 
 [API](api.md#done)
 
