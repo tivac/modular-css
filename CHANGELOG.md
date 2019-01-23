@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [21.1.2](https://github.com/tivac/modular-css/compare/v21.1.1...v21.1.2) (2019-01-23)
+
+
+### Bug Fixes
+
+* properly support loader option ([#549](https://github.com/tivac/modular-css/issues/549)) ([ff38e83](https://github.com/tivac/modular-css/commit/ff38e83))
+
+
+
+
+
 ## [21.1.1](https://github.com/tivac/modular-css/compare/v21.1.0...v21.1.1) (2019-01-21)
 
 
