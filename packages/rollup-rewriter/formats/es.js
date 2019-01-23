@@ -3,9 +3,7 @@ exports.regex = (deps) => new RegExp(
     "g"
 );
 
-exports.loader = (options, str) => str.prepend(
-    `import lazyload from "./css.js";\n`
-);
+exports.loader = (options, str) => str.prepend(`${options.loader}\n`);
 
 exports.load = (options, imports, statement) => `
     Promise.all([
@@ -14,4 +12,4 @@ exports.load = (options, imports, statement) => `
     ])
     .then((results) => results[results.length - 1])
 `;
-        
+

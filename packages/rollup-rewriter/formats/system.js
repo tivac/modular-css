@@ -12,11 +12,11 @@ exports.loader = (options, str) => {
     if(i === -1) {
         throw new Error("Unable to find strict mode declaration");
     }
-    
+
     // + 1 is for the newline...
     str.appendRight(
         i + search.length + 1,
-        `import lazyload from "./css.js";\n`
+        `${options.loader}\n`
     );
 };
 
@@ -27,4 +27,4 @@ exports.load = (options, imports, statement) => `
     ])
     .then((results) => results[results.length - 1])
 `;
-        
+
