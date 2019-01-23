@@ -4,6 +4,7 @@ const path = require("path");
 
 const resolve = require("resolve-from");
 const dedent = require("dedent");
+const isUrl = require("is-url");
 
 const Processor = require("@modular-css/processor");
 
@@ -21,7 +22,7 @@ module.exports = (config = false) => {
     // This function is hilariously large but it's actually simpler this way
     // Mostly because markup() is async so tracking state is painful w/o inlining
     // the whole damn thing
-    // eslint-disable-next-line max-statements
+    // eslint-disable-next-line max-statements, complexity
     const markup = async ({ content, filename }) => {
         let source = content;
 
@@ -58,6 +59,13 @@ module.exports = (config = false) => {
         if(link) {
             // This looks weird, but it's to support multiple types of quotation marks
             file = link[1] || link[2] || link[3];
+
+            // Don't transform URLs
+            if(isUrl(file)) {
+                return {
+                    code : content,
+                };
+            }
 
             const external = resolve(path.dirname(filename), file);
 
