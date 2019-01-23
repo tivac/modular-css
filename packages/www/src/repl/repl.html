@@ -1,31 +1,23 @@
-<link rel="stylesheet" href="../site.css" />
+<link rel="stylesheet" href="./repl.css" />
 
-<Layout {version} type="repl">
+<div class="{css.repl}">
     <Input />
     <Output />
-</Layout>
+</div>
 
 <Error />
 
 <script>
-import { version } from "../../package.json";
-
 import store from "./store.js";
 import listen from "./listen.js";
 
 export default {
     components : {
-        Layout : "../layout.html",
-
         Input  : "./input.html",
         Output : "./output.html",
         Error  : "./error.html",
     },
 
     store : () => store,
-
-    data : () => ({
-        version,
-    }),
 };
 </script>

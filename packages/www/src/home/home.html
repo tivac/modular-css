@@ -1,0 +1,28 @@
+<style>
+.home {
+    composes: content from "../site.css";
+
+    padding: 2rem 1rem;
+    max-width: 950px;
+    align-self: center;
+}
+
+</style>
+
+<Page {styles}>
+    <div class="{css.home}">
+        {@html content}
+    </div>
+</Page>
+
+<script>
+export default {
+    components : {
+        Page   : "../page.html"
+    },
+
+    data : () => ({
+        content : "",
+    })
+};
+</script>

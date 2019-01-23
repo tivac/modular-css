@@ -1,0 +1,38 @@
+<style>
+.guide {
+    composes: content from "../site.css";
+
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+}
+
+.bd {
+    max-width: 950px;
+    margin-left: 13rem;
+}
+</style>
+
+<Page title="Guide" {styles}>
+    <div class="{css.guide}">
+        <Sidebar {tocs} />
+
+        <div class="{css.bd}">
+            {@html content}
+        </div>
+    </div>
+</Page>
+
+<script>
+export default {
+    components : {
+        Page   : "../page.html",
+        Sidebar : "./sidebar.html",
+    },
+
+    data : () => ({
+        tocs    : new Map(),
+        content : "",
+    })
+};
+</script>

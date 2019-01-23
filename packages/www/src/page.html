@@ -12,18 +12,26 @@
     <link href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto" rel="stylesheet">
 
     {#if styles}
-        {#each styles as style}
-        <link rel="stylesheet" href="{style}" />
-        {/each}
+    {#each styles as style}
+    <link href="{style}" rel="stylesheet" />
+    {/each}
     {/if}
 </head>
 <body>
-    {#if content}
-        {@html content}
-    {/if}
+    <Header />
+
+    <slot />
 
     {#if scripts}
-        {@html scripts}
+    {@html scripts}
     {/if}
 </body>
 </html>
+
+<script>
+export default {
+    components : {
+        Header : "./header.html",
+    },
+};
+</script>
