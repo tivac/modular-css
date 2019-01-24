@@ -1,5 +1,5 @@
 {
-  "version": "21.1.2",
+  "version": "21.2.0",
   "command": {
     "publish": {
       "conventionalCommits": true,

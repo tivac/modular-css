@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/website",
-  "version": "21.1.1",
+  "version": "21.2.0",
   "private": true,
   "description": "web site for modular-css",
   "main": "index.js",
@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@modular-css/shortnames": "^21.1.1",
-    "@modular-css/webpack": "^21.1.1",
+    "@modular-css/webpack": "^21.2.0",
     "buble-loader": "0.4.1",
     "copy-webpack-plugin": "4.5.2",
     "cssnano-cli": "1.0.5",

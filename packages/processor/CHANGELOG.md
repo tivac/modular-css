@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [21.2.0](https://github.com/tivac/modular-css/compare/v21.1.2...v21.2.0) (2019-01-24)
+
+
+### Bug Fixes
+
+* use a safer regex for finding [@values](https://github.com/values) ([#552](https://github.com/tivac/modular-css/issues/552)) ([c6a684c](https://github.com/tivac/modular-css/commit/c6a684c)), closes [#548](https://github.com/tivac/modular-css/issues/548)
+
+
+### Features
+
+* support postcss process options ([#551](https://github.com/tivac/modular-css/issues/551)) ([86d6d68](https://github.com/tivac/modular-css/commit/86d6d68)), closes [#550](https://github.com/tivac/modular-css/issues/550)
+
+
+
+
+
 ## [21.1.1](https://github.com/tivac/modular-css/compare/v21.1.0...v21.1.1) (2019-01-21)
 
 **Note:** Version bump only for package @modular-css/processor
