@@ -164,7 +164,7 @@ new Processor({
 
 ### `postcss`
 
-Specify an option that maps to any of the [PostCSS `.process()` Options](http://api.postcss.org/global.html#processOptions). Note that `from` and `to` will usally **be overwritten** to match the files being processed. This feature allows for the use of custom `parser`, `stringifier`, and `syntax` settings.
+Specify an object that contains any of the [PostCSS `.process()` Options](http://api.postcss.org/global.html#processOptions). Note that `from` and `to` will usally **be overwritten** to match the files being processed. This feature allows for the use of custom `parser`, `stringifier`, and `syntax` settings.
 
 ### `resolvers`
 
