@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [21.2.1](https://github.com/tivac/modular-css/compare/v21.2.0...v21.2.1) (2019-01-24)
+
+
+### Bug Fixes
+
+* ignore URLs in <link href>  ([#553](https://github.com/tivac/modular-css/issues/553)) ([16ec1d9](https://github.com/tivac/modular-css/commit/16ec1d9))
+
+
+
+
+
 # [21.2.0](https://github.com/tivac/modular-css/compare/v21.1.2...v21.2.0) (2019-01-24)
 
 
