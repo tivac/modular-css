@@ -198,10 +198,14 @@ export default a$1;
 ",
   },
   Object {
-    "file": "assets/common.css",
+    "file": "assets/a.css",
     "text": "/* packages/rollup/test/specimens/circular-dependencies/a.css */
 .a { color: aqua; }
-/* packages/rollup/test/specimens/circular-dependencies/b.css */
+",
+  },
+  Object {
+    "file": "assets/b.css",
+    "text": "/* packages/rollup/test/specimens/circular-dependencies/b.css */
 .b { color: blue; }
 ",
   },
@@ -325,21 +329,22 @@ Array [
     "file": "metadata.json",
     "text": "{
     \\"a.js\\": {
-        \\"dependencies\\": [
-            \\"assets/chunk.css\\",
+        \\"assets\\": [
             \\"assets/a.css\\"
-        ]
+        ],
+        \\"dynamicAssets\\": []
     },
     \\"b.js\\": {
-        \\"dependencies\\": [
-            \\"assets/chunk.css\\",
+        \\"assets\\": [
             \\"assets/b.css\\"
-        ]
+        ],
+        \\"dynamicAssets\\": []
     },
     \\"chunk2.js\\": {
-        \\"dependencies\\": [
+        \\"assets\\": [
             \\"assets/chunk.css\\"
-        ]
+        ],
+        \\"dynamicAssets\\": []
     }
 }",
   },
@@ -370,21 +375,22 @@ Array [
     "file": "chunks.json",
     "text": "{
     \\"a.js\\": {
-        \\"dependencies\\": [
-            \\"assets/chunk.css\\",
+        \\"assets\\": [
             \\"assets/a.css\\"
-        ]
+        ],
+        \\"dynamicAssets\\": []
     },
     \\"b.js\\": {
-        \\"dependencies\\": [
-            \\"assets/chunk.css\\",
+        \\"assets\\": [
             \\"assets/b.css\\"
-        ]
+        ],
+        \\"dynamicAssets\\": []
     },
     \\"chunk2.js\\": {
-        \\"dependencies\\": [
+        \\"assets\\": [
             \\"assets/chunk.css\\"
-        ]
+        ],
+        \\"dynamicAssets\\": []
     }
 }",
   },

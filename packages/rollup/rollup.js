@@ -163,23 +163,38 @@ module.exports = (opts) => {
                 );
             }
 
-            // Build chunk dependency graph so it can be walked in order later to
-            // Allow for outputting CSS alongside chunks as optimally as possible
-            const usage = new Graph({ circular : true });
+            // Build chunk dependency graphs (one for static imports, one for dynamic) so they can
+            // be walked in the correct order later, which helps to output CSS alongside chunks as
+            // optimally as possible
+            const usage = {
+                static  : new Graph({ circular : true }),
+                dynamic : new Graph({ circular : true }),
+            };
 
             Object.entries(bundle).forEach(([ entry, chunk ]) => {
                 const { imports, dynamicImports } = chunk;
 
-                usage.addNode(entry, true);
+                usage.static.addNode(entry, true);
+                usage.dynamic.addNode(entry, true);
 
-                [ ...imports, ...dynamicImports ].forEach((dep) => {
+                imports.forEach((dep) => {
                     // Need to filter out invalid deps, see rollup/rollup#2659
                     if(!dep) {
                         return;
                     }
 
-                    usage.addNode(dep, true);
-                    usage.addDependency(entry, dep);
+                    usage.static.addNode(dep, true);
+                    usage.static.addDependency(entry, dep);
+                });
+
+                dynamicImports.forEach((dep) => {
+                    // Need to filter out invalid deps, see rollup/rollup#2659
+                    if(!dep) {
+                        return;
+                    }
+
+                    usage.dynamic.addNode(dep, true);
+                    usage.dynamic.addDependency(entry, dep);
                 });
             });
 
@@ -189,50 +204,53 @@ module.exports = (opts) => {
             // Keep track of files that are queued to be written
             const queued = new Set();
 
-            usage.overallOrder().forEach((entry) => {
-                const { modules, name, fileName, isEntry } = bundle[entry];
-                const css = new Set();
+            Object.entries(usage).forEach(([ type, graph ]) => {
+                graph.overallOrder().forEach((entry) => {
+                    const { modules, name, fileName, isEntry } = bundle[entry];
+                    const css = new Set();
 
-                // Get CSS files being used by this chunk
-                const styles = Object.keys(modules).filter((file) => processor.has(file));
+                    // Get CSS files being used by this chunk
+                    const styles = Object.keys(modules).filter((file) => processor.has(file));
 
-                // Get dependency chains for each css file & record them into the usage graph
-                styles.forEach((style) => {
-                    processor
-                        .dependencies(style)
-                        .forEach((file) => css.add(file));
+                    // Get dependency chains for each css file & record them into the usage graph
+                    styles.forEach((style) => {
+                        processor
+                            .dependencies(style)
+                            .forEach((file) => css.add(file));
 
-                    css.add(style);
+                        css.add(style);
+                    });
+
+                    const included = [ ...css ].filter((file) => !queued.has(file));
+
+                    if(!included.length) {
+                        return;
+                    }
+
+                    // Parse out the name part from the resulting filename,
+                    // based on the module's template (either entry or chunk)
+                    let dest;
+                    const template = isEntry ? entryFileNames : chunkFileNames;
+
+                    if(template.includes("[hash]")) {
+                        const parts = parse(template, fileName);
+
+                        dest = parts.name;
+                    } else {
+                        // Want to use source chunk name when code-splitting, otherwise match bundle name
+                        dest = outputOptions.dir ? name : path.basename(entry, path.extname(entry));
+                    }
+
+                    out.set(entry, {
+                        type,
+                        name         : dest,
+                        files        : included,
+                        dependencies : graph.dependenciesOf(entry),
+                    });
+
+                    // Flag all the files that are queued for writing so they don't get double-output
+                    css.forEach((file) => queued.add(file));
                 });
-
-                const included = [ ...css ].filter((file) => !queued.has(file));
-
-                if(!included.length) {
-                    return;
-                }
-
-                // Parse out the name part from the resulting filename,
-                // based on the module's template (either entry or chunk)
-                let dest;
-                const template = isEntry ? entryFileNames : chunkFileNames;
-
-                if(template.includes("[hash]")) {
-                    const parts = parse(template, fileName);
-
-                    dest = parts.name;
-                } else {
-                    // Want to use source chunk name when code-splitting, otherwise match bundle name
-                    dest = outputOptions.dir ? name : path.basename(entry, path.extname(entry));
-                }
-
-                out.set(entry, {
-                    name         : dest,
-                    files        : included,
-                    dependencies : usage.dependenciesOf(entry),
-                });
-
-                // Flag all the files that are queued for writing so they don't get double-output
-                css.forEach((file) => queued.add(file));
             });
 
             // Figure out if there were any CSS files that the JS didn't reference
@@ -315,7 +333,7 @@ module.exports = (opts) => {
 
             // If this bundle has CSS dependencies, stick them on the object for other plugins to reference
             // Has to happen in a second loop to ensure that all filenames are correctly resolved
-            for(const [ entry, { dependencies }] of out.entries()) {
+            for(const [ entry, { type, dependencies }] of out.entries()) {
                 // unused CSS doesn't correspond to a bundle, so don't bother
                 if(!bundle[entry]) {
                     continue;
@@ -323,12 +341,18 @@ module.exports = (opts) => {
 
                 log("attaching assets", entry);
 
-                bundle[entry].assets = [
+                const [ current, other ] = type === "dynamic" ?
+                    [ "dynamicAssets", "assets" ] :
+                    [ "assets", "dynamicAssets" ];
+
+                bundle[entry][current] = [
                     ...dependencies
                         .filter((dep) => out.has(dep))
                         .map((dep) => filenames.get(dep)),
                     filenames.get(entry),
                 ];
+
+                bundle[entry][other] = [];
             }
 
             if(options.json) {
@@ -348,13 +372,15 @@ module.exports = (opts) => {
 
                 const meta = {};
 
-                Object.entries(bundle).forEach(([ entry, { assets }]) => {
-                    if(!assets) {
+                Object.entries(bundle).forEach(([ entry, { dynamicAssets, assets }]) => {
+                    if(!assets && !dynamicAssets) {
                         return;
                     }
 
+
                     meta[entry] = {
-                        dependencies : assets,
+                        assets,
+                        dynamicAssets,
                     };
                 });
 
