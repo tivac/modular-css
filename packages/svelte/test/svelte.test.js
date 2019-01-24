@@ -31,6 +31,24 @@ describe("/svelte.js", () => {
 
         expect(output.css).toMatchSnapshot();
     });
+    
+    it("should ignore <links> that reference a URL", async () => {
+        const filename = require.resolve("./specimens/url.html");
+        const { preprocess, processor } = plugin({
+            namer,
+        });
+
+        const processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        const output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
+    });
 
     it.each`
         specimen                    | title
@@ -159,6 +177,47 @@ describe("/svelte.js", () => {
         logSnapshot();
     });
 
+    it("should warn when multiple <link> elements are in the html", async () => {
+        const spy = jest.spyOn(global.console, "warn");
+
+        spy.mockImplementation(() => { /* NO-OP */ });
+
+        const filename = require.resolve(`./specimens/multiple-link.html`);
+
+        const { processor, preprocess } = plugin({
+            namer,
+        });
+
+        const processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        const output = await processor.output();
+        
+        expect(output.css).toMatchSnapshot();
+        
+        expect(spy).toHaveBeenCalled();
+        expect(spy.mock.calls).toMatchSnapshot();
+    });
+
+    it("should no-op if all <link>s reference a URL", async () => {
+        const filename = require.resolve("./specimens/multiple-url.html");
+        
+        const { preprocess } = plugin({
+            namer,
+        });
+
+        const processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+    });
+    
     it("should remove files before reprocessing when config.clean is set", async () => {
         // V1 of files
         fs.writeFileSync(path.resolve(__dirname, "./output/source.html"), dedent(`
