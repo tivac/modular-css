@@ -30,7 +30,7 @@ install:
 - npm ci
 
 script:
-- npm test -- --verbose --ci
+- npm test -- --ci
 
 # Run codecov after all builds, and only
 # on a single environment
