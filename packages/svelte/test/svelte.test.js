@@ -203,6 +203,21 @@ describe("/svelte.js", () => {
         expect(spy.mock.calls).toMatchSnapshot();
     });
 
+    it("should no-op if all <link>s reference a URL", async () => {
+        const filename = require.resolve("./specimens/multiple-url.html");
+        
+        const { preprocess } = plugin({
+            namer,
+        });
+
+        const processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+    });
+    
     it("should remove files before reprocessing when config.clean is set", async () => {
         // V1 of files
         fs.writeFileSync(path.resolve(__dirname, "./output/source.html"), dedent(`

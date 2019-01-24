@@ -398,6 +398,14 @@ exports[`/svelte.js should ignore files without <style> blocks 1`] = `
 
 exports[`/svelte.js should ignore files without <style> blocks 2`] = `""`;
 
+exports[`/svelte.js should no-op if all <link>s reference a URL 1`] = `
+"<link rel=\\"stylesheet\\" href=\\"http://example.com/styles.css\\" />
+<link rel=\\"stylesheet\\" href=\\"http://example.com/styles2.css\\" />
+
+<div class=\\"fooga\\">fooga</div>
+"
+`;
+
 exports[`/svelte.js should remove files before reprocessing when config.clean is set 1`] = `
 "<div class=\\"source\\">Source</div><script>
     import css from \\"./source.css\\";

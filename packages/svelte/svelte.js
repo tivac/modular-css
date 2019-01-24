@@ -81,7 +81,15 @@ module.exports = (config = false) => {
                 return out;
             }, []);
 
+            // No-op
+            if(!valid.length) {
+                return {
+                    code : source,
+                };
+            }
+
             if(valid.length > 1) {
+                // eslint-disable-next-line no-console
                 console.warn("@modular-css/svelte will only use the first local <link> tag");
             }
 
