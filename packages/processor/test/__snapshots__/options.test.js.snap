@@ -239,6 +239,13 @@ Object {
 }
 `;
 
+exports[`/processor.js options postcss options should support custom parsers 1`] = `
+"/* packages/processor/test/specimens/parser.css */
+.mce1d18d5d_a {
+    color: blue
+}"
+`;
+
 exports[`/processor.js options rewrite should not rewrite url() references when falsey 1`] = `
 "/* packages/processor/test/specimens/rewrite.css */
 .mc20ca2799_a {

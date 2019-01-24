@@ -30,5 +30,8 @@
     "resolve-from": "^4.0.0",
     "true-case-path": "^1.0.2",
     "unique-slug": "^2.0.0"
+  },
+  "peerDependencies": {
+    "postcss": "^7.0.0"
   }
 }
