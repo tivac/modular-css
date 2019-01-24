@@ -20,6 +20,7 @@ const noop = () => true;
 const params = ({ _options, _files, _graph, _resolve }, args) => Object.assign(
     Object.create(null),
     _options,
+    _options.postcss,
     {
         from    : null,
         files   : _files,
@@ -40,6 +41,7 @@ class Processor {
                 rewrite   : true,
                 verbose   : false,
                 resolvers : [],
+                postcss   : {},
             },
             opts
         );

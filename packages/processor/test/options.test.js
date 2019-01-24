@@ -212,6 +212,33 @@ describe("/processor.js", () => {
             });
         });
 
+        describe("postcss options", () => {
+            it("should support custom parsers", async () => {
+                const parser = require("sugarss");
+                
+                const processor = new Processor({
+                    postcss : {
+                        parser,
+                    }
+                });
+                
+                await processor.string(
+                    "packages/processor/test/specimens/parser.css",
+                    dedent(`
+                        .a
+                            color: blue
+                    `)
+                );
+                
+                const { css } = await processor.output({
+                    from : "packages/processor/test/specimens/parser.css",
+                    to   : "./packages/processor/test/output/parser.css",
+                });
+
+                expect(css).toMatchSnapshot();
+            });
+        });
+
         describe("lifecycle options", () => {
             describe("before", () => {
                 it("should run sync postcss plugins before processing", async () => {
