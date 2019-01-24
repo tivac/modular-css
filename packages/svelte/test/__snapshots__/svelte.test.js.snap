@@ -2,7 +2,6 @@
 
 exports[`/svelte.js should extract CSS from a <link> tag ("existing script") 1`] = `
 "
-
 <div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
@@ -56,7 +55,6 @@ exports[`/svelte.js should extract CSS from a <link> tag ("existing script") 2`]
 
 exports[`/svelte.js should extract CSS from a <link> tag ("no script") 1`] = `
 "
-
 <div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
@@ -93,7 +91,6 @@ exports[`/svelte.js should extract CSS from a <link> tag ("no script") 2`] = `
 
 exports[`/svelte.js should extract CSS from a <link> tag ("single quotes") 1`] = `
 "
-
 <div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
@@ -130,7 +127,6 @@ exports[`/svelte.js should extract CSS from a <link> tag ("single quotes") 2`] =
 
 exports[`/svelte.js should extract CSS from a <link> tag ("unquoted") 1`] = `
 "
-
 <div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
@@ -167,7 +163,6 @@ exports[`/svelte.js should extract CSS from a <link> tag ("unquoted") 2`] = `
 
 exports[`/svelte.js should extract CSS from a <link> tag ("values") 1`] = `
 "
-
 <div
     data-simple=\\"color: #BEEFED\\"
     data-expression=\\"{\\"color: \\" + \\"#BEEFED\\"}\\"
@@ -270,7 +265,6 @@ Array [
 
 exports[`/svelte.js should handle errors: "empty css file - <link>" 3`] = `
 "
-
 <div class=\\"{css.nope}\\">NOPE</div>
 <div class=\\"{css.alsonope}\\">STILL NOPE</div>
 <script>
@@ -311,7 +305,6 @@ Array [
 
 exports[`/svelte.js should handle errors: "invalid reference <script> - <link>" 3`] = `
 "
-
 <h2 class=\\"yup\\">Yup</h2>
 
 <script>
@@ -356,7 +349,6 @@ Array [
 
 exports[`/svelte.js should handle errors: "invalid reference template - <link>" 3`] = `
 "
-
 <h1 class=\\"{css.nope}\\">Nope</h1>
 <h2 class=\\"yup\\">Yup</h2>
 <script>
@@ -382,6 +374,23 @@ exports[`/svelte.js should handle errors: "invalid reference template - <style>"
 "
 `;
 
+exports[`/svelte.js should ignore <links> that reference a URL 1`] = `
+"<link rel=\\"stylesheet\\" href=\\"http://example.com/styles.css\\" />
+
+<div class=\\"fooga\\">fooga</div>
+<script>
+    import css from \\"./simple.css\\";
+</script>"
+`;
+
+exports[`/svelte.js should ignore <links> that reference a URL 2`] = `
+"/* packages/svelte/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+"
+`;
+
 exports[`/svelte.js should ignore files without <style> blocks 1`] = `
 "<h1>Hello</h1>
 <script>console.log(\\"output\\")</script>"
@@ -389,9 +398,16 @@ exports[`/svelte.js should ignore files without <style> blocks 1`] = `
 
 exports[`/svelte.js should ignore files without <style> blocks 2`] = `""`;
 
-exports[`/svelte.js should remove files before reprocessing when config.clean is set 1`] = `
+exports[`/svelte.js should no-op if all <link>s reference a URL 1`] = `
+"<link rel=\\"stylesheet\\" href=\\"http://example.com/styles.css\\" />
+<link rel=\\"stylesheet\\" href=\\"http://example.com/styles2.css\\" />
+
+<div class=\\"fooga\\">fooga</div>
 "
-<div class=\\"source\\">Source</div><script>
+`;
+
+exports[`/svelte.js should remove files before reprocessing when config.clean is set 1`] = `
+"<div class=\\"source\\">Source</div><script>
     import css from \\"./source.css\\";
 </script>"
 `;
@@ -404,8 +420,7 @@ exports[`/svelte.js should remove files before reprocessing when config.clean is
 `;
 
 exports[`/svelte.js should remove files before reprocessing when config.clean is set 3`] = `
-"
-<div class=\\"source\\">Source</div><script>
+"<div class=\\"source\\">Source</div><script>
     import css from \\"./source.css\\";
 </script>"
 `;
@@ -615,3 +630,32 @@ Array [
 `;
 
 exports[`/svelte.js should throw on both <style> and <link> in one file 1`] = `"@modular-css/svelte: use <style> OR <link>, but not both"`;
+
+exports[`/svelte.js should warn when multiple <link> elements are in the html 1`] = `
+"<link rel=\\"stylesheet\\" href=\\"./simple2.css\\" />
+
+<div class=\\"fooga\\">fooga</div>
+<div class=\\"{css.booga}\\">booga</div>
+<script>
+    import css from \\"./simple.css\\";
+</script>"
+`;
+
+exports[`/svelte.js should warn when multiple <link> elements are in the html 2`] = `
+"/* packages/svelte/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+"
+`;
+
+exports[`/svelte.js should warn when multiple <link> elements are in the html 3`] = `
+Array [
+  Array [
+    "@modular-css/svelte will only use the first local <link> tag",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .booga in \\"./simple.css\\"",
+  ],
+]
+`;
