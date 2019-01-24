@@ -102,3 +102,30 @@ exports[`/processor.js values should support value replacement in :external(...)
 }
 "
 `;
+
+exports[`/processor.js values shouldn't replace values unless they're safe 1`] = `
+"/* values.css */
+.a {
+    color: foo-a;
+    color: foo(red);
+    color: foo_a;
+    color: fooa;
+    color: foo, red;
+    color: foo, red, woo;
+    width: foopx;
+    color:red;
+    color:foo-a;
+    color: red;
+}
+
+@media red { }
+@media red, b {}
+@media foo-a, b {}
+@media foo-a { }
+@media (min-width: red) { }
+@media (min-width: foo-a) { }
+@media not red {}
+@media not (red) {}
+@media not foo-a {}
+@media not (foo-a) {}"
+`;

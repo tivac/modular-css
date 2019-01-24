@@ -36,7 +36,7 @@ module.exports = (css, { opts, messages }) => {
     const matchRegex = new RegExp(
         Object.keys(values)
             .sort((a, b) => b.length - a.length)
-            .map((v) => `\\b${escape(v)}\\b`)
+            .map((v) => `^${escape(v)}$`)
             .join("|"),
         "g"
     );
