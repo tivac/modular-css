@@ -5,15 +5,18 @@ const path = require("path");
 const resolve = require("resolve-from");
 const dedent = require("dedent");
 const isUrl = require("is-url");
+const escape = require("escape-string-regexp");
 
 const Processor = require("@modular-css/processor");
 
 const styleRegex = /<style[\S\s]*?>([\S\s]*?)<\/style>/im;
 const scriptRegex = /<script[\S\s]*?>([\S\s]*?)<\/script>/im;
-const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/im;
 const missedRegex = /css\.\w+/gim;
 
 module.exports = (config = false) => {
+    // Defined here to avoid .lastIndex bugs since /g is set
+    const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/gim;
+
     const processor = new Processor(config);
 
     // eslint-disable-next-line no-console, no-empty-function
@@ -26,15 +29,15 @@ module.exports = (config = false) => {
     const markup = async ({ content, filename }) => {
         let source = content;
 
-        const link = source.match(linkRegex);
+        const links = source.match(linkRegex);
         const style = source.match(styleRegex);
 
-        if(link && style) {
+        if(links && style) {
             throw new Error("@modular-css/svelte: use <style> OR <link>, but not both");
         }
 
         // No-op
-        if(!link && !style) {
+        if(!links && !style) {
             return {
                 code : source,
             };
@@ -56,16 +59,36 @@ module.exports = (config = false) => {
             );
         }
 
-        if(link) {
-            // This looks weird, but it's to support multiple types of quotation marks
-            file = link[1] || link[2] || link[3];
+        if(links) {
+            const valid = links.reduce((out, link) => {
+                linkRegex.lastIndex = 0;
 
-            // Don't transform URLs
-            if(isUrl(file)) {
-                return {
-                    code : content,
-                };
+                const parts = linkRegex.exec(link);
+
+                // This looks weird, but it's to support multiple types of quotation marks
+                const href = parts[1] || parts[2] || parts[3];
+
+                // Don't transform URLs
+                if(isUrl(href)) {
+                    return out;
+                }
+
+                out.push({
+                    link,
+                    href,
+                });
+
+                return out;
+            }, []);
+
+            if(valid.length > 1) {
+                console.warn("@modular-css/svelte will only use the first local <link> tag");
             }
+
+            const [{ link, href }] = valid;
+
+            // Assign to file for later usage in logging
+            file = href;
 
             const external = resolve(path.dirname(filename), file);
 
@@ -82,7 +105,7 @@ module.exports = (config = false) => {
             result = await processor.file(external);
 
             // Remove the <link> element from the component to avoid double-loading
-            source = source.replace(link[0], "");
+            source = source.replace(new RegExp(`${escape(link)}\r?\n?`), "");
 
             // To get rollup to watch the CSS file we need to inject an import statement
             // if a <script> block already exists hijack it otherwise inject a simple one

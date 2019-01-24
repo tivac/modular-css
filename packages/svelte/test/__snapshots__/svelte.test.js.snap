@@ -622,3 +622,32 @@ Array [
 `;
 
 exports[`/svelte.js should throw on both <style> and <link> in one file 1`] = `"@modular-css/svelte: use <style> OR <link>, but not both"`;
+
+exports[`/svelte.js should warn when multiple <link> elements are in the html 1`] = `
+"<link rel=\\"stylesheet\\" href=\\"./simple2.css\\" />
+
+<div class=\\"fooga\\">fooga</div>
+<div class=\\"{css.booga}\\">booga</div>
+<script>
+    import css from \\"./simple.css\\";
+</script>"
+`;
+
+exports[`/svelte.js should warn when multiple <link> elements are in the html 2`] = `
+"/* packages/svelte/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+"
+`;
+
+exports[`/svelte.js should warn when multiple <link> elements are in the html 3`] = `
+Array [
+  Array [
+    "@modular-css/svelte will only use the first local <link> tag",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .booga in \\"./simple.css\\"",
+  ],
+]
+`;

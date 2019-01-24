@@ -177,7 +177,7 @@ describe("/svelte.js", () => {
         logSnapshot();
     });
 
-    it.skip("should warn when multiple <link> elements are in the html", async () => {
+    it("should warn when multiple <link> elements are in the html", async () => {
         const spy = jest.spyOn(global.console, "warn");
 
         spy.mockImplementation(() => { /* NO-OP */ });
