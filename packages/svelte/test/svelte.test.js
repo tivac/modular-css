@@ -31,6 +31,24 @@ describe("/svelte.js", () => {
 
         expect(output.css).toMatchSnapshot();
     });
+    
+    it("should ignore <links> that reference a URL", async () => {
+        const filename = require.resolve("./specimens/url.html");
+        const { preprocess, processor } = plugin({
+            namer,
+        });
+
+        const processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        const output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
+    });
 
     it.each`
         specimen                    | title
@@ -157,6 +175,32 @@ describe("/svelte.js", () => {
         await processor.output();
 
         logSnapshot();
+    });
+
+    it.skip("should warn when multiple <link> elements are in the html", async () => {
+        const spy = jest.spyOn(global.console, "warn");
+
+        spy.mockImplementation(() => { /* NO-OP */ });
+
+        const filename = require.resolve(`./specimens/multiple-link.html`);
+
+        const { processor, preprocess } = plugin({
+            namer,
+        });
+
+        const processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        const output = await processor.output();
+        
+        expect(output.css).toMatchSnapshot();
+        
+        expect(spy).toHaveBeenCalled();
+        expect(spy.mock.calls).toMatchSnapshot();
     });
 
     it("should remove files before reprocessing when config.clean is set", async () => {
