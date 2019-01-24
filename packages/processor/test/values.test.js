@@ -38,6 +38,45 @@ describe("/processor.js", () => {
                 );
             }
         });
+        
+        it("shouldn't replace values unless they're safe", async () => {
+            await processor.string(
+                "./values.css",
+                dedent(`
+                    @value a: red;
+                    @value c: foo-a;
+                    @value d:a;
+
+                    .a {
+                        color: foo-a;
+                        color: foo(a);
+                        color: foo_a;
+                        color: fooa;
+                        color: foo, a;
+                        color: foo, a, woo;
+                        width: foopx;
+                        color:a;
+                        color:foo-a;
+                        color: d;
+                    }
+
+                    @media a { }
+                    @media a, b {}
+                    @media foo-a, b {}
+                    @media foo-a { }
+                    @media (min-width: a) { }
+                    @media (min-width: foo-a) { }
+                    @media not a {}
+                    @media not (a) {}
+                    @media not foo-a {}
+                    @media not (foo-a) {}
+                `)
+            );
+
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
+        });
 
         it("should support simple values", async () => {
             await processor.string(
