@@ -20,7 +20,7 @@ const chunkFileNames = "[name].js";
 const map = false;
 const sourcemap = false;
 
-const formats = [ "amd", "es", "esm", "system" ];
+const formats = [[ "amd" ], [ "es" ], [ "esm" ], [ "system" ]];
 
 describe("rollup-rewriter", () => {
     beforeAll(() => shell.rm("-rf", prefix("./output/*")));
@@ -29,7 +29,9 @@ describe("rollup-rewriter", () => {
         expect(() => rewriter({})).toThrow();
     });
 
-    it("should error on unsupported formats", async () => {
+    it.each([
+        [ "cjs" ],
+    ])("should error on unsupported formats (%p)", async (format) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/dynamic-imports/a.js"),
@@ -47,7 +49,7 @@ describe("rollup-rewriter", () => {
         });
 
         await expect(bundle.generate({
-            format : "cjs",
+            format,
             sourcemap,
 
             assetFileNames,
@@ -55,7 +57,7 @@ describe("rollup-rewriter", () => {
         })).rejects.toThrowErrorMatchingSnapshot();
     });
 
-    it("shouldn't require a loader", async () => {
+    it.each(formats)("shouldn't require a loader (%p)", async (format) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/dynamic-imports/a.js"),
@@ -72,20 +74,18 @@ describe("rollup-rewriter", () => {
             ],
         });
 
-        for(const format of formats) {
-            const result = await bundle.generate({
-                format,
-                sourcemap,
+        const result = await bundle.generate({
+            format,
+            sourcemap,
 
-                assetFileNames,
-                chunkFileNames,
-            });
+            assetFileNames,
+            chunkFileNames,
+        });
 
-            expect(result).toMatchRollupSnapshot(format);
-        }
+        expect(result).toMatchRollupSnapshot();
     });
 
-    it("should support loader & loadfn", async () => {
+    it.each(formats)("should support loader & loadfn (%p)", async (format) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/dynamic-imports/a.js"),
@@ -103,20 +103,18 @@ describe("rollup-rewriter", () => {
             ],
         });
 
-        for(const format of formats) {
-            const result = await bundle.generate({
-                format,
-                sourcemap,
+        const result = await bundle.generate({
+            format,
+            sourcemap,
 
-                assetFileNames,
-                chunkFileNames,
-            });
+            assetFileNames,
+            chunkFileNames,
+        });
 
-            expect(result).toMatchRollupSnapshot(format);
-        }
+        expect(result).toMatchRollupSnapshot();
     });
 
-    it("should only rewrite when necessary", async () => {
+    it.each(formats)("should only rewrite when necessary (%p)", async (format) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/no-asset-imports/a.js"),
@@ -133,17 +131,15 @@ describe("rollup-rewriter", () => {
             ],
         });
 
-        for(const format of formats) {
-            const result = await bundle.generate({
-                format,
-                sourcemap,
+        const result = await bundle.generate({
+            format,
+            sourcemap,
 
-                assetFileNames,
-                chunkFileNames,
-            });
+            assetFileNames,
+            chunkFileNames,
+        });
 
-            expect(result).toMatchRollupSnapshot(format);
-        }
+        expect(result).toMatchRollupSnapshot();
     });
 
     it("should log details in verbose mode", async () => {
