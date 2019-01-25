@@ -10,13 +10,16 @@ const { dest } = require("../environment.js");
 const css = require("./css.js");
 
 // Create home page markup
-module.exports = ({ md }) => {
-    const Home = require(path.join(dest, "./home.cjs.js"));
+module.exports = ({ md, bundle, graph }) => {
+    const entry = "home.cjs.js";
+    const file = path.join(dest, "./index.html");
+    
+    const Home = require(path.join(dest, entry));
 
     return {
-        file : path.join(dest, "./index.html"),
+        file,
         html : Home.render({
-            styles  : css("home"),
+            styles  : css(entry, { file, graph, bundle }),
             content : md.render(
                 fs.readFileSync(require.resolve("../../src/index.md"), "utf8")
             ),

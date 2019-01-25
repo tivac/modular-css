@@ -34,6 +34,7 @@
     "cssnano": "^4.1.8",
     "debounce": "^1.2.0",
     "get-port": "^4.1.0",
+    "is-url": "^1.2.4",
     "lazyload-css": "^1.0.5",
     "lznext": "^0.1.0",
     "markdown-it": "^8.4.2",

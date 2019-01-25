@@ -15,6 +15,64 @@ const { processor, preprocess } = require("@modular-css/svelte")({
 });
 
 module.exports = [
+    // CJS Build of home/guide for node generation
+    {
+        input : {
+            guide : "./src/guide/guide.html",
+            home  : "./src/home/home.html",
+            repl  : "./src/repl/repl.html",
+
+            // REPL builds using generic page container
+            page : "./src/page.html",
+        },
+
+        // Don't need to bundle any of this, so purposefully exclude it
+        external : [
+            "fs",
+            "path",
+            "crypto",
+            "module",
+            "postcss",
+            "@modular-css/processor",
+            "lznext",
+        ],
+
+        output : {
+            dir    : dest,
+            format : "cjs",
+
+            sourcemap : false,
+
+            entryFileNames : "[name].[format].js",
+            chunkFileNames : "[name].[format].js",
+        },
+
+        plugins : [
+            // Wipe the destination dir on each rebuild
+            require("./build/rollup-plugin-clean")(),
+
+            require("rollup-plugin-node-resolve")({
+                module : true,
+
+                preferBuiltins : false,
+            }),
+            
+            require("rollup-plugin-commonjs")(),
+            require("rollup-plugin-json")(),
+            
+            require("rollup-plugin-svelte")({
+                preprocess,
+                generate : "ssr",
+            }),
+
+            require("@modular-css/rollup")({
+                processor,
+            }),
+
+            // Generate HTML for all the static pages
+            require("./build/rollup-plugin-generate-html.js")(),
+        ]
+    },
     // Browser build of the REPL
     {
         input : {
@@ -31,9 +89,6 @@ module.exports = [
         },
 
         plugins : [
-            // Wipe the destination dir on each rebuild
-            require("./build/rollup-plugin-clean")(),
-            
             require("rollup-plugin-alias")({
                 fs   : require.resolve("./stubs/fs.js"),
                 path : require.resolve("./stubs/path.js"),
@@ -69,46 +124,4 @@ module.exports = [
             isProduction && require("rollup-plugin-terser").terser(),
         ],
     },
-    // CJS Build of home/guide for node generation
-    {
-        input : {
-            guide : "./src/guide/guide.html",
-            home  : "./src/home/home.html",
-            page  : "./src/page.html",
-        },
-
-        output : {
-            dir    : dest,
-            format : "cjs",
-
-            sourcemap : false,
-
-            entryFileNames : "[name].[format].js",
-            chunkFileNames : "[name].[format].js",
-        },
-
-        plugins : [
-            require("rollup-plugin-node-resolve")({
-                module  : true,
-                browser : true,
-
-                preferBuiltins : false,
-            }),
-            
-            require("rollup-plugin-commonjs")(),
-            require("rollup-plugin-json")(),
-            
-            require("rollup-plugin-svelte")({
-                preprocess,
-                generate : "ssr",
-            }),
-
-            require("@modular-css/rollup")({
-                processor,
-            }),
-
-            // Generate HTML for all the static pages
-            require("./build/rollup-plugin-generate-html.js")(),
-        ]
-    }
 ];

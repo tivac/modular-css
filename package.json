@@ -14,10 +14,11 @@
     "parser": "pegjs packages/processor/parsers/parser.pegjs",
     "prerelease": "npm test -- --ci",
     "release": "lerna publish",
-    "start": "lerna run --stream start packages/www",
     "pretest": "npm run parser",
     "test": "jest",
-    "watch": "jest --watch"
+    "watch": "jest --watch",
+    "www:build": "lerna run --stream build packages/www",
+    "www:start": "lerna run --stream start packages/www"
   },
   "devDependencies": {
     "@modular-css/test-utils": "file:packages/test-utils",

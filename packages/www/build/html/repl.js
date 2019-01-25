@@ -1,28 +1,30 @@
 const path = require("path");
 
 const dedent = require("dedent");
-const shell = require("shelljs");
 
 const { dest } = require("../environment.js");
 
 const css = require("./css.js");
 
-module.exports = () => {
-    const Page = require(path.join(dest, "./page.cjs.js"));
+module.exports = ({ graph, bundle }) => {
+    const entry = "page.cjs.js";
+    const file = path.join(dest, "./repl/index.html");
 
-    const scripts = shell
-        .find(path.join(dest, "./repl*.js"))
-        .map((script) => `shimport("../${path.relative(dest, script)}");`)
-        .join("\n");
+    const Page = require(path.join(dest, entry));
+
+    let repl;
+
+    // TODO: need to find the REPL JS, but it isn't generated yet...
+    // const repl = Object.entries(bundle).find(([ entry, { isAsset }]));
 
     return {
         file : path.join(dest, "./repl/index.html"),
         html : Page.render({
             title : "REPL",
             
-            styles : css("repl"),
+            styles : css("repl.cjs.js", { file, graph, bundle }),
             
-            scripts : dedent(`
+            script : dedent(`
                 <script>
                 function shimport(src) {
                     try {
@@ -35,7 +37,6 @@ module.exports = () => {
                     }
                 }
         
-                ${scripts}
                 </script>
             `),
         })

@@ -3,7 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const dedent = require("dedent");
+const Graph = require("dependency-graph").DepGraph;
 const shell = require("shelljs");
 const md = require("markdown-it")({
     html        : true,
@@ -13,8 +13,6 @@ const md = require("markdown-it")({
 
 const prism = require("markdown-it-prism");
 const { default : toc } = require("markdown-it-toc-and-anchor");
-
-const { dest } = require("./environment.js");
 
 const repl = require("./html/repl.js");
 const guide = require("./html/guide.js");
@@ -40,14 +38,29 @@ module.exports = () => {
                 .forEach((doc) => this.addWatchFile(doc));
         },
 
-        async writeBundle() {
-            const outputs = [
-                repl({ md }),
-                guide({ md }),
-                home({ md }),
-            ];
-            
-            outputs.forEach(({ file, html }) => {
+        async writeBundle(bundle) {
+            const graph = new Graph();
+
+            Object.entries(bundle).forEach(([ entry, { isAsset, imports }]) => {
+                if(isAsset) {
+                    return;
+                }
+
+                graph.addNode(entry, 0);
+
+                imports.forEach((dep) => {
+                    graph.addNode(dep);
+                    graph.addDependency(entry, dep);
+                });
+            });
+
+            const args = { md, bundle, graph };
+
+            [
+                repl(args),
+                // guide(args),
+                // home(args),
+            ].forEach(({ file, html }) => {
                 const dir = path.dirname(file);
 
                 shell.mkdir("-p", dir);

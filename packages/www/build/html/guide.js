@@ -9,7 +9,9 @@ const { dest } = require("../environment.js");
 
 const css = require("./css.js");
 
-module.exports = ({ md }) => {
+module.exports = ({ md, graph, bundle }) => {
+    const entry = "guide.cjs.js";
+    const file = path.join(dest, "./guide/index.html");
     const tocs = new Map();
 
     const markdown = shell
@@ -31,18 +33,22 @@ module.exports = ({ md }) => {
         },
     });
 
-    const Guide = require(path.join(dest, "./guide.cjs.js"));
+    const Guide = require(path.join(dest, entry));
 
     // Write out guide page
     return {
-        file : path.join(dest, "./guide/index.html"),
+        file,
         html : Guide.render({
             tocs,
             content : html,
-            styles  : [
-                "https://unpkg.com/prismjs@1.15.0/themes/prism-tomorrow.css",
-                ...css("guide"),
-            ]
+            styles  : css(entry, {
+                graph,
+                bundle,
+                file,
+                styles : [
+                    "https://unpkg.com/prismjs@1.15.0/themes/prism-tomorrow.css",
+                ]
+        }),
         })
     };
 };

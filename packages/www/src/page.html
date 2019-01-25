@@ -12,9 +12,9 @@
     <link href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto" rel="stylesheet">
 
     {#if styles}
-    {#each styles as style}
-    <link href="{style}" rel="stylesheet" />
-    {/each}
+        {#each styles as style}
+        {@html style}
+        {/each}
     {/if}
 </head>
 <body>
@@ -22,8 +22,8 @@
 
     <slot />
 
-    {#if scripts}
-    {@html scripts}
+    {#if script}
+    {@html script}
     {/if}
 </body>
 </html>
