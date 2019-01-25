@@ -189,6 +189,10 @@ module.exports = (opts) => {
             const queued = new Set();
 
             usage.overallOrder().forEach((entry) => {
+                if(!bundle[entry]) {
+                    return;
+                }
+
                 const { modules, name, fileName, isEntry } = bundle[entry];
                 const css = new Set();
 
