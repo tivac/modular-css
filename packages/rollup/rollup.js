@@ -163,24 +163,23 @@ module.exports = (opts) => {
                 );
             }
 
-            // Build chunk dependency graph so it can be walked in order later to
-            // Allow for outputting CSS alongside chunks as optimally as possible
+            // Build chunk dependency graph
             const usage = new Graph({ circular : true });
 
             Object.entries(bundle).forEach(([ entry, chunk ]) => {
                 const { imports, dynamicImports } = chunk;
 
-                usage.addNode(entry, true);
+                // Add all the nodes first, tagging them with their type for later
+                imports.forEach((dep) => usage.addNode(dep, "static"));
+                dynamicImports.forEach((dep) => usage.addNode(dep, "dynamic"));
 
-                [ ...imports, ...dynamicImports ].forEach((dep) => {
-                    // Need to filter out invalid deps, see rollup/rollup#2659
-                    if(!dep) {
-                        return;
-                    }
+                // Then tag the entry node
+                usage.addNode(entry, "entry");
 
-                    usage.addNode(dep, true);
-                    usage.addDependency(entry, dep);
-                });
+                // And then add all the dependency links
+                [ ...dynamicImports, ...imports ].forEach((dep) =>
+                    usage.addDependency(entry, dep)
+                );
             });
 
             // Output CSS chunks
@@ -226,9 +225,8 @@ module.exports = (opts) => {
                 }
 
                 out.set(entry, {
-                    name         : dest,
-                    files        : included,
-                    dependencies : usage.dependenciesOf(entry),
+                    name  : dest,
+                    files : included
                 });
 
                 // Flag all the files that are queued for writing so they don't get double-output
@@ -262,9 +260,6 @@ module.exports = (opts) => {
                 );
             }
 
-            // Track filename each CSS file will be written to
-            const filenames = new Map();
-
             for(const [ entry, value ] of out.entries()) {
                 const { name, files } = value;
 
@@ -286,8 +281,6 @@ module.exports = (opts) => {
 
                 // Save off the final name of this asset for later use
                 const dest = this.getAssetFileName(id);
-
-                filenames.set(entry, dest);
 
                 // Maps can't be written out via the asset APIs becuase they shouldn't ever be hashed.
                 // They shouldn't be hashed because they simply follow the name of their parent .css asset.
@@ -311,24 +304,20 @@ module.exports = (opts) => {
                         bundle[dest].source += `\n/*# sourceMappingURL=${path.basename(fileName)} */`;
                     }
                 }
-            }
 
-            // If this bundle has CSS dependencies, stick them on the object for other plugins to reference
-            // Has to happen in a second loop to ensure that all filenames are correctly resolved
-            for(const [ entry, { dependencies }] of out.entries()) {
-                // unused CSS doesn't correspond to a bundle, so don't bother
-                if(!bundle[entry]) {
-                    continue;
+                if(entry in bundle) {
+                    // Attach info about this asset to the bundle
+                    const { assets = [], dynamicAssets = [] } = bundle[entry];
+
+                    if(usage.getNodeData(entry) === "dynamic") {
+                        dynamicAssets.push(dest);
+                    } else {
+                        assets.push(dest);
+                    }
+
+                    bundle[entry].assets = assets;
+                    bundle[entry].dynamicAssets = dynamicAssets;
                 }
-
-                log("attaching assets", entry);
-
-                bundle[entry].assets = [
-                    ...dependencies
-                        .filter((dep) => out.has(dep))
-                        .map((dep) => filenames.get(dep)),
-                    filenames.get(entry),
-                ];
             }
 
             if(options.json) {
@@ -348,13 +337,14 @@ module.exports = (opts) => {
 
                 const meta = {};
 
-                Object.entries(bundle).forEach(([ entry, { assets }]) => {
-                    if(!assets) {
+                Object.entries(bundle).forEach(([ entry, { dynamicAssets = false, assets = false }]) => {
+                    if(!assets && !dynamicAssets) {
                         return;
                     }
 
                     meta[entry] = {
-                        dependencies : assets,
+                        assets,
+                        dynamicAssets,
                     };
                 });
 

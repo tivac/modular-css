@@ -31,6 +31,6 @@
     "xregexp": "^4.2.4"
   },
   "peerDependencies": {
-    "rollup": "^1"
+    "rollup": "^1.1.2"
   }
 }
