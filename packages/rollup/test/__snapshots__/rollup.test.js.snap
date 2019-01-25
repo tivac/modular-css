@@ -267,11 +267,6 @@ Array [
     "simple.css",
   ],
   Array [
-    "[rollup]",
-    "attaching assets",
-    "simple.js",
-  ],
-  Array [
     "[processor]",
     "file()",
     "packages/processor/test/specimens/start.css",
