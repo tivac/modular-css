@@ -41,15 +41,15 @@ module.exports = (opts) => {
             Object.entries(chunks).forEach(([ entry, chunk ]) => {
                 const {
                     isAsset = false,
-                    assets = [],
                     code = "",
+                    dynamicAssets = [],
                     dynamicImports = [],
                 } = chunk;
 
                 // Guard against https://github.com/rollup/rollup/issues/2659
                 const deps = dynamicImports.filter(Boolean);
 
-                if(isAsset || !deps.length || !assets.length) {
+                if(isAsset || !deps.length || !dynamicAssets.length) {
                     return;
                 }
 
@@ -73,8 +73,10 @@ module.exports = (opts) => {
                     const [ statement, file ] = result;
                     const { index } = result;
 
-                    if(chunks[file].assets) {
-                        const imports = chunks[file].assets.map((dep) =>
+                    const { dynamicAssets : assets = false } = chunks[file];
+
+                    if(assets && assets.length) {
+                        const imports = assets.map((dep) =>
                             `${options.loadfn}("./${dep}")`
                         );
 
