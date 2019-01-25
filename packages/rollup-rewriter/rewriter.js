@@ -42,14 +42,13 @@ module.exports = (opts) => {
                 const {
                     isAsset = false,
                     code = "",
-                    dynamicAssets = [],
                     dynamicImports = [],
                 } = chunk;
 
                 // Guard against https://github.com/rollup/rollup/issues/2659
                 const deps = dynamicImports.filter(Boolean);
-
-                if(isAsset || !deps.length || !dynamicAssets.length) {
+                
+                if(isAsset || !deps.length) {
                     return;
                 }
 
