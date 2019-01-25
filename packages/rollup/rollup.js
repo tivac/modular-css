@@ -193,8 +193,8 @@ module.exports = (opts) => {
                     return;
                 }
 
-                const { modules, name, fileName, isEntry } = bundle[entry];
                 const css = new Set();
+                const { modules, name, fileName, isEntry } = bundle[entry];
 
                 // Get CSS files being used by this chunk
                 const styles = Object.keys(modules).filter((file) => processor.has(file));
@@ -208,6 +208,7 @@ module.exports = (opts) => {
                     css.add(style);
                 });
 
+                // How does Set not have .filter yet ಠ_ಠ
                 const included = [ ...css ].filter((file) => !queued.has(file));
 
                 if(!included.length) {
@@ -341,10 +342,12 @@ module.exports = (opts) => {
 
                 const meta = {};
 
-                Object.entries(bundle).forEach(([ entry, { dynamicAssets = false, assets = false }]) => {
-                    if(!assets && !dynamicAssets) {
+                out.forEach((value, entry) => {
+                    if(!bundle[entry]) {
                         return;
                     }
+
+                    const { assets, dynamicAssets } = bundle[entry];
 
                     meta[entry] = {
                         assets,
