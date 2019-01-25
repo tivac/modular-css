@@ -169,35 +169,17 @@ module.exports = (opts) => {
             Object.entries(bundle).forEach(([ entry, chunk ]) => {
                 const { imports, dynamicImports } = chunk;
 
-                imports.forEach((dep) => {
-                    // Need to filter out invalid deps, see rollup/rollup#2659
-                    if(!dep) {
-                        return;
-                    }
+                // Add all the nodes first, tagging them with their type for later
+                imports.forEach((dep) => usage.addNode(dep, "static"));
+                dynamicImports.forEach((dep) => usage.addNode(dep, "dynamic"));
 
-                    usage[usage.hasNode(dep) ? "setNodeData" : "addNode"](dep, "static");
-                });
-
-                dynamicImports.forEach((dep) => {
-                    // Need to filter out invalid deps, see rollup/rollup#2659
-                    if(!dep) {
-                        return;
-                    }
-
-                    usage[usage.hasNode(dep) ? "setNodeData" : "addNode"](dep, "dynamic");
-                });
-
-                // Wait until the end to tag this node
+                // Then tag the entry node
                 usage.addNode(entry, "entry");
 
-                [ ...dynamicImports, ...imports ].forEach((dep) => {
-                    // Need to filter out invalid deps, see rollup/rollup#2659
-                    if(!dep) {
-                        return;
-                    }
-
-                    usage.addDependency(entry, dep);
-                });
+                // And then add all the dependency links
+                [ ...dynamicImports, ...imports ].forEach((dep) =>
+                    usage.addDependency(entry, dep)
+                );
             });
 
             // Output CSS chunks
