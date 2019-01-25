@@ -191,6 +191,11 @@ module.exports = (opts) => {
                 usage.addNode(entry, "entry");
 
                 [ ...dynamicImports, ...imports ].forEach((dep) => {
+                    // Need to filter out invalid deps, see rollup/rollup#2659
+                    if(!dep) {
+                        return;
+                    }
+
                     usage.addDependency(entry, dep);
                 });
             });
