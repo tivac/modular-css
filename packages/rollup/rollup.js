@@ -278,9 +278,6 @@ module.exports = (opts) => {
                 );
             }
 
-            // Track filename each CSS file will be written to
-            const filenames = new Map();
-
             for(const [ entry, value ] of out.entries()) {
                 const { name, files } = value;
 
@@ -302,8 +299,6 @@ module.exports = (opts) => {
 
                 // Save off the final name of this asset for later use
                 const dest = this.getAssetFileName(id);
-
-                filenames.set(entry, dest);
 
                 // Maps can't be written out via the asset APIs becuase they shouldn't ever be hashed.
                 // They shouldn't be hashed because they simply follow the name of their parent .css asset.
@@ -327,43 +322,20 @@ module.exports = (opts) => {
                         bundle[dest].source += `\n/*# sourceMappingURL=${path.basename(fileName)} */`;
                     }
                 }
-            }
 
-            // If this bundle has CSS dependencies, stick them on the object for other plugins to reference
-            // Has to happen in a second loop to ensure that all filenames are correctly resolved
-            for(const entry of out.keys()) {
-                // unused CSS doesn't correspond to a bundle, so don't bother
-                if(!bundle[entry]) {
-                    continue;
+                if(entry in bundle) {
+                    // Attach info about this asset to the bundle
+                    const { assets = [], dynamicAssets = [] } = bundle[entry];
+
+                    if(usage.getNodeData(entry) === "dynamic") {
+                        dynamicAssets.push(dest);
+                    } else {
+                        assets.push(dest);
+                    }
+
+                    bundle[entry].assets = assets;
+                    bundle[entry].dynamicAssets = dynamicAssets;
                 }
-
-                log("attaching assets", entry);
-
-                const dependencies = [
-                    ...usage.dependenciesOf(entry),
-                    entry,
-                ];
-
-                // Figure out the output names of all the static assets this entry point depends on
-                const assets = dependencies
-                    .filter((dep) =>
-                        out.has(dep) && (
-                            usage.getNodeData(dep) === "static" ||
-                            usage.getNodeData(dep) === "entry"
-                        )
-                    )
-                    .map((dep) => filenames.get(dep));
-
-                // Figure out the output names of all the dynamic assets this entry point depends on
-                const dynamicAssets = dependencies
-                    .filter((dep) =>
-                        out.has(dep) &&
-                        usage.getNodeData(dep) === "dynamic"
-                    )
-                    .map((dep) => filenames.get(dep));
-
-                bundle[entry].assets = assets;
-                bundle[entry].dynamicAssets = dynamicAssets;
             }
 
             if(options.json) {
