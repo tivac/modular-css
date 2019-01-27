@@ -2,7 +2,7 @@
 .sidebar {
     position: fixed;
     width: 12rem;
-    height: 100%;
+    height: calc(100% - 4rem);
     overflow-y: auto;
 }
 
@@ -29,11 +29,12 @@
     text-transform: uppercase;
 }
 
-.sidebar :global(.toc) > li > ul {
+.sidebar :global(.toc) li ul {
     margin-top: 0.75rem;
+    text-transform: lowercase;
 }
 
-.sidebar :global(.toc) > li > ul > li + li {
+.sidebar :global(.toc) li ul li + li {
     margin-top: 0.3rem;
 }
 </style>

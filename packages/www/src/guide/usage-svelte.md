@@ -1,8 +1,8 @@
-## svelte
+### svelte
 
 Svelte preprocessor support for [`modular-css`](https://github.com/tivac/modular-css). Process inline `<style>`s or `<link>` references inside your Svelte components using the full power of `modular-css` while also providing compile-time optimizations for smaller bundles and even faster runtime performance!
 
-### Example
+#### Example
 
 Turns this
 
@@ -34,19 +34,15 @@ while allowing you to use all of the usual `modular-css` goodies.
 
 Alternatively you can use `<link href="./file.css" />` tags to reference CSS external to the component.
 
-- [Install](#install)
-- [Usage](#usage)
-- [Options](#options)
-
-### Install
+#### Install
 
 ```bash
 > npm i @modular-css/svelte -D
 ```
 
-### Usage
+#### Usage
 
-#### `svelte.preprocess()`
+##### `svelte.preprocess()`
 
 ```js
 const filename = "./Component.html";
@@ -65,9 +61,9 @@ const result = await processor.output();
 fs.writeFileSync("./dist/bundle.css", result.css);
 ```
 
-#### `@modular-css/rollup`
+##### `@modular-css/rollup`
 
-##### API
+###### API
 
 ```js
 const rollup = require("rollup").rollup;
@@ -99,7 +95,7 @@ bundle.write({
 });
 ```
 
-##### `rollup.config.js`
+###### `rollup.config.js`
 
 ```js
 const { preprocess, processor } = require("@modular-css/svelte")({
@@ -128,16 +124,16 @@ module.exports = {
 };
 ```
 
-### Options
+#### Options
 
-#### `strict`
+##### `strict`
 
-If `true` whenever a missing replacement is found like `{css.doesnotexist}` an error will be throw aborting the file processing. Defaults to `false`.
+If `true` whenever a missing replacement is found like `{css.doesnotexist}` an error will be thrown aborting the file processing. Defaults to `false`.
 
-#### `clean`
+##### `clean`
 
 If `true` will re-process any previously handled files (and remove any files that dependended on them). Might be useful, but currently also dangerous (see [#522](https://github.com/tivac/modular-css/issues/522)). Defaults to `false`.
 
-#### Shared Options
+##### Shared Options
 
 All options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).

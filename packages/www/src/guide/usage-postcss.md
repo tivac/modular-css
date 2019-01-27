@@ -1,14 +1,14 @@
-## PostCSS
+### PostCSS
 
 `@modular-css/postcss` provides a PostCSS plugin that can be used like any other. It will output a message with a `type` of `modular-css-exports` containing all the exported class compositions.
 
-### PostCSS Install
+#### PostCSS Install
 
 ```bash
 > npm i @modular-css/postcss
 ```
 
-### PostCSS Usage (via API)
+#### PostCSS Usage (via API)
 
 ```js
 const postcss = require("postcss");
@@ -26,7 +26,7 @@ const result = await processor.process("<css>")
 // etc
 ```
 
-### PostCSS Usage (via config)
+#### PostCSS Usage (via config)
 
 ```bash
 > postcss --config postcss.json input.css
@@ -43,18 +43,18 @@ const result = await processor.process("<css>")
 
 ```
 
-### PostCSS Usage (via CLI)
+#### PostCSS Usage (via CLI)
 
 ```bash
 > postcss --use modular-css/postcss input.css
 ```
 
-### PostCSS Options
+#### PostCSS Options
 
-#### `json`
+##### `json`
 
 Write the class composition data to this location on disk.
 
-#### Shared Options
+##### Shared Options
 
 All other options are passed to the underlying `Processor` instance, see [Processor Options](#processor-options).

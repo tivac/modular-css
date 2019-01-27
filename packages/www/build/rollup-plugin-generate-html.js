@@ -9,6 +9,7 @@ const shell = require("shelljs");
 const repl = require("./html/repl.js");
 const guide = require("./html/guide.js");
 const home = require("./html/home.js");
+const changelog = require("./html/changelog.js");
 
 module.exports = ({ bundle : previous }) => ({
     name : "rollup-plugin-generate-html",
@@ -35,6 +36,7 @@ module.exports = ({ bundle : previous }) => ({
             repl(args),
             guide(args),
             home(args),
+            changelog(args),
         ].forEach(({ file, html }) => {
             const dir = path.dirname(file);
 

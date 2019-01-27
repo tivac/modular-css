@@ -1,4 +1,82 @@
-<link rel="stylesheet" href="./header.css" />
+<style>
+@value headerHeight from "./site.css";
+@value textColor from "./site.css";
+@value hoverColor from "./site.css";
+@value accentColor from "./site.css";
+@value tabHeight: 2.5rem;
+
+.header {
+    position: fixed;
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    
+    flex: 0 0 headerHeight;
+    padding: 1rem;
+
+    color: textColor;
+    background-color: hsl(0, 0%, 20%);
+
+    border-bottom: 2px solid accentColor;
+
+    z-index: 1;
+}
+
+.header a {
+    color: textColor;
+}
+
+.header a:hover {
+    color: hoverColor;
+}
+
+.title {
+    font-size: 1.5rem;
+}
+
+.name {
+    /* NO-OP for now */
+}
+
+.version {
+    display: inline-block;
+    
+    margin-left: 0.25rem;
+
+    font-size: 0.9rem;
+}
+
+.navitems {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    margin: 0;
+    padding: 0;
+}
+
+.navitem {
+    position: relative;
+
+    list-style-type: none;
+}
+
+.navitem + .navitem {
+    margin-left: 0.5rem;
+    padding-left: 0.5rem;
+
+    border-left: 2px solid hsl(0, 0%, 54%);
+}
+
+.link {
+    text-transform: uppercase;
+}
+
+</style>
 
 <div class="{css.header}">
     <div class="{css.title}">

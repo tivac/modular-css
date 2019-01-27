@@ -1,0 +1,47 @@
+<style>
+.changelog {
+    composes: content from "../site.css";
+
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+}
+
+.bd {
+    max-width: 950px;
+    margin-left: 13rem;
+}
+
+.bd a,
+.bd a:hover {
+    text-decoration: underline;
+}
+
+.bd li + li {
+    margin-top: 0.5rem;
+}
+</style>
+
+<Page title="Changelog" {styles}>
+    <div class="{css.changelog}">
+        <Sidebar {tocs} />
+
+        <div class="{css.bd}">
+            {@html content}
+        </div>
+    </div>
+</Page>
+
+<script>
+export default {
+    components : {
+        Page   : "../page.html",
+        Sidebar : "../sidebar.html",
+    },
+
+    data : () => ({
+        tocs    : false,
+        content : "",
+    })
+};
+</script>

@@ -1,5 +1,7 @@
 @value textColor: hsl(0, 0%, 94%);
-@value borderColor: #EEEEEE;
+@value borderColor: hsl(0, 0%, 93%);
+@value accentColor: hsl(197, 100%, 44%);
+@value hoverColor: accentColor;
 @value opacityTime: 125ms;
 @value headerHeight: 4rem;
 
@@ -24,6 +26,8 @@ body {
 
     display: flex;
     flex-flow: column nowrap;
+
+    scroll-behavior: smooth;
 }
 
 pre,
@@ -35,6 +39,10 @@ code[class*="language-"],
     font-family: 'Inconsolata', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 }
 
+a {
+    transition: color 125ms ease-out;
+}
+
 a,
 a:hover {
     text-decoration: none;
@@ -42,7 +50,9 @@ a:hover {
 }
 
 a:hover {
-    color: blue;
+    color: hoverColor;
+
+    transition: color 250ms ease-in;
 }
 
 .button {

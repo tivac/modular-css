@@ -1,4 +1,4 @@
-## browserify
+### browserify
 
 Browserify support for [`modular-css`](https://github.com/tivac/modular-css).
 
@@ -12,29 +12,29 @@ This plugin can be combined with the `factor-bundle` plugin to output a common C
 - [API](#api)
 - [factor-bundle](#factor-bundle)
 
-### Install
+#### Install
 
 ```bash
 $ npm i @modular-css/browserify
 ```
 
-### Options
+#### Options
 
-#### `css`
+##### `css`
 
 Location to write the generated CSS file to.
 
-#### Shared Options
+##### Shared Options
 
 All other options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).
 
-### CLI
+#### CLI
 
 ```
 $ browserify -p [ @modular-css/browserify --css "./style.css" ] entry.js
 ```
 
-### API
+#### API
 
 ```js
 var browserify = require("browserify"),
@@ -47,13 +47,13 @@ build.plugin("@modular-css/browserify", {
 });
 ```
 
-### factor-bundle
+#### factor-bundle
 
 `@modular-css/browserify` is fully `factor-bundle` aware and will output correctly-partitioned CSS bundles to match the JS bundles created by `factor-bundle`.
 
 **WARNING**: Due to how `factor-bundle` works the `@modular-css/browserify` must be applied to the Browserify object **before** `factor-bundle`.
 
-#### CLI
+##### CLI
 
 ```
 $ browserify home.js account.js \
@@ -62,7 +62,7 @@ $ browserify home.js account.js \
     -o bundle/common.js
 ```
 
-#### API
+##### API
 
 ```js
 var build = browserify([

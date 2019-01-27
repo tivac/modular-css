@@ -4,9 +4,8 @@ const fs = require("fs");
 const path = require("path");
 
 const { default : toc } = require("markdown-it-toc-and-anchor");
-const include = require("markdown-it-include");
 
-const { src, dest } = require("../environment.js");
+const { dest } = require("../environment.js");
 const css = require("./css.js");
 
 module.exports = ({ graph, bundle }) => {
@@ -15,40 +14,40 @@ module.exports = ({ graph, bundle }) => {
     // Set up markdown plugins
     md.use(toc, {
         tocFirstLevel   : 2,
-        tocLastLevel    : 3,
+        tocLastLevel    : 2,
         tocClassName    : "toc",
         anchorClassName : "anchor",
     });
 
-    md.use(include, path.join(src, "./guide"));
-
-    const entry = "guide.cjs.js";
-    const file = path.join(dest, "./guide/index.html");
+    const entry = "changelog.cjs.js";
+    const file = path.join(dest, "./changelog/index.html");
     let tocs;
 
+    const changelog = fs.readFileSync(
+        path.resolve(__dirname, "../../../../CHANGELOG.md"),
+        "utf8"
+    );
+
     // Have to render ahead-of-time so TOCs can be mapped for sidebar
-    const html = md.render(fs.readFileSync(path.join(src, "./guide/guide.md"), "utf8"), {
+    const html = md.render(changelog, {
         tocCallback : (tocmd, headings, tochtml) => {
             tocs = tochtml;
         },
     });
 
-    const Guide = require(path.join(dest, entry));
+    const Changelog = require(path.join(dest, entry));
 
     // Write out guide page
     return {
         file,
-        html : Guide.render({
+        html : Changelog.render({
             tocs,
             content : html,
             styles  : css(entry, {
                 graph,
                 bundle,
                 file,
-                styles : [
-                    "https://unpkg.com/prismjs@1.15.0/themes/prism-tomorrow.css",
-                ]
-        }),
+            }),
         })
     };
 };

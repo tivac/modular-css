@@ -8,9 +8,11 @@
 - [x] Rebase against master to get all the rollup/rollup-rewriter/svelte fixes
 - [x] Move svelte fix to ignore URLs to a new branch & send PR + test
 - [x] Figure out netlify deploy plan
+- [x] Make Guide outline and restructure content more cleanly
+- [x] Create a top-level Changelog page
 - [ ] Create an actual homepage design
 - [ ] Get DNS switched over to netlify
-- [ ] Make Guide outline and restructure content more cleanly
-- [ ] Create a top-level Changelog page
+- [ ] Style changelog page a bit
+- [ ] Create header link to changelog
 - [ ] Allow for giving new REPL tabs a name
 - [ ] Figure out how to get REPL build to not output CSS

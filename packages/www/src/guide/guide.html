@@ -12,12 +12,9 @@
     margin-left: 13rem;
 }
 
-.bd a {
-    color: blue;
-}
-
+.bd a,
 .bd a:hover {
-    color: red;
+    text-decoration: underline;
 }
 
 .bd li + li {
@@ -93,11 +90,11 @@
 export default {
     components : {
         Page   : "../page.html",
-        Sidebar : "./sidebar.html",
+        Sidebar : "../sidebar.html",
     },
 
     data : () => ({
-        tocs    : new Map(),
+        tocs    : false,
         content : "",
     })
 };

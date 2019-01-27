@@ -1,6 +1,5 @@
-@value textColor from "../site.css";
 @value borderColor from "../site.css";
-@value headerHeight from "../header.css";
+@value headerHeight from "../site.css";
 @value tabHeight: 2.5rem;
 
 .repl {
