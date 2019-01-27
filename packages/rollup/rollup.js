@@ -169,15 +169,18 @@ module.exports = (opts) => {
             Object.entries(bundle).forEach(([ entry, chunk ]) => {
                 const { imports, dynamicImports } = chunk;
 
+                const statics = imports.filter((dep) => dep in bundle);
+                const dynamics = dynamicImports.filter((dep) => dep in bundle);
+
                 // Add all the nodes first, tagging them with their type for later
-                imports.forEach((dep) => usage.addNode(dep, "static"));
-                dynamicImports.forEach((dep) => usage.addNode(dep, "dynamic"));
+                statics.forEach((dep) => usage.addNode(dep, "static"));
+                dynamics.forEach((dep) => usage.addNode(dep, "dynamic"));
 
                 // Then tag the entry node
                 usage.addNode(entry, "entry");
 
                 // And then add all the dependency links
-                [ ...dynamicImports, ...imports ].forEach((dep) =>
+                [ ...dynamics, ...statics ].forEach((dep) =>
                     usage.addDependency(entry, dep)
                 );
             });
@@ -189,10 +192,6 @@ module.exports = (opts) => {
             const queued = new Set();
 
             usage.overallOrder().forEach((entry) => {
-                if(!bundle[entry]) {
-                    return;
-                }
-
                 const css = new Set();
                 const { modules, name, fileName, isEntry } = bundle[entry];
 
@@ -343,10 +342,6 @@ module.exports = (opts) => {
                 const meta = {};
 
                 out.forEach((value, entry) => {
-                    if(!bundle[entry]) {
-                        return;
-                    }
-
                     const { assets, dynamicAssets } = bundle[entry];
 
                     meta[entry] = {
