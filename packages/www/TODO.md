@@ -7,5 +7,7 @@
 - [x] Make sure that CSS respects bundle dep graphs, somehow
 - [x] Rebase against master to get all the rollup/rollup-rewriter/svelte fixes
 - [x] Move svelte fix to ignore URLs to a new branch & send PR + test
+- [ ] Figure out netlify deploy plan
+- [ ] Get DNS switched over to netlify
 - [ ] Allow for giving new REPL tabs a name
 - [ ] Figure out how to get REPL build to not output CSS
