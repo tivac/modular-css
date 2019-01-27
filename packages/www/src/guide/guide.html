@@ -12,18 +12,40 @@
     margin-left: 13rem;
 }
 
+.bd a {
+    color: blue;
+}
+
+.bd a:hover {
+    color: red;
+}
+
 .bd li + li {
     margin-top: 0.5rem;
 }
 
 /* Standardize headings */
+
+.bd h2 {
+    margin: 2rem 0;
+    font-size: 1.75rem;
+}
+
+.bd h3,
+.bd h4,
+.bd h5,
+.bd h6 {
+    margin: 2rem 0;
+    font-size: 1.25rem;
+}
+
+.bd h1,
 .bd h2,
 .bd h3,
 .bd h4,
 .bd h5,
 .bd h6 {
-    margin: 2rem 0 2rem -1rem;
-    font-size: 1.25rem;
+    position: relative;
 }
 
 .bd h1 :global(.anchor),
@@ -32,7 +54,15 @@
 .bd h4 :global(.anchor),
 .bd h5 :global(.anchor),
 .bd h6 :global(.anchor) {
-    visibility: hidden;
+    position: absolute;
+    display: block;
+
+    width: 1rem;
+    height: 1rem;
+    left: -1.3rem;
+
+    opacity: 0;
+    transition: opacity 150ms;
 }
 
 .bd h1:hover :global(.anchor),
@@ -41,7 +71,7 @@
 .bd h4:hover :global(.anchor),
 .bd h5:hover :global(.anchor),
 .bd h6:hover :global(.anchor) {
-    visibility: visible;
+    opacity: 1;
 }
 
 .bd pre {

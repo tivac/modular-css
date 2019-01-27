@@ -32,12 +32,14 @@ textarea,
     font-family: 'Inconsolata', monospace;
 }
 
-a {
+a,
+a:hover {
     text-decoration: none;
+    color: inherit;
 }
 
 a:hover {
-    text-decoration: underline;
+    color: blue;
 }
 
 .button {

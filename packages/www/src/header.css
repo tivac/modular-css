@@ -18,6 +18,8 @@
     color: textColor;
 
     border-bottom: 2px solid #00A0E0;
+
+    z-index: 1;
 }
 
 .title {
