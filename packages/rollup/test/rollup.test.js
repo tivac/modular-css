@@ -186,6 +186,26 @@ describe("/rollup.js", () => {
 
         expect(exists("./output/no-css/assets/no-css.css")).toBe(false);
     });
+    
+    it("should ignore external modules", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/external.js"),
+            plugins : [
+                plugin({
+                    namer,
+                }),
+            ],
+            external : [
+                require.resolve("./specimens/simple.js"),
+            ],
+        });
+
+        await bundle.generate({
+            format,
+            assetFileNames,
+            file : prefix(`./output/no-css/no-css.js`),
+        });
+    });
 
     it("should generate JSON", async () => {
         const bundle = await rollup({

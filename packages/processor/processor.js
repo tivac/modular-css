@@ -158,7 +158,7 @@ class Processor {
         if(!input) {
             throw new Error("invalidate() requires a file argument");
         }
-        
+
         // Only want files actually in the array
         const source = this._normalize(input);
 
@@ -380,7 +380,7 @@ class Processor {
             return;
         }
 
-        this._graph.addNode(name);
+        this._graph.addNode(name, 0);
 
         this._log("_before()", name);
 
@@ -407,7 +407,7 @@ class Processor {
 
             const dep = this._normalize(dependency);
 
-            this._graph.addNode(dep);
+            this._graph.addNode(dep, 0);
             this._graph.addDependency(name, dep);
         });
 
