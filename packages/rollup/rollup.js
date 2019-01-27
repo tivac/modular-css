@@ -169,15 +169,18 @@ module.exports = (opts) => {
             Object.entries(bundle).forEach(([ entry, chunk ]) => {
                 const { imports, dynamicImports } = chunk;
 
+                const statics = imports.filter((dep) => dep in bundle);
+                const dynamics = dynamicImports.filter((dep) => dep in bundle);
+
                 // Add all the nodes first, tagging them with their type for later
-                imports.forEach((dep) => usage.addNode(dep, "static"));
-                dynamicImports.forEach((dep) => usage.addNode(dep, "dynamic"));
+                statics.forEach((dep) => usage.addNode(dep, "static"));
+                dynamics.forEach((dep) => usage.addNode(dep, "dynamic"));
 
                 // Then tag the entry node
                 usage.addNode(entry, "entry");
 
                 // And then add all the dependency links
-                [ ...dynamicImports, ...imports ].forEach((dep) =>
+                [ ...dynamics, ...statics ].forEach((dep) =>
                     usage.addDependency(entry, dep)
                 );
             });
@@ -189,8 +192,8 @@ module.exports = (opts) => {
             const queued = new Set();
 
             usage.overallOrder().forEach((entry) => {
-                const { modules, name, fileName, isEntry } = bundle[entry];
                 const css = new Set();
+                const { modules, name, fileName, isEntry } = bundle[entry];
 
                 // Get CSS files being used by this chunk
                 const styles = Object.keys(modules).filter((file) => processor.has(file));
@@ -204,6 +207,7 @@ module.exports = (opts) => {
                     css.add(style);
                 });
 
+                // How does Set not have .filter yet ಠ_ಠ
                 const included = [ ...css ].filter((file) => !queued.has(file));
 
                 if(!included.length) {
@@ -337,10 +341,8 @@ module.exports = (opts) => {
 
                 const meta = {};
 
-                Object.entries(bundle).forEach(([ entry, { dynamicAssets = false, assets = false }]) => {
-                    if(!assets && !dynamicAssets) {
-                        return;
-                    }
+                out.forEach((value, entry) => {
+                    const { assets, dynamicAssets } = bundle[entry];
 
                     meta[entry] = {
                         assets,
