@@ -24,7 +24,9 @@ module.exports = (entry, { file, graph, bundle, styles = [] }) => {
         return out;
     }, styles)
     .map((css) => {
-        const href = isUrl(css) ? css : path.relative(file, path.join(dest, css)).replace(/\\/g, "/");
+        const href = isUrl(css) ?
+            css :
+            path.relative(file, path.join(dest, css)).replace(/\\/g, "/");
 
         return `<link href="${href}" rel="stylesheet" />`;
     });
