@@ -11,6 +11,42 @@
     max-width: 950px;
     margin-left: 13rem;
 }
+
+.bd li + li {
+    margin-top: 0.5rem;
+}
+
+/* Standardize headings */
+.bd h2,
+.bd h3,
+.bd h4,
+.bd h5,
+.bd h6 {
+    margin: 2rem 0 2rem -1rem;
+    font-size: 1.25rem;
+}
+
+.bd h1 :global(.anchor),
+.bd h2 :global(.anchor),
+.bd h3 :global(.anchor),
+.bd h4 :global(.anchor),
+.bd h5 :global(.anchor),
+.bd h6 :global(.anchor) {
+    visibility: hidden;
+}
+
+.bd h1:hover :global(.anchor),
+.bd h2:hover :global(.anchor),
+.bd h3:hover :global(.anchor),
+.bd h4:hover :global(.anchor),
+.bd h5:hover :global(.anchor),
+.bd h6:hover :global(.anchor) {
+    visibility: visible;
+}
+
+.bd pre {
+    max-width: 700px;
+}
 </style>
 
 <Page title="Guide" {styles}>

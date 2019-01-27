@@ -1,8 +1,9 @@
 @value textColor from "./site.css";
-@value headerHeight: 4rem;
+@value headerHeight from "./site.css";
 @value tabHeight: 2.5rem;
 
 .header {
+    position: fixed;
     width: 100%;
 
     display: flex;

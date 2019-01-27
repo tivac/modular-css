@@ -141,7 +141,6 @@ class CssStore extends Store {
         let idx = files.size + 1;
         let name;
 
-        // TODO: fix keyword-spacing rule to include `do`
         do {
             idx++;
             name = `/file${idx}.css`;

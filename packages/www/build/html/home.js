@@ -3,14 +3,13 @@
 const fs = require("fs");
 const path = require("path");
 
-const shell = require("shelljs");
-
+const md = require("./markdown.js")();
 const { dest } = require("../environment.js");
 
 const css = require("./css.js");
 
 // Create home page markup
-module.exports = ({ md, bundle, graph }) => {
+module.exports = ({ bundle, graph }) => {
     const entry = "home.cjs.js";
     const file = path.join(dest, "./index.html");
     

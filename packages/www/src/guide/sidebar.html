@@ -1,55 +1,53 @@
 <style>
-.sidebar,
-.sidebar ul {
-    margin: 1rem;
-    padding: 0;
-
-    list-style: square;
-
-    font-size: 85%;
-}
-
 .sidebar {
     position: fixed;
     width: 12rem;
     height: 100%;
     overflow-y: auto;
+}
 
+.sidebar :global(.toc) {
+    margin: 1rem;
+    padding: 0;
+
+    font-size: 85%;
+}
+
+.sidebar :global(.toc) ul {
+    padding-left: 0.3rem;
+}
+
+.sidebar :global(.toc) li {
     list-style: none;
 }
 
-.doc + .doc {
-    margin-top: 1rem;
+.sidebar :global(.toc) > li + li {
+    margin-top: 1.25rem;
 }
 
-.doc > ul {
-    margin: 0.5rem;
-    padding-left: 0.75rem;
-    
-    font-size: 95%;
+.sidebar :global(.toc) > li > a {
+    text-transform: uppercase;
 }
 
-:global(.toc) {
-    font-size: 85%;
+.sidebar :global(.toc) > li > ul {
+    margin-top: 0.75rem;
+}
+
+.sidebar :global(.toc) > li > ul > li + li {
+    margin-top: 0.3rem;
 }
 </style>
 
-<ul class="{css.sidebar}">
-{#each [ ...tocs.entries() ] as [ { anchor, content }, html ]}
-<li class="{css.doc}">
-    <a href="#{anchor}">{content}</a>
-
-    {#if html}
-    {@html html}
-    {/if}
-</li>
-{/each}
-</ul>
+{#if tocs}
+<div class="{css.sidebar}">
+    {@html tocs}
+</div>
+{/if}
 
 <script>
 export default {
     data : () => ({
-        tocs : new Map(),
+        tocs : false,
     }),
 };
 </script>

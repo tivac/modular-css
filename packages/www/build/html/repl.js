@@ -6,16 +6,14 @@ const { dest } = require("../environment.js");
 
 const css = require("./css.js");
 
-module.exports = ({ graph, bundle }) => {
+module.exports = ({ graph, bundle, previous }) => {
     const entry = "page.cjs.js";
     const file = path.join(dest, "./repl/index.html");
 
     const Page = require(path.join(dest, entry));
 
-    let repl;
-
-    // TODO: need to find the REPL JS, but it isn't generated yet...
-    // const repl = Object.entries(bundle).find(([ entry, { isAsset }]));
+    const [ js ] = Object.entries(previous())
+        .find(([ , { isAsset, name }]) => !isAsset && name === "repl");
 
     return {
         file : path.join(dest, "./repl/index.html"),
@@ -36,6 +34,8 @@ module.exports = ({ graph, bundle }) => {
                         document.head.appendChild(s);
                     }
                 }
+
+                shimport("../${js}");
         
                 </script>
             `),

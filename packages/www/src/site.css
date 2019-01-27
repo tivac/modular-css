@@ -1,6 +1,7 @@
 @value textColor: hsl(0, 0%, 94%);
 @value borderColor: #EEEEEE;
 @value opacityTime: 125ms;
+@value headerHeight: 4rem;
 
 html {
     box-sizing: border-box;
@@ -76,4 +77,13 @@ a:hover {
 
 .content {
     flex: 1;
+
+    margin-top: headerHeight;
+}
+
+code[class*="language-"],
+pre[class*="language-"],
+code,
+pre {
+    font-family: Inconsolata, Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 }
