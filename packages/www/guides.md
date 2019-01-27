@@ -1075,7 +1075,7 @@ In CSS Modules there is no support for modifying styles in rules that aren't dir
 
 Discussion around potential solutions is happening here, [css-modules/css-modules#147](https://github.com/css-modules/css-modules/issues/147).
 
-`modular-css` has implemented the `:external()` proposal from that issue. More context is available here [features.md#overriding-styles](features.md#overriding-styles).
+`modular-css` has implemented the `:external()` proposal from that issue. More context is available in the [Overriding Styles section](#overriding-styles).
 
 ```css
 /* input.css */
@@ -1103,7 +1103,7 @@ CSS Modules allows for importing multiple values from an external file.
 }
 ```
 
-`modular-css` implements a suggestion made in [css-modules/css-modules#186](https://github.com/css-modules/css-modules/issues/186#issuecomment-257421710) to allow importing all of a file's exported values and aliasing it for easy use. More documentation can be found in [features.md#namespaces](features.md#namespaces).
+`modular-css` implements a suggestion made in [css-modules/css-modules#186](https://github.com/css-modules/css-modules/issues/186#issuecomment-257421710) to allow importing all of a file's exported values and aliasing it for easy use. More documentation can be found in the [Namespaced Imports section](#namespaced-imports).
 
 ```css
 /* modular-css */
