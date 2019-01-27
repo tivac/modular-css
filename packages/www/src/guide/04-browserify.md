@@ -26,7 +26,7 @@ Location to write the generated CSS file to.
 
 #### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](../processor/README.md#options).
+All other options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).
 
 ### CLI
 

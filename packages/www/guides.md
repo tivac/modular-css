@@ -117,7 +117,7 @@ This package contains two entry points, you will need to use **both** in tandem 
 - [Usage](#usage)
 - [Options](#options)
 
-#### Install
+#### webpack Install
 
 ```bash
 > npm i @modular-css/webpack
@@ -152,29 +152,27 @@ module.exports = {
 });
 ```
 
-#### Options
+#### webpack Plugin Options
 
-##### Plugin Options
-
-###### `css`
+##### `css`
 
 Location to write the generated CSS file to, relative to `output.path` just like `output.filename`
 
-###### `json`
+##### `json`
 
 Location to write out the JSON mapping file to, relative to `output.path` just like `output.filename`
 
-###### `processor`
+##### `processor`
 
 Pass an already-instantiated `Processor` instance to the Webpack plugin. It will then add any files found when traversing the modules to it and both the Webpack-discovered and any already-existing files will be output in the final CSS.
 
-###### Shared Options
+##### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](../processor/README.md#options).
+All other options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options)..
 
-##### Loader Options
+#### webpack Loader Options
 
-###### `namedExports`
+##### `namedExports`
 
 By default this plugin will create both a default export and named `export`s for each class in a CSS file. You can disable this by setting `namedExports` to `false`.
 
@@ -222,7 +220,7 @@ Location to write the generated CSS file to.
 
 ##### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](../processor/README.md#options).
+All other options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).
 
 #### CLI
 
@@ -421,7 +419,7 @@ If `true` will re-process any previously handled files (and remove any files tha
 
 ##### Shared Options
 
-All options are passed to the underlying `Processor` instance, see [Options](../processor/README.md#options).
+All options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).
 
 ### JS API
 
@@ -631,20 +629,17 @@ Remove files from the `Processor` instance. Accepts a single file or array of fi
 Returns an array of file paths. Accepts a single file argument to get the dependencies for, will return entire dependency graph in order if argument is omitted.
 
 
-### cli
+### CLI
 
 CLI interface to [`modular-css`](https://github.com/tivac/modular-css).
 
-- [Install](#install)
-- [Usage](#usage)
-
-#### Install
+#### CLI Install
 
 ```bash
 $ npm i @modular-css/cli
 ```
 
-#### Usage
+#### CLI Usage
 
 ```
 $ modular-css [options] <glob>...
@@ -658,25 +653,17 @@ Options
 --help                 Show this help
 ```
 
-### postcss
+### PostCSS
 
-PostCSS plugin to use [`modular-css`](https://github.com/tivac/modular-css) within a PostCSS processor instance.
+`@modular-css/postcss` provides a PostCSS plugin that can be used like any other. It will output a message with a `type` of `modular-css-exports` containing all the exported class compositions.
 
-- [Install](#install)
-- [Usage](#usage)
-- [Options](#options)
-
-#### Install
+#### PostCSS Install
 
 ```bash
 > npm i @modular-css/postcss
 ```
 
-#### Usage
-
-`@modular-css/postcss` provides a PostCSS plugin that can be used like any other. It will output a message with a `type` of `modular-css-exports` containing all the exported class compositions.
-
-##### API
+#### PostCSS Usage (via API)
 
 ```js
 const postcss = require("postcss");
@@ -694,7 +681,7 @@ const result = await processor.process("<css>")
 // etc
 ```
 
-##### Config
+#### PostCSS Usage (via config)
 
 ```bash
 > postcss --config postcss.json input.css
@@ -711,13 +698,13 @@ const result = await processor.process("<css>")
 
 ```
 
-##### CLI
+#### PostCSS Usage (via CLI)
 
 ```bash
 > postcss --use modular-css/postcss input.css
 ```
 
-#### Options
+#### PostCSS Options
 
 ##### `json`
 
@@ -725,7 +712,7 @@ Write the class composition data to this location on disk.
 
 ##### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](../processor/README.md#options).
+All other options are passed to the underlying `Processor` instance, see [Processor Options](#processor-options).
 
 ### glob
 
@@ -756,7 +743,7 @@ glob({
 
 #### Options
 
-`glob()` accepts all of the same options as a [`Processor` instance](../processor/README.md#options).
+`glob()` accepts all of the same options as laid out in the [Processor Options](#processor-options).
 
 ###### `search`
 

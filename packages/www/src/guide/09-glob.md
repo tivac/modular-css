@@ -27,7 +27,7 @@ glob({
 
 ### Options
 
-`glob()` accepts all of the same options as a [`Processor` instance](../processor/README.md#options).
+`glob()` accepts all of the same options as laid out in the [Processor Options](#processor-options).
 
 ##### `search`
 

@@ -1,17 +1,14 @@
-## cli
+## CLI
 
 CLI interface to [`modular-css`](https://github.com/tivac/modular-css).
 
-- [Install](#install)
-- [Usage](#usage)
-
-### Install
+### CLI Install
 
 ```bash
 $ npm i @modular-css/cli
 ```
 
-### Usage
+### CLI Usage
 
 ```
 $ modular-css [options] <glob>...

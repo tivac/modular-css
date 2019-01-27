@@ -140,4 +140,4 @@ If `true` will re-process any previously handled files (and remove any files tha
 
 #### Shared Options
 
-All options are passed to the underlying `Processor` instance, see [Options](../processor/README.md#options).
+All options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).

@@ -1,22 +1,14 @@
-## postcss
+## PostCSS
 
-PostCSS plugin to use [`modular-css`](https://github.com/tivac/modular-css) within a PostCSS processor instance.
+`@modular-css/postcss` provides a PostCSS plugin that can be used like any other. It will output a message with a `type` of `modular-css-exports` containing all the exported class compositions.
 
-- [Install](#install)
-- [Usage](#usage)
-- [Options](#options)
-
-### Install
+### PostCSS Install
 
 ```bash
 > npm i @modular-css/postcss
 ```
 
-### Usage
-
-`@modular-css/postcss` provides a PostCSS plugin that can be used like any other. It will output a message with a `type` of `modular-css-exports` containing all the exported class compositions.
-
-#### API
+### PostCSS Usage (via API)
 
 ```js
 const postcss = require("postcss");
@@ -34,7 +26,7 @@ const result = await processor.process("<css>")
 // etc
 ```
 
-#### Config
+### PostCSS Usage (via config)
 
 ```bash
 > postcss --config postcss.json input.css
@@ -51,13 +43,13 @@ const result = await processor.process("<css>")
 
 ```
 
-#### CLI
+### PostCSS Usage (via CLI)
 
 ```bash
 > postcss --use modular-css/postcss input.css
 ```
 
-### Options
+### PostCSS Options
 
 #### `json`
 
@@ -65,4 +57,4 @@ Write the class composition data to this location on disk.
 
 #### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see [Options](../processor/README.md#options).
+All other options are passed to the underlying `Processor` instance, see [Processor Options](#processor-options).
