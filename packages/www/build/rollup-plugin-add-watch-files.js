@@ -12,6 +12,8 @@ module.exports = () => ({
         shell
             .find(path.resolve(__dirname, `../src/**/*.md`))
             .forEach((doc) => this.addWatchFile(doc));
+        
+        this.addWatchFile(require.resolve("../../../CHANGELOG.md"));
     },
 });
 

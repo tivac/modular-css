@@ -24,7 +24,7 @@ module.exports = ({ graph, bundle }) => {
     let tocs;
 
     const changelog = fs.readFileSync(
-        path.resolve(__dirname, "../../../../CHANGELOG.md"),
+        require.resolve("../../../../CHANGELOG.md"),
         "utf8"
     );
 
