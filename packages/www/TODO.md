@@ -10,9 +10,9 @@
 - [x] Figure out netlify deploy plan
 - [x] Make Guide outline and restructure content more cleanly
 - [x] Create a top-level Changelog page
-- [ ] Create an actual homepage design
+- [x] Create an actual homepage design
+- [x] Style changelog page a bit
+- [x] Create header link to changelog
 - [ ] Get DNS switched over to netlify
-- [ ] Style changelog page a bit
-- [ ] Create header link to changelog
 - [ ] Allow for giving new REPL tabs a name
 - [ ] Figure out how to get REPL build to not output CSS
