@@ -1,6 +1,6 @@
 ### svelte
 
-Svelte preprocessor support for [`modular-css`](https://github.com/tivac/modular-css). Process inline `<style>`s or `<link>` references inside your Svelte components using the full power of `modular-css` while also providing compile-time optimizations for smaller bundles and even faster runtime performance!
+Svelte preprocessor support for [`modular-css`](https://github.com/tivac/modular-css). Process inline `<style>` or `<link>` references inside your Svelte components using the full power of `modular-css` while also providing compile-time optimizations for smaller bundles and even faster runtime performance!
 
 #### Example
 
@@ -13,16 +13,16 @@ Turns this
 
 <style>
     .main {
-        ...
+        /* ... */
     }
     
     .title {
-        ...
+        /* ... */
     }
 </style>
 ```
 
-into what is effectively this
+into this by running it through `modular-css` and then statically replacing everything possible for zero-cost run-time styling.
 
 ```html
 <div class="abc123_main">
@@ -30,9 +30,7 @@ into what is effectively this
 </div>
 ```
 
-while allowing you to use all of the usual `modular-css` goodies.
-
-Alternatively you can use `<link href="./file.css" />` tags to reference CSS external to the component.
+You could also use `<link href="./file.css" />` tags to reference CSS external to the component, but the component must have only **one** `<link>` (links to URLs are fine and ignored) or `<style>`. Combining them is not supported.
 
 #### Install
 
