@@ -8,7 +8,12 @@ const noop = () => {};
 const { processor, preprocess } = require("@modular-css/svelte")({
     namer : isProduction && require("@modular-css/shortnames")(),
 
+    before : [
+        require("postcss-nested")(),
+    ],
+    
     after : [
+        require("postcss-color-function")(),
         require("postcss-import")(),
     ],
 

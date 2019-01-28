@@ -1,18 +1,113 @@
 <style>
+@value * as site from "../site.css";
+
 .home {
     composes: content from "../site.css";
 
-    padding: 2rem 1rem;
-    max-width: 950px;
-    align-self: center;
+    padding: 0 1rem;
+    
+    display: grid;
+    grid-template:
+        " title    title  " 12rem
+        " intro   example " auto /
+        50% 50%;
+
+    @media site.narrow {
+        display: flex;
+        flex-flow: column nowrap;
+    }
+}
+
+.title {
+    grid-area: title;
+}
+
+.head {
+    font-size: 3rem;
+    font-weight: bold;
+
+    margin-bottom: 1rem;
+}
+
+.headline {
+    margin-top: 0;
+    font-weight: 400;
+}
+
+.intro {
+    grid-area: intro;
+
+    margin-right: 1rem;
+}
+
+.introtext a {
+    color: site.hoverColor;
+    font-weight: bold;
+}
+
+.introtext a:hover {
+    color: site.textColor;
+}
+
+.example {
+    grid-area: example;
+}
+
+.learn {
+    composes: center from "../site.css";
+
+    margin-top: 1rem;
+}
+
+.cta {
+    composes: center from "../site.css";
+
+    margin-top: 2rem;
+
+    width: 12rem;
+    height: 3rem;
+    background: site.hoverColor;
+    
+    color: site.headerColor;
+    font-weight: bold;
+
+    border-radius: 0.25rem;
+
+    transition: background-color site.hoverOutTime ease-in;
+}
+
+.cta:hover {
+    background: color(site.hoverColor lightness(+20%));
+    color: site.headerColor;
+
+    transition: background-color site.hoverInTime ease-out;
 }
 
 </style>
 
 <Page {styles}>
-    <div class="{css.home}">
-        {@html content}
+<div class="{css.home}">
+    <div class="{css.title}">
+        <h1 class="{css.head}">modular-css</h1>
+        <h2 class="{css.headline}">CSS Modules, reimagined for everywhere.</h2>
     </div>
+
+    <div class="{css.intro}">
+        <div class="{css.introtext}">
+            {@html intro}
+        </div>
+
+        <div class="{css.learn}">
+            <a href="/guide/" class="{css.cta}">
+                Learn More Now!
+            </a>
+        </div>
+    </div>
+
+    <div class="{css.example}">
+        {@html example}
+    </div>
+</div>
 </Page>
 
 <script>
@@ -22,7 +117,8 @@ export default {
     },
 
     data : () => ({
-        content : "",
+        intro : "",
+        example : "",
     })
 };
 </script>

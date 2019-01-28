@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 
+const get = require("import-fresh");
 const { default : toc } = require("markdown-it-toc-and-anchor");
 const include = require("markdown-it-include");
 
@@ -33,7 +34,7 @@ module.exports = ({ graph, bundle }) => {
         },
     });
 
-    const Guide = require(path.join(dest, entry));
+    const Guide = get(path.join(dest, entry));
 
     // Write out guide page
     return {
@@ -46,7 +47,7 @@ module.exports = ({ graph, bundle }) => {
                 bundle,
                 file,
                 styles : [
-                    "https://unpkg.com/prismjs@1.15.0/themes/prism-tomorrow.css",
+                    "prism",
                 ]
         }),
         })

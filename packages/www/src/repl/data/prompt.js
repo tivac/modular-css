@@ -1,5 +1,4 @@
-const prompt = `
-/* Here's some simple examples to get you started! */
+const prompt = `/* Here's some simple examples to get you started! */
 
 /* Selector Scoping */
 .fooga { color: red; }

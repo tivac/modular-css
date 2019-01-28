@@ -1,6 +1,6 @@
 <style>
 @value headerHeight from "./site.css";
-@value textColor from "./site.css";
+@value headerColor from "./site.css";
 @value hoverColor from "./site.css";
 @value accentColor from "./site.css";
 @value tabHeight: 2.5rem;
@@ -17,7 +17,7 @@
     flex: 0 0 headerHeight;
     padding: 1rem;
 
-    color: textColor;
+    color: headerColor;
     background-color: hsl(0, 0%, 20%);
 
     border-bottom: 2px solid accentColor;
@@ -26,7 +26,7 @@
 }
 
 .header a {
-    color: textColor;
+    color: headerColor;
 }
 
 .header a:hover {
@@ -81,7 +81,7 @@
 <div class="{css.header}">
     <div class="{css.title}">
         <a href="/" class="{css.name}">modular-css</a>
-        <div class="{css.version}">v{version}</div>
+        <a href="/changelog/" class="{css.version}">v{version}</a>
     </div>
 
     <ul class="{css.navitems}">

@@ -1,9 +1,13 @@
-@value textColor: hsl(0, 0%, 94%);
+@value headerColor: hsl(0, 0%, 94%);
+@value textColor: hsl(0, 0%, 10%);
 @value borderColor: hsl(0, 0%, 93%);
 @value accentColor: hsl(197, 100%, 44%);
 @value hoverColor: accentColor;
-@value opacityTime: 125ms;
+@value hoverInTime: 100ms;
+@value hoverOutTime: 250ms;
 @value headerHeight: 4rem;
+
+@value narrow: (max-width: 30rem);
 
 html {
     box-sizing: border-box;
@@ -28,6 +32,8 @@ body {
     flex-flow: column nowrap;
 
     scroll-behavior: smooth;
+
+    color: textColor;
 }
 
 pre,
@@ -40,7 +46,7 @@ code[class*="language-"],
 }
 
 a {
-    transition: color 125ms ease-out;
+    transition: color hoverOutTime ease-out;
 }
 
 a,
@@ -52,7 +58,13 @@ a:hover {
 a:hover {
     color: hoverColor;
 
-    transition: color 250ms ease-in;
+    transition: color hoverInTime ease-in;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .button {
@@ -94,4 +106,60 @@ a:hover {
     flex: 1;
 
     margin-top: headerHeight;
+}
+
+.bd {
+    
+}
+
+.bd h2 {
+    margin: 2rem 0;
+    font-size: 1.75rem;
+}
+
+.bd h3,
+.bd h4,
+.bd h5,
+.bd h6 {
+    margin: 2rem 0;
+    font-size: 1.25rem;
+}
+
+.bd h1,
+.bd h2,
+.bd h3,
+.bd h4,
+.bd h5,
+.bd h6 {
+    position: relative;
+}
+
+.bd h1 :global(.anchor),
+.bd h2 :global(.anchor),
+.bd h3 :global(.anchor),
+.bd h4 :global(.anchor),
+.bd h5 :global(.anchor),
+.bd h6 :global(.anchor) {
+    position: absolute;
+    display: block;
+
+    width: 1.3rem;
+    height: 1rem;
+    left: -1.3rem;
+
+    opacity: 0;
+    transition: opacity 150ms;
+
+    text-decoration: none;
+}
+
+.bd h1:hover :global(.anchor),
+.bd h2:hover :global(.anchor),
+.bd h3:hover :global(.anchor),
+.bd h4:hover :global(.anchor),
+.bd h5:hover :global(.anchor),
+.bd h6:hover :global(.anchor) {
+    opacity: 1;
+
+    text-decoration: none;
 }

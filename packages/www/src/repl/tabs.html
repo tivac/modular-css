@@ -1,5 +1,5 @@
 <style type="text/css">
-@value opacityTime from "../site.css";
+@value hoverInTime from "../site.css";
 
 .tabs {
     grid-area: tabs;
@@ -19,7 +19,7 @@
 
     opacity: 0.25;
 
-    transition: opacity opacityTime ease-out;
+    transition: opacity hoverInTime ease-out;
 }
 
 .button:hover {
@@ -82,7 +82,7 @@
 
     filter: grayscale();
     
-    transition: opacity opacityTime ease-in;
+    transition: opacity hoverInTime ease-in;
 }
 
 .tab .remove {

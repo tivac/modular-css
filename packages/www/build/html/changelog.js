@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 
+const get = require("import-fresh");
 const { default : toc } = require("markdown-it-toc-and-anchor");
 
 const { dest } = require("../environment.js");
@@ -35,7 +36,7 @@ module.exports = ({ graph, bundle }) => {
         },
     });
 
-    const Changelog = require(path.join(dest, entry));
+    const Changelog = get(path.join(dest, entry));
 
     // Write out guide page
     return {

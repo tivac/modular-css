@@ -6,13 +6,17 @@ const isUrl = require("is-url");
 
 const { dest } = require("../environment.js");
 
+const aliases = new Map([
+    [ "prism", "https://unpkg.com/prismjs@1.15.0/themes/prism-tomorrow.css" ],
+]);
+
 module.exports = (entry, { file, graph, bundle, styles = [] }) => {
     const modules = [
         ...graph.dependenciesOf(entry),
         entry,
     ];
 
-    return modules.reduce((out, key) => {
+    const css = modules.reduce((out, key) => {
         const { assets = false } = bundle[key] || false;
 
         if(!assets) {
@@ -22,13 +26,20 @@ module.exports = (entry, { file, graph, bundle, styles = [] }) => {
         out.push(...assets);
 
         return out;
-    }, styles)
-    .map((css) => {
-        const href = isUrl(css) ?
-            css :
-            path.relative(file, path.join(dest, css)).replace(/\\/g, "/");
+    }, styles);
+
+    const links = css.map((key) => {
+        if(aliases.has(key)) {
+            key = aliases.get(key);
+        }
+        
+        const href = isUrl(key) ?
+            key :
+            path.relative(file, path.join(dest, key)).replace(/\\/g, "/");
 
         return `<link href="${href}" rel="stylesheet" />`;
     });
+
+    return links;
 };
 

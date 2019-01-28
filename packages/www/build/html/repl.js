@@ -1,5 +1,6 @@
 const path = require("path");
 
+const get = require("import-fresh");
 const dedent = require("dedent");
 
 const { dest } = require("../environment.js");
@@ -10,7 +11,7 @@ module.exports = ({ graph, bundle, previous }) => {
     const entry = "page.cjs.js";
     const file = path.join(dest, "./repl/index.html");
 
-    const Page = require(path.join(dest, entry));
+    const Page = get(path.join(dest, entry));
 
     const [ js ] = Object.entries(previous())
         .find(([ , { isAsset, name }]) => !isAsset && name === "repl");
