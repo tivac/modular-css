@@ -342,6 +342,10 @@ module.exports = (opts) => {
                 const meta = {};
 
                 out.forEach((value, entry) => {
+                    if(!bundle[entry]) {
+                        return;
+                    }
+
                     const { assets, dynamicAssets } = bundle[entry];
 
                     meta[entry] = {
