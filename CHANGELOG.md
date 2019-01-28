@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.0.2](https://github.com/tivac/modular-css/compare/v22.0.1...v22.0.2) (2019-01-28)
+
+
+### Bug Fixes
+
+* metadata output breaks when common.css is output ([#556](https://github.com/tivac/modular-css/issues/556)) ([bf50079](https://github.com/tivac/modular-css/commit/bf50079))
+
+
+
+
+
 ## [22.0.1](https://github.com/tivac/modular-css/compare/v22.0.0...v22.0.1) (2019-01-27)
 
 
