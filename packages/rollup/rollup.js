@@ -7,12 +7,11 @@ const { keyword } = require("esutils");
 const utils = require("rollup-pluginutils");
 const dedent = require("dedent");
 const slash = require("slash");
-const Graph = require("dependency-graph").DepGraph;
 
 const Processor = require("@modular-css/processor");
 const output = require("@modular-css/processor/lib/output.js");
 
-const { parse } = require("./parser.js");
+const chunker = require("./chunker.js");
 
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
@@ -35,7 +34,6 @@ module.exports = (opts) => {
     const filter = utils.createFilter(options.include, options.exclude);
 
     const {
-        common,
         dev,
         done,
         map,
@@ -97,6 +95,7 @@ module.exports = (opts) => {
             const relative = path.relative(processor.options.cwd, id);
 
             const out = [
+                // Need to include this, watch mode doesn't catch all changes otherwise ಠ_ಠ
                 ...processor.dependencies(id).map((dep) => `import ${JSON.stringify(dep)};`),
                 dev ?
                     dedent(`
@@ -133,7 +132,7 @@ module.exports = (opts) => {
                 out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
             }
 
-            processor.dependencies(id).forEach((dependency) => this.addWatchFile(dependency));
+            processor.dependencies(id).forEach((dep) => this.addWatchFile(dep));
 
             return {
                 code : out.join("\n"),
@@ -149,111 +148,53 @@ module.exports = (opts) => {
 
             // Really wish rollup would provide these defaults somehow
             const {
-                chunkFileNames = "[name]-[hash].js",
-                entryFileNames = "[name].js",
                 assetFileNames = "assets/[name]-[hash][extname]",
             } = outputOptions;
 
             // Determine the correct to option for PostCSS by doing a bit of a dance
-            let to;
-
-            if(!outputOptions.file && !outputOptions.dir) {
-                to = path.join(processor.options.cwd, assetFileNames);
-            } else {
-                to = path.join(
+            const to = (!outputOptions.file && !outputOptions.dir) ?
+                path.join(processor.options.cwd, assetFileNames) :
+                path.join(
                     outputOptions.dir ? outputOptions.dir : path.dirname(outputOptions.file),
                     assetFileNames
                 );
-            }
+            
+            // Store an easy-to-use Set that maps all the entry files
+            const entries = new Set();
 
-            // Build chunk dependency graph
-            const usage = new Graph({ circular : true });
+            // Clone the processor graph so we can chunk it w/o making things crazy
+            const graph = processor.graph.clone();
 
+            // Convert the graph over to a chunking-amenable format
+            graph.overallOrder().forEach((node) => graph.setNodeData(node, [ node ]));
+            
+            // Walk all bundle entries and add them to the dependency graph
             Object.entries(bundle).forEach(([ entry, chunk ]) => {
-                const { imports, dynamicImports } = chunk;
+                const { isAsset, modules } = chunk;
 
-                const statics = imports.filter((dep) => dep in bundle);
-                const dynamics = dynamicImports.filter((dep) => dep in bundle);
-
-                // Add all the nodes first, tagging them with their type for later
-                statics.forEach((dep) => usage.addNode(dep, "static"));
-                dynamics.forEach((dep) => usage.addNode(dep, "dynamic"));
-
-                // Then tag the entry node
-                usage.addNode(entry, "entry");
-
-                // And then add all the dependency links
-                [ ...dynamics, ...statics ].forEach((dep) =>
-                    usage.addDependency(entry, dep)
-                );
-            });
-
-            // Output CSS chunks
-            const out = new Map();
-
-            // Keep track of files that are queued to be written
-            const queued = new Set();
-
-            usage.overallOrder().forEach((entry) => {
-                const css = new Set();
-                const { modules, name, fileName, isEntry } = bundle[entry];
-
-                // Get CSS files being used by this chunk
-                const styles = Object.keys(modules).filter((file) => processor.has(file));
-
-                // Get dependency chains for each css file & record them into the usage graph
-                styles.forEach((style) => {
-                    processor
-                        .dependencies(style)
-                        .forEach((file) => css.add(file));
-
-                    css.add(style);
-                });
-
-                // How does Set not have .filter yet ಠ_ಠ
-                const included = [ ...css ].filter((file) => !queued.has(file));
-
-                if(!included.length) {
+                if(isAsset) {
                     return;
                 }
 
-                // Parse out the name part from the resulting filename,
-                // based on the module's template (either entry or chunk)
-                let dest;
-                const template = isEntry ? entryFileNames : chunkFileNames;
-
-                if(template.includes("[hash]")) {
-                    const parts = parse(template, fileName);
-
-                    dest = parts.name;
-                } else {
-                    // Want to use source chunk name when code-splitting, otherwise match bundle name
-                    dest = outputOptions.dir ? name : path.basename(entry, path.extname(entry));
+                // Get CSS files being used by this chunk
+                const css = Object.keys(modules).filter((file) => processor.has(file));
+                
+                if(!css.length) {
+                    return;
                 }
 
-                out.set(entry, {
-                    name  : dest,
-                    files : included
-                });
+                entries.add(entry);
 
-                // Flag all the files that are queued for writing so they don't get double-output
-                css.forEach((file) => queued.add(file));
+                graph.addNode(entry, [ entry ]);
+
+                css.forEach((file) => graph.addDependency(entry, processor.normalize(file)));
             });
 
-            // Figure out if there were any CSS files that the JS didn't reference
-            const unused = processor
-                .dependencies()
-                .filter((css) => !queued.has(css));
-
-            // Shove any unreferenced CSS files onto the beginning of the first chunk
-            if(unused.length) {
-                out.set("unused", {
-                    // .css extension is added automatically down below, so strip in case it was specified
-                    name         : common.replace(path.extname(common), ""),
-                    files        : unused,
-                    dependencies : [],
-                });
-            }
+            // Output CSS chunks
+            const chunked = chunker({
+                graph,
+                entries : [ ...entries ],
+            });
 
             // If assets are being hashed then the automatic annotation has to be disabled
             // because it won't include the hashed value and will lead to badness
@@ -267,27 +208,37 @@ module.exports = (opts) => {
                 );
             }
 
-            for(const [ entry, value ] of out.entries()) {
-                const { name, files } = value;
+            // Track specified name -> output name for writing out metadata later
+            const names = new Map();
 
-                const id = this.emitAsset(`${name}.css`);
+            for(const node of chunked.overallOrder()) {
+                // Only want to deal with CSS currently
+                if(entries.has(node)) {
+                    continue;
+                }
+
+                const { name, ext, base } = path.parse(node);
+                const id = this.emitAsset(base);
 
                 /* eslint-disable-next-line no-await-in-loop */
                 const result = await processor.output({
                     // Can't use this.getAssetFileName() here, because the source hasn't been set yet
                     // Have to do our best to come up with a valid final location though...
-                    to  : to.replace(/\[(name|extname)\]/g, (match, field) => (field === "name" ? name : ".css")),
+                    to  : to.replace(/\[(name|extname)\]/g, (match, field) => (field === "name" ? name : ext)),
                     map : mapOpt,
 
-                    files,
+                    files : graph.getNodeData(node),
                 });
 
-                log("css output", `${name}.css`);
-
+                
                 this.setAssetSource(id, result.css);
-
+                
                 // Save off the final name of this asset for later use
                 const dest = this.getAssetFileName(id);
+                
+                names.set(node, dest);
+
+                log("css output", dest);
 
                 // Maps can't be written out via the asset APIs becuase they shouldn't ever be hashed.
                 // They shouldn't be hashed because they simply follow the name of their parent .css asset.
@@ -295,7 +246,7 @@ module.exports = (opts) => {
                 if(result.map) {
                     // Make sure to use the rollup name as the base, otherwise it won't
                     // automatically handle duplicate names correctly
-                    const fileName = dest.replace(".css", ".css.map");
+                    const fileName = dest.replace(ext, `${ext}.map`);
 
                     log("map output", fileName);
 
@@ -311,20 +262,6 @@ module.exports = (opts) => {
                         bundle[dest].source += `\n/*# sourceMappingURL=${path.basename(fileName)} */`;
                     }
                 }
-
-                if(entry in bundle) {
-                    // Attach info about this asset to the bundle
-                    const { assets = [], dynamicAssets = [] } = bundle[entry];
-
-                    if(usage.getNodeData(entry) === "dynamic") {
-                        dynamicAssets.push(dest);
-                    } else {
-                        assets.push(dest);
-                    }
-
-                    bundle[entry].assets = assets;
-                    bundle[entry].dynamicAssets = dynamicAssets;
-                }
             }
 
             if(options.json) {
@@ -337,25 +274,31 @@ module.exports = (opts) => {
                 this.emitAsset(dest, JSON.stringify(compositions, null, 4));
             }
 
+            const meta = {};
+
+            Object.entries(bundle).forEach(([ entry, chunk ]) => {
+                const { isAsset } = chunk;
+
+                if(isAsset || !entries.has(entry)) {
+                    return;
+                }
+
+                // Attach info about this asset to the bundle
+                const { assets = [] } = chunk;
+
+                chunked.dependenciesOf(entry).forEach((dep) => assets.push(names.get(dep)));
+
+                chunk.assets = assets;
+                
+                meta[entry] = {
+                    assets,
+                };
+            });
+
             if(options.meta) {
                 const dest = typeof options.meta === "string" ? options.meta : "metadata.json";
 
                 log("metadata output", dest);
-
-                const meta = {};
-
-                out.forEach((value, entry) => {
-                    if(!bundle[entry]) {
-                        return;
-                    }
-
-                    const { assets, dynamicAssets } = bundle[entry];
-
-                    meta[entry] = {
-                        assets,
-                        dynamicAssets,
-                    };
-                });
 
                 this.emitAsset(dest, JSON.stringify(meta, null, 4));
             }

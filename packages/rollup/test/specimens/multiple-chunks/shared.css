@@ -1,5 +1,0 @@
-@value main from "./constants.css";
-
-.shared { color: salmon; }
-
-.other { color: main; }

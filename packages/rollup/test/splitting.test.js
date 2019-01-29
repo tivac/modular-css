@@ -58,6 +58,35 @@ describe("/rollup.js", () => {
             expect(dir("./splitting/assets")).toMatchSnapshot();
         });
 
+        it("should correctly chunk up CSS files", async () => {
+            const bundle = await rollup({
+                input : [
+                    require.resolve("./specimens/css-dependencies/a.js"),
+                    require.resolve("./specimens/css-dependencies/b.js"),
+                ],
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map,
+                        // verbose : true,
+                    }),
+                ],
+            });
+
+            await bundle.write({
+                format,
+                sourcemap,
+
+                assetFileNames,
+                chunkFileNames,
+
+                dir : prefix(`./output/css-dependencies`),
+            });
+
+            expect(dir("./css-dependencies/assets")).toMatchSnapshot();
+        });
+
         it("should support outputting metadata about CSS dependencies", async () => {
             const bundle = await rollup({
                 input : [

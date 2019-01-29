@@ -247,7 +247,7 @@ describe("/rollup.js", () => {
         expect(read("./json-named/assets/custom.json")).toMatchSnapshot();
     });
 
-    it("should use the common arg for unreferenced CSS", async () => {
+    it("should output unreferenced CSS", async () => {
         const processor = new Processor({
             namer,
             map,
@@ -265,7 +265,6 @@ describe("/rollup.js", () => {
                 plugin({
                     namer,
                     processor,
-                    common : "unreferenced.css",
                 }),
             ],
         });
@@ -436,7 +435,7 @@ describe("/rollup.js", () => {
             file : prefix(`./output/no-maps/no-maps.js`),
         });
 
-        expect(read("./no-maps/assets/no-maps.css")).toMatchSnapshot();
+        expect(read("./no-maps/assets/simple.css")).toMatchSnapshot();
     });
 
     it("should respect the CSS dependency tree", async () => {

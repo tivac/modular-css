@@ -6,8 +6,8 @@ const shell = require("shelljs");
 
 const read = require("@modular-css/test-utils/read.js")(__dirname);
 const write = require("@modular-css/test-utils/write.js")(__dirname);
-const exists = require("@modular-css/test-utils/exists.js")(__dirname);
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
+const dir = require("@modular-css/test-utils/read-dir.js")(__dirname);
 const watching = require("@modular-css/test-utils/rollup-watching.js");
 
 const plugin = require("../rollup.js");
@@ -54,7 +54,7 @@ describe("/rollup.js", () => {
 
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(read("./watch/change/assets/watch-output.css")).toMatchSnapshot();
+                    expect(dir("./watch/change/assets/")).toMatchSnapshot();
 
                     setTimeout(() => write(`./watch/change/watched.css`, dedent(`
                         .two {
@@ -66,7 +66,7 @@ describe("/rollup.js", () => {
                     return;
                 }
 
-                expect(read("./watch/change/assets/watch-output.css")).toMatchSnapshot();
+                expect(dir("./watch/change/assets/")).toMatchSnapshot();
 
                 return done();
             }));
@@ -111,8 +111,7 @@ describe("/rollup.js", () => {
 
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(read("./watch/change-composes/assets/watch-output.css")).toMatchSnapshot();
-                    expect(read("./watch/change-composes/watch-output.js")).toMatchSnapshot();
+                    expect(dir("./watch/change-composes/")).toMatchSnapshot();
 
                     setTimeout(() => write(`./watch/change-composes/watched.css`, dedent(`
                         .one {
@@ -134,8 +133,7 @@ describe("/rollup.js", () => {
                     return;
                 }
 
-                expect(read("./watch/change-composes/assets/watch-output.css")).toMatchSnapshot();
-                expect(read("./watch/change-composes/watch-output.js")).toMatchSnapshot();
+                expect(dir("./watch/change-composes/")).toMatchSnapshot();
 
                 return done();
             }));
@@ -185,7 +183,7 @@ describe("/rollup.js", () => {
 
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(read("./watch/dep-graph/assets/watch-output.css")).toMatchSnapshot();
+                    expect(dir("./watch/dep-graph/assets/")).toMatchSnapshot();
 
                     setTimeout(() => write(`./watch/dep-graph/two.css`, dedent(`
                         .two {
@@ -197,7 +195,7 @@ describe("/rollup.js", () => {
                     return;
                 }
 
-                expect(read("./watch/dep-graph/assets/watch-output.css")).toMatchSnapshot();
+                expect(dir("./watch/dep-graph/assets/")).toMatchSnapshot();
 
                 return done();
             }));
@@ -232,7 +230,7 @@ describe("/rollup.js", () => {
 
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(exists("./new-file/assets/watch-output.css")).toBe(false);
+                    expect(dir("./new-file/assets/")).toMatchSnapshot();
 
                     setTimeout(() => write(`./watch/new-file/watch.js`, dedent(`
                         import css from "./one.css";
@@ -244,7 +242,7 @@ describe("/rollup.js", () => {
                     return;
                 }
 
-                expect(read("./watch/new-file/assets/watch-output.css")).toMatchSnapshot();
+                expect(dir("./watch/new-file/assets/")).toMatchSnapshot();
 
                 return done();
             }));
@@ -296,7 +294,7 @@ describe("/rollup.js", () => {
 
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(read("./watch/shared-deps/assets/watch-output.css")).toMatchSnapshot();
+                    expect(dir("./watch/shared-deps/assets/")).toMatchSnapshot();
                     
                     setTimeout(() => write(`./watch/shared-deps/two.css`, dedent(`
                         .two {
@@ -308,14 +306,14 @@ describe("/rollup.js", () => {
                     return;
                 }
                 
-                expect(read("./watch/shared-deps/assets/watch-output.css")).toMatchSnapshot();
+                expect(dir("./watch/shared-deps/assets/")).toMatchSnapshot();
 
                 return done();
             }));
         });
         
         // TODO: causing jest to hang but say the test has completed weirdly
-        it.skip("should watch when using code splitting", (done) => {
+        it("should watch when using code splitting", (done) => {
             // Create v1 of the files
             write(`./watch/code-splitting/one.css`, dedent(`
                 .one {
@@ -379,22 +377,18 @@ describe("/rollup.js", () => {
 
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(read("./watch/code-splitting/assets/one.css")).toMatchSnapshot();
-                    expect(read("./watch/code-splitting/assets/two.css")).toMatchSnapshot();
-                    expect(read("./watch/code-splitting/assets/common.css")).toMatchSnapshot();
+                    expect(dir("./watch/code-splitting/assets/")).toMatchSnapshot();
                     
                     // Create v2 of the file we want to change
                     setTimeout(() => write(`./watch/code-splitting/values.css`, dedent(`
-                        @value baloo: aqua;
+                    @value baloo: aqua;
                     `)), 100);
-
+                    
                     // continue watching
                     return;
                 }
                 
-                expect(read("./watch/code-splitting/assets/one.css")).toMatchSnapshot();
-                expect(read("./watch/code-splitting/assets/two.css")).toMatchSnapshot();
-                expect(read("./watch/code-splitting/assets/common.css")).toMatchSnapshot();
+                expect(dir("./watch/code-splitting/assets/")).toMatchSnapshot();
 
                 return done();
             }));
