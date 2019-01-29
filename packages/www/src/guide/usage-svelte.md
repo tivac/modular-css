@@ -128,9 +128,9 @@ module.exports = {
 
 If `true` whenever a missing replacement is found like `{css.doesnotexist}` an error will be thrown aborting the file processing. Defaults to `false`.
 
-##### `clean`
+##### `procesor`
 
-If `true` will re-process any previously handled files (and remove any files that dependended on them). Might be useful, but currently also dangerous (see [#522](https://github.com/tivac/modular-css/issues/522)). Defaults to `false`.
+Pass a previously-created `@modular-css/processor` instance into the preprocessor. Will **not** pass through any other options to the processor if this is set, but `strict` will still be honored by the preprocessor.
 
 ##### Shared Options
 
