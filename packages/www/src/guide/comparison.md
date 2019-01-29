@@ -83,4 +83,4 @@ CSS Modules allows for importing multiple values from an external file.
 
 ### Support
 
-CSS Modules is really only fully-supported as part of webpack these days. The repo is effectively mothballed, and there appears to be almost no one supporting the current codebase. Since webpack is the only live version & I prefer to use rollup for it's cleaner output and smaller bundles I needed an approach that could be flexibly be used with a [variety](#rollup) [of](#browserify) [tools](#cli).
+CSS Modules is really only fully-supported as part of webpack these days. The repo is effectively mothballed, and there appears to be almost no one supporting the current codebase. Since webpack is the only live version & we prefer to use rollup for it's cleaner output and smaller bundles we needed an approach that could be flexibly be used with a [variety](#rollup) [of](#browserify) [tools](#cli).

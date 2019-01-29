@@ -1,4 +1,6 @@
 <style>
+@value contentWidth from "../site.css";
+
 .guide {
     composes: content from "../site.css";
 
@@ -10,7 +12,7 @@
 .bd {
     composes: bd from "../site.css";
 
-    max-width: 950px;
+    max-width: contentWidth;
     margin: 0 0 0 13rem;
     padding-left: 0.75rem;
 }
@@ -24,8 +26,9 @@
     margin-top: 0.5rem;
 }
 
-.bd {
-    max-width: 700px;
+.bd img {
+    width: 100%;
+    height: auto;
 }
 </style>
 

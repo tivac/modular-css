@@ -22,19 +22,11 @@ module.exports = ({ graph, bundle }) => {
 
     const entry = "changelog.cjs.js";
     const file = path.join(dest, "./changelog/index.html");
-    let tocs;
 
     const changelog = fs.readFileSync(
         require.resolve("../../../../CHANGELOG.md"),
         "utf8"
     );
-
-    // Have to render ahead-of-time so TOCs can be mapped for sidebar
-    const html = md.render(changelog, {
-        tocCallback : (tocmd, headings, tochtml) => {
-            tocs = tochtml;
-        },
-    });
 
     const Changelog = get(path.join(dest, entry));
 
@@ -42,8 +34,7 @@ module.exports = ({ graph, bundle }) => {
     return {
         file,
         html : Changelog.render({
-            tocs,
-            content : html,
+            content : md.render(changelog),
             styles  : css(entry, {
                 graph,
                 bundle,

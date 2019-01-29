@@ -6,6 +6,7 @@
 @value hoverInTime: 100ms;
 @value hoverOutTime: 250ms;
 @value headerHeight: 4rem;
+@value contentWidth: 40rem;
 
 @value narrow: (max-width: 30rem);
 
@@ -108,8 +109,8 @@ a:hover {
     margin-top: headerHeight;
 }
 
-.bd {
-    
+.bd > :last-child{
+    margin-bottom: 5rem;
 }
 
 .bd h2 {
@@ -141,16 +142,19 @@ a:hover {
 .bd h5 :global(.anchor),
 .bd h6 :global(.anchor) {
     position: absolute;
+    left: -1.5rem;
+    top: 50%;
+    
     display: block;
 
-    width: 1.3rem;
-    height: 1rem;
-    left: -1.3rem;
+    width: 1.4rem;
+    font-size: 1.4rem;
 
     opacity: 0;
     transition: opacity 150ms;
 
     text-decoration: none;
+    transform: translateY(-50%);
 }
 
 .bd h1:hover :global(.anchor),

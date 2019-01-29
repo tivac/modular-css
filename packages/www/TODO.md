@@ -13,7 +13,7 @@
 - [x] Create an actual homepage design
 - [x] Style changelog page a bit
 - [x] Create header link to changelog
-- [ ] Remove sidebar from changelog page
+- [x] Remove sidebar from changelog page
 - [ ] Make guide sidebar hidden & toggleable at mobile sizes
 - [ ] Get DNS switched over to netlify
 - [ ] Allow for giving new REPL tabs a name
