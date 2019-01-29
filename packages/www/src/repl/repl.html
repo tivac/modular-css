@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="./repl.css" />
+
+<div class="{css.repl}">
+    <Input />
+    <Output />
+</div>
+
+<Error />
+
+<script>
+// Unused export to force the CSS to load correctly
+import Page from "../page.html";
+
+import store from "./store.js";
+import listen from "./listen.js";
+
+export default {
+    components : {
+        Input  : "./input.html",
+        Output : "./output.html",
+        Error  : "./error.html",
+    },
+
+    store : () => store,
+};
+</script>

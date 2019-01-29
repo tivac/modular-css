@@ -1,0 +1,54 @@
+<style>
+.output {
+    composes: column from "./repl.css";
+
+    grid-area: output;
+
+    position: relative;
+}
+</style>
+
+<div class="{css.output}">
+    <CodeMirror config={cmconfig} ref:codemirror/>
+</div>
+
+<script>
+import store from "./store.js";
+import listen from "./listen.js";
+
+const header = "/* CSS OUTPUT */";
+
+export default {
+    components : {
+        CodeMirror : "./codemirror.html",
+    },
+
+    store : () => store,
+
+    data : () => ({
+        cmconfig : {
+            readOnly : true,
+        }
+    }),
+
+    oncreate() {
+        // Default to just the header
+        this.refs.codemirror.input({ content : header });
+
+        // Then update whenever the store values change
+        listen(this.store, [ "css", "compositions" ], ({ css, compositions }) => {
+            this.refs.codemirror.input({
+                content : [
+                    header,
+                    css,
+                    "",
+                    "/* CLASS COMPOSITIONS */",
+                    "/**",
+                    JSON.stringify(compositions, null, 4),
+                    "**/",
+                ].join("\n")
+            });
+        });
+    },
+};
+</script>

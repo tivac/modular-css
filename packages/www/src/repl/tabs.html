@@ -1,0 +1,143 @@
+<style type="text/css">
+@value hoverInTime from "../site.css";
+
+.tabs {
+    grid-area: tabs;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.button {
+    composes: button from "../site.css";
+
+    align-self: center;
+
+    padding: 5px;
+
+    opacity: 0.25;
+
+    transition: opacity hoverInTime ease-out;
+}
+
+.button:hover {
+    opacity: 1;
+}
+
+.add {
+    composes: button;
+}
+
+.clear {
+    composes: button;
+}
+
+.tabs {
+    flex: 1;
+}
+
+.tab {
+    padding: 0 5px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    border-bottom: 1px solid transparent;
+}
+
+.add + .tab,
+.tab + .tab {
+    margin-left: 0.25rem;
+}
+
+.tabon {
+    composes: tab;
+
+    border-bottom-color: hsl(0, 0%, 0%);
+}
+
+.file {
+    composes: button from "../site.css";
+
+    flex: 1;
+
+    height: 100%;
+    margin-right: 10px;
+
+    text-decoration: none;
+    color: hsl(0, 0%, 60%);
+}
+
+.tabon .file {
+    color: hsl(0, 0%, 20%);
+}
+
+.remove {
+    composes: button from "../site.css";
+
+    width: 20px;
+
+    filter: grayscale();
+    
+    transition: opacity hoverInTime ease-in;
+}
+
+.tab .remove {
+    opacity: 0.1;
+}
+
+.tabon .remove {
+    opacity: 0.3;
+}
+
+.remove:hover {
+    filter: brightness(1.2);
+    opacity: 1;
+}
+</style>
+
+<div class="{css.tabs}">
+    <button
+        class="{css.add}"
+        title="Add a new file"
+        on:click="$add()"
+    >
+        ➕
+    </button>
+    
+    <div class="{css.tabs}">
+        {#each [ ...$files.values() ] as file (file)}
+        <div class="{$file === file ? css.tabon : css.tab}">
+            <button class="{css.file}" on:click="$set({ file })">{file}</button>
+            {#if $files.size > 1}
+                <button
+                    class="{css.remove}"
+                    title="Remove {file}"
+                    on:click="$remove(file)"
+                >
+                    ❌
+                </button>
+            {/if}
+        </div>
+        {/each}
+    </div>
+
+    <button
+        class="{css.clear}"
+        title="Remove all files & content"
+        on:click="$reset({ content : `` })"
+    >
+        🗑️
+    </button>
+</div>
+
+<script>
+import store from "./store.js";
+
+export default {
+    store : () => store,
+};
+</script>

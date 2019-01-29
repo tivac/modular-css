@@ -1,3 +1,5 @@
-var Memory = require("memory-fs");
+import BrowserFS from "node-browserfs";
 
-module.exports = new Memory();
+const fs = new BrowserFS();
+
+export default fs;

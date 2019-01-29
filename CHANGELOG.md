@@ -554,7 +554,7 @@ Both `assets` and `dynamicAssets` will only contain assets **directly** required
 
 ### BREAKING CHANGES
 
-* - `modular-css-svelte` no longer has a custom rollup integration, use `modular-css-rollup` instead
+- `modular-css-svelte` no longer has a custom rollup integration, use `modular-css-rollup` instead
 - `modular-css-rollup` now supports a `common` option that will handle outputting any CSS that was removed from chunks due to treeshaking.
 - `modular-css-rollup` accepts a new `processor` option that is expected to be a fully-configured & instantiated instance of `Processor` from `modular-css-core`.
 

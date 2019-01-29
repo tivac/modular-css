@@ -1,0 +1,130 @@
+<style>
+@value * as site from "../site.css";
+
+.home {
+    composes: content from "../site.css";
+
+    flex: 0;
+
+    padding: 0 1rem;
+    
+    display: grid;
+    grid-template:
+        " title    title  " auto
+        " intro   example " auto /
+        50% 50%;
+
+    @media site.narrow {
+        display: flex;
+        flex-flow: column nowrap;
+    }
+}
+
+.title {
+    grid-area: title;
+}
+
+.head {
+    font-size: 3rem;
+    font-weight: bold;
+
+    margin-bottom: 1rem;
+}
+
+.headline {
+    margin: 0;
+    font-weight: 400;
+}
+
+.intro {
+    grid-area: intro;
+
+    margin: 2rem 1rem 0 0;
+}
+
+.introtext {
+    line-height: 2rem;
+}
+
+.introtext a {
+    color: site.hoverColor;
+    font-weight: bold;
+}
+
+.introtext a:hover {
+    color: site.textColor;
+}
+
+.example {
+    grid-area: example;
+}
+
+.learn {
+    composes: center from "../site.css";
+
+    margin-top: 1rem;
+}
+
+.cta {
+    composes: center from "../site.css";
+
+    margin-top: 2rem;
+
+    width: 12rem;
+    height: 3rem;
+    background: site.hoverColor;
+    
+    color: site.headerColor;
+    font-weight: bold;
+
+    border-radius: 0.25rem;
+
+    transition: background-color site.hoverOutTime ease-in;
+}
+
+.cta:hover {
+    background: color(site.hoverColor lightness(+20%));
+    color: site.headerColor;
+
+    transition: background-color site.hoverInTime ease-out;
+}
+
+</style>
+
+<Page {styles}>
+<div class="{css.home}">
+    <div class="{css.title}">
+        <h1 class="{css.head}">modular-css</h1>
+        <h2 class="{css.headline}">CSS Modules, better and easier than ever.</h2>
+    </div>
+
+    <div class="{css.intro}">
+        <div class="{css.introtext}">
+            {@html intro}
+        </div>
+
+        <div class="{css.learn}">
+            <a href="/guide/" class="{css.cta}">
+                Learn More Now!
+            </a>
+        </div>
+    </div>
+
+    <div class="{css.example}">
+        {@html example}
+    </div>
+</div>
+</Page>
+
+<script>
+export default {
+    components : {
+        Page   : "../page.html"
+    },
+
+    data : () => ({
+        intro : "",
+        example : "",
+    })
+};
+</script>

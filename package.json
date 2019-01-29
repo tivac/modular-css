@@ -16,7 +16,9 @@
     "release": "lerna publish",
     "pretest": "npm run parser",
     "test": "jest",
-    "watch": "jest --watch"
+    "watch": "jest --watch",
+    "www:build": "lerna run --stream build packages/www",
+    "www:start": "lerna run --stream start packages/www"
   },
   "devDependencies": {
     "@modular-css/test-utils": "file:packages/test-utils",

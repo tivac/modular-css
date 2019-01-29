@@ -1,0 +1,141 @@
+<style>
+@import "codemirror/lib/codemirror.css";
+@import "codemirror/theme/base16-light.css";
+
+.editor {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.editor :global(.CodeMirror) {
+    flex: 1;
+}
+
+.errorLocation {
+    position: relative;
+    border-bottom: 2px solid rgb(200, 0, 0);
+}
+
+.errorLine {
+    background-color: rgba(200, 0, 0, 0.05);
+}
+
+.loading {}
+.loaderror {}
+</style>
+
+{#await loading}
+    <div class="{css.loading}">Loading editor...</div>
+{:then _}
+    <div class="{css.editor}">
+        <textarea ref:textarea></textarea>
+    </div>
+{:catch err}
+    <div class="{css.loaderror}">Unable to load editor</div>
+{/await}
+
+<script>
+import debounce from "debounce";
+
+import listen from "./listen.js";
+
+export default {
+    data : () => ({
+        loading : import("./codemirror.js"),
+        
+        config  : {
+            lineNumbers : true,
+            lineWrapping : true,
+            indentUnit : 4,
+            mode : "text/css",
+        },
+        
+        codemirror : false,
+    }),
+
+    methods : {
+        // Give consumers ability to forcibly update the editor's content
+        // (assuming it's loaded, of course)
+        async input({ content = "" } = false) {
+            const { loading } = this.get();
+            
+            await loading;
+            
+            this.cm.setValue(content);
+        },
+
+        async error({ error }) {
+            const { loading } = this.get();
+
+            await loading;
+            
+            if(this.clearError) {
+                this.clearError();
+            }
+            
+            const { line, column, source } = error;
+            
+            // Mark the offending line
+            this.cm.addLineClass(line - 1, "wrap", css.errorLine);
+
+            // And underline the offending text as best we can
+            const marker = this.cm.markText(
+                { line : line - 1, ch : column - 1 },
+                { line : line - 1, ch : column - 1 + source.trimEnd().length },
+                { className : css.errorLocation }
+            );
+
+            // Save a function to clear all the error markers
+            this.clearError = () => {
+                this.cm.removeLineClass(line - 1, "wrap", css.errorLine);
+
+                marker.clear();
+            };
+        }
+    },
+
+    // Read file contents on creation
+    oncreate() {
+        const { loading } = this.get();
+
+        // Instantiate codemirror once it's loaded
+        loading.then((mod) => {
+            const { config } = this.get();
+            const { codemirror, theme } = mod;
+
+            this.cm = codemirror.fromTextArea(
+                this.refs.textarea,
+                Object.assign({
+                    lineNumbers : true,
+                    lineWrapping : true,
+                    indentUnit : 4,
+                    mode : "text/css",
+                    theme,
+                },
+                config,
+            ));
+
+            // Make codemirror instance externally-accessible, for some reason
+            this.set({
+                codemirror : this.cm,
+            });
+
+            this.cm.on("change", debounce(() => {
+                this.fire("change", {
+                    content : this.cm.getValue(),
+                });
+            }, 100));
+        });
+    },
+    
+    ondestroy() {
+        // Blow up the code mirror instance
+        this.cm.toTextArea();
+
+        this.cm = null;
+    },
+};
+</script>

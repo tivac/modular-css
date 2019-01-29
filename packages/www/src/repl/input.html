@@ -1,0 +1,24 @@
+<style type="text/css">
+.input {
+    composes: column from "./repl.css";
+
+    grid-area: input;
+}
+</style>
+
+<Tabs />
+
+<div class="{css.input}">
+    <Editor />
+</div>
+
+<script>
+import store from "./store.js";
+
+export default {
+    components : {
+        Editor : "./editor.html",
+        Tabs   : "./tabs.html",
+    },
+};
+</script>

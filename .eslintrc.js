@@ -4,10 +4,8 @@ module.exports = {
         "plugin:jest/recommended",
     ],
 
-    parserOptions : {
-        ecmaVersion : 8,
-    },
-    
+    parser: "babel-eslint",
+
     env : {
         node : true,
         jest : true,

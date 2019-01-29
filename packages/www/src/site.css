@@ -1,0 +1,167 @@
+@value headerColor: hsl(0, 0%, 94%);
+@value textColor: hsl(0, 0%, 10%);
+@value borderColor: hsl(0, 0%, 93%);
+@value accentColor: hsl(197, 100%, 44%);
+@value hoverColor: accentColor;
+@value hoverInTime: 100ms;
+@value hoverOutTime: 250ms;
+@value headerHeight: 4rem;
+@value contentWidth: 40rem;
+@value sidebarWidth: 12rem;
+
+@value narrow: all and (max-width: 50rem);
+@value skinny: all and (max-width: 30rem);
+
+html {
+    box-sizing: border-box;
+    
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    
+    width: 100%;
+    height: 100%;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    width: 100%;
+    min-height: 100%;
+
+    color: textColor;
+}
+
+pre,
+pre[class*="language-"],
+textarea,
+code,
+code[class*="language-"],
+:global(.CodeMirror) {
+    font-family: 'Inconsolata', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+a {
+    transition: color hoverOutTime ease-out;
+}
+
+a,
+a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    color: hoverColor;
+
+    transition: color hoverInTime ease-in;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button {
+    background-color: rgba(0,0,0,0);
+    border-color: rgb(0, 0, 238);
+    border-style: none;
+    box-sizing: content-box;
+    color: rgb(0, 0, 238);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font: inherit;
+    height: auto;
+    padding: 0;
+    perspective-origin: 0 0;
+    text-align: start;
+    text-decoration: none;
+    transform-origin: 0 0;
+    width: auto;
+    -moz-appearance: none;
+    -webkit-logical-height: 1em;
+    -webkit-logical-width: auto;
+}
+  
+@supports (-moz-appearance:none) {
+    .button::-moz-focus-inner {
+        border: none;
+        padding: 0;
+    }
+  
+    .button:focus {
+        outline-style: dotted;
+        outline-width: 1px;
+    }
+}
+
+@value contentTop: calc(headerHeight + 1rem);
+
+.content {
+    min-height: calc(100vh - contentTop);
+    margin-top: contentTop;
+}
+
+.bd > :last-child{
+    margin-bottom: 5rem;
+}
+
+.bd h2 {
+    margin: 2rem 0;
+    font-size: 1.75rem;
+}
+
+.bd h3,
+.bd h4,
+.bd h5,
+.bd h6 {
+    margin: 2rem 0;
+    font-size: 1.25rem;
+}
+
+.bd h1,
+.bd h2,
+.bd h3,
+.bd h4,
+.bd h5,
+.bd h6 {
+    position: relative;
+}
+
+.bd h1 :global(.anchor),
+.bd h2 :global(.anchor),
+.bd h3 :global(.anchor),
+.bd h4 :global(.anchor),
+.bd h5 :global(.anchor),
+.bd h6 :global(.anchor) {
+    position: absolute;
+    left: -1.5rem;
+    top: 50%;
+    
+    display: block;
+
+    width: 1.4rem;
+    font-size: 1.4rem;
+
+    opacity: 0;
+    transition: opacity 150ms;
+
+    text-decoration: none;
+    transform: translateY(-50%);
+}
+
+.bd h1:hover :global(.anchor),
+.bd h2:hover :global(.anchor),
+.bd h3:hover :global(.anchor),
+.bd h4:hover :global(.anchor),
+.bd h5:hover :global(.anchor),
+.bd h6:hover :global(.anchor) {
+    opacity: 1;
+
+    text-decoration: none;
+}

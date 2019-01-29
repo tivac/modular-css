@@ -1,0 +1,37 @@
+<style>
+.error {
+    /* lol */
+    z-index: 1000;
+
+    position: absolute;
+
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    padding: 1rem;
+
+    background: hsl(6, 93%, 71%);
+    color: hsl(0, 0%, 94%);
+
+    visibility: hidden;
+}
+
+.erroron {
+    composes: error;
+
+    visibility: visible;
+}
+</style>
+
+<div class="{$error ? css.erroron : css.error}">
+    <pre>{$error ? $error.toString() : ""}</pre>
+</div>
+
+<script>
+import store from "./store.js";
+
+export default {
+    store : () => store,
+};
+</script>
