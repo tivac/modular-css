@@ -398,38 +398,58 @@ exports[`/svelte.js should ignore files without <style> blocks 1`] = `
 
 exports[`/svelte.js should ignore files without <style> blocks 2`] = `""`;
 
-exports[`/svelte.js should no-op if all <link>s reference a URL 1`] = `
-"<link rel=\\"stylesheet\\" href=\\"http://example.com/styles.css\\" />
-<link rel=\\"stylesheet\\" href=\\"http://example.com/styles2.css\\" />
-
-<div class=\\"fooga\\">fooga</div>
-"
-`;
-
-exports[`/svelte.js should remove files before reprocessing when config.clean is set 1`] = `
+exports[`/svelte.js should invalidate files before reprocessing (<link>) 1`] = `
 "<div class=\\"source\\">Source</div><script>
     import css from \\"./source.css\\";
 </script>"
 `;
 
-exports[`/svelte.js should remove files before reprocessing when config.clean is set 2`] = `
+exports[`/svelte.js should invalidate files before reprocessing (<link>) 2`] = `
 "/* packages/svelte/test/output/source.css */
 .source {
     color: red;
 }"
 `;
 
-exports[`/svelte.js should remove files before reprocessing when config.clean is set 3`] = `
+exports[`/svelte.js should invalidate files before reprocessing (<link>) 3`] = `
 "<div class=\\"source\\">Source</div><script>
     import css from \\"./source.css\\";
 </script>"
 `;
 
-exports[`/svelte.js should remove files before reprocessing when config.clean is set 4`] = `
+exports[`/svelte.js should invalidate files before reprocessing (<link>) 4`] = `
 "/* packages/svelte/test/output/source.css */
 .source {
     color: blue;
 }"
+`;
+
+exports[`/svelte.js should invalidate files before reprocessing (<style>) 1`] = `
+"<style>/* replaced by modular-css */</style>
+<div class=\\"source\\">Source</div>"
+`;
+
+exports[`/svelte.js should invalidate files before reprocessing (<style>) 2`] = `
+"/* packages/svelte/test/output/source.html */
+.source { color: red; }"
+`;
+
+exports[`/svelte.js should invalidate files before reprocessing (<style>) 3`] = `
+"<style>/* replaced by modular-css */</style>
+<div class=\\"source\\">Source</div>"
+`;
+
+exports[`/svelte.js should invalidate files before reprocessing (<style>) 4`] = `
+"/* packages/svelte/test/output/source.html */
+.source { color: blue; }"
+`;
+
+exports[`/svelte.js should no-op if all <link>s reference a URL 1`] = `
+"<link rel=\\"stylesheet\\" href=\\"http://example.com/styles.css\\" />
+<link rel=\\"stylesheet\\" href=\\"http://example.com/styles2.css\\" />
+
+<div class=\\"fooga\\">fooga</div>
+"
 `;
 
 exports[`/svelte.js should support verbose output: "<link>" 1`] = `
@@ -630,6 +650,24 @@ Array [
 `;
 
 exports[`/svelte.js should throw on both <style> and <link> in one file 1`] = `"@modular-css/svelte: use <style> OR <link>, but not both"`;
+
+exports[`/svelte.js should use an already-created processor 1`] = `
+"<link rel=\\"stylesheet\\" href=\\"http://example.com/styles.css\\" />
+
+<div class=\\"fooga\\">fooga</div>
+<script>
+    import css from \\"./simple.css\\";
+</script>"
+`;
+
+exports[`/svelte.js should use an already-created processor 2`] = `
+"/* fake.css */
+.fake { color: #F00; }
+/* packages/svelte/test/specimens/simple.css */
+.fooga {
+    color: red;
+}"
+`;
 
 exports[`/svelte.js should warn when multiple <link> elements are in the html 1`] = `
 "<link rel=\\"stylesheet\\" href=\\"./simple2.css\\" />

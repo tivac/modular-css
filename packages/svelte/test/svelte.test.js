@@ -6,6 +6,7 @@ const path = require("path");
 const svelte = require("svelte");
 const dedent = require("dedent");
 
+const Processor = require("@modular-css/processor");
 const namer = require("@modular-css/test-utils/namer.js");
 const logs  = require("@modular-css/test-utils/logs.js");
 
@@ -36,6 +37,31 @@ describe("/svelte.js", () => {
         const filename = require.resolve("./specimens/url.html");
         const { preprocess, processor } = plugin({
             namer,
+        });
+
+        const processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        const output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
+    });
+
+    it("should use an already-created processor", async () => {
+        const processor = new Processor({ namer });
+
+        await processor.string(
+            "./fake.css",
+            ".fake { color: #F00; }"
+        );
+
+        const filename = require.resolve("./specimens/url.html");
+        const { preprocess } = plugin({
+            processor,
         });
 
         const processed = await svelte.preprocess(
@@ -218,7 +244,8 @@ describe("/svelte.js", () => {
         expect(processed.toString()).toMatchSnapshot();
     });
     
-    it("should remove files before reprocessing when config.clean is set", async () => {
+
+    it("should invalidate files before reprocessing (<link>)", async () => {
         // V1 of files
         fs.writeFileSync(path.resolve(__dirname, "./output/source.html"), dedent(`
             <link rel="stylesheet" href="./source.css" />
@@ -234,8 +261,6 @@ describe("/svelte.js", () => {
         const filename = require.resolve(`./output/source.html`);
         const { processor, preprocess } = plugin({
             namer,
-
-            clean : true,
         });
 
         let processed = await svelte.preprocess(
@@ -254,6 +279,47 @@ describe("/svelte.js", () => {
             .source {
                 color: blue;
             }
+        `));
+
+        processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
+    });
+
+    it("should invalidate files before reprocessing (<style>)", async () => {
+        // V1 of files
+        fs.writeFileSync(path.resolve(__dirname, "./output/source.html"), dedent(`
+            <style>.source { color: red; }</style>
+            <div class="{css.source}">Source</div>
+        `));
+
+        const filename = require.resolve(`./output/source.html`);
+        const { processor, preprocess } = plugin({
+            namer,
+        });
+
+        let processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        let output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
+
+        // V2 of CSS
+        fs.writeFileSync(path.resolve(__dirname, "./output/source.html"), dedent(`
+            <style>.source { color: blue; }</style>
+            <div class="{css.source}">Source</div>
         `));
 
         processed = await svelte.preprocess(
