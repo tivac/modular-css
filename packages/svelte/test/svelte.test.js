@@ -6,6 +6,7 @@ const path = require("path");
 const svelte = require("svelte");
 const dedent = require("dedent");
 
+const Processor = require("@modular-css/processor");
 const namer = require("@modular-css/test-utils/namer.js");
 const logs  = require("@modular-css/test-utils/logs.js");
 
@@ -36,6 +37,31 @@ describe("/svelte.js", () => {
         const filename = require.resolve("./specimens/url.html");
         const { preprocess, processor } = plugin({
             namer,
+        });
+
+        const processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        const output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
+    });
+
+    it("should use an already-created processor", async () => {
+        const processor = new Processor({ namer });
+
+        await processor.string(
+            "./fake.css",
+            ".fake { color: #F00; }"
+        );
+
+        const filename = require.resolve("./specimens/url.html");
+        const { preprocess } = plugin({
+            processor,
         });
 
         const processed = await svelte.preprocess(

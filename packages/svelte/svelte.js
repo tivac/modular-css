@@ -17,7 +17,8 @@ module.exports = (config = false) => {
     // Defined here to avoid .lastIndex bugs since /g is set
     const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/gim;
 
-    const processor = new Processor(config);
+    // Use a passed processor, or set up our own if necessary
+    const { processor = new Processor(config) } = config;
 
     // eslint-disable-next-line no-console, no-empty-function
     const log = config.verbose ? console.log.bind(console, "[svelte]") : () => {};
