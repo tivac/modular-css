@@ -50,9 +50,13 @@ module.exports = (config = false) => {
 
         if(style) {
             log("extract <style>");
-
+            
             file = "<style>";
-
+            
+            if(processor.has(filename)) {
+                processor.invalidate(filename);
+            }
+    
             result = await processor.string(
                 filename,
                 style[1]
@@ -102,11 +106,8 @@ module.exports = (config = false) => {
 
             log("extract <link>", external);
 
-            // When cleaning remove any files that've already been encountered, they need to be re-processed
-            if(config.clean) {
-                if(external in processor.files) {
-                    [ ...processor.dependents(external), external ].forEach((entry) => processor.remove(entry));
-                }
+            if(processor.has(external)) {
+                processor.invalidate(external);
             }
 
             // Process the file
