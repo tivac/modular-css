@@ -167,8 +167,10 @@ class Processor {
         }
 
         const deps = this.dependents(source);
-
+        
         deps.concat(source).forEach((file) => {
+            this._log("invalidate()", file);
+
             this._files[file].valid = false;
         });
     }

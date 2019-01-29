@@ -180,6 +180,57 @@ Array [
 ]
 `;
 
+exports[`/rollup.js code splitting should output metadata successfully when unreferenced CSS is output to common 1`] = `
+Array [
+  Object {
+    "file": "a.css",
+    "text": "/* packages/rollup/test/specimens/metadata/a.css */
+.mc541d3f5c_a { color: aqua; }
+",
+  },
+  Object {
+    "file": "b.css",
+    "text": "/* packages/rollup/test/specimens/metadata/b.css */
+.mc04101138_b { color: blue; }
+",
+  },
+  Object {
+    "file": "chunk.css",
+    "text": "/* packages/rollup/test/specimens/metadata/d.css */
+.mc7de0d66b_d { color: darkkhaki; }
+",
+  },
+  Object {
+    "file": "common.css",
+    "text": "/* fake.css */
+.mc2c838439_fake { color: red; }",
+  },
+  Object {
+    "file": "metadata.json",
+    "text": "{
+    \\"chunk2.js\\": {
+        \\"assets\\": [],
+        \\"dynamicAssets\\": [
+            \\"assets/chunk.css\\"
+        ]
+    },
+    \\"a.js\\": {
+        \\"assets\\": [
+            \\"assets/a.css\\"
+        ],
+        \\"dynamicAssets\\": []
+    },
+    \\"b.js\\": {
+        \\"assets\\": [
+            \\"assets/b.css\\"
+        ],
+        \\"dynamicAssets\\": []
+    }
+}",
+  },
+]
+`;
+
 exports[`/rollup.js code splitting should support circular JS dependencies 1`] = `
 Array [
   Object {

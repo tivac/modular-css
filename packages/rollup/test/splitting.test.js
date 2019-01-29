@@ -5,6 +5,8 @@ const { rollup } = require("rollup");
 
 const shell = require("shelljs");
 
+const Processor = require("@modular-css/processor");
+
 const dir = require("@modular-css/test-utils/read-dir.js")(__dirname);
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
 const namer = require("@modular-css/test-utils/namer.js");
@@ -83,6 +85,40 @@ describe("/rollup.js", () => {
             });
 
             expect(dir("./css-metadata/assets")).toMatchSnapshot();
+        });
+
+        it("should output metadata successfully when unreferenced CSS is output to common", async () => {
+            const processor = new Processor();
+
+            await processor.string("./fake.css", ".fake { color: red; }");
+
+            const bundle = await rollup({
+                input : [
+                    require.resolve("./specimens/metadata/a.js"),
+                    require.resolve("./specimens/metadata/b.js"),
+                ],
+
+                plugins : [
+                    plugin({
+                        namer,
+                        map,
+                        processor,
+                        meta : true,
+                    }),
+                ],
+            });
+
+            await bundle.write({
+                format,
+                sourcemap,
+
+                assetFileNames,
+                chunkFileNames,
+
+                dir : prefix(`./output/css-metadata-common`),
+            });
+
+            expect(dir("./css-metadata-common/assets")).toMatchSnapshot();
         });
 
         it("should support outputting metadata about CSS dependencies to a named file ", async () => {

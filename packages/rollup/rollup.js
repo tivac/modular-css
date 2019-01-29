@@ -68,6 +68,9 @@ module.exports = (opts) => {
                     `Any plugins defined during the "done" lifecycle won't run when "styleExport" is set!`
                 );
             }
+
+            // Watch any files already in the procesor
+            Object.keys(processor.files).forEach((file) => this.addWatchFile(file));
         },
 
         watchChange(file) {
@@ -342,6 +345,10 @@ module.exports = (opts) => {
                 const meta = {};
 
                 out.forEach((value, entry) => {
+                    if(!bundle[entry]) {
+                        return;
+                    }
+
                     const { assets, dynamicAssets } = bundle[entry];
 
                     meta[entry] = {
