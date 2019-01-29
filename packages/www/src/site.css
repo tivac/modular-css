@@ -7,8 +7,10 @@
 @value hoverOutTime: 250ms;
 @value headerHeight: 4rem;
 @value contentWidth: 40rem;
+@value sidebarWidth: 12rem;
 
-@value narrow: (max-width: 30rem);
+@value narrow: all and (max-width: 50rem);
+@value skinny: all and (max-width: 30rem);
 
 html {
     box-sizing: border-box;
@@ -27,12 +29,7 @@ html {
 
 body {
     width: 100%;
-    height: 100%;
-
-    display: flex;
-    flex-flow: column nowrap;
-
-    scroll-behavior: smooth;
+    min-height: 100%;
 
     color: textColor;
 }
@@ -103,10 +100,11 @@ a:hover {
     }
 }
 
-.content {
-    flex: 1;
+@value contentTop: calc(headerHeight + 1rem);
 
-    margin-top: headerHeight;
+.content {
+    min-height: calc(100vh - contentTop);
+    margin-top: contentTop;
 }
 
 .bd > :last-child{

@@ -14,7 +14,7 @@
 - [x] Style changelog page a bit
 - [x] Create header link to changelog
 - [x] Remove sidebar from changelog page
-- [ ] Make guide sidebar hidden & toggleable at mobile sizes
+- [x] Make guide sidebar hidden at mobile sizes
 - [ ] Get DNS switched over to netlify
 - [ ] Allow for giving new REPL tabs a name
 - [ ] Figure out how to get REPL build to not output CSS

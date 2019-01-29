@@ -1,20 +1,21 @@
 <style>
-@value contentWidth from "../site.css";
+@value contentWidth, sidebarWidth, narrow from "../site.css";
 
 .guide {
     composes: content from "../site.css";
-
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: stretch;
 }
 
 .bd {
     composes: bd from "../site.css";
 
     max-width: contentWidth;
-    margin: 0 0 0 13rem;
-    padding-left: 0.75rem;
+    margin: 1rem;
+    margin-left: calc(sidebarWidth + 1.5rem);
+
+    @media narrow {
+        margin-left: 2rem;
+        max-width: 100%;
+    }
 }
 
 .bd a,
@@ -45,8 +46,8 @@
 <script>
 export default {
     components : {
-        Page   : "../page.html",
-        Sidebar : "../sidebar.html",
+        Page    : "../page.html",
+        Sidebar : "./sidebar.html",
     },
 
     data : () => ({

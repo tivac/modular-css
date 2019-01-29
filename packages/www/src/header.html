@@ -1,20 +1,20 @@
 <style>
-@value headerHeight from "./site.css";
-@value headerColor from "./site.css";
-@value hoverColor from "./site.css";
-@value accentColor from "./site.css";
+@value headerHeight, headerColor, hoverColor, accentColor from "./site.css";
+@value skinny from "./site.css";
+
 @value tabHeight: 2.5rem;
 
 .header {
     position: fixed;
-    width: 100%;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: headerHeight;
 
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: stretch;
     
-    flex: 0 0 headerHeight;
     padding: 1rem;
 
     color: headerColor;
@@ -23,6 +23,10 @@
     border-bottom: 2px solid accentColor;
 
     z-index: 1;
+
+    @media skinny {
+        padding: 0.5rem 1rem;
+    }
 }
 
 .header a {
@@ -35,6 +39,7 @@
 
 .title {
     font-size: 1.5rem;
+    flex: 1;
 }
 
 .name {
@@ -47,6 +52,12 @@
     margin-left: 0.25rem;
 
     font-size: 0.9rem;
+
+    @media skinny {
+        display: block;
+
+        margin-left: 0;
+    }
 }
 
 .navitems {

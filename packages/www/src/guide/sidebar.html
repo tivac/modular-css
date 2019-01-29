@@ -1,9 +1,16 @@
 <style>
+@value narrow, borderColor, headerHeight, sidebarWidth from "../site.css";
+
 .sidebar {
     position: fixed;
-    width: 12rem;
-    height: calc(100% - 4rem);
+    width: sidebarWidth;
+    height: calc(100vh - headerHeight);
     overflow-y: auto;
+
+    @media narrow {
+        /* Yes, this sucks. I don't want to build a proper toggling sidebar atm */
+        display: none;
+    }
 }
 
 .sidebar :global(.toc) {
