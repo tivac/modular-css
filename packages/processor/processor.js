@@ -145,6 +145,11 @@ class Processor {
         return files;
     }
 
+    // Return the corrected-path version of the file
+    normalize(file) {
+        return this._normalize(file);
+    }
+
     // Check if a file exists in the currently-processed set
     has(input) {
         const file = this._normalize(input);
