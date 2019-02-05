@@ -10,7 +10,6 @@ Array [
 }
 /* packages/rollup/test/specimens/casing/foo.css */
 .mc3dd08d27_foo {
-
     color: #F00;
 }",
   },
@@ -456,7 +455,6 @@ exports[`/rollup.js should respect the CSS dependency tree 2`] = `
 }
 /* packages/rollup/test/specimens/dependencies.css */
 .wooga {
-
     background: blue;
 }
 "

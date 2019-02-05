@@ -239,7 +239,6 @@ exports[`/processor.js API .output() should order output by dependencies, then a
 /* packages/processor/test/specimens/composes.css */
 /* packages/processor/test/specimens/deep.css */
 .deep {
-    
     color: black;
 }
 /* packages/processor/test/specimens/local.css */
