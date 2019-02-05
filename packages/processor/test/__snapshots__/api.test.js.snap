@@ -145,9 +145,9 @@ exports[`/processor.js API .invalidate() should throw if an invalid file is pass
 
 exports[`/processor.js API .invalidate() should throw if no file is passed 1`] = `"invalidate() requires a file argument"`;
 
-exports[`/processor.js API .normalize() should normalize file inputs based on the processor cwd 1`] = `
+exports[`/processor.js API .normalize() should normalize inputs 1`] = `
 Array [
-  "foo.css",
+  "simple.css",
 ]
 `;
 

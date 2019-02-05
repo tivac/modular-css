@@ -35,7 +35,6 @@ describe("/processor.js", () => {
         describe(".file()", () => {
             it("should process a relative file", async () => {
                 const result = await processor.file("./packages/processor/test/specimens/simple.css");
-
             
                 expect(result.exports).toMatchSnapshot();
                 expect(result.details.exports).toMatchSnapshot();
@@ -55,6 +54,33 @@ describe("/processor.js", () => {
             });
         });
         
+        describe(".has()", () => {
+            it("should return a boolean", async () => {
+                await processor.string(
+                    "./simple.css",
+                    ".wooga { }"
+                );
+
+                expect(processor.has("./simple.css")).toBe(true);
+                expect(processor.has("./nope.css")).toBe(false);
+            });
+            
+            it("should normalize inputs before checking for existence", async () => {
+                await processor.string(
+                    "./simple.css",
+                    ".wooga { }"
+                );
+
+                expect(processor.has("../modular-css/simple.css")).toBe(true);
+            });
+        });
+        
+        describe(".normalize()", () => {
+            it("should normalize inputs", async () => {
+                expect(relative([ processor.normalize("../modular-css/simple.css") ])).toMatchSnapshot();
+            });
+        });
+
         describe(".remove()", () => {
             it("should remove a relative file", async () => {
                 await processor.string(
