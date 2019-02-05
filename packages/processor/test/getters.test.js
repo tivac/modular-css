@@ -41,7 +41,6 @@ describe("/processor.js", () => {
 
                 expect(processor.graph).toBeInstanceOf(DepGraph);
             });
-git;
-});
+        });
     });
 });
