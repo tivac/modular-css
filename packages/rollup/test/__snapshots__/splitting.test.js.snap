@@ -3,46 +3,30 @@
 exports[`/rollup.js code splitting should dedupe chunk names using rollup's incrementing counter logic (hashed) 1`] = `
 Array [
   Object {
-    "file": "a-14363c2f.css",
+    "file": "a-8dc3c49a.css",
     "text": "/* packages/rollup/test/specimens/multiple-chunks/a.css */
 .a {
-
     color: aqua;
 }
 
-/*# sourceMappingURL=a-14363c2f.css.map */",
+/*# sourceMappingURL=a-8dc3c49a.css.map */",
   },
   Object {
-    "file": "a-14363c2f.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,WAAW;AACf\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: aqua;\\\\n}\\\\n\\"]}",
+    "file": "a-8dc3c49a.css.map",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: aqua;\\\\n}\\\\n\\"]}",
   },
   Object {
-    "file": "b-b31885ac.css",
+    "file": "b-fc0ef588.css",
     "text": "/* packages/rollup/test/specimens/multiple-chunks/b.css */
 .b {
-
     color: blue;
 }
 
-/*# sourceMappingURL=b-b31885ac.css.map */",
+/*# sourceMappingURL=b-fc0ef588.css.map */",
   },
   Object {
-    "file": "b-b31885ac.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,WAAW;AACf\\",\\"file\\":\\"b-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
-  },
-  Object {
-    "file": "chunk-23649ca7.css",
-    "text": "/* packages/rollup/test/specimens/multiple-chunks/d.css */
-.d {
-
-    color: deepskyblue;
-}
-
-/*# sourceMappingURL=chunk-23649ca7.css.map */",
-  },
-  Object {
-    "file": "chunk-23649ca7.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,kBAAW;AACf\\",\\"file\\":\\"chunk-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+    "file": "b-fc0ef588.css.map",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"b-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
   },
   Object {
     "file": "chunk-2f7464a0.css",
@@ -58,18 +42,30 @@ Array [
     "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/constants.css\\",\\"../../../specimens/multiple-chunks/shared.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,iEAAA,ECAA,8DAAA;AAEA,UAAU,aAAa,EAAE;;AAEzB,SDJA,WAAiB,ECIK\\",\\"file\\":\\"chunk-[hash].css\\",\\"sourcesContent\\":[\\"@value main: blue;\\\\n\\",\\"@value main from \\\\\\"./constants.css\\\\\\";\\\\n\\\\n.shared { color: salmon; }\\\\n\\\\n.other { color: main; }\\\\n\\"]}",
   },
   Object {
-    "file": "chunk-57d5c038.css",
+    "file": "chunk-48a593d7.css",
     "text": "/* packages/rollup/test/specimens/multiple-chunks/c.css */
 .c {
-
     color: coral;
 }
 
-/*# sourceMappingURL=chunk-57d5c038.css.map */",
+/*# sourceMappingURL=chunk-48a593d7.css.map */",
   },
   Object {
-    "file": "chunk-57d5c038.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,YAAW;AACf\\",\\"file\\":\\"chunk-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+    "file": "chunk-48a593d7.css.map",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,YAAW;AACf\\",\\"file\\":\\"chunk-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+  },
+  Object {
+    "file": "chunk-ee76f9f0.css",
+    "text": "/* packages/rollup/test/specimens/multiple-chunks/d.css */
+.d {
+    color: deepskyblue;
+}
+
+/*# sourceMappingURL=chunk-ee76f9f0.css.map */",
+  },
+  Object {
+    "file": "chunk-ee76f9f0.css.map",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,kBAAW;AACf\\",\\"file\\":\\"chunk-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
   },
 ]
 `;
@@ -80,7 +76,6 @@ Array [
     "file": "a.css",
     "text": "/* packages/rollup/test/specimens/multiple-chunks/a.css */
 .a {
-
     color: aqua;
 }
 
@@ -88,13 +83,12 @@ Array [
   },
   Object {
     "file": "a.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,WAAW;AACf\\",\\"file\\":\\"a.css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: aqua;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"a.css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: aqua;\\\\n}\\\\n\\"]}",
   },
   Object {
     "file": "b.css",
     "text": "/* packages/rollup/test/specimens/multiple-chunks/b.css */
 .b {
-
     color: blue;
 }
 
@@ -102,7 +96,7 @@ Array [
   },
   Object {
     "file": "b.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,WAAW;AACf\\",\\"file\\":\\"b.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"b.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
   },
   Object {
     "file": "chunk.css",
@@ -121,27 +115,25 @@ Array [
     "file": "chunk2.css",
     "text": "/* packages/rollup/test/specimens/multiple-chunks/d.css */
 .d {
-
     color: deepskyblue;
 }
 ",
   },
   Object {
     "file": "chunk2.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,kBAAW;AACf\\",\\"file\\":\\"chunk.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,kBAAW;AACf\\",\\"file\\":\\"chunk.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
   },
   Object {
     "file": "chunk3.css",
     "text": "/* packages/rollup/test/specimens/multiple-chunks/c.css */
 .c {
-
     color: coral;
 }
 ",
   },
   Object {
     "file": "chunk3.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;;IAGI,YAAW;AACf\\",\\"file\\":\\"chunk.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,YAAW;AACf\\",\\"file\\":\\"chunk.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
   },
 ]
 `;
@@ -160,7 +152,6 @@ Array [
     "file": "dependencies.css",
     "text": "/* packages/rollup/test/specimens/dependencies.css */
 .wooga {
-
     background: blue;
 }
 ",
@@ -284,12 +275,10 @@ Array [
 }
 /* packages/rollup/test/specimens/dynamic-imports/d.css */
 .d {
-    
     color: darkred;
 }
 /* packages/rollup/test/specimens/dynamic-imports/a.css */
 .a {
-
     color: aqua;
 }
 ",
@@ -302,7 +291,6 @@ Array [
 }
 /* packages/rollup/test/specimens/dynamic-imports/b.css */
 .b {
-    
     color: blue;
 }
 ",
@@ -311,7 +299,6 @@ Array [
     "file": "chunk.css",
     "text": "/* packages/rollup/test/specimens/dynamic-imports/c.css */
 .c {
-    
     color: cyan;
 }
 ",
@@ -325,7 +312,6 @@ Array [
     "file": "a.css",
     "text": "/* packages/rollup/test/specimens/manual-chunks/a.css */
 .a {
-
     color: red;
 }
 ",
@@ -334,7 +320,6 @@ Array [
     "file": "b.css",
     "text": "/* packages/rollup/test/specimens/manual-chunks/b.css */
 .b {
-
     color: blue;
 }
 ",
@@ -458,7 +443,6 @@ Array [
     "file": "dependencies.css",
     "text": "/* packages/rollup/test/specimens/dependencies.css */
 .wooga {
-
     background: blue;
 }
 ",
@@ -472,7 +456,6 @@ Array [
     "file": "a.css",
     "text": "/* packages/rollup/test/specimens/css-chunks/a.css */
 .a {
-
     color: aqua;
 }
 ",
@@ -481,7 +464,6 @@ Array [
     "file": "b.css",
     "text": "/* packages/rollup/test/specimens/css-chunks/b.css */
 .b {
-    
     color: blue;
 }
 ",
@@ -494,7 +476,6 @@ Array [
 }
 /* packages/rollup/test/specimens/css-chunks/c.css */
 .c {
-
     color: cyan;
 }
 ",
@@ -514,12 +495,10 @@ Array [
 }
 /* packages/rollup/test/specimens/common-splitting/a.css */
 .a {
-
     color: aqua;
 }
 /* packages/rollup/test/specimens/common-splitting/b.css */
 .b {
-
     color: blue;
 }
 ",
