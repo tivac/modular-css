@@ -172,6 +172,7 @@ module.exports = (opts) => {
             Object.entries(bundle).forEach(([ entry, chunk ]) => {
                 const { isAsset, modules } = chunk;
 
+                /* istanbul ignore if */
                 if(isAsset) {
                     return;
                 }

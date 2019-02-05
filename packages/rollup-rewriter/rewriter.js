@@ -58,14 +58,14 @@ module.exports = (opts) => {
 
                 graph.addNode(entry);
                 
-                imports.forEach((file) => {
+                imported.forEach((file) => {
                     graph.addNode(file);
                     graph.addDependency(entry, file);
                 });
             });
             
             entries.forEach((deps, entry) => {
-                const { code = "" } = chunks[entry];
+                const { code } = chunks[entry];
 
                 const { regex, loader, load } = formats[format];
 
