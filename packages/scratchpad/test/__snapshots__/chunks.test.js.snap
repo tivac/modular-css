@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`chunking algorithm should handle more complicated chunking 1`] = `
+Array [
+  Object {
+    "node": "F",
+    "nodes": Array [
+      "G",
+      "F",
+    ],
+  },
+  Object {
+    "node": "A",
+    "nodes": Array [
+      "E",
+      "C",
+      "D",
+      "A",
+    ],
+  },
+  Object {
+    "node": "a",
+    "nodes": null,
+  },
+  Object {
+    "node": "B",
+    "nodes": Array [
+      "B",
+    ],
+  },
+  Object {
+    "node": "b",
+    "nodes": null,
+  },
+]
+`;
+
+exports[`chunking algorithm should handle more simple chunking 1`] = `
+Array [
+  Object {
+    "node": "D",
+    "nodes": Array [
+      "D",
+    ],
+  },
+  Object {
+    "node": "A",
+    "nodes": Array [
+      "A",
+    ],
+  },
+  Object {
+    "node": "a",
+    "nodes": null,
+  },
+  Object {
+    "node": "B",
+    "nodes": Array [
+      "C",
+      "B",
+    ],
+  },
+  Object {
+    "node": "b",
+    "nodes": null,
+  },
+]
+`;
+
+exports[`chunking algorithm should handle unmergable chunks 1`] = `
+Array [
+  Object {
+    "node": "C",
+    "nodes": Array [
+      "C",
+    ],
+  },
+  Object {
+    "node": "B",
+    "nodes": Array [
+      "B",
+    ],
+  },
+  Object {
+    "node": "A",
+    "nodes": Array [
+      "A",
+    ],
+  },
+  Object {
+    "node": "a",
+    "nodes": null,
+  },
+  Object {
+    "node": "b",
+    "nodes": null,
+  },
+  Object {
+    "node": "c",
+    "nodes": null,
+  },
+]
+`;
+
+exports[`chunking algorithm should handle very simple chunking 1`] = `
+Array [
+  Object {
+    "node": "D",
+    "nodes": Array [
+      "D",
+    ],
+  },
+  Object {
+    "node": "A",
+    "nodes": Array [
+      "C",
+      "A",
+    ],
+  },
+  Object {
+    "node": "a",
+    "nodes": null,
+  },
+  Object {
+    "node": "B",
+    "nodes": Array [
+      "B",
+    ],
+  },
+  Object {
+    "node": "b",
+    "nodes": null,
+  },
+]
+`;

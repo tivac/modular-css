@@ -145,6 +145,11 @@ class Processor {
         return files;
     }
 
+    // Return the corrected-path version of the file
+    normalize(file) {
+        return this._normalize(file);
+    }
+
     // Check if a file exists in the currently-processed set
     has(input) {
         const file = this._normalize(input);
@@ -167,7 +172,7 @@ class Processor {
         }
 
         const deps = this.dependents(source);
-        
+
         deps.concat(source).forEach((file) => {
             this._log("invalidate()", file);
 
@@ -176,29 +181,33 @@ class Processor {
     }
 
     // Get the dependency order for a file or the entire tree
-    dependencies(file) {
+    dependencies(file, options = false) {
+        const { leavesOnly } = options;
+
         if(file) {
             const id = this._normalize(file);
 
-            return this._graph.dependenciesOf(id);
+            return this._graph.dependenciesOf(id, leavesOnly);
         }
 
-        return this._graph.overallOrder();
+        return this._graph.overallOrder(leavesOnly);
     }
 
     // Get the dependant files for a file
-    dependents(file) {
+    dependents(file, options = false) {
         if(!file) {
             throw new Error("Must provide a file to processor.dependants()");
         }
 
         const id = this._normalize(file);
+        const { leavesOnly } = options;
 
-        return this._graph.dependantsOf(id);
+        return this._graph.dependantsOf(id, leavesOnly);
     }
 
     // Get the ultimate output for specific files or the entire tree
     async output(args = false) {
+        const { to } = args;
         let { files } = args;
 
         if(!Array.isArray(files)) {
@@ -225,7 +234,6 @@ class Processor {
 
         // Rewrite relative URLs before adding
         // Have to do this every time because target file might be different!
-        //
         const results = [];
 
         for(const dep of files) {
@@ -240,7 +248,7 @@ class Processor {
 
                 params(this, {
                     from : dep,
-                    to   : args.to,
+                    to,
                 })
             );
 
@@ -306,6 +314,11 @@ class Processor {
     // Expose combined options object
     get options() {
         return this._options;
+    }
+
+    // Expose the dependency graph
+    get graph() {
+        return this._graph;
     }
 
     // Return all the compositions for the files loaded into the processor instance

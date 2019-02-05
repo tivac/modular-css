@@ -3,6 +3,7 @@
 const MagicString = require("magic-string");
 const dedent = require("dedent");
 const escape = require("escape-string-regexp");
+const { DepGraph } = require("dependency-graph");
 
 const formats = {
     es     : require("./formats/es.js"),
@@ -38,19 +39,33 @@ module.exports = (opts) => {
                 this.error(`Unsupported format: ${format}. Supported formats are ${JSON.stringify([ ...supported.values() ])}`);
             }
 
-            Object.entries(chunks).forEach(([ entry, chunk ]) => {
-                const {
-                    isAsset = false,
-                    code = "",
-                    dynamicImports = [],
-                } = chunk;
+            const entries = new Map();
+            const graph = new DepGraph({ circular : true });
 
-                // Guard against https://github.com/rollup/rollup/issues/2659
-                const deps = dynamicImports.filter(Boolean);
-                
-                if(isAsset || !deps.length) {
+            Object.entries(chunks).forEach(([ entry, chunk ]) => {
+                const { isAsset, imports, dynamicImports } = chunk;
+
+                if(isAsset) {
                     return;
                 }
+
+                // Guard against https://github.com/rollup/rollup/issues/2659
+                const imported = dynamicImports.filter(Boolean);
+
+                if(imported.length) {
+                    entries.set(entry, imported);
+                }
+
+                graph.addNode(entry);
+                
+                imported.forEach((file) => {
+                    graph.addNode(file);
+                    graph.addDependency(entry, file);
+                });
+            });
+            
+            entries.forEach((deps, entry) => {
+                const { code } = chunks[entry];
 
                 const { regex, loader, load } = formats[format];
 
@@ -72,10 +87,17 @@ module.exports = (opts) => {
                     const [ statement, file ] = result;
                     const { index } = result;
 
-                    const { dynamicAssets : assets = false } = chunks[file];
+                    // eslint-disable-next-line no-loop-func
+                    const css = [ ...graph.dependenciesOf(file), file ].reduce((out, curr) => {
+                        const { assets = [] } = chunks[curr];
 
-                    if(assets && assets.length) {
-                        const imports = assets.map((dep) =>
+                        assets.forEach((asset) => out.add(asset));
+
+                        return out;
+                    }, new Set());
+
+                    if(css.size) {
+                        const imports = [ ...css ].map((dep) =>
                             `${options.loadfn}("./${dep}")`
                         );
 
@@ -91,7 +113,7 @@ module.exports = (opts) => {
 
                 log("Updating", entry);
 
-                chunk.code = str.toString();
+                chunks[entry].code = str.toString();
             });
         },
     };

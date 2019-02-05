@@ -3,7 +3,7 @@
 exports[`/rollup.js case sensitivity tests should remove repeated references that point at the same files 1`] = `
 Array [
   Object {
-    "file": "assets/main.css",
+    "file": "assets/foo.css",
     "text": "/* packages/rollup/test/specimens/casing/bar.css */
 .mc79ab9c62_bar {
     display: none;
@@ -30,7 +30,7 @@ console.log({ foo: foo$1, bar: bar$3, bar2: bar$1 });
 exports[`/rollup.js should accept an existing processor instance (no css in bundle) 1`] = `
 Array [
   Object {
-    "file": "common.css",
+    "file": "fake.css",
     "text": "/* packages/rollup/test/specimens/fake.css */
 .fake {
     color: yellow;
@@ -42,14 +42,14 @@ Array [
 exports[`/rollup.js should accept an existing processor instance 1`] = `
 Array [
   Object {
-    "file": "common.css",
+    "file": "fake.css",
     "text": "/* packages/rollup/test/specimens/fake.css */
 .fake {
     color: yellow;
 }",
   },
   Object {
-    "file": "existing-processor.css",
+    "file": "simple.css",
     "text": "/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
@@ -83,7 +83,7 @@ console.log(fooga);
 exports[`/rollup.js should correctly handle hashed output 1`] = `
 Array [
   Object {
-    "file": "assets/hashes-8d1bcf7b.css",
+    "file": "assets/simple-8d1bcf7b.css",
     "text": "/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
@@ -115,17 +115,17 @@ Array [
 }",
   },
   Object {
-    "file": "assets/hashes-8d1bcf7b.css",
+    "file": "assets/simple-8d1bcf7b.css",
     "text": "/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }
 
-/*# sourceMappingURL=hashes-8d1bcf7b.css.map */",
+/*# sourceMappingURL=simple-8d1bcf7b.css.map */",
   },
   Object {
-    "file": "assets/hashes-8d1bcf7b.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,8CAAA;AAEA;IACI,UAAU;AACd\\",\\"file\\":\\"hashes-[hash].css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
+    "file": "assets/simple-8d1bcf7b.css.map",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,8CAAA;AAEA;IACI,UAAU;AACd\\",\\"file\\":\\"simple-[hash].css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
   },
   Object {
     "file": "hashes.js",
@@ -263,7 +263,7 @@ Array [
   Array [
     "[rollup]",
     "css output",
-    "simple.css",
+    "assets/simple.css",
   ],
   Array [
     "[processor]",
@@ -397,6 +397,26 @@ console.log(css);
 }
 `;
 
+exports[`/rollup.js should output unreferenced CSS 1`] = `
+Array [
+  Object {
+    "file": "fake.css",
+    "text": "/* packages/rollup/test/specimens/fake.css */
+.fake {
+    color: yellow;
+}",
+  },
+  Object {
+    "file": "simple.css",
+    "text": "/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+",
+  },
+]
+`;
+
 exports[`/rollup.js should provide named exports 1`] = `
 Object {
   "named": "var str = \\"\\\\\\"string\\\\\\"\\";
@@ -438,26 +458,6 @@ exports[`/rollup.js should respect the CSS dependency tree 2`] = `
     background: blue;
 }
 "
-`;
-
-exports[`/rollup.js should use the common arg for unreferenced CSS 1`] = `
-Array [
-  Object {
-    "file": "simple.css",
-    "text": "/* packages/rollup/test/specimens/simple.css */
-.fooga {
-    color: red;
-}
-",
-  },
-  Object {
-    "file": "unreferenced.css",
-    "text": "/* packages/rollup/test/specimens/fake.css */
-.fake {
-    color: yellow;
-}",
-  },
-]
 `;
 
 exports[`/rollup.js should warn & not export individual keys when they are not valid identifiers 1`] = `

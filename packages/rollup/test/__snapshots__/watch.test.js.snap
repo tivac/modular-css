@@ -1,21 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/rollup.js watch mode should generate updated output 1`] = `
-"/* packages/rollup/test/output/watch/change/watched.css */
+Array [
+  Object {
+    "file": "watched.css",
+    "text": "/* packages/rollup/test/output/watch/change/watched.css */
 .mc5f9237d4_one {
     color: red;
-}"
+}",
+  },
+]
 `;
 
 exports[`/rollup.js watch mode should generate updated output 2`] = `
-"/* packages/rollup/test/output/watch/change/watched.css */
+Array [
+  Object {
+    "file": "watched.css",
+    "text": "/* packages/rollup/test/output/watch/change/watched.css */
 .mc5f9237d4_two {
     color: blue;
-}"
+}",
+  },
+]
 `;
 
 exports[`/rollup.js watch mode should generate updated output for composes changes 1`] = `
-"/* packages/rollup/test/output/watch/change-composes/watched.css */
+Array [
+  Object {
+    "file": "assets/watched.css",
+    "text": "/* packages/rollup/test/output/watch/change-composes/watched.css */
 .mc0f3c579a_one {
     color: red;
 }
@@ -26,22 +39,47 @@ exports[`/rollup.js watch mode should generate updated output for composes chang
 
 .mc0f3c579a_three {
     color: teal;
-}"
-`;
-
-exports[`/rollup.js watch mode should generate updated output for composes changes 2`] = `
-"var css = {
+}",
+  },
+  Object {
+    "file": "watch-output.js",
+    "text": "var css = {
     \\"one\\": \\"mc0f3c579a_one\\",
     \\"two\\": \\"mc0f3c579a_one mc0f3c579a_two\\",
     \\"three\\": \\"mc0f3c579a_three\\"
 };
 
 console.log(css);
-"
+",
+  },
+  Object {
+    "file": "watched.css",
+    "text": ".one {
+    color: red;
+}
+
+.two {
+    composes: one;
+    background: blue;
+}
+
+.three {
+    color: teal;
+}",
+  },
+  Object {
+    "file": "watched.js",
+    "text": "import css from \\"./watched.css\\";
+console.log(css);",
+  },
+]
 `;
 
-exports[`/rollup.js watch mode should generate updated output for composes changes 3`] = `
-"/* packages/rollup/test/output/watch/change-composes/watched.css */
+exports[`/rollup.js watch mode should generate updated output for composes changes 2`] = `
+Array [
+  Object {
+    "file": "assets/watched.css",
+    "text": "/* packages/rollup/test/output/watch/change-composes/watched.css */
 .mc0f3c579a_one {
     color: green;
 }
@@ -52,22 +90,48 @@ exports[`/rollup.js watch mode should generate updated output for composes chang
 
 .mc0f3c579a_three {
     color: teal;
-}"
-`;
-
-exports[`/rollup.js watch mode should generate updated output for composes changes 4`] = `
-"var css = {
+}",
+  },
+  Object {
+    "file": "watch-output.js",
+    "text": "var css = {
     \\"one\\": \\"mc0f3c579a_one\\",
     \\"two\\": \\"mc0f3c579a_one mc0f3c579a_two\\",
     \\"three\\": \\"mc0f3c579a_one mc0f3c579a_three\\"
 };
 
 console.log(css);
-"
+",
+  },
+  Object {
+    "file": "watched.css",
+    "text": ".one {
+    color: green;
+}
+
+.two {
+    composes: one;
+    background: blue;
+}
+
+.three {
+    composes: one;
+    color: teal;
+}",
+  },
+  Object {
+    "file": "watched.js",
+    "text": "import css from \\"./watched.css\\";
+console.log(css);",
+  },
+]
 `;
 
 exports[`/rollup.js watch mode should update when a dependency changes 1`] = `
-"/* packages/rollup/test/output/watch/dep-graph/two.css */
+Array [
+  Object {
+    "file": "one.css",
+    "text": "/* packages/rollup/test/output/watch/dep-graph/two.css */
 .mc6f857f1c_two {
     color: blue;
 }
@@ -78,11 +142,16 @@ exports[`/rollup.js watch mode should update when a dependency changes 1`] = `
 /* packages/rollup/test/output/watch/dep-graph/one.css */
 .mca3136a1b_one {
     color: red;
-}"
+}",
+  },
+]
 `;
 
 exports[`/rollup.js watch mode should update when a dependency changes 2`] = `
-"/* packages/rollup/test/output/watch/dep-graph/two.css */
+Array [
+  Object {
+    "file": "one.css",
+    "text": "/* packages/rollup/test/output/watch/dep-graph/two.css */
 .mc6f857f1c_two {
     color: green;
 }
@@ -93,11 +162,16 @@ exports[`/rollup.js watch mode should update when a dependency changes 2`] = `
 /* packages/rollup/test/output/watch/dep-graph/one.css */
 .mca3136a1b_one {
     color: red;
-}"
+}",
+  },
+]
 `;
 
 exports[`/rollup.js watch mode should update when a shared dependency changes 1`] = `
-"/* packages/rollup/test/output/watch/shared-deps/two.css */
+Array [
+  Object {
+    "file": "three.css",
+    "text": "/* packages/rollup/test/output/watch/shared-deps/two.css */
 .mc5067d789_two {
     color: green;
 }
@@ -108,11 +182,16 @@ exports[`/rollup.js watch mode should update when a shared dependency changes 1`
 /* packages/rollup/test/output/watch/shared-deps/three.css */
 .mc4ec9318b_three {
     color: teal;
-}"
+}",
+  },
+]
 `;
 
 exports[`/rollup.js watch mode should update when a shared dependency changes 2`] = `
-"/* packages/rollup/test/output/watch/shared-deps/two.css */
+Array [
+  Object {
+    "file": "three.css",
+    "text": "/* packages/rollup/test/output/watch/shared-deps/two.css */
 .mc5067d789_two {
     color: yellow;
 }
@@ -123,64 +202,75 @@ exports[`/rollup.js watch mode should update when a shared dependency changes 2`
 /* packages/rollup/test/output/watch/shared-deps/three.css */
 .mc4ec9318b_three {
     color: teal;
-}"
+}",
+  },
+]
 `;
 
-exports[`/rollup.js watch mode should update when adding new css files 1`] = `
-"/* packages/rollup/test/output/watch/new-file/one.css */
+exports[`/rollup.js watch mode should update when adding new css files 1`] = `Array []`;
+
+exports[`/rollup.js watch mode should update when adding new css files 2`] = `
+Array [
+  Object {
+    "file": "one.css",
+    "text": "/* packages/rollup/test/output/watch/new-file/one.css */
 .mc54f12712_one {
     color: red;
-}"
+}",
+  },
+]
 `;
 
 exports[`/rollup.js watch mode should watch when using code splitting 1`] = `
-"/* packages/rollup/test/output/watch/code-splitting/one.css */
+Array [
+  Object {
+    "file": "one.css",
+    "text": "/* packages/rollup/test/output/watch/code-splitting/values.css */
+/* packages/rollup/test/output/watch/code-splitting/shared.css */
+.mc4002e81f_shared {
+    color: blue;
+}
+/* packages/rollup/test/output/watch/code-splitting/one.css */
 .mc204ad279_one {
     color: red;
-}"
+}",
+  },
+  Object {
+    "file": "two.css",
+    "text": "/* packages/rollup/test/output/watch/code-splitting/two.css */
+.mc3861d3af_two {
+    color: green;
+}",
+  },
+]
 `;
 
 exports[`/rollup.js watch mode should watch when using code splitting 2`] = `
-"/* packages/rollup/test/output/watch/code-splitting/two.css */
-.mc3861d3af_two {
-    color: green;
-}"
-`;
-
-exports[`/rollup.js watch mode should watch when using code splitting 3`] = `
-"/* packages/rollup/test/output/watch/code-splitting/values.css */
-/* packages/rollup/test/output/watch/code-splitting/shared.css */
-.mc4002e81f_shared {
-    color: blue;
-}"
-`;
-
-exports[`/rollup.js watch mode should watch when using code splitting 4`] = `
-"/* packages/rollup/test/output/watch/code-splitting/one.css */
+Array [
+  Object {
+    "file": "one.css",
+    "text": "/* packages/rollup/test/output/watch/code-splitting/one.css */
 .mc204ad279_one {
     color: red;
-}"
-`;
-
-exports[`/rollup.js watch mode should watch when using code splitting 5`] = `
-"/* packages/rollup/test/output/watch/code-splitting/two.css */
-.mc3861d3af_two {
-    color: green;
-}"
-`;
-
-exports[`/rollup.js watch mode should watch when using code splitting 6`] = `
-"/* packages/rollup/test/output/watch/code-splitting/one.css */
-.mc204ad279_one {
-    color: red;
-}
-/* packages/rollup/test/output/watch/code-splitting/two.css */
-.mc3861d3af_two {
-    color: green;
-}
-/* packages/rollup/test/output/watch/code-splitting/shared.css */
+}",
+  },
+  Object {
+    "file": "shared.css",
+    "text": "/* packages/rollup/test/output/watch/code-splitting/shared.css */
 .mc4002e81f_shared {
     color: blue;
-}
-/* packages/rollup/test/output/watch/code-splitting/values.css */"
+}",
+  },
+  Object {
+    "file": "two.css",
+    "text": "/* packages/rollup/test/output/watch/code-splitting/two.css */
+.mc3861d3af_two {
+    color: green;
+}",
+  },
+  Object {
+    "file": "values.css",
+    "text": "/* packages/rollup/test/output/watch/code-splitting/values.css */",
+  },
+]
 `;

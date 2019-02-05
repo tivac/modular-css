@@ -1,5 +1,0 @@
-.d {
-    composes: shared from "./shared.css";
-
-    color: deepskyblue;
-}

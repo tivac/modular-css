@@ -1,0 +1,5 @@
+.a {
+    composes: c from "./c.css";
+
+    color: aqua;
+}

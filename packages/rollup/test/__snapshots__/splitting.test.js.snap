@@ -1,5 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/rollup.js code splitting should correctly chunk up CSS files 1`] = `
+Array [
+  Object {
+    "file": "a.css",
+    "text": "/* packages/rollup/test/specimens/css-dependencies/a.css */
+.a {
+    color: aqua;
+}
+",
+  },
+  Object {
+    "file": "b.css",
+    "text": "/* packages/rollup/test/specimens/css-dependencies/b.css */
+.b {
+    color: blue;
+}
+",
+  },
+  Object {
+    "file": "c.css",
+    "text": "/* packages/rollup/test/specimens/css-dependencies/c.css */
+.c {
+    color: cyan;
+}
+",
+  },
+]
+`;
+
 exports[`/rollup.js code splitting should dedupe chunk names using rollup's incrementing counter logic (hashed) 1`] = `
 Array [
   Object {
@@ -13,7 +42,17 @@ Array [
   },
   Object {
     "file": "a-8dc3c49a.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: aqua;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n    \\\\n    color: aqua;\\\\n}\\\\n\\"]}",
+  },
+  Object {
+    "file": "a-bfb0bddb.css",
+    "text": "/* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */
+.a { color: azure; }
+/*# sourceMappingURL=a-bfb0bddb.css.map */",
+  },
+  Object {
+    "file": "a-bfb0bddb.css.map",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/subfolder/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,mEAAA;AAAA,KAAK,YAAY,EAAE\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".a { color: azure; }\\"]}",
   },
   Object {
     "file": "b-fc0ef588.css",
@@ -26,46 +65,7 @@ Array [
   },
   Object {
     "file": "b-fc0ef588.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"b-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
-  },
-  Object {
-    "file": "chunk-2f7464a0.css",
-    "text": "/* packages/rollup/test/specimens/multiple-chunks/constants.css */ /* packages/rollup/test/specimens/multiple-chunks/shared.css */
-.shared { color: salmon; }
-
-.other { color: blue; }
-
-/*# sourceMappingURL=chunk-2f7464a0.css.map */",
-  },
-  Object {
-    "file": "chunk-2f7464a0.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/constants.css\\",\\"../../../specimens/multiple-chunks/shared.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,iEAAA,ECAA,8DAAA;AAEA,UAAU,aAAa,EAAE;;AAEzB,SDJA,WAAiB,ECIK\\",\\"file\\":\\"chunk-[hash].css\\",\\"sourcesContent\\":[\\"@value main: blue;\\\\n\\",\\"@value main from \\\\\\"./constants.css\\\\\\";\\\\n\\\\n.shared { color: salmon; }\\\\n\\\\n.other { color: main; }\\\\n\\"]}",
-  },
-  Object {
-    "file": "chunk-48a593d7.css",
-    "text": "/* packages/rollup/test/specimens/multiple-chunks/c.css */
-.c {
-    color: coral;
-}
-
-/*# sourceMappingURL=chunk-48a593d7.css.map */",
-  },
-  Object {
-    "file": "chunk-48a593d7.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,YAAW;AACf\\",\\"file\\":\\"chunk-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
-  },
-  Object {
-    "file": "chunk-ee76f9f0.css",
-    "text": "/* packages/rollup/test/specimens/multiple-chunks/d.css */
-.d {
-    color: deepskyblue;
-}
-
-/*# sourceMappingURL=chunk-ee76f9f0.css.map */",
-  },
-  Object {
-    "file": "chunk-ee76f9f0.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,kBAAW;AACf\\",\\"file\\":\\"chunk-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"b-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
   },
 ]
 `;
@@ -74,6 +74,16 @@ exports[`/rollup.js code splitting should dedupe chunk names using rollup's incr
 Array [
   Object {
     "file": "a.css",
+    "text": "/* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */
+.a { color: azure; }
+/*# sourceMappingURL=a.css.map */",
+  },
+  Object {
+    "file": "a.css.map",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/subfolder/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,mEAAA;AAAA,KAAK,YAAY,EAAE\\",\\"file\\":\\"a.css\\",\\"sourcesContent\\":[\\".a { color: azure; }\\"]}",
+  },
+  Object {
+    "file": "a2.css",
     "text": "/* packages/rollup/test/specimens/multiple-chunks/a.css */
 .a {
     color: aqua;
@@ -82,8 +92,8 @@ Array [
 /*# sourceMappingURL=a.css.map */",
   },
   Object {
-    "file": "a.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"a.css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: aqua;\\\\n}\\\\n\\"]}",
+    "file": "a2.css.map",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"a.css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n    \\\\n    color: aqua;\\\\n}\\\\n\\"]}",
   },
   Object {
     "file": "b.css",
@@ -96,58 +106,13 @@ Array [
   },
   Object {
     "file": "b.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"b.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
-  },
-  Object {
-    "file": "chunk.css",
-    "text": "/* packages/rollup/test/specimens/multiple-chunks/constants.css */ /* packages/rollup/test/specimens/multiple-chunks/shared.css */
-.shared { color: salmon; }
-
-.other { color: blue; }
-
-/*# sourceMappingURL=chunk.css.map */",
-  },
-  Object {
-    "file": "chunk.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/constants.css\\",\\"../../../specimens/multiple-chunks/shared.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,iEAAA,ECAA,8DAAA;AAEA,UAAU,aAAa,EAAE;;AAEzB,SDJA,WAAiB,ECIK\\",\\"file\\":\\"chunk.css\\",\\"sourcesContent\\":[\\"@value main: blue;\\\\n\\",\\"@value main from \\\\\\"./constants.css\\\\\\";\\\\n\\\\n.shared { color: salmon; }\\\\n\\\\n.other { color: main; }\\\\n\\"]}",
-  },
-  Object {
-    "file": "chunk2.css",
-    "text": "/* packages/rollup/test/specimens/multiple-chunks/d.css */
-.d {
-    color: deepskyblue;
-}
-",
-  },
-  Object {
-    "file": "chunk2.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,kBAAW;AACf\\",\\"file\\":\\"chunk.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
-  },
-  Object {
-    "file": "chunk3.css",
-    "text": "/* packages/rollup/test/specimens/multiple-chunks/c.css */
-.c {
-    color: coral;
-}
-",
-  },
-  Object {
-    "file": "chunk3.css.map",
-    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,YAAW;AACf\\",\\"file\\":\\"chunk.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: shared from \\\\\\"./shared.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+    "text": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"b.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
   },
 ]
 `;
 
 exports[`/rollup.js code splitting should ouput only 1 JSON file 1`] = `
 Array [
-  Object {
-    "file": "chunk.css",
-    "text": "/* packages/rollup/test/specimens/simple.css */
-.fooga {
-    color: red;
-}
-",
-  },
   Object {
     "file": "dependencies.css",
     "text": "/* packages/rollup/test/specimens/dependencies.css */
@@ -168,6 +133,14 @@ Array [
     }
 }",
   },
+  Object {
+    "file": "simple.css",
+    "text": "/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+",
+  },
 ]
 `;
 
@@ -186,36 +159,33 @@ Array [
 ",
   },
   Object {
-    "file": "chunk.css",
+    "file": "d.css",
     "text": "/* packages/rollup/test/specimens/metadata/d.css */
 .mc7de0d66b_d { color: darkkhaki; }
 ",
   },
   Object {
-    "file": "common.css",
+    "file": "fake.css",
     "text": "/* fake.css */
 .mc2c838439_fake { color: red; }",
   },
   Object {
     "file": "metadata.json",
     "text": "{
-    \\"chunk2.js\\": {
-        \\"assets\\": [],
-        \\"dynamicAssets\\": [
-            \\"assets/chunk.css\\"
-        ]
-    },
     \\"a.js\\": {
         \\"assets\\": [
             \\"assets/a.css\\"
-        ],
-        \\"dynamicAssets\\": []
+        ]
     },
     \\"b.js\\": {
         \\"assets\\": [
             \\"assets/b.css\\"
-        ],
-        \\"dynamicAssets\\": []
+        ]
+    },
+    \\"chunk2.js\\": {
+        \\"assets\\": [
+            \\"assets/d.css\\"
+        ]
     }
 }",
   },
@@ -240,10 +210,14 @@ export default a$1;
 ",
   },
   Object {
-    "file": "assets/common.css",
+    "file": "assets/a.css",
     "text": "/* packages/rollup/test/specimens/circular-dependencies/a.css */
 .a { color: aqua; }
-/* packages/rollup/test/specimens/circular-dependencies/b.css */
+",
+  },
+  Object {
+    "file": "assets/b.css",
+    "text": "/* packages/rollup/test/specimens/circular-dependencies/b.css */
 .b { color: blue; }
 ",
   },
@@ -269,15 +243,7 @@ exports[`/rollup.js code splitting should support dynamic imports 1`] = `
 Array [
   Object {
     "file": "a.css",
-    "text": "/* packages/rollup/test/specimens/dynamic-imports/f.css */
-.f {
-    color: floralwhite;
-}
-/* packages/rollup/test/specimens/dynamic-imports/d.css */
-.d {
-    color: darkred;
-}
-/* packages/rollup/test/specimens/dynamic-imports/a.css */
+    "text": "/* packages/rollup/test/specimens/dynamic-imports/a.css */
 .a {
     color: aqua;
 }
@@ -296,10 +262,22 @@ Array [
 ",
   },
   Object {
-    "file": "chunk.css",
+    "file": "c.css",
     "text": "/* packages/rollup/test/specimens/dynamic-imports/c.css */
 .c {
     color: cyan;
+}
+",
+  },
+  Object {
+    "file": "d.css",
+    "text": "/* packages/rollup/test/specimens/dynamic-imports/f.css */
+.f {
+    color: floralwhite;
+}
+/* packages/rollup/test/specimens/dynamic-imports/d.css */
+.d {
+    color: darkred;
 }
 ",
   },
@@ -325,7 +303,7 @@ Array [
 ",
   },
   Object {
-    "file": "shared.css",
+    "file": "c.css",
     "text": "/* packages/rollup/test/specimens/manual-chunks/d.css */
 /* packages/rollup/test/specimens/manual-chunks/c.css */
 .c {
@@ -352,7 +330,7 @@ Array [
 ",
   },
   Object {
-    "file": "chunk.css",
+    "file": "d.css",
     "text": "/* packages/rollup/test/specimens/metadata/d.css */
 .d { color: darkkhaki; }
 ",
@@ -360,23 +338,20 @@ Array [
   Object {
     "file": "metadata.json",
     "text": "{
-    \\"chunk2.js\\": {
-        \\"assets\\": [],
-        \\"dynamicAssets\\": [
-            \\"assets/chunk.css\\"
-        ]
-    },
     \\"a.js\\": {
         \\"assets\\": [
             \\"assets/a.css\\"
-        ],
-        \\"dynamicAssets\\": []
+        ]
     },
     \\"b.js\\": {
         \\"assets\\": [
             \\"assets/b.css\\"
-        ],
-        \\"dynamicAssets\\": []
+        ]
+    },
+    \\"chunk2.js\\": {
+        \\"assets\\": [
+            \\"assets/d.css\\"
+        ]
     }
 }",
   },
@@ -398,33 +373,30 @@ Array [
 ",
   },
   Object {
-    "file": "chunk.css",
-    "text": "/* packages/rollup/test/specimens/metadata/d.css */
-.d { color: darkkhaki; }
-",
-  },
-  Object {
     "file": "chunks.json",
     "text": "{
-    \\"chunk2.js\\": {
-        \\"assets\\": [],
-        \\"dynamicAssets\\": [
-            \\"assets/chunk.css\\"
-        ]
-    },
     \\"a.js\\": {
         \\"assets\\": [
             \\"assets/a.css\\"
-        ],
-        \\"dynamicAssets\\": []
+        ]
     },
     \\"b.js\\": {
         \\"assets\\": [
             \\"assets/b.css\\"
-        ],
-        \\"dynamicAssets\\": []
+        ]
+    },
+    \\"chunk2.js\\": {
+        \\"assets\\": [
+            \\"assets/d.css\\"
+        ]
     }
 }",
+  },
+  Object {
+    "file": "d.css",
+    "text": "/* packages/rollup/test/specimens/metadata/d.css */
+.d { color: darkkhaki; }
+",
   },
 ]
 `;
@@ -432,18 +404,18 @@ Array [
 exports[`/rollup.js code splitting should support splitting up CSS files 1`] = `
 Array [
   Object {
-    "file": "chunk.css",
-    "text": "/* packages/rollup/test/specimens/simple.css */
-.fooga {
-    color: red;
-}
-",
-  },
-  Object {
     "file": "dependencies.css",
     "text": "/* packages/rollup/test/specimens/dependencies.css */
 .wooga {
     background: blue;
+}
+",
+  },
+  Object {
+    "file": "simple.css",
+    "text": "/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
 }
 ",
   },
@@ -469,14 +441,18 @@ Array [
 ",
   },
   Object {
-    "file": "chunk.css",
+    "file": "c.css",
+    "text": "/* packages/rollup/test/specimens/css-chunks/c.css */
+.c {
+    color: cyan;
+}
+",
+  },
+  Object {
+    "file": "shared.css",
     "text": "/* packages/rollup/test/specimens/css-chunks/shared.css */
 .shared {
     color: snow;
-}
-/* packages/rollup/test/specimens/css-chunks/c.css */
-.c {
-    color: cyan;
 }
 ",
   },
@@ -488,7 +464,7 @@ exports[`/rollup.js code splitting shouldn't break when dynamic imports are tree
 exports[`/rollup.js code splitting shouldn't put bundle-specific CSS in common.css 1`] = `
 Array [
   Object {
-    "file": "a.css",
+    "file": "b.css",
     "text": "/* packages/rollup/test/specimens/common-splitting/shared.css */
 .shared {
     color: snow;

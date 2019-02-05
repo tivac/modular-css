@@ -1,5 +1,5 @@
 .b {
-    composes: shared from "./shared.css";
+    composes: a from "./subfolder/a.css";
 
     color: blue;
 }

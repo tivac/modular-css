@@ -36,13 +36,13 @@ module.exports = () => {
 
         const { id, selectors } = meta.get(file);
         
-        // Has to use "in" because they can be 0 which is falsey
-        if(!selectors.has(selector)) {
-            selectors.set(selector, selectors.size);
-        }
+        // Don't need to cache this because repeats were caught by the cache up above
+        selectors.set(selector, selectors.size);
 
-        cache[key] = value(letters, id) + value(everything, selectors.get(selector));
+        const output = value(letters, id) + value(everything, selectors.get(selector));
 
-        return cache[key];
+        cache.set(key, output);
+
+        return output;
     };
 };
