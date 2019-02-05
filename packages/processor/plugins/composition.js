@@ -94,8 +94,12 @@ module.exports = (css, result) => {
             }
         });
 
+        const next = decl.next();
+
         // Remove just the composes declaration if there are other declarations
-        if(decl.parent.nodes.length > 1) {
+        if(next) {
+            next.raws.before = decl.raw("before");
+
             return decl.remove();
         }
 
