@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [22.1.0](https://github.com/tivac/modular-css/compare/v22.0.2...v22.1.0) (2019-02-06)
+
+
+### Features
+
+* new website ([#557](https://github.com/tivac/modular-css/issues/557)) ([059fd7a](https://github.com/tivac/modular-css/commit/059fd7a))
+* svelte processor arg & improved test coverage ([#558](https://github.com/tivac/modular-css/issues/558)) ([7655d72](https://github.com/tivac/modular-css/commit/7655d72))
+
+
+
+
+
 ## [22.0.1](https://github.com/tivac/modular-css/compare/v22.0.0...v22.0.1) (2019-01-27)
 
 **Note:** Version bump only for package @modular-css/website
