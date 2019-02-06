@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/svelte.js should extract CSS from a <link> tag ("existing script") 1`] = `
+exports[`/svelte.js should extract CSS from a <link> tag (existing script) 1`] = `
 "
 <div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
@@ -30,7 +30,7 @@ export default {
 "
 `;
 
-exports[`/svelte.js should extract CSS from a <link> tag ("existing script") 2`] = `
+exports[`/svelte.js should extract CSS from a <link> tag (existing script) 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
 .fooga {
     color: red;
@@ -52,7 +52,7 @@ exports[`/svelte.js should extract CSS from a <link> tag ("existing script") 2`]
 "
 `;
 
-exports[`/svelte.js should extract CSS from a <link> tag ("no script") 1`] = `
+exports[`/svelte.js should extract CSS from a <link> tag (no script) 1`] = `
 "
 <div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
@@ -65,7 +65,7 @@ exports[`/svelte.js should extract CSS from a <link> tag ("no script") 1`] = `
 </script>"
 `;
 
-exports[`/svelte.js should extract CSS from a <link> tag ("no script") 2`] = `
+exports[`/svelte.js should extract CSS from a <link> tag (no script) 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
 .fooga {
     color: red;
@@ -87,7 +87,7 @@ exports[`/svelte.js should extract CSS from a <link> tag ("no script") 2`] = `
 "
 `;
 
-exports[`/svelte.js should extract CSS from a <link> tag ("single quotes") 1`] = `
+exports[`/svelte.js should extract CSS from a <link> tag (single quotes) 1`] = `
 "
 <div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
@@ -100,7 +100,7 @@ exports[`/svelte.js should extract CSS from a <link> tag ("single quotes") 1`] =
 </script>"
 `;
 
-exports[`/svelte.js should extract CSS from a <link> tag ("single quotes") 2`] = `
+exports[`/svelte.js should extract CSS from a <link> tag (single quotes) 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
 .fooga {
     color: red;
@@ -122,7 +122,7 @@ exports[`/svelte.js should extract CSS from a <link> tag ("single quotes") 2`] =
 "
 `;
 
-exports[`/svelte.js should extract CSS from a <link> tag ("unquoted") 1`] = `
+exports[`/svelte.js should extract CSS from a <link> tag (unquoted) 1`] = `
 "
 <div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
@@ -135,7 +135,7 @@ exports[`/svelte.js should extract CSS from a <link> tag ("unquoted") 1`] = `
 </script>"
 `;
 
-exports[`/svelte.js should extract CSS from a <link> tag ("unquoted") 2`] = `
+exports[`/svelte.js should extract CSS from a <link> tag (unquoted) 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
 .fooga {
     color: red;
@@ -157,7 +157,7 @@ exports[`/svelte.js should extract CSS from a <link> tag ("unquoted") 2`] = `
 "
 `;
 
-exports[`/svelte.js should extract CSS from a <link> tag ("values") 1`] = `
+exports[`/svelte.js should extract CSS from a <link> tag (values) 1`] = `
 "
 <div
     data-simple=\\"color: #BEEFED\\"
@@ -180,7 +180,7 @@ import css from \\"./external.css\\";
 "
 `;
 
-exports[`/svelte.js should extract CSS from a <link> tag ("values") 2`] = `
+exports[`/svelte.js should extract CSS from a <link> tag (values) 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
 .fooga {
     color: red;
@@ -244,9 +244,9 @@ exports[`/svelte.js should extract CSS from a <style> tag 2`] = `
 "
 `;
 
-exports[`/svelte.js should handle errors: "empty css file - <link>" 1`] = `"@modular-css/svelte: Unable to find .nope, .alsonope in \\"./empty.css\\""`;
+exports[`/svelte.js should handle errors: empty css file - <link> 1`] = `"@modular-css/svelte: Unable to find .nope, .alsonope in \\"./empty.css\\""`;
 
-exports[`/svelte.js should handle errors: "empty css file - <link>" 2`] = `
+exports[`/svelte.js should handle errors: empty css file - <link> 2`] = `
 Array [
   Array [
     "@modular-css/svelte: Unable to find .nope in \\"./empty.css\\"",
@@ -257,7 +257,7 @@ Array [
 ]
 `;
 
-exports[`/svelte.js should handle errors: "empty css file - <link>" 3`] = `
+exports[`/svelte.js should handle errors: empty css file - <link> 3`] = `
 "
 <div class=\\"{css.nope}\\">NOPE</div>
 <div class=\\"{css.alsonope}\\">STILL NOPE</div>
@@ -266,9 +266,9 @@ exports[`/svelte.js should handle errors: "empty css file - <link>" 3`] = `
 </script>"
 `;
 
-exports[`/svelte.js should handle errors: "empty css file - <style>" 1`] = `"@modular-css/svelte: Unable to find .nope, .alsonope in \\"<style>\\""`;
+exports[`/svelte.js should handle errors: empty css file - <style> 1`] = `"@modular-css/svelte: Unable to find .nope, .alsonope in \\"<style>\\""`;
 
-exports[`/svelte.js should handle errors: "empty css file - <style>" 2`] = `
+exports[`/svelte.js should handle errors: empty css file - <style> 2`] = `
 Array [
   Array [
     "@modular-css/svelte: Unable to find .nope in \\"<style>\\"",
@@ -279,7 +279,7 @@ Array [
 ]
 `;
 
-exports[`/svelte.js should handle errors: "empty css file - <style>" 3`] = `
+exports[`/svelte.js should handle errors: empty css file - <style> 3`] = `
 "<div class=\\"{css.nope}\\">NOPE</div>
 <div class=\\"{css.alsonope}\\">STILL NOPE</div>
 
@@ -287,9 +287,9 @@ exports[`/svelte.js should handle errors: "empty css file - <style>" 3`] = `
 "
 `;
 
-exports[`/svelte.js should handle errors: "invalid reference <script> - <link>" 1`] = `"@modular-css/svelte: Unable to find .nuhuh in \\"./invalid.css\\""`;
+exports[`/svelte.js should handle errors: invalid reference <script> - <link> 1`] = `"@modular-css/svelte: Unable to find .nuhuh in \\"./invalid.css\\""`;
 
-exports[`/svelte.js should handle errors: "invalid reference <script> - <link>" 2`] = `
+exports[`/svelte.js should handle errors: invalid reference <script> - <link> 2`] = `
 Array [
   Array [
     "@modular-css/svelte: Unable to find .nuhuh in \\"./invalid.css\\"",
@@ -297,7 +297,7 @@ Array [
 ]
 `;
 
-exports[`/svelte.js should handle errors: "invalid reference <script> - <link>" 3`] = `
+exports[`/svelte.js should handle errors: invalid reference <script> - <link> 3`] = `
 "
 <h2 class=\\"yup\\">Yup</h2>
 
@@ -310,9 +310,9 @@ import css from \\"./invalid.css\\";
 "
 `;
 
-exports[`/svelte.js should handle errors: "invalid reference <script> - <style>" 1`] = `"@modular-css/svelte: Unable to find .nuhuh in \\"<style>\\""`;
+exports[`/svelte.js should handle errors: invalid reference <script> - <style> 1`] = `"@modular-css/svelte: Unable to find .nuhuh in \\"<style>\\""`;
 
-exports[`/svelte.js should handle errors: "invalid reference <script> - <style>" 2`] = `
+exports[`/svelte.js should handle errors: invalid reference <script> - <style> 2`] = `
 Array [
   Array [
     "@modular-css/svelte: Unable to find .nuhuh in \\"<style>\\"",
@@ -320,7 +320,7 @@ Array [
 ]
 `;
 
-exports[`/svelte.js should handle errors: "invalid reference <script> - <style>" 3`] = `
+exports[`/svelte.js should handle errors: invalid reference <script> - <style> 3`] = `
 "<h2 class=\\"yup\\">Yup</h2>
 
 <style>/* replaced by modular-css */</style>
@@ -331,9 +331,9 @@ exports[`/svelte.js should handle errors: "invalid reference <script> - <style>"
 "
 `;
 
-exports[`/svelte.js should handle errors: "invalid reference template - <link>" 1`] = `"@modular-css/svelte: Unable to find .nope in \\"./invalid.css\\""`;
+exports[`/svelte.js should handle errors: invalid reference template - <link> 1`] = `"@modular-css/svelte: Unable to find .nope in \\"./invalid.css\\""`;
 
-exports[`/svelte.js should handle errors: "invalid reference template - <link>" 2`] = `
+exports[`/svelte.js should handle errors: invalid reference template - <link> 2`] = `
 Array [
   Array [
     "@modular-css/svelte: Unable to find .nope in \\"./invalid.css\\"",
@@ -341,7 +341,7 @@ Array [
 ]
 `;
 
-exports[`/svelte.js should handle errors: "invalid reference template - <link>" 3`] = `
+exports[`/svelte.js should handle errors: invalid reference template - <link> 3`] = `
 "
 <h1 class=\\"{css.nope}\\">Nope</h1>
 <h2 class=\\"yup\\">Yup</h2>
@@ -350,9 +350,9 @@ exports[`/svelte.js should handle errors: "invalid reference template - <link>" 
 </script>"
 `;
 
-exports[`/svelte.js should handle errors: "invalid reference template - <style>" 1`] = `"@modular-css/svelte: Unable to find .nope in \\"<style>\\""`;
+exports[`/svelte.js should handle errors: invalid reference template - <style> 1`] = `"@modular-css/svelte: Unable to find .nope in \\"<style>\\""`;
 
-exports[`/svelte.js should handle errors: "invalid reference template - <style>" 2`] = `
+exports[`/svelte.js should handle errors: invalid reference template - <style> 2`] = `
 Array [
   Array [
     "@modular-css/svelte: Unable to find .nope in \\"<style>\\"",
@@ -360,7 +360,7 @@ Array [
 ]
 `;
 
-exports[`/svelte.js should handle errors: "invalid reference template - <style>" 3`] = `
+exports[`/svelte.js should handle errors: invalid reference template - <style> 3`] = `
 "<h1 class=\\"{css.nope}\\">Nope</h1>
 <h2 class=\\"yup\\">Yup</h2>
 
@@ -446,7 +446,7 @@ exports[`/svelte.js should no-op if all <link>s reference a URL 1`] = `
 "
 `;
 
-exports[`/svelte.js should support verbose output: "<link>" 1`] = `
+exports[`/svelte.js should support verbose output: <link> 1`] = `
 Array [
   Array [
     "[svelte]",
@@ -545,7 +545,7 @@ Array [
 ]
 `;
 
-exports[`/svelte.js should support verbose output: "<style>" 1`] = `
+exports[`/svelte.js should support verbose output: <style> 1`] = `
 Array [
   Array [
     "[svelte]",
