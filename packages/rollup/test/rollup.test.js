@@ -576,7 +576,7 @@ describe("/rollup.js", () => {
         logSnapshot();
     });
 
-    it.only("should output assets with a .css file extension", async () => {
+    it("should output assets with a .css file extension", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/file-extension/entry.js"),
             plugins : [
