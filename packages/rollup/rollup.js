@@ -23,12 +23,14 @@ module.exports = (opts) => {
     const options = Object.assign(Object.create(null), {
         common       : "common.css",
         dev          : false,
-        include      : "**/*.css",
         json         : false,
         meta         : false,
         namedExports : true,
         styleExport  : false,
         verbose      : false,
+        
+        // Regexp to work around https://github.com/rollup/rollup-pluginutils/issues/39
+        include : /\.css$/i,
     }, opts);
 
     const filter = utils.createFilter(options.include, options.exclude);
