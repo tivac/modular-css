@@ -587,7 +587,10 @@ describe("/rollup.js", () => {
             ],
         });
 
-        const result = await bundle.generate({ format });
+        const result = await bundle.generate({
+            format,
+            assetFileNames,
+        });
 
         expect(result).toMatchRollupSnapshot();
     });

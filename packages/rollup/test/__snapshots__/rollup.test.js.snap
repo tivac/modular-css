@@ -399,7 +399,7 @@ console.log(css);
 
 exports[`/rollup.js should output assets with a .css file extension 1`] = `
 Object {
-  "assets/style-ea90c2f3.css": "
+  "assets/style.css": "
 /* packages/rollup/test/specimens/file-extension/style.cssx */
 .style {
     color: salmon;
