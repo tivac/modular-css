@@ -15,6 +15,7 @@ const namer   = require("@modular-css/test-utils/namer.js");
 const logs    = require("@modular-css/test-utils/logs.js");
 
 require("@modular-css/test-utils/rollup-code-snapshot.js");
+require("@modular-css/test-utils/rollup-build-snapshot.js");
 
 const Processor = require("@modular-css/processor");
 
@@ -573,6 +574,22 @@ describe("/rollup.js", () => {
         await processor.output();
 
         logSnapshot();
+    });
+
+    it.only("should output assets with a .css file extension", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/file-extension/entry.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    include : /\.cssx$/
+                }),
+            ],
+        });
+
+        const result = await bundle.generate({ format });
+
+        expect(result).toMatchRollupSnapshot();
     });
 
     describe("case sensitivity tests", () => {
