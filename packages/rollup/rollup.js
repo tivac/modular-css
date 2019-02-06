@@ -220,8 +220,10 @@ module.exports = (opts) => {
                     continue;
                 }
 
-                const { name, ext, base } = path.parse(node);
-                const id = this.emitAsset(base);
+                const ext = ".css";
+                const name = path.basename(node, path.extname(node));
+                
+                const id = this.emitAsset(`${name}${ext}`);
 
                 /* eslint-disable-next-line no-await-in-loop */
                 const result = await processor.output({

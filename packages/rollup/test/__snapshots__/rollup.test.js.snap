@@ -397,6 +397,24 @@ console.log(css);
 }
 `;
 
+exports[`/rollup.js should output assets with a .css file extension 1`] = `
+Object {
+  "assets/style.css": "
+/* packages/rollup/test/specimens/file-extension/style.cssx */
+.style {
+    color: salmon;
+}
+",
+  "entry.js": "
+var style = {
+    \\"style\\": \\"style\\"
+};
+
+console.log(style);
+",
+}
+`;
+
 exports[`/rollup.js should output unreferenced CSS 1`] = `
 Array [
   Object {
