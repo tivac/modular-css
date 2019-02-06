@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.1.1](https://github.com/tivac/modular-css/compare/v22.1.0...v22.1.1) (2019-02-06)
+
+
+### Bug Fixes
+
+* force rollup output to use .css ([#563](https://github.com/tivac/modular-css/issues/563)) ([8f4348e](https://github.com/tivac/modular-css/commit/8f4348e))
+* work around rollup-pluginutils globbing cwd ([4c0bdd8](https://github.com/tivac/modular-css/commit/4c0bdd8))
+
+
+
+
+
 # [22.1.0](https://github.com/tivac/modular-css/compare/v22.0.2...v22.1.0) (2019-02-06)
 
 
