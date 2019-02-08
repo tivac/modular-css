@@ -663,6 +663,17 @@ exports[`/svelte.js should use an already-created processor 2`] = `
 }"
 `;
 
+exports[`/svelte.js should wait for files to finish 1`] = `
+Array [
+  "<style>/* replaced by modular-css */</style>
+entry1
+",
+  "<style>/* replaced by modular-css */</style>
+entry2
+",
+]
+`;
+
 exports[`/svelte.js should warn when multiple <link> elements are in the html 1`] = `
 "<link rel=\\"stylesheet\\" href=\\"./simple2.css\\" />
 

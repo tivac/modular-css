@@ -335,12 +335,11 @@ describe("/svelte.js", () => {
     });
 
     it.only("should wait for files to finish", async () => {
-        const { processor, preprocess } = plugin({
+        const { preprocess } = plugin({
             namer,
-            verbose : true,
         });
 
-        await Promise.all(
+        const results = await Promise.all(
             [
                 require.resolve("./specimens/overlapping/entry1.html"),
                 require.resolve("./specimens/overlapping/entry2.html"),
@@ -350,5 +349,7 @@ describe("/svelte.js", () => {
                 Object.assign({}, preprocess, { filename })
             ))
         );
+
+        expect(results.map((result) => result.toString())).toMatchSnapshot();
     });
 });
