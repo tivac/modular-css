@@ -35,16 +35,16 @@
     "jest": "^24.1.0",
     "jest-cli": "^24.1.0",
     "jest-runner-eslint": "^0.7.3",
-    "lerna": "^3.10.8",
+    "lerna": "^3.11.0",
     "pegjs": "0.10.0",
     "read-dir-deep": "^4.0.1",
     "rollup": "^1.1.2",
     "rollup-plugin-svelte": "^5.0.1",
     "shelljs": "^0.8.3",
     "sugarss": "^2.0.0",
-    "svelte": "^2.16.0",
+    "svelte": "^2.16.1",
     "watchify": "3.11.0",
-    "webpack": "^4.29.1"
+    "webpack": "^4.29.3"
   },
   "dependencies": {
     "@modular-css/browserify": "file:packages/browserify",
