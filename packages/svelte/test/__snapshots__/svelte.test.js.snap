@@ -249,6 +249,24 @@ exports[`/svelte.js should handle errors: empty css file - <link> 1`] = `"@modul
 exports[`/svelte.js should handle errors: empty css file - <link> 2`] = `
 Array [
   Array [
+    "@modular-css/svelte: Unable to find .nuhuh in \\"<style>\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nope in \\"<style>\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nuhuh in \\"./invalid.css\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nope in \\"./invalid.css\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nope in \\"<style>\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .alsonope in \\"<style>\\"",
+  ],
+  Array [
     "@modular-css/svelte: Unable to find .nope in \\"./empty.css\\"",
   ],
   Array [
@@ -271,6 +289,18 @@ exports[`/svelte.js should handle errors: empty css file - <style> 1`] = `"@modu
 exports[`/svelte.js should handle errors: empty css file - <style> 2`] = `
 Array [
   Array [
+    "@modular-css/svelte: Unable to find .nuhuh in \\"<style>\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nope in \\"<style>\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nuhuh in \\"./invalid.css\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nope in \\"./invalid.css\\"",
+  ],
+  Array [
     "@modular-css/svelte: Unable to find .nope in \\"<style>\\"",
   ],
   Array [
@@ -291,6 +321,12 @@ exports[`/svelte.js should handle errors: invalid reference <script> - <link> 1`
 
 exports[`/svelte.js should handle errors: invalid reference <script> - <link> 2`] = `
 Array [
+  Array [
+    "@modular-css/svelte: Unable to find .nuhuh in \\"<style>\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nope in \\"<style>\\"",
+  ],
   Array [
     "@modular-css/svelte: Unable to find .nuhuh in \\"./invalid.css\\"",
   ],
@@ -336,6 +372,15 @@ exports[`/svelte.js should handle errors: invalid reference template - <link> 1`
 exports[`/svelte.js should handle errors: invalid reference template - <link> 2`] = `
 Array [
   Array [
+    "@modular-css/svelte: Unable to find .nuhuh in \\"<style>\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nope in \\"<style>\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nuhuh in \\"./invalid.css\\"",
+  ],
+  Array [
     "@modular-css/svelte: Unable to find .nope in \\"./invalid.css\\"",
   ],
 ]
@@ -354,6 +399,9 @@ exports[`/svelte.js should handle errors: invalid reference template - <style> 1
 
 exports[`/svelte.js should handle errors: invalid reference template - <style> 2`] = `
 Array [
+  Array [
+    "@modular-css/svelte: Unable to find .nuhuh in \\"<style>\\"",
+  ],
   Array [
     "@modular-css/svelte: Unable to find .nope in \\"<style>\\"",
   ],
@@ -451,6 +499,105 @@ Array [
   Array [
     "[svelte]",
     "Processing",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[svelte]",
+    "extract <style>",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[processor]",
+    "string()",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[processor]",
+    "_add()",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[processor]",
+    "_before()",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[processor]",
+    "file()",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "_add()",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "_before()",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "file()",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "_add()",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "_before()",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "_process()",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "_process()",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "_process()",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[svelte]",
+    "processed styles",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[svelte]",
+    "updating source {css.<key>} references from",
+    "<style>",
+  ],
+  Array [
+    "[svelte]",
+    "[\\"flex\\",\\"wrapper\\",\\"hd\\",\\"bd\\",\\"text\\",\\"active\\"]",
+  ],
+  Array [
+    "[processor]",
+    "_after()",
+    "packages/svelte/test/specimens/simple.css",
+  ],
+  Array [
+    "[processor]",
+    "_after()",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
+    "_after()",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[svelte]",
+    "Processing",
     "packages/svelte/test/specimens/external.html",
   ],
   Array [
@@ -520,6 +667,11 @@ Array [
   ],
   Array [
     "[svelte]",
+    "processed styles",
+    "packages/svelte/test/specimens/external.html",
+  ],
+  Array [
+    "[svelte]",
     "updating source {css.<key>} references from",
     "./external.css",
   ],
@@ -555,6 +707,7 @@ Array [
   Array [
     "[svelte]",
     "extract <style>",
+    "packages/svelte/test/specimens/style.html",
   ],
   Array [
     "[processor]",
@@ -614,6 +767,11 @@ Array [
   Array [
     "[processor]",
     "_process()",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[svelte]",
+    "processed styles",
     "packages/svelte/test/specimens/style.html",
   ],
   Array [
@@ -694,6 +852,30 @@ exports[`/svelte.js should warn when multiple <link> elements are in the html 2`
 
 exports[`/svelte.js should warn when multiple <link> elements are in the html 3`] = `
 Array [
+  Array [
+    "@modular-css/svelte: Unable to find .nuhuh in \\"<style>\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nope in \\"<style>\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nuhuh in \\"./invalid.css\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nope in \\"./invalid.css\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nope in \\"<style>\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .alsonope in \\"<style>\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .nope in \\"./empty.css\\"",
+  ],
+  Array [
+    "@modular-css/svelte: Unable to find .alsonope in \\"./empty.css\\"",
+  ],
   Array [
     "@modular-css/svelte will only use the first local <link> tag",
   ],

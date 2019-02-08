@@ -334,7 +334,7 @@ describe("/svelte.js", () => {
         expect(output.css).toMatchSnapshot();
     });
 
-    it.only("should wait for files to finish", async () => {
+    it("should wait for files to finish", async () => {
         const { preprocess } = plugin({
             namer,
         });
