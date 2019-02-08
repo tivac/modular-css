@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 "use strict";
 
 const fs   = require("fs");
@@ -239,7 +240,6 @@ class Processor {
         for(const dep of files) {
             this._log("_after()", dep);
 
-            // eslint-disable-next-line no-await-in-loop
             const result = await this._after.process(
                 // NOTE: the call to .clone() is really important here, otherwise this call
                 // modifies the .result root itself and you process URLs multiple times
@@ -346,7 +346,7 @@ class Processor {
                 this._log("_process()", dep);
 
                 file.processed = this._process.process(
-                    file.result,
+                    file.before,
                     params(this, {
                         from  : dep,
                         namer : this._options.namer,
@@ -354,7 +354,6 @@ class Processor {
                 );
             }
 
-            // eslint-disable-next-line no-await-in-loop
             file.result = await file.processed;
 
             const { result } = file;
@@ -399,23 +398,26 @@ class Processor {
 
         this._log("_before()", name);
 
+        let walked;
+
         const file = this._files[name] = {
             text,
             exports : false,
             values  : false,
             valid   : true,
-            result  : this._before.process(
+            before  : this._before.process(
                 text,
                 params(this, {
                     from : name,
                 })
             ),
+            walked : new Promise((done) => (walked = done)),
         };
 
-        await file.result;
+        await file.before;
 
         // Add all the found dependencies to the graph
-        file.result.messages.forEach(({ plugin, dependency }) => {
+        file.before.messages.forEach(({ plugin, dependency }) => {
             if(plugin !== "modular-css-graph-nodes") {
                 return;
             }
@@ -429,11 +431,14 @@ class Processor {
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
             this._graph.dependenciesOf(name).map((dependency) => (
-                this._files[dependency] ?
-                        this._files[dependency].result :
-                        this.file(dependency)
+                dependency in this._files ?
+                    this._files[dependency].walked :
+                    this.file(dependency)
             ))
         );
+
+        // Mark the walk of this file & its dependencies complete
+        walked();
     }
 }
 
