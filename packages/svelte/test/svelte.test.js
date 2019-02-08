@@ -337,9 +337,10 @@ describe("/svelte.js", () => {
     it.only("should wait for files to finish", async () => {
         const { processor, preprocess } = plugin({
             namer,
+            verbose : true,
         });
 
-        Promise.all(
+        await Promise.all(
             [
                 require.resolve("./specimens/overlapping/entry1.html"),
                 require.resolve("./specimens/overlapping/entry2.html"),
