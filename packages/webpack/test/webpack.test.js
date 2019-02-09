@@ -126,9 +126,7 @@ describe("/webpack.js", () => {
     it.skip("should report errors", (done) => {
         webpack(config({
             entry : "./packages/webpack/test/specimens/invalid.js",
-        }), function(err, stats) {
-            console.log(arguments);
-
+        }), (err, stats) => {
             expect(stats.toJson().errors[0]).toMatch("Invalid composes reference");
 
             done();

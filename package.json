@@ -18,7 +18,8 @@
     "test": "jest",
     "watch": "jest --watch",
     "www:build": "lerna run --stream build packages/www",
-    "www:start": "lerna run --stream start packages/www"
+    "www:start": "lerna run --stream start packages/www",
+    "www:deploy": "cd ./packages/www && npm run production"
   },
   "devDependencies": {
     "@modular-css/test-utils": "file:packages/test-utils",
@@ -35,7 +36,7 @@
     "jest": "^24.1.0",
     "jest-cli": "^24.1.0",
     "jest-runner-eslint": "^0.7.3",
-    "lerna": "^3.10.8",
+    "lerna": "^3.11.0",
     "pegjs": "0.10.0",
     "read-dir-deep": "^4.0.1",
     "rollup": "^1.1.2",

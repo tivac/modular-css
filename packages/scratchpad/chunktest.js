@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const chunks = require("./chunks.js");
 const construct = require("./test/construct.js");
 
