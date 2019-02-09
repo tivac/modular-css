@@ -520,6 +520,11 @@ Array [
   ],
   Array [
     "[svelte]",
+    "processed styles",
+    "packages/svelte/test/specimens/external.html",
+  ],
+  Array [
+    "[svelte]",
     "updating source {css.<key>} references from",
     "./external.css",
   ],
@@ -555,6 +560,7 @@ Array [
   Array [
     "[svelte]",
     "extract <style>",
+    "packages/svelte/test/specimens/style.html",
   ],
   Array [
     "[processor]",
@@ -618,6 +624,11 @@ Array [
   ],
   Array [
     "[svelte]",
+    "processed styles",
+    "packages/svelte/test/specimens/style.html",
+  ],
+  Array [
+    "[svelte]",
     "updating source {css.<key>} references from",
     "<style>",
   ],
@@ -661,6 +672,17 @@ exports[`/svelte.js should use an already-created processor 2`] = `
 .fooga {
     color: red;
 }"
+`;
+
+exports[`/svelte.js should wait for files to finish 1`] = `
+Array [
+  "<style>/* replaced by modular-css */</style>
+entry1
+",
+  "<style>/* replaced by modular-css */</style>
+entry2
+",
+]
 `;
 
 exports[`/svelte.js should warn when multiple <link> elements are in the html 1`] = `

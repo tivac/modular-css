@@ -1,0 +1,3 @@
+.two {
+    composes: three from "./tier3.css";
+}

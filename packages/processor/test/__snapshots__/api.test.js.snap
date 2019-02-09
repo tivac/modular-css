@@ -89,6 +89,25 @@ exports[`/processor.js API .file() should process an absolute file 4`] = `
 "
 `;
 
+exports[`/processor.js API .file() should wait for dependencies to be processed before composing 1`] = `
+Array [
+  Object {
+    "one": Array [
+      "three",
+      "two",
+      "one",
+    ],
+  },
+  Object {
+    "two": Array [
+      "three",
+      "two",
+      "one",
+    ],
+  },
+]
+`;
+
 exports[`/processor.js API .invalidate() should invalidate a relative file 1`] = `
 Array [
   Array [

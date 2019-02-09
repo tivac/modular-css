@@ -27,7 +27,7 @@ module.exports = (config = false) => {
     // Mostly because markup() is async so tracking state is painful w/o inlining
     // the whole damn thing
     // eslint-disable-next-line max-statements, complexity
-    const markup = async ({ content, filename }) => {
+    const markup = async ({ content, filename: html }) => {
         let source = content;
 
         const links = source.match(linkRegex);
@@ -45,21 +45,21 @@ module.exports = (config = false) => {
         }
 
         let result;
-        let file;
+        let css;
 
-        log("Processing", filename);
+        log("Processing", html);
 
         if(style) {
-            log("extract <style>");
+            log("extract <style>", html);
             
-            file = "<style>";
+            css = "<style>";
             
-            if(processor.has(filename)) {
-                processor.invalidate(filename);
+            if(processor.has(html)) {
+                processor.invalidate(html);
             }
     
             result = await processor.string(
-                filename,
+                html,
                 style[1]
             );
         }
@@ -101,9 +101,9 @@ module.exports = (config = false) => {
             const [{ link, href }] = valid;
 
             // Assign to file for later usage in logging
-            file = href;
+            css = href;
 
-            const external = resolve(path.dirname(filename), file);
+            const external = resolve(path.dirname(html), css);
 
             log("extract <link>", external);
 
@@ -126,21 +126,23 @@ module.exports = (config = false) => {
 
                 source = source.replace(
                     tag,
-                    tag.replace(contents, `\nimport css from ${JSON.stringify(file)};\n\n${contents}`)
+                    tag.replace(contents, `\nimport css from ${JSON.stringify(css)};\n\n${contents}`)
                 );
             } else {
                 source += dedent(`
                     <script>
-                        import css from ${JSON.stringify(file)};
+                        import css from ${JSON.stringify(css)};
                     </script>
                 `);
             }
         }
 
+        log("processed styles", html);
+
         const exported = result.exports;
         const keys = Object.keys(exported);
 
-        log("updating source {css.<key>} references from", file);
+        log("updating source {css.<key>} references from", css);
         log(JSON.stringify(keys));
 
         if(keys.length) {
@@ -178,12 +180,12 @@ module.exports = (config = false) => {
             const classes = missed.map((reference) => reference.split("css.")[1]);
 
             if(strict) {
-                throw new Error(`@modular-css/svelte: Unable to find .${classes.join(", .")} in "${file}"`);
+                throw new Error(`@modular-css/svelte: Unable to find .${classes.join(", .")} in "${css}"`);
             }
 
             classes.forEach((key) =>
                 // eslint-disable-next-line no-console
-                console.warn(`@modular-css/svelte: Unable to find .${key} in "${file}"`)
+                console.warn(`@modular-css/svelte: Unable to find .${key} in "${css}"`)
             );
         }
 
