@@ -52,6 +52,15 @@ describe("/processor.js", () => {
                 expect(result.details.text).toMatchSnapshot();
                 expect(result.details.processed.root.toResult().css).toMatchSnapshot();
             });
+
+            it("should wait for dependencies to be processed before composing", async () => {
+                const results = await Promise.all([
+                    processor.file(require.resolve("./specimens/overlapping/entry1.css")),
+                    processor.file(require.resolve("./specimens/overlapping/entry2.css")),
+                ]);
+        
+                expect(results.map((result) => result.exports)).toMatchSnapshot();
+            });
         });
         
         describe(".has()", () => {
