@@ -43,7 +43,7 @@ module.exports = (opts) => {
             const graph = new DepGraph({ circular : true });
 
             Object.entries(chunks).forEach(([ entry, chunk ]) => {
-                const { isAsset, imports, dynamicImports } = chunk;
+                const { isAsset, dynamicImports } = chunk;
 
                 if(isAsset) {
                     return;

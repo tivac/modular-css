@@ -94,6 +94,7 @@ class CssStore extends Store {
                 compositions,
             });
         } catch(error) {
+            // eslint-disable-next-line no-console
             console.warn("Error generating output", error);
 
             return this.set({ error });
@@ -114,6 +115,7 @@ class CssStore extends Store {
             
             this.output();
         } catch(error) {
+            // eslint-disable-next-line no-console
             console.warn(`Error parsing "${error.file}"`, error);
 
             this.set({ error });
