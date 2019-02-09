@@ -15,6 +15,7 @@ const { processor, preprocess } = require("@modular-css/svelte")({
     after : [
         require("postcss-color-function")(),
         require("postcss-import")(),
+        require("postcss-calc")(),
     ],
 
     done : [
