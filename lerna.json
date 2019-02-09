@@ -3,7 +3,11 @@
   "command": {
     "publish": {
       "conventionalCommits": true,
-      "message": "chore: Publish %s :rocket:"
+      "message": "release: %s :tada: :rocket:"
+    },
+    "version": {
+      "conventionalCommits": true,
+      "githubRelease": true
     }
   },
   "packages": [
