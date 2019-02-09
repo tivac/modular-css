@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/cli",
-  "version": "22.1.0",
+  "version": "22.1.2",
   "description": "CLI for modular-css",
   "main": "./cli.js",
   "bin": {
