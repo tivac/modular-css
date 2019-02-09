@@ -26,7 +26,7 @@
     "magic-string": "^0.25.1"
   },
   "peerDependencies": {
-    "@modular-css/rollup": "^21",
+    "@modular-css/rollup": "^22",
     "rollup": "^1.1.1"
   }
 }
