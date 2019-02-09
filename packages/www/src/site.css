@@ -104,11 +104,7 @@ a:hover {
 
 .content {
     min-height: calc(100vh - contentTop);
-    margin-top: contentTop;
-}
-
-.bd > :last-child{
-    margin-bottom: 5rem;
+    margin: contentTop 1rem 5rem 1rem;
 }
 
 .bd h2 {
