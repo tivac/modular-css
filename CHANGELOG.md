@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.1.3](https://github.com/tivac/modular-css/compare/v22.1.2...v22.1.3) (2019-02-10)
+
+
+### Bug Fixes
+
+* add repo link to header ([b47c1ad](https://github.com/tivac/modular-css/commit/b47c1ad)), closes [#564](https://github.com/tivac/modular-css/issues/564)
+* add some spacing after content ([d84579a](https://github.com/tivac/modular-css/commit/d84579a))
+* clean up netlify deploys ([#566](https://github.com/tivac/modular-css/issues/566)) ([39c11d5](https://github.com/tivac/modular-css/commit/39c11d5))
+* flatten out all static calc()s ([4518d75](https://github.com/tivac/modular-css/commit/4518d75))
+* try to get netlify to use node@10 ([955c4f6](https://github.com/tivac/modular-css/commit/955c4f6))
+
+
+
+
+
 ## [22.1.2](https://github.com/tivac/modular-css/compare/v22.1.1...v22.1.2) (2019-02-09)
 
 
