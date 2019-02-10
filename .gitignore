@@ -86,3 +86,6 @@ $RECYCLE.BIN/
 profiling
 
 dist/
+
+# environment variables
+.env
