@@ -7,9 +7,7 @@ A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/
 
 There's an online REPL where you can try out `modular-css` without needing to install anything!
 
-http://m-css.com
-
-Here's a prefilled version showing some [`modular-css` features](http://m-css.com/#W3sibmFtZSI6Ii8xLmNzcyIsImNzcyI6Ii8qIHNpbXBsZSB2YWx1ZXMgKi9cblxuQHZhbHVlIHJlZDogI0YwMDtcbkB2YWx1ZSBibHVlOiAjMDBGO1xuXG4uYSB7IGNvbG9yOiByZWQ7IH1cblxuLyogc2VsZWN0b3Igbm90IHJlbmFtZWQgKi9cbjpnbG9iYWwoLmIpIHsgYmFja2dyb3VuZDogd2hpdGU7IH1cblxuLyogTm90IG91dHB1dCBpbiBDU1MgYmVjYXVzZSBvbmx5IGNvbXBvc2VzICovXG4uYyB7IGNvbXBvc2VzOiBhOyB9XG4ifSx7Im5hbWUiOiIvMi5jc3MiLCJjc3MiOiJAdmFsdWUgKiBhcyBvbmUgZnJvbSBcIi4vMS5jc3NcIjtcblxuLyogaW1wb3J0IHZhbHVlcyBhcyBhIG5hbWVzcGFjZSAqL1xuLmEgeyBjb2xvcjogb25lLnJlZDsgfVxuXG4vKiBncmFiIHJlZmVyZW5jZSB0byBleHRlcm5hbCBzZWxlY3RvciBmb3Igb3ZlcnJpZGVzICovXG4uYiA6ZXh0ZXJuYWwoYSBmcm9tIFwiLi8xLmNzc1wiKSB7IGNvbG9yOiBvbmUuYmx1ZTsgfSJ9XQ==).
+http://m-css.com/repl
 
 ## Features
 
@@ -80,89 +78,8 @@ Here's a prefilled version showing some [`modular-css` features](http://m-css.co
 }
 ```
 
-More detailed descriptions are available in [docs/features.md](docs/features.md)
+More detailed descriptions are available on [the website](https://m-css.com/guide/#features).
 
 ## Install
 
-### [JS API](/packages/processor/#readme)
-
-```bash
-> npm i @modular-css/processor
-```
-
-The core of `modular-css`, reasonably usable and powers literally everything else.
-
-### [CLI](/packages/cli/#readme)
-
-```bash
-> npm i @modular-css/cli
-```
-
-`modular-css` via CLI, for those times where you need to try something really quickly.
-
-###  [Browserify](/packages/browserify/#readme)
-
-```bash
-> npm i @modular-css/browserify
-```
-
-The old standby, still works. Supports `factor-bundle` for painless CSS & JS bundle splitting!
-
-### [Rollup](/packages/rollup/#readme)
-
-```bash
-> npm i @modular-css/rollup
-```
-
-Tiny bundles, code-splitting, and first-class `modular-css` support. 👌🏻
-
-### [Webpack](/packages/webpack/#readme)
-
-```bash
-> npm i @modular-css/webpack
-```
-
-The popular choice. Not as full-featured or well-supported but should work out just fine.
-
-### [Svelte](/packages/svelte/#readme)
-
-```bash
-> npm i @modular-css/svelte
-```
-
-Take your svelte components and power them up using `modular-css`! ⚡
-
-### [PostCSS Plugin](/packages/postcss/#readme)
-
-```bash
-> npm i @modular-css/postcss
-```
-
-For those times when you've just gotta run some postcss inside of your postcss. 😵
-
-### [Globbing API](/packages/glob/#readme)
-
-```bash
-> npm i @modular-css/glob
-```
-
-Sometimes you just need to grab `**/*.css` and get a move on. The globbing API is here for you!
-
-## Why?
-
-CSS Modules doesn't support the features we need & has bugs blocking our usage.
-Attempts to fix those bugs have been unsuccessful for a variety of reasons.
-Thus, a perfect storm of compelling reasons to learn [PostCSS](http://postcss.org/) was found.
-
-Also because this:
-
-<p align="center">
-    <a href="https://twitter.com/iamdevloper/status/636455478093029376">
-        <img src="https://i.imgur.com/fcq3GsW.png" alt="Green pills look gross" />
-    </a>
-</p>
-
-## Thanks
-
-- [@JoshGalvin](https://github.com/JoshGalvin) for ideas/encouragement to do this silly thing.
-- The CSS modules team for inspiration!
+https://m-css.com/guide/#usage
