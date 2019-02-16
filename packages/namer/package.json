@@ -3,8 +3,13 @@
   "version": "22.1.0",
   "description": "Helper function to make tiny classnames for modular-css",
   "main": "namer.js",
-  "repository": "tivac/modular-css",
-  "author": "Pat Cavit <pcavit@arena.net>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tivac/modular-css.git",
+    "directory": "packages/namer"
+  },
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "homepage": "https://m-css.com",
   "license": "MIT",
   "publishConfig": {
     "access": "public"

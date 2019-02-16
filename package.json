@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "author": "Pat Cavit <npm@patcavit.com>",
+  "homepage": "https://m-css.com",
   "license": "MIT",
   "repository": "tivac/modular-css",
   "bugs": {

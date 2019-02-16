@@ -3,11 +3,16 @@
   "version": "22.0.0",
   "description": "Custom file resolver supporting multiple paths for modular-css",
   "main": "./paths.js",
-  "repository": "tivac/modular-css",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tivac/modular-css.git",
+    "directory": "packages/paths"
+  },
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
+  "homepage": "https://m-css.com",
   "license": "MIT",
   "publishConfig": {
     "access": "public"

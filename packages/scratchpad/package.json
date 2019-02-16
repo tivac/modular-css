@@ -5,6 +5,11 @@
   "description": "Testing area for new ideas modular-css",
   "main": "compare.js",
   "author": "Pat Cavit <npm@patcavit.com>",
-  "repository": "tivac/modular-css",
+  "homepage": "https://m-css.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tivac/modular-css.git",
+    "directory": "packages/scratchpad"
+  },
   "license": "MIT"
 }

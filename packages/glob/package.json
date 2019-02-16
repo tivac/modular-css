@@ -3,11 +3,16 @@
   "version": "22.1.2",
   "description": "Glob support for modular-css",
   "main": "./glob.js",
-  "repository": "tivac/modular-css",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tivac/modular-css.git",
+    "directory": "packages/glob"
+  },
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
+  "homepage": "https://m-css.com",
   "license": "MIT",
   "publishConfig": {
     "access": "public"

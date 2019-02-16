@@ -3,11 +3,16 @@
   "version": "22.1.2",
   "description": "Browserify transform for modular-css",
   "main": "./browserify.js",
-  "repository": "tivac/modular-css",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tivac/modular-css.git",
+    "directory": "packages/browserify"
+  },
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
   },
   "author": "Pat Cavit <npm@patcavit.com>",
+  "homepage": "https://m-css.com",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
