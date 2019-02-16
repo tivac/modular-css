@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/scratchpad",
-  "version": "22.1.3",
+  "version": "22.1.4",
   "private": true,
   "description": "Testing area for new ideas modular-css",
   "main": "compare.js",
