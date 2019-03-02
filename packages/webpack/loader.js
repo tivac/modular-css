@@ -37,18 +37,20 @@ module.exports = async function(source) {
         if(options.namedExports === false) {
             return done(null, out.join("\n"));
         }
-        
+
         // Warn if any of the exported CSS wasn't able to be used as a valid JS identifier
         // and exclude from the output
         Object.keys(exported).forEach((ident) => {
             if(keyword.isReservedWordES6(ident) || !keyword.isIdentifierNameES6(ident)) {
                 this.emitWarning(new Error(`Invalid JS identifier "${ident}", unable to export`));
-                
+
                 return;
             }
 
             out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
         });
+
+        out.push(`export var styles = ${JSON.stringify(result.details.result.css)};`);
 
         return done(null, out.join("\n"));
     } catch(e) {
