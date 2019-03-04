@@ -93,11 +93,11 @@ exports[`/webpack.js should accept an existing processor instance 1`] = `
 /*!****************************************************!*\\\\
   !*** ./packages/webpack/test/specimens/simple.css ***!
   \\\\****************************************************/
-/*! exports provided: default, wooga */
+/*! exports provided: default, wooga, styles */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"wooga\\\\\\", function() { return wooga; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"wooga\\\\\\": \\\\\\"mc8d99986b_wooga\\\\\\"\\\\n});\\\\nvar wooga = \\\\\\"mc8d99986b_wooga\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/simple.css?\\");
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"wooga\\\\\\", function() { return wooga; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"styles\\\\\\", function() { return styles; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"wooga\\\\\\": \\\\\\"mc8d99986b_wooga\\\\\\"\\\\n});\\\\nvar wooga = \\\\\\"mc8d99986b_wooga\\\\\\";\\\\nvar styles = \\\\\\".mc8d99986b_wooga { color: red; }\\\\\\\\n\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/simple.css?\\");
 
 /***/ }),
 
@@ -217,11 +217,11 @@ exports[`/webpack.js should generate correct builds in watch mode when files cha
 /*!**************************************************!*\\\\
   !*** ./packages/webpack/test/output/watched.css ***!
   \\\\**************************************************/
-/*! exports provided: default, one */
+/*! exports provided: default, one, styles */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"one\\\\\\", function() { return one; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"one\\\\\\": \\\\\\"one\\\\\\"\\\\n});\\\\nvar one = \\\\\\"one\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/output/watched.css?\\");
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"one\\\\\\", function() { return one; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"styles\\\\\\", function() { return styles; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"one\\\\\\": \\\\\\"one\\\\\\"\\\\n});\\\\nvar one = \\\\\\"one\\\\\\";\\\\nvar styles = \\\\\\".one { color: red; }\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/output/watched.css?\\");
 
 /***/ }),
 
@@ -338,11 +338,11 @@ exports[`/webpack.js should generate correct builds in watch mode when files cha
 /*!**************************************************!*\\\\
   !*** ./packages/webpack/test/output/watched.css ***!
   \\\\**************************************************/
-/*! exports provided: default, two */
+/*! exports provided: default, two, styles */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"two\\\\\\", function() { return two; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"two\\\\\\": \\\\\\"two\\\\\\"\\\\n});\\\\nvar two = \\\\\\"two\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/output/watched.css?\\");
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"two\\\\\\", function() { return two; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"styles\\\\\\", function() { return styles; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"two\\\\\\": \\\\\\"two\\\\\\"\\\\n});\\\\nvar two = \\\\\\"two\\\\\\";\\\\nvar styles = \\\\\\".two { color: blue; }\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/output/watched.css?\\");
 
 /***/ }),
 
@@ -459,11 +459,11 @@ exports[`/webpack.js should generate correct builds when files change 1`] = `
 /*!**************************************************!*\\\\
   !*** ./packages/webpack/test/output/changed.css ***!
   \\\\**************************************************/
-/*! exports provided: default, one */
+/*! exports provided: default, one, styles */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"one\\\\\\", function() { return one; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"one\\\\\\": \\\\\\"one\\\\\\"\\\\n});\\\\nvar one = \\\\\\"one\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/output/changed.css?\\");
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"one\\\\\\", function() { return one; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"styles\\\\\\", function() { return styles; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"one\\\\\\": \\\\\\"one\\\\\\"\\\\n});\\\\nvar one = \\\\\\"one\\\\\\";\\\\nvar styles = \\\\\\".one { color: red; }\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/output/changed.css?\\");
 
 /***/ }),
 
@@ -580,11 +580,11 @@ exports[`/webpack.js should generate correct builds when files change 3`] = `
 /*!**************************************************!*\\\\
   !*** ./packages/webpack/test/output/changed.css ***!
   \\\\**************************************************/
-/*! exports provided: default, two */
+/*! exports provided: default, two, styles */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"two\\\\\\", function() { return two; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"two\\\\\\": \\\\\\"two\\\\\\"\\\\n});\\\\nvar two = \\\\\\"two\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/output/changed.css?\\");
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"two\\\\\\", function() { return two; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"styles\\\\\\", function() { return styles; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"two\\\\\\": \\\\\\"two\\\\\\"\\\\n});\\\\nvar two = \\\\\\"two\\\\\\";\\\\nvar styles = \\\\\\".two { color: blue; }\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/output/changed.css?\\");
 
 /***/ }),
 
@@ -701,11 +701,11 @@ exports[`/webpack.js should generate correct builds when files change 5`] = `
 /*!**************************************************!*\\\\
   !*** ./packages/webpack/test/output/changed.css ***!
   \\\\**************************************************/
-/*! exports provided: default, three */
+/*! exports provided: default, three, styles */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"three\\\\\\", function() { return three; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"three\\\\\\": \\\\\\"three\\\\\\"\\\\n});\\\\nvar three = \\\\\\"three\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/output/changed.css?\\");
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"three\\\\\\", function() { return three; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"styles\\\\\\", function() { return styles; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"three\\\\\\": \\\\\\"three\\\\\\"\\\\n});\\\\nvar three = \\\\\\"three\\\\\\";\\\\nvar styles = \\\\\\".three { color: green; }\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/output/changed.css?\\");
 
 /***/ }),
 
@@ -822,11 +822,11 @@ exports[`/webpack.js should handle dependencies 1`] = `
 /*!***************************************************!*\\\\
   !*** ./packages/webpack/test/specimens/start.css ***!
   \\\\***************************************************/
-/*! exports provided: default, one, two, folder, wooga, booga, tooga */
+/*! exports provided: default, one, two, folder, wooga, booga, tooga, styles */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"one\\\\\\", function() { return one; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"two\\\\\\", function() { return two; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"folder\\\\\\", function() { return folder; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"wooga\\\\\\", function() { return wooga; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"booga\\\\\\", function() { return booga; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"tooga\\\\\\", function() { return tooga; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"one\\\\\\": \\\\\\"red\\\\\\",\\\\n    \\\\\\"two\\\\\\": \\\\\\"blue\\\\\\",\\\\n    \\\\\\"folder\\\\\\": \\\\\\"white\\\\\\",\\\\n    \\\\\\"wooga\\\\\\": \\\\\\"booga wooga\\\\\\",\\\\n    \\\\\\"booga\\\\\\": \\\\\\"booga\\\\\\",\\\\n    \\\\\\"tooga\\\\\\": \\\\\\"tooga\\\\\\"\\\\n});\\\\nvar one = \\\\\\"red\\\\\\";\\\\nvar two = \\\\\\"blue\\\\\\";\\\\nvar folder = \\\\\\"white\\\\\\";\\\\nvar wooga = \\\\\\"booga wooga\\\\\\";\\\\nvar booga = \\\\\\"booga\\\\\\";\\\\nvar tooga = \\\\\\"tooga\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/start.css?\\");
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"one\\\\\\", function() { return one; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"two\\\\\\", function() { return two; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"folder\\\\\\", function() { return folder; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"wooga\\\\\\", function() { return wooga; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"booga\\\\\\", function() { return booga; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"tooga\\\\\\", function() { return tooga; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"styles\\\\\\", function() { return styles; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"one\\\\\\": \\\\\\"red\\\\\\",\\\\n    \\\\\\"two\\\\\\": \\\\\\"blue\\\\\\",\\\\n    \\\\\\"folder\\\\\\": \\\\\\"white\\\\\\",\\\\n    \\\\\\"wooga\\\\\\": \\\\\\"booga wooga\\\\\\",\\\\n    \\\\\\"booga\\\\\\": \\\\\\"booga\\\\\\",\\\\n    \\\\\\"tooga\\\\\\": \\\\\\"tooga\\\\\\"\\\\n});\\\\nvar one = \\\\\\"red\\\\\\";\\\\nvar two = \\\\\\"blue\\\\\\";\\\\nvar folder = \\\\\\"white\\\\\\";\\\\nvar wooga = \\\\\\"booga wooga\\\\\\";\\\\nvar booga = \\\\\\"booga\\\\\\";\\\\nvar tooga = \\\\\\"tooga\\\\\\";\\\\nvar styles = \\\\\\".booga { color: red; background: blue; }\\\\\\\\n.tooga { border: 1px solid white; }\\\\\\\\n\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/start.css?\\");
 
 /***/ }),
 
@@ -971,11 +971,11 @@ exports[`/webpack.js should output css to disk 1`] = `
 /*!****************************************************!*\\\\
   !*** ./packages/webpack/test/specimens/simple.css ***!
   \\\\****************************************************/
-/*! exports provided: default, wooga */
+/*! exports provided: default, wooga, styles */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"wooga\\\\\\", function() { return wooga; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"wooga\\\\\\": \\\\\\"wooga\\\\\\"\\\\n});\\\\nvar wooga = \\\\\\"wooga\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/simple.css?\\");
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"wooga\\\\\\", function() { return wooga; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"styles\\\\\\", function() { return styles; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"wooga\\\\\\": \\\\\\"wooga\\\\\\"\\\\n});\\\\nvar wooga = \\\\\\"wooga\\\\\\";\\\\nvar styles = \\\\\\".wooga { color: red; }\\\\\\\\n\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/simple.css?\\");
 
 /***/ }),
 
@@ -1101,11 +1101,11 @@ exports[`/webpack.js should output json to disk 1`] = `
 /*!****************************************************!*\\\\
   !*** ./packages/webpack/test/specimens/simple.css ***!
   \\\\****************************************************/
-/*! exports provided: default, wooga */
+/*! exports provided: default, wooga, styles */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"wooga\\\\\\", function() { return wooga; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"wooga\\\\\\": \\\\\\"wooga\\\\\\"\\\\n});\\\\nvar wooga = \\\\\\"wooga\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/simple.css?\\");
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"wooga\\\\\\", function() { return wooga; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"styles\\\\\\", function() { return styles; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"wooga\\\\\\": \\\\\\"wooga\\\\\\"\\\\n});\\\\nvar wooga = \\\\\\"wooga\\\\\\";\\\\nvar styles = \\\\\\".wooga { color: red; }\\\\\\\\n\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/simple.css?\\");
 
 /***/ }),
 
@@ -1236,11 +1236,11 @@ eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony import */ var
 /*!****************************************************!*\\\\
   !*** ./packages/webpack/test/specimens/es2015.css ***!
   \\\\****************************************************/
-/*! exports provided: default, val, a, b */
+/*! exports provided: default, val, a, b, styles */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"val\\\\\\", function() { return val; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"a\\\\\\", function() { return a; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"b\\\\\\", function() { return b; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"val\\\\\\": \\\\\\"\\\\\\\\\\\\\\"value\\\\\\\\\\\\\\"\\\\\\",\\\\n    \\\\\\"a\\\\\\": \\\\\\"a\\\\\\",\\\\n    \\\\\\"b\\\\\\": \\\\\\"b\\\\\\"\\\\n});\\\\nvar val = \\\\\\"\\\\\\\\\\\\\\"value\\\\\\\\\\\\\\"\\\\\\";\\\\nvar a = \\\\\\"a\\\\\\";\\\\nvar b = \\\\\\"b\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/es2015.css?\\");
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"val\\\\\\", function() { return val; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"a\\\\\\", function() { return a; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"b\\\\\\", function() { return b; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"styles\\\\\\", function() { return styles; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"val\\\\\\": \\\\\\"\\\\\\\\\\\\\\"value\\\\\\\\\\\\\\"\\\\\\",\\\\n    \\\\\\"a\\\\\\": \\\\\\"a\\\\\\",\\\\n    \\\\\\"b\\\\\\": \\\\\\"b\\\\\\"\\\\n});\\\\nvar val = \\\\\\"\\\\\\\\\\\\\\"value\\\\\\\\\\\\\\"\\\\\\";\\\\nvar a = \\\\\\"a\\\\\\";\\\\nvar b = \\\\\\"b\\\\\\";\\\\nvar styles = \\\\\\".a { color: red; }\\\\\\\\n.b { color: blue; }\\\\\\\\n\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/es2015.css?\\");
 
 /***/ })
 
@@ -1359,11 +1359,11 @@ eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony import */ var
 /*!****************************************************!*\\\\
   !*** ./packages/webpack/test/specimens/es2015.css ***!
   \\\\****************************************************/
-/*! exports provided: default, val, a, b */
+/*! exports provided: default, val, a, b, styles */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"val\\\\\\", function() { return val; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"a\\\\\\", function() { return a; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"b\\\\\\", function() { return b; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"val\\\\\\": \\\\\\"\\\\\\\\\\\\\\"value\\\\\\\\\\\\\\"\\\\\\",\\\\n    \\\\\\"a\\\\\\": \\\\\\"a\\\\\\",\\\\n    \\\\\\"b\\\\\\": \\\\\\"b\\\\\\"\\\\n});\\\\nvar val = \\\\\\"\\\\\\\\\\\\\\"value\\\\\\\\\\\\\\"\\\\\\";\\\\nvar a = \\\\\\"a\\\\\\";\\\\nvar b = \\\\\\"b\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/es2015.css?\\");
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"val\\\\\\", function() { return val; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"a\\\\\\", function() { return a; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"b\\\\\\", function() { return b; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"styles\\\\\\", function() { return styles; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"val\\\\\\": \\\\\\"\\\\\\\\\\\\\\"value\\\\\\\\\\\\\\"\\\\\\",\\\\n    \\\\\\"a\\\\\\": \\\\\\"a\\\\\\",\\\\n    \\\\\\"b\\\\\\": \\\\\\"b\\\\\\"\\\\n});\\\\nvar val = \\\\\\"\\\\\\\\\\\\\\"value\\\\\\\\\\\\\\"\\\\\\";\\\\nvar a = \\\\\\"a\\\\\\";\\\\nvar b = \\\\\\"b\\\\\\";\\\\nvar styles = \\\\\\".a { color: red; }\\\\\\\\n.b { color: blue; }\\\\\\\\n\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/es2015.css?\\");
 
 /***/ })
 
