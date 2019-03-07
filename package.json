@@ -30,7 +30,7 @@
     "dedent": "0.7.0",
     "dentist": "1.0.3",
     "env-cmd": "^8.0.2",
-    "eslint": "^5.14.0",
+    "eslint": "^5.15.1",
     "eslint-plugin-jest": "^22.3.0",
     "factor-bundle": "2.5.0",
     "from2-string": "1.1.0",
