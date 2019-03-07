@@ -37,7 +37,7 @@
     "jest": "^24.1.0",
     "jest-cli": "^24.1.0",
     "jest-runner-eslint": "^0.7.3",
-    "lerna": "^3.13.0",
+    "lerna": "^3.13.1",
     "pegjs": "0.10.0",
     "read-dir-deep": "^4.0.2",
     "rollup": "^1.5.0",
