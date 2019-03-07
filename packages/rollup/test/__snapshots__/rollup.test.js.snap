@@ -15,13 +15,13 @@ Array [
   },
   Object {
     "file": "main.js",
-    "text": "var bar$1 = \\"mc79ab9c62_bar\\";
+    "text": "var bar = \\"mc79ab9c62_bar\\";
 
-var foo$1 = \\"mc79ab9c62_bar mc3dd08d27_foo\\";
+var foo = \\"mc79ab9c62_bar mc3dd08d27_foo\\";
 
-var bar$3 = \\"mc79ab9c62_bar\\";
+var bar$1 = \\"mc79ab9c62_bar\\";
 
-console.log({ foo: foo$1, bar: bar$3, bar2: bar$1 });
+console.log({ foo, bar: bar$1, bar2: bar });
 ",
   },
 ]

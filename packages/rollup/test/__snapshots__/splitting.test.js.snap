@@ -204,9 +204,9 @@ var css = {
 
 console.log(css, b);
 
-var a$1 = \\"a\\";
+var a = \\"a\\";
 
-export default a$1;
+export default a;
 ",
   },
   Object {
@@ -231,9 +231,9 @@ var css = {
 
 console.log(css, a);
 
-var b$1 = \\"b\\";
+var b = \\"b\\";
 
-export default b$1;
+export default b;
 ",
   },
 ]
@@ -501,7 +501,7 @@ Array [
 ",
   },
   Object {
-    "file": "simple.15bac60f.js",
+    "file": "simple.96e4896f.js",
     "text": "var css = {
     \\"str\\": \\"\\\\\\"string\\\\\\"\\",
     \\"fooga\\": \\"fooga\\"

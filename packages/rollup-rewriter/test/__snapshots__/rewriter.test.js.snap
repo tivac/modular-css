@@ -71,9 +71,9 @@ define(['exports'], function (exports) { 'use strict';
 
 	console.log(css);
 
-	var c$1 = \\"c\\";
+	var c = \\"c\\";
 
-	exports.default = c$1;
+	exports.default = c;
 
 });
 ",
@@ -132,9 +132,9 @@ var css = {
 
 console.log(css);
 
-var c$1 = \\"c\\";
+var c = \\"c\\";
 
-export default c$1;
+export default c;
 ",
   "chunk2.js": "
 var d = \\"d\\";
@@ -187,9 +187,9 @@ var css = {
 
 console.log(css);
 
-var c$1 = \\"c\\";
+var c = \\"c\\";
 
-export default c$1;
+export default c;
 ",
   "chunk2.js": "
 var d = \\"d\\";
@@ -265,7 +265,7 @@ System.register([], function (exports, module) {
 
 			console.log(css);
 
-			var c$1 = exports('default', \\"c\\");
+			var c = exports('default', \\"c\\");
 
 		}
 	};
@@ -296,7 +296,7 @@ import lazyload from \\"./css.js\\";
         \\"a\\": \\"a\\"
     };
 
-    function a$1() {
+    function a() {
         console.log(css);
 
         new Promise(function (resolve, reject) { Promise.all([
@@ -307,7 +307,7 @@ import lazyload from \\"./css.js\\";
 .catch(reject) }).then(console.log);
     }
 
-    return a$1;
+    return a;
 
 });
 ",
@@ -343,7 +343,7 @@ import lazyload from \\"./css.js\\";
         \\"b\\": \\"b\\"
     };
 
-    function b$1() {
+    function b() {
         console.log(css);
 
         new Promise(function (resolve, reject) { Promise.all([
@@ -354,7 +354,7 @@ import lazyload from \\"./css.js\\";
 .catch(reject) }).then(console.log);
     }
 
-    return b$1;
+    return b;
 
 });
 ",
@@ -395,7 +395,7 @@ var css = {
     \\"a\\": \\"a\\"
 };
 
-function a$1() {
+function a() {
     console.log(css);
 
     Promise.all([
@@ -405,7 +405,7 @@ function a$1() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a$1;
+export default a;
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
@@ -437,7 +437,7 @@ var css = {
     \\"b\\": \\"b\\"
 };
 
-function b$1() {
+function b() {
     console.log(css);
 
     Promise.all([
@@ -447,7 +447,7 @@ function b$1() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b$1;
+export default b;
 ",
   "chunk.js": "
 var css = {
@@ -478,7 +478,7 @@ var css = {
     \\"a\\": \\"a\\"
 };
 
-function a$1() {
+function a() {
     console.log(css);
 
     Promise.all([
@@ -488,7 +488,7 @@ function a$1() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a$1;
+export default a;
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
@@ -520,7 +520,7 @@ var css = {
     \\"b\\": \\"b\\"
 };
 
-function b$1() {
+function b() {
     console.log(css);
 
     Promise.all([
@@ -530,7 +530,7 @@ function b$1() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b$1;
+export default b;
 ",
   "chunk.js": "
 var css = {
@@ -562,13 +562,13 @@ import lazyload from \\"./css.js\\";
     return {
         execute: function () {
 
-            exports('default', a$1);
+            exports('default', a);
 
             var css = {
                 \\"a\\": \\"a\\"
             };
 
-            function a$1() {
+            function a() {
                 console.log(css);
 
                 Promise.all([
@@ -613,13 +613,13 @@ import lazyload from \\"./css.js\\";
     return {
         execute: function () {
 
-            exports('default', b$1);
+            exports('default', b);
 
             var css = {
                 \\"b\\": \\"b\\"
             };
 
-            function b$1() {
+            function b() {
                 console.log(css);
 
                 Promise.all([
@@ -679,7 +679,7 @@ define(['require'], function (require) { 'use strict';
         \\"a\\": \\"a\\"
     };
 
-    function a$1() {
+    function a() {
         console.log(css);
 
         new Promise(function (resolve, reject) { Promise.all([
@@ -690,7 +690,7 @@ define(['require'], function (require) { 'use strict';
 .catch(reject) }).then(console.log);
     }
 
-    return a$1;
+    return a;
 
 });
 ",
@@ -725,7 +725,7 @@ define(['require'], function (require) { 'use strict';
         \\"b\\": \\"b\\"
     };
 
-    function b$1() {
+    function b() {
         console.log(css);
 
         new Promise(function (resolve, reject) { Promise.all([
@@ -736,7 +736,7 @@ define(['require'], function (require) { 'use strict';
 .catch(reject) }).then(console.log);
     }
 
-    return b$1;
+    return b;
 
 });
 ",
@@ -776,7 +776,7 @@ var css = {
     \\"a\\": \\"a\\"
 };
 
-function a$1() {
+function a() {
     console.log(css);
 
     Promise.all([
@@ -786,7 +786,7 @@ function a$1() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a$1;
+export default a;
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
@@ -817,7 +817,7 @@ var css = {
     \\"b\\": \\"b\\"
 };
 
-function b$1() {
+function b() {
     console.log(css);
 
     Promise.all([
@@ -827,7 +827,7 @@ function b$1() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b$1;
+export default b;
 ",
   "chunk.js": "
 var css = {
@@ -857,7 +857,7 @@ var css = {
     \\"a\\": \\"a\\"
 };
 
-function a$1() {
+function a() {
     console.log(css);
 
     Promise.all([
@@ -867,7 +867,7 @@ function a$1() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a$1;
+export default a;
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
@@ -898,7 +898,7 @@ var css = {
     \\"b\\": \\"b\\"
 };
 
-function b$1() {
+function b() {
     console.log(css);
 
     Promise.all([
@@ -908,7 +908,7 @@ function b$1() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b$1;
+export default b;
 ",
   "chunk.js": "
 var css = {
@@ -939,13 +939,13 @@ System.register([], function (exports, module) {
     return {
         execute: function () {
 
-            exports('default', a$1);
+            exports('default', a);
 
             var css = {
                 \\"a\\": \\"a\\"
             };
 
-            function a$1() {
+            function a() {
                 console.log(css);
 
                 Promise.all([
@@ -989,13 +989,13 @@ System.register([], function (exports, module) {
     return {
         execute: function () {
 
-            exports('default', b$1);
+            exports('default', b);
 
             var css = {
                 \\"b\\": \\"b\\"
             };
 
-            function b$1() {
+            function b() {
                 console.log(css);
 
                 Promise.all([
