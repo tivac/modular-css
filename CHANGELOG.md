@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [22.2.0](https://github.com/tivac/modular-css/compare/v22.1.4...v22.2.0) (2019-03-07)
+
+
+### Features
+
+* Include Style String in Webpack Loader Output ([#567](https://github.com/tivac/modular-css/issues/567)) ([6d883ac](https://github.com/tivac/modular-css/commit/6d883ac))
+
+
+
+
+
 ## [22.1.4](https://github.com/tivac/modular-css/compare/v22.1.3...v22.1.4) (2019-02-16)
 
 
