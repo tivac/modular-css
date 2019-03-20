@@ -5,6 +5,7 @@ const { rollup } = require("rollup");
 
 const dedent = require("dedent");
 const shell = require("shelljs");
+const cssnano = require("cssnano");
 
 const read    = require("@modular-css/test-utils/read.js")(__dirname);
 const readdir = require("@modular-css/test-utils/read-dir.js")(__dirname);
@@ -594,6 +595,56 @@ describe("/rollup.js", () => {
 
         expect(result).toMatchRollupSnapshot();
     });
+
+    it("should write out empty CSS files by default", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/empty.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    map,
+
+                    done : [
+                        cssnano(),
+                    ],
+                }),
+            ],
+        });
+
+        await bundle.write({
+            format,
+            assetFileNames,
+            file : prefix(`./output/empty-css/empty.js`),
+        });
+
+        expect(read("./empty-css/assets/empty.css")).toMatchSnapshot();
+    });
+
+    it("should not write out empty CSS files when empties is falsey", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/empty.js"),
+            plugins : [
+                plugin({
+                    namer,
+                    map,
+                    empties : false,
+
+                    done : [
+                        cssnano(),
+                    ],
+                }),
+            ],
+        });
+
+        await bundle.write({
+            format,
+            assetFileNames,
+            file : prefix(`./output/no-empty-css/empty.js`),
+        });
+
+        expect(exists("./output/no-empty-css/assets/empty.css")).toBe(false);
+    });
+
 
     describe("case sensitivity tests", () => {
         const fs = require("fs");
