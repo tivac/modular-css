@@ -28,6 +28,7 @@ module.exports = (opts) => {
         namedExports : true,
         styleExport  : false,
         verbose      : false,
+        empties      : true,
         
         // Regexp to work around https://github.com/rollup/rollup-pluginutils/issues/39
         include : /\.css$/i,
@@ -214,6 +215,9 @@ module.exports = (opts) => {
             // Track specified name -> output name for writing out metadata later
             const names = new Map();
 
+            // Track chunks that don't actually need to be output
+            const duds = new Set();
+
             for(const node of chunked.overallOrder()) {
                 // Only want to deal with CSS currently
                 if(entries.has(node)) {
@@ -223,8 +227,6 @@ module.exports = (opts) => {
                 const ext = ".css";
                 const name = path.basename(node, path.extname(node));
                 
-                const id = this.emitAsset(`${name}${ext}`);
-
                 /* eslint-disable-next-line no-await-in-loop */
                 const result = await processor.output({
                     // Can't use this.getAssetFileName() here, because the source hasn't been set yet
@@ -235,8 +237,14 @@ module.exports = (opts) => {
                     files : graph.getNodeData(node),
                 });
 
-                
-                this.setAssetSource(id, result.css);
+                // Don't output empty files if empties is falsey
+                if(!options.empties && !result.css.length) {
+                    duds.add(node);
+
+                    continue;
+                }
+
+                const id = this.emitAsset(`${name}${ext}`, result.css);
                 
                 // Save off the final name of this asset for later use
                 const dest = this.getAssetFileName(id);
@@ -290,8 +298,10 @@ module.exports = (opts) => {
 
                 // Attach info about this asset to the bundle
                 const { assets = [] } = chunk;
-
-                chunked.dependenciesOf(entry).forEach((dep) => assets.push(names.get(dep)));
+                
+                chunked.dependenciesOf(entry)
+                    .filter((dep) => !duds.has(dep))
+                    .forEach((dep) => assets.push(names.get(dep)));
 
                 chunk.assets = assets;
                 

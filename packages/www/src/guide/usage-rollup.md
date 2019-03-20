@@ -86,6 +86,10 @@ Enable `styleExport` will also disable the plugin from emitting any assets as we
 
 Pass an already-instantiated `Processor` instance to the rollup plugin. It will then add any files found when traversing the modules to it and both the rollup-discovered and any already-existing files will be output in the final CSS.
 
+##### `empties`
+
+Set to a falsey value to disable outputting of empty CSS files. This is most common when a file contains only `@value`s and then a minifier is used which strips out the file heading comments. Defaults to `true`.
+
 ##### Shared Options
 
 All other options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).
