@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [22.3.0](https://github.com/tivac/modular-css/compare/v22.2.0...v22.3.0) (2019-03-20)
+
+
+### Features
+
+* support supressing empty CSS files in rollup plugin ([#569](https://github.com/tivac/modular-css/issues/569)) ([f9240a3](https://github.com/tivac/modular-css/commit/f9240a3))
+
+
+
+
+
 # [22.2.0](https://github.com/tivac/modular-css/compare/v22.1.4...v22.2.0) (2019-03-07)
 
 
