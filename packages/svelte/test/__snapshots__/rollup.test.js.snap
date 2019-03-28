@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/svelte.js rollup watching should generate updated output 1`] = `
+Snapshot Diff:
+- First value
++ Second value
+
+@@ -1,7 +1,14 @@
+  Array [
+    Object {
++     "file": "assets/app.css",
++     "text": "/* packages/svelte/test/output/rollup/input/app.css */
++ .mc043115d5_nope {
++     color: blue;
++ }",
++   },
++   Object {
+      "file": "output.js",
+      "text": "function noop() {}
+  
+  function assign(tar, src) {
+  	for (var k in src) tar[k] = src[k];
+@@ -160,11 +167,11 @@
+  
+  	return {
+  		c() {
+  			div = createElement(\\"div\\");
+  			div.textContent = \\"Hi\\";
+- 			div.className = \\"css.nope\\";
++ 			div.className = \\"mc043115d5_nope\\";
+  		},
+  
+  		m(target, anchor) {
+  			insert(target, div, anchor);
+  		},
+`;
