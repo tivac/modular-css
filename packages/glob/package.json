@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/glob",
-  "version": "22.1.4",
+  "version": "23.0.0",
   "description": "Glob support for modular-css",
   "main": "./glob.js",
   "repository": {

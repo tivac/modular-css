@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.0.0](https://github.com/tivac/modular-css/compare/v22.3.0...v23.0.0) (2019-03-28)
+
+**Note:** Version bump only for package @modular-css/rollup-rewriter
+
+
+
+
+
 # [22.2.0](https://github.com/tivac/modular-css/compare/v22.1.4...v22.2.0) (2019-03-07)
 
 **Note:** Version bump only for package @modular-css/rollup-rewriter

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.0.0](https://github.com/tivac/modular-css/compare/v22.3.0...v23.0.0) (2019-03-28)
+
+
+### Features
+
+* replacing missing css.fooga with stringified version ([#574](https://github.com/tivac/modular-css/issues/574)) ([2084b62](https://github.com/tivac/modular-css/commit/2084b62))
+
+
+### BREAKING CHANGES
+
+* Previously missing css.fooga references would be left as-is, now they're wrapped in quotes to prevent them from causing JS errors. If you want missing classes to break things you should enable strict mode. Also no longer injecting a `<script>` block just to import css if there isn't already a `<script>` block defined in the module.
+
+
+
+
+
 ## [22.1.4](https://github.com/tivac/modular-css/compare/v22.1.3...v22.1.4) (2019-02-16)
 
 
