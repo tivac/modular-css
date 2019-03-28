@@ -430,11 +430,17 @@ class Processor {
 
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
-            this._graph.dependenciesOf(name).map((dependency) => (
-                dependency in this._files ?
-                    this._files[dependency].walked :
-                    this.file(dependency)
-            ))
+            this._graph.dependenciesOf(name).map((dependency) => {
+                const { valid, walked : complete } = this._files[dependency] || false;
+
+                // If the file hasn't been invalidated wait for it to be done processing
+                if(valid) {
+                    return complete;
+                }
+
+                // Otherwise add it to the queue
+                return this.file(dependency);
+            })
         );
 
         // Mark the walk of this file & its dependencies complete
