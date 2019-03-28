@@ -5,11 +5,9 @@ const { rollup } = require("rollup");
 
 const shell = require("shelljs");
 
-const prefix  = require("@modular-css/test-utils/prefix.js")(__dirname);
-const namer   = require("@modular-css/test-utils/namer.js");
-const logs    = require("@modular-css/test-utils/logs.js");
-
-require("@modular-css/test-utils/rollup-build-snapshot.js");
+const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
+const namer  = require("@modular-css/test-utils/namer.js");
+const logs   = require("@modular-css/test-utils/logs.js");
 
 const css = require("@modular-css/rollup");
 

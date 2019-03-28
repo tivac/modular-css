@@ -15,9 +15,6 @@ const dir     = require("@modular-css/test-utils/read-dir.js")(__dirname);
 const namer   = require("@modular-css/test-utils/namer.js");
 const logs    = require("@modular-css/test-utils/logs.js");
 
-require("@modular-css/test-utils/rollup-code-snapshot.js");
-require("@modular-css/test-utils/rollup-build-snapshot.js");
-
 const Processor = require("@modular-css/processor");
 
 const plugin = require("../rollup.js");

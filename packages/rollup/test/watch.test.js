@@ -4,7 +4,6 @@
 const dedent = require("dedent");
 const shell = require("shelljs");
 
-const read = require("@modular-css/test-utils/read.js")(__dirname);
 const write = require("@modular-css/test-utils/write.js")(__dirname);
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
 const dir = require("@modular-css/test-utils/read-dir.js")(__dirname);

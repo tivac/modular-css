@@ -17,6 +17,16 @@ module.exports = {
                 "/output/",
                 "/specimens/",
             ],
+
+            setupFilesAfterEnv : [
+                "<rootDir>/packages/test-utils/expect/toMatchDiffSnapshot.js",
+                "<rootDir>/packages/test-utils/expect/toMatchRollupSnapshot.js",
+                "<rootDir>/packages/test-utils/expect/toMatchRollupCodeSnapshot.js",
+            ],
+
+            snapshotSerializers : [
+                require.resolve("snapshot-diff/serializer.js"),
+            ],
         },
         {
             displayName : "lint",
