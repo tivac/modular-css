@@ -10,8 +10,9 @@ module.exports = (cwd) =>
         const dir = path.join(cwd, "./output", name);
         const files = read.sync(dir);
 
-        return files.sort().map((file) => ({
-            file : file.replace(/\\/g, "/"),
-            text : fs.readFileSync(path.join(dir, file), "utf8"),
-        }));
+        return files.sort().reduce((out, file) => {
+            out[file.replace(/\\/g, "/")] = fs.readFileSync(path.join(dir, file), "utf8");
+
+            return out;
+        }, Object.create(null));
     };

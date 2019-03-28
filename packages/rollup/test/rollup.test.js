@@ -8,7 +8,6 @@ const shell = require("shelljs");
 const cssnano = require("cssnano");
 
 const read    = require("@modular-css/test-utils/read.js")(__dirname);
-const readdir = require("@modular-css/test-utils/read-dir.js")(__dirname);
 const exists  = require("@modular-css/test-utils/exists.js")(__dirname);
 const prefix  = require("@modular-css/test-utils/prefix.js")(__dirname);
 const dir     = require("@modular-css/test-utils/read-dir.js")(__dirname);
@@ -144,7 +143,7 @@ describe("/rollup.js", () => {
             file : prefix(`./output/hashes/hashes.js`),
         });
 
-        expect(readdir("./hashes")).toMatchSnapshot();
+        expect(dir("./hashes")).toMatchSnapshot();
     });
 
     it("should correctly handle hashed output with external source maps & json files", async () => {
@@ -164,7 +163,7 @@ describe("/rollup.js", () => {
             file : prefix(`./output/hashes/hashes.js`),
         });
 
-        expect(readdir("./hashes")).toMatchSnapshot();
+        expect(dir("./hashes")).toMatchSnapshot();
     });
 
     it("should avoid generating empty CSS", async () => {
@@ -642,7 +641,6 @@ describe("/rollup.js", () => {
         expect(exists("./output/no-empty-css/assets/empty.css")).toBe(false);
     });
 
-
     describe("case sensitivity tests", () => {
         const fs = require("fs");
         let fn = it;
@@ -673,7 +671,7 @@ describe("/rollup.js", () => {
                 file : prefix(`./output/casing/main.js`),
             });
 
-            expect(readdir("./casing")).toMatchSnapshot();
+            expect(dir("./casing")).toMatchSnapshot();
         });
     });
 
