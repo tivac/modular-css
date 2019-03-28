@@ -29,7 +29,7 @@ module.exports = (config = false) => {
         if(!missed) {
             return source;
         }
-         
+
         const { strict } = processor.options;
 
         const classes = missed.map((reference) => reference.replace("css.", ""));
@@ -45,7 +45,7 @@ module.exports = (config = false) => {
 
         // Turn all missing values into strings so nothing explodes
         return source.replace(
-            new RegExp(`(${missed.map((ref) => escape(ref)).join("|")})`),
+            new RegExp(`(${missed.map((ref) => escape(ref)).join("|")})`, "g"),
             (match) => JSON.stringify(match)
         );
     };
@@ -82,13 +82,13 @@ module.exports = (config = false) => {
 
         if(style) {
             log("extract <style>", html);
-            
+
             css = "<style>";
-            
+
             if(processor.has(html)) {
                 processor.invalidate(html);
             }
-    
+
             result = await processor.string(
                 html,
                 style[1]
@@ -194,7 +194,7 @@ module.exports = (config = false) => {
                     new RegExp(`(\\b)css\\.(${selectors})(\\b)`, "gm"),
                     (match, prefix, key, suffix) => {
                         const replacement = Array.isArray(exported[key]) ? exported[key].join(" ") : exported[key];
-                        
+
                         return `${prefix}"${replacement}"${suffix}`;
                     }
                 );
