@@ -177,7 +177,7 @@ module.exports = (config = false) => {
         if(missed) {
             const { strict } = processor.options;
 
-            const classes = missed.map((reference) => reference.split("css.")[1]);
+            const classes = missed.map((reference) => reference.replace("css.", ""));
 
             if(strict) {
                 throw new Error(`@modular-css/svelte: Unable to find .${classes.join(", .")} in "${css}"`);
@@ -186,6 +186,12 @@ module.exports = (config = false) => {
             classes.forEach((key) =>
                 // eslint-disable-next-line no-console
                 console.warn(`@modular-css/svelte: Unable to find .${key} in "${css}"`)
+            );
+
+            // Turn all missing values into strings so nothing explodes
+            source = source.replace(
+                new RegExp(`(${missed.map((ref) => escape(ref)).join("|")})`),
+                (match) => JSON.stringify(match)
             );
         }
 

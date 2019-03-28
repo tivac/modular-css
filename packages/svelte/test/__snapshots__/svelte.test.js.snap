@@ -259,7 +259,7 @@ Array [
 
 exports[`/svelte.js should handle errors: empty css file - <link> 3`] = `
 "
-<div class=\\"{css.nope}\\">NOPE</div>
+<div class=\\"{\\"css.nope\\"}\\">NOPE</div>
 <div class=\\"{css.alsonope}\\">STILL NOPE</div>
 <script>
     import css from \\"./empty.css\\";
@@ -280,7 +280,7 @@ Array [
 `;
 
 exports[`/svelte.js should handle errors: empty css file - <style> 3`] = `
-"<div class=\\"{css.nope}\\">NOPE</div>
+"<div class=\\"{\\"css.nope\\"}\\">NOPE</div>
 <div class=\\"{css.alsonope}\\">STILL NOPE</div>
 
 <style>/* replaced by modular-css */</style>
@@ -305,7 +305,7 @@ exports[`/svelte.js should handle errors: invalid reference <script> - <link> 3`
 import css from \\"./invalid.css\\";
 
 
-    console.log(css.nuhuh);
+    console.log(\\"css.nuhuh\\");
 </script>
 "
 `;
@@ -326,7 +326,7 @@ exports[`/svelte.js should handle errors: invalid reference <script> - <style> 3
 <style>/* replaced by modular-css */</style>
 
 <script>
-    console.log(css.nuhuh);
+    console.log(\\"css.nuhuh\\");
 </script>
 "
 `;
@@ -343,7 +343,7 @@ Array [
 
 exports[`/svelte.js should handle errors: invalid reference template - <link> 3`] = `
 "
-<h1 class=\\"{css.nope}\\">Nope</h1>
+<h1 class=\\"{\\"css.nope\\"}\\">Nope</h1>
 <h2 class=\\"yup\\">Yup</h2>
 <script>
     import css from \\"./invalid.css\\";
@@ -361,7 +361,7 @@ Array [
 `;
 
 exports[`/svelte.js should handle errors: invalid reference template - <style> 3`] = `
-"<h1 class=\\"{css.nope}\\">Nope</h1>
+"<h1 class=\\"{\\"css.nope\\"}\\">Nope</h1>
 <h2 class=\\"yup\\">Yup</h2>
 
 <style>/* replaced by modular-css */</style>
@@ -689,7 +689,7 @@ exports[`/svelte.js should warn when multiple <link> elements are in the html 1`
 "<link rel=\\"stylesheet\\" href=\\"./simple2.css\\" />
 
 <div class=\\"fooga\\">fooga</div>
-<div class=\\"{css.booga}\\">booga</div>
+<div class=\\"{\\"css.booga\\"}\\">booga</div>
 <script>
     import css from \\"./simple.css\\";
 </script>"
