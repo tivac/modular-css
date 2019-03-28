@@ -4,7 +4,7 @@ const parser = require("../parsers/parser.js");
 
 const plugin = "modular-css-values-composed";
 
-// Find @value fooga: wooga entries & catalog/remove them
+// Find @value fooga from "./wooga.css" entries & catalog/remove them
 module.exports = (css, { opts, messages }) => {
     const { files, resolve, from } = opts;
     
@@ -25,7 +25,7 @@ module.exports = (css, { opts, messages }) => {
 
         rule.remove();
     });
-    
+
     if(Object.keys(values).length > 0) {
         messages.push({
             type : "modular-css",
