@@ -4,7 +4,6 @@
 const dedent = require("dedent");
 const shell = require("shelljs");
 
-const read = require("@modular-css/test-utils/read.js")(__dirname);
 const write = require("@modular-css/test-utils/write.js")(__dirname);
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
 const dir = require("@modular-css/test-utils/read-dir.js")(__dirname);
@@ -41,7 +40,7 @@ describe("/rollup.js", () => {
             watcher = watch({
                 input  : prefix(`./output/watch/change/watched.js`),
                 output : {
-                    file : prefix(`./output/watch/change/watch-output.js`),
+                    file : prefix(`./output/watch/change/output/output.js`),
                     format,
                     assetFileNames,
                 },
@@ -52,9 +51,12 @@ describe("/rollup.js", () => {
                 ],
             });
 
+            let v1;
+            let v2;
+
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(dir("./watch/change/assets/")).toMatchSnapshot();
+                    v1 = dir("./watch/change/output/");
 
                     setTimeout(() => write(`./watch/change/watched.css`, dedent(`
                         .two {
@@ -66,7 +68,9 @@ describe("/rollup.js", () => {
                     return;
                 }
 
-                expect(dir("./watch/change/assets/")).toMatchSnapshot();
+                v2 = dir("./watch/change/output/");
+
+                expect(v1).toMatchDiffSnapshot(v2);
 
                 return done();
             }));
@@ -98,7 +102,7 @@ describe("/rollup.js", () => {
             watcher = watch({
                 input  : prefix(`./output/watch/change-composes/watched.js`),
                 output : {
-                    file : prefix(`./output/watch/change-composes/watch-output.js`),
+                    file : prefix(`./output/watch/change-composes/output/output.js`),
                     format,
                     assetFileNames,
                 },
@@ -109,9 +113,12 @@ describe("/rollup.js", () => {
                 ],
             });
 
+            let v1;
+            let v2;
+
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(dir("./watch/change-composes/")).toMatchSnapshot();
+                    v1 = dir("./watch/change-composes/output/");
 
                     setTimeout(() => write(`./watch/change-composes/watched.css`, dedent(`
                         .one {
@@ -133,7 +140,9 @@ describe("/rollup.js", () => {
                     return;
                 }
 
-                expect(dir("./watch/change-composes/")).toMatchSnapshot();
+                v2 = dir("./watch/change-composes/output/");
+
+                expect(v1).toMatchDiffSnapshot(v2);
 
                 return done();
             }));
@@ -170,7 +179,7 @@ describe("/rollup.js", () => {
             watcher = watch({
                 input  : require.resolve(prefix("./output/watch/dep-graph/watch.js")),
                 output : {
-                    file : prefix(`./output/watch/dep-graph/watch-output.js`),
+                    file : prefix(`./output/watch/dep-graph/output/output.js`),
                     format,
                     assetFileNames,
                 },
@@ -181,9 +190,12 @@ describe("/rollup.js", () => {
                 ],
             });
 
+            let v1;
+            let v2;
+
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(dir("./watch/dep-graph/assets/")).toMatchSnapshot();
+                    v1 = dir("./watch/dep-graph/output/");
 
                     setTimeout(() => write(`./watch/dep-graph/two.css`, dedent(`
                         .two {
@@ -195,7 +207,9 @@ describe("/rollup.js", () => {
                     return;
                 }
 
-                expect(dir("./watch/dep-graph/assets/")).toMatchSnapshot();
+                v2 = dir("./watch/dep-graph/output/");
+
+                expect(v1).toMatchDiffSnapshot(v2);
 
                 return done();
             }));
@@ -217,7 +231,7 @@ describe("/rollup.js", () => {
             watcher = watch({
                 input  : require.resolve(prefix("./output/watch/new-file/watch.js")),
                 output : {
-                    file : prefix(`./output/watch/new-file/watch-output.js`),
+                    file : prefix(`./output/watch/new-file/output/output.js`),
                     format,
                     assetFileNames,
                 },
@@ -228,9 +242,12 @@ describe("/rollup.js", () => {
                 ],
             });
 
+            let v1;
+            let v2;
+
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(dir("./new-file/assets/")).toMatchSnapshot();
+                    v1 = dir("./watch/new-file/output/");
 
                     setTimeout(() => write(`./watch/new-file/watch.js`, dedent(`
                         import css from "./one.css";
@@ -242,7 +259,9 @@ describe("/rollup.js", () => {
                     return;
                 }
 
-                expect(dir("./watch/new-file/assets/")).toMatchSnapshot();
+                v2 = dir("./watch/new-file/output");
+
+                expect(v1).toMatchDiffSnapshot(v2);
 
                 return done();
             }));
@@ -281,7 +300,7 @@ describe("/rollup.js", () => {
             watcher = watch({
                 input  : require.resolve(prefix("./output/watch/shared-deps/watch.js")),
                 output : {
-                    file : prefix(`./output/watch/shared-deps/watch-output.js`),
+                    file : prefix(`./output/watch/shared-deps/output/output.js`),
                     format,
                     assetFileNames,
                 },
@@ -292,9 +311,12 @@ describe("/rollup.js", () => {
                 ],
             });
 
+            let v1;
+            let v2;
+
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(dir("./watch/shared-deps/assets/")).toMatchSnapshot();
+                    v1 = dir("./watch/shared-deps/output");
                     
                     setTimeout(() => write(`./watch/shared-deps/two.css`, dedent(`
                         .two {
@@ -306,13 +328,71 @@ describe("/rollup.js", () => {
                     return;
                 }
                 
-                expect(dir("./watch/shared-deps/assets/")).toMatchSnapshot();
+                v2 = dir("./watch/shared-deps/output");
+
+                expect(v1).toMatchDiffSnapshot(v2);
+
+                return done();
+            }));
+        });
+
+        it("should update when a shared @value changes", (done) => {
+            // Create v1 of the files
+            write(`./watch/shared-deps/one.css`, dedent(`
+                @value baloo from "./values.css";
+                .one {
+                    color: baloo;
+                }
+            `));
+
+            write(`./watch/shared-deps/values.css`, dedent(`
+                @value baloo: blue;
+            `));
+
+            write(`./watch/shared-deps/watch.js`, dedent(`
+                import css from "./one.css";
+
+                console.log(css);
+            `));
+
+            // Start watching
+            watcher = watch({
+                input  : require.resolve(prefix("./output/watch/shared-deps/watch.js")),
+                output : {
+                    file : prefix(`./output/watch/shared-deps/output/output.js`),
+                    format,
+                    assetFileNames,
+                },
+                plugins : [
+                    plugin({
+                        map,
+                    }),
+                ],
+            });
+
+            let v1;
+            let v2;
+
+            watcher.on("event", watching((builds) => {
+                if(builds === 1) {
+                    v1 = dir("./watch/shared-deps/output");
+                    
+                    setTimeout(() => write(`./watch/shared-deps/values.css`, dedent(`
+                        @value baloo: red;
+                    `)), 100);
+
+                    // continue watching
+                    return;
+                }
+                
+                v2 = dir("./watch/shared-deps/output");
+
+                expect(v1).toMatchDiffSnapshot(v2);
 
                 return done();
             }));
         });
         
-        // TODO: causing jest to hang but say the test has completed weirdly
         it("should watch when using code splitting", (done) => {
             // Create v1 of the files
             write(`./watch/code-splitting/one.css`, dedent(`
@@ -329,15 +409,9 @@ describe("/rollup.js", () => {
             `));
             
             write(`./watch/code-splitting/shared.css`, dedent(`
-                @value baloo from "./values.css";
-
                 .shared {
-                    color: baloo;
+                    color: blue;
                 }
-            `));
-            
-            write(`./watch/code-splitting/values.css`, dedent(`
-                @value baloo: blue;
             `));
             
             write(`./watch/code-splitting/one.js`, dedent(`
@@ -363,7 +437,7 @@ describe("/rollup.js", () => {
                 ],
 
                 output : {
-                    dir : prefix(`./output/watch/code-splitting`),
+                    dir : prefix(`./output/watch/code-splitting/output`),
                     format,
                     assetFileNames,
                 },
@@ -375,20 +449,27 @@ describe("/rollup.js", () => {
                 ],
             });
 
+            let v1;
+            let v2;
+
             watcher.on("event", watching((builds) => {
                 if(builds === 1) {
-                    expect(dir("./watch/code-splitting/assets/")).toMatchSnapshot();
+                    v1 = dir("./watch/code-splitting/output");
                     
                     // Create v2 of the file we want to change
-                    setTimeout(() => write(`./watch/code-splitting/values.css`, dedent(`
-                    @value baloo: aqua;
+                    setTimeout(() => write(`./watch/code-splitting/shared.css`, dedent(`
+                        .shared {
+                            color: seafoam;
+                        } 
                     `)), 100);
                     
                     // continue watching
                     return;
                 }
                 
-                expect(dir("./watch/code-splitting/assets/")).toMatchSnapshot();
+                v2 = dir("./watch/code-splitting/output");
+
+                expect(v1).toMatchDiffSnapshot(v2);
 
                 return done();
             }));

@@ -1,276 +1,160 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/rollup.js watch mode should generate updated output 1`] = `
-Array [
-  Object {
-    "file": "watched.css",
-    "text": "/* packages/rollup/test/output/watch/change/watched.css */
-.mc5f9237d4_one {
-    color: red;
-}",
-  },
-]
-`;
+Snapshot Diff:
+- First value
++ Second value
 
-exports[`/rollup.js watch mode should generate updated output 2`] = `
-Array [
   Object {
-    "file": "watched.css",
-    "text": "/* packages/rollup/test/output/watch/change/watched.css */
-.mc5f9237d4_two {
-    color: blue;
-}",
-  },
-]
+    "assets/watched.css": "/* packages/rollup/test/output/watch/change/watched.css */
+- .mc5f9237d4_one {
+-     color: red;
++ .mc5f9237d4_two {
++     color: blue;
+  }",
+    "output.js": "var css = {
+-     \\"one\\": \\"mc5f9237d4_one\\"
++     \\"two\\": \\"mc5f9237d4_two\\"
+  };
+  
+  console.log(css);
+  ",
+  }
 `;
 
 exports[`/rollup.js watch mode should generate updated output for composes changes 1`] = `
-Array [
+Snapshot Diff:
+- First value
++ Second value
+
+@@ -1,9 +1,9 @@
   Object {
-    "file": "assets/watched.css",
-    "text": "/* packages/rollup/test/output/watch/change-composes/watched.css */
-.mc0f3c579a_one {
-    color: red;
-}
-
-.mc0f3c579a_two {
-    background: blue;
-}
-
-.mc0f3c579a_three {
-    color: teal;
-}",
-  },
-  Object {
-    "file": "watch-output.js",
-    "text": "var css = {
-    \\"one\\": \\"mc0f3c579a_one\\",
-    \\"two\\": \\"mc0f3c579a_one mc0f3c579a_two\\",
-    \\"three\\": \\"mc0f3c579a_three\\"
-};
-
-console.log(css);
-",
-  },
-  Object {
-    "file": "watched.css",
-    "text": ".one {
-    color: red;
-}
-
-.two {
-    composes: one;
-    background: blue;
-}
-
-.three {
-    color: teal;
-}",
-  },
-  Object {
-    "file": "watched.js",
-    "text": "import css from \\"./watched.css\\";
-console.log(css);",
-  },
-]
-`;
-
-exports[`/rollup.js watch mode should generate updated output for composes changes 2`] = `
-Array [
-  Object {
-    "file": "assets/watched.css",
-    "text": "/* packages/rollup/test/output/watch/change-composes/watched.css */
-.mc0f3c579a_one {
-    color: green;
-}
-
-.mc0f3c579a_two {
-    background: blue;
-}
-
-.mc0f3c579a_three {
-    color: teal;
-}",
-  },
-  Object {
-    "file": "watch-output.js",
-    "text": "var css = {
-    \\"one\\": \\"mc0f3c579a_one\\",
-    \\"two\\": \\"mc0f3c579a_one mc0f3c579a_two\\",
-    \\"three\\": \\"mc0f3c579a_one mc0f3c579a_three\\"
-};
-
-console.log(css);
-",
-  },
-  Object {
-    "file": "watched.css",
-    "text": ".one {
-    color: green;
-}
-
-.two {
-    composes: one;
-    background: blue;
-}
-
-.three {
-    composes: one;
-    color: teal;
-}",
-  },
-  Object {
-    "file": "watched.js",
-    "text": "import css from \\"./watched.css\\";
-console.log(css);",
-  },
-]
+    "assets/watched.css": "/* packages/rollup/test/output/watch/change-composes/watched.css */
+  .mc0f3c579a_one {
+-     color: red;
++     color: green;
+  }
+  
+  .mc0f3c579a_two {
+      background: blue;
+  }
+@@ -12,11 +12,11 @@
+      color: teal;
+  }",
+    "output.js": "var css = {
+      \\"one\\": \\"mc0f3c579a_one\\",
+      \\"two\\": \\"mc0f3c579a_one mc0f3c579a_two\\",
+-     \\"three\\": \\"mc0f3c579a_three\\"
++     \\"three\\": \\"mc0f3c579a_one mc0f3c579a_three\\"
+  };
+  
+  console.log(css);
+  ",
+  }
 `;
 
 exports[`/rollup.js watch mode should update when a dependency changes 1`] = `
-Array [
+Snapshot Diff:
+- First value
++ Second value
+
+@@ -1,9 +1,9 @@
   Object {
-    "file": "one.css",
-    "text": "/* packages/rollup/test/output/watch/dep-graph/two.css */
-.mc6f857f1c_two {
-    color: blue;
-}
-/* packages/rollup/test/output/watch/dep-graph/three.css */
-.mc7228cc44_three {
-    color: green;
-}
-/* packages/rollup/test/output/watch/dep-graph/one.css */
-.mca3136a1b_one {
-    color: red;
-}",
-  },
-]
+    "assets/one.css": "/* packages/rollup/test/output/watch/dep-graph/two.css */
+  .mc6f857f1c_two {
+-     color: blue;
++     color: green;
+  }
+  /* packages/rollup/test/output/watch/dep-graph/three.css */
+  .mc7228cc44_three {
+      color: green;
+  }
 `;
 
-exports[`/rollup.js watch mode should update when a dependency changes 2`] = `
-Array [
+exports[`/rollup.js watch mode should update when a shared @value changes 1`] = `
+Snapshot Diff:
+- First value
++ Second value
+
+@@ -1,10 +1,10 @@
   Object {
-    "file": "one.css",
-    "text": "/* packages/rollup/test/output/watch/dep-graph/two.css */
-.mc6f857f1c_two {
-    color: green;
-}
-/* packages/rollup/test/output/watch/dep-graph/three.css */
-.mc7228cc44_three {
-    color: green;
-}
-/* packages/rollup/test/output/watch/dep-graph/one.css */
-.mca3136a1b_one {
-    color: red;
-}",
-  },
-]
+    "assets/one.css": "/* packages/rollup/test/output/watch/shared-deps/values.css */
+  /* packages/rollup/test/output/watch/shared-deps/one.css */
+  .mca79168b9_one {
+-     color: blue;
++     color: red;
+  }",
+    "assets/three.css": "/* packages/rollup/test/output/watch/shared-deps/two.css */
+  .mc5067d789_two {
+      color: yellow;
+  }
+@@ -15,11 +15,11 @@
+  /* packages/rollup/test/output/watch/shared-deps/three.css */
+  .mc4ec9318b_three {
+      color: teal;
+  }",
+    "output.js": "var css = {
+-     \\"baloo\\": \\"blue\\",
++     \\"baloo\\": \\"red\\",
+      \\"one\\": \\"mca79168b9_one\\"
+  };
+  
+  console.log(css);
+  ",
 `;
 
 exports[`/rollup.js watch mode should update when a shared dependency changes 1`] = `
-Array [
+Snapshot Diff:
+- First value
++ Second value
+
+@@ -1,9 +1,9 @@
   Object {
-    "file": "three.css",
-    "text": "/* packages/rollup/test/output/watch/shared-deps/two.css */
-.mc5067d789_two {
-    color: green;
-}
-/* packages/rollup/test/output/watch/shared-deps/one.css */
-.mca79168b9_one {
-    color: red;
-}
-/* packages/rollup/test/output/watch/shared-deps/three.css */
-.mc4ec9318b_three {
-    color: teal;
-}",
-  },
-]
+    "assets/three.css": "/* packages/rollup/test/output/watch/shared-deps/two.css */
+  .mc5067d789_two {
+-     color: green;
++     color: yellow;
+  }
+  /* packages/rollup/test/output/watch/shared-deps/one.css */
+  .mca79168b9_one {
+      color: red;
+  }
 `;
 
-exports[`/rollup.js watch mode should update when a shared dependency changes 2`] = `
-Array [
-  Object {
-    "file": "three.css",
-    "text": "/* packages/rollup/test/output/watch/shared-deps/two.css */
-.mc5067d789_two {
-    color: yellow;
-}
-/* packages/rollup/test/output/watch/shared-deps/one.css */
-.mca79168b9_one {
-    color: red;
-}
-/* packages/rollup/test/output/watch/shared-deps/three.css */
-.mc4ec9318b_three {
-    color: teal;
-}",
-  },
-]
-`;
+exports[`/rollup.js watch mode should update when adding new css files 1`] = `
+Snapshot Diff:
+- First value
++ Second value
 
-exports[`/rollup.js watch mode should update when adding new css files 1`] = `Array []`;
-
-exports[`/rollup.js watch mode should update when adding new css files 2`] = `
-Array [
   Object {
-    "file": "one.css",
-    "text": "/* packages/rollup/test/output/watch/new-file/one.css */
-.mc54f12712_one {
-    color: red;
-}",
-  },
-]
+-   "output.js": "console.log(\\"hello\\");
++   "assets/one.css": "/* packages/rollup/test/output/watch/new-file/one.css */
++ .mc54f12712_one {
++     color: red;
++ }",
++   "output.js": "var css = {
++     \\"one\\": \\"mc54f12712_one\\"
++ };
++ 
++ console.log(css);
+  ",
+  }
 `;
 
 exports[`/rollup.js watch mode should watch when using code splitting 1`] = `
-Array [
-  Object {
-    "file": "one.css",
-    "text": "/* packages/rollup/test/output/watch/code-splitting/values.css */
-/* packages/rollup/test/output/watch/code-splitting/shared.css */
-.mc4002e81f_shared {
-    color: blue;
-}
-/* packages/rollup/test/output/watch/code-splitting/one.css */
-.mc204ad279_one {
-    color: red;
-}",
-  },
-  Object {
-    "file": "two.css",
-    "text": "/* packages/rollup/test/output/watch/code-splitting/two.css */
-.mc3861d3af_two {
-    color: green;
-}",
-  },
-]
-`;
+Snapshot Diff:
+- First value
++ Second value
 
-exports[`/rollup.js watch mode should watch when using code splitting 2`] = `
-Array [
+@@ -1,9 +1,9 @@
   Object {
-    "file": "one.css",
-    "text": "/* packages/rollup/test/output/watch/code-splitting/one.css */
-.mc204ad279_one {
-    color: red;
-}",
-  },
-  Object {
-    "file": "shared.css",
-    "text": "/* packages/rollup/test/output/watch/code-splitting/shared.css */
-.mc4002e81f_shared {
-    color: blue;
-}",
-  },
-  Object {
-    "file": "two.css",
-    "text": "/* packages/rollup/test/output/watch/code-splitting/two.css */
-.mc3861d3af_two {
-    color: green;
-}",
-  },
-  Object {
-    "file": "values.css",
-    "text": "/* packages/rollup/test/output/watch/code-splitting/values.css */",
-  },
-]
+    "assets/one.css": "/* packages/rollup/test/output/watch/code-splitting/shared.css */
+  .mc4002e81f_shared {
+-     color: blue;
++     color: seafoam;
+  }
+  /* packages/rollup/test/output/watch/code-splitting/one.css */
+  .mc204ad279_one {
+      color: red;
+  }",
 `;
