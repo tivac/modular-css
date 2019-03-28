@@ -5,22 +5,18 @@ Snapshot Diff:
 - First value
 + Second value
 
-@@ -1,7 +1,14 @@
-  Array [
-    Object {
-+     "file": "assets/app.css",
-+     "text": "/* packages/svelte/test/output/rollup/input/app.css */
+@@ -1,6 +1,10 @@
+  Object {
++   "assets/app.css": "/* packages/svelte/test/output/rollup/input/app.css */
 + .mc043115d5_nope {
 +     color: blue;
 + }",
-+   },
-+   Object {
-      "file": "output.js",
-      "text": "function noop() {}
+    "output.js": "function noop() {}
   
   function assign(tar, src) {
   	for (var k in src) tar[k] = src[k];
-@@ -160,11 +167,11 @@
+  	return tar;
+@@ -158,11 +162,11 @@
   
   	return {
   		c() {

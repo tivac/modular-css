@@ -3,7 +3,6 @@
 
 const dedent = require("dedent");
 const shell = require("shelljs");
-const diff = require("snapshot-diff");
 
 const write = require("@modular-css/test-utils/write.js")(__dirname);
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
