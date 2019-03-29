@@ -36,5 +36,8 @@
     "mkdirp": "^0.5.1",
     "resolve-from": "^4.0.0",
     "rollup-pluginutils": "^2.3.0"
+  },
+  "peerDependencies": {
+    "svelte": "^2",
   }
 }
