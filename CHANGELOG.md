@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [23.0.3](https://github.com/tivac/modular-css/compare/v23.0.2...v23.0.3) (2019-03-29)
+
+
+### Bug Fixes
+
+* don't mutate arrays while iterating ([0f63ea2](https://github.com/tivac/modular-css/commit/0f63ea2))
+
+
+
+
+
 ## [23.0.2](https://github.com/tivac/modular-css/compare/v23.0.1...v23.0.2) (2019-03-29)
 
 **Note:** Version bump only for package modular-css
