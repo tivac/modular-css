@@ -3,3 +3,9 @@
 
     color: blue;
 }
+
+.b2 {
+    composes: shared3 from "./shared3.css";
+
+    color: blanchedalmond;
+}

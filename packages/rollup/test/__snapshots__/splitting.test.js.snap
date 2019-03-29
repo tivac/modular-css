@@ -327,14 +327,32 @@ Object {
 .a {
     color: aqua;
 }
+.a2 {
+    color: azure;
+}
+/* packages/rollup/test/specimens/common-splitting/shared3.css */
+.shared3 {
+    color: saddlebrown;
+}
 /* packages/rollup/test/specimens/common-splitting/b.css */
 .b {
     color: blue;
+}
+.b2 {
+    color: blanchedalmond;
 }
 ",
   "c.css": "/* packages/rollup/test/specimens/common-splitting/c.css */
 .c {
     color: cyan;
+}
+
+.c2 {
+    color: crimson;
+}",
+  "shared2.css": "/* packages/rollup/test/specimens/common-splitting/shared2.css */
+.shared2 {
+    color: sandybrown;
 }
 ",
 }

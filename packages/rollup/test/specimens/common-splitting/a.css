@@ -3,3 +3,9 @@
 
     color: aqua;
 }
+
+.a2 {
+    composes: shared2 from "./shared2.css";
+
+    color: azure;
+}

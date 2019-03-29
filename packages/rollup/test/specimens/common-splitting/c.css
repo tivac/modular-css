@@ -1,3 +1,9 @@
 .c {
     color: cyan;
 }
+
+.c2 {
+    composes: shared2 from "./shared2.css";
+
+    color: crimson;
+}

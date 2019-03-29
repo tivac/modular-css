@@ -5,22 +5,25 @@ const merge = (graph, original, target) => {
     const incoming = graph.incomingEdges[original];
     const outgoing = graph.outgoingEdges[original];
 
+    // Add original file reference to target array
     graph.getNodeData(target).unshift(original);
 
+    // Copy all incoming dependencies from original to target
     incoming.forEach((src) => {
-        graph.removeDependency(src, original);
-
-        if(src !== target) {
-            graph.addDependency(src, target);
+        if(src === target) {
+            return;
         }
+        
+        graph.addDependency(src, target);
     });
 
+    // Copy all outgoing dependencies from original to target
     outgoing.forEach((dest) => {
-        graph.removeDependency(original, dest);
-
-        if(dest !== target) {
-            graph.addDependency(target, dest);
+        if(dest === target) {
+            return;
         }
+
+        graph.addDependency(target, dest);
     });
 
     // Bye bye
