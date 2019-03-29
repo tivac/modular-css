@@ -38,6 +38,6 @@
     "rollup-pluginutils": "^2.3.0"
   },
   "peerDependencies": {
-    "svelte": "^2",
+    "svelte": "^2"
   }
 }
