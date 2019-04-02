@@ -140,7 +140,7 @@ describe("rollup-rewriter", () => {
         expect(result).toMatchRollupSnapshot();
     });
 
-    it("should resolve static module imports to their CSS dependencies", async () => {
+    it.each(formats)("should include css for static imports used by a dynamic import (%p)", async (format) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/dynamic-shared-imports/entry1.js"),
@@ -158,7 +158,7 @@ describe("rollup-rewriter", () => {
         });
 
         const result = await bundle.generate({
-            format : "esm",
+            format,
             sourcemap,
 
             assetFileNames,
