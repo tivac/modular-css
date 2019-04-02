@@ -355,7 +355,7 @@ console.log(css);
 (function() {
     Promise.all([
     lazyload(\\"./assets/static1.css\\"),
-    lazyload(\\"./assets/dynamic1.css\\"),
+lazyload(\\"./assets/dynamic1.css\\"),
     import('./chunk2.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
