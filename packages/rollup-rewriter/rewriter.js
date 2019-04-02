@@ -57,13 +57,13 @@ module.exports = (opts) => {
                 }
 
                 graph.addNode(entry);
-                
+
                 imported.forEach((file) => {
                     graph.addNode(file);
                     graph.addDependency(entry, file);
                 });
             });
-            
+
             entries.forEach((deps, entry) => {
                 const { code } = chunks[entry];
 
@@ -88,7 +88,11 @@ module.exports = (opts) => {
                     const { index } = result;
 
                     // eslint-disable-next-line no-loop-func
-                    const css = [ ...graph.dependenciesOf(file), file ].reduce((out, curr) => {
+                    const css = [
+                        ...graph.dependenciesOf(file),
+                        ...(file in chunks ? chunks[file].imports : []),
+                        file,
+                    ].reduce((out, curr) => {
                         const { assets = [] } = chunks[curr];
 
                         assets.forEach((asset) => out.add(asset));
