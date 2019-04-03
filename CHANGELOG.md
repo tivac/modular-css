@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [23.0.4](https://github.com/tivac/modular-css/compare/v23.0.3...v23.0.4) (2019-04-03)
+
+
+### Bug Fixes
+
+* **rollup-rewriter:** include static dependencies ([#577](https://github.com/tivac/modular-css/issues/577)) ([ca499c6](https://github.com/tivac/modular-css/commit/ca499c6))
+
+
+
+
+
 ## [23.0.3](https://github.com/tivac/modular-css/compare/v23.0.2...v23.0.3) (2019-03-29)
 
 

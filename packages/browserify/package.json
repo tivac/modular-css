@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/browserify",
-  "version": "23.0.0",
+  "version": "23.0.4",
   "description": "Browserify transform for modular-css",
   "main": "./browserify.js",
   "repository": {
