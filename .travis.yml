@@ -7,9 +7,7 @@ if: tag IS blank
 # Environment setup
 language: node_js
 node_js:
-# Disabling latest until https://github.com/facebook/jest/issues/8069 is fixed
-# - node
-- "11.10.1"
+- node
 - '10'
 - '8'
 
