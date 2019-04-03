@@ -311,17 +311,13 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            await bundle.write({
+            await bundle.generate({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-
-                dir : prefix(`./output/stripped-dynamic-imports`),
             });
-
-            expect(dir("./stripped-dynamic-imports/assets/")).toMatchSnapshot();
         });
 
         it("should ouput only 1 JSON file", async () => {

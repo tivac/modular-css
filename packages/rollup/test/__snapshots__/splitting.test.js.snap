@@ -315,8 +315,6 @@ Object {
 }
 `;
 
-exports[`/rollup.js code splitting shouldn't break when dynamic imports are tree-shaken away (rollup/rollup#2659) 1`] = `Object {}`;
-
 exports[`/rollup.js code splitting shouldn't put bundle-specific CSS in common.css 1`] = `
 Object {
   "b.css": "/* packages/rollup/test/specimens/common-splitting/shared.css */
