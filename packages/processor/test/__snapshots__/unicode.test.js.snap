@@ -47,22 +47,22 @@ exports[`/processor.js unicode should support unicode classes & ids 1`] = `
 .\\\\? { background: lime; }
 .\\\\@ { background: lime; }
 .\\\\. { background: lime; }
-.\\\\3A\\\\) { background: lime; }
-.\\\\3A\\\\\`\\\\( { background: lime; }
+.\\\\:\\\\) { background: lime; }
+.\\\\:\\\\\`\\\\( { background: lime; }
 .\\\\31 23 { background: lime; }
 .\\\\31 a2b3c { background: lime; }
 .\\\\<p\\\\> { background: lime; }
 .\\\\<\\\\>\\\\<\\\\<\\\\<\\\\>\\\\>\\\\<\\\\> { background: lime; }
 .\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\[\\\\>\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\>\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\>\\\\+\\\\+\\\\+\\\\>\\\\+\\\\<\\\\<\\\\<\\\\<-\\\\]\\\\>\\\\+\\\\+\\\\.\\\\>\\\\+\\\\.\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\.\\\\.\\\\+\\\\+\\\\+\\\\.\\\\>\\\\+\\\\+\\\\.\\\\<\\\\<\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\.\\\\>\\\\.\\\\+\\\\+\\\\+\\\\.------\\\\.--------\\\\.\\\\>\\\\+\\\\.\\\\>\\\\. { background: lime; }
-.\\\\\\\\# { background: lime; }
-.\\\\\\\\#\\\\# { background: lime; }
-.\\\\\\\\#\\\\.\\\\#\\\\.\\\\# { background: lime; }
-.\\\\_ { background: lime; }
+.\\\\# { background: lime; }
+.\\\\#\\\\# { background: lime; }
+.\\\\#\\\\.\\\\#\\\\.\\\\# { background: lime; }
+._ { background: lime; }
 .\\\\{\\\\} { background: lime; }
-.\\\\\\\\#fake\\\\-id { background: lime; }
+.\\\\#fake-id { background: lime; }
 .foo\\\\.bar { background: lime; }
-.\\\\3Ahover { background: lime; }
-.\\\\3Ahover\\\\3A focus\\\\3A active { background: lime; }
+.\\\\:hover { background: lime; }
+.\\\\:hover\\\\:focus\\\\:active { background: lime; }
 .\\\\[attr\\\\=value\\\\] { background: lime; }
 .f\\\\/o\\\\/o { background: lime; }
 .f\\\\\\\\o\\\\\\\\o { background: lime; }
