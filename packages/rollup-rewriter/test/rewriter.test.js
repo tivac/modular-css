@@ -140,6 +140,34 @@ describe("rollup-rewriter", () => {
         expect(result).toMatchRollupSnapshot();
     });
 
+    it.each(formats)("should include css for static imports used by a dynamic import (%p)", async (format) => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/dynamic-shared-imports/entry1.js"),
+                require.resolve("./specimens/dynamic-shared-imports/entry2.js"),
+            ],
+            plugins : [
+                css({
+                    namer,
+                    map,
+                }),
+                rewriter({
+                    loadfn : "lazyload",
+                }),
+            ],
+        });
+
+        const result = await bundle.generate({
+            format,
+            sourcemap,
+
+            assetFileNames,
+            chunkFileNames,
+        });
+
+        expect(result).toMatchRollupSnapshot();
+    });
+
     it("should log details in verbose mode", async () => {
         const { logSnapshot } = logs();
 

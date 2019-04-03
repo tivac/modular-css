@@ -2,6 +2,367 @@
 
 exports[`rollup-rewriter should error on unsupported formats ("cjs") 1`] = `"Unsupported format: cjs. Supported formats are [\\"amd\\",\\"es\\",\\"esm\\",\\"system\\"]"`;
 
+exports[`rollup-rewriter should include css for static imports used by a dynamic import ("amd") 1`] = `
+Object {
+  "assets/dynamic1.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/dynamic1.css */
+.dynamic1 {
+    color: dynamic1;
+}
+",
+  "assets/entry1.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry1.css */
+.entry1 {
+    color: entry1;
+}
+",
+  "assets/entry2.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry2.css */
+.entry2 {
+    color: entry2;
+}
+",
+  "assets/static1.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/static1.css */
+.static1 {
+    color: static1;
+}
+",
+  "chunk.js": "
+define(['exports'], function (exports) { 'use strict';
+
+    var css = {
+        \\"static1\\": \\"static1\\"
+    };
+
+    console.log(css);
+
+    var static1 = \\"static1.js\\";
+
+    exports.static1 = static1;
+
+});
+",
+  "chunk2.js": "
+define(['exports', './chunk.js'], function (exports, __chunk_1) { 'use strict';
+
+    var css = {
+        \\"dynamic1\\": \\"dynamic1\\"
+    };
+
+    console.log(__chunk_1.static1, css);
+
+    var dynamic1 = \\"dynamic1.js\\";
+
+    exports.default = dynamic1;
+
+});
+",
+  "entry1.js": "
+define(['./chunk.js'], function (__chunk_1) { 'use strict';
+
+    var css = {
+        \\"entry1\\": \\"entry1\\"
+    };
+
+    console.log(__chunk_1.static1, css);
+
+});
+",
+  "entry2.js": "
+define(['require'], function (require) { 'use strict';
+
+    var css = {
+        \\"entry2\\": \\"entry2\\"
+    };
+
+    console.log(css);
+
+    (function() {
+        new Promise(function (resolve, reject) { Promise.all([
+    lazyload(\\"./assets/static1.css\\"),
+lazyload(\\"./assets/dynamic1.css\\"),
+    new Promise(function (resolve, reject) { require(['./chunk2.js'], resolve, reject) })
+])
+.then((results) => resolve(results[results.length - 1]))
+.catch(reject) }).then(console.log);
+    }());
+
+});
+",
+}
+`;
+
+exports[`rollup-rewriter should include css for static imports used by a dynamic import ("es") 1`] = `
+Object {
+  "assets/dynamic1.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/dynamic1.css */
+.dynamic1 {
+    color: dynamic1;
+}
+",
+  "assets/entry1.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry1.css */
+.entry1 {
+    color: entry1;
+}
+",
+  "assets/entry2.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry2.css */
+.entry2 {
+    color: entry2;
+}
+",
+  "assets/static1.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/static1.css */
+.static1 {
+    color: static1;
+}
+",
+  "chunk.js": "
+var css = {
+    \\"static1\\": \\"static1\\"
+};
+
+console.log(css);
+
+var static1 = \\"static1.js\\";
+
+export { static1 as a };
+",
+  "chunk2.js": "
+import { a as static1 } from './chunk.js';
+
+var css = {
+    \\"dynamic1\\": \\"dynamic1\\"
+};
+
+console.log(static1, css);
+
+var dynamic1 = \\"dynamic1.js\\";
+
+export default dynamic1;
+",
+  "entry1.js": "
+import { a as static1 } from './chunk.js';
+
+var css = {
+    \\"entry1\\": \\"entry1\\"
+};
+
+console.log(static1, css);
+",
+  "entry2.js": "
+var css = {
+    \\"entry2\\": \\"entry2\\"
+};
+
+console.log(css);
+
+(function() {
+    Promise.all([
+    lazyload(\\"./assets/static1.css\\"),
+lazyload(\\"./assets/dynamic1.css\\"),
+    import('./chunk2.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+}());
+",
+}
+`;
+
+exports[`rollup-rewriter should include css for static imports used by a dynamic import ("esm") 1`] = `
+Object {
+  "assets/dynamic1.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/dynamic1.css */
+.dynamic1 {
+    color: dynamic1;
+}
+",
+  "assets/entry1.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry1.css */
+.entry1 {
+    color: entry1;
+}
+",
+  "assets/entry2.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry2.css */
+.entry2 {
+    color: entry2;
+}
+",
+  "assets/static1.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/static1.css */
+.static1 {
+    color: static1;
+}
+",
+  "chunk.js": "
+var css = {
+    \\"static1\\": \\"static1\\"
+};
+
+console.log(css);
+
+var static1 = \\"static1.js\\";
+
+export { static1 as a };
+",
+  "chunk2.js": "
+import { a as static1 } from './chunk.js';
+
+var css = {
+    \\"dynamic1\\": \\"dynamic1\\"
+};
+
+console.log(static1, css);
+
+var dynamic1 = \\"dynamic1.js\\";
+
+export default dynamic1;
+",
+  "entry1.js": "
+import { a as static1 } from './chunk.js';
+
+var css = {
+    \\"entry1\\": \\"entry1\\"
+};
+
+console.log(static1, css);
+",
+  "entry2.js": "
+var css = {
+    \\"entry2\\": \\"entry2\\"
+};
+
+console.log(css);
+
+(function() {
+    Promise.all([
+    lazyload(\\"./assets/static1.css\\"),
+lazyload(\\"./assets/dynamic1.css\\"),
+    import('./chunk2.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+}());
+",
+}
+`;
+
+exports[`rollup-rewriter should include css for static imports used by a dynamic import ("system") 1`] = `
+Object {
+  "assets/dynamic1.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/dynamic1.css */
+.dynamic1 {
+    color: dynamic1;
+}
+",
+  "assets/entry1.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry1.css */
+.entry1 {
+    color: entry1;
+}
+",
+  "assets/entry2.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry2.css */
+.entry2 {
+    color: entry2;
+}
+",
+  "assets/static1.css": "
+/* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/static1.css */
+.static1 {
+    color: static1;
+}
+",
+  "chunk.js": "
+System.register([], function (exports, module) {
+    'use strict';
+    return {
+        execute: function () {
+
+            var css = {
+                \\"static1\\": \\"static1\\"
+            };
+
+            console.log(css);
+
+            var static1 = exports('a', \\"static1.js\\");
+
+        }
+    };
+});
+",
+  "chunk2.js": "
+System.register(['./chunk.js'], function (exports, module) {
+    'use strict';
+    var static1;
+    return {
+        setters: [function (module) {
+            static1 = module.a;
+        }],
+        execute: function () {
+
+            var css = {
+                \\"dynamic1\\": \\"dynamic1\\"
+            };
+
+            console.log(static1, css);
+
+            var dynamic1 = exports('default', \\"dynamic1.js\\");
+
+        }
+    };
+});
+",
+  "entry1.js": "
+System.register(['./chunk.js'], function (exports, module) {
+    'use strict';
+    var static1;
+    return {
+        setters: [function (module) {
+            static1 = module.a;
+        }],
+        execute: function () {
+
+            var css = {
+                \\"entry1\\": \\"entry1\\"
+            };
+
+            console.log(static1, css);
+
+        }
+    };
+});
+",
+  "entry2.js": "
+System.register([], function (exports, module) {
+    'use strict';
+    return {
+        execute: function () {
+
+            var css = {
+                \\"entry2\\": \\"entry2\\"
+            };
+
+            console.log(css);
+
+            (function() {
+                Promise.all([
+    lazyload(\\"./assets/static1.css\\"),
+lazyload(\\"./assets/dynamic1.css\\"),
+    module.import('./chunk2.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+            }());
+
+        }
+    };
+});
+",
+}
+`;
+
 exports[`rollup-rewriter should log details in verbose mode 1`] = `
 Array [
   Array [
