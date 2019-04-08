@@ -689,7 +689,6 @@ describe("/rollup.js", () => {
                         leaveIdsAlone : true,
                         files         : {
                             "error.js" : `
-                                // import css from "./error.css";
                                 import css from "error.css";
 
                                 console.log(css);
