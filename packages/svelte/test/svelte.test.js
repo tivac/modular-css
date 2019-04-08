@@ -13,6 +13,13 @@ const logs  = require("@modular-css/test-utils/logs.js");
 const plugin = require("../svelte.js");
 
 describe("/svelte.js", () => {
+    let warnSpy;
+
+    beforeEach(() => {
+        warnSpy = jest.spyOn(global.console, "warn");
+        warnSpy.mockImplementation(() => { /* NO-OP */ });
+    });
+
     afterEach(() => require("shelljs").rm("-rf", "./packages/svelte/test/output/*"));
 
     it("should extract CSS from a <style> tag", async () => {
@@ -32,7 +39,23 @@ describe("/svelte.js", () => {
 
         expect(output.css).toMatchSnapshot();
     });
-    
+
+    it("should expose CSS errors in a useful way", async () => {
+        const filename = require.resolve("./specimens/error.html");
+        const { preprocess } = plugin({
+            namer,
+        });
+
+        try {
+            await svelte.preprocess(
+                fs.readFileSync(filename, "utf8"),
+                Object.assign({}, preprocess, { filename })
+            );
+        } catch(e) {
+            expect(e.toString()).toMatch(/\.wooga/);
+        }
+    });
+
     it("should ignore <links> that reference a URL", async () => {
         const filename = require.resolve("./specimens/url.html");
         const { preprocess, processor } = plugin({
@@ -128,10 +151,6 @@ describe("/svelte.js", () => {
         ${"empty css file - <style>"}             | ${"invalid-inline-empty.html"}
         ${"empty css file - <link>"}              | ${"invalid-external-empty.html"}
     `("should handle errors: $title", async ({ specimen }) => {
-        const spy = jest.spyOn(global.console, "warn");
-
-        spy.mockImplementation(() => { /* NO-OP */ });
-
         const filename = require.resolve(`./specimens/${specimen}`);
 
         // Set up strict plugin
@@ -157,8 +176,8 @@ describe("/svelte.js", () => {
             Object.assign({}, loose, { filename })
         );
 
-        expect(spy).toHaveBeenCalled();
-        expect(spy.mock.calls).toMatchSnapshot();
+        expect(warnSpy).toHaveBeenCalled();
+        expect(warnSpy.mock.calls).toMatchSnapshot();
 
         expect(processed.toString()).toMatchSnapshot();
     });
@@ -204,10 +223,6 @@ describe("/svelte.js", () => {
     });
 
     it("should warn when multiple <link> elements are in the html", async () => {
-        const spy = jest.spyOn(global.console, "warn");
-
-        spy.mockImplementation(() => { /* NO-OP */ });
-
         const filename = require.resolve(`./specimens/multiple-link.html`);
 
         const { processor, preprocess } = plugin({
@@ -222,16 +237,16 @@ describe("/svelte.js", () => {
         expect(processed.toString()).toMatchSnapshot();
 
         const output = await processor.output();
-        
+
         expect(output.css).toMatchSnapshot();
-        
-        expect(spy).toHaveBeenCalled();
-        expect(spy.mock.calls).toMatchSnapshot();
+
+        expect(warnSpy).toHaveBeenCalled();
+        expect(warnSpy.mock.calls).toMatchSnapshot();
     });
 
     it("should no-op if all <link>s reference a URL", async () => {
         const filename = require.resolve("./specimens/multiple-url.html");
-        
+
         const { preprocess } = plugin({
             namer,
         });
@@ -243,7 +258,7 @@ describe("/svelte.js", () => {
 
         expect(processed.toString()).toMatchSnapshot();
     });
-    
+
 
     it("should invalidate files before reprocessing (<link>)", async () => {
         // V1 of files
