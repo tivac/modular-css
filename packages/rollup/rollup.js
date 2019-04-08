@@ -97,7 +97,10 @@ module.exports = (opts) => {
             try {
                 processed = await processor.string(id, code);
             } catch(e) {
-                return this.error(e.toString());
+                // Replace the default message with the much more verbose one
+                e.message = e.toString();
+
+                return this.error(e);
             }
 
             const { details, exports } = processed;
