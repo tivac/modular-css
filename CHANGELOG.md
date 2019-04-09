@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [23.0.5](https://github.com/tivac/modular-css/compare/v23.0.4...v23.0.5) (2019-04-09)
+
+
+### Bug Fixes
+
+* **rollup:** better error details ([#579](https://github.com/tivac/modular-css/issues/579)) ([15da7ff](https://github.com/tivac/modular-css/commit/15da7ff)), closes [#578](https://github.com/tivac/modular-css/issues/578)
+
+
+
+
+
 ## [23.0.4](https://github.com/tivac/modular-css/compare/v23.0.3...v23.0.4) (2019-04-03)
 
 
