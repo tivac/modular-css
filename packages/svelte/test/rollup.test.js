@@ -1,8 +1,11 @@
 /* eslint consistent-return: off */
 "use strict";
 
+const path = require("path");
+
 const dedent = require("dedent");
 const shell = require("shelljs");
+const { rollup } = require("rollup");
 
 const write = require("@modular-css/test-utils/write.js")(__dirname);
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
@@ -15,19 +18,26 @@ const assetFileNames = "assets/[name][extname]";
 const format = "es";
 
 describe("/svelte.js", () => {
+    let warnSpy;
+
+    beforeEach(() => {
+        warnSpy = jest.spyOn(global.console, "warn");
+        warnSpy.mockImplementation(() => { /* NO-OP */ });
+    });
+
     describe("rollup watching", () => {
         const { watch } = require("rollup");
         let watcher;
-        
+
         beforeAll(() => shell.rm("-rf", prefix(`./output/rollup/*`)));
         afterEach(() => watcher.close());
-        
+
         it("should generate updated output", (done) => {
             const { preprocess, processor } = plugin();
 
             let v1;
             let v2;
-            
+
             // Create v1 of the files
             write(`./rollup/input/index.js`, dedent(`
                 import app from "./app.html";
@@ -84,5 +94,43 @@ describe("/svelte.js", () => {
                 return done();
             }));
         });
+    });
+
+    describe("rollup errors", () => {
+        it.each([[ "link" ], [ "style" ]])(
+            "should show useful errors from rollup (<%s>)",
+            async (type) => {
+                const { preprocess, processor } = plugin();
+
+                try {
+                    await rollup({
+                        input : "./error.js",
+
+                        plugins : [
+                            require("rollup-plugin-hypothetical")({
+                                cwd   : path.join(__dirname, "./specimens"),
+                                files : {
+                                    "./error.js" : `
+                                        import Component from "./error-${type}.html";
+
+                                        console.log(Component);
+                                    `
+                                },
+
+                                allowFallthrough : true,
+                            }),
+                            require("rollup-plugin-svelte")({
+                                preprocess,
+                            }),
+                            require("@modular-css/rollup")({
+                                processor,
+                            }),
+                        ]
+                    });
+                } catch(e) {
+                    expect(e.toString()).toMatch(/\.wooga/);
+                }
+            }
+        );
     });
 });

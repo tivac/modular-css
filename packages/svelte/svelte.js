@@ -89,10 +89,16 @@ module.exports = (config = false) => {
                 processor.invalidate(html);
             }
 
-            result = await processor.string(
-                html,
-                style[1]
-            );
+            try {
+                result = await processor.string(
+                    html,
+                    style[1]
+                );
+            } catch(e) {
+                e.message = e.toString();
+
+                throw e;
+            }
         }
 
         if(links) {
@@ -145,8 +151,14 @@ module.exports = (config = false) => {
                 processor.invalidate(external);
             }
 
-            // Process the file
-            result = await processor.file(external);
+            try {
+                // Process the file
+                result = await processor.file(external);
+            } catch(e) {
+                e.message = e.toString();
+
+                throw e;
+            }
 
             // Remove the <link> element from the component to avoid double-loading
             source = source.replace(new RegExp(`${escape(link)}\r?\n?`), "");

@@ -29,7 +29,7 @@ module.exports = (opts) => {
         styleExport  : false,
         verbose      : false,
         empties      : true,
-        
+
         // Regexp to work around https://github.com/rollup/rollup-pluginutils/issues/39
         include : /\.css$/i,
     }, opts);
@@ -92,7 +92,18 @@ module.exports = (opts) => {
 
             log("transform", id);
 
-            const { details, exports } = await processor.string(id, code);
+            let processed;
+
+            try {
+                processed = await processor.string(id, code);
+            } catch(e) {
+                // Replace the default message with the much more verbose one
+                e.message = e.toString();
+
+                return this.error(e);
+            }
+
+            const { details, exports } = processed;
 
             const exported = output.join(exports);
             const relative = path.relative(processor.options.cwd, id);
@@ -161,7 +172,7 @@ module.exports = (opts) => {
                     outputOptions.dir ? outputOptions.dir : path.dirname(outputOptions.file),
                     assetFileNames
                 );
-            
+
             // Store an easy-to-use Set that maps all the entry files
             const entries = new Set();
 
@@ -170,7 +181,7 @@ module.exports = (opts) => {
 
             // Convert the graph over to a chunking-amenable format
             graph.overallOrder().forEach((node) => graph.setNodeData(node, [ node ]));
-            
+
             // Walk all bundle entries and add them to the dependency graph
             Object.entries(bundle).forEach(([ entry, chunk ]) => {
                 const { isAsset, modules } = chunk;
@@ -182,7 +193,7 @@ module.exports = (opts) => {
 
                 // Get CSS files being used by this chunk
                 const css = Object.keys(modules).filter((file) => processor.has(file));
-                
+
                 if(!css.length) {
                     return;
                 }
@@ -226,7 +237,7 @@ module.exports = (opts) => {
 
                 const ext = ".css";
                 const name = path.basename(node, path.extname(node));
-                
+
                 /* eslint-disable-next-line no-await-in-loop */
                 const result = await processor.output({
                     // Can't use this.getAssetFileName() here, because the source hasn't been set yet
@@ -245,10 +256,10 @@ module.exports = (opts) => {
                 }
 
                 const id = this.emitAsset(`${name}${ext}`, result.css);
-                
+
                 // Save off the final name of this asset for later use
                 const dest = this.getAssetFileName(id);
-                
+
                 names.set(node, dest);
 
                 log("css output", dest);
@@ -298,13 +309,13 @@ module.exports = (opts) => {
 
                 // Attach info about this asset to the bundle
                 const { assets = [] } = chunk;
-                
+
                 chunked.dependenciesOf(entry)
                     .filter((dep) => !duds.has(dep))
                     .forEach((dep) => assets.push(names.get(dep)));
 
                 chunk.assets = assets;
-                
+
                 meta[entry] = {
                     assets,
                 };

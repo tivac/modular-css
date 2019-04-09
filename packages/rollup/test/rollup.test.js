@@ -6,6 +6,7 @@ const { rollup } = require("rollup");
 const dedent = require("dedent");
 const shell = require("shelljs");
 const cssnano = require("cssnano");
+const files = require("rollup-plugin-hypothetical");
 
 const read    = require("@modular-css/test-utils/read.js")(__dirname);
 const exists  = require("@modular-css/test-utils/exists.js")(__dirname);
@@ -184,7 +185,7 @@ describe("/rollup.js", () => {
 
         expect(exists("./output/no-css/assets/no-css.css")).toBe(false);
     });
-    
+
     it("should ignore external modules", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/external.js"),
@@ -256,7 +257,7 @@ describe("/rollup.js", () => {
                 color: yellow;
             }
         `));
-        
+
         const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
@@ -490,7 +491,7 @@ describe("/rollup.js", () => {
 
         expect(dir("./existing-processor/assets/")).toMatchSnapshot();
     });
-    
+
     it("should accept an existing processor instance (no css in bundle)", async () => {
         const processor = new Processor({
             namer,
@@ -679,6 +680,32 @@ describe("/rollup.js", () => {
         function checkError(err) {
             expect(err.toString()).toMatch("error-plugin:");
         }
+
+        it("should show useful CSS error messages", () =>
+            rollup({
+                input   : "error.js",
+                plugins : [
+                    files({
+                        leaveIdsAlone : true,
+                        files         : {
+                            "error.js" : `
+                                import css from "error.css";
+
+                                console.log(css);
+                            `,
+                            "error.css" : `
+                                .fooga { color: #F00; }
+                                .wooga { composes: foo; }
+                            `
+                        }
+                    }),
+
+                    plugin({ namer })
+                ]
+            })
+            .catch((e) => expect(e.toString()).toMatch(".wooga"))
+        );
+
 
         it("should throw errors in in before plugins", () =>
             rollup({
