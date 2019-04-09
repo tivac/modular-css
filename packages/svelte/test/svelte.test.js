@@ -40,22 +40,25 @@ describe("/svelte.js", () => {
         expect(output.css).toMatchSnapshot();
     });
 
-    it("should expose CSS errors in a useful way", async () => {
-        const filename = require.resolve("./specimens/error.html");
-        const { preprocess } = plugin({
-            namer,
-        });
+    it.each([[ "style" ], [ "link" ]])(
+        "should expose CSS errors in a useful way (<%s>)",
+        async (type) => {
+            const filename = require.resolve(`./specimens/error-${type}.html`);
+            const { preprocess } = plugin({
+                namer,
+            });
 
-        try {
-            await svelte.preprocess(
-                fs.readFileSync(filename, "utf8"),
-                Object.assign({}, preprocess, { filename })
-            );
-        } catch(e) {
-            expect(e.toString()).toMatch(/\.wooga/);
+            try {
+                await svelte.preprocess(
+                    fs.readFileSync(filename, "utf8"),
+                    Object.assign({}, preprocess, { filename })
+                );
+            } catch(e) {
+                expect(e.toString()).toMatch(/\.wooga/);
+            }
         }
-    });
-
+    );
+    
     it("should ignore <links> that reference a URL", async () => {
         const filename = require.resolve("./specimens/url.html");
         const { preprocess, processor } = plugin({
