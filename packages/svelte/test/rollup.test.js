@@ -77,8 +77,8 @@ describe("/svelte.js", () => {
                         `);
 
                         write(`./rollup/input/app.html`, `
-                            <div class="{css.nope}">Hi</div>
                             <link rel="stylesheet" href="./app.css" />
+                            <div class="{css.nope}">Hi</div>
                         `);
                     }, 100);
 
