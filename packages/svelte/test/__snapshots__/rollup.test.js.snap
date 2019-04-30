@@ -46,7 +46,7 @@ Snapshot Diff:
 - First value
 + Second value
 
-@@ -182,11 +182,11 @@
+@@ -173,11 +173,11 @@
   
   	return {
   		c() {
