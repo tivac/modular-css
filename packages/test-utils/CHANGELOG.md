@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [23.0.6](https://github.com/tivac/modular-css/compare/v23.0.5...v23.0.6) (2019-04-30)
+
+
+### Bug Fixes
+
+* **svelte:** properly trigger components to re-render on change ([#580](https://github.com/tivac/modular-css/issues/580)) ([831ed50](https://github.com/tivac/modular-css/commit/831ed50))
+
+
+
+
+
 # [23.0.0](https://github.com/tivac/modular-css/compare/v22.3.0...v23.0.0) (2019-03-28)
 
 **Note:** Version bump only for package @modular-css/test-utils
