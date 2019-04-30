@@ -3,7 +3,6 @@
 
 const path = require("path");
 
-const dedent = require("dedent");
 const shell = require("shelljs");
 const { rollup } = require("rollup");
 
@@ -71,16 +70,16 @@ describe("/svelte.js", () => {
                     v1 = dir("./rollup/output/");
 
                     setTimeout(() => {
-                        write(`./rollup/input/app.css`, dedent(`
+                        write(`./rollup/input/app.css`, `
                             .nope {
                                 color: blue;
                             }
-                        `));
+                        `);
 
-                        write(`./rollup/input/app.html`, dedent(`
+                        write(`./rollup/input/app.html`, `
                             <link rel="stylesheet" href="./app.css" />
                             <div class="{css.nope}">Hi</div>
-                        `));
+                        `);
                     }, 100);
 
                     // continue watching
@@ -153,20 +152,20 @@ describe("/svelte.js", () => {
                     v1 = dir("./rollup-composes/output/");
 
                     setTimeout(() => {
-                        write(`./rollup-composes/input/app.css`, dedent(`
+                        write(`./rollup-composes/input/app.css`, `
                             .a {
                                 composes: c from "./other.css";
                                 
                                 color: red;
                             }
-                        `));
+                        `);
                     }, 100);
 
                     // continue watching
                     return;
                 }
 
-                v2 = dir("./rollup/output-composes/");
+                v2 = dir("./rollup-composes/output/");
 
                 expect(v1).toMatchDiffSnapshot(v2);
 
