@@ -77,8 +77,8 @@ describe("/svelte.js", () => {
                         `);
 
                         write(`./rollup/input/app.html`, `
-                            <link rel="stylesheet" href="./app.css" />
                             <div class="{css.nope}">Hi</div>
+                            <link rel="stylesheet" href="./app.css" />
                         `);
                     }, 100);
 
@@ -88,7 +88,11 @@ describe("/svelte.js", () => {
 
                 v2 = dir("./rollup/output/");
 
-                expect(v1).toMatchDiffSnapshot(v2);
+                expect(v1).toMatchDiffSnapshot(v2, {
+                    // Get specific to avoid some travis-related weirdness
+                    contextLines     : 0,
+                    stablePatchmarks : true,
+                });
 
                 return done();
             }));
