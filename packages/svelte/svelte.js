@@ -161,7 +161,7 @@ module.exports = (config = false) => {
             }
 
             // Remove the <link> element from the component to avoid double-loading
-            source = source.replace(new RegExp(`${escape(link)}\r?\n?`), "");
+            source = source.replace(new RegExp(`${escape(link)}(?:\r?\n)*`), "");
 
             // Inject the linked CSS into the <script> block for JS referencing
             // and so rollup will know about the file
