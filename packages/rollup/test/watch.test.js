@@ -19,7 +19,7 @@ describe("/rollup.js", () => {
         const { watch } = require("rollup");
         let watcher;
         
-        beforeAll(() => shell.rm("-rf", prefix(`./output/watch/*`));
+        beforeAll(() => shell.rm("-rf", prefix(`./output/watch/*`)));
         afterEach(() => watcher.close());
         
         it("should generate updated output", (done) => {
