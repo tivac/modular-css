@@ -1,7 +1,6 @@
 /* eslint consistent-return: off */
 "use strict";
 
-const dedent = require("dedent");
 const shell = require("shelljs");
 
 const write = require("@modular-css/test-utils/write.js")(__dirname);
@@ -20,21 +19,21 @@ describe("/rollup.js", () => {
         const { watch } = require("rollup");
         let watcher;
         
-        beforeAll(() => shell.rm("-rf", prefix(`./output/watch/*`)));
+        beforeAll(() => shell.rm("-rf", prefix(`./output/watch/*`));
         afterEach(() => watcher.close());
         
         it("should generate updated output", (done) => {
             // Create v1 of the files
-            write(`./watch/change/watched.css`, dedent(`
+            write(`./watch/change/watched.css`, `
                 .one {
                     color: red;
                 }
-            `));
+            `);
 
-            write(`./watch/change/watched.js`, dedent(`
+            write(`./watch/change/watched.js`, `
                 import css from "./watched.css";
                 console.log(css);
-            `));
+            `);
 
             // Start watching
             watcher = watch({
@@ -58,11 +57,11 @@ describe("/rollup.js", () => {
                 if(builds === 1) {
                     v1 = dir("./watch/change/output/");
 
-                    setTimeout(() => write(`./watch/change/watched.css`, dedent(`
+                    setTimeout(() => write(`./watch/change/watched.css`, `
                         .two {
                             color: blue;
                         }
-                    `)), 100);
+                    `), 100);
 
                     // continue watching
                     return;
@@ -78,7 +77,7 @@ describe("/rollup.js", () => {
 
         it("should generate updated output for composes changes", (done) => {
             // Create v1 of the files
-            write(`./watch/change-composes/watched.css`, dedent(`
+            write(`./watch/change-composes/watched.css`, `
                 .one {
                     color: red;
                 }
@@ -91,12 +90,12 @@ describe("/rollup.js", () => {
                 .three {
                     color: teal;
                 }
-            `));
+            `);
 
-            write(`./watch/change-composes/watched.js`, dedent(`
+            write(`./watch/change-composes/watched.js`, `
                 import css from "./watched.css";
                 console.log(css);
-            `));
+            `);
 
             // Start watching
             watcher = watch({
@@ -120,7 +119,7 @@ describe("/rollup.js", () => {
                 if(builds === 1) {
                     v1 = dir("./watch/change-composes/output/");
 
-                    setTimeout(() => write(`./watch/change-composes/watched.css`, dedent(`
+                    setTimeout(() => write(`./watch/change-composes/watched.css`, `
                         .one {
                             color: green;
                         }
@@ -134,7 +133,7 @@ describe("/rollup.js", () => {
                             composes: one;
                             color: teal;
                         }
-                    `)), 100);
+                    `), 100);
 
                     // continue watching
                     return;
@@ -150,30 +149,30 @@ describe("/rollup.js", () => {
 
         it("should update when a dependency changes", (done) => {
             // Create v1 of the files
-            write(`./watch/dep-graph/one.css`, dedent(`
+            write(`./watch/dep-graph/one.css`, `
                 .one {
                     composes: two from "./two.css";
                     composes: three from "./three.css";
                     color: red;
                 }
-            `));
+            `);
 
-            write(`./watch/dep-graph/two.css`, dedent(`
+            write(`./watch/dep-graph/two.css`, `
                 .two {
                     color: blue;
                 }
-            `));
+            `);
             
-            write(`./watch/dep-graph/three.css`, dedent(`
+            write(`./watch/dep-graph/three.css`, `
                 .three {
                     color: green;
                 }
-            `));
+            `);
             
-            write(`./watch/dep-graph/watch.js`, dedent(`
+            write(`./watch/dep-graph/watch.js`, `
                 import css from "./one.css";
                 console.log(css);
-            `));
+            `);
 
             // Start watching
             watcher = watch({
@@ -197,11 +196,11 @@ describe("/rollup.js", () => {
                 if(builds === 1) {
                     v1 = dir("./watch/dep-graph/output/");
 
-                    setTimeout(() => write(`./watch/dep-graph/two.css`, dedent(`
+                    setTimeout(() => write(`./watch/dep-graph/two.css`, `
                         .two {
                             color: green;
                         }
-                    `)), 100);
+                    `), 100);
 
                     // continue watching
                     return;
@@ -217,15 +216,15 @@ describe("/rollup.js", () => {
 
         it("should update when adding new css files", (done) => {
             // Create v1 of the files
-            write(`./watch/new-file/one.css`, dedent(`
+            write(`./watch/new-file/one.css`, `
                 .one {
                     color: red;
                 }
-            `));
+            `);
 
-            write(`./watch/new-file/watch.js`, dedent(`
+            write(`./watch/new-file/watch.js`, `
                 console.log("hello");
-            `));
+            `);
 
             // Start watching
             watcher = watch({
@@ -249,11 +248,11 @@ describe("/rollup.js", () => {
                 if(builds === 1) {
                     v1 = dir("./watch/new-file/output/");
 
-                    setTimeout(() => write(`./watch/new-file/watch.js`, dedent(`
+                    setTimeout(() => write(`./watch/new-file/watch.js`, `
                         import css from "./one.css";
 
                         console.log(css);
-                    `)), 100);
+                    `), 100);
 
                     // continue watching
                     return;
@@ -269,32 +268,32 @@ describe("/rollup.js", () => {
 
         it("should update when a shared dependency changes", (done) => {
             // Create v1 of the files
-            write(`./watch/shared-deps/one.css`, dedent(`
+            write(`./watch/shared-deps/one.css`, `
                 .one {
                     composes: two from "./two.css";
                     color: red;
                 }
-            `));
+            `);
 
-            write(`./watch/shared-deps/two.css`, dedent(`
+            write(`./watch/shared-deps/two.css`, `
                 .two {
                     color: green;
                 }
-            `));
+            `);
             
-            write(`./watch/shared-deps/three.css`, dedent(`
+            write(`./watch/shared-deps/three.css`, `
                 .three {
                     composes: two from "./two.css";
                     color: teal;
                 }
-            `));
+            `);
 
-            write(`./watch/shared-deps/watch.js`, dedent(`
+            write(`./watch/shared-deps/watch.js`, `
                 import css from "./one.css";
                 import css3 from "./three.css";
 
                 console.log(css, css3);
-            `));
+            `);
 
             // Start watching
             watcher = watch({
@@ -318,11 +317,11 @@ describe("/rollup.js", () => {
                 if(builds === 1) {
                     v1 = dir("./watch/shared-deps/output");
                     
-                    setTimeout(() => write(`./watch/shared-deps/two.css`, dedent(`
+                    setTimeout(() => write(`./watch/shared-deps/two.css`, `
                         .two {
                             color: yellow;
                         }
-                    `)), 100);
+                    `), 100);
 
                     // continue watching
                     return;
@@ -338,22 +337,22 @@ describe("/rollup.js", () => {
 
         it("should update when a shared @value changes", (done) => {
             // Create v1 of the files
-            write(`./watch/shared-deps/one.css`, dedent(`
+            write(`./watch/shared-deps/one.css`, `
                 @value baloo from "./values.css";
                 .one {
                     color: baloo;
                 }
-            `));
+            `);
 
-            write(`./watch/shared-deps/values.css`, dedent(`
+            write(`./watch/shared-deps/values.css`, `
                 @value baloo: blue;
-            `));
+            `);
 
-            write(`./watch/shared-deps/watch.js`, dedent(`
+            write(`./watch/shared-deps/watch.js`, `
                 import css from "./one.css";
 
                 console.log(css);
-            `));
+            `);
 
             // Start watching
             watcher = watch({
@@ -377,9 +376,9 @@ describe("/rollup.js", () => {
                 if(builds === 1) {
                     v1 = dir("./watch/shared-deps/output");
                     
-                    setTimeout(() => write(`./watch/shared-deps/values.css`, dedent(`
+                    setTimeout(() => write(`./watch/shared-deps/values.css`, `
                         @value baloo: red;
-                    `)), 100);
+                    `), 100);
 
                     // continue watching
                     return;
@@ -395,37 +394,37 @@ describe("/rollup.js", () => {
         
         it("should watch when using code splitting", (done) => {
             // Create v1 of the files
-            write(`./watch/code-splitting/one.css`, dedent(`
+            write(`./watch/code-splitting/one.css`, `
                 .one {
                     composes: shared from "./shared.css";
                     color: red;
                 }
-            `));
+            `);
 
-            write(`./watch/code-splitting/two.css`, dedent(`
+            write(`./watch/code-splitting/two.css`, `
                 .two {
                     color: green;
                 }
-            `));
+            `);
             
-            write(`./watch/code-splitting/shared.css`, dedent(`
+            write(`./watch/code-splitting/shared.css`, `
                 .shared {
                     color: blue;
                 }
-            `));
+            `);
             
-            write(`./watch/code-splitting/one.js`, dedent(`
+            write(`./watch/code-splitting/one.js`, `
                 import css from "./one.css";
 
                 console.log(css);
-            `));
+            `);
             
-            write(`./watch/code-splitting/two.js`, dedent(`
+            write(`./watch/code-splitting/two.js`, `
                 import two from "./two.css";
                 import "./shared.css";
 
                 console.log(css);
-            `));
+            `);
 
             // Start watching
             watcher = watch({
@@ -457,11 +456,11 @@ describe("/rollup.js", () => {
                     v1 = dir("./watch/code-splitting/output");
                     
                     // Create v2 of the file we want to change
-                    setTimeout(() => write(`./watch/code-splitting/shared.css`, dedent(`
+                    setTimeout(() => write(`./watch/code-splitting/shared.css`, `
                         .shared {
                             color: seafoam;
-                        } 
-                    `)), 100);
+                        }
+                    `), 100);
                     
                     // continue watching
                     return;
