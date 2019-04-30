@@ -39,14 +39,14 @@ describe("/svelte.js", () => {
             let v2;
 
             // Create v1 of the files
-            write(`./rollup/input/index.js`, dedent(`
+            write(`./rollup/input/index.js`, `
                 import app from "./app.html";
                 console.log(app);
-            `));
+            `);
 
-            write(`./rollup/input/app.html`, dedent(`
+            write(`./rollup/input/app.html`, `
                 <div class="{css.nope}">Hi</div>
-            `));
+            `);
 
             // Start watching
             watcher = watch({
@@ -88,6 +88,85 @@ describe("/svelte.js", () => {
                 }
 
                 v2 = dir("./rollup/output/");
+
+                expect(v1).toMatchDiffSnapshot(v2);
+
+                return done();
+            }));
+        });
+
+        it("should generate updated output when composition changes", (done) => {
+            const { preprocess, processor } = plugin();
+
+            let v1;
+            let v2;
+
+            // Create v1 of the files
+            write(`./rollup-composes/input/index.js`, `
+                import app from "./app.html";
+                console.log(app);
+            `);
+
+            write(`./rollup-composes/input/app.html`, `
+                <link rel="stylesheet" href="./app.css" />
+                <div class="{css.a}">Hi</div>
+            `);
+
+            write(`./rollup-composes/input/app.css`, `
+                .a {
+                    composes: b from "./other.css";
+
+                    color: red;
+                }
+            `);
+            
+            write(`./rollup-composes/input/other.css`, `
+                .b {
+                    background: blue;
+                }
+
+                .c {
+                    background: green;
+                }
+            `);
+
+            // Start watching
+            watcher = watch({
+                input  : prefix(`./output/rollup-composes/input/index.js`),
+                output : {
+                    file : prefix(`./output/rollup-composes/output/output.js`),
+                    format,
+                    assetFileNames,
+                },
+                plugins : [
+                    require("rollup-plugin-svelte")({
+                        preprocess,
+                    }),
+                    require("@modular-css/rollup")({
+                        processor,
+                    }),
+                ],
+            });
+
+            watcher.on("event", watching((builds) => {
+                if(builds === 1) {
+                    v1 = dir("./rollup-composes/output/");
+
+                    setTimeout(() => {
+                        write(`./rollup-composes/input/app.css`, dedent(`
+                            .a {
+                                composes: c from "./other.css";
+                                
+                                color: red;
+                            }
+                        `));
+                    }, 100);
+
+                    // continue watching
+                    return;
+                }
+
+                v2 = dir("./rollup/output-composes/");
 
                 expect(v1).toMatchDiffSnapshot(v2);
 
