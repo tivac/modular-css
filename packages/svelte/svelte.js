@@ -161,21 +161,25 @@ module.exports = (config = false) => {
             }
 
             // Remove the <link> element from the component to avoid double-loading
-            source = source.replace(new RegExp(`${escape(link)}\r?\n?`), "");
+            source = source.replace(new RegExp(`${escape(link)}(?:\r?\n)*`), "");
 
-            // Inject the link into the <script> block if it exists for JS referencing
+            // Inject the linked CSS into the <script> block for JS referencing
+            // and so rollup will know about the file
             const script = source.match(scriptRegex);
+            const inject = `import css from ${JSON.stringify(css)};`;
 
             if(script) {
                 const [ tag, contents ] = script;
 
                 source = source.replace(
                     tag,
-                    tag.replace(contents, `\nimport css from ${JSON.stringify(css)};\n\n${contents}`)
+                    tag.replace(contents, `\n${inject}\n\n${contents}`)
                 );
+            } else {
+                source += `<script>${inject}</script>`;
             }
 
-            dependencies = processor.dependencies(external);
+            dependencies = [ ...processor.dependencies(external), external ];
         }
 
         log("processed styles", html);

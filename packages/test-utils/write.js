@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 const shell = require("shelljs");
+const dedent = require("dedent");
 
 module.exports = (cwd) =>
     (name, contents) => {
@@ -11,5 +12,5 @@ module.exports = (cwd) =>
         
         shell.mkdir("-p", path.dirname(dest));
 
-        fs.writeFileSync(dest, contents, "utf8");
+        fs.writeFileSync(dest, dedent(contents), "utf8");
     };

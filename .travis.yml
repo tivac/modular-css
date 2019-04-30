@@ -37,9 +37,7 @@ script:
 jobs:
   include:
     - stage: Code Coverage
-      # Disabling latest until https://github.com/facebook/jest/issues/8069 is fixed
-      #node_js: node
-      node_js: "11.10.1"
+      node_js: node
       script:
       - npm test -- --ci --coverage
       - npx codecov
