@@ -4,7 +4,6 @@ const from = require("from2-string");
 const shell = require("shelljs");
 const browserify = require("browserify");
 const watchify  = require("watchify");
-const dedent = require("dedent");
     
 const read = require("@modular-css/test-utils/read.js")(__dirname);
 const write = require("@modular-css/test-utils/write.js")(__dirname);
@@ -20,7 +19,7 @@ describe("/browserify.js", () => {
             it("should update when CSS dependencies change", (done) => {
                 const build = browserify();
                 
-                write("./issues/58/issue.css", dedent(`
+                write("./issues/58/issue.css", `
                     .issue1 {
                         composes: other1 from "./other.css";
                         color: teal;
@@ -31,13 +30,13 @@ describe("/browserify.js", () => {
                         composes: other3 from "./other.css";
                         color: aqua;
                     }
-                `));
+                `);
 
-                write("./issues/58/other.css", dedent(`
+                write("./issues/58/other.css", `
                     .other1 { color: red; }
                     .other2 { color: navy; }
                     .other3 { color: blue; }
-                `));
+                `);
                 
                 build.add(
                     from("require('./packages/browserify/test/output/issues/58/issue.css');")
@@ -61,11 +60,11 @@ describe("/browserify.js", () => {
                 bundle(build).then((out) => {
                     expect(out).toMatchSnapshot();
                     
-                    write("./issues/58/other.css", dedent(`
+                    write("./issues/58/other.css", `
                         .other1 { color: green; }
                         .other2 { color: yellow; }
                         .other3 { composes: other2; background: white; }
-                    `));
+                    `);
                 });
             });
         });
