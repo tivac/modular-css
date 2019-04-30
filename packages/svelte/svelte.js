@@ -173,6 +173,8 @@ module.exports = (config = false) => {
                     tag,
                     tag.replace(contents, `\nimport css from ${JSON.stringify(css)};\n\n${contents}`)
                 );
+            } else {
+                source += `<script>import css from ${JSON.stringify(css)};</script>`;
             }
 
             dependencies = processor.dependencies(external);
