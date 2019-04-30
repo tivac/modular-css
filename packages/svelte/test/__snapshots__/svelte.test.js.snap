@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/svelte.js should extract CSS from a <link> tag (existing script) 1`] = `
-"
-<div class=\\"flex wrapper\\">
+"<div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
         <p class=\\"{bool ? \\"text\\" : \\"active\\" }\\">Text</p>
@@ -53,8 +52,7 @@ exports[`/svelte.js should extract CSS from a <link> tag (existing script) 2`] =
 `;
 
 exports[`/svelte.js should extract CSS from a <link> tag (no script) 1`] = `
-"
-<div class=\\"flex wrapper\\">
+"<div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
         <p class=\\"{bool ? \\"text\\" : \\"active\\" }\\">Text</p>
@@ -86,8 +84,7 @@ exports[`/svelte.js should extract CSS from a <link> tag (no script) 2`] = `
 `;
 
 exports[`/svelte.js should extract CSS from a <link> tag (single quotes) 1`] = `
-"
-<div class=\\"flex wrapper\\">
+"<div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
         <p class=\\"{bool ? \\"text\\" : \\"active\\" }\\">Text</p>
@@ -119,8 +116,7 @@ exports[`/svelte.js should extract CSS from a <link> tag (single quotes) 2`] = `
 `;
 
 exports[`/svelte.js should extract CSS from a <link> tag (unquoted) 1`] = `
-"
-<div class=\\"flex wrapper\\">
+"<div class=\\"flex wrapper\\">
     <h1 class=\\"flex fooga hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
         <p class=\\"{bool ? \\"text\\" : \\"active\\" }\\">Text</p>
@@ -152,8 +148,7 @@ exports[`/svelte.js should extract CSS from a <link> tag (unquoted) 2`] = `
 `;
 
 exports[`/svelte.js should extract CSS from a <link> tag (values) 1`] = `
-"
-<div
+"<div
     data-simple=\\"color: #BEEFED\\"
     data-expression=\\"{\\"color: \\" + \\"#BEEFED\\"}\\"
     data-template=\\"{\`color: \${\\"#BEEFED\\"}\`}\\"
@@ -252,8 +247,7 @@ Array [
 `;
 
 exports[`/svelte.js should handle errors: empty css file - <link> 3`] = `
-"
-<div class=\\"{\\"css.nope\\"}\\">NOPE</div>
+"<div class=\\"{\\"css.nope\\"}\\">NOPE</div>
 <div class=\\"{\\"css.alsonope\\"}\\">STILL NOPE</div>
 <script>import css from \\"./empty.css\\";</script>"
 `;
@@ -293,8 +287,7 @@ Array [
 `;
 
 exports[`/svelte.js should handle errors: invalid reference <script> - <link> 3`] = `
-"
-<h2 class=\\"yup\\">Yup</h2>
+"<h2 class=\\"yup\\">Yup</h2>
 
 <script>
 import css from \\"./invalid.css\\";
@@ -345,8 +338,7 @@ Array [
 `;
 
 exports[`/svelte.js should handle errors: invalid reference template - <link> 3`] = `
-"
-<h1 class=\\"{\\"css.nope\\"}\\">Nope</h1>
+"<h1 class=\\"{\\"css.nope\\"}\\">Nope</h1>
 <h2 class=\\"yup\\">Yup</h2>
 <h3 class=\\"{\\"css.stillnope\\"}\\">Still Nope</h3>
 <script>import css from \\"./invalid.css\\";</script>"
@@ -376,7 +368,6 @@ exports[`/svelte.js should handle errors: invalid reference template - <style> 3
 
 exports[`/svelte.js should ignore <links> that reference a URL 1`] = `
 "<link rel=\\"stylesheet\\" href=\\"http://example.com/styles.css\\" />
-
 <div class=\\"fooga\\">fooga</div>
 <script>import css from \\"./simple.css\\";</script>"
 `;
@@ -654,7 +645,6 @@ exports[`/svelte.js should throw on both <style> and <link> in one file 1`] = `"
 
 exports[`/svelte.js should use an already-created processor 1`] = `
 "<link rel=\\"stylesheet\\" href=\\"http://example.com/styles.css\\" />
-
 <div class=\\"fooga\\">fooga</div>
 <script>import css from \\"./simple.css\\";</script>"
 `;
