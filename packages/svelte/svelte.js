@@ -177,7 +177,7 @@ module.exports = (config = false) => {
                 source += `<script>import css from ${JSON.stringify(css)};</script>`;
             }
 
-            dependencies = processor.dependencies(external);
+            dependencies = [ ...processor.dependencies(external), external ];
         }
 
         log("processed styles", html);
