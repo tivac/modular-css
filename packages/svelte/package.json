@@ -30,12 +30,9 @@
   ],
   "dependencies": {
     "@modular-css/processor": "file:../processor",
-    "dedent": "^0.7.0",
     "escape-string-regexp": "^1.0.5",
     "is-url": "^1.2.4",
-    "mkdirp": "^0.5.1",
-    "resolve-from": "^4.0.0",
-    "rollup-pluginutils": "^2.3.0"
+    "resolve-from": "^4.0.0"
   },
   "peerDependencies": {
     "svelte": "^2"
