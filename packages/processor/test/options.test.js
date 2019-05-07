@@ -6,6 +6,7 @@ const dedent   = require("dedent");
 const namer    = require("@modular-css/test-utils/namer.js");
 const relative = require("@modular-css/test-utils/relative.js");
 const logs     = require("@modular-css/test-utils/logs.js");
+const cased    = require("@modular-css/test-utils/case-sensitive-fs.js");
 
 const Processor = require("../processor.js");
 
@@ -30,7 +31,7 @@ describe("/processor.js", () => {
                 const processor = new Processor({ cwd });
 
                 const { file } = await processor.file("./folder.css");
-                
+
                 expect(processor.options.cwd).toBe(cwd);
                 expect(file).toBe(require.resolve("./specimens/folder/folder.css"));
             });
@@ -41,7 +42,7 @@ describe("/processor.js", () => {
                 const processor = new Processor({ cwd });
 
                 const { file } = await processor.file("./folder.css");
-                
+
                 expect(processor.options.cwd).toBe(path.resolve(cwd));
                 expect(file).toBe(require.resolve("./specimens/folder/folder.css"));
             });
@@ -53,7 +54,7 @@ describe("/processor.js", () => {
                     namer : (filename, selector) =>
                         `${relative([ filename ])[0].replace(/[\/\.]/g, "_")}_${selector}`,
                 });
-                    
+
                 const result = await processor.string(
                     "./packages/processor/test/specimens/simple.css",
                     ".wooga { }"
@@ -69,12 +70,12 @@ describe("/processor.js", () => {
                 const processor = new Processor({
                     namer : "@modular-css/shortnames",
                 });
-                    
+
                 const result = await processor.string(
                     "./test/specimens/simple.css",
                     ".wooga { }"
                 );
-                
+
                 expect(result.exports).toMatchSnapshot();
             });
 
@@ -82,12 +83,12 @@ describe("/processor.js", () => {
                 const processor = new Processor({
                     namer : false,
                 });
-                    
+
                 const result = await processor.string(
                     "./packages/processor/test/specimens/simple.css",
                     ".wooga { }"
                 );
-                
+
                 expect(result.exports).toMatchSnapshot();
             });
         });
@@ -98,7 +99,7 @@ describe("/processor.js", () => {
                         namer,
                         map : true,
                     });
-                
+
                 await processor.file("./packages/processor/test/specimens/start.css");
 
                 const { css } = await processor.output({
@@ -116,7 +117,7 @@ describe("/processor.js", () => {
                             internal : false,
                         },
                     });
-                
+
                 await processor.file("./packages/processor/test/specimens/start.css");
 
                 const { css } = await processor.output({
@@ -133,7 +134,7 @@ describe("/processor.js", () => {
                 const processor = new Processor({
                         exportGlobals : false,
                     });
-                
+
                 const { exports } = await processor.string(
                     "./exportGlobals.css",
                     dedent(`
@@ -158,7 +159,7 @@ describe("/processor.js", () => {
                         }
                     `)
                 );
-                
+
                 const { css } = await processor.output({
                     from : "packages/processor/test/specimens/rewrite.css",
                     to   : "./packages/processor/test/output/rewrite.css",
@@ -178,7 +179,7 @@ describe("/processor.js", () => {
                         }
                     `)
                 );
-                
+
                 const { css } = await processor.output({
                     from : "packages/processor/test/specimens/rewrite.css",
                     to   : "./packages/processor/test/output/rewrite.css",
@@ -186,14 +187,14 @@ describe("/processor.js", () => {
 
                 expect(css).toMatchSnapshot();
             });
-            
+
             it("should pass through to postcss-url as config", async () => {
                 const processor = new Processor({
                     rewrite : {
                         url : "inline",
                     },
                 });
-                
+
                 await processor.string(
                     "packages/processor/test/specimens/rewrite.css",
                     dedent(`
@@ -202,7 +203,7 @@ describe("/processor.js", () => {
                         }
                     `)
                 );
-                
+
                 const { css } = await processor.output({
                     from : "packages/processor/test/specimens/rewrite.css",
                     to   : "./packages/processor/test/output/rewrite.css",
@@ -215,13 +216,13 @@ describe("/processor.js", () => {
         describe("postcss options", () => {
             it("should support custom parsers", async () => {
                 const parser = require("sugarss");
-                
+
                 const processor = new Processor({
                     postcss : {
                         parser,
                     }
                 });
-                
+
                 await processor.string(
                     "packages/processor/test/specimens/parser.css",
                     dedent(`
@@ -229,7 +230,7 @@ describe("/processor.js", () => {
                             color: blue
                     `)
                 );
-                
+
                 const { css } = await processor.output({
                     from : "packages/processor/test/specimens/parser.css",
                     to   : "./packages/processor/test/output/parser.css",
@@ -246,7 +247,7 @@ describe("/processor.js", () => {
                         namer,
                         before : [ sync ],
                     });
-                    
+
                     await processor.string(
                         "packages/processor/test/specimens/sync-before.css",
                         ""
@@ -264,7 +265,7 @@ describe("/processor.js", () => {
                         namer,
                         before : [ async ],
                     });
-                    
+
                     await processor.string(
                         "packages/processor/test/specimens/async-before.css",
                         ""
@@ -337,7 +338,7 @@ describe("/processor.js", () => {
                     expect(exports).toMatchSnapshot();
                 });
             });
-            
+
             describe("after", () => {
                 it("should use postcss-url by default", async () => {
                     const processor = new Processor();
@@ -351,7 +352,7 @@ describe("/processor.js", () => {
 
                     expect(css).toMatchSnapshot();
                 });
-                
+
                 it("should run sync postcss plugins", async () => {
                     const processor = new Processor({
                         namer,
@@ -367,7 +368,7 @@ describe("/processor.js", () => {
 
                     expect(css).toMatchSnapshot();
                 });
-                
+
                 it("should run async postcss plugins", async () => {
                     const processor = new Processor({
                         namer,
@@ -384,14 +385,14 @@ describe("/processor.js", () => {
                     expect(css).toMatchSnapshot();
                 });
             });
-            
+
             describe("done", () => {
                 it("should run sync postcss plugins done processing", async () => {
                     const processor = new Processor({
                         namer,
                         done : [ sync ],
                     });
-                    
+
                     await processor.string(
                         "packages/processor/test/specimens/sync-done.css",
                         ""
@@ -403,13 +404,13 @@ describe("/processor.js", () => {
 
                     expect(css).toMatchSnapshot();
                 });
-                
+
                 it("should run async postcss plugins done processing", async () => {
                     const processor = new Processor({
                         namer,
                         done : [ async ],
                     });
-                    
+
                     await processor.string(
                         "packages/processor/test/specimens/async-done.css",
                         ""
@@ -431,7 +432,7 @@ describe("/processor.js", () => {
                         namer,
                         verbose : true,
                     });
-                    
+
                     await processor.file("./packages/processor/test/specimens/start.css");
                     await processor.string(
                         "packages/processor/test/specimens/string.css",
@@ -445,15 +446,17 @@ describe("/processor.js", () => {
             });
 
             describe("dupewarn", () => {
+                // const fn = cased ? it.skip : it;
+
                 it("should warn on potentially duplicate file paths", async () => {
                     const { logSnapshot } = logs("warn");
 
                     const processor = new Processor({
                         namer,
                     });
-                    
-                    await processor.file("./packages/processor/test/specimens/start.css");
-                    await processor.file("./packages/processor/test/specimens/START.css");
+
+                    await processor.string("packages/processor/test/specimens/start.css", ".start { color: red; }");
+                    await processor.string("packages/processor/test/specimens/START.css", ".start { color: red; }");
 
                     logSnapshot();
                 });
@@ -462,14 +465,14 @@ describe("/processor.js", () => {
                     const spy = jest.spyOn(global.console, "warn");
 
                     spy.mockImplementation(() => { /* NO-OP */ });
-        
+
                     const processor = new Processor({
                         namer,
                         dupewarn : false,
                     });
-                    
-                    await processor.file("./packages/processor/test/specimens/start.css");
-                    await processor.file("./packages/processor/test/specimens/START.css");
+
+                    await processor.string("packages/processor/test/specimens/start.css", ".start { color: red; }");
+                    await processor.string("packages/processor/test/specimens/START.css", ".start { color: red; }");
 
                     expect(spy).not.toHaveBeenCalled();
                 });
