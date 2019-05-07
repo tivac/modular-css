@@ -32,7 +32,6 @@
     "postcss-url": "^8.0.0",
     "postcss-value-parser": "^3.3.0",
     "resolve-from": "^5.0.0",
-    "true-case-path": "^2.0.0",
     "unique-slug": "^2.0.0"
   },
   "peerDependencies": {

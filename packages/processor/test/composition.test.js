@@ -58,13 +58,13 @@ describe("/processor.js", () => {
                 ],
             });
 
-            const file = require.resolve("./specimens/composes.css");
-            
             try {
-                await processor.file(file);
-            } catch({ message }) {
+                await processor.file(require.resolve("./specimens/composes.css"));
+            } catch(e) {
+                const { message } = e;
+
                 expect(message).toMatch(
-                    `Unable to locate "./folder/folder2.css" from "${file}"`
+                    `no such file or directory, open '${require.resolve("./specimens/folder/folder2.css")}a'`
                 );
             }
         });

@@ -443,6 +443,37 @@ describe("/processor.js", () => {
                     logSnapshot();
                 });
             });
+
+            describe("dupewarn", () => {
+                it("should warn on potentially duplicate file paths", async () => {
+                    const { logSnapshot } = logs("warn");
+
+                    const processor = new Processor({
+                        namer,
+                    });
+                    
+                    await processor.file("./packages/processor/test/specimens/start.css");
+                    await processor.file("./packages/processor/test/specimens/START.css");
+
+                    logSnapshot();
+                });
+
+                it("shouldn't warn if dupewarn is false", async () => {
+                    const spy = jest.spyOn(global.console, "warn");
+
+                    spy.mockImplementation(() => { /* NO-OP */ });
+        
+                    const processor = new Processor({
+                        namer,
+                        dupewarn : false,
+                    });
+                    
+                    await processor.file("./packages/processor/test/specimens/start.css");
+                    await processor.file("./packages/processor/test/specimens/START.css");
+
+                    expect(spy).not.toHaveBeenCalled();
+                });
+            });
         });
     });
 });

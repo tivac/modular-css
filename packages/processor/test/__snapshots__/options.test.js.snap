@@ -57,6 +57,16 @@ exports[`/processor.js options lifecycle options done should run sync postcss pl
 a {}"
 `;
 
+exports[`/processor.js options lifecycle options dupewarn should warn on potentially duplicate file paths 1`] = `
+Array [
+  Array [
+    "POTENTIAL DUPLICATE FILES:
+	packages/processor/test/specimens/start.css
+	packages/processor/test/specimens/START.css",
+  ],
+]
+`;
+
 exports[`/processor.js options lifecycle options processing should include exports from 'modular-css-export' modules 1`] = `
 Object {
   "a": true,

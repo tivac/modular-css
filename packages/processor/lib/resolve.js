@@ -2,7 +2,6 @@
 
 const path = require("path");
 const resolve = require("resolve-from").silent;
-const pathcase = require("true-case-path");
 
 exports.resolve = (src, file) => resolve(path.dirname(src), file);
 
@@ -20,6 +19,6 @@ exports.resolvers = (resolvers) => {
             throw new Error(`Unable to locate "${file}" from "${src}"`);
         }
 
-        return pathcase(result);
+        return result;
     };
 };
