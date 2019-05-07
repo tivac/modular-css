@@ -1,9 +1,21 @@
+"use strict";
+
+const path = require("path");
+
+const escape = require("escape-string-regexp");
+
 const search = `'use strict';`;
 
-exports.regex = (deps) => new RegExp(
-    `require\\(\\[['"]\\.\\/(${deps})['"]\\], resolve, reject\\)`,
-    "g"
-);
+exports.regex = (deps) => {
+    const parts = deps.map((dep) =>
+        escape(dep.replace(path.extname(dep), ""))
+    );
+
+    return new RegExp(
+        `require\\(\\[['"]\\.\\/(${parts.join("|")})['"]\\], resolve, reject\\)`,
+        "g"
+    );
+};
 
 exports.loader = (options, str) => {
     const s = str.toString();

@@ -1,8 +1,9 @@
 "use strict";
 
+const path = require("path");
+
 const MagicString = require("magic-string");
 const dedent = require("dedent");
-const escape = require("escape-string-regexp");
 const { DepGraph } = require("dependency-graph");
 
 const formats = {
@@ -69,7 +70,7 @@ module.exports = (opts) => {
 
                 const { regex, loader, load } = formats[format];
 
-                const search = regex(deps.map(escape).join("|"));
+                const search = regex(deps);
 
                 const str = new MagicString(code);
 
@@ -84,8 +85,11 @@ module.exports = (opts) => {
 
                 while(result) {
                     // Pull useful values out of the regex result
-                    const [ statement, file ] = result;
+                    const [ statement, ident ] = result;
                     const { index } = result;
+
+                    // TODO: is assuming .js safe here?
+                    const file = path.extname(ident).length ? ident : `${ident}.js`;
 
                     // eslint-disable-next-line no-loop-func
                     const css = [
