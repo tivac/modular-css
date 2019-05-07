@@ -114,7 +114,7 @@ Object {
             \\"assets/b.css\\"
         ]
     },
-    \\"chunk2.js\\": {
+    \\"d.js\\": {
         \\"assets\\": [
             \\"assets/d.css\\"
         ]
@@ -235,7 +235,7 @@ Object {
             \\"assets/b.css\\"
         ]
     },
-    \\"chunk2.js\\": {
+    \\"d.js\\": {
         \\"assets\\": [
             \\"assets/d.css\\"
         ]
@@ -263,7 +263,7 @@ Object {
             \\"assets/b.css\\"
         ]
     },
-    \\"chunk2.js\\": {
+    \\"d.js\\": {
         \\"assets\\": [
             \\"assets/d.css\\"
         ]
