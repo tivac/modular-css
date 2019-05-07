@@ -3,7 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const read = require("read-dir-deep");
+const { readDirDeepSync : read } = require("read-dir-deep");
 
 module.exports = (cwd) =>
     (name) => {

@@ -25,14 +25,14 @@
   ],
   "dependencies": {
     "dependency-graph": "^0.8.0",
-    "escape-string-regexp": "^1.0.5",
+    "escape-string-regexp": "^2.0.0",
     "lodash": "^4.17.0",
     "postcss": "^7.0.0",
     "postcss-selector-parser": "^6.0.2",
     "postcss-url": "^8.0.0",
     "postcss-value-parser": "^3.3.0",
-    "resolve-from": "^4.0.0",
-    "true-case-path": "^1.0.2",
+    "resolve-from": "^5.0.0",
+    "true-case-path": "^2.0.0",
     "unique-slug": "^2.0.0"
   },
   "peerDependencies": {

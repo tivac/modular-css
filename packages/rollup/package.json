@@ -30,7 +30,7 @@
     "dedent": "0.7.0",
     "esutils": "^2.0.2",
     "rollup-pluginutils": "^2.0.1",
-    "slash": "^2.0.0"
+    "slash": "^3.0.0"
   },
   "peerDependencies": {
     "rollup": "^1.1.2"

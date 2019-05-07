@@ -1,7 +1,7 @@
 "use strict";
 
 const path = require("path");
-const filecase = require("true-case-path");
+const { trueCasePathSync : filecase } = require("true-case-path");
 
 module.exports = (cwd, file) => {
     if(!path.isAbsolute(file)) {
