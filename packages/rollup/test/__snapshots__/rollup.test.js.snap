@@ -1,24 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/rollup.js case sensitivity tests should remove repeated references that point at the same files 1`] = `
-Object {
-  "assets/foo.css": "/* packages/rollup/test/specimens/casing/bar.css */
-.mc79ab9c62_bar {
-    display: none;
-}
-/* packages/rollup/test/specimens/casing/foo.css */
-.mc3dd08d27_foo {
-    color: #F00;
-}",
-  "main.js": "var bar = \\"mc79ab9c62_bar\\";
-
-var foo = \\"mc79ab9c62_bar mc3dd08d27_foo\\";
-
-var bar$1 = \\"mc79ab9c62_bar\\";
-
-console.log({ foo, bar: bar$1, bar2: bar });
-",
-}
+exports[`/rollup.js case sensitivity tests should warn about repeated references that point at the same files 1`] = `
+Array [
+  Array [
+    "POTENTIAL DUPLICATE FILES:
+	packages/rollup/test/specimens/Casing/bar.css
+	packages/rollup/test/specimens/casing/bar.css",
+  ],
+]
 `;
 
 exports[`/rollup.js should accept an existing processor instance (no css in bundle) 1`] = `
