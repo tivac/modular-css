@@ -15,10 +15,6 @@ exports.resolvers = (resolvers) => {
             (result = fn(src, file, exports.resolve))
         );
         
-        if(!result) {
-            throw new Error(`Unable to locate "${file}" from "${src}"`);
-        }
-
         return result;
     };
 };
