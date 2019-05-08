@@ -13,7 +13,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BREAKING CHANGES
 
-* **processor:** 
+* **processor:** It was causing massive slowdowns to synchronously resolve files using `true-case-path`, and making it async wasn't a guaranteed win either. So it's removed, which should solve #581 pretty neatly. Instead now there's a warning if two files are included that differ in case only. It can be disabled by setting `dupewarn : false` as part of the config object.
 
 
 
