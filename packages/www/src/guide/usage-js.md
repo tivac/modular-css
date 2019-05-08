@@ -171,6 +171,18 @@ new Processor({
 */
 ```
 
+##### `dupewarn`
+
+Boolean value that determines whether or not the Processor instance will issue warnings for duplicate seeming files (identical path with only case variations). If you're using a case-sensitive filesystem feel free to disable by setting it to `false`.
+
+**Default**: `true`, so warnings are emitted.
+
+```js
+new Processor({
+    dupewarn : true
+});
+```
+
 #### Processor Properties
 
 ##### `.files`
