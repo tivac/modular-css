@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.0.0](https://github.com/tivac/modular-css/compare/v23.0.6...v24.0.0) (2019-05-08)
+
+
+### Code Refactoring
+
+* **processor:** add dupewarn option and no longer resolve path case ([#582](https://github.com/tivac/modular-css/issues/582)) ([01581f9](https://github.com/tivac/modular-css/commit/01581f9)), closes [#581](https://github.com/tivac/modular-css/issues/581)
+
+
+### BREAKING CHANGES
+
+* **processor:** 
+
+
+
+
+
 ## [23.0.6](https://github.com/tivac/modular-css/compare/v23.0.5...v23.0.6) (2019-04-30)
 
 
