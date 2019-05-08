@@ -1,7 +1,15 @@
-exports.regex = (deps) => new RegExp(
-    `\\bimport\\(['"]\\.\\/(${deps})['"]\\)`,
-    "g"
-);
+"use strict";
+
+const escape = require("escape-string-regexp");
+
+exports.regex = (deps) => {
+    const parts = deps.map(escape);
+
+    return new RegExp(
+        `\\bimport\\(['"]\\.\\/(${parts.join("|")})['"]\\)`,
+        "g"
+    );
+};
 
 exports.loader = (options, str) => str.prepend(`${options.loader}\n`);
 

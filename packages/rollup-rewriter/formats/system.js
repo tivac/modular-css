@@ -1,9 +1,17 @@
+"use strict";
+
+const escape = require("escape-string-regexp");
+
 const search = `'use strict';`;
 
-exports.regex = (deps) => new RegExp(
-    `\\bmodule\\.import\\(['"]\\.\\/(${deps})['"]\\)`,
-    "g"
-);
+exports.regex = (deps) => {
+    const parts = deps.map(escape);
+
+    return new RegExp(
+        `\\bmodule\\.import\\(['"]\\.\\/(${parts.join("|")})['"]\\)`,
+        "g"
+    );
+};
 
 exports.loader = (options, str) => {
     const s = str.toString();

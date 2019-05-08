@@ -43,6 +43,7 @@ class Processor {
                 verbose   : false,
                 resolvers : [],
                 postcss   : {},
+                dupewarn  : true,
             },
             opts
         );
@@ -74,6 +75,7 @@ class Processor {
 
         this._files = Object.create(null);
         this._graph = new Graph();
+        this._ids = new Map();
 
         this._before = postcss([
             ...(options.before || []),
@@ -174,10 +176,12 @@ class Processor {
 
         const deps = this.dependents(source);
 
-        deps.concat(source).forEach((file) => {
+        [ ...deps, source ].forEach((file) => {
             this._log("invalidate()", file);
 
             this._files[file].valid = false;
+
+            this._ids.delete(file.toLowerCase());
         });
     }
 
@@ -280,7 +284,7 @@ class Processor {
                 ),
             });
 
-            root.append([ comment ].concat(result.root.nodes));
+            root.append([ comment, ...result.root.nodes ]);
 
             const idx = root.index(comment);
 
@@ -333,11 +337,24 @@ class Processor {
     // Take a file id and some text, walk it for dependencies, then
     // process and return details
     async _add(id, text) {
+        const check = id.toLowerCase();
+
+        // Warn about potential dupes if an ID goes past we've seen before
+        if(this._options.dupewarn) {
+            const other = this._ids.get(check);
+
+            if(other && other !== id) {
+                console.warn(`POTENTIAL DUPLICATE FILES:\n\t${relative(this._options.cwd, other)}\n\t${relative(this._options.cwd, id)}`);
+            }
+        }
+
+        this._ids.set(check, id);
+
         this._log("_add()", id);
 
         await this._walk(id, text);
 
-        const deps = this._graph.dependenciesOf(id).concat(id);
+        const deps = [ ...this._graph.dependenciesOf(id), id ];
 
         for(const dep of deps) {
             const file = this._files[dep];

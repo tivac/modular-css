@@ -43,8 +43,8 @@ define(['exports'], function (exports) { 'use strict';
 
 });
 ",
-  "chunk2.js": "
-define(['exports', './chunk.js'], function (exports, __chunk_1) { 'use strict';
+  "dynamic1.js": "
+define(['exports', './chunk'], function (exports, __chunk_1) { 'use strict';
 
     var css = {
         \\"dynamic1\\": \\"dynamic1\\"
@@ -59,7 +59,7 @@ define(['exports', './chunk.js'], function (exports, __chunk_1) { 'use strict';
 });
 ",
   "entry1.js": "
-define(['./chunk.js'], function (__chunk_1) { 'use strict';
+define(['./chunk'], function (__chunk_1) { 'use strict';
 
     var css = {
         \\"entry1\\": \\"entry1\\"
@@ -82,7 +82,7 @@ define(['require'], function (require) { 'use strict';
         new Promise(function (resolve, reject) { Promise.all([
     lazyload(\\"./assets/static1.css\\"),
 lazyload(\\"./assets/dynamic1.css\\"),
-    new Promise(function (resolve, reject) { require(['./chunk2.js'], resolve, reject) })
+    new Promise(function (resolve, reject) { require(['./dynamic1'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
 .catch(reject) }).then(console.log);
@@ -130,7 +130,7 @@ var static1 = \\"static1.js\\";
 
 export { static1 as a };
 ",
-  "chunk2.js": "
+  "dynamic1.js": "
 import { a as static1 } from './chunk.js';
 
 var css = {
@@ -163,7 +163,7 @@ console.log(css);
     Promise.all([
     lazyload(\\"./assets/static1.css\\"),
 lazyload(\\"./assets/dynamic1.css\\"),
-    import('./chunk2.js')
+    import('./dynamic1.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 }());
@@ -208,7 +208,7 @@ var static1 = \\"static1.js\\";
 
 export { static1 as a };
 ",
-  "chunk2.js": "
+  "dynamic1.js": "
 import { a as static1 } from './chunk.js';
 
 var css = {
@@ -241,7 +241,7 @@ console.log(css);
     Promise.all([
     lazyload(\\"./assets/static1.css\\"),
 lazyload(\\"./assets/dynamic1.css\\"),
-    import('./chunk2.js')
+    import('./dynamic1.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 }());
@@ -293,7 +293,7 @@ System.register([], function (exports, module) {
     };
 });
 ",
-  "chunk2.js": "
+  "dynamic1.js": "
 System.register(['./chunk.js'], function (exports, module) {
     'use strict';
     var static1;
@@ -351,7 +351,7 @@ System.register([], function (exports, module) {
                 Promise.all([
     lazyload(\\"./assets/static1.css\\"),
 lazyload(\\"./assets/dynamic1.css\\"),
-    module.import('./chunk2.js')
+    module.import('./dynamic1.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
             }());
@@ -391,7 +391,7 @@ define(['require'], function (require) { 'use strict';
 
 	new Promise(function (resolve, reject) { Promise.all([
     lazyload(\\"./assets/c.css\\"),
-    new Promise(function (resolve, reject) { require(['./chunk.js'], resolve, reject) })
+    new Promise(function (resolve, reject) { require(['./c'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
 .catch(reject) }).then(console.log);
@@ -419,11 +419,11 @@ define(['require'], function (require) { 'use strict';
 
 	console.log(css);
 
-	new Promise(function (resolve, reject) { require(['./chunk2.js'], resolve, reject) }).then(console.log);
+	new Promise(function (resolve, reject) { require(['./d'], resolve, reject) }).then(console.log);
 
 });
 ",
-  "chunk.js": "
+  "c.js": "
 define(['exports'], function (exports) { 'use strict';
 
 	var css = {
@@ -438,7 +438,7 @@ define(['exports'], function (exports) { 'use strict';
 
 });
 ",
-  "chunk2.js": "
+  "d.js": "
 define(['exports'], function (exports) { 'use strict';
 
 	var d = \\"d\\";
@@ -461,7 +461,7 @@ console.log(css);
 
 Promise.all([
     lazyload(\\"./assets/c.css\\"),
-    import('./chunk.js')
+    import('./c.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 ",
@@ -484,9 +484,9 @@ var css = {
 
 console.log(css);
 
-import('./chunk2.js').then(console.log);
+import('./d.js').then(console.log);
 ",
-  "chunk.js": "
+  "c.js": "
 var css = {
     \\"c\\": \\"c\\"
 };
@@ -497,7 +497,7 @@ var c = \\"c\\";
 
 export default c;
 ",
-  "chunk2.js": "
+  "d.js": "
 var d = \\"d\\";
 
 export default d;
@@ -516,7 +516,7 @@ console.log(css);
 
 Promise.all([
     lazyload(\\"./assets/c.css\\"),
-    import('./chunk.js')
+    import('./c.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 ",
@@ -539,9 +539,9 @@ var css = {
 
 console.log(css);
 
-import('./chunk2.js').then(console.log);
+import('./d.js').then(console.log);
 ",
-  "chunk.js": "
+  "c.js": "
 var css = {
     \\"c\\": \\"c\\"
 };
@@ -552,7 +552,7 @@ var c = \\"c\\";
 
 export default c;
 ",
-  "chunk2.js": "
+  "d.js": "
 var d = \\"d\\";
 
 export default d;
@@ -576,7 +576,7 @@ System.register([], function (exports, module) {
 
 			Promise.all([
     lazyload(\\"./assets/c.css\\"),
-    module.import('./chunk.js')
+    module.import('./c.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 
@@ -608,13 +608,13 @@ System.register([], function (exports, module) {
 
 			console.log(css);
 
-			module.import('./chunk2.js').then(console.log);
+			module.import('./d.js').then(console.log);
 
 		}
 	};
 });
 ",
-  "chunk.js": "
+  "c.js": "
 System.register([], function (exports, module) {
 	'use strict';
 	return {
@@ -632,7 +632,7 @@ System.register([], function (exports, module) {
 	};
 });
 ",
-  "chunk2.js": "
+  "d.js": "
 System.register([], function (exports, module) {
 	'use strict';
 	return {
@@ -662,7 +662,7 @@ import lazyload from \\"./css.js\\";
 
         new Promise(function (resolve, reject) { Promise.all([
     lazyload(\\"./assets/c.css\\"),
-    new Promise(function (resolve, reject) { require(['./chunk.js'], resolve, reject) })
+    new Promise(function (resolve, reject) { require(['./c'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
 .catch(reject) }).then(console.log);
@@ -709,7 +709,7 @@ import lazyload from \\"./css.js\\";
 
         new Promise(function (resolve, reject) { Promise.all([
     lazyload(\\"./assets/d.css\\"),
-    new Promise(function (resolve, reject) { require(['./chunk2.js'], resolve, reject) })
+    new Promise(function (resolve, reject) { require(['./d'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
 .catch(reject) }).then(console.log);
@@ -719,7 +719,7 @@ import lazyload from \\"./css.js\\";
 
 });
 ",
-  "chunk.js": "
+  "c.js": "
 define(['exports'], function (exports) { 'use strict';
 
     var css = {
@@ -732,7 +732,7 @@ define(['exports'], function (exports) { 'use strict';
 
 });
 ",
-  "chunk2.js": "
+  "d.js": "
 define(['exports'], function (exports) { 'use strict';
 
     var css = {
@@ -761,7 +761,7 @@ function a() {
 
     Promise.all([
     lazyload(\\"./assets/c.css\\"),
-    import('./chunk.js')
+    import('./c.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 }
@@ -803,14 +803,14 @@ function b() {
 
     Promise.all([
     lazyload(\\"./assets/d.css\\"),
-    import('./chunk2.js')
+    import('./d.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
 export default b;
 ",
-  "chunk.js": "
+  "c.js": "
 var css = {
     \\"c\\": \\"c\\"
 };
@@ -819,7 +819,7 @@ console.log(css);
 
 export default css;
 ",
-  "chunk2.js": "
+  "d.js": "
 var css = {
     \\"d\\": \\"d\\"
 };
@@ -844,7 +844,7 @@ function a() {
 
     Promise.all([
     lazyload(\\"./assets/c.css\\"),
-    import('./chunk.js')
+    import('./c.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 }
@@ -886,14 +886,14 @@ function b() {
 
     Promise.all([
     lazyload(\\"./assets/d.css\\"),
-    import('./chunk2.js')
+    import('./d.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
 export default b;
 ",
-  "chunk.js": "
+  "c.js": "
 var css = {
     \\"c\\": \\"c\\"
 };
@@ -902,7 +902,7 @@ console.log(css);
 
 export default css;
 ",
-  "chunk2.js": "
+  "d.js": "
 var css = {
     \\"d\\": \\"d\\"
 };
@@ -934,7 +934,7 @@ import lazyload from \\"./css.js\\";
 
                 Promise.all([
     lazyload(\\"./assets/c.css\\"),
-    module.import('./chunk.js')
+    module.import('./c.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
             }
@@ -985,7 +985,7 @@ import lazyload from \\"./css.js\\";
 
                 Promise.all([
     lazyload(\\"./assets/d.css\\"),
-    module.import('./chunk2.js')
+    module.import('./d.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
             }
@@ -994,7 +994,7 @@ import lazyload from \\"./css.js\\";
     };
 });
 ",
-  "chunk.js": "
+  "c.js": "
 System.register([], function (exports, module) {
     'use strict';
     return {
@@ -1011,7 +1011,7 @@ System.register([], function (exports, module) {
     };
 });
 ",
-  "chunk2.js": "
+  "d.js": "
 System.register([], function (exports, module) {
     'use strict';
     return {
@@ -1045,7 +1045,7 @@ define(['require'], function (require) { 'use strict';
 
         new Promise(function (resolve, reject) { Promise.all([
     lazyload(\\"./assets/c.css\\"),
-    new Promise(function (resolve, reject) { require(['./chunk.js'], resolve, reject) })
+    new Promise(function (resolve, reject) { require(['./c'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
 .catch(reject) }).then(console.log);
@@ -1091,7 +1091,7 @@ define(['require'], function (require) { 'use strict';
 
         new Promise(function (resolve, reject) { Promise.all([
     lazyload(\\"./assets/d.css\\"),
-    new Promise(function (resolve, reject) { require(['./chunk2.js'], resolve, reject) })
+    new Promise(function (resolve, reject) { require(['./d'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
 .catch(reject) }).then(console.log);
@@ -1101,7 +1101,7 @@ define(['require'], function (require) { 'use strict';
 
 });
 ",
-  "chunk.js": "
+  "c.js": "
 define(['exports'], function (exports) { 'use strict';
 
     var css = {
@@ -1114,7 +1114,7 @@ define(['exports'], function (exports) { 'use strict';
 
 });
 ",
-  "chunk2.js": "
+  "d.js": "
 define(['exports'], function (exports) { 'use strict';
 
     var css = {
@@ -1142,7 +1142,7 @@ function a() {
 
     Promise.all([
     lazyload(\\"./assets/c.css\\"),
-    import('./chunk.js')
+    import('./c.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 }
@@ -1183,14 +1183,14 @@ function b() {
 
     Promise.all([
     lazyload(\\"./assets/d.css\\"),
-    import('./chunk2.js')
+    import('./d.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
 export default b;
 ",
-  "chunk.js": "
+  "c.js": "
 var css = {
     \\"c\\": \\"c\\"
 };
@@ -1199,7 +1199,7 @@ console.log(css);
 
 export default css;
 ",
-  "chunk2.js": "
+  "d.js": "
 var css = {
     \\"d\\": \\"d\\"
 };
@@ -1223,7 +1223,7 @@ function a() {
 
     Promise.all([
     lazyload(\\"./assets/c.css\\"),
-    import('./chunk.js')
+    import('./c.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 }
@@ -1264,14 +1264,14 @@ function b() {
 
     Promise.all([
     lazyload(\\"./assets/d.css\\"),
-    import('./chunk2.js')
+    import('./d.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
 export default b;
 ",
-  "chunk.js": "
+  "c.js": "
 var css = {
     \\"c\\": \\"c\\"
 };
@@ -1280,7 +1280,7 @@ console.log(css);
 
 export default css;
 ",
-  "chunk2.js": "
+  "d.js": "
 var css = {
     \\"d\\": \\"d\\"
 };
@@ -1311,7 +1311,7 @@ System.register([], function (exports, module) {
 
                 Promise.all([
     lazyload(\\"./assets/c.css\\"),
-    module.import('./chunk.js')
+    module.import('./c.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
             }
@@ -1361,7 +1361,7 @@ System.register([], function (exports, module) {
 
                 Promise.all([
     lazyload(\\"./assets/d.css\\"),
-    module.import('./chunk2.js')
+    module.import('./d.js')
 ])
 .then((results) => results[results.length - 1]).then(console.log);
             }
@@ -1370,7 +1370,7 @@ System.register([], function (exports, module) {
     };
 });
 ",
-  "chunk.js": "
+  "c.js": "
 System.register([], function (exports, module) {
     'use strict';
     return {
@@ -1387,7 +1387,7 @@ System.register([], function (exports, module) {
     };
 });
 ",
-  "chunk2.js": "
+  "d.js": "
 System.register([], function (exports, module) {
     'use strict';
     return {

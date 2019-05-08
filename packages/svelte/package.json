@@ -30,11 +30,11 @@
   ],
   "dependencies": {
     "@modular-css/processor": "file:../processor",
-    "escape-string-regexp": "^1.0.5",
+    "escape-string-regexp": "^2.0.0",
     "is-url": "^1.2.4",
-    "resolve-from": "^4.0.0"
+    "resolve-from": "^5.0.0"
   },
   "peerDependencies": {
-    "svelte": "^2"
+    "svelte": ">1"
   }
 }

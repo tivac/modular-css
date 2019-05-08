@@ -655,7 +655,9 @@ describe("/rollup.js", () => {
             fn = it.skip;
         }
 
-        fn("should remove repeated references that point at the same files", async () => {
+        fn("should warn about repeated references that point at the same files", async () => {
+            const { logSnapshot } = logs("warn");
+
             const bundle = await rollup({
                 input   : require.resolve("./specimens/casing/main.js"),
                 plugins : [
@@ -672,7 +674,7 @@ describe("/rollup.js", () => {
                 file : prefix(`./output/casing/main.js`),
             });
 
-            expect(dir("./casing")).toMatchSnapshot();
+            logSnapshot();
         });
     });
 
