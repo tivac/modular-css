@@ -13,7 +13,7 @@
     "cover": "jest --coverage",
     "outdated": "lerna exec --no-bail --stream -- npm outdated",
     "parser": "pegjs packages/processor/parsers/parser.pegjs",
-    "release": "env-cmd .env lerna publish",
+    "release": "env-cmd lerna publish",
     "pretest": "npm run parser",
     "test": "jest",
     "watch": "jest --watch",
