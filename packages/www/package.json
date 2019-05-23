@@ -34,7 +34,7 @@
     "codemirror": "^5.42.2",
     "cssnano": "^4.1.8",
     "debounce": "^1.2.0",
-    "get-port": "^4.1.0",
+    "get-port": "^5.0.0",
     "import-fresh": "^3.0.0",
     "is-url": "^1.2.4",
     "lazyload-css": "^1.0.5",
