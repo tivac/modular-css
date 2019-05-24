@@ -24,6 +24,6 @@
     "paths"
   ],
   "dependencies": {
-    "resolve-from": "^4.0.0"
+    "resolve-from": "^5.0.0"
   }
 }
