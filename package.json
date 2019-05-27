@@ -40,7 +40,7 @@
     "jest-runner-eslint": "^0.7.3",
     "lerna": "^3.13.4",
     "pegjs": "0.10.0",
-    "read-dir-deep": "^5.0.0",
+    "read-dir-deep": "^6.0.0",
     "rollup": "^1.11.3",
     "rollup-plugin-hypothetical": "^2.1.0",
     "rollup-plugin-svelte": "^5.0.3",
