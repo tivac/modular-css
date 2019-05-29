@@ -107,10 +107,9 @@ module.exports = (opts) => {
 
             const exported = output.join(exports);
             const relative = path.relative(processor.options.cwd, id);
+            const dependencies = processor.dependencies(id);
 
             const out = [
-                // Need to include this, watch mode doesn't catch all changes otherwise ಠ_ಠ
-                ...processor.dependencies(id).map((dep) => `import ${JSON.stringify(dep)};`),
                 dev ?
                     dedent(`
                         const data = ${JSON.stringify(exported)};
@@ -146,7 +145,7 @@ module.exports = (opts) => {
                 out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
             }
 
-            processor.dependencies(id).forEach((dep) => this.addWatchFile(dep));
+            dependencies.forEach((dep) => this.addWatchFile(dep));
 
             return {
                 code : out.join("\n"),
@@ -190,7 +189,7 @@ module.exports = (opts) => {
                 if(isAsset) {
                     return;
                 }
-
+                
                 // Get CSS files being used by this chunk
                 const css = Object.keys(modules).filter((file) => processor.has(file));
 
