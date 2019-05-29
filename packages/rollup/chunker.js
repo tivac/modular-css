@@ -10,6 +10,7 @@ const merge = (graph, original, target) => {
 
     // Copy all incoming dependencies from original to target
     incoming.forEach((src) => {
+        /* istanbul ignore if */
         if(src === target) {
             return;
         }
@@ -19,6 +20,7 @@ const merge = (graph, original, target) => {
 
     // Copy all outgoing dependencies from original to target
     outgoing.forEach((dest) => {
+        /* istanbul ignore if */
         if(dest === target) {
             return;
         }
