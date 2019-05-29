@@ -10,15 +10,17 @@ const merge = (graph, original, target) => {
 
     // Copy all incoming dependencies from original to target
     incoming.forEach((src) => {
+        /* istanbul ignore if */
         if(src === target) {
             return;
         }
-        
+
         graph.addDependency(src, target);
     });
 
     // Copy all outgoing dependencies from original to target
     outgoing.forEach((dest) => {
+        /* istanbul ignore if */
         if(dest === target) {
             return;
         }
@@ -80,23 +82,23 @@ const chunks = ({ entries, graph }) => {
     while(chunked.size < nodeToEntries.size) {
         // Iterate the nodes associated with each entry,
         // and figure out if the node can be collapsed
-        entryToNodes.forEach((nodes, entry) => {
+        entryToNodes.forEach((nodes) => {
             // Nodes that will be merged at the end of this iteration
             const queued = new Set();
-
-            // This will be the first set of entries found in the walk,
-            // any subsequent nodes in this pass must match this to be combined
-            let branches;
 
             // If all the nodes for this branch are handled, skip it
             if(setsContain(nodes, chunked)) {
                 return;
             }
 
-            // Walk the dependencies of the current entry in order
-            const branch = result.dependenciesOf(entry).reverse();
+            // This will be the first set of entries found in the walk,
+            // any subsequent nodes in this pass must match this to be combined
+            // NOTE: can't be assigned yet because the already-chunked nodes
+            // need to be filtered out first
+            let branches;
 
-            for(const node of branch) {
+            // Walk the dependencies of the current entry in order
+            for(const node of nodes) {
                 if(chunked.has(node)) {
                     continue;
                 }
@@ -106,14 +108,12 @@ const chunks = ({ entries, graph }) => {
 
                 if(!branches) {
                     branches = containers;
-                } else if(!setsMatch(branches, containers)) {
-                    // TODO: Can we get the order to have leaf nodes first so we could stop
-                    // TODO: iteration on this branch at this point? Might have to implement BFS
-                    // TODO: to get that info
-                    continue;
                 }
 
-                queued.add(node);
+                // If the references are identical the node can be queued to merge
+                if(setsMatch(branches, containers)) {
+                    queued.add(node);
+                }
             }
 
             // Merge all the queued nodes into the first node in the queue
