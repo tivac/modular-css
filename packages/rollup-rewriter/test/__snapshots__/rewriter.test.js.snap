@@ -128,10 +128,10 @@ console.log(css);
 
 var static1 = \\"static1.js\\";
 
-export { static1 as a };
+export { static1 as s };
 ",
   "dynamic1.js": "
-import { a as static1 } from './chunk.js';
+import { s as static1 } from './chunk.js';
 
 var css = {
     \\"dynamic1\\": \\"dynamic1\\"
@@ -144,7 +144,7 @@ var dynamic1 = \\"dynamic1.js\\";
 export default dynamic1;
 ",
   "entry1.js": "
-import { a as static1 } from './chunk.js';
+import { s as static1 } from './chunk.js';
 
 var css = {
     \\"entry1\\": \\"entry1\\"
@@ -206,10 +206,10 @@ console.log(css);
 
 var static1 = \\"static1.js\\";
 
-export { static1 as a };
+export { static1 as s };
 ",
   "dynamic1.js": "
-import { a as static1 } from './chunk.js';
+import { s as static1 } from './chunk.js';
 
 var css = {
     \\"dynamic1\\": \\"dynamic1\\"
@@ -222,7 +222,7 @@ var dynamic1 = \\"dynamic1.js\\";
 export default dynamic1;
 ",
   "entry1.js": "
-import { a as static1 } from './chunk.js';
+import { s as static1 } from './chunk.js';
 
 var css = {
     \\"entry1\\": \\"entry1\\"
@@ -276,7 +276,7 @@ Object {
 }
 ",
   "chunk.js": "
-System.register([], function (exports, module) {
+System.register([], function (exports) {
     'use strict';
     return {
         execute: function () {
@@ -287,19 +287,19 @@ System.register([], function (exports, module) {
 
             console.log(css);
 
-            var static1 = exports('a', \\"static1.js\\");
+            var static1 = exports('s', \\"static1.js\\");
 
         }
     };
 });
 ",
   "dynamic1.js": "
-System.register(['./chunk.js'], function (exports, module) {
+System.register(['./chunk.js'], function (exports) {
     'use strict';
     var static1;
     return {
         setters: [function (module) {
-            static1 = module.a;
+            static1 = module.s;
         }],
         execute: function () {
 
@@ -316,12 +316,12 @@ System.register(['./chunk.js'], function (exports, module) {
 });
 ",
   "entry1.js": "
-System.register(['./chunk.js'], function (exports, module) {
+System.register(['./chunk.js'], function () {
     'use strict';
     var static1;
     return {
         setters: [function (module) {
-            static1 = module.a;
+            static1 = module.s;
         }],
         execute: function () {
 
@@ -615,7 +615,7 @@ System.register([], function (exports, module) {
 });
 ",
   "c.js": "
-System.register([], function (exports, module) {
+System.register([], function (exports) {
 	'use strict';
 	return {
 		execute: function () {
@@ -633,7 +633,7 @@ System.register([], function (exports, module) {
 });
 ",
   "d.js": "
-System.register([], function (exports, module) {
+System.register([], function (exports) {
 	'use strict';
 	return {
 		execute: function () {
@@ -995,7 +995,7 @@ import lazyload from \\"./css.js\\";
 });
 ",
   "c.js": "
-System.register([], function (exports, module) {
+System.register([], function (exports) {
     'use strict';
     return {
         execute: function () {
@@ -1012,7 +1012,7 @@ System.register([], function (exports, module) {
 });
 ",
   "d.js": "
-System.register([], function (exports, module) {
+System.register([], function (exports) {
     'use strict';
     return {
         execute: function () {
@@ -1371,7 +1371,7 @@ System.register([], function (exports, module) {
 });
 ",
   "c.js": "
-System.register([], function (exports, module) {
+System.register([], function (exports) {
     'use strict';
     return {
         execute: function () {
@@ -1388,7 +1388,7 @@ System.register([], function (exports, module) {
 });
 ",
   "d.js": "
-System.register([], function (exports, module) {
+System.register([], function (exports) {
     'use strict';
     return {
         execute: function () {
