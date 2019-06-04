@@ -30,7 +30,7 @@
     "postcss": "^7.0.0",
     "postcss-selector-parser": "^6.0.2",
     "postcss-url": "^8.0.0",
-    "postcss-value-parser": "^3.3.0",
+    "postcss-value-parser": "^4.0.0",
     "resolve-from": "^5.0.0",
     "unique-slug": "^2.0.0"
   },
