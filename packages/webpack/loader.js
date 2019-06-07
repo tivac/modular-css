@@ -2,7 +2,7 @@
 
 const utils   = require("loader-utils");
 const { keyword } = require("esutils");
-    
+
 const output = require("@modular-css/processor/lib/output.js");
 
 // Can't be an arrow function due to `this` usage :(
@@ -50,7 +50,9 @@ module.exports = async function(source) {
             out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
         });
 
-        out.push(`export var styles = ${JSON.stringify(result.details.result.css)};`);
+        if(options.styleExport !== false) {
+            out.push(`export var styles = ${JSON.stringify(result.details.result.css)};`);
+        }
 
         return done(null, out.join("\n"));
     } catch(e) {

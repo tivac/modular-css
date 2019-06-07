@@ -93,3 +93,23 @@ By default this plugin will create both a default export and named `export`s for
     },
 ...
 ```
+
+#### `styleExport`
+
+By default this plugin will export the style string, eg `import { styles } from "./style.css";`. You can disable this by setting `styleExport` to `false`.
+
+```js
+...
+    module : {
+        rules : [{
+            test : /\.css$/,
+            use  : {
+                loader  : "@modular-css/webpack/loader",
+                options : {
+                    styleExport : false
+                }
+            }
+        }]
+    },
+...
+```
