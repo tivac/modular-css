@@ -206,6 +206,24 @@ describe("/webpack.js", () => {
         });
     });
 
+    it("should support disabling styleExports when the option is set", (done) => {
+        webpack(config({
+            entry : "./packages/webpack/test/specimens/simple.js",
+            use   : {
+                loader,
+                options : {
+                    styleExports : false,
+                },
+            },
+        }), (err, stats) => {
+            success(err, stats);
+
+            expect(read("output.js")).toMatchSnapshot();
+
+            done();
+        });
+    });
+
     it("should generate correct builds in watch mode when files change", (done) => {
         var changed = 0,
             compiler, watcher;
