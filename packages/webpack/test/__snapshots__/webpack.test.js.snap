@@ -1492,7 +1492,7 @@ eval(\\"__webpack_require__(/*! ./simple.css */ \\\\\\"./packages/webpack/test/s
 /******/ });"
 `;
 
-exports[`/webpack.js should support disabling styleExports when the option is set 1`] = `
+exports[`/webpack.js should support disabling styleExport when the option is set 1`] = `
 "/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1585,11 +1585,11 @@ exports[`/webpack.js should support disabling styleExports when the option is se
 /*!****************************************************!*\\\\
   !*** ./packages/webpack/test/specimens/simple.css ***!
   \\\\****************************************************/
-/*! exports provided: default, wooga, styles */
+/*! exports provided: default, wooga */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 \\"use strict\\";
-eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"wooga\\\\\\", function() { return wooga; });\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"styles\\\\\\", function() { return styles; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"wooga\\\\\\": \\\\\\"wooga\\\\\\"\\\\n});\\\\nvar wooga = \\\\\\"wooga\\\\\\";\\\\nvar styles = \\\\\\".wooga { color: red; }\\\\\\\\n\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/simple.css?\\");
+eval(\\"__webpack_require__.r(__webpack_exports__);\\\\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \\\\\\"wooga\\\\\\", function() { return wooga; });\\\\n/* harmony default export */ __webpack_exports__[\\\\\\"default\\\\\\"] = ({\\\\n    \\\\\\"wooga\\\\\\": \\\\\\"wooga\\\\\\"\\\\n});\\\\nvar wooga = \\\\\\"wooga\\\\\\";\\\\n\\\\n//# sourceURL=webpack:///./packages/webpack/test/specimens/simple.css?\\");
 
 /***/ }),
 

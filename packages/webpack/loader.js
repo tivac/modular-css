@@ -50,7 +50,7 @@ module.exports = async function(source) {
             out.push(`export var ${ident} = ${JSON.stringify(exported[ident])};`);
         });
 
-        if(options.styleExport !== false) {
+        if(options.styleExport) {
             out.push(`export var styles = ${JSON.stringify(result.details.result.css)};`);
         }
 

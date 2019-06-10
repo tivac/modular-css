@@ -206,13 +206,13 @@ describe("/webpack.js", () => {
         });
     });
 
-    it("should support disabling styleExports when the option is set", (done) => {
+    it("should support disabling styleExport when the option is set", (done) => {
         webpack(config({
             entry : "./packages/webpack/test/specimens/simple.js",
             use   : {
                 loader,
                 options : {
-                    styleExports : false,
+                    styleExport : false,
                 },
             },
         }), (err, stats) => {
