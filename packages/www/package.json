@@ -24,12 +24,14 @@
       "node": true
     }
   },
+  "devDependencies": {
+    "sirv": "^0.2.2"
+  },
   "dependencies": {
     "@modular-css/processor": "file:../processor",
     "@modular-css/rollup": "file:../rollup",
     "@modular-css/shortnames": "file:../namer",
     "@modular-css/svelte": "file:../svelte",
-    "@purtuga/esm-webpack-plugin": "^1.0.1",
     "babel-eslint": "^10.0.1",
     "codemirror": "^5.42.2",
     "cssnano": "^4.1.8",
@@ -60,7 +62,6 @@
     "rollup-plugin-node-resolve": "^5.0.0",
     "rollup-plugin-svelte": "^5.0.1",
     "rollup-plugin-terser": "^5.0.0",
-    "sirv": "^0.2.2",
     "svelte": "^2.16.0"
   }
 }
