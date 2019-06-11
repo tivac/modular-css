@@ -37,14 +37,13 @@ class Processor {
         const options = Object.assign(
             Object.create(null),
             {
-                cwd         : process.cwd(),
-                map         : false,
-                rewrite     : true,
-                verbose     : false,
-                resolvers   : [],
-                postcss     : {},
-                dupewarn    : true,
-                styleExport : true,
+                cwd       : process.cwd(),
+                map       : false,
+                rewrite   : true,
+                verbose   : false,
+                resolvers : [],
+                postcss   : {},
+                dupewarn  : true,
             },
             opts
         );
