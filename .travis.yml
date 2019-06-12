@@ -7,9 +7,13 @@ if: tag IS blank
 # Environment setup
 language: node_js
 node_js:
-- node
-- '10'
-- '8'
+  - node
+  - '10'
+  - '8'
+
+os:
+  - windows
+  - linux
 
 # https://docs.travis-ci.com/user/customizing-the-build/#Fast-Finishing
 matrix:
