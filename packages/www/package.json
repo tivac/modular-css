@@ -25,7 +25,7 @@
     }
   },
   "devDependencies": {
-    "sirv": "^0.2.2"
+    "sirv": "^0.4.2"
   },
   "dependencies": {
     "@modular-css/processor": "file:../processor",
