@@ -42,6 +42,7 @@ jobs:
   include:
     - stage: Code Coverage
       node_js: node
+      os: windows
       script:
       - npm test -- --ci --coverage
       - npx codecov
