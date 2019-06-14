@@ -1,13 +1,17 @@
 "use strict";
 
-const utils   = require("loader-utils");
+const utils       = require("loader-utils");
 const { keyword } = require("esutils");
 
 const output = require("@modular-css/processor/lib/output.js");
 
 // Can't be an arrow function due to `this` usage :(
 module.exports = async function(source) {
-    const options   = utils.getOptions(this) || false;
+    const defaults  = {
+        styleExport  : true,
+        namedExports : true
+    };
+    const options   = Object.assign(Object.create(null), defaults, utils.getOptions(this)) || false;
     const done      = this.async();
     const processor = this.options ?
         // Webpack 2 & 3
@@ -34,7 +38,7 @@ module.exports = async function(source) {
         processor.dependencies(this.resourcePath).forEach(this.addDependency);
 
         // Just default object export in this case
-        if(options.namedExports === false) {
+        if(!options.namedExports) {
             return done(null, out.join("\n"));
         }
 

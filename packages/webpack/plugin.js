@@ -18,7 +18,6 @@ const getChangedFiles = (prev, curr) =>
 function ModularCSS(args) {
     var options = Object.assign(
             Object.create(null),
-            { styleExport : true },
             args
         );
 
