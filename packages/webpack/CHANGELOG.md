@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.1.0](https://github.com/tivac/modular-css/compare/v24.0.1...v24.1.0) (2019-06-17)
+
+
+### Features
+
+* **webpack:** add styleExport option ([#613](https://github.com/tivac/modular-css/issues/613)) ([8fc3ae1](https://github.com/tivac/modular-css/commit/8fc3ae1))
+
+
+
+
+
 ## [24.0.1](https://github.com/tivac/modular-css/compare/v24.0.0...v24.0.1) (2019-05-29)
 
 **Note:** Version bump only for package @modular-css/webpack
