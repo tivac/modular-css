@@ -26,7 +26,7 @@ const generate = async () => {
             const parser = peg.generate(`${shared}\n${grammar}`, {
                 output            : "source",
                 format            : "commonjs",
-                allowedStartRules : "start",
+                allowedStartRules : [ "start" ],
                 optimize          : "speed",
             });
 

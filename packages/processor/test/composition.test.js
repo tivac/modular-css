@@ -15,7 +15,7 @@ describe("/processor.js", () => {
             });
         });
 
-        it.only("should fail on invalid composes syntax", async () => {
+        it("should fail on invalid composes syntax", async () => {
             try {
                 await processor.string(
                     "./invalid/value.css",
@@ -41,7 +41,7 @@ describe("/processor.js", () => {
             try {
                 await processor.string(
                     "./invalid-composition.css",
-                    ".a { composes: b from \"../local.css\"; }"
+                    `.a { composes: b from "../local.css"; }`
                 );
             } catch({ message }) {
                 expect(message).toMatch(

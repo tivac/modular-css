@@ -11,30 +11,22 @@ module.exports = (css, { opts }) => {
 
     const process = (rule, pseudo) => {
         const params = pseudo.nodes.toString();
-        const { type, source, ref } = parser.parse(params);
-        const root   = selector.root();
-
-        if(type !== "composition") {
-            throw rule.error(
-                "externals must be from another file",
-                { word : params }
-            );
-        }
-
-        const file = files[resolve(from, source)];
-
+        const { source, ref } = parser.parse(params);
         const { name } = ref;
+        const file = files[resolve(from, source)];
         
-        if(!source.exports[name]) {
+        if(!file.exports[name]) {
             throw rule.error(`Invalid external reference: ${name}`, { word : name });
         }
-
+        
         // This was a... poor naming choice
         const s = selector.selector();
-
+        
         file.exports[name].forEach((value) =>
             s.append(selector.className({ value }))
         );
+        
+        const root = selector.root();
         
         root.append(s);
 

@@ -3,7 +3,7 @@
 const selector = require("postcss-selector-parser");
 
 const values   = require("../parsers/values.js");
-const composes = require("../parsers/values.js");
+const composes = require("../parsers/composes.js");
 const external = require("../parsers/external.js");
 
 const plugin = "modular-css-graph-nodes";
@@ -18,8 +18,6 @@ module.exports = (css, result) => {
         try {
             parsed = parser.parse(value);
         } catch(e) {
-            console.log(e);
-
             throw rule.error(e.toString(), {
                 word : value.substring(e.location.start.offset, e.location.end.offset),
             });
