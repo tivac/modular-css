@@ -27,19 +27,6 @@ describe("/processor.js", () => {
             }
         });
 
-        it("should fail if not referencing another file", async () => {
-            try {
-                await processor.string(
-                    "./invalid-external.css",
-                    dedent(`
-                        :external(a) { }
-                    `)
-                );
-            } catch({ message }) {
-                expect(message).toMatch(`externals must be from another file`);
-            }
-        });
-
         it("should fail on bad class references", async () => {
             try {
                 await processor.file(require.resolve("./specimens/externals-invalid.css"));

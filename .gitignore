@@ -85,6 +85,7 @@ $RECYCLE.BIN/
 # Profiler Output
 profiling
 
+# Generated website content
 dist/
 
 # environment variables

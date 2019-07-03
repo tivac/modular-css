@@ -41,7 +41,7 @@ describe("/processor.js", () => {
             try {
                 await processor.string(
                     "./invalid-composition.css",
-                    ".a { composes: b from \"../local.css\"; }"
+                    `.a { composes: b from "../local.css"; }`
                 );
             } catch({ message }) {
                 expect(message).toMatch(
