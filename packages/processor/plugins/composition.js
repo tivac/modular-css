@@ -7,7 +7,7 @@ const mapvalues = require("lodash/mapValues");
 const message = require("../lib/message.js");
 const identifiers = require("../lib/identifiers.js");
 
-const parser = require("../parsers/parser.js");
+const parser = require("../parsers/composes.js");
 
 const plugin = "modular-css-composition";
 

@@ -2,20 +2,24 @@
 
 const selector = require("postcss-selector-parser");
 
-const parser  = require("../parsers/parser.js");
+const values   = require("../parsers/values.js");
+const composes = require("../parsers/values.js");
+const external = require("../parsers/external.js");
 
 const plugin = "modular-css-graph-nodes";
 
 module.exports = (css, result) => {
     let current;
 
-    const parse = (rule, value) => {
+    const parse = (parser, rule, value) => {
         const { opts } = result;
         let parsed;
 
         try {
             parsed = parser.parse(value);
         } catch(e) {
+            console.log(e);
+
             throw rule.error(e.toString(), {
                 word : value.substring(e.location.start.offset, e.location.end.offset),
             });
@@ -49,15 +53,15 @@ module.exports = (css, result) => {
                 return;
             }
             
-            parse(current, nodes.toString());
+            parse(external, current, nodes.toString());
         })
     );
     
     // @value <value> from <file>
-    css.walkAtRules("value", (rule) => parse(rule, rule.params));
+    css.walkAtRules("value", (rule) => parse(values, rule, rule.params));
 
     // { composes: <rule> from <file> }
-    css.walkDecls("composes", (rule) => parse(rule, rule.value));
+    css.walkDecls("composes", (rule) => parse(composes, rule, rule.value));
 
     // :external(<rule> from <file>) { ... }
     // Have to assign to current so postcss-selector-parser can reference the right thing

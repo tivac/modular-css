@@ -1,6 +1,6 @@
 "use strict";
 
-const parser = require("../parsers/parser.js");
+const parser = require("../parsers/values.js");
 
 const plugin = "modular-css-values-namespaced";
 

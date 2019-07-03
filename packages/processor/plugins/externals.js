@@ -2,7 +2,7 @@
 
 const selector = require("postcss-selector-parser");
 
-const parser = require("../parsers/parser.js");
+const parser = require("../parsers/external.js");
 
 // Find :external(<rule> from <file>) references and update them to be
 // the namespaced selector instead
@@ -11,33 +11,32 @@ module.exports = (css, { opts }) => {
 
     const process = (rule, pseudo) => {
         const params = pseudo.nodes.toString();
-        const parsed = parser.parse(params);
+        const { type, source, ref } = parser.parse(params);
         const root   = selector.root();
 
-        if(parsed.type !== "composition") {
+        if(type !== "composition") {
             throw rule.error(
                 "externals must be from another file",
                 { word : params }
             );
         }
 
-        const source = files[resolve(from, parsed.source)];
+        const file = files[resolve(from, source)];
 
-        // There will only ever be one, but this is nicer
-        parsed.refs.forEach(({ name }) => {
-            if(!source.exports[name]) {
-                throw rule.error(`Invalid external reference: ${name}`, { word : name });
-            }
+        const { name } = ref;
+        
+        if(!source.exports[name]) {
+            throw rule.error(`Invalid external reference: ${name}`, { word : name });
+        }
 
-            // This was a... poor naming choice
-            const s = selector.selector();
+        // This was a... poor naming choice
+        const s = selector.selector();
 
-            source.exports[name].forEach((value) =>
-                s.append(selector.className({ value }))
-            );
-            
-            root.append(s);
-        });
+        file.exports[name].forEach((value) =>
+            s.append(selector.className({ value }))
+        );
+        
+        root.append(s);
 
         pseudo.replaceWith(root);
     };

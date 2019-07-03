@@ -15,7 +15,7 @@ describe("/processor.js", () => {
             });
         });
 
-        it("should fail on invalid composes syntax", async () => {
+        it.only("should fail on invalid composes syntax", async () => {
             try {
                 await processor.string(
                     "./invalid/value.css",

@@ -12,9 +12,9 @@
   "scripts": {
     "cover": "jest --coverage",
     "outdated": "lerna exec --no-bail --stream -- npm outdated",
-    "parser": "pegjs packages/processor/parsers/parser.pegjs",
+    "parsers": "node parsers/build.js",
     "release": "env-cmd lerna publish",
-    "pretest": "npm run parser",
+    "pretest": "npm run parsers",
     "test": "jest",
     "watch": "jest --watch",
     "www:build": "lerna run --stream build packages/www",
