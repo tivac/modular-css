@@ -90,6 +90,3 @@ dist/
 
 # environment variables
 .env
-
-# Generated parsers
-packages/processor/parsers/
