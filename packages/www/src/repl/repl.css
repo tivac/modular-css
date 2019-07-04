@@ -10,6 +10,8 @@
 
     display: grid;
 
+    margin-left: 0;
+
     grid-template:
         "  tabs   tabs  " tabHeight
         " input  output " calc(100vh - headerHeight - tabHeight) /
