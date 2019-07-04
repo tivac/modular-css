@@ -24,9 +24,6 @@
       "node": true
     }
   },
-  "devDependencies": {
-    "sirv": "^0.2.2"
-  },
   "dependencies": {
     "@modular-css/processor": "file:../processor",
     "@modular-css/rollup": "file:../rollup",

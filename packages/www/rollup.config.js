@@ -20,7 +20,7 @@ const { processor, preprocess } = require("@modular-css/svelte")({
 
     done : [
         isProduction ? require("cssnano")() : noop,
-    ]
+    ],
 });
 
 const shared = (store) => {
@@ -65,8 +65,7 @@ module.exports = [
             }),
 
             require("rollup-plugin-node-resolve")({
-                module  : true,
-                browser : true,
+                mainFields : [ "module", "browser", "main" ],
 
                 preferBuiltins : false,
             }),
@@ -140,8 +139,6 @@ module.exports = [
             require("./build/rollup-plugin-add-watch-files.js")(),
 
             require("rollup-plugin-node-resolve")({
-                module : true,
-
                 preferBuiltins : false,
             }),
             
@@ -159,7 +156,7 @@ module.exports = [
 
             // Generate HTML for all the static pages
             require("./build/rollup-plugin-generate-html.js")({ bundle }),
-        ]
+        ],
     },
     
 ];
