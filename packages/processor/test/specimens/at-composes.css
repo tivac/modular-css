@@ -1,0 +1,7 @@
+@composes "./blue.css";
+
+.notblue {
+    composes: wooga;
+
+    color: green;
+}

@@ -12,9 +12,10 @@ const write = promisify(fs.writeFile);
 const dest = path.resolve(__dirname, "../packages/processor/parsers/");
 const shared = fs.readFileSync(require.resolve("./shared.pegjs"));
 const files = [
-    require.resolve("./values.pegjs"),
+    require.resolve("./at-composes.pegjs"),
     require.resolve("./composes.pegjs"),
     require.resolve("./external.pegjs"),
+    require.resolve("./values.pegjs"),
 ];
 
 const generate = async () => {

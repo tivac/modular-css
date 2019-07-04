@@ -2,9 +2,10 @@
 
 const selector = require("postcss-selector-parser");
 
-const values   = require("../parsers/values.js");
+const atcomposes = require("../parsers/at-composes.js");
 const composes = require("../parsers/composes.js");
 const external = require("../parsers/external.js");
+const values = require("../parsers/values.js");
 
 const plugin = "modular-css-graph-nodes";
 
@@ -57,6 +58,9 @@ module.exports = (css, result) => {
     
     // @value <value> from <file>
     css.walkAtRules("value", (rule) => parse(values, rule, rule.params));
+    
+    // @composes <file>
+    css.walkAtRules("composes", (rule) => parse(atcomposes, rule, rule.params));
 
     // { composes: <rule> from <file> }
     css.walkDecls("composes", (rule) => parse(composes, rule, rule.value));
