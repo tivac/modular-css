@@ -15,3 +15,5 @@
 !!!include(feature-values-namespaced.md)!!!
 
 !!!include(feature-values-wildcard.md)!!!
+
+!!!include(feature-at-composes.md)!!!
