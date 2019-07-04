@@ -7,7 +7,7 @@
     },
     "version": {
       "conventionalCommits": true,
-      "githubRelease": true
+      "createRelease": "github"
     }
   },
   "packages": [
