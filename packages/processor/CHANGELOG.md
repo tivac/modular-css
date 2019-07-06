@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.2.0](https://github.com/tivac/modular-css/compare/v24.1.0...v24.2.0) (2019-07-06)
+
+
+### Features
+
+* composes at-rule ([#635](https://github.com/tivac/modular-css/issues/635)) ([27d696a](https://github.com/tivac/modular-css/commit/27d696a)), closes [#633](https://github.com/tivac/modular-css/issues/633)
+
+
+
+
+
 # [24.1.0](https://github.com/tivac/modular-css/compare/v24.0.1...v24.1.0) (2019-06-17)
 
 **Note:** Version bump only for package @modular-css/processor
