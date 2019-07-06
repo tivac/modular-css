@@ -46,7 +46,7 @@ File name to use in case there are any CSS dependencies that appear in multiple 
 
 ##### `dev`
 
-Enable dev mode. In dev mode the default export of a CSS file will be a `Proxy` instead of a bare object. Attempts to access non-existant properties on the proxy will throw a `ReferenceError` to assist in catching invalid usage.
+Enable dev mode. In dev mode the default export of a CSS file will be a `Proxy` instead of a bare object. Attempts to access non-existant properties on the proxy will throw a `ReferenceError` to assist in catching incorrect usage.
 
 ##### `include`/`exclude`
 

@@ -39,7 +39,7 @@ In `modular-css` all CSS is local by default, and since `:global()` is [required
 
 In CSS Modules there is no support for modifying styles in rules that aren't direct ancestors via `composes`.
 
-Discussion around potential solutions was happening in [css-modules/css-modules#147](https://github.com/css-modules/css-modules/issues/147) but eventually died out.
+Discussion around potential solutions was happening in [css-modules/css-modules#147](https://github.com/css-modules/css-modules/issues/147) but eventually dried up.
 
 `modular-css` has implemented the `:external()` proposal from that issue. More context is available in the [Overriding Styles section](#overriding-styles).
 
