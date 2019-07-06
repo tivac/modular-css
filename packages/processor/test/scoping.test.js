@@ -45,7 +45,6 @@ describe("/processor.js", () => {
                     .e:not(.e) {}
                 `)
             );
-            
 
             expect(exports).toMatchSnapshot();
 

@@ -1,4 +1,4 @@
-### Overriding Styles
+#### Overriding Styles
 
 Sometimes a component will need some customization for use in a specific location/design, but you don't want to bake that customization into the component.`:external(...)` helps you solve that problem.
 

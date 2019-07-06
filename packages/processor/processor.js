@@ -86,6 +86,7 @@ class Processor {
         ]);
 
         this._process = postcss([
+            require("./plugins/at-composes.js"),
             require("./plugins/values-composed.js"),
             require("./plugins/values-imported.js"),
             require("./plugins/values-export.js"),
@@ -304,7 +305,7 @@ class Processor {
         );
 
         Object.defineProperty(result, "compositions", {
-            get : () => output.compositions(this)
+            get : () => output.compositions(this),
         });
 
         return result;

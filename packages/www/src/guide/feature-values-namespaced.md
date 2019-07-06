@@ -1,4 +1,4 @@
-### Namespaced values
+#### Namespaced @values
 
 `@value`s can be imported as a namespace which provides a convenient shorthand way to access a bunch of shared values from a file.
 

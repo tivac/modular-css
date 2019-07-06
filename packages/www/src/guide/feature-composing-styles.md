@@ -1,4 +1,4 @@
-### Composition
+### Style Composition
 
 Selector limitations mean that it's difficult to use complicated selectors, so to enable building anything of complexity you can compose selectors. These compositions can be within a file or even pull in classes defined in other files.
 

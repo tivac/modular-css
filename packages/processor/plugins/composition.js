@@ -30,10 +30,13 @@ const composesFirst = (decl) => {
 module.exports = (css, result) => {
     const { opts } = result;
     
-    const refs = message(result, "classes");
+    const refs = {
+        ...message(result, "atcomposes"),
+        ...message(result, "classes"),
+    };
+
     const map = invert(refs);
-    
-    const out = Object.assign(Object.create(null), refs);
+    const out = { ...refs };
     const graph = new Graph();
 
     Object.keys(refs).forEach((key) => graph.addNode(key));

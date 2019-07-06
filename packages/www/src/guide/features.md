@@ -4,9 +4,7 @@
 
 !!!include(feature-scoped-selectors.md)!!!
 
-!!!include(feature-composition.md)!!!
-
-!!!include(feature-overriding-styles.md)!!!
+!!!include(feature-composing-styles.md)!!!
 
 !!!include(feature-values.md)!!!
 
@@ -15,3 +13,11 @@
 !!!include(feature-values-namespaced.md)!!!
 
 !!!include(feature-values-wildcard.md)!!!
+
+### Other Features
+
+These features can help when you find yourself bumping up against the edges of a few specific problems in `modular-css` but are best used sparingly.
+
+!!!include(feature-overriding-styles.md)!!!
+
+!!!include(feature-composing-files.md)!!!

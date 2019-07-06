@@ -1,6 +1,6 @@
 ### JS API
 
-The heart of `modular-css`, the JS API is a `Processor` that will be fed files, transform them, then spit out their bones...
+The heart of `modular-css`, the JS API is a `Processor` that will be fed files, transform them, then barf out their bones...
 
 Or, you know, their CSS. One of those for sure.
 
@@ -97,7 +97,7 @@ new Processor({
 
 Specify a function (that takes `filename` & `selector` as arguments) to produce scoped selectors.
 
-Can also pass a string that will be `require()`'d and executed, it should return the namer function.
+Can also pass a string that will be `require()`'d and evaluated, it should return the namer function.
 
 **Default**: Function that returns `"mc" + unique-slug(<file>) + "_" + selector`
 
@@ -140,7 +140,7 @@ new Processor({
 
 ##### `exportGlobals`
 
-By default identifiers wrapped in `:global(...)` are exported for ease of referencing via JS. By setting `exportGlobals` to `false` that behavior can be disabled. Mostly useful to avoid warnings when global CSS properties are not valid JS identifiers.
+By default identifiers wrapped in `:global(...)` are exported for ease of referencing via JS. By setting `exportGlobals` to `false` that behavior can be deactivated. Mostly useful to avoid warnings when global CSS properties are not valid JS identifiers.
 
 ```js
 new Processor({

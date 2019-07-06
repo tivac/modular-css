@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js @composes should allow composing classes from the composed file 1`] = `
+Object {
+  "a": Array [
+    "wooga",
+    "a",
+  ],
+  "b": Array [
+    "b",
+  ],
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js @composes should allow for chains of @composes-included files 1`] = `
+Object {
+  "a": Array [
+    "wooga",
+    "notblue",
+    "a",
+  ],
+  "b": Array [
+    "wooga",
+    "b",
+  ],
+  "notblue": Array [
+    "wooga",
+    "notblue",
+  ],
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js @composes should include compositions from the composed file 1`] = `
+Object {
+  "packages/processor/test/specimens/at-composes.css": Object {
+    "a": "a",
+    "b": "wooga b",
+    "wooga": "wooga",
+  },
+  "packages/processor/test/specimens/simple.css": Object {
+    "wooga": "wooga",
+  },
+}
+`;
+
+exports[`/processor.js @composes should include exported classes from the composed file 1`] = `
+Object {
+  "a": Array [
+    "a",
+  ],
+  "b": Array [
+    "b",
+  ],
+  "booga": Array [
+    "booga",
+  ],
+  "looga": Array [
+    "booga",
+    "looga",
+  ],
+}
+`;
+
+exports[`/processor.js @composes should not include exported values from the composed file 1`] = `Object {}`;
+
+exports[`/processor.js @composes should output css from the composed file 1`] = `
+"/* packages/processor/test/specimens/simple.css */
+.wooga { color: red; }
+/* packages/processor/test/specimens/at-composes.css */
+.a {
+    color: aqua;
+}
+.b {
+    color: blue;
+}
+"
+`;
