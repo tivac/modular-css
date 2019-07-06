@@ -4,8 +4,4 @@
 
 !!!include(features.md)!!!
 
-!!!include(usage.md)!!!
-
-!!!include(extending.md)!!!
-
 !!!include(comparison.md)!!!

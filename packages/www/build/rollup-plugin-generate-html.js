@@ -7,6 +7,7 @@ const Graph = require("dependency-graph").DepGraph;
 const shell = require("shelljs");
 
 const repl = require("./html/repl.js");
+const api = require("./html/api.js");
 const guide = require("./html/guide.js");
 const home = require("./html/home.js");
 const changelog = require("./html/changelog.js");
@@ -35,6 +36,7 @@ module.exports = ({ bundle : previous }) => ({
         [
             repl(args),
             guide(args),
+            api(args),
             home(args),
             changelog(args),
         ].forEach(({ file, html }) => {

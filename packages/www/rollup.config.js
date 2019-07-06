@@ -105,6 +105,7 @@ module.exports = [
     // CJS Build of home/guide for node generation
     {
         input : {
+            api       : "./src/api/api.html",
             guide     : "./src/guide/guide.html",
             home      : "./src/home/home.html",
             repl      : "./src/repl/repl.html",

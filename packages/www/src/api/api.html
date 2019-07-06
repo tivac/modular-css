@@ -1,0 +1,57 @@
+<style>
+@value contentWidth, sidebarWidth, narrow from "../site.css";
+
+.guide {
+    composes: content from "../site.css";
+}
+
+.bd {
+    composes: bd from "../site.css";
+
+    max-width: contentWidth;
+    margin: 1rem 1rem 0 calc(sidebarWidth + 1.5rem);
+
+    @media narrow {
+        margin-left: 2rem;
+        max-width: 100%;
+    }
+}
+
+.bd a,
+.bd a:hover {
+    text-decoration: underline;
+}
+
+.bd li + li {
+    margin-top: 0.5rem;
+}
+
+.bd img {
+    width: 100%;
+    height: auto;
+}
+</style>
+
+<Page title="Guide" {styles}>
+    <div class="{css.guide}">
+        <Sidebar {tocs} />
+
+        <div class="{css.bd}">
+            {@html content}
+        </div>
+    </div>
+</Page>
+
+<script>
+export default {
+    components : {
+        Page    : "../page.html",
+        Sidebar : "./sidebar.html",
+    },
+
+    data : () => ({
+        tocs    : false,
+        content : "",
+    })
+};
+</script>
