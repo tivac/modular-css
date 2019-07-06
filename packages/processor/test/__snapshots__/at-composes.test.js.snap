@@ -49,7 +49,7 @@ Object {
 }
 `;
 
-exports[`/processor.js @composes should include exports from the composed file 1`] = `
+exports[`/processor.js @composes should include exported classes from the composed file 1`] = `
 Object {
   "a": Array [
     "a",
@@ -57,11 +57,17 @@ Object {
   "b": Array [
     "b",
   ],
-  "wooga": Array [
-    "wooga",
+  "booga": Array [
+    "booga",
+  ],
+  "looga": Array [
+    "booga",
+    "looga",
   ],
 }
 `;
+
+exports[`/processor.js @composes should not include exported values from the composed file 1`] = `Object {}`;
 
 exports[`/processor.js @composes should output css from the composed file 1`] = `
 "/* packages/processor/test/specimens/simple.css */

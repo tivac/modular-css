@@ -27,11 +27,22 @@ module.exports = (css, { opts, messages }) => {
         return;
     }
 
+    // Need to separate out just the classes, values are handled via namespaced imports
+    const atcomposes = Object.create(null);
+
+    for(const [ key, value ] of Object.entries(source.exports)) {
+        if(key in source.values) {
+            continue;
+        }
+
+        atcomposes[key] = value;
+    }
+
     messages.push({
         type : "modular-css",
         plugin,
 
-        atcomposes : source.exports,
+        atcomposes,
     });
 };
 

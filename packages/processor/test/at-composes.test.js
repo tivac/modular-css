@@ -5,6 +5,8 @@ const dedent = require("dedent");
 const namer  = require("@modular-css/test-utils/namer.js");
 const Processor = require("../processor.js");
 
+const id = "./packages/processor/test/specimens/at-composes.css";
+
 describe("/processor.js", () => {
     describe("@composes", () => {
         let processor;
@@ -15,9 +17,9 @@ describe("/processor.js", () => {
             });
         });
 
-        it("should include exports from the composed file", async () => {
-            const { exports } = await processor.string("./packages/processor/test/specimens/at-composes.css", dedent(`
-                @composes "./simple.css";
+        it("should include exported classes from the composed file", async () => {
+            const { exports } = await processor.string(id, dedent(`
+                @composes "./local.css";
 
                 .a {
                     color: aqua;
@@ -30,9 +32,17 @@ describe("/processor.js", () => {
 
             expect(exports).toMatchSnapshot();
         });
+
+        it("should not include exported values from the composed file", async () => {
+            const { exports } = await processor.string(id, dedent(`
+                @composes "./values.css";
+            `));
+
+            expect(exports).toMatchSnapshot();
+        });
         
         it("should allow composing classes from the composed file", async () => {
-            const { exports } = await processor.string("./packages/processor/test/specimens/at-composes.css", dedent(`
+            const { exports } = await processor.string(id, dedent(`
                 @composes "./simple.css";
 
                 .a {
@@ -50,7 +60,7 @@ describe("/processor.js", () => {
         });
 
         it("should include compositions from the composed file", async () => {
-            await processor.string("./packages/processor/test/specimens/at-composes.css", dedent(`
+            await processor.string(id, dedent(`
                 @composes "./simple.css";
 
                 .a {
@@ -70,7 +80,7 @@ describe("/processor.js", () => {
         });
         
         it("should output css from the composed file", async () => {
-            await processor.string("./packages/processor/test/specimens/at-composes.css", dedent(`
+            await processor.string(id, dedent(`
                 @composes "./simple.css";
 
                 .a {
@@ -111,7 +121,7 @@ describe("/processor.js", () => {
 
         it("should only allow a single @composes per file", async () => {
             try {
-                await processor.string("./packages/processor/test/specimens/at-composes.css", dedent(`
+                await processor.string(id, dedent(`
                     @composes "./simple.css";
                     @composes "./blue.css";
 
