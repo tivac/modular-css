@@ -1,4 +1,4 @@
-### Importing Values
+#### Importing @values
 
 `@value`s can be imported from another file by using a slightly different syntax.
 

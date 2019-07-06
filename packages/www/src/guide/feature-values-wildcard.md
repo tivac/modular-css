@@ -1,4 +1,4 @@
-### wildcard values
+#### Wildcard @values
 
 It's possible to import all the `@value` definitions from another file into the current one. Any local `@value` declarations will override the imported values.
 
