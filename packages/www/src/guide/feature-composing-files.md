@@ -1,10 +1,6 @@
-### Composing Files
+#### Composing Files
 
-Despite the availability of `composes` and `:external()` there are still times where the design of CSS Modules (& by extension, `modular-css`) makes life more difficult than it should be. One of the most common of these is creating a base CSS file for something, then creating multiple small tweaks to that base style.
-
-A straightforward approach to solving this would be creating shadow selectors of everything you needed and making them all use `composes` to pull in the inherited style. This is both time-consuming and exceedingly error-prone. A slightly different approach is to require both the base CSS file and the override CSS file and merge the results in Javascript. This can work, but means that the CSS dependency information is now incomplete which can lead to incorrect chunking when splitting up bundles. It also adds complexity to the JS usage of `modular-css`.
-
-Fortunately, `@composes` exists to solve those problems!
+When necessary you can also use the `@composes` at-rule to enable composing an entire CSS file, instead of going rule-by-rule. This is mostly useful when you've got a base style you want to apply to a component but you need to modify just a single style from the base. Instead of manually creating shadowed versions of all the classes in the base CSS, you can use `@composes` to save a bunch of repetition and potential for fat-fingering.
 
 ```css
 /* == base.css == */
