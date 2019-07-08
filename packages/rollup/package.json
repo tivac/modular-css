@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/rollup",
-  "version": "24.2.0",
+  "version": "24.2.1",
   "description": "Add modular-css support to rollup",
   "main": "./rollup.js",
   "repository": {
