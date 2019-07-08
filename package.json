@@ -14,6 +14,7 @@
     "outdated": "lerna exec --no-bail --stream -- npm outdated",
     "parsers": "node parsers/build.js",
     "release": "env-cmd lerna publish",
+    "prepublishOnly": "npm run parsers",
     "pretest": "npm run parsers",
     "test": "jest",
     "watch": "jest --watch",
