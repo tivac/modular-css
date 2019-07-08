@@ -13,6 +13,7 @@
     "cover": "jest --coverage",
     "outdated": "lerna exec --no-bail --stream -- npm outdated",
     "parsers": "node parsers/build.js",
+    "prepublishOnly": "npm run parsers",
     "release": "env-cmd lerna publish",
     "pretest": "npm run parsers",
     "test": "jest",
