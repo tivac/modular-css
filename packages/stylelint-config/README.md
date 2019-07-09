@@ -22,7 +22,7 @@ Someday it might even validate things for you, but that's a trickier proposition
 
 Inside your [stylelint config](https://stylelint.io/user-guide/configuration/) you'll specify an [`extends`](https://stylelint.io/user-guide/configuration/#extends) property pointing to this package.
 
-```json
+```js
 {
     "extends" : "@modular-css/stylelint-config",
     "rules" : {
