@@ -1,0 +1,28 @@
+{
+  "name": "@modular-css/stylelint-config",
+  "version": "24.2.2",
+  "description": "Stylelint config to suport modular-css syntax",
+  "main": "./stylelint.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tivac/modular-css.git",
+    "directory": "packages/stylelint"
+  },
+  "bugs": {
+    "url": "https://github.com/tivac/modular-css/issues"
+  },
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "homepage": "https://m-css.com",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "stylelint",
+    "stylelint-config",
+    "css",
+    "css-modules",
+    "modular-css",
+    "postcss"
+  ]
+}
