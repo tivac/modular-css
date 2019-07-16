@@ -15,6 +15,8 @@ body {
 }
 ```
 
+[REPL Link](https://m-css.com/repl/#NrBEHoFsEMEsDsB0BjAzq0AaUABAbtADYCuApgAQwLkBmATgPaTkA6oi4NshpAzCujYBuFvFEAjBgBMAnuQDeo8svLIGhBnQBclOPBHwAvqAC6mMJ258BGbPiJldCHXVJSD9khXEBzHQHcAC1gAF1IhUxMgA)
+
 It's also possible to import multiple values at once.
 
 ```css
@@ -30,3 +32,5 @@ body {
     background: bg;
 }
 ```
+
+[REPL Link](https://m-css.com/repl/#NrBEHoFsEMEsDsB0BjAzq0AaUABAbtADYCuApgAQwKbkBGA5uQGYBOA9pOQDqiLhOxCpAMwp0PANxd402mwAmAT3IBvaeQ3lkbQmxYAuSnHhT4mutGQBreu2Lx5hhqYC+oALqYw-QSLEZsfCIyIwRDFlJ5UyCSCgZDAHcAC1gAF1IJD3cgA)

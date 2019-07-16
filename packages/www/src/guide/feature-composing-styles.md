@@ -9,18 +9,18 @@ Selector limitations mean that it's difficult to use complicated selectors, so t
     color: red;
 }
 
+/* Will be stripped from the CSS output because it doesn't */
+/* contain any actual rules */
 .multiple {
     composes: more, than, one from "./multiple.css";
-    /*
-    Since .multiple doesn't declare any rules other than composes
-    aggregate styles from other rules it will be stripped from the output
-    */
 }
 
 .local {
     composes: single;
 }
 ```
+
+[REPL Link](https://m-css.com/repl/#NrBEHoFsEMEsDs)
 
 When this file is required the JS object will contain the expected keys, but the arrays will now contain more values.
 
@@ -46,14 +46,18 @@ If you're going to be doing a lot of composition with another file you can store
 
 .head {
     composes: heading from guide;
+    
     font-size: 120%;
 }
 
 .body {
     composes: body from guide;
+    
     padding: 10px;
 }
 ```
+
+[REPL Link](https://m-css.com/repl/#NrBEHoFsEMEsDsB0BjAzq0AaUABAbtADYCuApgAQDmxsAJqQFzkA6oi4AZrIaQMwrpWAbmbxRiABalotcgG9R5JeWQB7SAAdVqUqiZSZCSuQ4AndVRr0R8ZS1vKOq+ABcAtKlgAvRuQCMAEwADACkNgC+ouIARqq0AJ7yispqmtq6TLEJJuaQlnSkNnbJShoytEZMfkEaAB4RoAC6mGCc3HwCGNiS0hXwxgoOSmqEqqZMAMQAwjMRUUhZiYN2I2OTAGybDY2NQA)
 
 You can also get access to variables defined in other files for simple sharing of useful information.
 

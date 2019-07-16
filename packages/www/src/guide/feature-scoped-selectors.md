@@ -3,12 +3,18 @@
 By default all CSS selectors live in the global scope of the page and are chosen based on specificity rules. This has proven to be a model that makes it difficult to succeed and incredibly easy to dig yourself into a hole you can't climb out of. `modular-css` scopes all selectors to the local file by default, ensuring that your CSS is always exactly as specific as it should be.
 
 ```css
-.wooga { color: red; }
+.wooga {
+    color: red;
+}
 
 /* Becomes */
 
-.f5507abd_wooga { color: red; }
+.mcf250d69f_wooga {
+    color: red;
+}
 ```
+
+[REPL Link](https://m-css.com/repl/#NrBEHoFsEMEsDsB0BjAzq0AaUiDuB7fAc2gAIBvU5fAG3wCcAuU+gUwBMBuUgX1AF1+QA)
 
 By default the selector scoping is based off hashing the contents of the file but you can also provide your own custom function.
 
@@ -20,15 +26,20 @@ var css = require("./styles.css");
 // css is:
 /*
 {
-    wooga : "f5507abd3_wooga",
+    wooga : "mcf250d69f_wooga",
+    booga : "mcf250d69f_wooga mcf250d69f_booga",
     ...
 }
 */
 
-// so mithril code (or any templating code!) can do the following
-m("div", { class : css.wooga });
-// which would output
-// <div class="f5507abd_wooga"></div>
+// So then you can render that class trivially
+const html = `<div class="${css.wooga}">Wooga</div>`;
+
+// which then has the properly scoped selector
+// <div class="mcf250d69f_wooga">Wooga</div>
+
+// Also easy-to-use with JSX!
+const jsx = <div class={css.wooga}>Wooga</div>;
 ```
 
 These arrays of selectors can then be applied to elements using the much more nicely-named object keys and you're off to the races.
@@ -37,8 +48,11 @@ You can opt out of selector scoping by wrapping your classes/ids in the `:global
 
 ```css
 /* == styles.css == */
-:global(.global) { color: red; }
+:global(.global) {
+    color: red;
+}
 ```
+
 ```js
 var css = require("./styles.css");
 
@@ -49,6 +63,8 @@ var css = require("./styles.css");
 }
 */
 ```
+
+[REPL Link](https://m-css.com/repl/#NrBEHoFsEMEsDsB0BjAzq0AaUAuA5gDYD2ARtAQBSKGnkCUABAN4A68DHDyRxATjg14BTACYBuNgF9QAXRlA)
 
 Selector scoping is **only** done on simple classes/ids, any selectors containing tags or pseudo-selectors won't be exported.
 
@@ -70,5 +86,7 @@ ol, ul {
     list-style: none;
 }
 ```
+
+[REPL Link](https://m-css.com/repl/#NrBEHoFsEMEsDsB0BjAzq0AaCAqABADID2y0ANngMrJEAOApgCZ47gA68RZmeArhQG8OeEXjKxUAFwC0UgJ5l6ALjyd49ANwcAvhw7h8AcTJEARuSo0GzABQB1AE5F4AcwCEAShbt4SlyfMyGy4efi8heFExCRl5RRU1TR09eAM8YzMLajomPBsAYSIHB3pkSU9vDj8A8mCyDx5qzKCwvAio8SlZSQVlVWck+G1QAF0RoA)
 
 Adding `:global()` to every comma seperated rule would be tedious when using something like [Eric Meyer's CSS Reset](http://meyerweb.com/eric/tools/css/reset/). Therefore it is recommended that you seperate the reset in to its own file, and make use of the [postcss-import](https://github.com/postcss/postcss-import) module with the [after](/api#after-hook) or [done](/api#done-hook) hooks to include the file when modular-css has finished processing. You would then need to include `@import "reset.css";` somewhere in one of your CSS files.

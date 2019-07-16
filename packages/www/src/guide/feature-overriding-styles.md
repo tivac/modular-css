@@ -14,4 +14,15 @@ In this case we've got an `input` component that is normally 100% of the width o
 .fieldset :external(input from "./input.css") {
     width: 50%;
 }
+
+/* == Output == */
+.mcd8e24dd1_input {
+    width: 100%;
+}
+
+.mcf250d69f_fieldset .mcd8e24dd1_input {
+    width: 50%;
+}
 ```
+
+[REPL Link](https://m-css.com/repl/#NrBEHoFsEMEsDsB0BjAzq0AaUiBmsBTAGwBNUCAXAAgC4CAPCggJ3miIAoEAHAV2tzMA9pCoAdHOHxECAZhToJASioBvMfCpaqAd1gkKACxpUArAAYApAG4NAX1ABdTGCmwZ8tBmyIe-NRrauvpGJgCM5la28A6OjkA)

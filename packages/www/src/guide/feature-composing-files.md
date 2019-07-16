@@ -25,6 +25,8 @@ When necessary you can also use the `@composes` at-rule to enable composing an e
 
 ```
 
+[REPL Link](https://m-css.com/repl/#NrBEHoFsEMEsDsB0BjAzq0AaUABZB7SAB31QFNUACAHVEXADNYAbMgZhXVoG5r4-EAF1iDWlAN59K0ygWKkKALkoALMtAAmZAE69+8GZQBG0ZAGsA5tvwBXeBuXayGvQF9QAXUxhGLdpwxsRDVNHQkpGQJmfG1HZzc+ASN8DQBPcINI-GjY42YbMjdPDyA)
+
 When `custom.css` is required the JS object will contain the selectors defined in that file as well as any selectors from `base.css`. It also allowed for the `.title` class in `custom.css` to use `composes: header` even though `.header` wasn't defined in that file at all.
 
 ```js
