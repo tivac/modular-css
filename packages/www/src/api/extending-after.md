@@ -13,7 +13,7 @@ Since all manipulations on the file are complete at this point it is a good plac
 }
 ```
 
-#### `after` usage
+#### Using the `after` hook
 
 Specify an array of PostCSS plugins to be run after files are processed, but before they are combined. Plugin will be passed a `to` and `from` option.
 

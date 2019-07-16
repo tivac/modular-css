@@ -22,7 +22,7 @@ new Processor({
 
 The `plugin` field must begin with "modular-css-export", and the `exports` field should be the object to be mixed into the exports of the CSS file. It will be added last, so it can be used to override the default exports if desired.
 
-#### `processing` usage
+#### Using the `processing` hook
 
 Specify an array of PostCSS plugins to be run against each file during processing. Plugin will be passed a `from` option.
 
