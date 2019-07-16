@@ -142,6 +142,8 @@ module.exports = [
             require("rollup-plugin-node-resolve")({
                 preferBuiltins : false,
             }),
+
+            require("./build/rollup-plugin-md.js")(),
             
             require("rollup-plugin-commonjs")(),
             require("rollup-plugin-json")(),

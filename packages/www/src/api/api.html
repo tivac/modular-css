@@ -43,6 +43,8 @@
 </Page>
 
 <script>
+import { content, tocs } from "./api.md";
+
 export default {
     components : {
         Page    : "../page.html",
@@ -50,8 +52,8 @@ export default {
     },
 
     data : () => ({
-        tocs    : false,
-        content : "",
-    })
+        content,
+        tocs,
+    }),
 };
 </script>
