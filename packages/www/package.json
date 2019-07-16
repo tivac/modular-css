@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rollup --config",
     "markdown": "node build/markdown.js",
-    "production": "rollup --config --environment=NODE_ENV:production",
+    "deploy": "rollup --config --environment=NODE_ENV:production",
     "start": "rollup --config --watch",
     "test": "echo \"no tests ¯\\_(ツ)_/¯\""
   },

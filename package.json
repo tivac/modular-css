@@ -19,7 +19,8 @@
     "watch": "jest --watch",
     "www:build": "lerna run --stream build packages/www",
     "www:start": "lerna run --stream start packages/www",
-    "www:deploy": "cd ./packages/www && npm run production"
+    "prewww:deploy": "npm run parsers",
+    "www:deploy": "lerna run --stream deploy packages/www"
   },
   "devDependencies": {
     "@modular-css/test-utils": "file:packages/test-utils",
