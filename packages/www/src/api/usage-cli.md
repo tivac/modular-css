@@ -1,4 +1,4 @@
-### CLI
+## CLI
 
 CLI interface to [`modular-css`](https://github.com/tivac/modular-css).
 
