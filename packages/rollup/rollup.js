@@ -210,8 +210,6 @@ module.exports = (opts) => {
                 entries : [ ...entries ],
             });
 
-            console.log(chunked);
-
             // If assets are being hashed then the automatic annotation has to be disabled
             // because it won't include the hashed value and will lead to badness
             let mapOpt = map;

@@ -1,0 +1,32 @@
+<link href="./repl.css" />
+
+<Page title="REPL" {styles} {script} />
+
+<script>
+export default {
+    components : {
+        Page    : "../page.html",
+    },
+
+    data : () => ({
+        js : false,
+    }),
+
+    computed : {
+        script : ({ js }) => `
+            function shimport(src) {
+                try {
+                    new Function('import("' + src + '")')();
+                } catch (e) {
+                    var s = document.createElement('script');
+                    s.src = 'https://unpkg.com/shimport';
+                    s.dataset.main = src;
+                    document.head.appendChild(s);
+                }
+            }
+
+            shimport("/${js}");
+        `,
+    }
+};
+</script>

@@ -109,11 +109,8 @@ module.exports = [
             api       : "./src/api/api.html",
             guide     : "./src/guide/guide.html",
             home      : "./src/home/home.html",
-            // repl      : "./src/repl/repl.html",
+            repl      : "./src/repl/index.html",
             changelog : "./src/changelog/changelog.html",
-
-            // REPL builds using generic page container
-            // page : "./src/page.html",
         },
 
         // Don't need to bundle any of this, so purposefully exclude it
