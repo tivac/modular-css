@@ -1,0 +1,15 @@
+<link href="./sidebar.css" />
+
+{#if tocs}
+<div class="{css.sidebar}">
+    {@html tocs}
+</div>
+{/if}
+
+<script>
+export default {
+    data : () => ({
+        tocs : false,
+    }),
+};
+</script>
