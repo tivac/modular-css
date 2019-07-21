@@ -84,6 +84,7 @@ module.exports = [
 
             require("@modular-css/rollup")({
                 processor,
+                meta : "meta1.json",
             }),
 
             // Weird little inline plugin to make the previous bundle available
@@ -105,14 +106,14 @@ module.exports = [
     // CJS Build of home/guide for node generation
     {
         input : {
-            api       : "./src/api/api.html",
-            guide     : "./src/guide/guide.html",
-            home      : "./src/home/home.html",
-            repl      : "./src/repl/repl.html",
-            changelog : "./src/changelog/changelog.html",
+            api  : "./src/api/api.html",
+            // guide     : "./src/guide/guide.html",
+            home : "./src/home/home.html",
+            // repl      : "./src/repl/repl.html",
+            // changelog : "./src/changelog/changelog.html",
 
             // REPL builds using generic page container
-            page : "./src/page.html",
+            // page : "./src/page.html",
         },
 
         // Don't need to bundle any of this, so purposefully exclude it
@@ -132,7 +133,7 @@ module.exports = [
 
             sourcemap : false,
 
-            entryFileNames : "[name].[format].js",
+            entryFileNames : "[name].js",
             chunkFileNames : "[name].[format].js",
         },
 
@@ -155,6 +156,7 @@ module.exports = [
 
             require("@modular-css/rollup")({
                 processor,
+                meta : "meta2.json",
             }),
 
             // Generate HTML for all the static pages

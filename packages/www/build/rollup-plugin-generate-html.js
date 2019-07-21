@@ -3,48 +3,44 @@
 const fs = require("fs");
 const path = require("path");
 
-const Graph = require("dependency-graph").DepGraph;
 const shell = require("shelljs");
 
-const repl = require("./html/repl.js");
-const api = require("./html/api.js");
-const guide = require("./html/guide.js");
-const home = require("./html/home.js");
-const changelog = require("./html/changelog.js");
+const { dest } = require("./environment.js");
 
-module.exports = ({ bundle : previous }) => ({
+module.exports = () => ({
     name : "rollup-plugin-generate-html",
 
     async writeBundle(bundle) {
-        const graph = new Graph();
-
-        Object.entries(bundle).forEach(([ entry, { isAsset, imports }]) => {
-            if(isAsset) {
+        Object.entries(bundle).forEach(([ id, { isEntry, assets = [], imports = [] }]) => {
+            if(!isEntry) {
                 return;
             }
 
-            graph.addNode(entry, 0);
+            console.log(id, { assets, imports });
+
+            const page = require(path.join(dest, id));
+            const { name } = path.parse(id);
+            let dir = path.join(dest, name);
+
+            if(name === "home") {
+                dir = dest;
+            }
+
+            const styles = [];
 
             imports.forEach((dep) => {
-                graph.addNode(dep);
-                graph.addDependency(entry, dep);
+                const { assets : css = [] } = bundle[dep];
+                
+                css.forEach((href) => styles.push(`<link href="/${href}" rel="stylesheet" />`));
             });
-        });
 
-        const args = { bundle, graph, previous };
+            assets.forEach((href) => styles.push(`<link href="/${href}" rel="stylesheet" />`));
 
-        [
-            repl(args),
-            guide(args),
-            api(args),
-            home(args),
-            changelog(args),
-        ].forEach(({ file, html }) => {
-            const dir = path.dirname(file);
+            const { html } = page.render({ styles });
 
             shell.mkdir("-p", dir);
 
-            fs.writeFileSync(file, html, "utf8");
+            fs.writeFileSync(path.join(dir, "index.html"), html, "utf8");
         });
     },
 });

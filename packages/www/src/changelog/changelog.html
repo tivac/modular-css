@@ -1,26 +1,4 @@
-<style>
-@value contentWidth from "../site.css";
-
-.changelog {
-    composes: content, bd from "../site.css";
-
-    max-width: contentWidth;
-    margin-left: 5rem;
-}
-
-.changelog a,
-.changelog a:hover {
-    text-decoration: underline;
-}
-
-.changelog ul {
-    margin: 2rem 0;
-}
-
-.changelog li + li {
-    margin-top: 1rem;
-}
-</style>
+<link href="./changelog.css" />
 
 <Page title="Changelog" {styles}>
     <div class="{css.changelog}">
@@ -29,13 +7,15 @@
 </Page>
 
 <script>
+import { content } from "../../../../CHANGELOG.md";
+
 export default {
     components : {
-        Page   : "../page.html",
+        Page    : "../page.html",
     },
 
     data : () => ({
-        content : "",
-    })
+        content,
+    }),
 };
 </script>

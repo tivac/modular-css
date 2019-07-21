@@ -90,8 +90,9 @@ module.exports = (config = false) => {
             }
 
             try {
+                // Add with a virtual filename
                 result = await processor.string(
-                    html,
+                    html.replace(/\.(?:html|svelte)$/, ".css"),
                     style[1]
                 );
             } catch(e) {
@@ -219,7 +220,7 @@ module.exports = (config = false) => {
         return {
             code : missing({
                 source,
-                file : css
+                file : css,
             }),
             dependencies,
         };
