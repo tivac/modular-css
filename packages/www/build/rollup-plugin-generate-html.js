@@ -7,6 +7,23 @@ const shell = require("shelljs");
 
 const { dest } = require("./environment.js");
 
+const script = (src) => `
+    <script>
+        function shimport(src) {
+            try {
+                new Function('import("' + src + '")')();
+            } catch (e) {
+                var s = document.createElement('script');
+                s.src = 'https://unpkg.com/shimport';
+                s.dataset.main = src;
+                document.head.appendChild(s);
+            }
+        }
+
+        shimport("/${src}");
+    </script>
+`;
+
 module.exports = ({ bundle : previous }) => ({
     name : "rollup-plugin-generate-html",
 
@@ -41,14 +58,14 @@ module.exports = ({ bundle : previous }) => ({
             // REPL has custom behavior because it was built in a previous pass, go find the
             // filename to use and set it on the component
             if(id === "repl.js") {
-                // TODO: find repl output file from previous build
-                // TODO: set that file as data.js to trigger loading
-
-                // TODO: this is failing but... shouldn't be?
-                // const [ js ] = Object.values(previous())
-                //     .find(([ , { isAsset, name : mod }]) => !isAsset && mod === "repl");
+                // Using Object.entries because we need the key, but are comparing against the value,
+                // it's weird-looking w/ all the destructuring
+                const [ js, { assets : css = [] }] = Object.entries(previous()).find(([ , { isAsset, name : file }]) =>
+                    !isAsset && file === "repl"
+                );
                 
-                // data.js = js;
+                data.script = script(js);
+                data.styles.push(...css);
             }
 
             const { html } = page.render(data);

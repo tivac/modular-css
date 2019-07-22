@@ -109,7 +109,7 @@ module.exports = [
             api       : "./src/api/api.html",
             guide     : "./src/guide/guide.html",
             home      : "./src/home/home.html",
-            repl      : "./src/repl/index.html",
+            repl      : "./src/repl/repl.html",
             changelog : "./src/changelog/changelog.html",
         },
 

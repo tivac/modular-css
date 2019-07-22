@@ -1,0 +1,26 @@
+@import "codemirror/lib/codemirror.css";
+@import "codemirror/theme/base16-light.css";
+
+.editor {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.editor :global(.CodeMirror) {
+    flex: 1;
+}
+
+.errorLocation {
+    position: relative;
+    border-bottom: 2px solid rgb(200, 0, 0);
+}
+
+.errorLine {
+    background-color: rgba(200, 0, 0, 0.05);
+}
+
+.loading {}
+.loaderror {}
