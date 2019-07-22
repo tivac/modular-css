@@ -41,15 +41,15 @@ module.exports = ({ bundle : previous }) => ({
                 dir = dest;
             }
 
-            const styles = [];
+            const styles = new Set();
 
             imports.forEach((dep) => {
                 const { assets : css = [] } = bundle[dep];
                 
-                css.forEach((href) => styles.push(`<link href="/${href}" rel="stylesheet" />`));
+                css.forEach((href) => styles.add(`<link href="/${href}" rel="stylesheet" />`));
             });
 
-            assets.forEach((href) => styles.push(`<link href="/${href}" rel="stylesheet" />`));
+            assets.forEach((href) => styles.add(`<link href="/${href}" rel="stylesheet" />`));
 
             const data = {
                 styles,
@@ -63,10 +63,13 @@ module.exports = ({ bundle : previous }) => ({
                 const [ js, { assets : css = [] }] = Object.entries(previous()).find(([ , { isAsset, name : file }]) =>
                     !isAsset && file === "repl"
                 );
-                
+
                 data.script = script(js);
-                data.styles.push(...css);
+
+                css.forEach((href) => styles.add(`<link href="/${href}" rel="stylesheet" />`));
             }
+
+            data.styles = [ ...data.styles.values() ];
 
             const { html } = page.render(data);
 
