@@ -1,5 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/svelte.js rollup chunking should correctly chunk svelte files using inline <style> 1`] = `
+Object {
+  "a.css": "
+/* packages/svelte/test/specimens/inline-chunking/a-dep.css */
+.mc6ca450b0_adep {
+    margin: 5px;
+}
+/* packages/svelte/test/specimens/inline-chunking/a.html */
+.mc80aa5044_a {
+    color: aqua;
+}
+",
+  "b.css": "
+/* packages/svelte/test/specimens/inline-chunking/b-dep.css */
+.mcf56d52f6_bdep {
+    padding: 5px;
+}
+/* packages/svelte/test/specimens/inline-chunking/b.html */
+.mcbb945b2f_b {
+    color: blue;
+}
+",
+  "shared.css": "
+/* packages/svelte/test/specimens/inline-chunking/shared.css */
+.mcfef68931_shared {
+    background: black;
+}
+",
+}
+`;
+
 exports[`/svelte.js rollup watching should generate updated output 1`] = `
 Snapshot Diff:
 - First value
