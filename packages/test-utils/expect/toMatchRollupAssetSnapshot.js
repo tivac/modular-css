@@ -3,15 +3,15 @@
 const { toMatchSnapshot } = require("jest-snapshot");
 
 expect.extend({
-    toMatchRollupCodeSnapshot({ output }) {
+    toMatchRollupAssetSnapshot({ output }) {
         const out = Object.create(null);
         
-        output.forEach(({ isAsset, name, code }) => {
-            if(isAsset) {
+        output.forEach(({ isAsset, fileName, source }) => {
+            if(!isAsset) {
                 return;
             }
 
-            out[name] = code;
+            out[fileName] = `\n${source}`;
         });
 
         return toMatchSnapshot.call(

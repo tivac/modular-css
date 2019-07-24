@@ -196,7 +196,7 @@ describe("/svelte.js", () => {
                                         import Component from "./error-${type}.html";
 
                                         console.log(Component);
-                                    `
+                                    `,
                                 },
 
                                 allowFallthrough : true,
@@ -207,12 +207,42 @@ describe("/svelte.js", () => {
                             require("@modular-css/rollup")({
                                 processor,
                             }),
-                        ]
+                        ],
                     });
                 } catch(e) {
                     expect(e.toString()).toMatch(/\.wooga/);
                 }
             }
         );
+    });
+
+    describe("rollup chunking", () => {
+        it("should correctly chunk svelte files using inline <style>", async () => {
+            const { preprocess, processor } = plugin();
+
+            const bundle = await rollup({
+                input : [
+                    require.resolve("./specimens/inline-chunking/a.html"),
+                    require.resolve("./specimens/inline-chunking/b.html"),
+                ],
+
+                plugins : [
+                    require("rollup-plugin-svelte")({
+                        preprocess,
+                    }),
+                    require("@modular-css/rollup")({
+                        processor,
+                    }),
+                ],
+            });
+
+            const out = await bundle.generate({
+                format         : "esm",
+                assetFileNames : "[name][extname]",
+                chunkFileNames : "[name]",
+            });
+
+            expect(out).toMatchRollupAssetSnapshot();
+        });
     });
 });
