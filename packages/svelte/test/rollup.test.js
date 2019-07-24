@@ -217,7 +217,7 @@ describe("/svelte.js", () => {
     });
 
     describe("rollup chunking", () => {
-        it.only("should correctly chunk svelte files using inline <style>", async () => {
+        it("should correctly chunk svelte files using inline <style>", async () => {
             const { preprocess, processor } = plugin();
 
             const bundle = await rollup({
