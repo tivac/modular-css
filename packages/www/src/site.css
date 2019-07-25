@@ -127,37 +127,59 @@ a:hover {
 .bd h5,
 .bd h6 {
     position: relative;
-}
 
-.bd h1 :global(.anchor),
-.bd h2 :global(.anchor),
-.bd h3 :global(.anchor),
-.bd h4 :global(.anchor),
-.bd h5 :global(.anchor),
-.bd h6 :global(.anchor) {
-    position: absolute;
-    left: -1.5rem;
-    top: 50%;
+    & :global(.anchor) {
+        position: absolute;
+        left: -1.5rem;
+        top: 50%;
+        
+        display: block;
+
+        width: 1.4rem;
+        font-size: 1.4rem;
+
+        opacity: 0;
+        transition: opacity 150ms;
+
+        text-decoration: none;
+        transform: translateY(-50%);
+    }
     
-    display: block;
-
-    width: 1.4rem;
-    font-size: 1.4rem;
-
-    opacity: 0;
-    transition: opacity 150ms;
-
-    text-decoration: none;
-    transform: translateY(-50%);
+    &:hover :global(.anchor) {
+        opacity: 1;
+    
+        text-decoration: none;
+    }
 }
 
-.bd h1:hover :global(.anchor),
-.bd h2:hover :global(.anchor),
-.bd h3:hover :global(.anchor),
-.bd h4:hover :global(.anchor),
-.bd h5:hover :global(.anchor),
-.bd h6:hover :global(.anchor) {
-    opacity: 1;
+/* Examples that link off to the REPL */
+:global(.repl-code) {
+    position: relative;
 
-    text-decoration: none;
+    & :global(.repl-link) {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        padding: 0.35rem 0.5rem;
+
+        background: #666;
+        color: #FFF;
+
+        font-size: 0.85rem;
+
+        opacity: 0;
+
+        transition: opacity 250ms ease-in;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    &:hover :global(.repl-link) {
+        opacity: 1;
+
+        transition: opacity 100ms ease-out;
+    }
 }
