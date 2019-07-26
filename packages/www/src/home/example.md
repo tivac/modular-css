@@ -1,5 +1,11 @@
-::: repl example.css
+::: repl
 ```css
+/* === input.css === */
+.input {
+    width: 100%;
+}
+
+/* === example.css === */
 /* Values */
 @value warning: rgb(250, 128, 114);
 

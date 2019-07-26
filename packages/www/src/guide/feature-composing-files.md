@@ -2,6 +2,7 @@
 
 When necessary you can also use the `@composes` at-rule to enable composing an entire CSS file, instead of going rule-by-rule. This is mostly useful when you've got a base style you want to apply to a component but you need to modify just a single style from the base. Instead of manually creating shadowed versions of all the classes in the base CSS, you can use `@composes` to save a bunch of repetition and potential for fat-fingering.
 
+::: repl
 ```css
 /* == base.css == */
 .header {
@@ -22,10 +23,8 @@ When necessary you can also use the `@composes` at-rule to enable composing an e
 
     background: red;
 }
-
 ```
-
-[REPL Link](https://m-css.com/repl/#NrBEHoFsEMEsDsB0BjAzq0AaUABZB7SAB31QFNUACAHVEXADNYAbMgZhXVoG5r4-EAF1iDWlAN59K0ygWKkKALkoALMtAAmZAE69+8GZQBG0ZAGsA5tvwBXeBuXayGvQF9QAXUxhGLdpwxsRDVNHQkpGQJmfG1HZzc+ASN8DQBPcINI-GjY42YbMjdPDyA)
+:::
 
 When `custom.css` is required the JS object will contain the selectors defined in that file as well as any selectors from `base.css`. It also allowed for the `.title` class in `custom.css` to use `composes: header` even though `.header` wasn't defined in that file at all.
 

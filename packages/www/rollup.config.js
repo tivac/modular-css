@@ -75,13 +75,14 @@ module.exports = [
             // Wipe the destination dir on each rebuild
             require("./build/rollup-plugin-clean")(),
 
-
+            // Watch .md files for chanegs as well
             require("./build/rollup-plugin-add-watch-files.js")(),
 
             require("rollup-plugin-node-resolve")({
                 preferBuiltins : false,
             }),
 
+            // Transform .md files
             require("./build/rollup-plugin-md.js")(),
             
             require("rollup-plugin-commonjs")(),

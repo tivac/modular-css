@@ -1,22 +1,11 @@
 "use strict";
 
-const { utils } = require("markdown-it")();
-
 const lz = require("lznext");
 const dedent = require("dedent");
 
 const { isProduction } = require("./environment.js");
 
-const hash = (name, code) => {
-    const data = [
-        [
-            `/${name}`,
-            code,
-        ],
-    ];
-
-    return lz.compressToEncodedURIComponent(JSON.stringify(data));
-};
+const hash = (data) => lz.compressToEncodedURIComponent(JSON.stringify(data));
 
 const base = isProduction ?
     "https://m-css.com" :
@@ -29,8 +18,6 @@ module.exports = (tokens, idx) => {
     if(token.nesting !== 1) {
         return `</div>\n`;
     }
-
-    const [ , name ] = token.info.trim().split("repl ");
 
     // Find fenced code token
     let code;
@@ -45,13 +32,50 @@ module.exports = (tokens, idx) => {
         break;
     }
 
-    code = code.split("/* OUTPUTS */")[0];
+    // split into triplets, "", filename, code
+    const parts = code.split(/\/\* =+ ([\w-]+\.css) =+ \*\/\r?\n/g);
 
-    const url = `${base}/repl/#${hash(name, code)}`;
+    let files;
+
+    if(parts.length > 1) {
+        files = parts.reduce((acc, curr) => {
+            // Handle ""
+            if(!curr.length) {
+                return acc;
+            }
+
+            // Handle filename
+            if(curr.endsWith(".css")) {
+                let file = curr;
+
+                if(file[0] !== "/") {
+                    file = `/${file}`;
+                }
+
+                acc.push([ file ]);
+
+                return acc;
+            }
+
+            // Handle code
+            acc[acc.length - 1].push(curr);
+
+            return acc;
+        }, []);
+    } else {
+        files = [
+            [
+                "./style.css",
+                code,
+            ],
+        ];
+    }
+
+    const href = `${base}/repl/#${hash(files)}`;
 
     // Opening tag
     return dedent`
         <div class="repl-code">
-            <a class="repl-link" href="${url}">Edit in REPL</a>
+            <a class="repl-link" href="${href}">Edit in REPL</a>
     `;
 };

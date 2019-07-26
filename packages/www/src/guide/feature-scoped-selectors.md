@@ -2,19 +2,21 @@
 
 By default all CSS selectors live in the global scope of the page and are chosen based on specificity rules. This has proven to be a model that makes it difficult to succeed and incredibly easy to dig yourself into a hole you can't climb out of. `modular-css` scopes all selectors to the local file by default, ensuring that your CSS is always exactly as specific as it should be.
 
+::: repl
 ```css
 .wooga {
     color: red;
 }
+```
+:::
 
-/* Becomes */
+will be output as
 
+```css
 .mcf250d69f_wooga {
     color: red;
 }
 ```
-
-[REPL Link](https://m-css.com/repl/#NrBEHoFsEMEsDsB0BjAzq0AaUiDuB7fAc2gAIBvU5fAG3wCcAuU+gUwBMBuUgX1AF1+QA)
 
 By default the selector scoping is based off hashing the contents of the file but you can also provide your own custom function.
 
@@ -46,12 +48,15 @@ These arrays of selectors can then be applied to elements using the much more ni
 
 You can opt out of selector scoping by wrapping your classes/ids in the `:global()` pseudo-class, this will prevent them from being renamed but they will still be available in the module's exported object.
 
+::: repl
 ```css
-/* == styles.css == */
 :global(.global) {
     color: red;
 }
 ```
+:::
+
+when transformed to JS looks like this
 
 ```js
 var css = require("./styles.css");
@@ -64,12 +69,11 @@ var css = require("./styles.css");
 */
 ```
 
-[REPL Link](https://m-css.com/repl/#NrBEHoFsEMEsDsB0BjAzq0AaUAuA5gDYD2ARtAQBSKGnkCUABAN4A68DHDyRxATjg14BTACYBuNgF9QAXRlA)
-
 Selector scoping is **only** done on simple classes/ids, any selectors containing tags or pseudo-selectors won't be exported.
 
 `:global()` is treated the same as a CSS pseudo-class and therefore cannot wrap multiple comma seperated rules. For example if you're using a CSS reset the following is required:
 
+::: repl
 ```css
 /* Local Scoped */
 ol, ul {
@@ -86,7 +90,6 @@ ol, ul {
     list-style: none;
 }
 ```
-
-[REPL Link](https://m-css.com/repl/#NrBEHoFsEMEsDsB0BjAzq0AaCAqABADID2y0ANngMrJEAOApgCZ47gA68RZmeArhQG8OeEXjKxUAFwC0UgJ5l6ALjyd49ANwcAvhw7h8AcTJEARuSo0GzABQB1AE5F4AcwCEAShbt4SlyfMyGy4efi8heFExCRl5RRU1TR09eAM8YzMLajomPBsAYSIHB3pkSU9vDj8A8mCyDx5qzKCwvAio8SlZSQVlVWck+G1QAF0RoA)
+:::
 
 Adding `:global()` to every comma seperated rule would be tedious when using something like [Eric Meyer's CSS Reset](http://meyerweb.com/eric/tools/css/reset/). Therefore it is recommended that you seperate the reset in to its own file, and make use of the [postcss-import](https://github.com/postcss/postcss-import) module with the [after](/api#after-hook) or [done](/api#done-hook) hooks to include the file when modular-css has finished processing. You would then need to include `@import "reset.css";` somewhere in one of your CSS files.
