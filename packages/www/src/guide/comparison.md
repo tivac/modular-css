@@ -43,17 +43,19 @@ Discussion around potential solutions was happening in [css-modules/css-modules#
 
 `modular-css` has implemented the `:external()` proposal from that issue. More context is available in the [Overriding Styles section](#overriding-styles).
 
+::: repl
 ```css
-/* input.css */
+/* === input.css === */
 .input {
     width: 100%;
 }
 
-/* fieldset.css */
+/* === fieldset.css === */
 .fieldset :external(input from "./input.css") {
     width: 50%;
 }
 ```
+:::
 
 ### Namespaces
 
@@ -71,15 +73,22 @@ CSS Modules allows for importing multiple values from an external file.
 
 `modular-css` implements a suggestion made in [css-modules/css-modules#186](https://github.com/css-modules/css-modules/issues/186#issuecomment-257421710) to allow importing all of a file's exported values and aliasing it for easy use. More documentation can be found in the [Namespaced values section](#namespaced-values).
 
+::: repl
 ```css
-/* modular-css */
-@value * as constants from "./constants.css";
+/* === constants.css === */
+@value red: #F00;
+@value small: 0.5rem;
+/* ... */
+
+/* === namespaced.css === */
+@value * as constants from "/constants.css";
 
 .a {
   color: constants.red;
   width: constants.small;
 }
 ```
+:::
 
 ### Support
 
