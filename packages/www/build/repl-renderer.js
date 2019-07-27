@@ -62,6 +62,10 @@ module.exports = (tokens, idx) => {
 
             return acc;
         }, []);
+
+        // Because the file demonstrating the feature always comes last
+        // it's worth reversing the list here before hashing it
+        files.reverse();
     } else {
         files = [
             [
