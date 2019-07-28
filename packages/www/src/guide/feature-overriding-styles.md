@@ -4,6 +4,7 @@ Sometimes a component will need some customization for use in a specific locatio
 
 In this case we've got an `input` component that is normally 100% of the width of its container, but when it's within the `fieldset` component it should only be half as wide.
 
+::: repl
 ```css
 /* == input.css == */
 .input {
@@ -12,6 +13,19 @@ In this case we've got an `input` component that is normally 100% of the width o
 
 /* == fieldset.css == */
 .fieldset :external(input from "./input.css") {
+    width: 50%;
+}
+```
+:::
+
+will create output like this
+
+```css
+.mcd8e24dd1_input {
+    width: 100%;
+}
+
+.mcf250d69f_fieldset .mcd8e24dd1_input {
     width: 50%;
 }
 ```

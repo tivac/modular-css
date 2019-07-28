@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rollup --config",
     "markdown": "node build/markdown.js",
-    "production": "rollup --config --environment=NODE_ENV:production",
+    "deploy": "rollup --config --environment=NODE_ENV:production",
     "start": "rollup --config --watch",
     "test": "echo \"no tests ¯\\_(ツ)_/¯\""
   },
@@ -39,6 +39,7 @@
     "lazyload-css": "^1.0.5",
     "lznext": "^0.1.0",
     "markdown-it": "^8.4.2",
+    "markdown-it-container": "^2.0.0",
     "markdown-it-include": "^1.0.0",
     "markdown-it-prism": "^2.0.1",
     "markdown-it-toc-and-anchor": "^4.2.0",
@@ -50,6 +51,7 @@
     "postcss-color-function": "^4.0.1",
     "postcss-import": "^12.0.1",
     "postcss-nested": "^4.1.1",
+    "require-from-string": "^2.0.2",
     "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-json": "^4.0.0",
@@ -59,6 +61,7 @@
     "rollup-plugin-node-resolve": "^5.0.0",
     "rollup-plugin-svelte": "^5.0.1",
     "rollup-plugin-terser": "^5.0.0",
+    "rollup-pluginutils": "^2.8.1",
     "svelte": "^2.16.0"
   }
 }

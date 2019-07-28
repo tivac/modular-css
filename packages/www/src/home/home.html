@@ -1,93 +1,4 @@
-<style>
-@value * as site from "../site.css";
-
-.home {
-    composes: content from "../site.css";
-
-    flex: 0;
-
-    display: grid;
-    grid-template:
-        " title    title  " auto
-        " intro   example " auto /
-        50% 50%;
-
-    @media site.narrow {
-        display: flex;
-        flex-flow: column nowrap;
-    }
-}
-
-.title {
-    grid-area: title;
-}
-
-.head {
-    font-size: 3rem;
-    font-weight: bold;
-
-    margin-bottom: 1rem;
-}
-
-.headline {
-    margin: 0;
-    font-weight: 400;
-}
-
-.intro {
-    grid-area: intro;
-
-    margin: 2rem 1rem 0 0;
-}
-
-.introtext {
-    line-height: 2rem;
-}
-
-.introtext a {
-    color: site.hoverColor;
-    font-weight: bold;
-}
-
-.introtext a:hover {
-    color: site.textColor;
-}
-
-.example {
-    grid-area: example;
-}
-
-.learn {
-    composes: center from "../site.css";
-
-    margin-top: 1rem;
-}
-
-.cta {
-    composes: center from "../site.css";
-
-    margin-top: 2rem;
-
-    width: 12rem;
-    height: 3rem;
-    background: site.hoverColor;
-    
-    color: site.headerColor;
-    font-weight: bold;
-
-    border-radius: 0.25rem;
-
-    transition: background-color site.hoverOutTime ease-in;
-}
-
-.cta:hover {
-    background: color(site.hoverColor lightness(+20%));
-    color: site.headerColor;
-
-    transition: background-color site.hoverInTime ease-out;
-}
-
-</style>
+<link href="./home.css" />
 
 <Page {styles}>
 <div class="{css.home}">
@@ -115,14 +26,17 @@
 </Page>
 
 <script>
+import { content as intro } from "./intro.md";
+import { content as example } from "./example.md";
+
 export default {
     components : {
         Page   : "../page.html"
     },
 
     data : () => ({
-        intro : "",
-        example : "",
+        intro,
+        example,
     })
 };
 </script>

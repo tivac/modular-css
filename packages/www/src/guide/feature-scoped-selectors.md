@@ -2,12 +2,20 @@
 
 By default all CSS selectors live in the global scope of the page and are chosen based on specificity rules. This has proven to be a model that makes it difficult to succeed and incredibly easy to dig yourself into a hole you can't climb out of. `modular-css` scopes all selectors to the local file by default, ensuring that your CSS is always exactly as specific as it should be.
 
+::: repl
 ```css
-.wooga { color: red; }
+.wooga {
+    color: red;
+}
+```
+:::
 
-/* Becomes */
+will be output as
 
-.f5507abd_wooga { color: red; }
+```css
+.mcf250d69f_wooga {
+    color: red;
+}
 ```
 
 By default the selector scoping is based off hashing the contents of the file but you can also provide your own custom function.
@@ -20,25 +28,36 @@ var css = require("./styles.css");
 // css is:
 /*
 {
-    wooga : "f5507abd3_wooga",
+    wooga : "mcf250d69f_wooga",
+    booga : "mcf250d69f_wooga mcf250d69f_booga",
     ...
 }
 */
 
-// so mithril code (or any templating code!) can do the following
-m("div", { class : css.wooga });
-// which would output
-// <div class="f5507abd_wooga"></div>
+// So then you can render that class trivially
+const html = `<div class="${css.wooga}">Wooga</div>`;
+
+// which then has the properly scoped selector
+// <div class="mcf250d69f_wooga">Wooga</div>
+
+// Also easy-to-use with JSX!
+const jsx = <div class={css.wooga}>Wooga</div>;
 ```
 
 These arrays of selectors can then be applied to elements using the much more nicely-named object keys and you're off to the races.
 
 You can opt out of selector scoping by wrapping your classes/ids in the `:global()` pseudo-class, this will prevent them from being renamed but they will still be available in the module's exported object.
 
+::: repl
 ```css
-/* == styles.css == */
-:global(.global) { color: red; }
+:global(.global) {
+    color: red;
+}
 ```
+:::
+
+when transformed to JS looks like this
+
 ```js
 var css = require("./styles.css");
 
@@ -54,6 +73,7 @@ Selector scoping is **only** done on simple classes/ids, any selectors containin
 
 `:global()` is treated the same as a CSS pseudo-class and therefore cannot wrap multiple comma seperated rules. For example if you're using a CSS reset the following is required:
 
+::: repl
 ```css
 /* Local Scoped */
 ol, ul {
@@ -70,5 +90,6 @@ ol, ul {
     list-style: none;
 }
 ```
+:::
 
-Adding `:global()` to every comma seperated rule would be tedious when using something like [Eric Meyer's CSS Reset](http://meyerweb.com/eric/tools/css/reset/). Therefore it is recommended that you seperate the reset in to its own file, and make use of the [postcss-import](https://github.com/postcss/postcss-import) module with the [after](https://github.com/tivac/modular-css/blob/master/docs/api.md#after) or [done](https://github.com/tivac/modular-css/blob/master/docs/api.md#done) hooks to include the file when modular-css has finished processing. You would then need to include `@import "reset.css";` somewhere in one of your CSS files.
+Adding `:global()` to every comma seperated rule would be tedious when using something like [Eric Meyer's CSS Reset](http://meyerweb.com/eric/tools/css/reset/). Therefore it is recommended that you seperate the reset in to its own file, and make use of the [postcss-import](https://github.com/postcss/postcss-import) module with the [after](/api#after-hook) or [done](/api#done-hook) hooks to include the file when modular-css has finished processing. You would then need to include `@import "reset.css";` somewhere in one of your CSS files.

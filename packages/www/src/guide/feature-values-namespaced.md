@@ -2,12 +2,13 @@
 
 `@value`s can be imported as a namespace which provides a convenient shorthand way to access a bunch of shared values from a file.
 
+::: repl
 ```css
-/* == colors.css == */
+/* === colors.css === */
 @value main: red;
 @value bg: white;
 
-/* == site.css == */
+/* === site.css === */
 @value * as colors from "./colors.css";
 
 body {
@@ -15,3 +16,4 @@ body {
     background: colors.bg;
 }
 ```
+:::

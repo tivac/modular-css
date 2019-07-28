@@ -1,5 +1,4 @@
-<style>
-@value narrow, borderColor, headerHeight, sidebarWidth from "../site.css";
+@value narrow, borderColor, headerHeight, sidebarWidth from "./site.css";
 
 .sidebar {
     position: fixed;
@@ -44,18 +43,3 @@
 .sidebar :global(.toc) li ul li + li {
     margin-top: 0.3rem;
 }
-</style>
-
-{#if tocs}
-<div class="{css.sidebar}">
-    {@html tocs}
-</div>
-{/if}
-
-<script>
-export default {
-    data : () => ({
-        tocs : false,
-    }),
-};
-</script>

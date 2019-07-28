@@ -1,8 +1,15 @@
+::: repl
 ```css
-/* Values */
-@value alert: rgb(250, 128, 114);
+/* === input.css === */
+.input {
+    width: 100%;
+}
 
-.alert { background: alert; }
+/* === example.css === */
+/* Values */
+@value warning: rgb(250, 128, 114);
+
+.alert { background: warning; }
 
 /* Scoping */
 :global(.alertBanner) {
@@ -17,3 +24,4 @@
     width: 50%;
 }
 ```
+:::

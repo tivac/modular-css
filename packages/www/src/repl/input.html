@@ -1,15 +1,11 @@
-<style type="text/css">
-.input {
-    composes: column from "./repl.css";
-
-    grid-area: input;
-}
-</style>
+<link href="./input.css" />
 
 <Tabs />
 
 <div class="{css.input}">
     <Editor />
+
+    <Error />
 </div>
 
 <script>
@@ -18,6 +14,7 @@ import store from "./store.js";
 export default {
     components : {
         Editor : "./editor.html",
+        Error  : "./error.html",
         Tabs   : "./tabs.html",
     },
 };

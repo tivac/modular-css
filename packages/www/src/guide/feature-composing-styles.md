@@ -2,25 +2,25 @@
 
 Selector limitations mean that it's difficult to use complicated selectors, so to enable building anything of complexity you can compose selectors. These compositions can be within a file or even pull in classes defined in other files.
 
+::: repl
 ```css
-/* == styles.css == */
-.single {
-    composes: other from "./other.css";
-    color: red;
-}
-
-.multiple {
-    composes: more, than, one from "./multiple.css";
-    /*
-    Since .multiple doesn't declare any rules other than composes
-    aggregate styles from other rules it will be stripped from the output
-    */
+.composable {
+    background: black;
 }
 
 .local {
-    composes: single;
+    composes: composable;
+    
+    color: red;
+}
+
+/* Will be stripped from the CSS output because it doesn't */
+/* contain any actual rules */
+.removed {
+    composes: local;
 }
 ```
+:::
 
 When this file is required the JS object will contain the expected keys, but the arrays will now contain more values.
 
@@ -41,22 +41,30 @@ var css = require("./styles.css");
 
 If you're going to be doing a lot of composition with another file you can store the filename into a value for ease of referencing.
 
+::: repl
 ```css
-@value guide: "../style-guide.css";
+/* === style-guide.css === */
+.heading {
+    font-size: 140%;
+}
+
+.body {
+    margin: 10px;
+    height: 100%;
+}
+
+/* === home-page.css === */
+@value guide: "/style-guide.css";
 
 .head {
     composes: heading from guide;
+    
     font-size: 120%;
 }
 
 .body {
     composes: body from guide;
+    
     padding: 10px;
 }
-```
-
-You can also get access to variables defined in other files for simple sharing of useful information.
-
-```css
-@value first, second from "./somewhere-else.css";
 ```

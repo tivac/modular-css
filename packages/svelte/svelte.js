@@ -219,7 +219,7 @@ module.exports = (config = false) => {
         return {
             code : missing({
                 source,
-                file : css
+                file : css,
             }),
             dependencies,
         };

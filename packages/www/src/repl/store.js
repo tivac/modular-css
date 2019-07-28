@@ -140,7 +140,7 @@ class CssStore extends Store {
     add() {
         const { files } = this.get();
 
-        let idx = files.size + 1;
+        let idx = files.size;
         let name;
 
         do {
@@ -186,7 +186,7 @@ class CssStore extends Store {
         // Update location.hash with fs state
         const hash = [ ...files.values() ].map((value) => ([
             value,
-            fs.readFileSync(value, "utf8")
+            fs.readFileSync(value, "utf8"),
         ]));
 
         location.hash = lz.compressToEncodedURIComponent(JSON.stringify(hash));

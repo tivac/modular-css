@@ -1,12 +1,4 @@
-<style>
-.output {
-    composes: column from "./repl.css";
-
-    grid-area: output;
-
-    position: relative;
-}
-</style>
+<link href="./output.css" />
 
 <div class="{css.output}">
     <CodeMirror config={cmconfig} ref:codemirror/>

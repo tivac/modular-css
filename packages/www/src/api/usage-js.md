@@ -37,6 +37,14 @@ Promise.all([
 });
 ```
 
+##### `processor.file(<path>)`
+
+Pass a file path to the processor instance for processing. Returns a promise that resolves to details about the file that was added.
+
+##### `processor.string(<name>, <css>)`
+
+Pass a name and `css` string to the processor instance for processing. Returns a promise that resolves to details about the file that was added.
+
 #### Processor Options
 
 ##### `rewrite`

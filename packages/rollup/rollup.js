@@ -199,6 +199,9 @@ module.exports = (opts) => {
 
                 entries.add(entry);
 
+                // TODO: this needs to check if the graph already has a value for entry and
+                // append the entry to the end of it if necessary. Support for inline <style> in
+                // @modular-css/svelte is broken atm because this just splats over the top of it
                 graph.addNode(entry, [ entry ]);
 
                 css.forEach((file) => graph.addDependency(entry, processor.normalize(file)));
