@@ -3,13 +3,7 @@
 const lz = require("lznext");
 const dedent = require("dedent");
 
-const { isProduction } = require("./environment.js");
-
 const hash = (data) => lz.compressToEncodedURIComponent(JSON.stringify(data));
-
-const base = isProduction ?
-    "https://m-css.com" :
-    "http://localhost:3000";
 
 module.exports = (tokens, idx) => {
     const token = tokens[idx];
@@ -75,7 +69,7 @@ module.exports = (tokens, idx) => {
         ];
     }
 
-    const href = `${base}/repl/#${hash(files)}`;
+    const href = `/repl/#${hash(files)}`;
 
     // Opening tag
     return dedent`
