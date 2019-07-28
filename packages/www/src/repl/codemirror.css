@@ -1,6 +1,8 @@
 @import "codemirror/lib/codemirror.css";
 @import "codemirror/theme/base16-light.css";
 
+@value monospaced from "../site.css";
+
 .editor {
     flex: 1;
 
@@ -24,3 +26,8 @@
 
 .loading {}
 .loaderror {}
+
+:global(.CodeMirror) pre {
+    font-family: monospaced;
+    font-size: 80%;
+}

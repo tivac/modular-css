@@ -138,7 +138,11 @@ module.exports = [
             }),
 
             require("rollup-plugin-node-resolve")({
-                mainFields : [ "module", "browser", "main" ],
+                mainFields : [
+                    "module",
+                    "browser",
+                    "main",
+                ],
 
                 preferBuiltins : false,
             }),

@@ -12,6 +12,8 @@
 @value narrow: all and (max-width: 50rem);
 @value skinny: all and (max-width: 30rem);
 
+@value monospaced: 'Inconsolata', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+
 html {
     box-sizing: border-box;
     
@@ -38,9 +40,8 @@ pre,
 pre[class*="language-"],
 textarea,
 code,
-code[class*="language-"],
-:global(.CodeMirror) {
-    font-family: 'Inconsolata', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+code[class*="language-"] {
+    font-family: monospaced;
 }
 
 a {
