@@ -67,7 +67,7 @@ module.exports = [
 
             sourcemap : false,
 
-            entryFileNames : "[name].js",
+            entryFileNames : "[name].[format].js",
             chunkFileNames : "[name].[format].js",
         },
 
@@ -91,10 +91,12 @@ module.exports = [
             require("rollup-plugin-svelte")({
                 preprocess,
                 generate : "ssr",
+                dev      : isProduction,
             }),
 
             require("@modular-css/rollup")({
                 processor,
+                dev : isProduction,
             }),
 
             // Weird little inline plugin to make the previous bundle available
@@ -108,9 +110,6 @@ module.exports = [
 
             // Start a local server if in watch mode
             isWatch && require("./build/rollup-plugin-sirv.js")(),
-
-            // Compress JS in production mode
-            isProduction && require("rollup-plugin-terser").terser(),
         ],
     },
     // Browser build of the REPL
@@ -154,14 +153,19 @@ module.exports = [
             
             require("rollup-plugin-svelte")({
                 preprocess,
+                dev : isProduction,
             }),
 
             require("@modular-css/rollup")({
                 processor,
+                dev : isProduction,
             }),
 
             // Generate HTML for all the static pages
             require("./build/rollup-plugin-generate-html.js")({ bundle }),
+
+            // Compress JS in production mode
+            isProduction && require("rollup-plugin-terser").terser(),
         ],
     },
 ];
