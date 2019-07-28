@@ -1,7 +1,9 @@
 <link href="./codemirror.css" />
 
 {#await loading}
+    {#if slow}
     <div class="{css.loading}">Loading editor...</div>
+    {/if}
 {:then _}
     <div class="{css.editor}">
         <textarea ref:textarea></textarea>
@@ -18,6 +20,7 @@ import listen from "./listen.js";
 export default {
     data : () => ({
         loading : import("./codemirror.js"),
+        slow : false,
         
         config  : {
             lineNumbers : true,
@@ -74,8 +77,14 @@ export default {
     oncreate() {
         const { loading } = this.get();
 
+        const ticking = setTimeout(() => this.set({
+            slow : true,
+        }), 100);
+
         // Instantiate codemirror once it's loaded
         loading.then((mod) => {
+            clearTimeout(ticking);
+
             const { config } = this.get();
             const { codemirror, theme } = mod;
 
