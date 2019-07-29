@@ -3,7 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const svelte = require("svelte");
+const svelte = require("svelte/compiler");
 const dedent = require("dedent");
 
 const Processor = require("@modular-css/processor");

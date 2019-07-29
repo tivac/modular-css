@@ -316,12 +316,8 @@ module.exports = (opts = {}) => {
 
             const meta = {};
 
-            Object.entries(bundle).forEach(([ entry, chunk ]) => {
-                const { isAsset } = chunk;
-
-                if(isAsset || !entries.has(entry)) {
-                    return;
-                }
+            entries.forEach((entry) => {
+                const chunk = bundle[entry];
 
                 // Attach info about this asset to the bundle
                 const { assets = [] } = chunk;

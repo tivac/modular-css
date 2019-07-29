@@ -17,11 +17,12 @@
     padding: 1rem;
 
     color: headerColor;
-    background-color: hsl(0, 0%, 20%);
+    background-color: hsl(220, 16%, 22%);
 
     border-bottom: 2px solid accentColor;
 
-    z-index: 1;
+    /* Necessary to force it above codemirror on /repl */
+    z-index: 100;
 
     @media skinny {
         padding: 0.5rem 1rem;

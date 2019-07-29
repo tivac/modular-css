@@ -12,7 +12,6 @@
 
     <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto" rel="stylesheet">
-    <link href="https://unpkg.com/prismjs@1.15.0/themes/prism-tomorrow.css" rel="stylesheet">
 
     {#if styles}
         {#each styles as style}
@@ -32,9 +31,9 @@
 </html>
 
 <script>
-export default {
-    components : {
-        Header : "./header.html",
-    },
-};
+import Header from "./header.svelte";
+
+export let title;
+export let styles;
+export let script;
 </script>

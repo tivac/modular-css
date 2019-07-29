@@ -26,17 +26,10 @@
 </Page>
 
 <script>
+import Page from "../page.svelte";
+
 import { content as intro } from "./intro.md";
 import { content as example } from "./example.md";
 
-export default {
-    components : {
-        Page   : "../page.html"
-    },
-
-    data : () => ({
-        intro,
-        example,
-    })
-};
+export let styles;
 </script>

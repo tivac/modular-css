@@ -1,7 +1,7 @@
 @import "codemirror/lib/codemirror.css";
-@import "codemirror/theme/base16-light.css";
+@import "codemirror/theme/nord.css";
 
-@value monospaced from "../site.css";
+@value monospaced from "../../site.css";
 
 .editor {
     flex: 1;

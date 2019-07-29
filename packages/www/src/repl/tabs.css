@@ -29,10 +29,6 @@
     composes: button;
 }
 
-.clear {
-    composes: button;
-}
-
 .tabs {
     flex: 1;
 }

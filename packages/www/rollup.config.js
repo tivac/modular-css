@@ -43,11 +43,11 @@ module.exports = [
     // CJS Build of home/guide for node generation
     {
         input : {
-            api       : "./src/api/api.html",
-            guide     : "./src/guide/guide.html",
-            home      : "./src/home/home.html",
-            repl      : "./src/repl/index.html",
-            changelog : "./src/changelog/changelog.html",
+            api       : "./src/api/api.svelte",
+            guide     : "./src/guide/guide.svelte",
+            home      : "./src/home/home.svelte",
+            repl      : "./src/repl/index.svelte",
+            changelog : "./src/changelog/changelog.svelte",
         },
 
         // Don't need to bundle any of this, so purposefully exclude it
@@ -67,8 +67,8 @@ module.exports = [
 
             sourcemap : false,
 
-            entryFileNames : "[name].[format].js",
-            chunkFileNames : "[name].[format].js",
+            entryFileNames : "node/[name].[format].js",
+            chunkFileNames : "node/[name].[format].js",
         },
 
         plugins : [
@@ -78,15 +78,15 @@ module.exports = [
             // Watch .md files for chanegs as well
             require("./build/rollup-plugin-add-watch-files.js")(),
 
-            require("rollup-plugin-node-resolve")({
+            require("@rollup/plugin-node-resolve")({
                 preferBuiltins : false,
             }),
 
             // Transform .md files
             require("./build/rollup-plugin-md.js")(),
             
-            require("rollup-plugin-commonjs")(),
-            require("rollup-plugin-json")(),
+            require("@rollup/plugin-commonjs")(),
+            require("@rollup/plugin-json")(),
             
             require("rollup-plugin-svelte")({
                 preprocess,
@@ -119,7 +119,7 @@ module.exports = [
             
             // Including to force the CSS to be split apart so the REPL CSS
             // doesn't duplicate things it doesn't need to
-            page : "./src/page.html",
+            page : "./src/page.svelte",
         },
 
         output : {
@@ -132,18 +132,17 @@ module.exports = [
         },
 
         plugins : [
-            require("rollup-plugin-alias")({
+            require("@rollup/plugin-alias")({
                 entries : {
-                    fs     : require.resolve("./stubs/fs.js"),
                     path   : require.resolve("./stubs/path.js"),
                     module : require.resolve("./stubs/module.js"),
                 },
             }),
 
-            require("rollup-plugin-node-resolve")({
+            require("@rollup/plugin-node-resolve")({
                 mainFields : [
-                    "module",
                     "browser",
+                    "module",
                     "main",
                 ],
 
@@ -153,10 +152,10 @@ module.exports = [
             // Run webpack INSIDE ROLLUP to bundle postcss because it's fuckered otherwise
             require("./build/rollup-plugin-postcss.js")(),
             
-            require("rollup-plugin-commonjs")(),
+            require("@rollup/plugin-commonjs")(),
             require("rollup-plugin-node-globals")(),
             require("rollup-plugin-node-builtins")(),
-            require("rollup-plugin-json")(),
+            require("@rollup/plugin-json")(),
             
             require("rollup-plugin-svelte")({
                 preprocess,

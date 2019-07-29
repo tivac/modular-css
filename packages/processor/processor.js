@@ -1,7 +1,6 @@
 /* eslint-disable no-await-in-loop */
 "use strict";
 
-const fs   = require("fs");
 const path = require("path");
 
 const Graph     = require("dependency-graph").DepGraph;
@@ -16,9 +15,19 @@ const tiered        = require("./lib/graph-tiers.js");
 const normalize     = require("./lib/normalize.js");
 const { resolvers } = require("./lib/resolve.js");
 
+let fs;
+
 const noop = () => true;
 
-const defaultLoadFile = (id) => fs.readFileSync(id, "utf8");
+const defaultLoadFile = (id) => {
+    if(!fs) {
+        const name = "fs";
+        
+        fs = require(name);
+    }
+    
+    return fs.readFileSync(id, "utf8");
+};
 
 const params = ({ _options, _files, _graph, _resolve }, args) => ({
     __proto__ : null,

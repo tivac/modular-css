@@ -17,29 +17,39 @@
     padding: 0;
 
     font-size: 85%;
+
+    & :global(.item) {
+        list-style: none;
+    }
+
+    & > :global(.list) {
+        padding-left: 0;
+    }
+
+    /* Top-level headings are uppercase */
+    & > :global(.list > li > a) {
+        text-transform: uppercase;
+    }
 }
 
-.sidebar :global(.toc) ul {
-    padding-left: 0.3rem;
-}
+.sidebar :global(.list) {
+    /* Nested lists */
+    & :global(.list) {
+        padding-left: 0.3rem;
+        margin-top: 0.75rem;
+        text-transform: lowercase;
+        
+        & :global(.item + .item) {
+            margin-top: 0.3rem;
+        }
 
-.sidebar :global(.toc) li {
-    list-style: none;
-}
-
-.sidebar :global(.toc) > li + li {
-    margin-top: 1.25rem;
-}
-
-.sidebar :global(.toc) > li > a {
-    text-transform: uppercase;
-}
-
-.sidebar :global(.toc) li ul {
-    margin-top: 0.75rem;
-    text-transform: lowercase;
-}
-
-.sidebar :global(.toc) li ul li + li {
-    margin-top: 0.3rem;
+        /* garbage in the TOC plugin output harumph */
+        & :global(.list) {
+            display: none;
+        }
+    }
+    
+    & :global(li + li) {
+        margin-top: 1.25rem;
+    }
 }
