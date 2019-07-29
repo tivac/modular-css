@@ -1,12 +1,12 @@
-@value headerColor: hsl(0, 0%, 94%);
+@value headerColor: hsl(219, 28%, 88%);
 @value textColor: hsl(0, 0%, 10%);
 @value borderColor: hsl(0, 0%, 93%);
-@value accentColor: hsl(197, 100%, 44%);
+@value accentColor: hsl(179, 25%, 75%);
 @value hoverColor: accentColor;
 @value hoverInTime: 100ms;
 @value hoverOutTime: 250ms;
 @value headerHeight: 4rem;
-@value contentWidth: 40rem;
+@value contentWidth: 35rem;
 @value sidebarWidth: 12rem;
 
 @value narrow: all and (max-width: 50rem);
@@ -37,11 +37,19 @@ body {
 }
 
 pre,
-pre[class*="language-"],
 textarea,
 code,
-code[class*="language-"] {
+:global(.shiki) {
     font-family: monospaced;
+}
+
+code {
+    font-size: 0.9em;
+}
+
+:global(.shiki) {
+    padding: 0.75rem 0.75rem;
+    font-size: 0.9em;
 }
 
 a {
@@ -105,7 +113,7 @@ a:hover {
 
 .content {
     min-height: calc(100vh - contentTop);
-    margin: contentTop 1rem 5rem 1rem;
+    padding: contentTop 1rem 5rem 1rem;
 }
 
 .bd h2 {
@@ -119,6 +127,7 @@ a:hover {
 .bd h6 {
     margin: 2rem 0;
     font-size: 1.25rem;
+    scroll-margin-top: contentTop;
 }
 
 .bd h1,
@@ -129,27 +138,26 @@ a:hover {
 .bd h6 {
     position: relative;
 
-    & :global(.anchor) {
+    & :global(.header-anchor) {
         position: absolute;
-        left: -1.5rem;
-        top: 50%;
-        
+        left: -1.6rem;
+        bottom: 0;
+
         display: block;
-
         width: 1.4rem;
-        font-size: 1.4rem;
-
-        opacity: 0;
+        font-size: 1rem;
+        
+        opacity: 0.25;
         transition: opacity 150ms;
+        
+        text-decoration: none;
+        transform: translateY(-10%);
 
-        text-decoration: none;
-        transform: translateY(-50%);
-    }
-    
-    &:hover :global(.anchor) {
-        opacity: 1;
-    
-        text-decoration: none;
+        &:hover {
+            opacity: 1;
+        
+            text-decoration: none;
+        }
     }
 }
 

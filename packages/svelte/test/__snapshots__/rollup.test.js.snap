@@ -42,12 +42,10 @@ Snapshot Diff:
 +     color: blue;
 + }",
 @@ --- --- @@
-+
+- 	let div_class_value;
 @@ --- --- @@
-+
-@@ --- --- @@
-- 			div.className = \\"css.nope\\";
-+ 			div.className = \\"mc043115d5_nope\\";
+- 			attr(div, \\"class\\", div_class_value = \\"css.nope\\");
++ 			attr(div, \\"class\\", \\"mc043115d5_nope\\");
 `;
 
 exports[`/svelte.js rollup watching should generate updated output when composition changes 1`] = `
@@ -59,13 +57,13 @@ Snapshot Diff:
 
   	return {
   		c() {
-  			div = createElement(\\"div\\");
+  			div = element(\\"div\\");
   			div.textContent = \\"Hi\\";
-- 			div.className = \\"mc8c3b9f40_b mc7c0d2c82_a\\";
-+ 			div.className = \\"mc8c3b9f40_c mc7c0d2c82_a\\";
+- 			attr(div, \\"class\\", \\"mc8c3b9f40_b mc7c0d2c82_a\\");
++ 			attr(div, \\"class\\", \\"mc8c3b9f40_c mc7c0d2c82_a\\");
   		},
-
   		m(target, anchor) {
   			insert(target, div, anchor);
   		},
+  		p: noop,
 `;

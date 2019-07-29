@@ -1,9 +1,18 @@
 "use strict";
 
 const path = require("path");
-const resolve = require("resolve-from").silent;
 
-exports.resolve = (src, file) => resolve(path.dirname(src), file);
+let resolve;
+
+exports.resolve = (src, file) => {
+    if(!resolve) {
+        const name = "resolve-from";
+
+        resolve = require(name).silent;
+    }
+
+    return resolve(path.dirname(src), file);
+};
 
 exports.resolvers = (resolvers) => {
     resolvers.push(exports.resolve);

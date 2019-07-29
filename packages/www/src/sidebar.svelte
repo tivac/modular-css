@@ -7,9 +7,5 @@
 {/if}
 
 <script>
-export default {
-    data : () => ({
-        tocs : false,
-    }),
-};
+export let tocs;
 </script>

@@ -1,5 +1,0 @@
-.input {
-    composes: column from "./repl.css";
-
-    grid-area: input;
-}

@@ -11,17 +11,10 @@
 </Page>
 
 <script>
+import Page from "../page.svelte";
+import Sidebar from "../sidebar.svelte";
+
 import { content, tocs } from "./guide.md";
 
-export default {
-    components : {
-        Page    : "../page.html",
-        Sidebar : "../sidebar.html",
-    },
-
-    data : () => ({
-        content,
-        tocs,
-    }),
-};
+export let styles;
 </script>

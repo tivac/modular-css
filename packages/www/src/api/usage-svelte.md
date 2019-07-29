@@ -43,7 +43,7 @@ You could also use `<link href="./file.css" />` tags to reference CSS external t
 ##### `svelte.preprocess()`
 
 ```js
-const filename = "./Component.html";
+const filename = "./Component.svelte";
 
 const { processor, preprocess } = require("@modular-css/svelte")({
     // Processor options
@@ -71,7 +71,7 @@ const { preprocess, processor } = require("@modular-css/svelte")({
 });
 
 const bundle = await rollup({
-    input   : "./Component.html",
+    input   : "./Component.svelte",
     
     plugins : [
         require("rollup-plugin-svelte")({
@@ -101,7 +101,7 @@ const { preprocess, processor } = require("@modular-css/svelte")({
 });
 
 module.exports = {
-    input   : "./Component.html",
+    input   : "./Component.svelte",
     
     output  : {
         format : "es",

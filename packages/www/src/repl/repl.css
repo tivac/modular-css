@@ -10,12 +10,13 @@
 
     display: grid;
 
-    margin-bottom: 0;
-    margin-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
 
     grid-template:
         "  tabs   tabs  " tabHeight
-        " input  output " calc(100vh - headerHeight - tabHeight) /
+        " input  output " calc(100vh - headerHeight - tabHeight - 1rem) /
         50% 50%;
 }
 
@@ -31,4 +32,32 @@
 
 .column + .column {
     border-left: 2px solid borderColor;
+}
+
+.input {
+    composes: column;
+
+    grid-area: input;
+}
+
+.error {
+    /* lol */
+    z-index: 1000;
+
+    position: absolute;
+
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    padding: 0 1rem;
+
+    background: hsl(6, 93%, 71%);
+    color: hsl(0, 0%, 94%);
+
+    visibility: hidden;
+
+    &[data-visible="true"] {
+        visibility: visible;
+    }
 }
