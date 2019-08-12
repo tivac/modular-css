@@ -62,6 +62,6 @@
     "rollup-plugin-svelte": "^5.0.1",
     "rollup-plugin-terser": "^5.0.0",
     "rollup-pluginutils": "^2.8.1",
-    "svelte": "^2.16.0"
+    "svelte": "^3.7.1"
   }
 }
