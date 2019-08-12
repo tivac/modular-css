@@ -38,7 +38,7 @@
     "is-url": "^1.2.4",
     "lazyload-css": "^1.0.5",
     "lznext": "^0.1.0",
-    "markdown-it": "^9.0.1",
+    "markdown-it": "^8.4.2",
     "markdown-it-container": "^2.0.0",
     "markdown-it-include": "^1.0.0",
     "markdown-it-prism": "^2.0.1",
