@@ -69,23 +69,6 @@ describe("/processor.js", () => {
             }
         });
 
-        it("should fail if composes isn't the first property", async () => {
-            try {
-                await processor.string(
-                    "./invalid/composes-first.css",
-                    dedent(`
-                        .a { color: red; }
-                        .b {
-                            color: blue;
-                            composes: a;
-                        }
-                    `)
-                );
-            } catch({ message }) {
-                expect(message).toMatch(`composes must be the first declaration`);
-            }
-        });
-
         it("should fail on rules that use multiple selectors", async () => {
             try {
                 await processor.string(
@@ -122,6 +105,29 @@ describe("/processor.js", () => {
                     .b {
                         /* comment */
                         composes: a;
+                    }
+                `)
+            );
+            
+            const { compositions } = await processor.output();
+            
+            expect(compositions).toMatchSnapshot();
+        });
+        
+        it("should allow composes anywhere", async () => {
+            await processor.string(
+                "./multiple-composes.css",
+                dedent(`
+                    .a { color: red; }
+                    .b {
+                        background: blue;
+                        composes: a;
+                    }
+                    .c {
+                        border: 1px solid red;
+                        composes: a;
+                        text-weight: bold;
+                        composes: b;
                     }
                 `)
             );

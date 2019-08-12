@@ -93,3 +93,7 @@ CSS Modules allows for importing multiple values from an external file.
 ### Support
 
 CSS Modules is really only fully-supported as part of webpack these days. The repo is effectively mothballed, and there appears to be almost no one supporting the current codebase. Since webpack is the only live version & we prefer to use rollup for it's cleaner output and smaller bundles we needed an approach that could be flexibly be used with a [variety](#rollup) [of](#browserify) [tools](#cli).
+
+### `composes` location
+
+After a long time with `composes` being required to be the first declaration in a rule the ability to use a tool like [`stylelint-order`](https://github.com/hudochenkov/stylelint-order) has reduced the need for `modular-css` to enforce positional requirements. After a push in [#645](https://github.com/tivac/modular-css/issues/645) the requirement was removed in [#646](https://github.com/tivac/modular-css/pull/646), which was published in v25. This is a change from CSS Modules, which continues to require that `composes` be the first declaration in a rule.
