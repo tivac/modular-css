@@ -11,22 +11,6 @@ const parser = require("../parsers/composes.js");
 
 const plugin = "modular-css-composition";
 
-// Loop through all previous nodes in the container to ensure
-// that composes (or a comment) comes first
-const composesFirst = (decl) => {
-    let prev = decl.prev();
-
-    while(prev) {
-        if(prev.type !== "comment") {
-            throw decl.error("composes must be the first declaration", {
-                word : "composes",
-            });
-        }
-
-        prev = prev.prev();
-    }
-};
-
 module.exports = (css, result) => {
     const { opts } = result;
     
@@ -46,8 +30,6 @@ module.exports = (css, result) => {
         /* eslint max-statements: "off" */
         const details = parser.parse(decl.value);
         const selectors = decl.parent.selectors.map(identifiers.parse);
-
-        composesFirst(decl);
 
         // https://github.com/tivac/modular-css/issues/238
         if(selectors.some(({ length }) => length > 1)) {
