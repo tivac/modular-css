@@ -580,7 +580,7 @@ describe("/rollup.js", () => {
             plugins : [
                 plugin({
                     namer,
-                    include : /\.cssx$/
+                    include : /\.cssx$/,
                 }),
             ],
         });
@@ -698,12 +698,12 @@ describe("/rollup.js", () => {
                             "error.css" : `
                                 .fooga { color: #F00; }
                                 .wooga { composes: foo; }
-                            `
-                        }
+                            `,
+                        },
                     }),
 
-                    plugin({ namer })
-                ]
+                    plugin({ namer }),
+                ],
             })
             .catch((e) => expect(e.toString()).toMatch(".wooga"))
         );

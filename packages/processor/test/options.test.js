@@ -6,7 +6,6 @@ const dedent   = require("dedent");
 const namer    = require("@modular-css/test-utils/namer.js");
 const relative = require("@modular-css/test-utils/relative.js");
 const logs     = require("@modular-css/test-utils/logs.js");
-const cased    = require("@modular-css/test-utils/case-sensitive-fs.js");
 
 const Processor = require("../processor.js");
 
@@ -220,7 +219,7 @@ describe("/processor.js", () => {
                 const processor = new Processor({
                     postcss : {
                         parser,
-                    }
+                    },
                 });
 
                 await processor.string(

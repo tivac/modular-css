@@ -29,6 +29,6 @@ module.exports = () => {
             
             // eslint-disable-next-line no-console
             console.log(`Server listening on localhost:${port}`);
-        }
+        },
     };
 };

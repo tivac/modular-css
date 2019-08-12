@@ -352,7 +352,7 @@ describe("/rollup.js", () => {
         it("shouldn't use entry hashes as part of the CSS file names", async () => {
             const bundle = await rollup({
                 input : [
-                    require.resolve("./specimens/simple.js")
+                    require.resolve("./specimens/simple.js"),
                 ],
 
                 plugins : [
@@ -465,7 +465,7 @@ describe("/rollup.js", () => {
                 assetFileNames,
                 chunkFileNames,
 
-                dir : prefix(`./output/circular-dependencies`)
+                dir : prefix(`./output/circular-dependencies`),
             });
 
             expect(dir(`./circular-dependencies`)).toMatchSnapshot();

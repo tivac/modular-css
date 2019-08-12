@@ -5,27 +5,27 @@ module.exports = {
         "at-rule-no-unknown" : [ true, {
             ignoreAtRules : [
                 "value",
-                "composes"
-            ]
+                "composes",
+            ],
         }],
 
         "declaration-block-no-duplicate-properties" : [ true, {
             ignoreProperties : [
-                "composes"
-            ]
+                "composes",
+            ],
         }],
 
         "property-no-unknown" : [ true, {
             ignoreProperties : [
-                "composes"
-            ]
+                "composes",
+            ],
         }],
 
         "selector-pseudo-class-no-unknown" : [ true, {
             ignorePseudoClasses : [
                 "global",
                 "external",
-            ]
+            ],
         }],
-    }
+    },
 };

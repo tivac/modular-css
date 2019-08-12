@@ -326,7 +326,7 @@ describe("/webpack.js", () => {
         webpack(config({
             entry  : "./packages/webpack/test/specimens/simple.js",
             plugin : {
-                processor
+                processor,
             },
         }), (err, stats) => {
             success(err, stats);

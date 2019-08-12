@@ -345,6 +345,7 @@ class Processor {
             const other = this._ids.get(check);
 
             if(other && other !== id) {
+                // eslint-disable-next-line no-console
                 console.warn(`POTENTIAL DUPLICATE FILES:\n\t${relative(this._options.cwd, other)}\n\t${relative(this._options.cwd, id)}`);
             }
         }
