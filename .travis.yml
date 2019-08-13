@@ -30,7 +30,12 @@ install:
 - npm ci
 
 script:
+# Tests need to pass
 - npm test -- --ci
+# Clean code is... better code
+- npm run lint
+# Make sure production web builds can at least compile
+- npm run www:deploy
 
 # Run codecov after all builds, and only
 # on a single environment
