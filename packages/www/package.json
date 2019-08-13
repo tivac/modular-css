@@ -60,7 +60,7 @@
     "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-svelte": "^5.0.1",
-    "rollup-plugin-terser": "^5.0.0",
+    "rollup-plugin-terser": "^5.1.1",
     "rollup-pluginutils": "^2.8.1",
     "svelte": "^2.16.0"
   }
