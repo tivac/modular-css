@@ -4,8 +4,8 @@ exports[`/rollup.js case sensitivity tests should warn about repeated references
 Array [
   Array [
     "POTENTIAL DUPLICATE FILES:
-	packages/rollup/test/specimens/Casing/bar.css
-	packages/rollup/test/specimens/casing/bar.css",
+	packages/rollup/test/specimens/casing/bar.css
+	packages/rollup/test/specimens/Casing/bar.css",
   ],
 ]
 `;
@@ -56,7 +56,7 @@ console.log(fooga);
 
 exports[`/rollup.js should correctly handle hashed output 1`] = `
 Object {
-  "assets/simple-8d1bcf7b.css": "/* packages/rollup/test/specimens/simple.css */
+  "assets/simple-8ed43a0c.css": "/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }
@@ -73,19 +73,19 @@ console.log(css);
 
 exports[`/rollup.js should correctly handle hashed output with external source maps & json files 1`] = `
 Object {
-  "assets/exports-24307d7d.json": "{
+  "assets/exports-2733b4a4.json": "{
     \\"packages/rollup/test/specimens/simple.css\\": {
         \\"str\\": \\"\\\\\\"string\\\\\\"\\",
         \\"fooga\\": \\"fooga\\"
     }
 }",
-  "assets/simple-8d1bcf7b.css": "/* packages/rollup/test/specimens/simple.css */
+  "assets/simple-8ed43a0c.css": "/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }
 
-/*# sourceMappingURL=simple-8d1bcf7b.css.map */",
-  "assets/simple-8d1bcf7b.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,8CAAA;AAEA;IACI,UAAU;AACd\\",\\"file\\":\\"simple-[hash].css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
+/*# sourceMappingURL=simple-8ed43a0c.css.map */",
+  "assets/simple-8ed43a0c.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,8CAAA;AAEA;IACI,UAAU;AACd\\",\\"file\\":\\"simple-[hash].css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
   "hashes.js": "var css = {
     \\"str\\": \\"\\\\\\"string\\\\\\"\\",
     \\"fooga\\": \\"fooga\\"

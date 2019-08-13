@@ -28,29 +28,14 @@ Object {
     color: static1;
 }
 ",
-  "chunk.js": "
-define(['exports'], function (exports) { 'use strict';
-
-    var css = {
-        \\"static1\\": \\"static1\\"
-    };
-
-    console.log(css);
-
-    var static1 = \\"static1.js\\";
-
-    exports.static1 = static1;
-
-});
-",
   "dynamic1.js": "
-define(['exports', './chunk'], function (exports, __chunk_1) { 'use strict';
+define(['exports', './static1'], function (exports, static1) { 'use strict';
 
     var css = {
         \\"dynamic1\\": \\"dynamic1\\"
     };
 
-    console.log(__chunk_1.static1, css);
+    console.log(static1.static1, css);
 
     var dynamic1 = \\"dynamic1.js\\";
 
@@ -59,13 +44,13 @@ define(['exports', './chunk'], function (exports, __chunk_1) { 'use strict';
 });
 ",
   "entry1.js": "
-define(['./chunk'], function (__chunk_1) { 'use strict';
+define(['./static1'], function (static1) { 'use strict';
 
     var css = {
         \\"entry1\\": \\"entry1\\"
     };
 
-    console.log(__chunk_1.static1, css);
+    console.log(static1.static1, css);
 
 });
 ",
@@ -87,6 +72,21 @@ lazyload(\\"./assets/dynamic1.css\\"),
 .then((results) => resolve(results[results.length - 1]))
 .catch(reject) }).then(console.log);
     }());
+
+});
+",
+  "static1.js": "
+define(['exports'], function (exports) { 'use strict';
+
+    var css = {
+        \\"static1\\": \\"static1\\"
+    };
+
+    console.log(css);
+
+    var static1 = \\"static1.js\\";
+
+    exports.static1 = static1;
 
 });
 ",
@@ -119,19 +119,8 @@ Object {
     color: static1;
 }
 ",
-  "chunk.js": "
-var css = {
-    \\"static1\\": \\"static1\\"
-};
-
-console.log(css);
-
-var static1 = \\"static1.js\\";
-
-export { static1 as s };
-",
   "dynamic1.js": "
-import { s as static1 } from './chunk.js';
+import { s as static1 } from './static1.js';
 
 var css = {
     \\"dynamic1\\": \\"dynamic1\\"
@@ -144,7 +133,7 @@ var dynamic1 = \\"dynamic1.js\\";
 export default dynamic1;
 ",
   "entry1.js": "
-import { s as static1 } from './chunk.js';
+import { s as static1 } from './static1.js';
 
 var css = {
     \\"entry1\\": \\"entry1\\"
@@ -167,6 +156,17 @@ lazyload(\\"./assets/dynamic1.css\\"),
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 }());
+",
+  "static1.js": "
+var css = {
+    \\"static1\\": \\"static1\\"
+};
+
+console.log(css);
+
+var static1 = \\"static1.js\\";
+
+export { static1 as s };
 ",
 }
 `;
@@ -197,19 +197,8 @@ Object {
     color: static1;
 }
 ",
-  "chunk.js": "
-var css = {
-    \\"static1\\": \\"static1\\"
-};
-
-console.log(css);
-
-var static1 = \\"static1.js\\";
-
-export { static1 as s };
-",
   "dynamic1.js": "
-import { s as static1 } from './chunk.js';
+import { s as static1 } from './static1.js';
 
 var css = {
     \\"dynamic1\\": \\"dynamic1\\"
@@ -222,7 +211,7 @@ var dynamic1 = \\"dynamic1.js\\";
 export default dynamic1;
 ",
   "entry1.js": "
-import { s as static1 } from './chunk.js';
+import { s as static1 } from './static1.js';
 
 var css = {
     \\"entry1\\": \\"entry1\\"
@@ -245,6 +234,17 @@ lazyload(\\"./assets/dynamic1.css\\"),
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 }());
+",
+  "static1.js": "
+var css = {
+    \\"static1\\": \\"static1\\"
+};
+
+console.log(css);
+
+var static1 = \\"static1.js\\";
+
+export { static1 as s };
 ",
 }
 `;
@@ -275,26 +275,8 @@ Object {
     color: static1;
 }
 ",
-  "chunk.js": "
-System.register([], function (exports) {
-    'use strict';
-    return {
-        execute: function () {
-
-            var css = {
-                \\"static1\\": \\"static1\\"
-            };
-
-            console.log(css);
-
-            var static1 = exports('s', \\"static1.js\\");
-
-        }
-    };
-});
-",
   "dynamic1.js": "
-System.register(['./chunk.js'], function (exports) {
+System.register(['./static1.js'], function (exports) {
     'use strict';
     var static1;
     return {
@@ -316,7 +298,7 @@ System.register(['./chunk.js'], function (exports) {
 });
 ",
   "entry1.js": "
-System.register(['./chunk.js'], function () {
+System.register(['./static1.js'], function () {
     'use strict';
     var static1;
     return {
@@ -355,6 +337,24 @@ lazyload(\\"./assets/dynamic1.css\\"),
 ])
 .then((results) => results[results.length - 1]).then(console.log);
             }());
+
+        }
+    };
+});
+",
+  "static1.js": "
+System.register([], function (exports) {
+    'use strict';
+    return {
+        execute: function () {
+
+            var css = {
+                \\"static1\\": \\"static1\\"
+            };
+
+            console.log(css);
+
+            var static1 = exports('s', \\"static1.js\\");
 
         }
     };
