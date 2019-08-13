@@ -656,7 +656,7 @@ describe("/rollup.js", () => {
         }
 
         fn("should warn about repeated references that point at the same files", async () => {
-            const { logSnapshot } = logs("warn");
+            const { spy } = logs("warn");
 
             const bundle = await rollup({
                 input   : require.resolve("./specimens/casing/main.js"),
@@ -674,7 +674,8 @@ describe("/rollup.js", () => {
                 file : prefix(`./output/casing/main.js`),
             });
 
-            logSnapshot();
+            expect(spy).toHaveBeenCalled();
+            expect(spy.mock.calls.length).toBe(2);
         });
     });
 

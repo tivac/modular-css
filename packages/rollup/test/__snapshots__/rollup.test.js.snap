@@ -1,15 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/rollup.js case sensitivity tests should warn about repeated references that point at the same files 1`] = `
-Array [
-  Array [
-    "POTENTIAL DUPLICATE FILES:
-	packages/rollup/test/specimens/casing/bar.css
-	packages/rollup/test/specimens/Casing/bar.css",
-  ],
-]
-`;
-
 exports[`/rollup.js should accept an existing processor instance (no css in bundle) 1`] = `
 Object {
   "fake.css": "/* packages/rollup/test/specimens/fake.css */

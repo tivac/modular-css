@@ -28,7 +28,7 @@ Object {
 }
 
 /*# sourceMappingURL=a-890c0aa5.css.map */",
-  "a-890c0aa5.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+  "a-890c0aa5.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n    \\\\n    color: aqua;\\\\n}\\\\n\\"]}",
   "a-a56cc35c.css": "/* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */
 .a { color: azure; }
 /*# sourceMappingURL=a-a56cc35c.css.map */",
@@ -39,7 +39,7 @@ Object {
 }
 
 /*# sourceMappingURL=b-097f3a93.css.map */",
-  "b-097f3a93.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"b-[hash].css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+  "b-097f3a93.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"b-[hash].css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n    \\\\n    color: aqua;\\\\n}\\\\n\\"]}",
 }
 `;
 
@@ -53,15 +53,15 @@ Object {
 .a {
     color: aqua;
 }
-
-/*# sourceMappingURL=a.css.map */",
-  "a2.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"a.css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n    \\\\n    color: aqua;\\\\n}\\\\n\\"]}",
+",
+  "a2.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"a.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
   "b.css": "/* packages/rollup/test/specimens/multiple-chunks/b.css */
 .b {
     color: blue;
 }
-",
-  "b.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"b.css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n    \\\\n    color: aqua;\\\\n}\\\\n\\"]}",
+
+/*# sourceMappingURL=b.css.map */",
+  "b.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"b.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
 }
 `;
 
