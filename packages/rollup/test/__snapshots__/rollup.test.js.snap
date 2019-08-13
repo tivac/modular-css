@@ -25,7 +25,8 @@ Object {
 
 exports[`/rollup.js should allow disabling of named exports 1`] = `
 Object {
-  "simple": "var css = {
+  "simple": "
+var css = {
     \\"str\\": \\"\\\\\\"string\\\\\\"\\",
     \\"fooga\\": \\"fooga\\"
 };
@@ -37,7 +38,8 @@ console.log(css);
 
 exports[`/rollup.js should be able to tree-shake results 1`] = `
 Object {
-  "tree-shaking": "var fooga = \\"fooga\\";
+  "tree-shaking": "
+var fooga = \\"fooga\\";
 
 console.log(fooga);
 ",
@@ -123,7 +125,8 @@ exports[`/rollup.js should generate JSON with a custom name 1`] = `
 
 exports[`/rollup.js should generate exports 1`] = `
 Object {
-  "simple": "var css = {
+  "simple": "
+var css = {
     \\"str\\": \\"\\\\\\"string\\\\\\"\\",
     \\"fooga\\": \\"fooga\\"
 };
@@ -324,7 +327,8 @@ exports[`/rollup.js should not output sourcemaps when they are disabled 1`] = `
 
 exports[`/rollup.js should output a proxy in dev mode 1`] = `
 Object {
-  "simple": "const data = {\\"str\\":\\"\\\\\\"string\\\\\\"\\",\\"fooga\\":\\"fooga\\"};
+  "simple": "
+const data = {\\"str\\":\\"\\\\\\"string\\\\\\"\\",\\"fooga\\":\\"fooga\\"};
 
 var css = new Proxy(data, {
     get(tgt, key) {
@@ -377,7 +381,8 @@ Object {
 
 exports[`/rollup.js should provide named exports 1`] = `
 Object {
-  "named": "var str = \\"\\\\\\"string\\\\\\"\\";
+  "named": "
+var str = \\"\\\\\\"string\\\\\\"\\";
 var num = \\"10\\";
 var dim = \\"10px\\";
 var mix = \\"1px solid red\\";
@@ -390,7 +395,8 @@ console.log(a, str, num, dim, mix);
 
 exports[`/rollup.js should provide style export 1`] = `
 Object {
-  "style-export": "var styles = \\".ooh {\\\\n    content: \\\\\\"string\\\\\\";\\\\n}\\\\n\\";
+  "style-export": "
+var styles = \\".ooh {\\\\n    content: \\\\\\"string\\\\\\";\\\\n}\\\\n\\";
 
 console.log(styles);
 ",
@@ -431,7 +437,8 @@ Object {
 
 exports[`/rollup.js should warn & not export individual keys when they are not valid identifiers 2`] = `
 Object {
-  "invalid-name": "var css = {
+  "invalid-name": "
+var css = {
     \\"fooga\\": \\"fooga\\",
     \\"fooga-wooga\\": \\"fooga-wooga\\"
 };

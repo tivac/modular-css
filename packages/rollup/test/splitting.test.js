@@ -3,12 +3,8 @@
 
 const { rollup } = require("rollup");
 
-const shell = require("shelljs");
-
 const Processor = require("@modular-css/processor");
 
-const dir = require("@modular-css/test-utils/read-dir.js")(__dirname);
-const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
 const namer = require("@modular-css/test-utils/namer.js");
 
 const plugin = require("../rollup.js");
@@ -27,8 +23,6 @@ const sourcemap = false;
 const json = true;
 
 describe("/rollup.js", () => {
-    beforeAll(() => shell.rm("-rf", prefix("./output/*")));
-
     describe("code splitting", () => {
         it("should support splitting up CSS files", async () => {
             const bundle = await rollup({
@@ -45,17 +39,13 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            await bundle.write({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-
-                dir : prefix(`./output/splitting`),
-            });
-
-            expect(dir("./splitting/assets")).toMatchSnapshot();
+            })).toMatchRollupAssetSnapshot();
         });
 
         it("should correctly chunk up CSS files", async () => {
@@ -74,17 +64,13 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            await bundle.write({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-
-                dir : prefix(`./output/css-dependencies`),
-            });
-
-            expect(dir("./css-dependencies/assets")).toMatchSnapshot();
+            })).toMatchRollupAssetSnapshot();
         });
 
         it("should support outputting metadata about CSS dependencies", async () => {
@@ -103,17 +89,13 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            await bundle.write({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-
-                dir : prefix(`./output/css-metadata`),
-            });
-
-            expect(dir("./css-metadata/assets")).toMatchSnapshot();
+            })).toMatchRollupAssetSnapshot();
         });
 
         it("should output metadata successfully when unreferenced CSS is output to common", async () => {
@@ -137,17 +119,13 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            await bundle.write({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-
-                dir : prefix(`./output/css-metadata-common`),
-            });
-
-            expect(dir("./css-metadata-common/assets")).toMatchSnapshot();
+            })).toMatchRollupAssetSnapshot();
         });
 
         it("should support outputting metadata about CSS dependencies to a named file ", async () => {
@@ -166,17 +144,13 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            await bundle.write({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-
-                dir : prefix(`./output/css-metadata-named`),
-            });
-
-            expect(dir("./css-metadata-named/assets")).toMatchSnapshot();
+            })).toMatchRollupAssetSnapshot();
         });
 
         it("should support splitting up CSS files w/ shared assets", async () => {
@@ -194,17 +168,13 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            await bundle.write({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-
-                dir : prefix(`./output/css-chunks`),
-            });
-
-            expect(dir("./css-chunks/assets")).toMatchSnapshot();
+            })).toMatchRollupAssetSnapshot();
         });
 
         it("shouldn't put bundle-specific CSS in common.css", async () => {
@@ -222,17 +192,13 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            await bundle.write({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-
-                dir : prefix(`./output/common-splitting`),
-            });
-
-            expect(dir("./common-splitting/assets")).toMatchSnapshot();
+            })).toMatchRollupAssetSnapshot();
         });
 
         it("should support manual chunks", async () => {
@@ -256,17 +222,13 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            await bundle.write({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-
-                dir : prefix(`./output/manual-chunks`),
-            });
-
-            expect(dir("./manual-chunks/assets")).toMatchSnapshot();
+            })).toMatchRollupAssetSnapshot();
         });
 
         it("should support dynamic imports", async () => {
@@ -284,17 +246,13 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            await bundle.write({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-
-                dir : prefix(`./output/dynamic-imports`),
-            });
-
-            expect(dir("./dynamic-imports/assets/")).toMatchSnapshot();
+            })).toMatchRollupAssetSnapshot();
         });
 
         it("shouldn't break when dynamic imports are tree-shaken away (rollup/rollup#2659)", async () => {
@@ -311,13 +269,13 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            await bundle.generate({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-            });
+            })).toMatchRollupAssetSnapshot();
         });
 
         it("should ouput only 1 JSON file", async () => {
@@ -336,17 +294,13 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            await bundle.write({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-
-                dir : prefix(`./output/json-splitting`),
-            });
-
-            expect(dir("./json-splitting/assets")).toMatchSnapshot();
+            })).toMatchRollupAssetSnapshot();
         });
 
         it("shouldn't use entry hashes as part of the CSS file names", async () => {
@@ -364,16 +318,12 @@ describe("/rollup.js", () => {
 
             });
 
-            await bundle.write({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
 
                 entryFileNames : "[name].[hash].js",
-
-                dir : prefix(`./output/no-hash-names/`),
-            });
-
-            expect(dir("./no-hash-names")).toMatchSnapshot();
+            })).toMatchRollupSnapshot();
         });
 
         it("should dedupe chunk names using rollup's incrementing counter logic", async () => {
@@ -386,25 +336,19 @@ describe("/rollup.js", () => {
                 plugins : [
                     plugin({
                         namer,
-                        map : {
-                            inline : false,
-                        },
+                        map : false,
                     }),
                 ],
 
             });
 
-            await bundle.write({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-
-                dir : prefix(`./output/multiple-chunks/`),
-            });
-
-            expect(dir("./multiple-chunks/assets")).toMatchSnapshot();
+            })).toMatchRollupAssetSnapshot();
         });
 
         it("should dedupe chunk names using rollup's incrementing counter logic (hashed)", async () => {
@@ -425,14 +369,10 @@ describe("/rollup.js", () => {
 
             });
 
-            await bundle.write({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
-
-                dir : prefix(`./output/multiple-chunks-hashed/`),
-            });
-
-            expect(dir("./multiple-chunks-hashed/assets")).toMatchSnapshot();
+            })).toMatchRollupAssetSnapshot();
         });
 
         it("should support circular JS dependencies", async () => {
@@ -458,17 +398,13 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            await bundle.write({
+            await expect(await bundle.generate({
                 format,
                 sourcemap,
 
                 assetFileNames,
                 chunkFileNames,
-
-                dir : prefix(`./output/circular-dependencies`),
-            });
-
-            expect(dir(`./circular-dependencies`)).toMatchSnapshot();
+            })).toMatchRollupSnapshot();
         });
     });
 });

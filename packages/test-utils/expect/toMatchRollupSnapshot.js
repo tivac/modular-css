@@ -4,13 +4,20 @@ const { toMatchSnapshot } = require("jest-snapshot");
 
 expect.extend({
     toMatchRollupSnapshot({ output }, name = "") {
-        const out = Object.create(null);
+        const things = new Map();
         
         output.forEach(({ code, isAsset, fileName, source }) => {
             // Leading newline to make diffs easier to read
-            out[fileName] = `\n${isAsset ? source : code}`;
+            things.set(fileName, `\n${isAsset ? source : code}`);
         });
+        
+        const out = Object.create(null);
 
+        // Ensure out object is in a consistent order
+        [ ...things.keys() ].sort().forEach((key) => {
+            out[key] = things.get(key);
+        });
+        
         return toMatchSnapshot.call(
             this,
             out,

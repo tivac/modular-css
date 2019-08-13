@@ -2,17 +2,20 @@
 
 exports[`/rollup.js code splitting should correctly chunk up CSS files 1`] = `
 Object {
-  "a.css": "/* packages/rollup/test/specimens/css-dependencies/a.css */
+  "assets/a.css": "
+/* packages/rollup/test/specimens/css-dependencies/a.css */
 .a {
     color: aqua;
 }
 ",
-  "b.css": "/* packages/rollup/test/specimens/css-dependencies/b.css */
+  "assets/b.css": "
+/* packages/rollup/test/specimens/css-dependencies/b.css */
 .b {
     color: blue;
 }
 ",
-  "c.css": "/* packages/rollup/test/specimens/css-dependencies/c.css */
+  "assets/c.css": "
+/* packages/rollup/test/specimens/css-dependencies/c.css */
 .c {
     color: cyan;
 }
@@ -22,57 +25,63 @@ Object {
 
 exports[`/rollup.js code splitting should dedupe chunk names using rollup's incrementing counter logic (hashed) 1`] = `
 Object {
-  "a-890c0aa5.css": "/* packages/rollup/test/specimens/multiple-chunks/a.css */
+  "assets/a-890c0aa5.css": "
+/* packages/rollup/test/specimens/multiple-chunks/a.css */
 .a {
     color: aqua;
 }
 
 /*# sourceMappingURL=a-890c0aa5.css.map */",
-  "a-890c0aa5.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n    \\\\n    color: aqua;\\\\n}\\\\n\\"]}",
-  "a-a56cc35c.css": "/* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */
+  "assets/a-890c0aa5.css.map": "
+{\\"version\\":3,\\"sources\\":[\\"../packages/rollup/test/specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n    \\\\n    color: aqua;\\\\n}\\\\n\\"]}",
+  "assets/a-a56cc35c.css": "
+/* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */
 .a { color: azure; }
 /*# sourceMappingURL=a-a56cc35c.css.map */",
-  "a-a56cc35c.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/subfolder/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,mEAAA;AAAA,KAAK,YAAY,EAAE\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".a { color: azure; }\\"]}",
-  "b-097f3a93.css": "/* packages/rollup/test/specimens/multiple-chunks/b.css */
+  "assets/a-a56cc35c.css.map": "
+{\\"version\\":3,\\"sources\\":[\\"../packages/rollup/test/specimens/multiple-chunks/subfolder/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,mEAAA;AAAA,KAAK,YAAY,EAAE\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".a { color: azure; }\\"]}",
+  "assets/b-097f3a93.css": "
+/* packages/rollup/test/specimens/multiple-chunks/b.css */
 .b {
     color: blue;
 }
 
 /*# sourceMappingURL=b-097f3a93.css.map */",
-  "b-097f3a93.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"b-[hash].css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n    \\\\n    color: aqua;\\\\n}\\\\n\\"]}",
+  "assets/b-097f3a93.css.map": "
+{\\"version\\":3,\\"sources\\":[\\"../packages/rollup/test/specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"b-[hash].css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n    \\\\n    color: aqua;\\\\n}\\\\n\\"]}",
 }
 `;
 
 exports[`/rollup.js code splitting should dedupe chunk names using rollup's incrementing counter logic 1`] = `
 Object {
-  "a.css": "/* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */
-.a { color: azure; }
-/*# sourceMappingURL=a.css.map */",
-  "a.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/subfolder/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,mEAAA;AAAA,KAAK,YAAY,EAAE\\",\\"file\\":\\"a.css\\",\\"sourcesContent\\":[\\".a { color: azure; }\\"]}",
-  "a2.css": "/* packages/rollup/test/specimens/multiple-chunks/a.css */
+  "assets/a.css": "
+/* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */
+.a { color: azure; }",
+  "assets/a2.css": "
+/* packages/rollup/test/specimens/multiple-chunks/a.css */
 .a {
     color: aqua;
 }
 ",
-  "a2.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"a.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
-  "b.css": "/* packages/rollup/test/specimens/multiple-chunks/b.css */
+  "assets/b.css": "
+/* packages/rollup/test/specimens/multiple-chunks/b.css */
 .b {
     color: blue;
 }
-
-/*# sourceMappingURL=b.css.map */",
-  "b.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/multiple-chunks/b.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"b.css\\",\\"sourcesContent\\":[\\".b {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n\\\\n    color: blue;\\\\n}\\\\n\\"]}",
+",
 }
 `;
 
 exports[`/rollup.js code splitting should ouput only 1 JSON file 1`] = `
 Object {
-  "dependencies.css": "/* packages/rollup/test/specimens/dependencies.css */
+  "assets/dependencies.css": "
+/* packages/rollup/test/specimens/dependencies.css */
 .wooga {
     background: blue;
 }
 ",
-  "exports.json": "{
+  "assets/exports.json": "
+{
     \\"packages/rollup/test/specimens/dependencies.css\\": {
         \\"wooga\\": \\"fooga wooga\\"
     },
@@ -81,7 +90,8 @@ Object {
         \\"fooga\\": \\"fooga\\"
     }
 }",
-  "simple.css": "/* packages/rollup/test/specimens/simple.css */
+  "assets/simple.css": "
+/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }
@@ -91,18 +101,23 @@ Object {
 
 exports[`/rollup.js code splitting should output metadata successfully when unreferenced CSS is output to common 1`] = `
 Object {
-  "a.css": "/* packages/rollup/test/specimens/metadata/a.css */
+  "assets/a.css": "
+/* packages/rollup/test/specimens/metadata/a.css */
 .mc541d3f5c_a { color: aqua; }
 ",
-  "b.css": "/* packages/rollup/test/specimens/metadata/b.css */
+  "assets/b.css": "
+/* packages/rollup/test/specimens/metadata/b.css */
 .mc04101138_b { color: blue; }
 ",
-  "d.css": "/* packages/rollup/test/specimens/metadata/d.css */
+  "assets/d.css": "
+/* packages/rollup/test/specimens/metadata/d.css */
 .mc7de0d66b_d { color: darkkhaki; }
 ",
-  "fake.css": "/* fake.css */
+  "assets/fake.css": "
+/* fake.css */
 .mc2c838439_fake { color: red; }",
-  "metadata.json": "{
+  "assets/metadata.json": "
+{
     \\"a.js\\": {
         \\"assets\\": [
             \\"assets/a.css\\"
@@ -124,7 +139,8 @@ Object {
 
 exports[`/rollup.js code splitting should support circular JS dependencies 1`] = `
 Object {
-  "a.js": "import b from './b.js';
+  "a.js": "
+import b from './b.js';
 
 var css = {
     \\"a\\": \\"a\\"
@@ -136,13 +152,16 @@ var a = \\"a\\";
 
 export default a;
 ",
-  "assets/a.css": "/* packages/rollup/test/specimens/circular-dependencies/a.css */
+  "assets/a.css": "
+/* packages/rollup/test/specimens/circular-dependencies/a.css */
 .a { color: aqua; }
 ",
-  "assets/b.css": "/* packages/rollup/test/specimens/circular-dependencies/b.css */
+  "assets/b.css": "
+/* packages/rollup/test/specimens/circular-dependencies/b.css */
 .b { color: blue; }
 ",
-  "b.js": "import a from './a.js';
+  "b.js": "
+import a from './a.js';
 
 var css = {
     \\"b\\": \\"b\\"
@@ -159,12 +178,14 @@ export default b;
 
 exports[`/rollup.js code splitting should support dynamic imports 1`] = `
 Object {
-  "a.css": "/* packages/rollup/test/specimens/dynamic-imports/a.css */
+  "assets/a.css": "
+/* packages/rollup/test/specimens/dynamic-imports/a.css */
 .a {
     color: aqua;
 }
 ",
-  "b.css": "/* packages/rollup/test/specimens/dynamic-imports/e.css */
+  "assets/b.css": "
+/* packages/rollup/test/specimens/dynamic-imports/e.css */
 .e {
     color: #EEE;
 }
@@ -173,12 +194,14 @@ Object {
     color: blue;
 }
 ",
-  "c.css": "/* packages/rollup/test/specimens/dynamic-imports/c.css */
+  "assets/c.css": "
+/* packages/rollup/test/specimens/dynamic-imports/c.css */
 .c {
     color: cyan;
 }
 ",
-  "d.css": "/* packages/rollup/test/specimens/dynamic-imports/f.css */
+  "assets/d.css": "
+/* packages/rollup/test/specimens/dynamic-imports/f.css */
 .f {
     color: floralwhite;
 }
@@ -192,17 +215,20 @@ Object {
 
 exports[`/rollup.js code splitting should support manual chunks 1`] = `
 Object {
-  "a.css": "/* packages/rollup/test/specimens/manual-chunks/a.css */
+  "assets/a.css": "
+/* packages/rollup/test/specimens/manual-chunks/a.css */
 .a {
     color: red;
 }
 ",
-  "b.css": "/* packages/rollup/test/specimens/manual-chunks/b.css */
+  "assets/b.css": "
+/* packages/rollup/test/specimens/manual-chunks/b.css */
 .b {
     color: blue;
 }
 ",
-  "c.css": "/* packages/rollup/test/specimens/manual-chunks/d.css */
+  "assets/c.css": "
+/* packages/rollup/test/specimens/manual-chunks/d.css */
 /* packages/rollup/test/specimens/manual-chunks/c.css */
 .c {
     color: green;
@@ -214,16 +240,20 @@ Object {
 
 exports[`/rollup.js code splitting should support outputting metadata about CSS dependencies 1`] = `
 Object {
-  "a.css": "/* packages/rollup/test/specimens/metadata/a.css */
+  "assets/a.css": "
+/* packages/rollup/test/specimens/metadata/a.css */
 .a { color: aqua; }
 ",
-  "b.css": "/* packages/rollup/test/specimens/metadata/b.css */
+  "assets/b.css": "
+/* packages/rollup/test/specimens/metadata/b.css */
 .b { color: blue; }
 ",
-  "d.css": "/* packages/rollup/test/specimens/metadata/d.css */
+  "assets/d.css": "
+/* packages/rollup/test/specimens/metadata/d.css */
 .d { color: darkkhaki; }
 ",
-  "metadata.json": "{
+  "assets/metadata.json": "
+{
     \\"a.js\\": {
         \\"assets\\": [
             \\"assets/a.css\\"
@@ -245,13 +275,16 @@ Object {
 
 exports[`/rollup.js code splitting should support outputting metadata about CSS dependencies to a named file  1`] = `
 Object {
-  "a.css": "/* packages/rollup/test/specimens/metadata/a.css */
+  "assets/a.css": "
+/* packages/rollup/test/specimens/metadata/a.css */
 .a { color: aqua; }
 ",
-  "b.css": "/* packages/rollup/test/specimens/metadata/b.css */
+  "assets/b.css": "
+/* packages/rollup/test/specimens/metadata/b.css */
 .b { color: blue; }
 ",
-  "chunks.json": "{
+  "assets/chunks.json": "
+{
     \\"a.js\\": {
         \\"assets\\": [
             \\"assets/a.css\\"
@@ -268,7 +301,8 @@ Object {
         ]
     }
 }",
-  "d.css": "/* packages/rollup/test/specimens/metadata/d.css */
+  "assets/d.css": "
+/* packages/rollup/test/specimens/metadata/d.css */
 .d { color: darkkhaki; }
 ",
 }
@@ -276,12 +310,14 @@ Object {
 
 exports[`/rollup.js code splitting should support splitting up CSS files 1`] = `
 Object {
-  "dependencies.css": "/* packages/rollup/test/specimens/dependencies.css */
+  "assets/dependencies.css": "
+/* packages/rollup/test/specimens/dependencies.css */
 .wooga {
     background: blue;
 }
 ",
-  "simple.css": "/* packages/rollup/test/specimens/simple.css */
+  "assets/simple.css": "
+/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }
@@ -291,22 +327,26 @@ Object {
 
 exports[`/rollup.js code splitting should support splitting up CSS files w/ shared assets 1`] = `
 Object {
-  "a.css": "/* packages/rollup/test/specimens/css-chunks/a.css */
+  "assets/a.css": "
+/* packages/rollup/test/specimens/css-chunks/a.css */
 .a {
     color: aqua;
 }
 ",
-  "b.css": "/* packages/rollup/test/specimens/css-chunks/b.css */
+  "assets/b.css": "
+/* packages/rollup/test/specimens/css-chunks/b.css */
 .b {
     color: blue;
 }
 ",
-  "c.css": "/* packages/rollup/test/specimens/css-chunks/c.css */
+  "assets/c.css": "
+/* packages/rollup/test/specimens/css-chunks/c.css */
 .c {
     color: cyan;
 }
 ",
-  "shared.css": "/* packages/rollup/test/specimens/css-chunks/shared.css */
+  "assets/shared.css": "
+/* packages/rollup/test/specimens/css-chunks/shared.css */
 .shared {
     color: snow;
 }
@@ -314,9 +354,12 @@ Object {
 }
 `;
 
+exports[`/rollup.js code splitting shouldn't break when dynamic imports are tree-shaken away (rollup/rollup#2659) 1`] = `Object {}`;
+
 exports[`/rollup.js code splitting shouldn't put bundle-specific CSS in common.css 1`] = `
 Object {
-  "b.css": "/* packages/rollup/test/specimens/common-splitting/shared.css */
+  "assets/b.css": "
+/* packages/rollup/test/specimens/common-splitting/shared.css */
 .shared {
     color: snow;
 }
@@ -339,7 +382,8 @@ Object {
     color: blanchedalmond;
 }
 ",
-  "c.css": "/* packages/rollup/test/specimens/common-splitting/c.css */
+  "assets/c.css": "
+/* packages/rollup/test/specimens/common-splitting/c.css */
 .c {
     color: cyan;
 }
@@ -347,7 +391,8 @@ Object {
 .c2 {
     color: crimson;
 }",
-  "shared2.css": "/* packages/rollup/test/specimens/common-splitting/shared2.css */
+  "assets/shared2.css": "
+/* packages/rollup/test/specimens/common-splitting/shared2.css */
 .shared2 {
     color: sandybrown;
 }
@@ -357,12 +402,14 @@ Object {
 
 exports[`/rollup.js code splitting shouldn't use entry hashes as part of the CSS file names 1`] = `
 Object {
-  "assets/simple-8ed43a0c.css": "/* packages/rollup/test/specimens/simple.css */
+  "assets/simple-8ed43a0c.css": "
+/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }
 ",
-  "simple.96e4896f.js": "var css = {
+  "simple.96e4896f.js": "
+var css = {
     \\"str\\": \\"\\\\\\"string\\\\\\"\\",
     \\"fooga\\": \\"fooga\\"
 };
