@@ -29,17 +29,5 @@ module.exports = {
                 require.resolve("snapshot-diff/serializer.js"),
             ],
         },
-        {
-            displayName : "lint",
-            runner      : "jest-runner-eslint",
-            
-            watchPlugins : [
-                "jest-runner-eslint/watch-fix",
-            ],
-            
-            testMatch : [
-                "<rootDir>/packages/**/*.js",
-            ],
-        },
     ],
 };
