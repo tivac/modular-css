@@ -21,3 +21,6 @@ pkg:cli:
 
 pkg:www:
 - packages/www/**/*
+
+greenkeeper:
+- packages/processor/**/*
