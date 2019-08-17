@@ -23,8 +23,8 @@ const params = ({ _options, _files, _graph, _resolve }, args) => Object.assign(
     _options,
     _options.postcss,
     {
-        from    : null,
         files   : _files,
+        from    : null,
         graph   : _graph,
         resolve : _resolve,
     },
