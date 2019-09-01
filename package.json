@@ -34,7 +34,7 @@
     "cssnano": "^4.1.10",
     "dedent": "0.7.0",
     "dentist": "1.0.3",
-    "env-cmd": "^9.0.3",
+    "env-cmd": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-jest": "^22.5.1",
     "factor-bundle": "2.5.0",
