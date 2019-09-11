@@ -17,7 +17,7 @@ exports.regex = (deps) => {
     );
 };
 
-exports.loader = (options, str) => {
+exports.loader = ({ content, str }) => {
     const s = str.toString();
     const i = s.indexOf(search);
 
@@ -28,7 +28,7 @@ exports.loader = (options, str) => {
     // + 1 is for the newline...
     str.appendRight(
         i + search.length + 1,
-        `${options.loader}\n`
+        `${content}\n`
     );
 };
 

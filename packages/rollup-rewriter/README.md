@@ -84,9 +84,9 @@ export default {
 
 ## Options
 
-### `loader` (string)
+### `loader` (string|function)
 
-The `loader` option can be set if you want the plugin to inject a reference to a CSS loader that returns a promise (I like [`lazyload-css`](https://npmjs.com/lazyload-css)). This loader must be available statically, so this option is most useful in `es`/`esm` mode where it can be loaded via `import`.
+The `loader` option can be set if you want the plugin to inject a reference to a CSS loader that returns a promise (I like [`lazyload-css`](https://npmjs.com/lazyload-css)). This loader must be available statically, so this option is most useful in `es`/`esm` mode where it can be loaded via `import`. If given a function instead of a string that function will be called once per chunk being modified, it gets passed a single argument of the form `{ chunks }` where `chunks` is the raw rollup output chunks.
 
 ### `loadfn` (string)
 

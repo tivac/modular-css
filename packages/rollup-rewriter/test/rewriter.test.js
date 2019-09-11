@@ -111,6 +111,35 @@ describe("rollup-rewriter", () => {
 
         expect(result).toMatchRollupSnapshot();
     });
+    
+    it.each(formats)("should support loader being a function (%p)", async (format) => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/dynamic-imports/a.js"),
+                require.resolve("./specimens/dynamic-imports/b.js"),
+            ],
+            plugins : [
+                css({
+                    namer,
+                    map,
+                }),
+                rewriter({
+                    loader : ({ chunks }) => `import chunkCountIs${Object.keys(chunks).length} from "./css.js";`,
+                    loadfn : "lazyload",
+                }),
+            ],
+        });
+
+        const result = await bundle.generate({
+            format,
+            sourcemap,
+
+            assetFileNames,
+            chunkFileNames,
+        });
+
+        expect(result).toMatchRollupCodeSnapshot();
+    });
 
     it.each(formats)("should only rewrite when necessary (%p)", async (format) => {
         const bundle = await rollup({

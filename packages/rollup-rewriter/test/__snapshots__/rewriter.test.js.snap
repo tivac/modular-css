@@ -1031,6 +1031,294 @@ System.register([], function (exports) {
 }
 `;
 
+exports[`rollup-rewriter should support loader being a function ("amd") 1`] = `
+Object {
+  "a": "
+define(['require'], function (require) { 'use strict';
+import chunkCountIs8 from \\"./css.js\\";
+
+    var css = {
+        \\"a\\": \\"a\\"
+    };
+
+    function a() {
+        console.log(css);
+
+        new Promise(function (resolve, reject) { Promise.all([
+    lazyload(\\"./assets/c.css\\"),
+    new Promise(function (resolve, reject) { require(['./c'], resolve, reject) })
+])
+.then((results) => resolve(results[results.length - 1]))
+.catch(reject) }).then(console.log);
+    }
+
+    return a;
+
+});
+",
+  "b": "
+define(['require'], function (require) { 'use strict';
+import chunkCountIs8 from \\"./css.js\\";
+
+    var css = {
+        \\"b\\": \\"b\\"
+    };
+
+    function b() {
+        console.log(css);
+
+        new Promise(function (resolve, reject) { Promise.all([
+    lazyload(\\"./assets/d.css\\"),
+    new Promise(function (resolve, reject) { require(['./d'], resolve, reject) })
+])
+.then((results) => resolve(results[results.length - 1]))
+.catch(reject) }).then(console.log);
+    }
+
+    return b;
+
+});
+",
+  "c": "
+define(['exports'], function (exports) { 'use strict';
+
+    var css = {
+        \\"c\\": \\"c\\"
+    };
+
+    console.log(css);
+
+    exports.default = css;
+
+});
+",
+  "d": "
+define(['exports'], function (exports) { 'use strict';
+
+    var css = {
+        \\"d\\": \\"d\\"
+    };
+
+    console.log(css);
+
+    exports.default = css;
+
+});
+",
+}
+`;
+
+exports[`rollup-rewriter should support loader being a function ("es") 1`] = `
+Object {
+  "a": "
+import chunkCountIs8 from \\"./css.js\\";
+var css = {
+    \\"a\\": \\"a\\"
+};
+
+function a() {
+    console.log(css);
+
+    Promise.all([
+    lazyload(\\"./assets/c.css\\"),
+    import('./c.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+}
+
+export default a;
+",
+  "b": "
+import chunkCountIs8 from \\"./css.js\\";
+var css = {
+    \\"b\\": \\"b\\"
+};
+
+function b() {
+    console.log(css);
+
+    Promise.all([
+    lazyload(\\"./assets/d.css\\"),
+    import('./d.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+}
+
+export default b;
+",
+  "c": "
+var css = {
+    \\"c\\": \\"c\\"
+};
+
+console.log(css);
+
+export default css;
+",
+  "d": "
+var css = {
+    \\"d\\": \\"d\\"
+};
+
+console.log(css);
+
+export default css;
+",
+}
+`;
+
+exports[`rollup-rewriter should support loader being a function ("esm") 1`] = `
+Object {
+  "a": "
+import chunkCountIs8 from \\"./css.js\\";
+var css = {
+    \\"a\\": \\"a\\"
+};
+
+function a() {
+    console.log(css);
+
+    Promise.all([
+    lazyload(\\"./assets/c.css\\"),
+    import('./c.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+}
+
+export default a;
+",
+  "b": "
+import chunkCountIs8 from \\"./css.js\\";
+var css = {
+    \\"b\\": \\"b\\"
+};
+
+function b() {
+    console.log(css);
+
+    Promise.all([
+    lazyload(\\"./assets/d.css\\"),
+    import('./d.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+}
+
+export default b;
+",
+  "c": "
+var css = {
+    \\"c\\": \\"c\\"
+};
+
+console.log(css);
+
+export default css;
+",
+  "d": "
+var css = {
+    \\"d\\": \\"d\\"
+};
+
+console.log(css);
+
+export default css;
+",
+}
+`;
+
+exports[`rollup-rewriter should support loader being a function ("system") 1`] = `
+Object {
+  "a": "
+System.register([], function (exports, module) {
+    'use strict';
+import chunkCountIs8 from \\"./css.js\\";
+    return {
+        execute: function () {
+
+            exports('default', a);
+
+            var css = {
+                \\"a\\": \\"a\\"
+            };
+
+            function a() {
+                console.log(css);
+
+                Promise.all([
+    lazyload(\\"./assets/c.css\\"),
+    module.import('./c.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+            }
+
+        }
+    };
+});
+",
+  "b": "
+System.register([], function (exports, module) {
+    'use strict';
+import chunkCountIs8 from \\"./css.js\\";
+    return {
+        execute: function () {
+
+            exports('default', b);
+
+            var css = {
+                \\"b\\": \\"b\\"
+            };
+
+            function b() {
+                console.log(css);
+
+                Promise.all([
+    lazyload(\\"./assets/d.css\\"),
+    module.import('./d.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+            }
+
+        }
+    };
+});
+",
+  "c": "
+System.register([], function (exports) {
+    'use strict';
+    return {
+        execute: function () {
+
+            var css = {
+                \\"c\\": \\"c\\"
+            };
+
+            console.log(css);
+            exports('default', css);
+
+        }
+    };
+});
+",
+  "d": "
+System.register([], function (exports) {
+    'use strict';
+    return {
+        execute: function () {
+
+            var css = {
+                \\"d\\": \\"d\\"
+            };
+
+            console.log(css);
+            exports('default', css);
+
+        }
+    };
+});
+",
+}
+`;
+
 exports[`rollup-rewriter shouldn't require a loader ("amd") 1`] = `
 Object {
   "a.js": "
