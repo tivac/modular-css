@@ -11,7 +11,7 @@ exports.regex = (deps) => {
     );
 };
 
-exports.loader = (options, str) => str.prepend(`${options.loader}\n`);
+exports.loader = ({ content, str }) => str.prepend(`${content}\n`);
 
 exports.load = (options, imports, statement) => `
     Promise.all([

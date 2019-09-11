@@ -75,7 +75,11 @@ module.exports = (opts) => {
                 const str = new MagicString(code);
 
                 if(options.loader) {
-                    loader(options, str);
+                    const content = typeof options.loader === "function" ?
+                        options.loader({ chunks, options }) :
+                        options.loader;
+
+                    loader({ content, str });
                 }
 
                 // Yay stateful regexes
