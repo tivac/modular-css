@@ -408,7 +408,7 @@ Object {
     color: red;
 }
 ",
-  "simple.96e4896f.js": "
+  "simple.336b919d.js": "
 var css = {
     \\"str\\": \\"\\\\\\"string\\\\\\"\\",
     \\"fooga\\": \\"fooga\\"
