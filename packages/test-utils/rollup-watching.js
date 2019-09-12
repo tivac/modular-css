@@ -24,8 +24,6 @@ module.exports.promise = (watcher) => {
     let deferred;
 
     watcher.on("event", (e) => {
-        console.log("watch event", e.code);
-        
         if(e.code === "ERROR" || e.code === "FATAL") {
             return deferred && deferred.reject(e.error);
         }

@@ -22,7 +22,7 @@ describe("/rollup.js", () => {
         beforeAll(() => shell.rm("-rf", prefix(`./output/watch/*`)));
         afterEach(() => watcher.close());
         
-        it("should generate updated output", (done) => {
+        it("should generate updated output", async () => {
             // Create v1 of the files
             write(`./watch/change/watched.css`, `
                 .one {
@@ -50,32 +50,26 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            let v1;
-            let v2;
+            const wait = watching.promise(watcher);
 
-            watcher.on("event", watching((builds) => {
-                if(builds === 1) {
-                    v1 = dir("./watch/change/output/");
+            await wait();
+            
+            const v1 = dir("./watch/change/output/");
 
-                    setTimeout(() => write(`./watch/change/watched.css`, `
-                        .two {
-                            color: blue;
-                        }
-                    `), 100);
-
-                    // continue watching
-                    return;
+            setTimeout(() => write(`./watch/change/watched.css`, `
+                .two {
+                    color: blue;
                 }
+            `), 100);
 
-                v2 = dir("./watch/change/output/");
+            await wait();
 
-                expect(v1).toMatchDiffSnapshot(v2);
+            const v2 = dir("./watch/change/output/");
 
-                return done();
-            }));
+            expect(v1).toMatchDiffSnapshot(v2);
         });
 
-        it("should generate updated output for composes changes", (done) => {
+        it("should generate updated output for composes changes", async () => {
             // Create v1 of the files
             write(`./watch/change-composes/watched.css`, `
                 .one {
@@ -112,42 +106,36 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            let v1;
-            let v2;
+            const wait = watching.promise(watcher);
 
-            watcher.on("event", watching((builds) => {
-                if(builds === 1) {
-                    v1 = dir("./watch/change-composes/output/");
+            await wait();
+                    
+            const v1 = dir("./watch/change-composes/output/");
 
-                    setTimeout(() => write(`./watch/change-composes/watched.css`, `
-                        .one {
-                            color: green;
-                        }
-
-                        .two {
-                            composes: one;
-                            background: blue;
-                        }
-
-                        .three {
-                            composes: one;
-                            color: teal;
-                        }
-                    `), 100);
-
-                    // continue watching
-                    return;
+            setTimeout(() => write(`./watch/change-composes/watched.css`, `
+                .one {
+                    color: green;
                 }
 
-                v2 = dir("./watch/change-composes/output/");
+                .two {
+                    composes: one;
+                    background: blue;
+                }
 
-                expect(v1).toMatchDiffSnapshot(v2);
+                .three {
+                    composes: one;
+                    color: teal;
+                }
+            `), 100);
 
-                return done();
-            }));
+            await wait();
+
+            const v2 = dir("./watch/change-composes/output/");
+
+            expect(v1).toMatchDiffSnapshot(v2);
         });
 
-        it("should update when a dependency changes", (done) => {
+        it("should update when a dependency changes", async () => {
             // Create v1 of the files
             write(`./watch/dep-graph/one.css`, `
                 .one {
@@ -189,32 +177,26 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            let v1;
-            let v2;
+            const wait = watching.promise(watcher);
 
-            watcher.on("event", watching((builds) => {
-                if(builds === 1) {
-                    v1 = dir("./watch/dep-graph/output/");
+            await wait();
 
-                    setTimeout(() => write(`./watch/dep-graph/two.css`, `
-                        .two {
-                            color: green;
-                        }
-                    `), 100);
+            const v1 = dir("./watch/dep-graph/output/");
 
-                    // continue watching
-                    return;
+            setTimeout(() => write(`./watch/dep-graph/two.css`, `
+                .two {
+                    color: green;
                 }
+            `), 100);
 
-                v2 = dir("./watch/dep-graph/output/");
+            await wait();
 
-                expect(v1).toMatchDiffSnapshot(v2);
+            const v2 = dir("./watch/dep-graph/output/");
 
-                return done();
-            }));
+            expect(v1).toMatchDiffSnapshot(v2);
         });
 
-        it("should update when adding new css files", (done) => {
+        it("should update when adding new css files", async () => {
             // Create v1 of the files
             write(`./watch/new-file/one.css`, `
                 .one {
@@ -241,32 +223,26 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            let v1;
-            let v2;
+            const wait = watching.promise(watcher);
 
-            watcher.on("event", watching((builds) => {
-                if(builds === 1) {
-                    v1 = dir("./watch/new-file/output/");
+            await wait();
 
-                    setTimeout(() => write(`./watch/new-file/watch.js`, `
-                        import css from "./one.css";
+            const v1 = dir("./watch/new-file/output/");
 
-                        console.log(css);
-                    `), 100);
+            setTimeout(() => write(`./watch/new-file/watch.js`, `
+                import css from "./one.css";
 
-                    // continue watching
-                    return;
-                }
+                console.log(css);
+            `), 100);
 
-                v2 = dir("./watch/new-file/output");
+            await wait();
 
-                expect(v1).toMatchDiffSnapshot(v2);
+            const v2 = dir("./watch/new-file/output");
 
-                return done();
-            }));
+            expect(v1).toMatchDiffSnapshot(v2);
         });
 
-        it("should update when a shared dependency changes", (done) => {
+        it("should update when a shared dependency changes", async () => {
             // Create v1 of the files
             write(`./watch/shared-deps/one.css`, `
                 .one {
@@ -310,32 +286,26 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            let v1;
-            let v2;
+            const wait = watching.promise(watcher);
 
-            watcher.on("event", watching((builds) => {
-                if(builds === 1) {
-                    v1 = dir("./watch/shared-deps/output");
+            await wait();
+
+            const v1 = dir("./watch/shared-deps/output");
                     
-                    setTimeout(() => write(`./watch/shared-deps/two.css`, `
-                        .two {
-                            color: yellow;
-                        }
-                    `), 100);
-
-                    // continue watching
-                    return;
+            setTimeout(() => write(`./watch/shared-deps/two.css`, `
+                .two {
+                    color: yellow;
                 }
-                
-                v2 = dir("./watch/shared-deps/output");
+            `), 100);
+               
+            await wait();
 
-                expect(v1).toMatchDiffSnapshot(v2);
+            const v2 = dir("./watch/shared-deps/output");
 
-                return done();
-            }));
+            expect(v1).toMatchDiffSnapshot(v2);
         });
 
-        it("should update when a shared @value changes", (done) => {
+        it("should update when a shared @value changes", async () => {
             // Create v1 of the files
             write(`./watch/shared-deps/one.css`, `
                 @value baloo from "./values.css";
@@ -369,30 +339,24 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            let v1;
-            let v2;
+            const wait = watching.promise(watcher);
 
-            watcher.on("event", watching((builds) => {
-                if(builds === 1) {
-                    v1 = dir("./watch/shared-deps/output");
+            await wait();
+            
+            const v1 = dir("./watch/shared-deps/output");
                     
-                    setTimeout(() => write(`./watch/shared-deps/values.css`, `
-                        @value baloo: red;
-                    `), 100);
+            setTimeout(() => write(`./watch/shared-deps/values.css`, `
+                @value baloo: red;
+            `), 100);
 
-                    // continue watching
-                    return;
-                }
-                
-                v2 = dir("./watch/shared-deps/output");
+            await wait();
 
-                expect(v1).toMatchDiffSnapshot(v2);
+            const v2 = dir("./watch/shared-deps/output");
 
-                return done();
-            }));
+            expect(v1).toMatchDiffSnapshot(v2);
         });
         
-        it("should watch when using code splitting", (done) => {
+        it("should watch when using code splitting", async () => {
             // Create v1 of the files
             write(`./watch/code-splitting/one.css`, `
                 .one {
@@ -448,30 +412,24 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            let v1;
-            let v2;
+            const wait = watching.promise(watcher);
 
-            watcher.on("event", watching((builds) => {
-                if(builds === 1) {
-                    v1 = dir("./watch/code-splitting/output");
-                    
-                    // Create v2 of the file we want to change
-                    setTimeout(() => write(`./watch/code-splitting/shared.css`, `
-                        .shared {
-                            color: seafoam;
-                        }
-                    `), 100);
-                    
-                    // continue watching
-                    return;
+            await wait();
+
+
+            const v1 = dir("./watch/code-splitting/output");
+            
+            setTimeout(() => write(`./watch/code-splitting/shared.css`, `
+                .shared {
+                    color: seafoam;
                 }
-                
-                v2 = dir("./watch/code-splitting/output");
+            `), 100);
+                    
+            await wait();
 
-                expect(v1).toMatchDiffSnapshot(v2);
+            const v2 = dir("./watch/code-splitting/output");
 
-                return done();
-            }));
+            expect(v1).toMatchDiffSnapshot(v2);
         });
     });
 });

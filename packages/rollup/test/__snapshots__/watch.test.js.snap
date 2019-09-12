@@ -27,7 +27,7 @@ Snapshot Diff:
 - First value
 + Second value
 
-@@ -1,9 +1,9 @@
+@@ --- --- @@
   Object {
     "assets/watched.css": "/* packages/rollup/test/output/watch/change-composes/watched.css */
   .mc0f3c579a_one {
@@ -38,7 +38,7 @@ Snapshot Diff:
   .mc0f3c579a_two {
       background: blue;
   }
-@@ -12,11 +12,11 @@
+@@ --- --- @@
       color: teal;
   }",
     "output.js": "var css = {
@@ -58,7 +58,7 @@ Snapshot Diff:
 - First value
 + Second value
 
-@@ -1,9 +1,9 @@
+@@ --- --- @@
   Object {
     "assets/one.css": "/* packages/rollup/test/output/watch/dep-graph/two.css */
   .mc6f857f1c_two {
@@ -76,7 +76,7 @@ Snapshot Diff:
 - First value
 + Second value
 
-@@ -1,10 +1,10 @@
+@@ --- --- @@
   Object {
     "assets/one.css": "/* packages/rollup/test/output/watch/shared-deps/values.css */
   /* packages/rollup/test/output/watch/shared-deps/one.css */
@@ -88,7 +88,7 @@ Snapshot Diff:
   .mc5067d789_two {
       color: yellow;
   }
-@@ -15,11 +15,11 @@
+@@ --- --- @@
   /* packages/rollup/test/output/watch/shared-deps/three.css */
   .mc4ec9318b_three {
       color: teal;
@@ -108,7 +108,7 @@ Snapshot Diff:
 - First value
 + Second value
 
-@@ -1,9 +1,9 @@
+@@ --- --- @@
   Object {
     "assets/three.css": "/* packages/rollup/test/output/watch/shared-deps/two.css */
   .mc5067d789_two {
@@ -146,7 +146,7 @@ Snapshot Diff:
 - First value
 + Second value
 
-@@ -3,11 +3,11 @@
+@@ --- --- @@
   .mc204ad279_one {
       color: red;
   }",
