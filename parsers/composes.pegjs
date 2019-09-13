@@ -16,9 +16,9 @@ composition
     }
 
 global
-    = refs:references _ "from" _ "global" {
+    = refs:references _ "from" _ global_keyword {
         return {
-            type : "composition",
+            type : "simple",
             refs: refs.map(({ name }) => ({ name, global : true }))
         };
     }

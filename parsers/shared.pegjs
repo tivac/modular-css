@@ -5,7 +5,7 @@ _ "whitespace"
 s "string"
     = "\"" chars:[^\"\r\n]* "\"" { return chars.join(""); }
     / "\'" chars:[^\'\r\n]* "\'" { return chars.join(""); }
-  
+
 // Partials
 
 // wooga
@@ -17,11 +17,14 @@ ident "identifier"
 reference "reference"
     = "global(" _ ref:ident _ ")" { return { name : ref, global : true }; }
     / ref:ident { return { name : ref }; }
- 
+
 // wooga
 // wooga, tooga
 references "references"
     = _ head:reference tail:(_ "," _ ref:reference { return ref; })* _ { return [ head ].concat(tail); }
+
+global_keyword "global"
+    = "global"
 
 // "./wooga.css"
 source "source"

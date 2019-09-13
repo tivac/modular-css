@@ -22,7 +22,7 @@ describe("/processor.js", () => {
                     ".a { composes: b from nowhere.css; }"
                 );
             } catch({ message }) {
-                expect(message).toMatch(`SyntaxError: Expected source but "n" found.`);
+                expect(message).toMatch(`SyntaxError: Expected global or source but "n" found.`);
             }
         });
 
