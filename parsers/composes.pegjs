@@ -15,6 +15,8 @@ composition
         };
     }
 
+// fooga from global
+// fooga, wooga from global
 global
     = refs:references _ "from" _ global_keyword {
         return {
