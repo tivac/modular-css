@@ -69,6 +69,8 @@ class Processor {
             // eslint-disable-next-line no-empty-function
             () => {};
 
+        this._loadFile = options.loadFile;
+
         this._resolve = resolve.resolvers(options.resolvers);
 
         this._normalize = normalize.bind(null, this._options.cwd);
@@ -458,6 +460,10 @@ class Processor {
                 }
 
                 // Otherwise add it to the queue
+                if(this._loadFile) {
+                    return this._loadFile(dependency).then((str) => this.string(dependency, str));
+                }
+
                 return this.file(dependency);
             })
         );
