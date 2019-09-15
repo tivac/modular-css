@@ -64,7 +64,7 @@ with CSS frameworks or other non-module styles.
 ::: repl
 ```css
 .box {
-    composes: d-flex px-4 py-3 from global;
+    composes: d-flex, px-4, py-3 from global;
 
     color: blue;
 }
