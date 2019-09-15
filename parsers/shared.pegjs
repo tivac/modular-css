@@ -5,19 +5,22 @@ _ "whitespace"
 s "string"
     = "\"" chars:[^\"\r\n]* "\"" { return chars.join(""); }
     / "\'" chars:[^\'\r\n]* "\'" { return chars.join(""); }
-  
+
 // Partials
 
 // wooga
 ident "identifier"
     = chars:[a-z0-9-_]i+ { return chars.join(""); }
 
+global_keyword "global"
+    = "global"
+
 // wooga
 // global(wooga)
 reference "reference"
-    = "global(" _ ref:ident _ ")" { return { name : ref, global : true }; }
+    = global_keyword "(" _ ref:ident _ ")" { return { name : ref, global : true }; }
     / ref:ident { return { name : ref }; }
- 
+
 // wooga
 // wooga, tooga
 references "references"

@@ -1,6 +1,6 @@
 ### Style Composition
 
-Selector limitations mean that it's difficult to use complicated selectors, so to enable building anything of complexity you can compose selectors. These compositions can be within a file or even pull in classes defined in other files.
+Selector limitations mean that it's difficult to use complicated selectors, so to enable building anything of complexity you can compose selectors. These compositions can be within a file, reference global CSS class, or even pull in classes defined in other files.
 
 ::: repl
 ```css
@@ -10,7 +10,7 @@ Selector limitations mean that it's difficult to use complicated selectors, so t
 
 .local {
     composes: composable;
-    
+
     color: red;
 }
 
@@ -25,19 +25,52 @@ Selector limitations mean that it's difficult to use complicated selectors, so t
 When this file is required the JS object will contain the expected keys, but the arrays will now contain more values.
 
 ```js
-var css = require("./styles.css");
+var css = require("./style.css");
 
 // css is:
 /*
 {
-    single   : "dafdfcc_other aeacf0c_single",
-    // Since .multiple is only a singular composes: declaration there's no need
-    // for it to be rewritten, it's left out of the output
-    multiple : "dafdfcc_more f5507abd_than aeacf0c_one",
-    local    : "dafdfcc_other aeacf0c_single"
+    composable : "dafdfcc_composable",
+    local      : "dafdfcc_composable aeacf0c_local",
+    removed    : "dafdfcc_composable aeacf0c_local aeacf0c_removed"
 }
 */
 ```
+
+Composition also works between files, by providing the source file.
+
+::: repl
+```css
+/* === style-guide.css === */
+
+.body {
+    margin: 10px;
+    height: 100%;
+}
+
+/* === home-page.css === */
+
+.body {
+    composes: body from "/style-guide.css";
+
+    padding: 10px;
+}
+```
+::::
+
+Styles can also be composed directly from the global scope to help with interoperability
+with CSS frameworks or other non-module styles.
+
+::: repl
+```css
+.box {
+    composes: d-flex, px-4, py-3 from global;
+
+    color: blue;
+}
+```
+::::
+
 
 If you're going to be doing a lot of composition with another file you can store the filename into a value for ease of referencing.
 
@@ -58,13 +91,13 @@ If you're going to be doing a lot of composition with another file you can store
 
 .head {
     composes: heading from guide;
-    
+
     font-size: 120%;
 }
 
 .body {
     composes: body from guide;
-    
+
     padding: 10px;
 }
 ```

@@ -1,5 +1,6 @@
 start
     = composition
+    / global
     / namespaced
     / simple
 
@@ -11,6 +12,16 @@ composition
             type : "composition",
             source,
             refs
+        };
+    }
+
+// fooga from global
+// fooga, wooga from global
+global
+    = refs:references _ "from" _ global_keyword {
+        return {
+            type : "simple",
+            refs: refs.map(({ name }) => ({ name, global : true }))
         };
     }
 

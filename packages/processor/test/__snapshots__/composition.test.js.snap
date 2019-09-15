@@ -28,6 +28,14 @@ Object {
 }
 `;
 
+exports[`/processor.js composition should compose from global keyword 1`] = `
+Object {
+  "global-compose.css": Object {
+    "a": "b c d a",
+  },
+}
+`;
+
 exports[`/processor.js composition should compose from globals 1`] = `
 Object {
   "global-compose.css": Object {

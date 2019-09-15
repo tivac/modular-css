@@ -8,7 +8,7 @@ const Processor = require("../processor.js");
 describe("/processor.js", () => {
     describe("composition", () => {
         let processor;
-        
+
         beforeEach(() => {
             processor = new Processor({
                 namer,
@@ -22,10 +22,10 @@ describe("/processor.js", () => {
                     ".a { composes: b from nowhere.css; }"
                 );
             } catch({ message }) {
-                expect(message).toMatch(`SyntaxError: Expected source but "n" found.`);
+                expect(message).toMatch(`SyntaxError: Expected global or source but "n" found.`);
             }
         });
-        
+
         it("should fail if a composition references a non-existant class", async () => {
             try {
                 await processor.string(
@@ -36,7 +36,7 @@ describe("/processor.js", () => {
                 expect(message).toMatch(`Invalid composes reference`);
             }
         });
-        
+
         it("should fail if a composition references a non-existant file", async () => {
             try {
                 await processor.string(
@@ -108,12 +108,12 @@ describe("/processor.js", () => {
                     }
                 `)
             );
-            
+
             const { compositions } = await processor.output();
-            
+
             expect(compositions).toMatchSnapshot();
         });
-        
+
         it("should allow composes anywhere", async () => {
             await processor.string(
                 "./multiple-composes.css",
@@ -131,9 +131,9 @@ describe("/processor.js", () => {
                     }
                 `)
             );
-            
+
             const { compositions } = await processor.output();
-            
+
             expect(compositions).toMatchSnapshot();
         });
 
@@ -144,9 +144,22 @@ describe("/processor.js", () => {
                     .a { composes: global(b); }
                 `)
             );
-            
+
             const { compositions } = await processor.output();
-            
+
+            expect(compositions).toMatchSnapshot();
+        });
+
+        it("should compose from global keyword", async () => {
+            await processor.string(
+                "./global-compose.css",
+                dedent(`
+                    .a { composes: b, c, d from global; }
+                `)
+            );
+
+            const { compositions } = await processor.output();
+
             expect(compositions).toMatchSnapshot();
         });
 
@@ -162,17 +175,17 @@ describe("/processor.js", () => {
                     }
                 `)
             );
-            
+
             const { compositions } = await processor.output();
-            
+
             expect(compositions).toMatchSnapshot();
         });
-        
+
         it("should compose from other files", async () => {
             await processor.file(require.resolve("./specimens/composes.css"));
-            
+
             const { compositions } = await processor.output();
-            
+
             expect(compositions).toMatchSnapshot();
         });
     });
