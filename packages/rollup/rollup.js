@@ -257,7 +257,11 @@ module.exports = (opts) => {
                     continue;
                 }
 
-                const id = this.emitAsset(`${name}${ext}`, result.css);
+                const id = this.emitFile({
+                    type   : "asset",
+                    name   : `${name}${ext}`,
+                    source : result.css,
+                });
 
                 // Save off the final name of this asset for later use
                 const dest = this.getAssetFileName(id);
@@ -266,9 +270,6 @@ module.exports = (opts) => {
 
                 log("css output", dest);
 
-                // Maps can't be written out via the asset APIs becuase they shouldn't ever be hashed.
-                // They shouldn't be hashed because they simply follow the name of their parent .css asset.
-                // So add them to the bundle directly.
                 if(result.map) {
                     // Make sure to use the rollup name as the base, otherwise it won't
                     // automatically handle duplicate names correctly
@@ -276,11 +277,14 @@ module.exports = (opts) => {
 
                     log("map output", fileName);
 
-                    bundle[fileName] = {
-                        isAsset : true,
-                        source  : result.map.toString(),
+                    this.emitFile({
+                        type   : "asset",
+                        source : result.map.toString(),
+
+                        // Use fileName instead of name because this has to follow the parent
+                        // file naming and can't be double-hashed
                         fileName,
-                    };
+                    });
 
                     // Had to re-add the map annotation to the end of the source files
                     // if the filename had a hash, since we stripped it out up above
@@ -297,7 +301,11 @@ module.exports = (opts) => {
 
                 const compositions = await processor.compositions;
 
-                this.emitAsset(dest, JSON.stringify(compositions, null, 4));
+                this.emitFile({
+                    type   : "asset",
+                    name   : dest,
+                    source : JSON.stringify(compositions, null, 4),
+                });
             }
 
             const meta = {};
@@ -328,7 +336,11 @@ module.exports = (opts) => {
 
                 log("metadata output", dest);
 
-                this.emitAsset(dest, JSON.stringify(meta, null, 4));
+                this.emitFile({
+                    type   : "asset",
+                    source : JSON.stringify(meta, null, 4),
+                    name   : dest,
+                });
             }
         },
     };
