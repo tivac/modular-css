@@ -31,11 +31,8 @@ describe("/svelte.js", () => {
         beforeAll(() => shell.rm("-rf", prefix(`./output/rollup/*`)));
         afterEach(() => watcher.close());
 
-        it("should generate updated output", (done) => {
+        it("should generate updated output", async () => {
             const { preprocess, processor } = plugin();
-
-            let v1;
-            let v2;
 
             // Create v1 of the files
             write(`./rollup/input/index.js`, `
@@ -65,44 +62,38 @@ describe("/svelte.js", () => {
                 ],
             });
 
-            watcher.on("event", watching((builds) => {
-                if(builds === 1) {
-                    v1 = dir("./rollup/output/");
+            const wait = watching.promise(watcher);
 
-                    setTimeout(() => {
-                        write(`./rollup/input/app.css`, `
-                            .nope {
-                                color: blue;
-                            }
-                        `);
+            await wait();
 
-                        write(`./rollup/input/app.html`, `
-                            <link rel="stylesheet" href="./app.css" />
-                            <div class="{css.nope}">Hi</div>
-                        `);
-                    }, 100);
+            const v1 = dir("./rollup/output/");
 
-                    // continue watching
-                    return;
-                }
+            setTimeout(() => {
+                write(`./rollup/input/app.css`, `
+                    .nope {
+                        color: blue;
+                    }
+                `);
 
-                v2 = dir("./rollup/output/");
+                write(`./rollup/input/app.html`, `
+                    <link rel="stylesheet" href="./app.css" />
+                    <div class="{css.nope}">Hi</div>
+                `);
+            }, 100);
 
-                expect(v1).toMatchDiffSnapshot(v2, {
-                    // Get specific to avoid some travis-related weirdness
-                    contextLines     : 0,
-                    stablePatchmarks : true,
-                });
+            await wait();
 
-                return done();
-            }));
+            const v2 = dir("./rollup/output/");
+
+            expect(v1).toMatchDiffSnapshot(v2, {
+                // Get specific to avoid some travis-related weirdness
+                contextLines     : 0,
+                stablePatchmarks : true,
+            });
         });
 
-        it("should generate updated output when composition changes", (done) => {
+        it("should generate updated output when composition changes", async () => {
             const { preprocess, processor } = plugin();
-
-            let v1;
-            let v2;
 
             // Create v1 of the files
             write(`./rollup-composes/input/index.js`, `
@@ -151,30 +142,27 @@ describe("/svelte.js", () => {
                 ],
             });
 
-            watcher.on("event", watching((builds) => {
-                if(builds === 1) {
-                    v1 = dir("./rollup-composes/output/");
+            const wait = watching.promise(watcher);
 
-                    setTimeout(() => {
-                        write(`./rollup-composes/input/app.css`, `
-                            .a {
-                                composes: c from "./other.css";
-                                
-                                color: red;
-                            }
-                        `);
-                    }, 100);
+            await wait();
 
-                    // continue watching
-                    return;
+            const v1 = dir("./rollup-composes/output/");
+
+            setTimeout(() => write(`./rollup-composes/input/app.css`, `
+                .a {
+                    composes: c from "./other.css";
+                    
+                    color: red;
                 }
+            `), 100);
+            
+            await wait();
 
-                v2 = dir("./rollup-composes/output/");
+            const v2 = dir("./rollup-composes/output/");
 
-                expect(v1).toMatchDiffSnapshot(v2);
+            expect(v1).toMatchDiffSnapshot(v2);
 
-                return done();
-            }));
+            wait.close();
         });
     });
 
