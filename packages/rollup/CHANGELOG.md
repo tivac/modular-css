@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.0.0](https://github.com/tivac/modular-css/compare/v24.2.2...v25.0.0) (2019-09-16)
+
+
+### Bug Fixes
+
+* use this.emitFile() API from rollup ([#666](https://github.com/tivac/modular-css/issues/666)) ([108a4a1](https://github.com/tivac/modular-css/commit/108a4a1))
+* **www:** trying this again... ([b3d9221](https://github.com/tivac/modular-css/commit/b3d9221))
+
+
+
+
+
 ## [24.2.2](https://github.com/tivac/modular-css/compare/v24.2.0...v24.2.2) (2019-07-08)
 
 **Note:** Version bump only for package @modular-css/rollup

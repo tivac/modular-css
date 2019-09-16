@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.0.0](https://github.com/tivac/modular-css/compare/v24.2.2...v25.0.0) (2019-09-16)
+
+
+### Features
+
+* **rollup-rewriter:** let loader option be a function ([#667](https://github.com/tivac/modular-css/issues/667)) ([a57cddf](https://github.com/tivac/modular-css/commit/a57cddf))
+
+
+
+
+
 # [24.1.0](https://github.com/tivac/modular-css/compare/v24.0.1...v24.1.0) (2019-06-17)
 
 **Note:** Version bump only for package @modular-css/rollup-rewriter

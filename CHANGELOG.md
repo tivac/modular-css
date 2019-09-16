@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.0.0](https://github.com/tivac/modular-css/compare/v24.2.2...v25.0.0) (2019-09-16)
+
+
+### Bug Fixes
+
+* use this.emitFile() API from rollup ([#666](https://github.com/tivac/modular-css/issues/666)) ([108a4a1](https://github.com/tivac/modular-css/commit/108a4a1))
+* **www:** stub out module since resolve-from uses it now ([e11947c](https://github.com/tivac/modular-css/commit/e11947c))
+* **www:** trying this again... ([b3d9221](https://github.com/tivac/modular-css/commit/b3d9221))
+
+
+### Features
+
+* support from global for composes ([#669](https://github.com/tivac/modular-css/issues/669)) ([0a7996e](https://github.com/tivac/modular-css/commit/0a7996e))
+* **processor:** allow composes anywhere in a rule ([#646](https://github.com/tivac/modular-css/issues/646)) ([31b57a2](https://github.com/tivac/modular-css/commit/31b57a2)), closes [#645](https://github.com/tivac/modular-css/issues/645)
+* **rollup-rewriter:** let loader option be a function ([#667](https://github.com/tivac/modular-css/issues/667)) ([a57cddf](https://github.com/tivac/modular-css/commit/a57cddf))
+* **stylelint-config:** add @modular-css/stylelint-config package ([#637](https://github.com/tivac/modular-css/issues/637)) ([bc3b711](https://github.com/tivac/modular-css/commit/bc3b711))
+
+
+### BREAKING CHANGES
+
+* **processor:** previously `modular-css` would require that `composes` be the first declaration in  a rule. This restriction has been removed due to better solutions for enforcing that behavior existing now (stylelint-order).
+
+
+
+
+
 ## [24.2.2](https://github.com/tivac/modular-css/compare/v24.2.0...v24.2.2) (2019-07-08)
 
 

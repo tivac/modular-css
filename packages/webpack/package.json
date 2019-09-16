@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/webpack",
-  "version": "24.2.2",
+  "version": "25.0.0",
   "description": "Webpack support for modular-css",
   "main": "./index.js",
   "repository": {
