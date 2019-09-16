@@ -46,8 +46,3 @@ jobs:
       script:
       - npm test -- --ci --coverage
       - npx codecov
-
-# travis buddy adds comments with travis failures to PRs
-notifications:
-  webhooks: https://www.travisbuddy.com/
-  on_success: never
