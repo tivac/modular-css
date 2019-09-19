@@ -412,6 +412,7 @@ class Processor {
     async _walk(name, text) {
         // No need to re-process files unless they've been marked invalid
         if(this._files[name] && this._files[name].valid) {
+            console.log('CACHE HIT', name);
             return;
         }
 
