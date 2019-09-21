@@ -37,13 +37,14 @@ class Processor {
         const options = Object.assign(
             Object.create(null),
             {
-                cwd       : process.cwd(),
-                map       : false,
-                rewrite   : true,
-                verbose   : false,
-                resolvers : [],
-                postcss   : {},
-                dupewarn  : true,
+                cwd          : process.cwd(),
+                dupewarn     : true,
+                exportValues : true,
+                map          : false,
+                postcss      : {},
+                resolvers    : [],
+                rewrite      : true,
+                verbose      : false,
             },
             opts
         );
@@ -379,8 +380,11 @@ class Processor {
 
             file.exports = Object.assign(
                 Object.create(null),
-                // export @value entries
-                mapValues(file.values, ({ value }) => value),
+
+                // optionally export @value entries
+                this._options.exportValues ?
+                    mapValues(file.values, ({ value }) => value) :
+                    null,
 
                 // export classes
                 message(result, "classes"),
