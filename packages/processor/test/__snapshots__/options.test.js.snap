@@ -8,7 +8,7 @@ Object {
 }
 `;
 
-exports[`/processor.js options exportValues should not export @values by default 1`] = `
+exports[`/processor.js options exportValues should export @values by default 1`] = `
 Object {
   "a": "#F00",
   "b": Array [
