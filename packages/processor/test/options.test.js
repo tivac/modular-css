@@ -146,6 +146,38 @@ describe("/processor.js", () => {
             });
         });
 
+        describe("exportValues", () => {
+            it("should export @values by default", async () => {
+                const processor = new Processor({});
+
+                const { exports } = await processor.string(
+                    "./exportValues.css",
+                    dedent(`
+                        @value a: #F00;
+                        .b {}
+                    `)
+                );
+
+                expect(exports).toMatchSnapshot();
+            });
+
+            it("should not export @values when exportValues is false", async () => {
+                const processor = new Processor({
+                    exportValues : false,
+                });
+
+                const { exports } = await processor.string(
+                    "./exportGlobals.css",
+                    dedent(`
+                        @value a: #F00;
+                        .b {}
+                    `)
+                );
+
+                expect(exports).toMatchSnapshot();
+            });
+        });
+
         describe("rewrite", () => {
             it("should rewrite url() references by default", async () => {
                 const processor = new Processor();
