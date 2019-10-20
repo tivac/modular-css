@@ -18,6 +18,8 @@ const normalize = require("./lib/normalize.js");
 
 const noop = () => true;
 
+const defaultLoadFile = (id) => fs.readFileSync(id, "utf8");
+
 const params = ({ _options, _files, _graph, _resolve }, args) => Object.assign(
     Object.create(null),
     _options,
@@ -44,6 +46,7 @@ class Processor {
                 resolvers : [],
                 postcss   : {},
                 dupewarn  : true,
+                loadFile  : defaultLoadFile,
             },
             opts
         );
@@ -78,6 +81,7 @@ class Processor {
         this._files = Object.create(null);
         this._graph = new Graph();
         this._ids = new Map();
+        this._pendingFiles = new Map();
 
         this._before = postcss([
             ...(options.before || []),
@@ -117,7 +121,17 @@ class Processor {
 
         this._log("file()", id);
 
-        return this._add(id, fs.readFileSync(id, "utf8"));
+        if(!this._pendingFiles.has(id)) {
+            const removePending = () => this._pendingFiles.delete(id);
+
+            const pendingAdd = Promise.resolve(this._loadFile(id))
+                .then((contents) => this._add(id, contents));
+
+            pendingAdd.then(removePending, removePending);
+            this._pendingFiles.set(id, pendingAdd);
+        }
+
+        return this._pendingFiles.get(id);
     }
 
     // Add a file by name + contents to the dependency graph
@@ -412,7 +426,6 @@ class Processor {
     async _walk(name, text) {
         // No need to re-process files unless they've been marked invalid
         if(this._files[name] && this._files[name].valid) {
-            console.log('CACHE HIT', name);
             return;
         }
 
@@ -461,10 +474,6 @@ class Processor {
                 }
 
                 // Otherwise add it to the queue
-                if(this._loadFile) {
-                    return this._loadFile(dependency).then((str) => this.string(dependency, str));
-                }
-
                 return this.file(dependency);
             })
         );
