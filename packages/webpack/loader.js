@@ -10,6 +10,7 @@ module.exports = async function(source) {
     const defaults  = {
         styleExport  : true,
         namedExports : true,
+        defaultExport: true,
     };
     const options   = Object.assign(Object.create(null), defaults, utils.getOptions(this)) || false;
     const done      = this.async();
@@ -31,9 +32,11 @@ module.exports = async function(source) {
         const result = await processor.string(this.resourcePath, source);
 
         const exported = output.join(result.exports);
-        const out = [
-            `export default ${JSON.stringify(exported, null, 4)};`,
-        ];
+        const out = [];
+
+        if(options.defaultExport) {
+            out.push(`export default ${JSON.stringify(exported, null, 4)};`);
+        }
 
         processor.dependencies(this.resourcePath).forEach(this.addDependency);
 
