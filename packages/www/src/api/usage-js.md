@@ -225,3 +225,18 @@ Remove files from the `Processor` instance. Accepts a single file or array of fi
 
 Returns an array of file paths. Accepts a single file argument to get the dependencies for, will return entire dependency graph in order if argument is omitted.
 
+##### `.invalidate(file)`
+
+Marks a file as stale, if that file is re-added either directly or as a dependency it will be reloaded from disk instead of the Processor cache.
+
+##### `.has(file)`
+
+Checks if the Processor instance knows about a file.
+
+##### `.normalize(file)`
+
+Uses the built-in path normalization settings to normalize the case of a file path.
+
+##### `.resolve(src, file)`
+
+Resolves `file` from `src`, using any of the specified [`resolvers`](#resolvers).
