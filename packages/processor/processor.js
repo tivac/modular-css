@@ -116,22 +116,14 @@ class Processor {
     }
 
     // Add a file on disk to the dependency graph
-    file(file) {
+    async file(file) {
         const id = this._normalize(file);
 
         this._log("file()", id);
 
-        if(!this._pendingFiles.has(id)) {
-            const removePending = () => this._pendingFiles.delete(id);
-
-            const pendingAdd = Promise.resolve(this._loadFile(id))
-                .then((contents) => this._add(id, contents));
-
-            pendingAdd.then(removePending, removePending);
-            this._pendingFiles.set(id, pendingAdd);
-        }
-
-        return this._pendingFiles.get(id);
+        const text = await this._loadFile(id);
+        
+        return this._add(id, text);
     }
 
     // Add a file by name + contents to the dependency graph
@@ -426,6 +418,9 @@ class Processor {
     async _walk(name, text) {
         // No need to re-process files unless they've been marked invalid
         if(this._files[name] && this._files[name].valid) {
+            // Do want to wait until they're done being processed though
+            await this._files[name].walked;
+
             return;
         }
 
@@ -467,7 +462,7 @@ class Processor {
         await Promise.all(
             this._graph.dependenciesOf(name).map((dependency) => {
                 const { valid, walked : complete } = this._files[dependency] || false;
-
+                
                 // If the file hasn't been invalidated wait for it to be done processing
                 if(valid) {
                     return complete;
