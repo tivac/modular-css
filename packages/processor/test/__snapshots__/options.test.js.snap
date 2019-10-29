@@ -8,6 +8,23 @@ Object {
 }
 `;
 
+exports[`/processor.js options exportValues should export @values by default 1`] = `
+Object {
+  "a": "#F00",
+  "b": Array [
+    "mc61ce7a4a_b",
+  ],
+}
+`;
+
+exports[`/processor.js options exportValues should not export @values when exportValues is false 1`] = `
+Object {
+  "b": Array [
+    "mc8df92ddf_b",
+  ],
+}
+`;
+
 exports[`/processor.js options lifecycle options after should run async postcss plugins 1`] = `
 "/* packages/processor/test/specimens/relative.css */
 .wooga {

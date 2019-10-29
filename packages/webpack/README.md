@@ -74,9 +74,29 @@ All other options are passed to the underlying `Processor` instance, see [Option
 
 ### Loader Options
 
+#### `defaultExport`
+
+By default this plugin will create both a default export and named `export`s for each class in a CSS file. You can disable `default` by setting `defaultExport` to `false`.
+
+```js
+...
+    module : {
+        rules : [{
+            test : /\.css$/,
+            use  : {
+                loader  : "@modular-css/webpack/loader",
+                options : {
+                    defaultExport : false
+                }
+            }
+        }]
+    },
+...
+```
+
 #### `namedExports`
 
-By default this plugin will create both a default export and named `export`s for each class in a CSS file. You can disable this by setting `namedExports` to `false`.
+By default this plugin will create both a default export and named `export`s for each class in a CSS file. You can disable named `export`s  by setting `namedExports` to `false`.
 
 ```js
 ...

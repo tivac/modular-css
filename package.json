@@ -18,7 +18,6 @@
     "prepublishOnly": "npm run parsers",
     "pretest": "npm run parsers",
     "test": "jest",
-    "posttest": "npm run lint",
     "watch": "jest --watch",
     "www:build": "lerna run --stream build packages/www",
     "www:start": "lerna run --stream start packages/www",

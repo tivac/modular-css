@@ -9,12 +9,12 @@ const postcss   = require("postcss");
 const slug      = require("unique-slug");
 const mapValues = require("lodash/mapValues");
 
-const output    = require("./lib/output.js");
-const message   = require("./lib/message.js");
-const relative  = require("./lib/relative.js");
-const tiered    = require("./lib/graph-tiers.js");
-const resolve   = require("./lib/resolve.js");
-const normalize = require("./lib/normalize.js");
+const output        = require("./lib/output.js");
+const message       = require("./lib/message.js");
+const relative      = require("./lib/relative.js");
+const tiered        = require("./lib/graph-tiers.js");
+const normalize     = require("./lib/normalize.js");
+const { resolvers } = require("./lib/resolve.js");
 
 const noop = () => true;
 
@@ -74,7 +74,7 @@ class Processor {
 
         this._loadFile = options.loadFile;
 
-        this._resolve = resolve.resolvers(options.resolvers);
+        this._resolve = resolvers(options.resolvers);
 
         this._normalize = normalize.bind(null, this._options.cwd);
 
@@ -160,6 +160,11 @@ class Processor {
     // Return the corrected-path version of the file
     normalize(file) {
         return this._normalize(file);
+    }
+
+    // Resolve a file from a src using the configured resolvers
+    resolve(src, file) {
+        return this._resolve(src, file);
     }
 
     // Check if a file exists in the currently-processed set
@@ -387,8 +392,11 @@ class Processor {
 
             file.exports = Object.assign(
                 Object.create(null),
-                // export @value entries
-                mapValues(file.values, ({ value }) => value),
+
+                // optionally export @value entries
+                this._options.exportValues ?
+                    mapValues(file.values, ({ value }) => value) :
+                    null,
 
                 // export classes
                 message(result, "classes"),

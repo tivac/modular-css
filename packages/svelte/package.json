@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/svelte",
-  "version": "25.0.0",
+  "version": "25.1.0",
   "description": "Add modular-css support to svelte",
   "main": "./svelte.js",
   "repository": {
@@ -31,8 +31,7 @@
   "dependencies": {
     "@modular-css/processor": "file:../processor",
     "escape-string-regexp": "^2.0.0",
-    "is-url": "^1.2.4",
-    "resolve-from": "^5.0.0"
+    "is-url": "^1.2.4"
   },
   "peerDependencies": {
     "svelte": ">1"

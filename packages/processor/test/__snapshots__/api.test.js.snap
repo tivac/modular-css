@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/processor.js API ._resolve() should fall back to a default resolver 1`] = `
+exports[`/processor.js API .resolve() should fall back to a default resolver 1`] = `
 Array [
   "packages/processor/test/specimens/local.css",
 ]
 `;
 
-exports[`/processor.js API ._resolve() should run resolvers until a match is found 1`] = `
+exports[`/processor.js API .resolve() should run resolvers until a match is found 1`] = `
 Array [
   "packages/processor/test/specimens/local.css",
 ]

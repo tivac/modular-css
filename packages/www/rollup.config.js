@@ -133,9 +133,11 @@ module.exports = [
 
         plugins : [
             require("rollup-plugin-alias")({
-                fs     : require.resolve("./stubs/fs.js"),
-                path   : require.resolve("./stubs/path.js"),
-                module : require.resolve("./stubs/module.js"),
+                entries : {
+                    fs     : require.resolve("./stubs/fs.js"),
+                    path   : require.resolve("./stubs/path.js"),
+                    module : require.resolve("./stubs/module.js"),
+                },
             }),
 
             require("rollup-plugin-node-resolve")({
