@@ -83,7 +83,6 @@ class Processor {
         this._files = Object.create(null);
         this._graph = new Graph();
         this._ids = new Map();
-        this._pendingFiles = new Map();
 
         this._before = postcss([
             ...(options.before || []),
