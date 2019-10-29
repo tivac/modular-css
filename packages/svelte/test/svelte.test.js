@@ -370,4 +370,30 @@ describe("/svelte.js", () => {
 
         expect(results.map((result) => result.toString())).toMatchSnapshot();
     });
+
+    it("should use modular-css's file resolver", async () => {
+        const processor = new Processor({
+            namer,
+            resolvers : [
+                // Force all paths to resolve to a different file
+                () => require.resolve("./specimens/simple.css"),
+            ],
+        });
+
+        const filename = require.resolve("./specimens/link-resolving.html");
+        const { preprocess } = plugin({
+            processor,
+        });
+
+        const processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            Object.assign({}, preprocess, { filename })
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        const output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
+    });
 });
