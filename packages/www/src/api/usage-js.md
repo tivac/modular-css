@@ -141,9 +141,25 @@ new Processor({
         (src, file, resolve) => ...,
         require("@modular-css/path-resolver")(
             "./some/other/path"
-        )
-    ]
-})
+        ),
+    ],
+});
+```
+
+##### `loadFile`
+
+Specify a function that will be responsible for taking a file path and returning the text contents of the file. The function can be synchronous, return a promise, or use `async`/`await`.
+
+The default implementation uses `fs` to read files off the local filesystem.
+
+```js
+new Processor({
+    async loadFile(id) {
+        const text = await goGetItFromSomewhere(id);
+
+        return text;
+    },
+});
 ```
 
 ##### `exportGlobals`
