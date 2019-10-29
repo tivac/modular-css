@@ -18,6 +18,8 @@ const { resolvers } = require("./lib/resolve.js");
 
 const noop = () => true;
 
+const defaultLoadFile = (id) => fs.readFileSync(id, "utf8");
+
 const params = ({ _options, _files, _graph, _resolve }, args) => Object.assign(
     Object.create(null),
     _options,
@@ -37,10 +39,12 @@ class Processor {
         const options = Object.assign(
             Object.create(null),
             {
-                cwd          : process.cwd(),
+                cwd : process.cwd(),
+                map : false,
+                
                 dupewarn     : true,
                 exportValues : true,
-                map          : false,
+                loadFile     : defaultLoadFile,
                 postcss      : {},
                 resolvers    : [],
                 rewrite      : true,
@@ -70,7 +74,10 @@ class Processor {
             // eslint-disable-next-line no-empty-function
             () => {};
 
+        this._loadFile = options.loadFile;
+
         this._resolve = resolvers(options.resolvers);
+
         this._normalize = normalize.bind(null, this._options.cwd);
 
         this._files = Object.create(null);
@@ -110,12 +117,14 @@ class Processor {
     }
 
     // Add a file on disk to the dependency graph
-    file(file) {
+    async file(file) {
         const id = this._normalize(file);
 
         this._log("file()", id);
 
-        return this._add(id, fs.readFileSync(id, "utf8"));
+        const text = await this._loadFile(id);
+        
+        return this._add(id, text);
     }
 
     // Add a file by name + contents to the dependency graph
@@ -418,6 +427,9 @@ class Processor {
     async _walk(name, text) {
         // No need to re-process files unless they've been marked invalid
         if(this._files[name] && this._files[name].valid) {
+            // Do want to wait until they're done being processed though
+            await this._files[name].walked;
+
             return;
         }
 
@@ -459,7 +471,7 @@ class Processor {
         await Promise.all(
             this._graph.dependenciesOf(name).map((dependency) => {
                 const { valid, walked : complete } = this._files[dependency] || false;
-
+                
                 // If the file hasn't been invalidated wait for it to be done processing
                 if(valid) {
                     return complete;
