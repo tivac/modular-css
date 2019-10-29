@@ -467,6 +467,11 @@ Array [
   ],
   Array [
     "[processor]",
+    "file()",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
     "_add()",
     "packages/svelte/test/specimens/simple.css",
   ],
@@ -474,11 +479,6 @@ Array [
     "[processor]",
     "_before()",
     "packages/svelte/test/specimens/simple.css",
-  ],
-  Array [
-    "[processor]",
-    "file()",
-    "packages/svelte/test/specimens/dependencies.css",
   ],
   Array [
     "[processor]",
@@ -571,6 +571,11 @@ Array [
   ],
   Array [
     "[processor]",
+    "file()",
+    "packages/svelte/test/specimens/dependencies.css",
+  ],
+  Array [
+    "[processor]",
     "_add()",
     "packages/svelte/test/specimens/simple.css",
   ],
@@ -578,11 +583,6 @@ Array [
     "[processor]",
     "_before()",
     "packages/svelte/test/specimens/simple.css",
-  ],
-  Array [
-    "[processor]",
-    "file()",
-    "packages/svelte/test/specimens/dependencies.css",
   ],
   Array [
     "[processor]",
