@@ -31,8 +31,7 @@
   "dependencies": {
     "@modular-css/processor": "file:../processor",
     "escape-string-regexp": "^2.0.0",
-    "is-url": "^1.2.4",
-    "resolve-from": "^5.0.0"
+    "is-url": "^1.2.4"
   },
   "peerDependencies": {
     "svelte": ">1"

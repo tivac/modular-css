@@ -2,7 +2,6 @@
 
 const path = require("path");
 
-const resolve = require("resolve-from");
 const isUrl = require("is-url");
 const escape = require("escape-string-regexp");
 
@@ -143,7 +142,7 @@ module.exports = (config = false) => {
             // Assign to file for later usage in logging
             css = href;
 
-            const external = resolve(path.dirname(html), css);
+            const external = processor.resolve(html, css);
 
             log("extract <link>", external);
 

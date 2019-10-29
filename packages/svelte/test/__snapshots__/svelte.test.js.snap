@@ -658,6 +658,19 @@ exports[`/svelte.js should use an already-created processor 2`] = `
 }"
 `;
 
+exports[`/svelte.js should use modular-css's file resolver 1`] = `
+"<div class=\\"fooga\\">fooga</div>
+<script>import css from \\"./does-not-exist.css\\";</script>"
+`;
+
+exports[`/svelte.js should use modular-css's file resolver 2`] = `
+"/* packages/svelte/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+"
+`;
+
 exports[`/svelte.js should wait for files to finish 1`] = `
 Array [
   "<style>/* replaced by modular-css */</style>
