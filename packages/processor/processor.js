@@ -18,16 +18,15 @@ const { resolvers } = require("./lib/resolve.js");
 
 const noop = () => true;
 
-const params = ({ _options, _files, _graph, resolve }, args) => Object.assign(
+const params = ({ _options, _files, _graph, _resolve }, args) => Object.assign(
     Object.create(null),
     _options,
     _options.postcss,
     {
-        resolve,
-        
-        from  : null,
-        files : _files,
-        graph : _graph,
+        from    : null,
+        files   : _files,
+        graph   : _graph,
+        resolve : _resolve,
     },
     args
 );
@@ -71,9 +70,7 @@ class Processor {
             // eslint-disable-next-line no-empty-function
             () => {};
 
-        // Expose resolving API publicly, because it's useful
-        this.resolve = resolvers(options.resolvers);
-
+        this._resolve = resolvers(options.resolvers);
         this._normalize = normalize.bind(null, this._options.cwd);
 
         this._files = Object.create(null);
@@ -155,6 +152,11 @@ class Processor {
     // Return the corrected-path version of the file
     normalize(file) {
         return this._normalize(file);
+    }
+
+    // Resolve a file from a src using the configured resolvers
+    resolve(src, file) {
+        return this._resolve(src, file);
     }
 
     // Check if a file exists in the currently-processed set
