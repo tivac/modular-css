@@ -336,7 +336,7 @@ describe("/processor.js", () => {
             });
         });
 
-        describe("._resolve()", () => {
+        describe(".resolve()", () => {
             it("should run resolvers until a match is found", () => {
                 let ran = false;
 
@@ -350,7 +350,7 @@ describe("/processor.js", () => {
                 
                 expect(
                     relative([
-                        processor._resolve(
+                        processor.resolve(
                             require.resolve("./specimens/start.css"),
                             "./local.css"
                         ),
@@ -370,7 +370,7 @@ describe("/processor.js", () => {
                 
                 expect(
                     relative([
-                        processor._resolve(
+                        processor.resolve(
                             require.resolve("./specimens/start.css"),
                             "./local.css"
                         ),

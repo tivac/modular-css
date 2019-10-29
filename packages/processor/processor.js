@@ -9,24 +9,25 @@ const postcss   = require("postcss");
 const slug      = require("unique-slug");
 const mapValues = require("lodash/mapValues");
 
-const output    = require("./lib/output.js");
-const message   = require("./lib/message.js");
-const relative  = require("./lib/relative.js");
-const tiered    = require("./lib/graph-tiers.js");
-const resolve   = require("./lib/resolve.js");
-const normalize = require("./lib/normalize.js");
+const output        = require("./lib/output.js");
+const message       = require("./lib/message.js");
+const relative      = require("./lib/relative.js");
+const tiered        = require("./lib/graph-tiers.js");
+const normalize     = require("./lib/normalize.js");
+const { resolvers } = require("./lib/resolve.js");
 
 const noop = () => true;
 
-const params = ({ _options, _files, _graph, _resolve }, args) => Object.assign(
+const params = ({ _options, _files, _graph, resolve }, args) => Object.assign(
     Object.create(null),
     _options,
     _options.postcss,
     {
-        from    : null,
-        files   : _files,
-        graph   : _graph,
-        resolve : _resolve,
+        resolve,
+        
+        from  : null,
+        files : _files,
+        graph : _graph,
     },
     args
 );
@@ -70,7 +71,8 @@ class Processor {
             // eslint-disable-next-line no-empty-function
             () => {};
 
-        this._resolve = resolve.resolvers(options.resolvers);
+        // Expose resolving API publicly, because it's useful
+        this.resolve = resolvers(options.resolvers);
 
         this._normalize = normalize.bind(null, this._options.cwd);
 
