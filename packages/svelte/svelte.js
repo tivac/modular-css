@@ -1,7 +1,5 @@
 "use strict";
 
-const path = require("path");
-
 const isUrl = require("is-url");
 const escape = require("escape-string-regexp");
 

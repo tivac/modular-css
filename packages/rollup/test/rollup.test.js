@@ -674,7 +674,10 @@ describe("/rollup.js", () => {
                 file : prefix(`./output/casing/main.js`),
             });
 
+            // eslint-disable-next-line jest/no-standalone-expect
             expect(spy).toHaveBeenCalled();
+            
+            // eslint-disable-next-line jest/no-standalone-expect
             expect(spy.mock.calls.length).toBeGreaterThan(0);
         });
     });

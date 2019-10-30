@@ -13,8 +13,9 @@ module.exports = (method = "log") => {
         spy,
 
         logSnapshot() {
+            // eslint-disable-next-line jest/no-standalone-expect
             expect(spy).toHaveBeenCalled();
-
+            
             const calls = spy.mock.calls.map((call) =>
                 call.map((arg) => (path.isAbsolute(arg) ?
                     relative([ arg ])[0] :
@@ -22,6 +23,7 @@ module.exports = (method = "log") => {
                 ))
             );
 
+            // eslint-disable-next-line jest/no-standalone-expect
             expect(calls).toMatchSnapshot();
         },
     };

@@ -8,9 +8,9 @@ const output = require("@modular-css/processor/lib/output.js");
 // Can't be an arrow function due to `this` usage :(
 module.exports = async function(source) {
     const defaults  = {
-        styleExport  : true,
-        namedExports : true,
-        defaultExport: true,
+        styleExport   : true,
+        namedExports  : true,
+        defaultExport : true,
     };
     const options   = Object.assign(Object.create(null), defaults, utils.getOptions(this)) || false;
     const done      = this.async();

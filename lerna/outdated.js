@@ -24,6 +24,6 @@ keys.forEach((key) => {
         return;
     }
 
-    // TODO: Better formatting someday
+    // eslint-disable-next-line no-console
     console.log(name, key, { wanted, latest });
 });
