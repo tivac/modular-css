@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.2.0](https://github.com/tivac/modular-css/compare/v25.1.0...v25.2.0) (2019-10-30)
+
+
+### Features
+
+* Custom file reader api ([#671](https://github.com/tivac/modular-css/issues/671)) ([f1865c9](https://github.com/tivac/modular-css/commit/f1865c9))
+* **processor:** add processor.resolve() ([#681](https://github.com/tivac/modular-css/issues/681)) ([2c5a51d](https://github.com/tivac/modular-css/commit/2c5a51d)), closes [#679](https://github.com/tivac/modular-css/issues/679)
+
+
+
+
+
 # [25.1.0](https://github.com/tivac/modular-css/compare/v25.0.0...v25.1.0) (2019-09-23)
 
 

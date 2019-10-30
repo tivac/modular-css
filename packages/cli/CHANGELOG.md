@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.2.0](https://github.com/tivac/modular-css/compare/v25.1.0...v25.2.0) (2019-10-30)
+
+
+### Features
+
+* exportDefault flag for webpack loader ([#680](https://github.com/tivac/modular-css/issues/680)) ([0179f99](https://github.com/tivac/modular-css/commit/0179f99))
+
+
+
+
+
 # [25.1.0](https://github.com/tivac/modular-css/compare/v25.0.0...v25.1.0) (2019-09-23)
 
 **Note:** Version bump only for package @modular-css/cli
