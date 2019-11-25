@@ -1,13 +1,18 @@
 "use strict";
 
+const path = require("path");
+
 const isUrl = require("is-url");
 const escape = require("escape-string-regexp");
+const slash = require("slash");
 
 const Processor = require("@modular-css/processor");
 
 const styleRegex = /<style[\S\s]*?>([\S\s]*?)<\/style>/im;
 const scriptRegex = /<script[\S\s]*?>([\S\s]*?)<\/script>/im;
 const missedRegex = /css\.\w+/gim;
+
+const prefix = `[${require("./package.json").name}]`;
 
 module.exports = (config = false) => {
     // Defined here to avoid .lastIndex bugs since /g is set
@@ -16,8 +21,15 @@ module.exports = (config = false) => {
     // Use a passed processor, or set up our own if necessary
     const { processor = new Processor(config) } = config;
 
+    const { cwd } = processor.options;
+
     // eslint-disable-next-line no-console, no-empty-function
-    const log = config.verbose ? console.log.bind(console, "[svelte]") : () => {};
+    const log = config.verbose ? console.log.bind(console, prefix) : () => {};
+
+    // eslint-disable-next-line no-console
+    const warn = console.warn.bind(console, prefix, "WARN");
+
+    const relative = (file) => slash(path.relative(cwd, file));
 
     // Check for and stringify any values in the template we couldn't convert
     const missing = ({ source, file }) => {
@@ -32,12 +44,11 @@ module.exports = (config = false) => {
         const classes = missed.map((reference) => reference.replace("css.", ""));
 
         if(strict) {
-            throw new Error(`@modular-css/svelte: Unable to find .${classes.join(", .")} in "${file}"`);
+            throw new Error(`${prefix} Unable to find .${classes.join(", .")} in "${file}"`);
         }
 
         classes.forEach((key) =>
-            // eslint-disable-next-line no-console
-            console.warn(`@modular-css/svelte: Unable to find .${key} in "${file}"`)
+            warn(`Unable to find .${key} in ${file}`)
         );
 
         // Turn all missing values into strings so nothing explodes
@@ -51,7 +62,9 @@ module.exports = (config = false) => {
     // Mostly because markup() is async so tracking state is painful w/o inlining
     // the whole damn thing
     // eslint-disable-next-line max-statements, complexity
-    const markup = async ({ content, filename : html }) => {
+    const markup = async ({ content, filename }) => {
+        const file = filename ? relative(filename) : "Unknown file";
+
         let source = content;
         let dependencies = [];
 
@@ -59,7 +72,7 @@ module.exports = (config = false) => {
         const style = source.match(styleRegex);
 
         if(links && style) {
-            throw new Error("@modular-css/svelte: use <style> OR <link>, but not both");
+            throw new Error(`${prefix} Use <style> OR <link>, but not both in "${file}"`);
         }
 
         // No-op
@@ -67,7 +80,7 @@ module.exports = (config = false) => {
             return {
                 code : missing({
                     source,
-                    file : html,
+                    file : filename,
                 }),
             };
         }
@@ -75,20 +88,20 @@ module.exports = (config = false) => {
         let result;
         let css;
 
-        log("Processing", html);
+        log("Processing", file);
 
         if(style) {
-            log("extract <style>", html);
+            log("extract <style>", file);
 
             css = "<style>";
 
-            if(processor.has(html)) {
-                processor.invalidate(html);
+            if(processor.has(filename)) {
+                processor.invalidate(filename);
             }
 
             try {
                 result = await processor.string(
-                    html,
+                    filename,
                     style[1]
                 );
             } catch(e) {
@@ -125,14 +138,13 @@ module.exports = (config = false) => {
                 return {
                     code : missing({
                         source,
-                        file : html,
+                        file : filename,
                     }),
                 };
             }
 
             if(valid.length > 1) {
-                // eslint-disable-next-line no-console
-                console.warn("@modular-css/svelte will only use the first local <link> tag");
+                warn(`Only the first local <link> tag will be used`, file);
             }
 
             const [{ link, href }] = valid;
@@ -140,7 +152,7 @@ module.exports = (config = false) => {
             // Assign to file for later usage in logging
             css = href;
 
-            const external = processor.resolve(html, css);
+            const external = processor.resolve(filename, css);
 
             log("extract <link>", external);
 
@@ -179,7 +191,7 @@ module.exports = (config = false) => {
             dependencies = [ ...processor.dependencies(external), external ];
         }
 
-        log("processed styles", html);
+        log("processed styles", file);
 
         const exported = result.exports;
         const keys = Object.keys(exported);
@@ -190,25 +202,34 @@ module.exports = (config = false) => {
         if(keys.length) {
             const selectors = keys.join("|");
 
+            // Look for instances of class={css.foo} to warn about
+            const matches = source.match(new RegExp(`class={css\.(?:${selectors})}`, "g"));
+
+            if(matches) {
+                for(const match of matches) {
+                    warn(`Unquoted class attribute! ${match}`, file);
+                }
+            }
+
             source = source
                 // Replace {css.<key>} values
                 // Note extra exclusion to avoid accidentally matching ${css.<key>}
                 .replace(
                     new RegExp(`([^$]){css\\.(${selectors})}`, "gm"),
-                    (match, prefix, key) => {
+                    (match, before, key) => {
                         const replacement = Array.isArray(exported[key]) ? exported[key].join(" ") : exported[key];
 
-                        return `${prefix}${replacement}`;
+                        return `${before}${replacement}`;
                     }
                 )
 
                 // Then any remaining css.<key> values
                 .replace(
                     new RegExp(`(\\b)css\\.(${selectors})(\\b)`, "gm"),
-                    (match, prefix, key, suffix) => {
+                    (match, before, key, suffix) => {
                         const replacement = Array.isArray(exported[key]) ? exported[key].join(" ") : exported[key];
 
-                        return `${prefix}"${replacement}"${suffix}`;
+                        return `${before}"${replacement}"${suffix}`;
                     }
                 );
         }
