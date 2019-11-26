@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.3.0](https://github.com/tivac/modular-css/compare/v25.2.0...v25.3.0) (2019-11-26)
+
+
+### Features
+
+* **svelte:** warn on unquoted class attributes ([#690](https://github.com/tivac/modular-css/issues/690)) ([846f4db](https://github.com/tivac/modular-css/commit/846f4db))
+
+
+
+
+
 # [25.2.0](https://github.com/tivac/modular-css/compare/v25.1.0...v25.2.0) (2019-10-30)
 
 
