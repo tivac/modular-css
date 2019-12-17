@@ -466,7 +466,7 @@ describe("/svelte.js", () => {
         expect(warnSpy.mock.calls).toMatchSnapshot();
     });
 
-    it.only.each([
+    it.each([
         [ "link", "./specimens/unused-link.html" ],
         [ "style", "./specimens/unused-style.html" ],
     ])("should warn about unused CSS exports (%s)", async (type, file) => {
@@ -488,7 +488,7 @@ describe("/svelte.js", () => {
         expect(warnSpy.mock.calls).toMatchSnapshot();
     });
 
-    it.only("should ignore unused CSS exports if warnOnUnused isn't set", async () => {
+    it("should ignore unused CSS exports if warnOnUnused isn't set", async () => {
         const filename = require.resolve("./specimens/unused-link.html");
         const { preprocess } = plugin({
             namer,

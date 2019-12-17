@@ -223,30 +223,33 @@ module.exports = (config = false) => {
                 }
             }
 
+            const replacer = ({ sep = "", useSuffix = false } = false) =>
+                (match, before, key, suffix = "") => {
+                    let out;
+
+                    if(key in values) {
+                        out = exported[key];
+                    } else {
+                        out = exported[key].join(" ");
+                        
+                        exported[key].forEach((val) => unused.delete(val));
+                    }
+
+                    return `${before}${sep}${out}${sep}${useSuffix ? suffix : ""}`;
+                };
+
             source = source
                 // Replace {css.<key>} values
                 // Note extra exclusion to avoid accidentally matching ${css.<key>}
                 .replace(
                     new RegExp(`([^$]){css\\.(${selectors})}`, "gm"),
-                    (match, before, key) => {
-                        const values = exported[key];
-
-                        values.forEach((val) => unused.delete(val));
-
-                        return `${before}${values.join(" ")}`;
-                    }
+                    replacer()
                 )
 
                 // Then any remaining css.<key> values
                 .replace(
                     new RegExp(`(\\b)css\\.(${selectors})(\\b)`, "gm"),
-                    (match, before, key, suffix) => {
-                        const values = exported[key];
-
-                        values.forEach((val) => unused.delete(val));
-
-                        return `${before}"${values.join(" ")}"${suffix}`;
-                    }
+                    replacer({ sep : `"`, useSuffix : true })
                 );
         }
 
