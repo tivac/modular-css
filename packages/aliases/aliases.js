@@ -3,11 +3,11 @@
 const from = require("resolve-from");
 
 module.exports = (args) => {
-    const options = Object.assign(
-        Object.create(null),
-        { aliases : {} },
-        args
-    );
+    const options = {
+        __proto__ : null,
+        aliases   : {},
+        ...args,
+    };
 
     const aliases = Object.keys(options.aliases).map((alias) => ({
         name   : alias,

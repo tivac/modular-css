@@ -6,17 +6,16 @@ const read    = require("@modular-css/test-utils/read.js")(__dirname);
 const namer   = require("@modular-css/test-utils/namer.js");
 const plugin  = require("../postcss.js");
 
-function process(file, opts) {
+function process(file, opts = {}) {
     return plugin.process(
         fs.readFileSync(file),
-        Object.assign(
-            Object.create(null),
-            {
-                from : file,
-                namer,
-            },
-            opts || {}
-        )
+        {
+            __proto__ : null,
+
+            from : file,
+            namer,
+            ...opts,
+        }
     );
 }
 

@@ -16,10 +16,10 @@ const getChangedFiles = (prev, curr) =>
         );
 
 function ModularCSS(args) {
-    var options = Object.assign(
-            Object.create(null),
-            args
-        );
+    var options = {
+        __proto__ : null,
+        ...args,
+    };
 
     if(options.cjs) {
         options.namedExports = false;

@@ -6,13 +6,13 @@ const postcss = require("postcss");
 const mkdirp  = require("mkdirp");
 const Processor = require("@modular-css/processor");
 
-module.exports = postcss.plugin("modular-css", (opts) =>
+module.exports = postcss.plugin("modular-css", (opts = {}) =>
     async (root, result) => {
-        const processor = new Processor(Object.assign(
-            Object.create(null),
-            opts,
-            result.opts
-        ));
+        const processor = new Processor({
+            __proto__ : null,
+            ...opts,
+            ...result.opts,
+        });
 
         const { exports : exported } = await processor.string(result.opts.from, root);
         

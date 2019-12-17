@@ -5,15 +5,21 @@ const { keyword } = require("esutils");
 
 const output = require("@modular-css/processor/lib/output.js");
 
+const DEFAULTS = {
+    styleExport   : true,
+    namedExports  : true,
+    defaultExport : true,
+};
+
 // Can't be an arrow function due to `this` usage :(
 module.exports = async function(source) {
-    const defaults  = {
-        styleExport   : true,
-        namedExports  : true,
-        defaultExport : true,
+    const options   = {
+        __proto__ : null,
+        ...DEFAULTS,
+        ...utils.getOptions(this),
     };
-    const options   = Object.assign(Object.create(null), defaults, utils.getOptions(this)) || false;
-    const done      = this.async();
+
+    const done = this.async();
     const processor = this.options ?
         // Webpack 2 & 3
         this.options.processor :

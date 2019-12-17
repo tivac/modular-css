@@ -16,11 +16,12 @@ module.exports = (css, { opts, messages }) => {
         .sort((a, b) => order.indexOf(a.plugin) - order.indexOf(b.plugin))
         .reduce((prev, curr) => Object.assign(prev, curr.values), Object.create(null));
     
-    file.values = Object.assign(
-        Object.create(null),
-        values,
-        file.values || {}
-    );
+    file.values = {
+        __proto__ : null,
+        
+        ...values,
+        ...(file.values || {}),
+    };
 };
 
 module.exports.postcssPlugin = "modular-css-values-export";

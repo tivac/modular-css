@@ -19,20 +19,26 @@ const emptyMappings = {
     mappings : "",
 };
 
-module.exports = (opts) => {
-    const options = Object.assign(Object.create(null), {
-        common       : "common.css",
-        dev          : false,
-        json         : false,
-        meta         : false,
-        namedExports : true,
-        styleExport  : false,
-        verbose      : false,
-        empties      : true,
+const DEFAULTS = {
+    common       : "common.css",
+    dev          : false,
+    json         : false,
+    meta         : false,
+    namedExports : true,
+    styleExport  : false,
+    verbose      : false,
+    empties      : true,
 
-        // Regexp to work around https://github.com/rollup/rollup-pluginutils/issues/39
-        include : /\.css$/i,
-    }, opts);
+    // Regexp to work around https://github.com/rollup/rollup-pluginutils/issues/39
+    include : /\.css$/i,
+};
+
+module.exports = (opts = {}) => {
+    const options = {
+        __proto__ : null,
+        ...DEFAULTS,
+        ...opts,
+    };
 
     const filter = utils.createFilter(options.include, options.exclude);
 
@@ -218,11 +224,11 @@ module.exports = (opts) => {
             let mapOpt = map;
 
             if(assetFileNames.includes("[hash]") && typeof mapOpt === "object") {
-                mapOpt = Object.assign(
-                    Object.create(null),
-                    mapOpt,
-                    { annotation : false }
-                );
+                mapOpt = {
+                    __proto__  : null,
+                    ...mapOpt,
+                    annotation : false,
+                };
             }
 
             // Track specified name -> output name for writing out metadata later

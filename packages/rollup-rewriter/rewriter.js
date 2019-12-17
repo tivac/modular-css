@@ -17,12 +17,18 @@ const formats = {
 
 const supported = new Set(Object.keys(formats).sort());
 
-module.exports = (opts) => {
-    const options = Object.assign(Object.create(null), {
-        loader  : false,
-        loadfn  : false,
-        verbose : false,
-    }, opts);
+const DEFAULTS = {
+    loader  : false,
+    loadfn  : false,
+    verbose : false,
+};
+
+module.exports = (opts = {}) => {
+    const options = {
+        __proto__ : null,
+        ...DEFAULTS,
+        ...opts,
+    };
 
     if(!options.loadfn) {
         throw new Error("options.loadfn must be configured");

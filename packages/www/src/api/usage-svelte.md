@@ -51,7 +51,7 @@ const { processor, preprocess } = require("@modular-css/svelte")({
 
 const processed = await svelte.preprocess(
     fs.readFileSync(filename, "utf8"),
-    Object.assign({}, preprocess, { filename })
+    { ...preprocess, filename },
 );
 
 const result = await processor.output();
@@ -131,6 +131,14 @@ If `true` whenever a missing replacement is found like `{css.doesnotexist}` an e
 ##### `procesor`
 
 Pass a previously-created `@modular-css/processor` instance into the preprocessor. Will **not** pass through any other options to the processor if this is set, but `strict` will still be honored by the preprocessor.
+
+##### `warnOnUnused`
+
+If `true` any classes in the source CSS that aren't directly utilized by the template (or indirectly used via `composes`) will be logged out as warnings.
+
+⚠️⚡💀⚠️💀⚡⚠️
+Please note that this functionality is **EXPERIMENTAL** and subject to change. The first iteration of this feature is very basic and may lead to considerable false-positive warnings. Use your best judgement before removing CSS!
+⚠️⚡💀⚠️💀⚡⚠️
 
 ##### Shared Options
 

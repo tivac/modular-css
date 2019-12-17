@@ -13,10 +13,10 @@ module.exports = async ({ file, preprocess = false }) => {
     if(preprocess) {
         const preprocessed = await svelte.preprocess(
             source,
-            Object.assign(
-                { filename : file },
-                preprocess
-            )
+            {
+                filename : file,
+                ...preprocess,
+            }
         );
 
         compiled = svelte.compile(preprocessed.toString(), { generate : "ssr" });
