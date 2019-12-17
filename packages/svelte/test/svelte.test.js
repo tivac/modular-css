@@ -465,4 +465,43 @@ describe("/svelte.js", () => {
         expect(warnSpy).toHaveBeenCalled();
         expect(warnSpy.mock.calls).toMatchSnapshot();
     });
+
+    it.only.each([
+        [ "link", "./specimens/unused-link.html" ],
+        [ "style", "./specimens/unused-style.html" ],
+    ])("should warn about unused CSS exports (%s)", async (type, file) => {
+        const filename = require.resolve(file);
+        const { preprocess } = plugin({
+            namer,
+            warnOnUnused : true,
+        });
+
+        await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            {
+                ...preprocess,
+                filename,
+            },
+        );
+
+        expect(warnSpy).toHaveBeenCalled();
+        expect(warnSpy.mock.calls).toMatchSnapshot();
+    });
+
+    it.only("should ignore unused CSS exports if warnOnUnused isn't set", async () => {
+        const filename = require.resolve("./specimens/unused-link.html");
+        const { preprocess } = plugin({
+            namer,
+        });
+
+        await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            {
+                ...preprocess,
+                filename,
+            },
+        );
+
+        expect(warnSpy.mock.calls).toMatchSnapshot();
+    });
 });

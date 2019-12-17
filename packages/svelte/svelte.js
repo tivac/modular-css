@@ -21,10 +21,10 @@ module.exports = (config = false) => {
     // Use a passed processor, or set up our own if necessary
     const { processor = new Processor(config) } = config;
 
-    const { cwd } = processor.options;
+    const { cwd, verbose, warnOnUnused } = processor.options;
 
     // eslint-disable-next-line no-console, no-empty-function
-    const log = config.verbose ? console.log.bind(console, prefix) : () => {};
+    const log = verbose ? console.log.bind(console, prefix) : () => {};
 
     // eslint-disable-next-line no-console
     const warn = console.warn.bind(console, prefix, "WARN");
@@ -32,7 +32,13 @@ module.exports = (config = false) => {
     const relative = (file) => slash(path.relative(cwd, file));
 
     // Check for and stringify any values in the template we couldn't convert
-    const missing = ({ source, file }) => {
+    const missing = ({ source, file, unused = false }) => {
+        if(warnOnUnused && unused && unused.size) {
+            unused.forEach((key) =>
+                warn(`Unused CSS selector .${key} in ${file}`)
+            );
+        }
+        
         const missed = source.match(missedRegex);
 
         if(!missed) {
@@ -193,8 +199,14 @@ module.exports = (config = false) => {
 
         log("processed styles", file);
 
-        const exported = result.exports;
+        const { exports : exported, details } = result;
+        const { values } = details;
+        
         const keys = Object.keys(exported);
+        const unused = new Set(keys);
+
+        // Don't check @values, it's not worth it
+        Object.keys(values).forEach((value) => unused.delete(value));
 
         log("updating source {css.<key>} references from", css);
         log(JSON.stringify(keys));
@@ -217,9 +229,11 @@ module.exports = (config = false) => {
                 .replace(
                     new RegExp(`([^$]){css\\.(${selectors})}`, "gm"),
                     (match, before, key) => {
-                        const replacement = Array.isArray(exported[key]) ? exported[key].join(" ") : exported[key];
+                        const values = exported[key];
 
-                        return `${before}${replacement}`;
+                        values.forEach((val) => unused.delete(val));
+
+                        return `${before}${values.join(" ")}`;
                     }
                 )
 
@@ -227,9 +241,11 @@ module.exports = (config = false) => {
                 .replace(
                     new RegExp(`(\\b)css\\.(${selectors})(\\b)`, "gm"),
                     (match, before, key, suffix) => {
-                        const replacement = Array.isArray(exported[key]) ? exported[key].join(" ") : exported[key];
+                        const values = exported[key];
 
-                        return `${before}"${replacement}"${suffix}`;
+                        values.forEach((val) => unused.delete(val));
+
+                        return `${before}"${values.join(" ")}"${suffix}`;
                     }
                 );
         }
@@ -237,6 +253,7 @@ module.exports = (config = false) => {
         return {
             code : missing({
                 source,
+                unused,
                 file : css,
             }),
             dependencies,

@@ -411,6 +411,8 @@ exports[`/svelte.js should ignore files without <style> blocks 1`] = `
 
 exports[`/svelte.js should ignore files without <style> blocks 2`] = `""`;
 
+exports[`/svelte.js should ignore unused CSS exports if warnOnUnused isn't set 1`] = `Array []`;
+
 exports[`/svelte.js should invalidate files before reprocessing (<link>) 1`] = `"<div class=\\"source\\">Source</div><script>import css from \\"./source.css\\";</script>"`;
 
 exports[`/svelte.js should invalidate files before reprocessing (<link>) 2`] = `
@@ -719,6 +721,36 @@ Array [
     "WARN",
     "Unquoted class attribute! class={css.a}",
     "packages/svelte/test/specimens/unquoted.html",
+  ],
+]
+`;
+
+exports[`/svelte.js should warn about unused CSS exports (link) 1`] = `
+Array [
+  Array [
+    "[@modular-css/svelte]",
+    "WARN",
+    "Unused CSS selector .b in ./unused.css",
+  ],
+  Array [
+    "[@modular-css/svelte]",
+    "WARN",
+    "Unused CSS selector .d in ./unused.css",
+  ],
+]
+`;
+
+exports[`/svelte.js should warn about unused CSS exports (style) 1`] = `
+Array [
+  Array [
+    "[@modular-css/svelte]",
+    "WARN",
+    "Unused CSS selector .b in <style>",
+  ],
+  Array [
+    "[@modular-css/svelte]",
+    "WARN",
+    "Unused CSS selector .d in <style>",
   ],
 ]
 `;

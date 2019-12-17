@@ -1,0 +1,19 @@
+@value notme: black;
+
+.a {
+    color: red;
+}
+
+.b {
+    color: blue;
+}
+
+.c {
+    composes: a;
+
+    color: cyan;
+}
+
+.d {
+    color: darkblue;
+}
