@@ -6,7 +6,9 @@ const relative = require("./relative.js");
 
 exports.join = (output) =>
     map(output, (classes) => (
-            classes.join(" ")
+        Array.isArray(classes) ?
+            classes.join(" ") :
+            classes.toString()
     ));
 
 exports.compositions = ({ options, files }) => {
