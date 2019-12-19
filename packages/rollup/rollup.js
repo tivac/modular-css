@@ -237,6 +237,16 @@ module.exports = (opts) => {
                     continue;
                 }
 
+                if(processor.options.warnOnUnused) {
+                    processor.unused.forEach((selectors, file) =>
+                        // eslint-disable-next-line no-console
+                        console.warn(
+                            `[@modular-css/rollup] Unused classes found in ${path.relative(processor.options.cwd, file)}:`,
+                            `.${[ ...selectors ].join(", .")}`,
+                        )
+                    );
+                }
+
                 const ext = ".css";
                 const name = path.basename(node, path.extname(node));
 
