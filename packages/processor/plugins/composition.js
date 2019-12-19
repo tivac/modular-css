@@ -102,9 +102,9 @@ module.exports = (css, result) => {
     );
 
     result.messages.push({
-        type : "modular-css",
+        type    : "modular-css",
         plugin,
-
+        graph,
         classes : mapvalues(out, (val) => {
             const classes = new Set(val);
 

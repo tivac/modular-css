@@ -10,18 +10,16 @@ const Processor = require("@modular-css/processor");
 
 const styleRegex = /<style[\S\s]*?>([\S\s]*?)<\/style>/im;
 const scriptRegex = /<script[\S\s]*?>([\S\s]*?)<\/script>/im;
+const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/gim;
 const missedRegex = /css\.\w+/gim;
 
 const prefix = `[${require("./package.json").name}]`;
 
 module.exports = (config = false) => {
-    // Defined here to avoid .lastIndex bugs since /g is set
-    const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/gim;
-
     // Use a passed processor, or set up our own if necessary
     const { processor = new Processor(config) } = config;
 
-    const { cwd, verbose, warnOnUnused } = processor.options;
+    const { cwd, verbose } = processor.options;
 
     // eslint-disable-next-line no-console, no-empty-function
     const log = verbose ? console.log.bind(console, prefix) : () => {};
@@ -32,13 +30,7 @@ module.exports = (config = false) => {
     const relative = (file) => slash(path.relative(cwd, file));
 
     // Check for and stringify any values in the template we couldn't convert
-    const missing = ({ source, file, unused = false }) => {
-        if(warnOnUnused && unused && unused.size) {
-            unused.forEach((key) =>
-                warn(`Unused CSS selector .${key} in ${file}`)
-            );
-        }
-        
+    const missing = ({ source, file }) => {
         const missed = source.match(missedRegex);
 
         if(!missed) {
@@ -74,6 +66,8 @@ module.exports = (config = false) => {
         let source = content;
         let dependencies = [];
 
+        linkRegex.lastIndex = 0;
+
         const links = source.match(linkRegex);
         const style = source.match(styleRegex);
 
@@ -93,6 +87,7 @@ module.exports = (config = false) => {
 
         let result;
         let css;
+        let cssRef;
 
         log("Processing", file);
 
@@ -100,6 +95,7 @@ module.exports = (config = false) => {
             log("extract <style>", file);
 
             css = "<style>";
+            cssRef = filename;
 
             if(processor.has(filename)) {
                 processor.invalidate(filename);
@@ -158,17 +154,17 @@ module.exports = (config = false) => {
             // Assign to file for later usage in logging
             css = href;
 
-            const external = processor.resolve(filename, css);
+            cssRef = processor.resolve(filename, css);
 
-            log("extract <link>", external);
+            log("extract <link>", cssRef);
 
-            if(processor.has(external)) {
-                processor.invalidate(external);
+            if(processor.has(cssRef)) {
+                processor.invalidate(cssRef);
             }
 
             try {
                 // Process the file
-                result = await processor.file(external);
+                result = await processor.file(cssRef);
             } catch(e) {
                 e.message = e.toString();
 
@@ -194,7 +190,7 @@ module.exports = (config = false) => {
                 source += `<script>${inject}</script>`;
             }
 
-            dependencies = [ ...processor.dependencies(external), external ];
+            dependencies = [ ...processor.dependencies(cssRef), cssRef ];
         }
 
         log("processed styles", file);
@@ -203,10 +199,6 @@ module.exports = (config = false) => {
         const { values } = details;
         
         const keys = Object.keys(exported);
-        const unused = new Set(keys);
-
-        // Don't check @values, it's not worth it
-        Object.keys(values).forEach((value) => unused.delete(value));
 
         log("updating source {css.<key>} references from", css);
         log(JSON.stringify(keys));
@@ -232,7 +224,7 @@ module.exports = (config = false) => {
                     } else {
                         out = exported[key].join(" ");
                         
-                        exported[key].forEach((val) => unused.delete(val));
+                        processor._used(cssRef, key);
                     }
 
                     return `${before}${sep}${out}${sep}${useSuffix ? suffix : ""}`;
@@ -256,7 +248,6 @@ module.exports = (config = false) => {
         return {
             code : missing({
                 source,
-                unused,
                 file : css,
             }),
             dependencies,

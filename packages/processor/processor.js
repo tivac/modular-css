@@ -349,6 +349,29 @@ class Processor {
         .then(() => output.compositions(this));
     }
 
+    // Return a report of any unused selectors across the list of known files
+    get unused() {
+        return Object.entries(this._files).reduce((acc, [ key, file ]) => {
+            const { usage, result } = file;
+
+            // All the exported classes, ignoring any @values
+            const unused = new Set(Object.keys(message(result, "classes")));
+            
+            const { graph : depgraph } = result.messages.find(({ plugin }) =>
+                plugin === "modular-css-composition"
+            );
+
+            usage.forEach((selector) => {
+                unused.delete(selector);
+                depgraph.dependenciesOf(selector).forEach((dep) => unused.delete(dep));
+            });
+
+            acc.set(key, unused);
+
+            return acc;
+        }, new Map());
+    }
+
     // Take a file id and some text, walk it for dependencies, then
     // process and return details
     async _add(id, text) {
@@ -422,6 +445,16 @@ class Processor {
         };
     }
 
+    async _used(file, key) {
+        if(!this._files[file]) {
+            throw new Error(`Can't set usage status for an unknown file, "${file}`);
+        }
+
+        const { usage } = this._files[file];
+
+        usage.add(key);
+    }
+
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
     async _walk(name, text) {
@@ -451,6 +484,7 @@ class Processor {
                 })
             ),
             walked : new Promise((done) => (walked = done)),
+            usage  : new Set(),
         };
 
         await file.before;
