@@ -23,7 +23,11 @@ module.exports = (css, result) => {
     const out = { ...refs };
     const graph = new Graph();
 
-    Object.keys(refs).forEach((key) => graph.addNode(key));
+    Object.entries(refs).forEach(([ selector, composed ]) => graph.addNode(selector, {
+        source : "local",
+        selector,
+        composed,
+    }));
 
     // Go look up "composes" declarations and populate dependency graph
     css.walkDecls("composes", (decl) => {
@@ -54,29 +58,34 @@ module.exports = (css, result) => {
                 scoped = (details.source ? `${details.source}-` : "") + name;
             }
 
-            graph.addNode(scoped);
+            const data = {
+                selector : name,
+                source : "",
+                composed : [],
+            };
+
+            if(global) {
+                data.source = "global";
+                data.composed = [ name ];
+            } else if(details.source) {
+                data.source = details.source;
+                data.composed = opts.files[details.source].exports[name];
+            } else if(refs[scoped]) {
+                data.source = "local";
+                data.composed = [ refs[scoped] ];
+            } else {
+                throw decl.error("Invalid composes reference", {
+                    word : name,
+                });
+            }
+
+            graph.addNode(scoped, data);
 
             selectors.forEach((parts) =>
                 parts.forEach((part) =>
                     graph.addDependency(map[part], scoped)
                 )
             );
-
-            if(global) {
-                refs[scoped] = [ name ];
-
-                return;
-            }
-
-            if(details.source) {
-                refs[scoped] = opts.files[details.source].exports[name];
-            }
-
-            if(!refs[scoped]) {
-                throw decl.error("Invalid composes reference", {
-                    word : name,
-                });
-            }
         });
 
         const next = decl.next();
@@ -93,13 +102,15 @@ module.exports = (css, result) => {
     });
 
     // Update out by walking dep graph and updating classes
-    graph.overallOrder().forEach((selector) =>
+    graph.overallOrder().forEach((selector) => {
         graph.dependenciesOf(selector)
             .reverse()
             .forEach((dep) => {
-                out[selector] = refs[dep].concat(out[selector]);
+                const { composed } = graph.getNodeData(dep);
+
+                out[selector] = [ ...composed, ...out[selector] ];
             })
-    );
+    });
 
     result.messages.push({
         type    : "modular-css",
