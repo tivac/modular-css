@@ -83,6 +83,7 @@ class Processor {
         this._files = Object.create(null);
         this._graph = new Graph();
         this._ids = new Map();
+        this._usage = new Set();
 
         this._before = postcss([
             ...(options.before || []),
@@ -350,23 +351,45 @@ class Processor {
     }
 
     // Return a report of any unused selectors across the list of known files
-    get unused() {
-        return Object.entries(this._files).reduce((acc, [ key, file ]) => {
-            const { usage, result } = file;
+    unused() {
+        const { _usage, _graph, _files } = this;
 
-            // All the exported classes, ignoring any @values
-            const unused = new Set(Object.keys(message(result, "classes")));
-            
+        return _graph.overallOrder().reverse().reduce((acc, id) => {
+            const { result } = _files[id];
+
+            // Get the local composition dependency graph
             const { graph : depgraph } = result.messages.find(({ plugin }) =>
                 plugin === "modular-css-composition"
             );
 
-            usage.forEach((selector) => {
-                unused.delete(selector);
-                depgraph.dependenciesOf(selector).forEach((dep) => unused.delete(dep));
+            // Extract out all the locally-defined classes
+            const classes = new Set(depgraph.overallOrder().filter((selector) => {
+                const { source } = depgraph.getNodeData(selector);
+
+                return source === "local";
+            }));
+
+            classes.forEach((selector) => {
+                if(!_usage.has(`${id}::${selector}`)) {
+                    return;
+                }
+
+                depgraph.dependenciesOf(selector).forEach((dep) => {
+                    const { source, selector } = depgraph.getNodeData(dep);
+
+                    if(source === "global") {
+                        return;
+                    }
+                    
+                    _usage.add(`${source === "local" ? id : source}::${selector}`);
+                });
+
+                classes.delete(selector);
             });
 
-            acc.set(key, unused);
+            if(classes.size) {
+                acc.set(id, classes);
+            }
 
             return acc;
         }, new Map());
@@ -383,7 +406,9 @@ class Processor {
 
             if(other && other !== id) {
                 // eslint-disable-next-line no-console
-                console.warn(`POTENTIAL DUPLICATE FILES:\n\t${relative(this._options.cwd, other)}\n\t${relative(this._options.cwd, id)}`);
+                console.warn(`POTENTIAL DUPLICATE FILES:\n\t${
+                    relative(this._options.cwd, other)}\n\t${relative(this._options.cwd, id)
+                }`);
             }
         }
 
@@ -445,27 +470,26 @@ class Processor {
         };
     }
 
-    async _used(file, key) {
-        if(!this._files[file]) {
-            throw new Error(`Can't set usage status for an unknown file, "${file}`);
-        }
-
-        const { usage } = this._files[file];
-
-        usage.add(key);
+    _used(file, key) {
+        this._usage.add(`${file}::${key}`);
     }
 
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
     async _walk(name, text) {
-        // No need to re-process files unless they've been marked invalid
-        if(this._files[name] && this._files[name].valid) {
-            // Do want to wait until they're done being processed though
-            await this._files[name].walked;
+        if(this._files[name]) {
+            const { valid, text : prev } = this._files[name];
+            
+            // No need to re-process files unless they've been marked invalid
+            // and the content has changed
+            if(this._files[name].valid || prev === text) {
+                // Do want to wait until they're done being processed though
+                await this._files[name].walked;
 
-            return;
+                return;
+            }
         }
-
+        
         this._graph.addNode(name, 0);
 
         this._log("_before()", name);
@@ -477,14 +501,13 @@ class Processor {
             exports : false,
             values  : false,
             valid   : true,
+            walked : new Promise((done) => (walked = done)),
             before  : this._before.process(
                 text,
                 params(this, {
                     from : name,
                 })
             ),
-            walked : new Promise((done) => (walked = done)),
-            usage  : new Set(),
         };
 
         await file.before;
