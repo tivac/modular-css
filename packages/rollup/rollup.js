@@ -237,16 +237,6 @@ module.exports = (opts) => {
                     continue;
                 }
 
-                if(processor.options.warnOnUnused) {
-                    processor.unused.forEach((selectors, file) =>
-                        // eslint-disable-next-line no-console
-                        console.warn(
-                            `[@modular-css/rollup] Unused classes found in ${path.relative(processor.options.cwd, file)}:`,
-                            `.${[ ...selectors ].join(", .")}`,
-                        )
-                    );
-                }
-
                 const ext = ".css";
                 const name = path.basename(node, path.extname(node));
 
@@ -353,5 +343,19 @@ module.exports = (opts) => {
                 });
             }
         },
+
+        async writeBundle() {
+            console.log(processor.unused());
+
+            // if(processor.options.warnOnUnused) {
+            //     processor.unused.forEach((selectors, file) =>
+            //         // eslint-disable-next-line no-console
+            //         console.warn(
+            //             `[@modular-css/rollup] Unused classes found in ${path.relative(processor.options.cwd, file)}:`,
+            //             `.${[ ...selectors ].join(", .")}`,
+            //         )
+            //     );
+            // }
+        }
     };
 };
