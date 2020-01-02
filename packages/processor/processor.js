@@ -357,6 +357,16 @@ class Processor {
         return _graph.overallOrder().reverse().reduce((acc, id) => {
             const { result } = _files[id];
 
+            // If the file uses @composes we just bail, because tracking usage
+            // for those is way too difficult
+            const atcomposes = result.messages.find(({ plugin }) =>
+                plugin === "modular-css-at-composes"
+            );
+
+            if(atcomposes) {
+                return acc;
+            }
+
             // Get the local composition dependency graph
             const { graph : depgraph } = result.messages.find(({ plugin }) =>
                 plugin === "modular-css-composition"
