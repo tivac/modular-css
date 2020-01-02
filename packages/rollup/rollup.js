@@ -345,17 +345,20 @@ module.exports = (opts) => {
         },
 
         async writeBundle() {
-            console.log(processor.unused());
+            if(!processor.options.warnOnUnused) {
+                return;
+            }
 
-            // if(processor.options.warnOnUnused) {
-            //     processor.unused.forEach((selectors, file) =>
-            //         // eslint-disable-next-line no-console
-            //         console.warn(
-            //             `[@modular-css/rollup] Unused classes found in ${path.relative(processor.options.cwd, file)}:`,
-            //             `.${[ ...selectors ].join(", .")}`,
-            //         )
-            //     );
-            // }
+            const prefix = "\n  .";
+
+            processor.unused().forEach((selectors, file) => {
+                const relative = path.relative(processor.options.cwd, file);
+                
+                // eslint-disable-next-line no-console
+                console.warn(
+                    `[@modular-css/rollup] Unused classes found in ${relative}: ${prefix}${[ ...selectors ].join(prefix)}`,
+                );
+            });
         }
     };
 };
