@@ -60,7 +60,7 @@ module.exports = (css, result) => {
 
             const data = {
                 selector : name,
-                source : "",
+                source   : "",
                 composed : [],
             };
 
@@ -109,7 +109,7 @@ module.exports = (css, result) => {
                 const { composed } = graph.getNodeData(dep);
 
                 out[selector] = [ ...composed, ...out[selector] ];
-            })
+            });
     });
 
     result.messages.push({
