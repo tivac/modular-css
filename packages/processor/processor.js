@@ -15,6 +15,7 @@ const relative      = require("./lib/relative.js");
 const tiered        = require("./lib/graph-tiers.js");
 const normalize     = require("./lib/normalize.js");
 const { resolvers } = require("./lib/resolve.js");
+const deferred      = require("./lib/deferred.js");
 
 const noop = () => true;
 
@@ -354,7 +355,11 @@ class Processor {
     unused() {
         const { _usage, _graph, _files } = this;
 
-        return _graph.overallOrder().reverse().reduce((acc, id) => {
+        const order = _graph
+            .overallOrder()
+            .reverse();
+
+        return order.reduce((acc, id) => {
             const { result } = _files[id];
 
             // If the file uses @composes we just bail, because tracking usage
@@ -487,31 +492,23 @@ class Processor {
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
     async _walk(name, text) {
-        if(this._files[name]) {
-            const { valid, text : prev } = this._files[name];
-            
-            // No need to re-process files unless they've been marked invalid
-            // and the content has changed
-            if(this._files[name].valid || prev === text) {
-                // Do want to wait until they're done being processed though
-                await this._files[name].walked;
+        if(this._files[name] && this._files[name].valid) {
+            // Wait until initial walk is complete
+            await this._files[name].walked;
 
-                return;
-            }
+            return;
         }
-        
+
         this._graph.addNode(name, 0);
 
         this._log("_before()", name);
-
-        let walked;
 
         const file = this._files[name] = {
             text,
             exports : false,
             values  : false,
             valid   : true,
-            walked : new Promise((done) => (walked = done)),
+            walked  : deferred(),
             before  : this._before.process(
                 text,
                 params(this, {
@@ -533,8 +530,14 @@ class Processor {
             this._graph.addNode(dep, 0);
             this._graph.addDependency(name, dep);
         });
+        
+        await this._walkDependencies(name);
 
-        // Walk this node's dependencies, reading new files from disk as necessary
+        this._files[name].walked.resolve();
+    }
+
+    // Walk a node's dependencies, loading new files as necessary
+    async _walkDependencies(name) {
         await Promise.all(
             this._graph.dependenciesOf(name).map((dependency) => {
                 const { valid, walked : complete } = this._files[dependency] || false;
@@ -548,9 +551,6 @@ class Processor {
                 return this.file(dependency);
             })
         );
-
-        // Mark the walk of this file & its dependencies complete
-        walked();
     }
 }
 

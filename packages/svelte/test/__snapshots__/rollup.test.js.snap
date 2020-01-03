@@ -69,30 +69,3 @@ Snapshot Diff:
   			insert(target, div, anchor);
   		},
 `;
-
-exports[`/svelte.js warnOnUnused should ignore unused CSS exports if warnOnUnused isn't set 1`] = `
-Array [
-  Array [
-    "[@modular-css/rollup] Unused classes found in packages\\\\svelte\\\\test\\\\specimens\\\\unused.css:",
-    ".b, .d",
-  ],
-]
-`;
-
-exports[`/svelte.js warnOnUnused should warn about unused CSS exports (link) 1`] = `
-Array [
-  Array [
-    "[@modular-css/rollup] Unused classes found in packages\\\\svelte\\\\test\\\\specimens\\\\unused.css:",
-    ".b, .d",
-  ],
-]
-`;
-
-exports[`/svelte.js warnOnUnused should warn about unused CSS exports (style) 1`] = `
-Array [
-  Array [
-    "[@modular-css/rollup] Unused classes found in packages\\\\svelte\\\\test\\\\specimens\\\\unused-style.html:",
-    ".b, .d",
-  ],
-]
-`;
