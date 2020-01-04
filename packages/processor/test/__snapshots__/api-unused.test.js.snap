@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js .unused() should return a map of unused exports 1`] = `
+Map {
+  "C:\\\\Users\\\\Tivac\\\\Documents\\\\GitHub\\\\modular-css\\\\two.css" => Set {
+    "two1",
+  },
+  "C:\\\\Users\\\\Tivac\\\\Documents\\\\GitHub\\\\modular-css\\\\one.css" => Set {
+    "one2",
+  },
+}
+`;
