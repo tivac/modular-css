@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js .string() should process a string 1`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js .string() should process a string 2`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js .string() should process a string 3`] = `".wooga { }"`;
+
+exports[`/processor.js .string() should process a string 4`] = `".wooga { }"`;

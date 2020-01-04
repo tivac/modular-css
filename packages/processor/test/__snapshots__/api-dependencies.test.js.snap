@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js .dependencies() should return the dependencies of the specified file 1`] = `
+Array [
+  "packages/processor/test/specimens/folder/folder.css",
+  "packages/processor/test/specimens/local.css",
+]
+`;
+
+exports[`/processor.js .dependencies() should return the overall order of dependencies if no file is specified 1`] = `
+Array [
+  "packages/processor/test/specimens/folder/folder.css",
+  "packages/processor/test/specimens/local.css",
+  "packages/processor/test/specimens/start.css",
+]
+`;
