@@ -431,7 +431,15 @@ class Processor {
 
         this._log("_add()", id);
 
-        await this._walk(id, text);
+        const record = this._files[id];
+
+        if(!record || !record.valid) {
+            // Unknown/invalid files are added & preliminary processing happens
+            await this._ingest(id, text);
+        } else {
+            // Known files only need to wait to ensure that they're done processing
+            await record.walked;
+        }
 
         const deps = [ ...this._graph.dependenciesOf(id), id ];
 
@@ -491,17 +499,8 @@ class Processor {
 
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
-    async _walk(name, text) {
-        if(this._files[name] && this._files[name].valid) {
-            // Wait until initial walk is complete
-            await this._files[name].walked;
-
-            return;
-        }
-
+    async _ingest(name, text) {
         this._graph.addNode(name, 0);
-
-        this._log("_before()", name);
 
         const file = this._files[name] = {
             text,
@@ -516,6 +515,8 @@ class Processor {
                 })
             ),
         };
+
+        this._log("_before()", name);
 
         await file.before;
 
@@ -533,18 +534,18 @@ class Processor {
         
         await this._walkDependencies(name);
 
-        this._files[name].walked.resolve();
+        file.walked.resolve();
     }
 
     // Walk a node's dependencies, loading new files as necessary
     async _walkDependencies(name) {
         await Promise.all(
             this._graph.dependenciesOf(name).map((dependency) => {
-                const { valid, walked : complete } = this._files[dependency] || false;
+                const { valid, walked } = this._files[dependency] || false;
                 
                 // If the file hasn't been invalidated wait for it to be done processing
                 if(valid) {
-                    return complete;
+                    return walked;
                 }
 
                 // Otherwise add it to the queue
