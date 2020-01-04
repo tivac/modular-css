@@ -758,5 +758,7 @@ describe("/rollup.js", () => {
                 file : prefix(`./output/done-error.js`),
             }))
         );
+
+        it.todo("should output when warnOnUnused is set");
     });
 });
