@@ -1,6 +1,7 @@
 "use strict";
 
 const namer = require("@modular-css/test-utils/namer.js");
+const relative = require("@modular-css/test-utils/relative.js");
 
 const Processor = require("../processor.js");
 
@@ -27,8 +28,18 @@ describe("/processor.js", () => {
 
             processor._used(processor._normalize("./one.css"), "one1");
             processor._used(processor._normalize("./two.css"), "two2");
+
+            const unused = processor.unused();
+
+            expect(unused).toBeInstanceOf(Map);
+
+            // Absolute file paths hork things up, so need to transform this
+            const expected = [ ...unused.entries() ].map(([ file, classes ]) => [
+                relative(file)[0],
+                classes,
+            ]);
             
-            expect(processor.unused()).toMatchSnapshot();
+            expect(expected).toMatchSnapshot();
         });
     });
 });
