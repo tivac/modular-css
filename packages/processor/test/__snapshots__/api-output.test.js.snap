@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js .output() should allow for seperate source map output 1`] = `
+Object {
+  "file": "to.css",
+  "mappings": "AAAA,wDAAA;AACA,UAAU,WAAW,EAAE;ACDvB,gDAAA;AAIA,SAAS,iBAAiB,EAAE;ACJ5B,gDAAA;AAEA,SDFA,UAAe,EACf,gBAAgB,ECCsB;AACtC,SFHA,uBAAoB,EEGe",
+  "names": Array [],
+  "sources": Array [
+    "packages/processor/test/specimens/folder/folder.css",
+    "packages/processor/test/specimens/local.css",
+    "packages/processor/test/specimens/start.css",
+  ],
+  "sourcesContent": Array [
+    "@value folder: white;
+.folder { margin: 2px; }
+",
+    "@value one: red;
+@value two: blue;
+@value folder from \\"./folder/folder.css\\";
+
+.booga { background: green; }
+.looga { composes: booga; }
+",
+    "@value one, two, folder from \\"./local.css\\";
+.wooga { composes: booga from \\"./local.css\\"; }
+.booga { color: one; background: two; }
+.tooga { border: 1px solid folder; }
+",
+  ],
+  "version": 3,
+}
+`;
+
+exports[`/processor.js .output() should avoid duplicating files in the output 1`] = `
+"/* packages/processor/test/specimens/folder/folder.css */
+.folder { margin: 2px; }
+/* packages/processor/test/specimens/local.css */
+.booga { background: green; }
+/* packages/processor/test/specimens/start.css */
+.booga { color: red; background: blue; }
+.tooga { border: 1px solid white; }
+"
+`;
+
+exports[`/processor.js .output() should generate a JSON structure of all the compositions 1`] = `
+Object {
+  "packages/processor/test/specimens/folder/folder.css": Object {
+    "folder": "folder",
+  },
+  "packages/processor/test/specimens/local.css": Object {
+    "booga": "booga",
+    "folder": "white",
+    "looga": "booga looga",
+    "one": "red",
+    "two": "blue",
+  },
+  "packages/processor/test/specimens/start.css": Object {
+    "booga": "booga",
+    "folder": "white",
+    "one": "red",
+    "tooga": "tooga",
+    "two": "blue",
+    "wooga": "booga wooga",
+  },
+}
+`;
+
+exports[`/processor.js .output() should generate css representing the output from all added files 1`] = `
+"/* packages/processor/test/specimens/folder/folder.css */
+.folder { margin: 2px; }
+/* packages/processor/test/specimens/simple.css */
+.wooga { color: red; }
+/* packages/processor/test/specimens/local.css */
+.booga { background: green; }
+/* packages/processor/test/specimens/start.css */
+.booga { color: red; background: blue; }
+.tooga { border: 1px solid white; }
+"
+`;
+
+exports[`/processor.js .output() should order output by dependencies, then alphabetically 1`] = `
+"/* packages/processor/test/specimens/folder/folder.css */
+.folder { margin: 2px; }
+/* packages/processor/test/specimens/folder/folder2.css */
+.folder2 { color: green; }
+/* packages/processor/test/specimens/folder/subfolder/subfolder.css */
+.subfolder { color: yellow; }
+/* packages/processor/test/specimens/composes.css */
+/* packages/processor/test/specimens/deep.css */
+.deep {
+    color: black;
+}
+/* packages/processor/test/specimens/local.css */
+.booga { background: green; }
+/* packages/processor/test/specimens/start.css */
+.booga { color: red; background: blue; }
+.tooga { border: 1px solid white; }
+"
+`;
+
+exports[`/processor.js .output() should return a postcss result 1`] = `
+"/* packages/processor/test/specimens/folder/folder.css */
+.folder { margin: 2px; }
+/* packages/processor/test/specimens/local.css */
+.booga { background: green; }
+/* packages/processor/test/specimens/start.css */
+.booga { color: red; background: blue; }
+.tooga { border: 1px solid white; }
+"
+`;
+
+exports[`/processor.js .output() should support returning output for specified absolute files 1`] = `
+"/* packages/processor/test/specimens/start.css */
+.booga { color: red; background: blue; }
+.tooga { border: 1px solid white; }
+"
+`;
+
+exports[`/processor.js .output() should support returning output for specified relative files 1`] = `
+"/* packages/processor/test/specimens/start.css */
+.booga { color: red; background: blue; }
+.tooga { border: 1px solid white; }
+"
+`;

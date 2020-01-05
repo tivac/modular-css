@@ -15,6 +15,7 @@ const relative      = require("./lib/relative.js");
 const tiered        = require("./lib/graph-tiers.js");
 const normalize     = require("./lib/normalize.js");
 const { resolvers } = require("./lib/resolve.js");
+const deferred      = require("./lib/deferred.js");
 
 const noop = () => true;
 
@@ -83,6 +84,7 @@ class Processor {
         this._files = Object.create(null);
         this._graph = new Graph();
         this._ids = new Map();
+        this._usage = new Set();
 
         this._before = postcss([
             ...(options.before || []),
@@ -349,6 +351,65 @@ class Processor {
         .then(() => output.compositions(this));
     }
 
+    // Return a report of any unused selectors across the list of known files
+    unused() {
+        const { _usage, _graph, _files } = this;
+
+        const order = _graph
+            .overallOrder()
+            .reverse();
+
+        return order.reduce((acc, id) => {
+            const { result } = _files[id];
+
+            // If the file uses @composes we just bail, because tracking usage
+            // for those is way too difficult
+            const atcomposes = result.messages.find(({ plugin }) =>
+                plugin === "modular-css-at-composes"
+            );
+
+            if(atcomposes) {
+                return acc;
+            }
+
+            // Get the local composition dependency graph
+            const { graph : depgraph } = result.messages.find(({ plugin }) =>
+                plugin === "modular-css-composition"
+            );
+
+            // Extract out all the locally-defined classes
+            const classes = new Set(depgraph.overallOrder().filter((selector) => {
+                const { source } = depgraph.getNodeData(selector);
+
+                return source === "local";
+            }));
+
+            classes.forEach((selector) => {
+                if(!_usage.has(`${id}::${selector}`)) {
+                    return;
+                }
+
+                depgraph.dependenciesOf(selector).forEach((dep) => {
+                    const { source, selector } = depgraph.getNodeData(dep);
+
+                    if(source === "global") {
+                        return;
+                    }
+                    
+                    _usage.add(`${source === "local" ? id : source}::${selector}`);
+                });
+
+                classes.delete(selector);
+            });
+
+            if(classes.size) {
+                acc.set(id, classes);
+            }
+
+            return acc;
+        }, new Map());
+    }
+
     // Take a file id and some text, walk it for dependencies, then
     // process and return details
     async _add(id, text) {
@@ -360,7 +421,9 @@ class Processor {
 
             if(other && other !== id) {
                 // eslint-disable-next-line no-console
-                console.warn(`POTENTIAL DUPLICATE FILES:\n\t${relative(this._options.cwd, other)}\n\t${relative(this._options.cwd, id)}`);
+                console.warn(`POTENTIAL DUPLICATE FILES:\n\t${
+                    relative(this._options.cwd, other)}\n\t${relative(this._options.cwd, id)
+                }`);
             }
         }
 
@@ -368,7 +431,15 @@ class Processor {
 
         this._log("_add()", id);
 
-        await this._walk(id, text);
+        const record = this._files[id];
+
+        if(!record || !record.valid) {
+            // Unknown/invalid files are added & preliminary processing happens
+            await this._ingest(id, text);
+        } else {
+            // Known files only need to wait to ensure that they're done processing
+            await record.walked;
+        }
 
         const deps = [ ...this._graph.dependenciesOf(id), id ];
 
@@ -422,36 +493,30 @@ class Processor {
         };
     }
 
+    _used(file, key) {
+        this._usage.add(`${file}::${key}`);
+    }
+
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
-    async _walk(name, text) {
-        // No need to re-process files unless they've been marked invalid
-        if(this._files[name] && this._files[name].valid) {
-            // Do want to wait until they're done being processed though
-            await this._files[name].walked;
-
-            return;
-        }
-
+    async _ingest(name, text) {
         this._graph.addNode(name, 0);
-
-        this._log("_before()", name);
-
-        let walked;
 
         const file = this._files[name] = {
             text,
             exports : false,
             values  : false,
             valid   : true,
+            walked  : deferred(),
             before  : this._before.process(
                 text,
                 params(this, {
                     from : name,
                 })
             ),
-            walked : new Promise((done) => (walked = done)),
         };
+
+        this._log("_before()", name);
 
         await file.before;
 
@@ -466,24 +531,27 @@ class Processor {
             this._graph.addNode(dep, 0);
             this._graph.addDependency(name, dep);
         });
+        
+        await this._walkDependencies(name);
 
-        // Walk this node's dependencies, reading new files from disk as necessary
+        file.walked.resolve();
+    }
+
+    // Walk a node's dependencies, loading new files as necessary
+    async _walkDependencies(name) {
         await Promise.all(
             this._graph.dependenciesOf(name).map((dependency) => {
-                const { valid, walked : complete } = this._files[dependency] || false;
+                const { valid, walked } = this._files[dependency] || false;
                 
                 // If the file hasn't been invalidated wait for it to be done processing
                 if(valid) {
-                    return complete;
+                    return walked;
                 }
 
                 // Otherwise add it to the queue
                 return this.file(dependency);
             })
         );
-
-        // Mark the walk of this file & its dependencies complete
-        walked();
     }
 }
 

@@ -62,7 +62,7 @@ const { processor, preprocess } = require("@modular-css/svelte")({
 
 const processed = await svelte.preprocess(
     fs.readFileSync(filename, "utf8"),
-    Object.assign({}, preprocess, { filename })
+    { ...preprocess, filename },
 );
 
 const result = await processor.output();

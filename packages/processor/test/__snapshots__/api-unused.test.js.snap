@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js .unused() should return a map of unused exports 1`] = `
+Array [
+  Array [
+    "packages/processor/test/specimens/global.css",
+    Set {
+      "global",
+    },
+  ],
+  Array [
+    "packages/processor/test/specimens/composes-global.css",
+    Set {
+      "one",
+    },
+  ],
+  Array [
+    "packages/processor/test/specimens/blue.css",
+    Set {
+      "wooga",
+    },
+  ],
+  Array [
+    "packages/processor/test/specimens/start.css",
+    Set {
+      "booga",
+      "tooga",
+    },
+  ],
+  Array [
+    "packages/processor/test/specimens/local.css",
+    Set {
+      "looga",
+    },
+  ],
+  Array [
+    "packages/processor/test/specimens/folder/folder.css",
+    Set {
+      "folder",
+    },
+  ],
+]
+`;

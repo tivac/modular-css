@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js .dependents() should return the dependents of the specified file 1`] = `
+Array [
+  "packages/processor/test/specimens/start.css",
+]
+`;
+
+exports[`/processor.js .dependents() should throw if no file is passed 1`] = `"Must provide a file to processor.dependants()"`;

@@ -343,5 +343,22 @@ module.exports = (opts) => {
                 });
             }
         },
+
+        async writeBundle() {
+            if(!processor.options.warnOnUnused) {
+                return;
+            }
+
+            const prefix = "\n  .";
+
+            processor.unused().forEach((selectors, file) => {
+                const relative = path.relative(processor.options.cwd, file);
+                
+                // eslint-disable-next-line no-console
+                console.warn(
+                    `[@modular-css/rollup] Unused classes found in ${relative}: ${prefix}${[ ...selectors ].join(prefix)}`,
+                );
+            });
+        }
     };
 };

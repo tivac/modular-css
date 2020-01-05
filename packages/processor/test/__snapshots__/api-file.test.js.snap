@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js .file() should process a relative file 1`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js .file() should process a relative file 2`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js .file() should process a relative file 3`] = `
+".wooga { color: red; }
+"
+`;
+
+exports[`/processor.js .file() should process a relative file 4`] = `
+".wooga { color: red; }
+"
+`;
+
+exports[`/processor.js .file() should process an absolute file 1`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js .file() should process an absolute file 2`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js .file() should process an absolute file 3`] = `
+".wooga { color: red; }
+"
+`;
+
+exports[`/processor.js .file() should process an absolute file 4`] = `
+".wooga { color: red; }
+"
+`;
+
+exports[`/processor.js .file() should wait for dependencies to be processed before composing 1`] = `
+Array [
+  Object {
+    "one": Array [
+      "three",
+      "two",
+      "one",
+    ],
+  },
+  Object {
+    "two": Array [
+      "three",
+      "two",
+      "one",
+    ],
+  },
+]
+`;

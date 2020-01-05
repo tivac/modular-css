@@ -1,0 +1,7 @@
+.one {
+    composes: g from global;
+}
+
+.two { 
+    composes: one;
+}

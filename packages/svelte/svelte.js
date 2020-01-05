@@ -10,21 +10,19 @@ const Processor = require("@modular-css/processor");
 
 const styleRegex = /<style[\S\s]*?>([\S\s]*?)<\/style>/im;
 const scriptRegex = /<script[\S\s]*?>([\S\s]*?)<\/script>/im;
+const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/gim;
 const missedRegex = /css\.\w+/gim;
 
 const prefix = `[${require("./package.json").name}]`;
 
 module.exports = (config = false) => {
-    // Defined here to avoid .lastIndex bugs since /g is set
-    const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/gim;
-
     // Use a passed processor, or set up our own if necessary
     const { processor = new Processor(config) } = config;
 
-    const { cwd } = processor.options;
+    const { cwd, verbose } = processor.options;
 
     // eslint-disable-next-line no-console, no-empty-function
-    const log = config.verbose ? console.log.bind(console, prefix) : () => {};
+    const log = verbose ? console.log.bind(console, prefix) : () => {};
 
     // eslint-disable-next-line no-console
     const warn = console.warn.bind(console, prefix, "WARN");
@@ -68,6 +66,8 @@ module.exports = (config = false) => {
         let source = content;
         let dependencies = [];
 
+        linkRegex.lastIndex = 0;
+
         const links = source.match(linkRegex);
         const style = source.match(styleRegex);
 
@@ -87,6 +87,7 @@ module.exports = (config = false) => {
 
         let result;
         let css;
+        let cssRef;
 
         log("Processing", file);
 
@@ -94,6 +95,7 @@ module.exports = (config = false) => {
             log("extract <style>", file);
 
             css = "<style>";
+            cssRef = filename;
 
             if(processor.has(filename)) {
                 processor.invalidate(filename);
@@ -152,17 +154,17 @@ module.exports = (config = false) => {
             // Assign to file for later usage in logging
             css = href;
 
-            const external = processor.resolve(filename, css);
+            cssRef = processor.resolve(filename, css);
 
-            log("extract <link>", external);
+            log("extract <link>", cssRef);
 
-            if(processor.has(external)) {
-                processor.invalidate(external);
+            if(processor.has(cssRef)) {
+                processor.invalidate(cssRef);
             }
 
             try {
                 // Process the file
-                result = await processor.file(external);
+                result = await processor.file(cssRef);
             } catch(e) {
                 e.message = e.toString();
 
@@ -188,12 +190,14 @@ module.exports = (config = false) => {
                 source += `<script>${inject}</script>`;
             }
 
-            dependencies = [ ...processor.dependencies(external), external ];
+            dependencies = [ ...processor.dependencies(cssRef), cssRef ];
         }
 
         log("processed styles", file);
 
-        const exported = result.exports;
+        const { exports : exported, details } = result;
+        const { values } = details;
+        
         const keys = Object.keys(exported);
 
         log("updating source {css.<key>} references from", css);
@@ -211,26 +215,33 @@ module.exports = (config = false) => {
                 }
             }
 
+            const replacer = ({ sep = "", useSuffix = false } = false) =>
+                (match, before, key, suffix = "") => {
+                    let out;
+
+                    if(key in values) {
+                        out = exported[key];
+                    } else {
+                        out = exported[key].join(" ");
+                        
+                        processor._used(cssRef, key);
+                    }
+
+                    return `${before}${sep}${out}${sep}${useSuffix ? suffix : ""}`;
+                };
+
             source = source
                 // Replace {css.<key>} values
                 // Note extra exclusion to avoid accidentally matching ${css.<key>}
                 .replace(
                     new RegExp(`([^$]){css\\.(${selectors})}`, "gm"),
-                    (match, before, key) => {
-                        const replacement = Array.isArray(exported[key]) ? exported[key].join(" ") : exported[key];
-
-                        return `${before}${replacement}`;
-                    }
+                    replacer()
                 )
 
                 // Then any remaining css.<key> values
                 .replace(
                     new RegExp(`(\\b)css\\.(${selectors})(\\b)`, "gm"),
-                    (match, before, key, suffix) => {
-                        const replacement = Array.isArray(exported[key]) ? exported[key].join(" ") : exported[key];
-
-                        return `${before}"${replacement}"${suffix}`;
-                    }
+                    replacer({ sep : `"`, useSuffix : true })
                 );
         }
 

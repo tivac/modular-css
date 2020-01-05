@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js .remove() should remove a relative file 1`] = `Array []`;
+
+exports[`/processor.js .remove() should remove an absolute file 1`] = `Array []`;
+
+exports[`/processor.js .remove() should remove multiple files 1`] = `
+Array [
+  "c.css",
+]
+`;
+
+exports[`/processor.js .remove() should return an array of removed files 1`] = `
+Array [
+  "a.css",
+  "b.css",
+]
+`;

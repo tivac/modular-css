@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/processor.js .compositions should return compositions for loaded files 1`] = `
+Object {
+  "packages/processor/test/specimens/folder/folder.css": Object {
+    "folder": "folder",
+  },
+  "packages/processor/test/specimens/local.css": Object {
+    "booga": "booga",
+    "folder": "white",
+    "looga": "booga looga",
+    "one": "red",
+    "two": "blue",
+  },
+  "packages/processor/test/specimens/start.css": Object {
+    "booga": "booga",
+    "folder": "white",
+    "one": "red",
+    "tooga": "tooga",
+    "two": "blue",
+    "wooga": "booga wooga",
+  },
+}
+`;
