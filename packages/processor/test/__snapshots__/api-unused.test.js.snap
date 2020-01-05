@@ -3,15 +3,40 @@
 exports[`/processor.js .unused() should return a map of unused exports 1`] = `
 Array [
   Array [
-    "two.css",
+    "packages/processor/test/specimens/global.css",
     Set {
-      "two1",
+      "global",
     },
   ],
   Array [
-    "one.css",
+    "packages/processor/test/specimens/composes-global.css",
     Set {
-      "one2",
+      "one",
+    },
+  ],
+  Array [
+    "packages/processor/test/specimens/blue.css",
+    Set {
+      "wooga",
+    },
+  ],
+  Array [
+    "packages/processor/test/specimens/start.css",
+    Set {
+      "booga",
+      "tooga",
+    },
+  ],
+  Array [
+    "packages/processor/test/specimens/local.css",
+    Set {
+      "looga",
+    },
+  ],
+  Array [
+    "packages/processor/test/specimens/folder/folder.css",
+    Set {
+      "folder",
     },
   ],
 ]
