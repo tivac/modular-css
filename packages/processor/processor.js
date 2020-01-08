@@ -404,7 +404,7 @@ class Processor {
 
                 // Export anything from plugins named "modular-css-export*"
                 result.messages.reduce((out, { plugin, exports : exported }) => {
-                    if(plugin.indexOf("modular-css-export") !== 0) {
+                    if(!plugin || plugin.indexOf("modular-css-export") !== 0) {
                         return out;
                     }
 
