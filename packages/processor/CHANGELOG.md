@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [25.3.1](https://github.com/tivac/modular-css/compare/v25.3.0...v25.3.1) (2020-01-23)
+
+
+### Bug Fixes
+
+* **processor:** don't assume `plugin` key on messages ([#712](https://github.com/tivac/modular-css/issues/712)) ([3a5279c](https://github.com/tivac/modular-css/commit/3a5279c))
+
+
+
+
+
 # [25.2.0](https://github.com/tivac/modular-css/compare/v25.1.0...v25.2.0) (2019-10-30)
 
 
