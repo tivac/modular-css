@@ -20,8 +20,6 @@ const noop = () => true;
 
 const defaultLoadFile = (id) => fs.readFileSync(id, "utf8");
 
-const parse = (text, params) => postcss.parse(text, params);
-
 const params = ({ _options, _files, _graph, _resolve }, args) => Object.assign(
     Object.create(null),
     _options,
@@ -362,7 +360,7 @@ class Processor {
 
     // Take a file id and some text, walk it for dependencies, then
     // process and return details
-    async _add(id, textOrRoot) {
+    async _add(id, src) {
         const check = id.toLowerCase();
 
         // Warn about potential dupes if an ID goes past we've seen before
@@ -379,7 +377,7 @@ class Processor {
 
         this._log("_add()", id);
 
-        await this._walk(id, textOrRoot);
+        await this._walk(id, src);
 
         const deps = [ ...this._graph.dependenciesOf(id), id ];
 
@@ -435,7 +433,7 @@ class Processor {
 
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
-    async _walk(name, textOrRoot) {
+    async _walk(name, src) {
         // No need to re-process files unless they've been marked invalid
         if(this._files[name] && this._files[name].valid) {
             // Do want to wait until they're done being processed though
@@ -444,10 +442,6 @@ class Processor {
             return;
         }
 
-        const text = typeof textOrRoot === "string" ?
-            textOrRoot :
-            textOrRoot.source.input.css;
-
         this._graph.addNode(name, 0);
 
         this._log("_before()", name);
@@ -455,12 +449,12 @@ class Processor {
         let walked;
 
         const file = this._files[name] = {
-            text,
+            text    : typeof src === "string" ? src : src.source.input.css,
             exports : false,
             values  : false,
             valid   : true,
             before  : this._before.process(
-                textOrRoot,
+                src,
                 params(this, {
                     from : name,
                 })
