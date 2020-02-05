@@ -56,6 +56,11 @@ Returns a promise. Add `file` to the `Processor` instance with `css` contents.
 
 Returns a promise. Add `file` to the `Processor` instance, reads contents from disk using `fs`.
 
+### `.root(file, Root)`
+
+Returns a promise. Add `file` to the `Processor` instance, re-uses a Postcss `Root` object, avoiding
+unnecessarily parsing an AST again.
+
 ### `.output({ args })`
 
 Returns a promise. Finalize processing of all added CSS and create combined CSS output file.

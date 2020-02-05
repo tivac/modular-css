@@ -20,6 +20,8 @@ const noop = () => true;
 
 const defaultLoadFile = (id) => fs.readFileSync(id, "utf8");
 
+const parse = (text, params) => postcss.parse(text, params);
+
 const params = ({ _options, _files, _graph, _resolve }, args) => Object.assign(
     Object.create(null),
     _options,
@@ -41,7 +43,7 @@ class Processor {
             {
                 cwd : process.cwd(),
                 map : false,
-                
+
                 dupewarn     : true,
                 exportValues : true,
                 loadFile     : defaultLoadFile,
@@ -123,7 +125,7 @@ class Processor {
         this._log("file()", id);
 
         const text = await this._loadFile(id);
-        
+
         return this._add(id, text);
     }
 
@@ -134,6 +136,15 @@ class Processor {
         this._log("string()", id);
 
         return this._add(id, text);
+    }
+
+    // Add an existing postcss Root object by name
+    root(file, root) {
+        const id = this._normalize(file);
+
+        this._log("root()", id);
+
+        return this._add(id, root);
     }
 
     // Remove a file from the dependency graph
@@ -351,7 +362,7 @@ class Processor {
 
     // Take a file id and some text, walk it for dependencies, then
     // process and return details
-    async _add(id, text) {
+    async _add(id, textOrRoot) {
         const check = id.toLowerCase();
 
         // Warn about potential dupes if an ID goes past we've seen before
@@ -368,7 +379,7 @@ class Processor {
 
         this._log("_add()", id);
 
-        await this._walk(id, text);
+        await this._walk(id, textOrRoot);
 
         const deps = [ ...this._graph.dependenciesOf(id), id ];
 
@@ -424,7 +435,7 @@ class Processor {
 
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
-    async _walk(name, text) {
+    async _walk(name, textOrRoot) {
         // No need to re-process files unless they've been marked invalid
         if(this._files[name] && this._files[name].valid) {
             // Do want to wait until they're done being processed though
@@ -432,6 +443,10 @@ class Processor {
 
             return;
         }
+
+        const text = typeof textOrRoot === "string" ?
+            textOrRoot :
+            textOrRoot.source.input.css;
 
         this._graph.addNode(name, 0);
 
@@ -445,7 +460,7 @@ class Processor {
             values  : false,
             valid   : true,
             before  : this._before.process(
-                text,
+                textOrRoot,
                 params(this, {
                     from : name,
                 })
@@ -471,7 +486,7 @@ class Processor {
         await Promise.all(
             this._graph.dependenciesOf(name).map((dependency) => {
                 const { valid, walked : complete } = this._files[dependency] || false;
-                
+
                 // If the file hasn't been invalidated wait for it to be done processing
                 if(valid) {
                     return complete;
