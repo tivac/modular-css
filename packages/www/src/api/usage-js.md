@@ -45,6 +45,10 @@ Pass a file path to the processor instance for processing. Returns a promise tha
 
 Pass a name and `css` string to the processor instance for processing. Returns a promise that resolves to details about the file that was added.
 
+##### `processor.root(<name>, Root)`
+
+Add a file to the `Processor` instance using an already-parsed Postcss `Root` object to avoid unnecessary reparsing. Returns a promise that resolves to details about the file that was added.
+
 #### Processor Options
 
 ##### `rewrite`
