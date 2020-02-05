@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.4.0](https://github.com/tivac/modular-css/compare/v25.3.1...v25.4.0) (2020-02-05)
+
+
+### Features
+
+* add `.root()` to avoid re-parsing inputs when possible ([#717](https://github.com/tivac/modular-css/issues/717)) ([fdb010b](https://github.com/tivac/modular-css/commit/fdb010b))
+
+
+
+
+
 ## [25.3.1](https://github.com/tivac/modular-css/compare/v25.3.0...v25.3.1) (2020-01-23)
 
 
