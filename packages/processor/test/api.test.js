@@ -1,5 +1,6 @@
 "use strict";
 
+const postcss  = require("postcss");
 const namer    = require("@modular-css/test-utils/namer.js");
 const relative = require("@modular-css/test-utils/relative.js");
 
@@ -17,6 +18,21 @@ describe("/processor.js", () => {
 
         it("should be a function", () => {
             expect(typeof Processor).toBe("function");
+        });
+
+        describe(".root()", () => {
+            it("should process a postcss Root", async () => {
+                const file = "./simple.css";
+                const root = postcss.parse(".wooga { }", { from : file });
+                const result = await processor.root(
+                    file, root
+                );
+
+                expect(result.exports).toMatchSnapshot();
+                expect(result.details.exports).toMatchSnapshot();
+                expect(result.details.text).toMatchSnapshot();
+                expect(result.details.processed.root.toResult().css).toMatchSnapshot();
+            });
         });
 
         describe(".string()", () => {

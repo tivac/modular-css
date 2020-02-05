@@ -1,17 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/processor.js API .resolve() should fall back to a default resolver 1`] = `
-Array [
-  "packages/processor/test/specimens/local.css",
-]
-`;
-
-exports[`/processor.js API .resolve() should run resolvers until a match is found 1`] = `
-Array [
-  "packages/processor/test/specimens/local.css",
-]
-`;
-
 exports[`/processor.js API .compositions should return compositions for loaded files 1`] = `Promise {}`;
 
 exports[`/processor.js API .dependencies() should return the dependencies of the specified file 1`] = `
@@ -309,6 +297,38 @@ Array [
   "b.css",
 ]
 `;
+
+exports[`/processor.js API .resolve() should fall back to a default resolver 1`] = `
+Array [
+  "packages/processor/test/specimens/local.css",
+]
+`;
+
+exports[`/processor.js API .resolve() should run resolvers until a match is found 1`] = `
+Array [
+  "packages/processor/test/specimens/local.css",
+]
+`;
+
+exports[`/processor.js API .root() should process a postcss Root 1`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js API .root() should process a postcss Root 2`] = `
+Object {
+  "wooga": Array [
+    "wooga",
+  ],
+}
+`;
+
+exports[`/processor.js API .root() should process a postcss Root 3`] = `".wooga { }"`;
+
+exports[`/processor.js API .root() should process a postcss Root 4`] = `".wooga { }"`;
 
 exports[`/processor.js API .string() should process a string 1`] = `
 Object {
