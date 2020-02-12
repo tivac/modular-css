@@ -39,7 +39,7 @@
     "factor-bundle": "2.5.0",
     "from2-string": "1.1.0",
     "jest": "^24.9.0",
-    "jest-cli": "^24.9.0",
+    "jest-cli": "^25.1.0",
     "lerna": "^3.16.4",
     "p-defer": "^3.0.0",
     "pegjs": "0.10.0",
