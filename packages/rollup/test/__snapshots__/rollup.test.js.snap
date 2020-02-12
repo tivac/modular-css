@@ -334,8 +334,6 @@ exports[`/rollup.js should not output sourcemaps when they are disabled 1`] = `
 "
 `;
 
-exports[`/rollup.js should not write out empty CSS files when empties is falsey 1`] = `""`;
-
 exports[`/rollup.js should output a proxy in dev mode 1`] = `
 Object {
   "simple": "
