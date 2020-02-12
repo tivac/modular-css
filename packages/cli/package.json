@@ -30,7 +30,7 @@
   "dependencies": {
     "@modular-css/glob": "file:../glob",
     "@modular-css/processor": "file:../processor",
-    "meow": "^5.0.0",
+    "meow": "^6.0.0",
     "mkdirp": "^1.0.3"
   }
 }
