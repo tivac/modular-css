@@ -19,10 +19,10 @@
     "pretest": "npm run parsers",
     "test": "jest",
     "watch": "jest --watch",
-    "www:build": "lerna run --stream build packages/www",
-    "www:start": "lerna run --stream start packages/www",
+    "www:build": "lerna run --scope @modular-css/website --stream build",
+    "www:start": "lerna run --scope @modular-css/website --stream start",
     "prewww:deploy": "npm run parsers",
-    "www:deploy": "lerna run --stream deploy packages/www"
+    "www:deploy": "lerna run --scope @modular-css/website --stream deploy"
   },
   "devDependencies": {
     "@modular-css/test-utils": "file:packages/test-utils",
