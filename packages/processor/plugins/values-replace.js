@@ -12,10 +12,11 @@ module.exports = (css, { opts, messages }) => {
     const graph = new Graph();
 
     // Create local copy of values since we're going to merge in namespace stuff
-    const values = Object.assign(
-        Object.create(null),
-        get(opts, [ "files", opts.from, "values" ])
-    );
+    const values = {
+        __proto__ : null,
+        
+        ...get(opts, [ "files", opts.from, "values" ]),
+    };
 
     // Merge namespaced values in w/ prefixed names
     messages

@@ -39,11 +39,13 @@ if(!cli.input.length) {
     cli.showHelp();
 }
 
-glob(Object.assign(
-    Object.create(null),
-    cli.flags,
-    { search : cli.input }
-))
+glob({
+    __proto__ : null,
+
+    ...cli.flags,
+    
+    search : cli.input,
+})
 .then((processor) => processor.output({ to : cli.flags.out }))
 .then(({ compositions, css }) => {
     if(cli.flags.json) {

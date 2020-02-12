@@ -26,12 +26,15 @@ const outputs = ({ exports }) => `module.exports = ${
 };`;
 
 module.exports = (browserify, opts) => {
-    const options = Object.assign(Object.create(null), {
-            ext   : ".css",
-            map   : browserify._options.debug,
-            cwd   : browserify._options.basedir || process.cwd(),
-            cache : true,
-        }, opts);
+    const options = {
+        __proto__ : null,
+
+        ext   : ".css",
+        map   : browserify._options.debug,
+        cwd   : browserify._options.basedir || process.cwd(),
+        cache : true,
+        ...opts,
+    };
 
     let processor = options.cache && new Processor(options);
     let bundler;

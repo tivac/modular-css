@@ -20,38 +20,38 @@ const noop = () => true;
 
 const defaultLoadFile = (id) => fs.readFileSync(id, "utf8");
 
-const params = ({ _options, _files, _graph, _resolve }, args) => Object.assign(
-    Object.create(null),
-    _options,
-    _options.postcss,
-    {
-        from    : null,
-        files   : _files,
-        graph   : _graph,
-        resolve : _resolve,
-    },
-    args
-);
+const params = ({ _options, _files, _graph, _resolve }, args) => ({
+    __proto__ : null,
+    ..._options,
+    ..._options.postcss,
+    from      : null,
+    files     : _files,
+    graph     : _graph,
+    resolve   : _resolve,
+    ...args,
+});
+
+const DEFAULTS = {
+    cwd : process.cwd(),
+    map : false,
+
+    dupewarn     : true,
+    exportValues : true,
+    loadFile     : defaultLoadFile,
+    postcss      : {},
+    resolvers    : [],
+    rewrite      : true,
+    verbose      : false,
+};
 
 class Processor {
-    constructor(opts) {
+    constructor(opts = {}) {
         /* eslint max-statements: [ "warn", 25 ] */
-        const options = Object.assign(
-            Object.create(null),
-            {
-                cwd : process.cwd(),
-                map : false,
-
-                dupewarn     : true,
-                exportValues : true,
-                loadFile     : defaultLoadFile,
-                postcss      : {},
-                resolvers    : [],
-                rewrite      : true,
-                verbose      : false,
-            },
-            opts
-        );
+        const options = {
+            __proto__ : null,
+            ...DEFAULTS,
+            ...opts,
+        };
 
         this._options = options;
 
@@ -301,11 +301,12 @@ class Processor {
                 // https://github.com/postcss/postcss/pull/761
                 // https://github.com/tivac/modular-css/pull/157
                 //
-                source : Object.assign(
-                    {},
-                    result.root.source,
-                    { end : result.root.source.start }
-                ),
+                source : {
+                    __proto__ : null,
+
+                    ...result.root.source,
+                    end : result.root.source.start,
+                },
             });
 
             root.append([ comment, ...result.root.nodes ]);
@@ -400,26 +401,28 @@ class Processor {
 
             const { result } = file;
 
-            file.exports = Object.assign(
-                Object.create(null),
+            file.exports = {
+                __proto__ : null,
 
                 // optionally export @value entries
-                this._options.exportValues ?
-                    mapValues(file.values, ({ value }) => value) :
-                    null,
+                ...(
+                    this._options.exportValues ?
+                        mapValues(file.values, ({ value }) => value) :
+                        null
+                ),
 
                 // export classes
-                message(result, "classes"),
+                ...message(result, "classes"),
 
                 // Export anything from plugins named "modular-css-export*"
-                result.messages.reduce((out, { plugin, exports : exported }) => {
+                ...result.messages.reduce((out, { plugin, exports : exported }) => {
                     if(!plugin || plugin.indexOf("modular-css-export") !== 0) {
                         return out;
                     }
 
                     return Object.assign(out, exported);
-                }, Object.create(null))
-            );
+                }, Object.create(null)),
+            };
         }
 
         return {
