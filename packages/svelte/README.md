@@ -20,7 +20,7 @@ Turns this
     .main {
         ...
     }
-    
+
     .title {
         ...
     }
@@ -62,7 +62,10 @@ const { processor, preprocess } = require("@modular-css/svelte")({
 
 const processed = await svelte.preprocess(
     fs.readFileSync(filename, "utf8"),
-    Object.assign({}, preprocess, { filename })
+    Object.assign({
+        ...preprocess,
+        filename,
+    })
 );
 
 const result = await processor.output();
@@ -83,7 +86,7 @@ const { preprocess, processor } = require("@modular-css/svelte")({
 
 const bundle = await rollup({
     input   : "./Component.html",
-    
+
     plugins : [
         require("rollup-plugin-svelte")({
             preprocess,
@@ -113,7 +116,7 @@ const { preprocess, processor } = require("@modular-css/svelte")({
 
 module.exports = {
     input   : "./Component.html",
-    
+
     output  : {
         format : "es",
         file   : "./dist/bundle.js"
@@ -123,7 +126,7 @@ module.exports = {
         require("rollup-plugin-svelte")({
             preprocess,
         }),
-        
+
         require("@modular-css/rollup")({
             processor,
 
