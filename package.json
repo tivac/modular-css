@@ -43,7 +43,7 @@
     "lerna": "^3.16.4",
     "p-defer": "^3.0.0",
     "pegjs": "0.10.0",
-    "read-dir-deep": "^6.0.0",
+    "read-dir-deep": "^7.0.1",
     "rollup": "^1.21.3",
     "rollup-plugin-hypothetical": "^2.1.0",
     "rollup-plugin-svelte": "^5.0.3",
