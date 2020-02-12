@@ -11,7 +11,7 @@ module.exports = (cwd) =>
         const files = read(dir);
 
         return files.sort().reduce((out, file) => {
-            out[file.replace(/\\/g, "/")] = fs.readFileSync(path.join(dir, file), "utf8");
+            out[path.relative(dir, file).replace(/\\/g, "/")] = fs.readFileSync(file, "utf8");
 
             return out;
         }, Object.create(null));

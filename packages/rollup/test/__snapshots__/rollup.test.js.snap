@@ -2,7 +2,8 @@
 
 exports[`/rollup.js should accept an existing processor instance (no css in bundle) 1`] = `
 Object {
-  "fake.css": "/* packages/rollup/test/specimens/fake.css */
+  "assets/fake.css": "
+/* packages/rollup/test/specimens/fake.css */
 .fake {
     color: yellow;
 }",
@@ -11,11 +12,13 @@ Object {
 
 exports[`/rollup.js should accept an existing processor instance 1`] = `
 Object {
-  "fake.css": "/* packages/rollup/test/specimens/fake.css */
+  "assets/fake.css": "
+/* packages/rollup/test/specimens/fake.css */
 .fake {
     color: yellow;
 }",
-  "simple.css": "/* packages/rollup/test/specimens/simple.css */
+  "assets/simple.css": "
+/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }
@@ -48,12 +51,14 @@ console.log(fooga);
 
 exports[`/rollup.js should correctly handle hashed output 1`] = `
 Object {
-  "assets/simple-8ed43a0c.css": "/* packages/rollup/test/specimens/simple.css */
+  "assets/simple-8ed43a0c.css": "
+/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }
 ",
-  "hashes.js": "var css = {
+  "hashes.js": "
+var css = {
     \\"str\\": \\"\\\\\\"string\\\\\\"\\",
     \\"fooga\\": \\"fooga\\"
 };
@@ -65,20 +70,24 @@ console.log(css);
 
 exports[`/rollup.js should correctly handle hashed output with external source maps & json files 1`] = `
 Object {
-  "assets/exports-2733b4a4.json": "{
+  "assets/exports-2733b4a4.json": "
+{
     \\"packages/rollup/test/specimens/simple.css\\": {
         \\"str\\": \\"\\\\\\"string\\\\\\"\\",
         \\"fooga\\": \\"fooga\\"
     }
 }",
-  "assets/simple-8ed43a0c.css": "/* packages/rollup/test/specimens/simple.css */
+  "assets/simple-8ed43a0c.css": "
+/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }
 
 /*# sourceMappingURL=simple-8ed43a0c.css.map */",
-  "assets/simple-8ed43a0c.css.map": "{\\"version\\":3,\\"sources\\":[\\"../../../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,8CAAA;AAEA;IACI,UAAU;AACd\\",\\"file\\":\\"simple-[hash].css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
-  "hashes.js": "var css = {
+  "assets/simple-8ed43a0c.css.map": "
+{\\"version\\":3,\\"sources\\":[\\"../../../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,8CAAA;AAEA;IACI,UAAU;AACd\\",\\"file\\":\\"simple-[hash].css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
+  "hashes.js": "
+var css = {
     \\"str\\": \\"\\\\\\"string\\\\\\"\\",
     \\"fooga\\": \\"fooga\\"
 };
@@ -367,11 +376,13 @@ console.log(style);
 
 exports[`/rollup.js should output unreferenced CSS 1`] = `
 Object {
-  "fake.css": "/* packages/rollup/test/specimens/fake.css */
+  "assets/fake.css": "
+/* packages/rollup/test/specimens/fake.css */
 .fake {
     color: yellow;
 }",
-  "simple.css": "/* packages/rollup/test/specimens/simple.css */
+  "assets/simple.css": "
+/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }

@@ -12,10 +12,10 @@ expect.extend({
         valueA,
         valueB,
         options = {},
-        testName
+        testName = "",
       ) {
         const difference = snapshotDiff(valueA, valueB, { ...defaults, ...options });
-      
+
         return snapshot.toMatchSnapshot.call(this, difference, testName);
       },
 });
