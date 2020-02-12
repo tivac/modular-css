@@ -16,7 +16,7 @@ Snapshot Diff:
 -     \\"one\\": \\"mc5f9237d4_one\\"
 +     \\"two\\": \\"mc5f9237d4_two\\"
   };
-  
+
   console.log(css);
   ",
   }
@@ -34,7 +34,7 @@ Snapshot Diff:
 -     color: red;
 +     color: green;
   }
-  
+
   .mc0f3c579a_two {
       background: blue;
   }
@@ -47,7 +47,7 @@ Snapshot Diff:
 -     \\"three\\": \\"mc0f3c579a_three\\"
 +     \\"three\\": \\"mc0f3c579a_one mc0f3c579a_three\\"
   };
-  
+
   console.log(css);
   ",
   }
@@ -98,7 +98,7 @@ Snapshot Diff:
 +     \\"baloo\\": \\"red\\",
       \\"one\\": \\"mca79168b9_one\\"
   };
-  
+
   console.log(css);
   ",
 `;
@@ -135,7 +135,7 @@ Snapshot Diff:
 +   "output.js": "var css = {
 +     \\"one\\": \\"mc54f12712_one\\"
 + };
-+ 
++
 + console.log(css);
   ",
   }

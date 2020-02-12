@@ -11,7 +11,6 @@ const files = require("rollup-plugin-hypothetical");
 const read    = require("@modular-css/test-utils/read.js")(__dirname);
 const exists  = require("@modular-css/test-utils/exists.js")(__dirname);
 const prefix  = require("@modular-css/test-utils/prefix.js")(__dirname);
-const dir     = require("@modular-css/test-utils/read-dir.js")(__dirname);
 const namer   = require("@modular-css/test-utils/namer.js");
 const logs    = require("@modular-css/test-utils/logs.js");
 
@@ -139,12 +138,12 @@ describe("/rollup.js", () => {
             ],
         });
 
-        await bundle.write({
+        const result = await bundle.generate({
             format,
             file : prefix(`./output/hashes/hashes.js`),
         });
 
-        expect(dir("./hashes")).toMatchSnapshot();
+        expect(result).toMatchRollupSnapshot();
     });
 
     it("should correctly handle hashed output with external source maps & json files", async () => {
@@ -159,12 +158,12 @@ describe("/rollup.js", () => {
             ],
         });
 
-        await bundle.write({
+        const result = await bundle.generate({
             format,
             file : prefix(`./output/hashes/hashes.js`),
         });
 
-        expect(dir("./hashes")).toMatchSnapshot();
+        expect(result).toMatchRollupSnapshot();
     });
 
     it("should avoid generating empty CSS", async () => {
@@ -268,13 +267,13 @@ describe("/rollup.js", () => {
             ],
         });
 
-        await bundle.write({
+        const result = await bundle.generate({
             format,
             assetFileNames,
             file : prefix(`./output/common-option/simple.js`),
         });
 
-        expect(dir("./common-option/assets/")).toMatchSnapshot();
+        expect(result).toMatchRollupAssetSnapshot();
     });
 
     it("should provide named exports", async () => {
@@ -481,7 +480,7 @@ describe("/rollup.js", () => {
             ],
         });
 
-        await bundle.write({
+        const result = await bundle.generate({
             format,
             sourcemap,
             assetFileNames,
@@ -489,7 +488,7 @@ describe("/rollup.js", () => {
             file : prefix(`./output/existing-processor/existing-processor.js`),
         });
 
-        expect(dir("./existing-processor/assets/")).toMatchSnapshot();
+        expect(result).toMatchRollupAssetSnapshot();
     });
 
     it("should accept an existing processor instance (no css in bundle)", async () => {
@@ -513,7 +512,7 @@ describe("/rollup.js", () => {
             ],
         });
 
-        await bundle.write({
+        const result = await bundle.generate({
             format,
             sourcemap,
             assetFileNames,
@@ -521,7 +520,7 @@ describe("/rollup.js", () => {
             file : prefix(`./output/existing-processor-no-css/existing-processor-no-css.js`),
         });
 
-        expect(dir("./existing-processor-no-css/assets/")).toMatchSnapshot();
+        expect(result).toMatchRollupAssetSnapshot();
     });
 
     it("should output a proxy in dev mode", async () => {
@@ -676,7 +675,7 @@ describe("/rollup.js", () => {
 
             // eslint-disable-next-line jest/no-standalone-expect
             expect(spy).toHaveBeenCalled();
-            
+
             // eslint-disable-next-line jest/no-standalone-expect
             expect(spy.mock.calls.length).toBeGreaterThan(0);
         });

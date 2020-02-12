@@ -42,9 +42,9 @@ Snapshot Diff:
 +     color: blue;
 + }",
 @@ --- --- @@
-+ 
++
 @@ --- --- @@
-+ 
++
 @@ --- --- @@
 - 			div.className = \\"css.nope\\";
 + 			div.className = \\"mc043115d5_nope\\";
@@ -56,7 +56,7 @@ Snapshot Diff:
 + Second value
 
 @@ --- --- @@
-  
+
   	return {
   		c() {
   			div = createElement(\\"div\\");
@@ -64,7 +64,7 @@ Snapshot Diff:
 - 			div.className = \\"mc8c3b9f40_b mc7c0d2c82_a\\";
 + 			div.className = \\"mc8c3b9f40_c mc7c0d2c82_a\\";
   		},
-  
+
   		m(target, anchor) {
   			insert(target, div, anchor);
   		},
