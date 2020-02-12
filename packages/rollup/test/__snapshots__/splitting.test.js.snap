@@ -140,29 +140,9 @@ Object {
 exports[`/rollup.js code splitting should support circular JS dependencies 1`] = `
 Object {
   "a.js": "
-import b from './b.js';
-
-var css = {
-    \\"a\\": \\"a\\"
-};
-
-console.log(css, b);
-
-var a = \\"a\\";
-
-export default a;
+export { a as default } from './a2.js';
 ",
-  "assets/a.css": "
-/* packages/rollup/test/specimens/circular-dependencies/a.css */
-.a { color: aqua; }
-",
-  "assets/b.css": "
-/* packages/rollup/test/specimens/circular-dependencies/b.css */
-.b { color: blue; }
-",
-  "b.js": "
-import a from './a.js';
-
+  "a2.js": "
 var css = {
     \\"b\\": \\"b\\"
 };
@@ -171,7 +151,24 @@ console.log(css, a);
 
 var b = \\"b\\";
 
-export default b;
+var css$1 = {
+    \\"a\\": \\"a\\"
+};
+
+console.log(css$1, b);
+
+var a = \\"a\\";
+
+export { a, b };
+",
+  "assets/a.css": "
+/* packages/rollup/test/specimens/circular-dependencies/b.css */
+.b { color: blue; }
+/* packages/rollup/test/specimens/circular-dependencies/a.css */
+.a { color: aqua; }
+",
+  "b.js": "
+export { b as default } from './a2.js';
 ",
 }
 `;
