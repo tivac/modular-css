@@ -61,7 +61,7 @@ describe("/webpack.js", () => {
         expect(typeof Plugin).toBe("function");
     });
 
-    it("should output css to disk", (done) => {
+    it("should output css to disk", () => new Promise((done) => {
         webpack(config({
             entry : "./packages/webpack/test/specimens/simple.js",
         }), (err, stats) => {
@@ -72,9 +72,9 @@ describe("/webpack.js", () => {
 
             done();
         });
-    });
+    }));
 
-    it("should output json to disk", (done) => {
+    it("should output json to disk", () => new Promise((done) => {
         webpack(config({
             entry  : "./packages/webpack/test/specimens/simple.js",
             plugin : {
@@ -88,9 +88,9 @@ describe("/webpack.js", () => {
 
             done();
         });
-    });
+    }));
 
-    it("should output inline source maps", (done) => {
+    it("should output inline source maps", () => new Promise((done) => {
         webpack(config({
             entry  : "./packages/webpack/test/specimens/simple.js",
             plugin : {
@@ -103,9 +103,9 @@ describe("/webpack.js", () => {
 
             done();
         });
-    });
+    }));
 
-    it("should output external source maps to disk", (done) => {
+    it("should output external source maps to disk", () => new Promise((done) => {
         webpack(config({
             entry  : "./packages/webpack/test/specimens/simple.js",
             plugin : {
@@ -120,20 +120,31 @@ describe("/webpack.js", () => {
 
             done();
         });
-    });
+    }));
 
-    // TODO: webpack is doing something weird with errors here suddenly?
-    it.skip("should report errors", (done) => {
+    it("should report modular-css errors", () => new Promise((done) => {
         webpack(config({
             entry : "./packages/webpack/test/specimens/invalid.js",
         }), (err, stats) => {
+            expect(stats.hasErrors()).toBe(true);
             expect(stats.toJson().errors[0]).toMatch("Invalid composes reference");
 
             done();
         });
-    });
+    }));
+    
+    it("should report postcss errors", () => new Promise((done) => {
+        webpack(config({
+            entry : "./packages/webpack/test/specimens/parse-error.js",
+        }), (err, stats) => {
+            expect(stats.hasErrors()).toBe(true);
+            expect(stats.toJson().errors[0]).toMatch("Unexpected '/'");
 
-    it("should report warnings on invalid property names", (done) => {
+            done();
+        });
+    }));
+
+    it("should report warnings on invalid property names", () => new Promise((done) => {
         webpack(config({
             entry : "./packages/webpack/test/specimens/invalid-name.js",
         }), (err, stats) => {
@@ -143,9 +154,9 @@ describe("/webpack.js", () => {
 
             done();
         });
-    });
+    }));
 
-    it("should handle dependencies", (done) => {
+    it("should handle dependencies", () => new Promise((done) => {
         webpack(config({
             entry  : "./packages/webpack/test/specimens/start.js",
             plugin : {
@@ -160,9 +171,9 @@ describe("/webpack.js", () => {
 
             done();
         });
-    });
+    }));
 
-    it("should support ES2015 default exports", (done) => {
+    it("should support ES2015 default exports", () => new Promise((done) => {
         webpack(config({
             entry : "./packages/webpack/test/specimens/es2015-default.js",
         }), (err, stats) => {
@@ -173,9 +184,9 @@ describe("/webpack.js", () => {
 
             done();
         });
-    });
+    }));
 
-    it("should support ES2015 named exports", (done) => {
+    it("should support ES2015 named exports", () => new Promise((done) => {
         webpack(config({
             entry : "./packages/webpack/test/specimens/es2015-named.js",
         }), (err, stats) => {
@@ -186,9 +197,9 @@ describe("/webpack.js", () => {
 
             done();
         });
-    });
+    }));
 
-    it("should support disabling namedExports when the option is set", (done) => {
+    it("should support disabling namedExports when the option is set", () => new Promise((done) => {
         webpack(config({
             entry : "./packages/webpack/test/specimens/simple.js",
             use   : {
@@ -204,9 +215,9 @@ describe("/webpack.js", () => {
 
             done();
         });
-    });
+    }));
 
-    it("should support disabling styleExport when the option is set", (done) => {
+    it("should support disabling styleExport when the option is set", () => new Promise((done) => {
         webpack(config({
             entry : "./packages/webpack/test/specimens/simple.js",
             use   : {
@@ -222,9 +233,9 @@ describe("/webpack.js", () => {
 
             done();
         });
-    });
+    }));
 
-    it("should support disabling defaultExport when the option is set", (done) => {
+    it("should support disabling defaultExport when the option is set", () => new Promise((done) => {
         webpack(config({
             entry : "./packages/webpack/test/specimens/simple.js",
             use   : {
@@ -240,9 +251,9 @@ describe("/webpack.js", () => {
 
             done();
         });
-    });
+    }));
 
-    it("should generate correct builds in watch mode when files change", (done) => {
+    it("should generate correct builds in watch mode when files change", () => new Promise((done) => {
         var changed = 0,
             compiler, watcher;
 
@@ -280,7 +291,7 @@ describe("/webpack.js", () => {
 
             return watcher.close();
         });
-    });
+    }));
 
     it("should generate correct builds when files change", () => {
         var changed = "./packages/webpack/test/output/changed.css",

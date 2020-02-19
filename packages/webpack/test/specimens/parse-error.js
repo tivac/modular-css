@@ -1,0 +1,1 @@
+require("./parse-error.css");

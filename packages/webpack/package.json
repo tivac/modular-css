@@ -2,7 +2,8 @@
   "name": "@modular-css/webpack",
   "version": "25.4.1",
   "description": "Webpack support for modular-css",
-  "main": "./index.js",
+  "main": "./plugin.js",
+  "loader": "./loader.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/tivac/modular-css.git",

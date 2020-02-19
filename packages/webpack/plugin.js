@@ -71,7 +71,12 @@ ModularCSS.prototype.apply = function(compiler) {
         }
     });
 
-    compiler.plugin("emit", (compilation, done) =>
+    compiler.plugin("emit", (compilation, done) => {
+        // Don't even bother if errors happened
+        if(compilation.errors.length) {
+            return done();
+        }
+
         this.processor.output({
             to : this.options.css || false,
         })
@@ -103,8 +108,8 @@ ModularCSS.prototype.apply = function(compiler) {
 
             return done();
         })
-        .catch(done)
-    );
+        .catch(done);
+    });
 };
 
 module.exports = ModularCSS;
