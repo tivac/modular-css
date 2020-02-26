@@ -20,6 +20,10 @@ module.exports = (css, { opts, messages }) => {
         const source = files[resolve(from, parsed.source)];
 
         parsed.refs.forEach(({ name }) => {
+            if(!source.values[name]) {
+                throw rule.error(`Could not find @value ${name} in "${parsed.source}"`);
+            }
+
             values[name] = source.values[name];
         });
 
