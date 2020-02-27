@@ -4,7 +4,7 @@ Rollup support for [`modular-css`](https://github.com/tivac/modular-css).
 
 #### Install
 
-```bash
+```shell
 > npm i @modular-css/rollup
 ```
 
@@ -12,7 +12,7 @@ Rollup support for [`modular-css`](https://github.com/tivac/modular-css).
 
 #### Usage via API
 
-```js
+```javascript
 const bundle = await rollup({
     input   : "./index.js",
     plugins : [
@@ -23,7 +23,7 @@ const bundle = await rollup({
 
 #### Usage via `rollup.config.js`
 
-```js
+```javascript
 import css from "@modular-css/rollup";
 
 export default {
@@ -76,7 +76,7 @@ By default this plugin will create both a default export and named `export`s for
 
 By default this plugin will extract and bundle CSS in a separate file. If you would like the styles from each imported CSS file to be exported as a string for use in JS, you can enable this by setting `styleExport` to `true`. If you are using this option the `after` & `done` hooks **will not run against the exported styles**, you should perform any additional CSS transformations in the `processing` hook instead.
 
-```js
+```javascript
 import { styles } from "./styles.css";
 ```
 

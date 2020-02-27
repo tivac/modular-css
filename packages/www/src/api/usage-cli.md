@@ -4,7 +4,7 @@ CLI interface to [`modular-css`](https://github.com/tivac/modular-css).
 
 #### CLI Install
 
-```bash
+```shell
 $ npm i @modular-css/cli
 ```
 

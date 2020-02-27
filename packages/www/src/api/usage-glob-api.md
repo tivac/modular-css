@@ -8,7 +8,7 @@ A JS API for using glob patterns with [`modular-css`](https://github.com/tivac/m
 
 #### glob usage
 
-```js
+```javascript
 const glob = require("@modular-css/glob");
 
     // returns a filled-out Processor instance you can use

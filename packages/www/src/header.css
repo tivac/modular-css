@@ -1,5 +1,4 @@
-@value headerHeight, headerColor, hoverColor, accentColor from "./site.css";
-@value skinny from "./site.css";
+@value * as values from "./site.css";
 
 @value tabHeight: 2.5rem;
 
@@ -8,7 +7,7 @@
     top: 0;
     right: 0;
     left: 0;
-    height: headerHeight;
+    height: values.headerHeight;
 
     display: flex;
     flex-direction: row;
@@ -16,10 +15,10 @@
     
     padding: 1rem;
 
-    color: headerColor;
-    background-color: hsl(220, 16%, 22%);
+    color: values.headerColor;
+    background-color: values.headerBg;
 
-    border-bottom: 2px solid accentColor;
+    border-bottom: 2px solid values.accentColor;
 
     /* Necessary to force it above codemirror on /repl */
     z-index: 100;
@@ -30,11 +29,11 @@
 }
 
 .header a {
-    color: headerColor;
+    color: values.headerColor;
 }
 
 .header a:hover {
-    color: hoverColor;
+    color: values.hoverColor;
 }
 
 .title {

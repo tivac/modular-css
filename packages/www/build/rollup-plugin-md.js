@@ -7,27 +7,32 @@ const anchor = require("markdown-it-anchor");
 const contents = require("markdown-it-toc-done-right");
 const includer = require("markdown-it-include");
 const container = require("markdown-it-container");
-const shiki = require("shiki");
+const codemirror = require("codemirror/addon/runmode/runmode.node.js");
+
+// Load up the various codemirror modes
+require(`codemirror/mode/css/css.js`);
+require(`codemirror/mode/javascript/javascript.js`);
+require(`codemirror/mode/shell/shell.js`);
+require(`codemirror/mode/htmlmixed/htmlmixed.js`);
 
 const { createFilter } = require("rollup-pluginutils");
 
 const replRenderer = require("./repl-renderer.js");
+const mcssMime = require("./codemirror-mcss-mime.js");
+
+mcssMime(codemirror);
+
+// Mapping of markdown langs to codemirror langs
+const MODE_MAP = new Map([
+    [ "html", "htmlmixed" ],
+    [ "css", "text/modular-css" ],
+]);
 
 module.exports = ({ include = "**/*.md", exclude } = false) => {
     const filter = createFilter(include, exclude, { resolve : false });
 
-    let highlighter;
-
     return {
         name : "rollup-plugin-md",
-        
-        async buildStart() {
-            if(highlighter) {
-                return;
-            }
-
-            highlighter = await shiki.getHighlighter({ theme : "nord" });
-        },
 
         async transform(src, id) {
             if(!filter(id)) {
@@ -45,7 +50,21 @@ module.exports = ({ include = "**/*.md", exclude } = false) => {
                         return "";
                     }
 
-                    return highlighter.codeToHtml(code, lang);
+                    if(MODE_MAP.has(lang)) {
+                        lang = MODE_MAP.get(lang);
+                    }
+
+                    let html = "";
+
+                    codemirror.runMode(code, lang, (token, style) => {
+                        if(style) {
+                            html += `<span class="cm-${style}">${md.utils.escapeHtml(token)}</span>`;
+                        } else {
+                            html += md.utils.escapeHtml(token);
+                        }
+                    });
+
+                    return `<pre class="code"><code><div class="CodeMirror cm-s-nord CodeMirror-wraphtml">${html}</div></code></pre>`;
                 },
             });
 

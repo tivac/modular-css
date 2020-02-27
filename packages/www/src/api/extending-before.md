@@ -7,7 +7,7 @@ The `before` hook is run before a CSS file is ever processed by `modular-css`, s
 
 Specify an array of PostCSS plugins to be run against each file before it is processed. Plugin will be passed a `from` option.
 
-```js
+```javascript
 new Processor({
     before : [ require("postcss-import") ]
 });

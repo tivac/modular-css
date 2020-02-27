@@ -1,6 +1,3 @@
-@import "codemirror/lib/codemirror.css";
-@import "codemirror/theme/nord.css";
-
 @value monospaced from "../../site.css";
 
 .editor {
@@ -26,8 +23,3 @@
 
 .loading {}
 .loaderror {}
-
-:global(.CodeMirror) pre {
-    font-family: monospaced;
-    font-size: 80%;
-}
