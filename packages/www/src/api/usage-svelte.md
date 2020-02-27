@@ -34,7 +34,7 @@ You could also use `<link href="./file.css" />` tags to reference CSS external t
 
 #### Install
 
-```bash
+```shell
 > npm i @modular-css/svelte -D
 ```
 
@@ -42,7 +42,7 @@ You could also use `<link href="./file.css" />` tags to reference CSS external t
 
 ##### `svelte.preprocess()`
 
-```js
+```javascript
 const filename = "./Component.svelte";
 
 const { processor, preprocess } = require("@modular-css/svelte")({
@@ -63,7 +63,7 @@ fs.writeFileSync("./dist/bundle.css", result.css);
 
 ###### API
 
-```js
+```javascript
 const rollup = require("rollup").rollup;
 
 const { preprocess, processor } = require("@modular-css/svelte")({
@@ -95,7 +95,7 @@ bundle.write({
 
 ###### `rollup.config.js`
 
-```js
+```javascript
 const { preprocess, processor } = require("@modular-css/svelte")({
     // Processor options
 });

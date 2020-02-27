@@ -22,7 +22,7 @@ By default the selector scoping is based off hashing the contents of the file bu
 
 Using these now-mangled selectors would be problematic, if `modular-css` didn't give you the tools required to use them easily. When using the browserify transform any `require()` calls for CSS files will instead return an object where the keys match the classes/ids defined in the requested CSS file.
 
-```js
+```javascript
 var css = require("./styles.css");
 
 // css is:
@@ -58,7 +58,7 @@ You can opt out of selector scoping by wrapping your classes/ids in the `:global
 
 when transformed to JS looks like this
 
-```js
+```javascript
 var css = require("./styles.css");
 
 // css is:

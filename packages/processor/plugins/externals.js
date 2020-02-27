@@ -15,6 +15,10 @@ module.exports = (css, { opts }) => {
         const { name } = ref;
         const file = files[resolve(from, source)];
         
+        if(!file) {
+            throw rule.error(`Unable to locate file: ${source}`, { word : source });
+        }
+
         if(!file.exports[name]) {
             throw rule.error(`Invalid external reference: ${name}`, { word : name });
         }

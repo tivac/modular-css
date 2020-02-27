@@ -8,7 +8,7 @@ Or, you know, their CSS. One of those for sure.
 
 Instantiate a new `Processor` instance, call `.file(<path>)` or `.string(<name>, <contents>)` methods, and then use the returned Promise to get access to the results/output.
 
-```js
+```javascript
 const Processor = require("modular-css");
 const processor = new Processor({
         // See "API Options" for valid options to pass to the Processor constructor
@@ -57,7 +57,7 @@ Enable or disable the usage of [`postcss-url`](https://www.npmjs.com/package/pos
 
 **Default**: `true`
 
-```js
+```javascript
 // On by default, so this will have rewritten url() references
 new Processor();
 
@@ -79,7 +79,7 @@ Enable source map generation. Can also be passed to `.output()`.
 
 **Default**: `false`
 
-```js
+```javascript
 // Inline source map
 new Processor({
     map : true
@@ -99,7 +99,7 @@ Specify the current working directory for this Processor instance, used when res
 
 **Default**: `process.cwd()`
 
-```js
+```javascript
 new Processor({
     cwd : path.join(process.cwd(), "/sub/dir")
 })
@@ -113,7 +113,7 @@ Can also pass a string that will be `require()`'d and evaluated, it should retur
 
 **Default**: Function that returns `"mc" + unique-slug(<file>) + "_" + selector`
 
-```js
+```javascript
 new Processor({
     namer : function(file, selector) {
         return file.replace(/[:\/\\ .]/g, "") + "_" + selector;
@@ -139,7 +139,7 @@ Resolver functions should either return an absolute path or a falsey value. They
 
 **Default**: See [/src/lib/resolve.js](/src/lib/resolve.js) for the default implementation.
 
-```js
+```javascript
 new Processor({
     resolvers : [
         (src, file, resolve) => ...,
@@ -156,7 +156,7 @@ Specify a function that will be responsible for taking a file path and returning
 
 The default implementation uses `fs` to read files off the local filesystem.
 
-```js
+```javascript
 new Processor({
     async loadFile(id) {
         const text = await goGetItFromSomewhere(id);
@@ -170,7 +170,7 @@ new Processor({
 
 By default identifiers wrapped in `:global(...)` are exported for ease of referencing via JS. By setting `exportGlobals` to `false` that behavior can be deactivated. Mostly useful to avoid warnings when global CSS properties are not valid JS identifiers.
 
-```js
+```javascript
 new Processor({
     exportGlobals : false
 });
@@ -205,7 +205,7 @@ Boolean value that determines whether or not the Processor instance will issue w
 
 **Default**: `true`, so warnings are emitted.
 
-```js
+```javascript
 new Processor({
     dupewarn : true
 });

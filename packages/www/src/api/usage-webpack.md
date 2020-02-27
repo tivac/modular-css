@@ -10,13 +10,13 @@ This package contains two entry points, you will need to use **both** in tandem 
 
 #### webpack Install
 
-```bash
+```shell
 > npm i @modular-css/webpack
 ```
 
 #### Usage
 
-```js
+```javascript
 // webpack.config.js
 const path = require("path");
     
@@ -67,7 +67,7 @@ All other options are passed to the underlying `Processor` instance, see the [Pr
 
 By default this plugin will create both a default export and named `export`s for each class in a CSS file. You can disable this by setting `namedExports` to `false`.
 
-```js
+```javascript
 ...
     module : {
         rules : [{

@@ -24,7 +24,7 @@ Selector limitations mean that it's difficult to use complicated selectors, so t
 
 When this file is required the JS object will contain the expected keys, but the arrays will now contain more values.
 
-```js
+```javascript
 var css = require("./style.css");
 
 // css is:

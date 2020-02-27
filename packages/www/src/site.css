@@ -1,7 +1,9 @@
+@value bgColor: #ECEFF4;
 @value headerColor: hsl(219, 28%, 88%);
+@value headerBg: hsl(220, 16%, 22%);
 @value textColor: hsl(0, 0%, 10%);
-@value borderColor: hsl(0, 0%, 93%);
-@value accentColor: hsl(179, 25%, 75%);
+@value borderColor: #D8DEE9;
+@value accentColor: #5E81AC;
 @value hoverColor: accentColor;
 @value hoverInTime: 100ms;
 @value hoverOutTime: 250ms;
@@ -13,6 +15,9 @@
 @value skinny: all and (max-width: 30rem);
 
 @value monospaced: 'Inconsolata', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+
+@import "codemirror/lib/codemirror.css";
+@import "codemirror/theme/nord.css";
 
 html {
     box-sizing: border-box;
@@ -34,6 +39,7 @@ body {
     min-height: 100%;
 
     color: textColor;
+    background: bgColor;
 }
 
 pre,
@@ -191,4 +197,19 @@ a:hover {
 
         transition: opacity 100ms ease-out;
     }
+}
+
+:global(pre.code) {
+    margin: .5em 0;
+
+    & :global(.CodeMirror) {
+        height: auto;
+
+        padding: 1em;
+    }
+}
+
+/* Nord's comment color is hard to read, this is a lightly-lightened version of it */
+:global(.cm-s-nord span.cm-comment) {
+    color: hsl(220, 16%, 46%);
 }

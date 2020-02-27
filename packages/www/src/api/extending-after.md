@@ -21,7 +21,7 @@ Specify an array of PostCSS plugins to be run after files are processed, but bef
 
 ⚠ [`postcss-url`](https://www.npmjs.com/package/postcss-url) automatically runs after any plugins defined in the `after` hook. To disable it use the [`rewrite`](#rewrite) option.
 
-```js
+```javascript
 new Processor({
     after : [ require("postcss-someplugin") ]
 });

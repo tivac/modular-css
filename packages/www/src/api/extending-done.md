@@ -6,7 +6,7 @@ The `done` hook is run after all of the constituent files are combined into a si
 
 Specify an array of PostCSS plugins to be run against the complete combined CSS. Plugin will be passed a `to` option.
 
-```js
+```javascript
 new Processor({
     done : [ require("cssnano")()]
 });

@@ -14,7 +14,7 @@ This plugin can be combined with the `factor-bundle` plugin to output a common C
 
 #### Install
 
-```bash
+```shell
 $ npm i @modular-css/browserify
 ```
 
@@ -36,7 +36,7 @@ $ browserify -p [ @modular-css/browserify --css "./style.css" ] entry.js
 
 #### API
 
-```js
+```javascript
 var browserify = require("browserify"),
     build;
 
@@ -64,7 +64,7 @@ $ browserify home.js account.js \
 
 ##### API
 
-```js
+```javascript
 var build = browserify([
         "./home.js",
         "./account.js"
