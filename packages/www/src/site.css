@@ -42,9 +42,10 @@ body {
 
 pre,
 textarea,
-code {
+code,
+:global(.CodeMirror) {
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    font-size: 0.9em;
+    font-size: 0.8rem;
 }
 
 a {
@@ -190,6 +191,7 @@ a:hover {
 
 :global(pre.code) {
     margin: .5em 0;
+
 
     & :global(.CodeMirror) {
         height: auto;
