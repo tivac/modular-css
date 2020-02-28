@@ -11,7 +11,7 @@
     {/if}
 
     <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
     {#if styles}
         {#each styles as style}
