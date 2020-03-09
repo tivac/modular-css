@@ -392,8 +392,6 @@ describe("/rollup.js", () => {
 
             // Start watching
             watcher = watch({
-                experimentalCodeSplitting : true,
-
                 input : [
                     require.resolve(prefix("./output/watch/code-splitting/one.js")),
                     require.resolve(prefix("./output/watch/code-splitting/two.js")),

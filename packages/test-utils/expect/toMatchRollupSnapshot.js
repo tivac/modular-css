@@ -6,9 +6,9 @@ expect.extend({
     toMatchRollupSnapshot({ output }, name = "") {
         const things = new Map();
         
-        output.forEach(({ code, isAsset, fileName, source }) => {
+        output.forEach(({ code, type, fileName, source }) => {
             // Leading newline to make diffs easier to read
-            things.set(fileName, `\n${isAsset ? source : code}`);
+            things.set(fileName, `\n${type === "asset" ? source : code}`);
         });
         
         const out = Object.create(null);
