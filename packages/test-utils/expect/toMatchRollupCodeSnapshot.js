@@ -6,8 +6,8 @@ expect.extend({
     toMatchRollupCodeSnapshot({ output }) {
         const chunks = new Map();
 
-        output.forEach(({ isAsset, name, code }) => {
-            if(isAsset) {
+        output.forEach(({ type, name, code }) => {
+            if(type === "asset") {
                 return;
             }
 

@@ -6,8 +6,8 @@ expect.extend({
     toMatchRollupAssetSnapshot({ output }) {
         const assets = new Map();
         
-        output.forEach(({ isAsset, fileName, source }) => {
-            if(!isAsset) {
+        output.forEach(({ type, fileName, source }) => {
+            if(type !== "asset") {
                 return;
             }
             

@@ -189,10 +189,10 @@ module.exports = (opts = {}) => {
 
             // Walk all bundle entries and add them to the dependency graph
             Object.entries(bundle).forEach(([ entry, chunk ]) => {
-                const { isAsset, modules } = chunk;
+                const { type, modules } = chunk;
 
                 /* istanbul ignore if */
-                if(isAsset) {
+                if(type === "asset") {
                     return;
                 }
                 
@@ -270,7 +270,7 @@ module.exports = (opts = {}) => {
                 });
 
                 // Save off the final name of this asset for later use
-                const dest = this.getAssetFileName(id);
+                const dest = this.getFileName(id);
 
                 names.set(node, dest);
 
