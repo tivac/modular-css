@@ -147,16 +147,14 @@ Snapshot Diff:
 + Second value
 
 @@ --- --- @@
-  .mc204ad279_one {
-      color: red;
-  }",
-    "assets/shared.css": "/* packages/rollup/test/output/watch/code-splitting/shared.css */
+  Object {
+    "assets/one.css": "/* packages/rollup/test/output/watch/code-splitting/shared.css */
   .mc4002e81f_shared {
 -     color: blue;
 +     color: seafoam;
-  }",
-    "assets/two.css": "/* packages/rollup/test/output/watch/code-splitting/two.css */
-  .mc3861d3af_two {
-      color: green;
+  }
+  /* packages/rollup/test/output/watch/code-splitting/one.css */
+  .mc204ad279_one {
+      color: red;
   }",
 `;
