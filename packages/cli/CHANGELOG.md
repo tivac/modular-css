@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.5.0](https://github.com/tivac/modular-css/compare/v25.4.1...v25.5.0) (2020-03-09)
+
+**Note:** Version bump only for package @modular-css/cli
+
+
+
+
+
 ## [25.4.1](https://github.com/tivac/modular-css/compare/v25.4.0...v25.4.1) (2020-02-12)
 
 **Note:** Version bump only for package @modular-css/cli

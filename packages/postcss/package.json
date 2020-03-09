@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/postcss",
-  "version": "25.4.1",
+  "version": "25.5.0",
   "description": "Use modular-css via postcss",
   "main": "./postcss.js",
   "repository": {
