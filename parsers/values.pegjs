@@ -1,6 +1,7 @@
 start
     = import_namespace
     / create_namespace
+    / create_alias
     / assignment
     / composition
 
@@ -11,7 +12,7 @@ import_namespace
     = _ "*" _ source:from_source {
         return {
             type : "import",
-            source
+            source,
         };
     }
 
@@ -21,7 +22,18 @@ create_namespace
         return {
             type : "namespace",
             source,
-            name
+            name,
+        };
+    }
+
+// fooga as wooga from "./booga"
+create_alias
+    = name:ident _ "as" _ alias:ident source:from_source {
+        return {
+            type : "alias",
+            name,
+            source,
+            alias,
         };
     }
 
@@ -31,7 +43,7 @@ assignment
         return {
             type  : "assignment",
             name  : ref.name,
-            value : value.join("")
+            value : value.join(""),
         };
     }
 
@@ -42,6 +54,6 @@ composition
         return {
             type : "composition",
             source,
-            refs
+            refs,
         };
     }

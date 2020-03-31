@@ -152,5 +152,13 @@ describe("/processor.js", () => {
             
             expect(css).toMatchSnapshot();
         });
+        
+        it("should support value aliasing", async () => {
+            await processor.file(require.resolve("./specimens/value-alias.css"));
+
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
+        });
     });
 });

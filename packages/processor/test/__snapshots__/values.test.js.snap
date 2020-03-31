@@ -56,6 +56,16 @@ exports[`/processor.js values should support simple values 1`] = `
 }"
 `;
 
+exports[`/processor.js values should support value aliasing 1`] = `
+"/* packages/processor/test/specimens/values.css */
+/* packages/processor/test/specimens/value-alias.css */
+.aliased {
+    color: red;
+    background: blue;
+}
+"
+`;
+
 exports[`/processor.js values should support value composition 1`] = `
 "/* packages/processor/test/specimens/values.css */
 /* packages/processor/test/specimens/value-composition.css */

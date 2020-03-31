@@ -1,0 +1,7 @@
+@value a as colorRed from "./values.css";
+@value b as colorBlue from "./values.css";
+
+.aliased {
+    color: colorRed;
+    background: colorBlue;
+}
