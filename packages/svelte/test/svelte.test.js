@@ -465,4 +465,21 @@ describe("/svelte.js", () => {
         expect(warnSpy).toHaveBeenCalled();
         expect(warnSpy.mock.calls).toMatchSnapshot();
     });
+    
+    it("should ignore <Link />", async () => {
+        const filename = require.resolve("./specimens/link-component.html");
+        const { preprocess } = plugin({
+            namer,
+        });
+
+        await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            {
+                ...preprocess,
+                filename,
+            },
+        );
+
+        expect(warnSpy).not.toHaveBeenCalled();
+    });
 });
