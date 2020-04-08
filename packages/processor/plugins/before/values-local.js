@@ -1,11 +1,14 @@
 "use strict";
 
-const parser = require("../parsers/values.js");
+const parser = require("../../parsers/values.js");
 
 const plugin = "modular-css-values-local";
 
 // Find @value fooga: wooga entries & catalog/remove them
-module.exports = (css, { messages }) => {
+module.exports = (css, { opts }) => {
+    const { files, from } = opts;
+    const file = files[from];
+
     const values = Object.create(null);
 
     css.walkAtRules("value", (rule) => {
@@ -29,14 +32,13 @@ module.exports = (css, { messages }) => {
 
         rule.remove();
     });
-    
-    if(Object.keys(values).length > 0) {
-        messages.push({
-            type : "modular-css",
-            plugin,
-            values,
-        });
-    }
+
+    file.values = {
+        __proto__ : null,
+        
+        ...(file.values || {}),
+        ...values,
+    };
 };
 
 module.exports.postcssPlugin = plugin;

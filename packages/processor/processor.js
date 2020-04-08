@@ -95,18 +95,14 @@ class Processor {
 
         this._before = postcss([
             ...(options.before || []),
-            require("./plugins/values-local.js"),
-            require("./plugins/values-export.js"),
+            require("./plugins/before/values-local.js"),
             require("./plugins/values-replace.js"),
-            require("./plugins/graph-nodes.js"),
+            require("./plugins/before/graph-nodes.js"),
         ]);
 
         this._process = postcss([
             require("./plugins/at-composes.js"),
-            require("./plugins/values-composed.js"),
-            require("./plugins/values-imported.js"),
-            require("./plugins/values-export.js"),
-            require("./plugins/values-namespaced.js"),
+            require("./plugins/values-import.js"),
             require("./plugins/values-replace.js"),
             require("./plugins/scoping.js"),
             require("./plugins/externals.js"),

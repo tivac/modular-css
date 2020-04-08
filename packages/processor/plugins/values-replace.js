@@ -6,9 +6,7 @@ const escape   = require("escape-string-regexp");
 const get      = require("lodash/get");
 const Graph    = require("dependency-graph").DepGraph;
 
-const namespaced = require("./values-namespaced.js");
-
-module.exports = (css, { opts, messages }) => {
+module.exports = (css, { opts }) => {
     const graph = new Graph();
 
     // Create local copy of values since we're going to merge in namespace stuff
@@ -17,17 +15,6 @@ module.exports = (css, { opts, messages }) => {
         
         ...get(opts, [ "files", opts.from, "values" ]),
     };
-
-    // Merge namespaced values in w/ prefixed names
-    messages
-        .filter(({ plugin }) => plugin === namespaced.postcssPlugin)
-        .forEach((msg) =>
-            Object.entries(msg.values).forEach(([ ns, children ]) =>
-                Object.entries(children).forEach(([ child, details ]) =>
-                    (values[`${ns}.${child}`] = details)
-                )
-            )
-        );
 
     // Bail if no work to do
     if(!Object.keys(values).length) {
