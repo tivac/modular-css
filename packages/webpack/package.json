@@ -30,7 +30,7 @@
   "dependencies": {
     "@modular-css/processor": "file:../processor",
     "esutils": "^2.0.2",
-    "loader-utils": "^1.1.0",
+    "loader-utils": "^2.0.0",
     "lodash": "^4.17.0",
     "webpack-sources": "^1.0.1"
   }
