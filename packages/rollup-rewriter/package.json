@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "dedent": "^0.7.0",
-    "escape-string-regexp": "^2.0.0",
+    "escape-string-regexp": "^3.0.0",
     "magic-string": "^0.25.1"
   },
   "peerDependencies": {
