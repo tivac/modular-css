@@ -16,7 +16,7 @@ const prefix = `[${require("./package.json").name}]`;
 
 module.exports = (config = false) => {
     // Defined here to avoid .lastIndex bugs since /g is set
-    const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/gim;
+    const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/gm;
 
     // Use a passed processor, or set up our own if necessary
     const { processor = new Processor(config) } = config;
