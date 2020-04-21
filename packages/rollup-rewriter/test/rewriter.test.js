@@ -18,7 +18,7 @@ const chunkFileNames = "[name].js";
 const map = false;
 const sourcemap = false;
 
-const formats = [[ "amd" ], [ "es" ], [ "esm" ], [ "system" ]];
+const formats = [ "amd", "es", "esm", "system" ];
 
 describe("rollup-rewriter", () => {
     beforeAll(() => shell.rm("-rf", prefix("./output/*")));
@@ -28,7 +28,7 @@ describe("rollup-rewriter", () => {
     });
 
     it.each([
-        [ "cjs" ],
+        "cjs",
     ])("should error on unsupported formats (%p)", async (format) => {
         const bundle = await rollup({
             input : [
@@ -169,6 +169,32 @@ describe("rollup-rewriter", () => {
         expect(result).toMatchRollupSnapshot();
     });
 
+    it.each(formats)("should ignore unknown imports", async (format) => {
+        const bundle = await rollup({
+            input    : require.resolve("./specimens/external-import/a.js"),
+            external : [ "external" ],
+            plugins  : [
+                css({
+                    namer,
+                    map,
+                }),
+                rewriter({
+                    loadfn : "lazyload",
+                }),
+            ],
+        });
+
+        const result = await bundle.generate({
+            format,
+            sourcemap,
+
+            assetFileNames,
+            chunkFileNames,
+        });
+
+        expect(result).toMatchRollupSnapshot();
+    });
+
     it.each(formats)("should include css for static imports used by a dynamic import (%p)", async (format) => {
         const bundle = await rollup({
             input : [
@@ -197,6 +223,7 @@ describe("rollup-rewriter", () => {
         expect(result).toMatchRollupSnapshot();
     });
 
+    // eslint-disable-next-line jest/expect-expect
     it("should log details in verbose mode", async () => {
         const { logSnapshot } = logs();
 
