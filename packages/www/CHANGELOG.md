@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.6.0](https://github.com/tivac/modular-css/compare/v25.4.1...v25.6.0) (2020-04-21)
+
+
+### Bug Fixes
+
+* **processor:** better error :external can't find a file ([469c859](https://github.com/tivac/modular-css/commit/469c8597d0535a2e1b723ee8ebb974326cddefdb))
+* **www:** better font, faster load ([0237987](https://github.com/tivac/modular-css/commit/0237987d9b2869502483bc162645a1cf7ae2ab11))
+* **www:** corrected font sizing ([b97149e](https://github.com/tivac/modular-css/commit/b97149ea45931c0cf9a98a0afcc5564eb5b1c30c))
+
+
+### Features
+
+* **website:** port site to svelte3 ([35e7a96](https://github.com/tivac/modular-css/commit/35e7a9677d700772cb6f9a06e35d2b14b0283494))
+
+
+
+
+
 # [25.5.0](https://github.com/tivac/modular-css/compare/v25.4.1...v25.5.0) (2020-03-09)
 
 

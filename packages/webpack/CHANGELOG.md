@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.6.0](https://github.com/tivac/modular-css/compare/v25.4.1...v25.6.0) (2020-04-21)
+
+
+### Bug Fixes
+
+* **webpack:** don't try to emit if there were errors ([#725](https://github.com/tivac/modular-css/issues/725)) ([e9de291](https://github.com/tivac/modular-css/commit/e9de2917481d62dac1a7aa02d946371518a7b66c)), closes [#724](https://github.com/tivac/modular-css/issues/724)
+
+
+
+
+
 # [25.5.0](https://github.com/tivac/modular-css/compare/v25.4.1...v25.5.0) (2020-03-09)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.6.0](https://github.com/tivac/modular-css/compare/v25.4.1...v25.6.0) (2020-04-21)
+
+
+### Bug Fixes
+
+* **rewriter:** don't explode on external chunks ([#749](https://github.com/tivac/modular-css/issues/749)) ([be741bb](https://github.com/tivac/modular-css/commit/be741bbf8423bf6b3b9af04de4f3f494554ff2f8)), closes [#688](https://github.com/tivac/modular-css/issues/688)
+
+
+### Features
+
+* **rollup:** rollup@2 compat ([#733](https://github.com/tivac/modular-css/issues/733)) ([361bd4e](https://github.com/tivac/modular-css/commit/361bd4e457050b76d94d5ab7193780666e786727))
+
+
+
+
+
 # [25.5.0](https://github.com/tivac/modular-css/compare/v25.4.1...v25.5.0) (2020-03-09)
 
 **Note:** Version bump only for package @modular-css/rollup-rewriter

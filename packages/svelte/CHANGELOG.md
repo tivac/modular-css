@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.6.0](https://github.com/tivac/modular-css/compare/v25.4.1...v25.6.0) (2020-04-21)
+
+
+### Bug Fixes
+
+* **svelte:** case-sensitive matching on <link> ([#744](https://github.com/tivac/modular-css/issues/744)) ([8577e3f](https://github.com/tivac/modular-css/commit/8577e3f3bf8c151192ad71df940dcafcc58a1dd7)), closes [#711](https://github.com/tivac/modular-css/issues/711)
+
+
+### Features
+
+* **website:** port site to svelte3 ([35e7a96](https://github.com/tivac/modular-css/commit/35e7a9677d700772cb6f9a06e35d2b14b0283494))
+
+
+
+
+
 # [25.5.0](https://github.com/tivac/modular-css/compare/v25.4.1...v25.5.0) (2020-03-09)
 
 
