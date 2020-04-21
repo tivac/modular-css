@@ -337,15 +337,13 @@ Object {
 }
 ",
   "assets/c.css": "
-/* packages/rollup/test/specimens/css-chunks/c.css */
-.c {
-    color: cyan;
-}
-",
-  "assets/shared.css": "
 /* packages/rollup/test/specimens/css-chunks/shared.css */
 .shared {
     color: snow;
+}
+/* packages/rollup/test/specimens/css-chunks/c.css */
+.c {
+    color: cyan;
 }
 ",
 }

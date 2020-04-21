@@ -195,11 +195,34 @@ module.exports = (opts = {}) => {
                 if(type === "asset") {
                     return;
                 }
-                
-                // Get CSS files being used by this chunk
-                const css = Object.keys(modules).filter((file) => processor.has(file));
 
-                if(!css.length) {
+                // Get CSS files being used by this chunk or any of its dependencies
+                const queue = Object.keys(modules);
+                const seen = new Set();
+                const deps = [];
+
+                while(queue.length) {
+                    const module = queue.shift();
+
+                    seen.add(module);
+                    
+                    // Only care about CSS dependencies for this
+                    if(processor.has(module)) {
+                        deps.push(module);
+                    }
+
+                    const { importedIds } = this.getModuleInfo(module);
+
+                    importedIds.forEach((dep) => {
+                        if(seen.has(dep)) {
+                            return;
+                        }
+
+                        queue.push(dep);
+                    });
+                }
+
+                if(!deps.length) {
                     return;
                 }
 
@@ -210,7 +233,7 @@ module.exports = (opts = {}) => {
                 // @modular-css/svelte is broken atm because this just splats over the top of it
                 graph.addNode(entry, [ entry ]);
 
-                css.forEach((file) => graph.addDependency(entry, processor.normalize(file)));
+                deps.forEach((file) => graph.addDependency(entry, processor.normalize(file)));
             });
 
             // Output CSS chunks

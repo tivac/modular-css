@@ -646,7 +646,7 @@ describe("/rollup.js", () => {
         let fn = it;
 
         // Verify that filesystem is case-insensitive before bothering
-        fs.writeFileSync("./packages/rollup/test/output/sensitive.txt");
+        fs.writeFileSync("./packages/rollup/test/output/sensitive.txt", "");
 
         try {
             fs.statSync("./packages/rollup/test/output/SENSITIVE.txt");
