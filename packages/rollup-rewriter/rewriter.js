@@ -107,6 +107,10 @@ module.exports = (opts = {}) => {
                         ...(file in chunks ? chunks[file].imports : []),
                         file,
                     ].reduce((out, curr) => {
+                        if(!chunks[curr]) {
+                            return out;
+                        }
+
                         const { assets = [] } = chunks[curr];
 
                         assets.forEach((asset) => out.add(asset));

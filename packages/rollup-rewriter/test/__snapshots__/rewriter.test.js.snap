@@ -2,6 +2,206 @@
 
 exports[`rollup-rewriter should error on unsupported formats ("cjs") 1`] = `"Unsupported format: cjs. Supported formats are [\\"amd\\",\\"es\\",\\"esm\\",\\"system\\"]"`;
 
+exports[`rollup-rewriter should ignore unknown imports 1`] = `
+Object {
+  "a.js": "
+define(['require', 'external'], function (require, external) { 'use strict';
+
+    external = external && Object.prototype.hasOwnProperty.call(external, 'default') ? external['default'] : external;
+
+    var css = {
+        \\"a\\": \\"a\\"
+    };
+
+    function a() {
+        console.log(css, external);
+
+        new Promise(function (resolve, reject) { Promise.all([
+    lazyload(\\"./assets/c.css\\"),
+    new Promise(function (resolve, reject) { require(['./c'], resolve, reject) })
+])
+.then((results) => resolve(results[results.length - 1]))
+.catch(reject) }).then(console.log);
+    }
+
+    return a;
+
+});
+",
+  "assets/a.css": "
+/* packages/rollup-rewriter/test/specimens/external-import/a.css */
+.a { color: aqua; }
+",
+  "assets/c.css": "
+/* packages/rollup-rewriter/test/specimens/external-import/c.css */
+.c {
+    color: cyan;
+}
+",
+  "c.js": "
+define(['exports'], function (exports) { 'use strict';
+
+    var css = {
+        \\"c\\": \\"c\\"
+    };
+
+    console.log(css);
+
+    exports.default = css;
+
+});
+",
+}
+`;
+
+exports[`rollup-rewriter should ignore unknown imports 2`] = `
+Object {
+  "a.js": "
+import external from 'external';
+
+var css = {
+    \\"a\\": \\"a\\"
+};
+
+function a() {
+    console.log(css, external);
+
+    Promise.all([
+    lazyload(\\"./assets/c.css\\"),
+    import('./c.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+}
+
+export default a;
+",
+  "assets/a.css": "
+/* packages/rollup-rewriter/test/specimens/external-import/a.css */
+.a { color: aqua; }
+",
+  "assets/c.css": "
+/* packages/rollup-rewriter/test/specimens/external-import/c.css */
+.c {
+    color: cyan;
+}
+",
+  "c.js": "
+var css = {
+    \\"c\\": \\"c\\"
+};
+
+console.log(css);
+
+export default css;
+",
+}
+`;
+
+exports[`rollup-rewriter should ignore unknown imports 3`] = `
+Object {
+  "a.js": "
+import external from 'external';
+
+var css = {
+    \\"a\\": \\"a\\"
+};
+
+function a() {
+    console.log(css, external);
+
+    Promise.all([
+    lazyload(\\"./assets/c.css\\"),
+    import('./c.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+}
+
+export default a;
+",
+  "assets/a.css": "
+/* packages/rollup-rewriter/test/specimens/external-import/a.css */
+.a { color: aqua; }
+",
+  "assets/c.css": "
+/* packages/rollup-rewriter/test/specimens/external-import/c.css */
+.c {
+    color: cyan;
+}
+",
+  "c.js": "
+var css = {
+    \\"c\\": \\"c\\"
+};
+
+console.log(css);
+
+export default css;
+",
+}
+`;
+
+exports[`rollup-rewriter should ignore unknown imports 4`] = `
+Object {
+  "a.js": "
+System.register(['external'], function (exports, module) {
+    'use strict';
+    var external;
+    return {
+        setters: [function (module) {
+            external = module.default;
+        }],
+        execute: function () {
+
+            exports('default', a);
+
+            var css = {
+                \\"a\\": \\"a\\"
+            };
+
+            function a() {
+                console.log(css, external);
+
+                Promise.all([
+    lazyload(\\"./assets/c.css\\"),
+    module.import('./c.js')
+])
+.then((results) => results[results.length - 1]).then(console.log);
+            }
+
+        }
+    };
+});
+",
+  "assets/a.css": "
+/* packages/rollup-rewriter/test/specimens/external-import/a.css */
+.a { color: aqua; }
+",
+  "assets/c.css": "
+/* packages/rollup-rewriter/test/specimens/external-import/c.css */
+.c {
+    color: cyan;
+}
+",
+  "c.js": "
+System.register([], function (exports) {
+    'use strict';
+    return {
+        execute: function () {
+
+            var css = {
+                \\"c\\": \\"c\\"
+            };
+
+            console.log(css);
+            exports('default', css);
+
+        }
+    };
+});
+",
+}
+`;
+
 exports[`rollup-rewriter should include css for static imports used by a dynamic import ("amd") 1`] = `
 Object {
   "assets/dynamic1.css": "
