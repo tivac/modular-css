@@ -64,3 +64,12 @@ Object {
   },
 }
 `;
+
+exports[`/processor.js composition should compose with escaped classes 1`] = `
+Object {
+  "escaped-classes.css": Object {
+    "c": "sm:foo c",
+    "sm:foo": "sm:foo",
+  },
+}
+`;
