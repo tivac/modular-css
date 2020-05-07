@@ -188,5 +188,21 @@ describe("/processor.js", () => {
 
             expect(compositions).toMatchSnapshot();
         });
+
+        it("should compose with escaped classes", async () => {
+            await processor.string(
+                "./escaped-classes.css",
+                dedent(`
+                    .sm\\:foo { color: red; }
+                    .c {
+                        composes: sm\\:foo;
+                    }
+                `)
+            );
+
+            const { compositions } = await processor.output();
+
+            expect(compositions).toMatchSnapshot();
+        });
     });
 });
