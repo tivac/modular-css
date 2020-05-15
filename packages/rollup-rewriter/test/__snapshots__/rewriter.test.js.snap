@@ -188,12 +188,11 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
-            var css = {
+            var css = exports('default', {
                 \\"c\\": \\"c\\"
-            };
+            });
 
             console.log(css);
-            exports('default', css);
 
         }
     };
@@ -1200,12 +1199,11 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
-            var css = {
+            var css = exports('default', {
                 \\"c\\": \\"c\\"
-            };
+            });
 
             console.log(css);
-            exports('default', css);
 
         }
     };
@@ -1217,12 +1215,11 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
-            var css = {
+            var css = exports('default', {
                 \\"d\\": \\"d\\"
-            };
+            });
 
             console.log(css);
-            exports('default', css);
 
         }
     };
@@ -1488,12 +1485,11 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
-            var css = {
+            var css = exports('default', {
                 \\"c\\": \\"c\\"
-            };
+            });
 
             console.log(css);
-            exports('default', css);
 
         }
     };
@@ -1505,12 +1501,11 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
-            var css = {
+            var css = exports('default', {
                 \\"d\\": \\"d\\"
-            };
+            });
 
             console.log(css);
-            exports('default', css);
 
         }
     };
@@ -1864,12 +1859,11 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
-            var css = {
+            var css = exports('default', {
                 \\"c\\": \\"c\\"
-            };
+            });
 
             console.log(css);
-            exports('default', css);
 
         }
     };
@@ -1881,12 +1875,11 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
-            var css = {
+            var css = exports('default', {
                 \\"d\\": \\"d\\"
-            };
+            });
 
             console.log(css);
-            exports('default', css);
 
         }
     };
