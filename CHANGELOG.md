@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.7.0](https://github.com/tivac/modular-css/compare/v25.6.0...v25.7.0) (2020-05-15)
+
+
+### Features
+
+* Support escaped characters in composed class names ([#755](https://github.com/tivac/modular-css/issues/755)) ([6cd4d8a](https://github.com/tivac/modular-css/commit/6cd4d8acc16abc9ac51c778a0b7f42a4c07088e4))
+
+
+
+
+
 # [25.6.0](https://github.com/tivac/modular-css/compare/v25.4.1...v25.6.0) (2020-04-21)
 
 
