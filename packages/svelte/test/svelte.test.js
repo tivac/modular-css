@@ -43,7 +43,7 @@ describe("/svelte.js", () => {
         expect(output.css).toMatchSnapshot();
     });
 
-    it.only.each([
+    it.each([
         "style",
         "link",
     ])("should expose CSS errors in a useful way (<%s>)", async (type) => {
@@ -61,7 +61,7 @@ describe("/svelte.js", () => {
         )).rejects.toThrow(/\.wooga/);
     });
 
-    it.only("should expose CSS errors in a useful way (non-css file)", async () => {
+    it("should expose CSS errors in a useful way (non-css file)", async () => {
             const filename = require.resolve(`./specimens/error-link-non-css.html`);
             const { preprocess } = plugin({
                 namer,
