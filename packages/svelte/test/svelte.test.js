@@ -43,25 +43,37 @@ describe("/svelte.js", () => {
         expect(output.css).toMatchSnapshot();
     });
 
-    it.each([[ "style" ], [ "link" ]])(
-        "should expose CSS errors in a useful way (<%s>)",
-        async (type) => {
-            const filename = require.resolve(`./specimens/error-${type}.html`);
+    it.only.each([
+        "style",
+        "link",
+    ])("should expose CSS errors in a useful way (<%s>)", async (type) => {
+        const filename = require.resolve(`./specimens/error-${type}.html`);
+        const { preprocess } = plugin({
+            namer,
+        });
+
+        await expect(svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            {
+                ...preprocess,
+                filename,
+            },
+        )).rejects.toThrow(/\.wooga/);
+    });
+
+    it.only("should expose CSS errors in a useful way (non-css file)", async () => {
+            const filename = require.resolve(`./specimens/error-link-non-css.html`);
             const { preprocess } = plugin({
                 namer,
             });
 
-            try {
-                await svelte.preprocess(
-                    fs.readFileSync(filename, "utf8"),
-                    {
-                        ...preprocess,
-                        filename,
-                    },
-                );
-            } catch(e) {
-                expect(e.toString()).toMatch(/\.wooga/);
-            }
+            await expect(svelte.preprocess(
+                fs.readFileSync(filename, "utf8"),
+                {
+                    ...preprocess,
+                    filename,
+                },
+            )).rejects.toThrow("CssSyntaxError: Unable to process file:");
         }
     );
 
