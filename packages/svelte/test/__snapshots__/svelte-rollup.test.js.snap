@@ -31,6 +31,14 @@ Object {
 }
 `;
 
+exports[`/svelte.js rollup errors should show useful errors from rollup (non-css file) 1`] = `
+Array [
+  Array [
+    "Possible invalid <link> href: ./error-link.html",
+  ],
+]
+`;
+
 exports[`/svelte.js rollup watching should generate updated output 1`] = `
 Snapshot Diff:
 - First value

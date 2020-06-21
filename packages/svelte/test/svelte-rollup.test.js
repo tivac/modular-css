@@ -225,7 +225,10 @@ describe("/svelte.js", () => {
                         processor,
                     }),
                 ],
-            })).rejects.toThrow("Unable to process file:");
+            })).rejects.toThrow("error-link.html:1:1: Unknown word");
+
+            expect(warnSpy).toHaveBeenCalled();
+            expect(warnSpy.mock.calls).toMatchSnapshot();
         });
     });
 

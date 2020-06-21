@@ -470,17 +470,7 @@ class Processor {
             walked : new Promise((done) => (walked = done)),
         };
 
-        try {
-            await file.before;
-        } catch(e) {
-            const error = new Error(`Unable to process file: ${e.file}`);
-
-            for(const prop in e) {
-                error[prop] = e[prop];
-            }
-
-            throw error;
-        }
+        await file.before;
 
         // Add all the found dependencies to the graph
         file.before.messages.forEach(({ plugin, dependency }) => {
