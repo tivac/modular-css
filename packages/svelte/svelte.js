@@ -125,6 +125,10 @@ module.exports = (config = false) => {
                     return out;
                 }
 
+                if(!href.endsWith(".css")) {
+                    console.warn(`Possible invalid <link> href: ${href}`);
+                }
+
                 out.push({
                     link,
                     href,

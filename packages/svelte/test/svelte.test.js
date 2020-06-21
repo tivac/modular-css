@@ -43,25 +43,40 @@ describe("/svelte.js", () => {
         expect(output.css).toMatchSnapshot();
     });
 
-    it.each([[ "style" ], [ "link" ]])(
-        "should expose CSS errors in a useful way (<%s>)",
-        async (type) => {
-            const filename = require.resolve(`./specimens/error-${type}.html`);
+    it.each([
+        "style",
+        "link",
+    ])("should expose CSS errors in a useful way (<%s>)", async (type) => {
+        const filename = require.resolve(`./specimens/error-${type}.html`);
+        const { preprocess } = plugin({
+            namer,
+        });
+
+        await expect(svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            {
+                ...preprocess,
+                filename,
+            },
+        )).rejects.toThrow(/\.wooga/);
+    });
+
+    it("should expose CSS errors in a useful way (non-css file)", async () => {
+            const filename = require.resolve(`./specimens/error-link-non-css.html`);
             const { preprocess } = plugin({
                 namer,
             });
 
-            try {
-                await svelte.preprocess(
-                    fs.readFileSync(filename, "utf8"),
-                    {
-                        ...preprocess,
-                        filename,
-                    },
-                );
-            } catch(e) {
-                expect(e.toString()).toMatch(/\.wooga/);
-            }
+            await expect(svelte.preprocess(
+                fs.readFileSync(filename, "utf8"),
+                {
+                    ...preprocess,
+                    filename,
+                },
+            )).rejects.toThrow("error-link.html:1:1: Unknown word");
+
+            expect(warnSpy).toHaveBeenCalled();
+            expect(warnSpy.mock.calls).toMatchSnapshot();
         }
     );
 

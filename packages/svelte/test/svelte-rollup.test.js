@@ -167,41 +167,69 @@ describe("/svelte.js", () => {
     });
 
     describe("rollup errors", () => {
-        it.each([[ "link" ], [ "style" ]])(
-            "should show useful errors from rollup (<%s>)",
-            async (type) => {
-                const { preprocess, processor } = plugin();
+        it.each([
+            "link",
+            "style",
+        ])("should show useful errors from rollup (<%s>)", async (type) => {
+            const { preprocess, processor } = plugin();
 
-                try {
-                    await rollup({
-                        input : "./error.js",
+            await expect(rollup({
+                input : "./error.js",
 
-                        plugins : [
-                            require("rollup-plugin-hypothetical")({
-                                cwd   : path.join(__dirname, "./specimens"),
-                                files : {
-                                    "./error.js" : `
-                                        import Component from "./error-${type}.html";
+                plugins : [
+                    require("rollup-plugin-hypothetical")({
+                        cwd   : path.join(__dirname, "./specimens"),
+                        files : {
+                            "./error.js" : `
+                                import Component from "./error-${type}.html";
 
-                                        console.log(Component);
-                                    `,
-                                },
+                                console.log(Component);
+                            `,
+                        },
 
-                                allowFallthrough : true,
-                            }),
-                            require("rollup-plugin-svelte")({
-                                preprocess,
-                            }),
-                            require("@modular-css/rollup")({
-                                processor,
-                            }),
-                        ],
-                    });
-                } catch(e) {
-                    expect(e.toString()).toMatch(/\.wooga/);
-                }
-            }
-        );
+                        allowFallthrough : true,
+                    }),
+                    require("rollup-plugin-svelte")({
+                        preprocess,
+                    }),
+                    require("@modular-css/rollup")({
+                        processor,
+                    }),
+                ],
+            })).rejects.toThrow(/\.wooga/);
+        });
+
+        it("should show useful errors from rollup (non-css file)", async () => {
+            const { preprocess, processor } = plugin();
+
+            await expect(rollup({
+                input : "./error.js",
+
+                plugins : [
+                    require("rollup-plugin-hypothetical")({
+                        cwd   : path.join(__dirname, "./specimens"),
+                        files : {
+                            "./error.js" : `
+                                import Component from "./error-link-non-css.html";
+
+                                console.log(Component);
+                            `,
+                        },
+
+                        allowFallthrough : true,
+                    }),
+                    require("rollup-plugin-svelte")({
+                        preprocess,
+                    }),
+                    require("@modular-css/rollup")({
+                        processor,
+                    }),
+                ],
+            })).rejects.toThrow("error-link.html:1:1: Unknown word");
+
+            expect(warnSpy).toHaveBeenCalled();
+            expect(warnSpy.mock.calls).toMatchSnapshot();
+        });
     });
 
     describe("rollup chunking", () => {

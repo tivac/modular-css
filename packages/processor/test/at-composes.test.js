@@ -120,15 +120,11 @@ describe("/processor.js", () => {
         });
 
         it("should only allow a single @composes per file", async () => {
-            try {
-                await processor.string(id, dedent(`
-                    @composes "./simple.css";
-                    @composes "./blue.css";
+            await expect(processor.string(id, dedent(`
+                @composes "./simple.css";
+                @composes "./blue.css";
 
-                `));
-            } catch({ message }) {
-                expect(message).toMatch(`Only one @composes rule per file`);
-            }
+            `))).rejects.toThrow(`Only one @composes rule per file`);
         });
     });
 });

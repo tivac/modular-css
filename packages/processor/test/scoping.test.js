@@ -54,42 +54,30 @@ describe("/processor.js", () => {
         });
 
         it("should not allow :global classes to overlap with local ones (local before global)", async () => {
-            try {
-                await processor.string(
-                    "./invalid/global.css",
-                    dedent(`
-                        .a {}
-                        :global(.a) {}
-                    `)
-                );
-            } catch({ message }) {
-                expect(message).toMatch(`Unable to re-use the same selector for global & local`);
-            }
+            await expect(processor.string(
+                "./invalid/global.css",
+                dedent(`
+                    .a {}
+                    :global(.a) {}
+                `)
+            )).rejects.toThrow(`Unable to re-use the same selector for global & local`);
         });
 
         it("should not allow :global classes to overlap with local ones (global before local)", async () => {
-            try {
-                await processor.string(
-                    "./invalid/global.css",
-                    dedent(`
-                        :global(.a) {}
-                        .a {}
-                    `)
-                );
-            } catch({ message }) {
-                expect(message).toMatch(`Unable to re-use the same selector for global & local`);
-            }
+            await expect(processor.string(
+                "./invalid/global.css",
+                dedent(`
+                    :global(.a) {}
+                    .a {}
+                `)
+            )).rejects.toThrow(`Unable to re-use the same selector for global & local`);
         });
 
         it("should not allow empty :global() selectors", async () => {
-            try {
-                await processor.string(
-                    "./invalid/global.css",
-                    ".a :global() { }"
-                );
-            } catch({ message }) {
-                expect(message).toMatch(`:global(...) must not be empty`);
-            }
+            await expect(processor.string(
+                "./invalid/global.css",
+                ".a :global() { }"
+            )).rejects.toThrow(`:global(...) must not be empty`);
         });
     });
 });

@@ -185,6 +185,7 @@ describe("/rollup.js", () => {
         expect(exists("./output/no-css/assets/no-css.css")).toBe(false);
     });
 
+    // eslint-disable-next-line jest/expect-expect
     it("should ignore external modules", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/external.js"),
@@ -307,6 +308,7 @@ describe("/rollup.js", () => {
         expect(result).toMatchRollupCodeSnapshot();
     });
 
+    // eslint-disable-next-line jest/expect-expect
     it("should warn that styleExport and done aren't compatible", async () => {
         const { logSnapshot } = logs("warn");
 
@@ -539,6 +541,7 @@ describe("/rollup.js", () => {
         expect(result).toMatchRollupCodeSnapshot();
     });
 
+    // eslint-disable-next-line jest/expect-expect
     it("should log in verbose mode", async () => {
         const { logSnapshot } = logs();
 
@@ -711,7 +714,7 @@ describe("/rollup.js", () => {
             .catch((e) => expect(e.toString()).toMatch(".wooga"))
         );
 
-
+        // eslint-disable-next-line jest/expect-expect
         it("should throw errors in in before plugins", () =>
             rollup({
                 input   : require.resolve("./specimens/simple.js"),
@@ -726,6 +729,7 @@ describe("/rollup.js", () => {
             .catch(checkError)
         );
 
+        // eslint-disable-next-line jest/expect-expect
         it("should throw errors in after plugins", () =>
             rollup({
                 input   : require.resolve("./specimens/simple.js"),
@@ -741,6 +745,7 @@ describe("/rollup.js", () => {
         );
 
         // Skipped because I can't figure out how to catch the error being thrown?
+        // eslint-disable-next-line jest/no-disabled-tests
         it.skip("should throw errors in done plugins", () =>
             rollup({
                 input   : require.resolve("./specimens/simple.js"),
