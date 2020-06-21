@@ -16,27 +16,19 @@ describe("/processor.js", () => {
         });
         
         it("should fail on invalid value syntax", async () => {
-            try {
-                await processor.string(
-                    "./invalid/value.css",
-                    "@value foo, bar from nowhere.css"
-                );
-            } catch({ message }) {
-                expect(message).toMatch(`SyntaxError: Expected source but "n" found.`);
-            }
+            await expect(processor.string(
+                "./invalid/value.css",
+                "@value foo, bar from nowhere.css"
+            )).rejects.toThrow(`SyntaxError: Expected source but "n" found.`);
         });
 
         it("should fail if a value imports a non-existant reference", async () => {
-            try {
-                await processor.string(
-                    "./invalid/value.css",
-                    "@value not-real from \"../local.css\";"
-                );
-            } catch({ message }) {
-                expect(message).toMatch(
-                    `Unable to locate "../local.css" from "${path.resolve("invalid/value.css")}"`
-                );
-            }
+            await expect(processor.string(
+                "./invalid/value.css",
+                "@value not-real from \"../local.css\";"
+            )).rejects.toThrow(
+                `Unable to locate "../local.css" from "${path.resolve("invalid/value.css")}"`
+            );
         });
         
         it("shouldn't replace values unless they're safe", async () => {

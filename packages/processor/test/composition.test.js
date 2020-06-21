@@ -16,38 +16,26 @@ describe("/processor.js", () => {
         });
 
         it("should fail on invalid composes syntax", async () => {
-            try {
-                await processor.string(
-                    "./invalid/value.css",
-                    ".a { composes: b from nowhere.css; }"
-                );
-            } catch({ message }) {
-                expect(message).toMatch(`SyntaxError: Expected global or source but "n" found.`);
-            }
+            await expect(processor.string(
+                "./invalid/value.css",
+                ".a { composes: b from nowhere.css; }"
+            )).rejects.toThrow(`SyntaxError: Expected global or source but "n" found.`);
         });
 
         it("should fail if a composition references a non-existant class", async () => {
-            try {
-                await processor.string(
-                    "./invalid-composition.css",
-                    ".a { composes: b; }"
-                );
-            } catch({ message }) {
-                expect(message).toMatch(`Invalid composes reference`);
-            }
+            await expect(processor.string(
+                "./invalid-composition.css",
+                ".a { composes: b; }"
+            )).rejects.toThrow(`Invalid composes reference`);
         });
 
         it("should fail if a composition references a non-existant file", async () => {
-            try {
-                await processor.string(
-                    "./invalid-composition.css",
-                    `.a { composes: b from "../local.css"; }`
-                );
-            } catch({ message }) {
-                expect(message).toMatch(
-                    `Unable to locate "../local.css" from "${path.resolve("invalid-composition.css")}"`
-                );
-            }
+            await expect(processor.string(
+                "./invalid-composition.css",
+                `.a { composes: b from "../local.css"; }`
+            )).rejects.toThrow(
+                `Unable to locate "../local.css" from "${path.resolve("invalid-composition.css")}"`
+            );
         });
 
         it("should fail if a composition references a non-existant file from a custom resolver", async () => {
@@ -58,29 +46,19 @@ describe("/processor.js", () => {
                 ],
             });
 
-            try {
-                await processor.file(require.resolve("./specimens/composes.css"));
-            } catch(e) {
-                const { message } = e;
-
-                expect(message).toMatch(
-                    `no such file or directory, open '${require.resolve("./specimens/folder/folder2.css")}a'`
-                );
-            }
+            await expect(processor.file(require.resolve("./specimens/composes.css"))).rejects.toThrow(
+                `no such file or directory, open '${require.resolve("./specimens/folder/folder2.css")}a'`
+            );
         });
 
         it("should fail on rules that use multiple selectors", async () => {
-            try {
-                await processor.string(
-                    "./invalid/composes-first.css",
-                    dedent(`
-                        .a { color: red; }
-                        .b .c { composes: a; }
-                    `)
-                );
-            } catch({ message }) {
-                expect(message).toMatch(`Only simple singular selectors may use composition`);
-            }
+            await expect(processor.string(
+                "./invalid/composes-first.css",
+                dedent(`
+                    .a { color: red; }
+                    .b .c { composes: a; }
+                `)
+            )).rejects.toThrow(`Only simple singular selectors may use composition`);
         });
 
         it("should compose a single class", async () => {

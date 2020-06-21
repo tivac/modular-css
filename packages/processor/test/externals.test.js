@@ -15,24 +15,18 @@ describe("/processor.js", () => {
         });
         
         it("should fail if not a valid composition reference", async () => {
-            try {
-                await processor.string(
-                    "./invalid-external.css",
-                    dedent(`
-                        :external(some garbage here) { }
-                    `)
-                );
-            } catch({ message }) {
-                expect(message).toMatch(`SyntaxError: Expected`);
-            }
+            await expect(processor.string(
+                "./invalid-external.css",
+                dedent(`
+                    :external(some garbage here) { }
+                `)
+            )).rejects.toThrow(`SyntaxError: Expected`);
         });
 
         it("should fail on bad class references", async () => {
-            try {
-                await processor.file(require.resolve("./specimens/externals-invalid.css"));
-            } catch({ message }) {
-                expect(message).toMatch(`Invalid external reference: nopenopenope`);
-            }
+            await expect(processor.file(require.resolve("./specimens/externals-invalid.css"))).rejects.toThrow(
+                `Invalid external reference: nopenopenope`
+            );
         });
         
         it("should support overriding external values", async () => {
