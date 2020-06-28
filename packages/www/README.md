@@ -10,7 +10,7 @@ From the root, `npm run www:build` will build a static copy of the site to the `
 
 ## Hosting
 
-Site is hosted by netlify.com, auto-builds and deploys from the `master` branch. Should keep it up to date with future releases.
+Site is hosted by netlify.com, auto-builds and deploys from the `main` branch. Should keep it up to date with future releases.
 
 ## Notes
 
