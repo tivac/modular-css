@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/svelte",
-  "version": "25.7.0",
+  "version": "25.8.0",
   "description": "Add modular-css support to svelte",
   "main": "./svelte.js",
   "repository": {

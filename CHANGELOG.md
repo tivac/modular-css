@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.8.0](https://github.com/tivac/modular-css/compare/v25.7.0...v25.8.0) (2020-06-29)
+
+
+### Bug Fixes
+
+* remove rule if there's no other decls ([#769](https://github.com/tivac/modular-css/issues/769)) ([9215873](https://github.com/tivac/modular-css/commit/92158730cb38947ed8aba03e1b6fa56501a711f0))
+
+
+### Features
+
+* **svelte:** warn on non ".css" <link href>  ([#766](https://github.com/tivac/modular-css/issues/766)) ([1ac0e4d](https://github.com/tivac/modular-css/commit/1ac0e4dde2f995f3b422d1d14bbece066c2704f9))
+
+
+
+
+
 # [25.7.0](https://github.com/tivac/modular-css/compare/v25.6.0...v25.7.0) (2020-05-15)
 
 
