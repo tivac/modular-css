@@ -183,7 +183,7 @@ describe("/processor.js", () => {
             expect(compositions).toMatchSnapshot();
         });
 
-        it.only.each([
+        it.each([
             [ "only composes", dedent(`
                 .a { color: red; }
                 .b { composes: a; }
