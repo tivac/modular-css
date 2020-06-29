@@ -79,11 +79,15 @@ module.exports = (css, result) => {
             }
         });
 
-        const next = decl.next();
-
         // Remove just the composes declaration if there are other declarations
-        if(next) {
-            next.raws.before = decl.raw("before");
+        if(decl.parent.nodes.length > 1) {
+            // If there's nodes after this one adjust their positioning
+            // so it's like the composes was never there
+            const next = decl.next();
+        
+            if(next) {
+                next.raws.before = decl.raw("before");
+            }
 
             return decl.remove();
         }

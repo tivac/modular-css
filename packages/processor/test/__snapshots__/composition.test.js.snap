@@ -73,3 +73,26 @@ Object {
   },
 }
 `;
+
+exports[`/processor.js composition should remove \`composes\` from the output css (composes first) 1`] = `
+"/* remove-composes.css */
+.a { color: red; }
+.b { background: blue; }"
+`;
+
+exports[`/processor.js composition should remove \`composes\` from the output css (composes last) 1`] = `
+"/* remove-composes.css */
+.a { color: red; }
+.b { background: blue; }"
+`;
+
+exports[`/processor.js composition should remove \`composes\` from the output css (composes middle) 1`] = `
+"/* remove-composes.css */
+.a { color: red; }
+.b { background: blue; border-color: green; }"
+`;
+
+exports[`/processor.js composition should remove \`composes\` from the output css (only composes) 1`] = `
+"/* remove-composes.css */
+.a { color: red; }"
+`;

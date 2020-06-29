@@ -182,5 +182,30 @@ describe("/processor.js", () => {
 
             expect(compositions).toMatchSnapshot();
         });
+
+        it.each([
+            [ "only composes", dedent(`
+                .a { color: red; }
+                .b { composes: a; }
+            `) ],
+            [ "composes first", dedent(`
+                .a { color: red; }
+                .b { composes: a; background: blue; }
+            `) ],
+            [ "composes last", dedent(`
+                .a { color: red; }
+                .b { background: blue; composes: a; }
+            `) ],
+            [ "composes middle", dedent(`
+                .a { color: red; }
+                .b { background: blue; composes: a; border-color: green; }
+            `) ],
+        ])("should remove `composes` from the output css (%s)", async (name, input) => {
+            await processor.string("./remove-composes.css", input);
+
+            const { css } = await processor.output();
+
+            expect(css).toMatchSnapshot();
+        });
     });
 });
