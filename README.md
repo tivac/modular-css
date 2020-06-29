@@ -3,6 +3,10 @@ modular-css [![Build Status](https://img.shields.io/travis/tivac/modular-css/mai
 
 A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/css-modules)
 
+## Documentation
+
+Check out the official modular-css site: http://m-css.com/
+
 ## Try it
 
 There's an online REPL where you can try out `modular-css` without needing to install anything!
