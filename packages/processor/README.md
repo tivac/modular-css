@@ -181,7 +181,7 @@ If you want to provide your own file resolution logic you can pass an array of r
 
 Resolver functions should either return an absolute path or a falsey value. They must also be synchronous.
 
-**Default**: See [/processor/lib/resolve.js](https://github.com/tivac/modular-css/blob/master/packages/processor/lib/resolve.js#L7) for the default implementation.
+**Default**: See [/processor/lib/resolve.js](https://github.com/tivac/modular-css/blob/main/packages/processor/lib/resolve.js#L7) for the default implementation.
 
 ```js
 new Processor({

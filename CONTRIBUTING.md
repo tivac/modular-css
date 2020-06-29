@@ -19,10 +19,10 @@ Hi! Thanks for stopping by. Hopefully this document helps you get your bearings 
 
 `modular-css` is a [lernajs](https://lernajs.io/) monorepo, so there's a bit of configuration in the root but the meat of the project lives within the `packages/` folders. Here's a quick-n-dirty breakdown of some of them:
 
-- [`packages/processor`](https://github.com/tivac/modular-css/tree/master/packages/processor) - The `Processor` is the main piece of infrastructure for the entire project. It's a wrapper around a series of [postcss](http://postcss.org/) pipelines and plugins that handles all of the functionality like `composes`, `@value`, and the rest.
-- [`packages/rollup`](https://github.com/tivac/modular-css/tree/master/packages/rollup) - [rollup](https://rollupjs.org/) plugin that acts as an interface between the rollup process and a `Processor` instance.
-- [`packages/webpack`](https://github.com/tivac/modular-css/tree/master/packages/webpack) - [webpack](https://webpack.js.org/) loader & plugin which acts as an interface between the webpack process and a `Processor` instance.
-- [`packages/browserify`](https://github.com/tivac/modular-css/tree/master/packages/browserify) - [browserify](http://browserify.org/) loader & plugin which acts as an interface between the webpack process and a `Processor` instance.
+- [`packages/processor`](https://github.com/tivac/modular-css/tree/main/packages/processor) - The `Processor` is the main piece of infrastructure for the entire project. It's a wrapper around a series of [postcss](http://postcss.org/) pipelines and plugins that handles all of the functionality like `composes`, `@value`, and the rest.
+- [`packages/rollup`](https://github.com/tivac/modular-css/tree/main/packages/rollup) - [rollup](https://rollupjs.org/) plugin that acts as an interface between the rollup process and a `Processor` instance.
+- [`packages/webpack`](https://github.com/tivac/modular-css/tree/main/packages/webpack) - [webpack](https://webpack.js.org/) loader & plugin which acts as an interface between the webpack process and a `Processor` instance.
+- [`packages/browserify`](https://github.com/tivac/modular-css/tree/main/packages/browserify) - [browserify](http://browserify.org/) loader & plugin which acts as an interface between the webpack process and a `Processor` instance.
 
 There's several other ways to use `modular-css` tucked away in the `packages/` folders, feel free to peruse the `README.md` files to get more details about each package.
 
