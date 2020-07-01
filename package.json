@@ -39,7 +39,7 @@
     "eslint-plugin-jest": "^23.0.2",
     "factor-bundle": "2.5.0",
     "from2-string": "1.1.0",
-    "jest": "^25.1.0",
+    "jest": "^26.1.0",
     "jest-cli": "^25.1.0",
     "lerna": "^3.16.4",
     "p-defer": "^3.0.0",
