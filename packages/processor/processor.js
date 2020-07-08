@@ -29,6 +29,16 @@ const defaultLoadFile = (id) => {
     return fs.readFileSync(id, "utf8");
 };
 
+const GRAPH_SEP = "::";
+const FILE_PREFIX = `file${GRAPH_SEP}`;
+
+const selectorKey = (file, selector) => `${file}${GRAPH_SEP}${selector}`;
+const fileKey = (file) => `${FILE_PREFIX}${file}`;
+
+const justFiles = (files) => files
+    .filter((f) => f.startsWith(FILE_PREFIX))
+    .map((f) => f.replace(FILE_PREFIX, ""));
+
 const params = ({ _options, _files, _graph, _resolve }, args) => ({
     __proto__ : null,
     ..._options,
@@ -203,7 +213,7 @@ class Processor {
             throw new Error(`Unknown file: ${input}`);
         }
 
-        const deps = this.dependents(source);
+        const deps = this.dependencies(source, { filesOnly : true });
 
         [ ...deps, source ].forEach((file) => {
             this._log("invalidate()", file);
@@ -215,28 +225,32 @@ class Processor {
     }
 
     // Get the dependency order for a file or the entire tree
-    dependencies(file, options = false) {
-        const { leavesOnly } = options;
+    dependencies(file, { leavesOnly = false, filesOnly = true } = false) {
+        let results;
 
         if(file) {
             const id = this._normalize(file);
 
-            return this._graph.dependenciesOf(id, leavesOnly);
+            results = this._graph.dependenciesOf(fileKey(id), leavesOnly);
+        } else {
+            results = this._graph.overallOrder(leavesOnly);
         }
 
-        return this._graph.overallOrder(leavesOnly);
+        return filesOnly ? justFiles(results) : results;
     }
 
     // Get the dependant files for a file
-    dependents(file, options = false) {
+    dependents(file, { leavesOnly = false, filesOnly = true } = false) {
+        throw new Error("processor.dependents is redundant and should be removed");
+        
         if(!file) {
             throw new Error("Must provide a file to processor.dependants()");
         }
 
         const id = this._normalize(file);
-        const { leavesOnly } = options;
+        const results = this._graph.dependenciesOf(fileKey(id), leavesOnly);
 
-        return this._graph.dependantsOf(id, leavesOnly);
+        return filesOnly ? justFiles(results) : results;
     }
 
     // Get the ultimate output for specific files or the entire tree
@@ -385,7 +399,7 @@ class Processor {
 
         await this._walk(id, src);
 
-        const deps = [ ...this._graph.dependenciesOf(id), id ];
+        const deps = [ ...justFiles(this._graph.dependenciesOf(fileKey(id))), id ];
 
         for(const dep of deps) {
             const file = this._files[dep];
@@ -416,6 +430,7 @@ class Processor {
                         null
                 ),
 
+                // TODO: clean up invalid identifiers here!
                 // export classes
                 ...message(result, "classes"),
 
@@ -450,7 +465,9 @@ class Processor {
             return;
         }
 
-        this._graph.addNode(name, 0);
+        const fileId = fileKey(name);
+
+        this._graph.addNode(fileId, 0);
 
         this._log("_before()", name);
 
@@ -473,20 +490,37 @@ class Processor {
         await file.before;
 
         // Add all the found dependencies to the graph
-        file.before.messages.forEach(({ plugin, dependency }) => {
+        file.before.messages.forEach(({ plugin, selector, refs, dependency }) => {
             if(plugin !== "modular-css-graph-nodes") {
                 return;
             }
 
+            const selectorId = selectorKey(name, selector);
             const dep = this._normalize(dependency);
+            const depId = fileKey(dep);
+            
+            this._graph.addNode(selectorId, 0);
+            this._graph.addNode(depId, 0);
+            this._graph.addDependency(selectorId, fileId);
+            this._graph.addDependency(fileId, depId);
 
-            this._graph.addNode(dep, 0);
-            this._graph.addDependency(name, dep);
+            refs.forEach(({ name : depSelector }) => {
+                const depSelectorId = selectorKey(dep, depSelector);
+
+                this._graph.addNode(depSelectorId, 0);
+                this._graph.addDependency(depSelectorId, depId);
+                this._graph.addDependency(selectorId, depSelectorId);
+                this._graph.addDependency(fileId, depSelectorId);
+            });
         });
+
+        // console.log(this._graph);
+        // console.log(this._graph.overallOrder());
+        // console.log(this._graph.dependenciesOf(fileId));
 
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
-            this._graph.dependenciesOf(name).map((dependency) => {
+            justFiles(this._graph.dependenciesOf(fileId)).map((dependency) => {
                 const { valid, walked : complete } = this._files[dependency] || false;
 
                 // If the file hasn't been invalidated wait for it to be done processing

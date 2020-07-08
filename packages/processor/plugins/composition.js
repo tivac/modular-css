@@ -97,23 +97,24 @@ module.exports = (css, result) => {
     });
 
     // Update out by walking dep graph and updating classes
-    graph.overallOrder().forEach((selector) =>
-        graph.dependenciesOf(selector)
-            .reverse()
-            .forEach((dep) => {
-                out[selector] = refs[dep].concat(out[selector]);
-            })
-    );
+    // graph.overallOrder().forEach((selector) =>
+    //     graph.dependenciesOf(selector)
+    //         .reverse()
+    //         .forEach((dep) => {
+    //             out[selector] = refs[dep].concat(out[selector]);
+    //         })
+    // );
 
     result.messages.push({
         type : "modular-css",
         plugin,
 
-        classes : mapvalues(out, (val) => {
-            const classes = new Set(val);
+        classes : out,
+        // mapvalues(out, (val) => {
+        //     const classes = new Set(val);
 
-            return [ ...classes ];
-        }),
+        //     return [ ...classes ];
+        // }),
     });
 };
 
