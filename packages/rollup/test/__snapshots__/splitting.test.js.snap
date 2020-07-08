@@ -313,7 +313,7 @@ Object {
     background: blue;
 }
 ",
-  "assets/simple.css": "
+  "assets/simple2.css": "
 /* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;

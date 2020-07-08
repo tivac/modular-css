@@ -31,8 +31,9 @@ const defaultLoadFile = (id) => {
 
 const GRAPH_SEP = "::";
 const FILE_PREFIX = `file${GRAPH_SEP}`;
+const SELECTOR_PREFIX = `selector${GRAPH_SEP}`;
 
-const selectorKey = (file, selector) => `${file}${GRAPH_SEP}${selector}`;
+const selectorKey = (file, selector) => `${SELECTOR_PREFIX}${file}${GRAPH_SEP}${selector}`;
 const fileKey = (file) => `${FILE_PREFIX}${file}`;
 
 const justFiles = (files) => files
@@ -239,18 +240,10 @@ class Processor {
         return filesOnly ? justFiles(results) : results;
     }
 
+    // TODO: fully deprecate/remove usage
     // Get the dependant files for a file
-    dependents(file, { leavesOnly = false, filesOnly = true } = false) {
+    dependents() {
         throw new Error("processor.dependents is redundant and should be removed");
-        
-        if(!file) {
-            throw new Error("Must provide a file to processor.dependants()");
-        }
-
-        const id = this._normalize(file);
-        const results = this._graph.dependenciesOf(fileKey(id), leavesOnly);
-
-        return filesOnly ? justFiles(results) : results;
     }
 
     // Get the ultimate output for specific files or the entire tree
@@ -467,7 +460,7 @@ class Processor {
 
         const fileId = fileKey(name);
 
-        this._graph.addNode(fileId, 0);
+        this._graph.addNode(fileId, { file : name });
 
         this._log("_before()", name);
 
@@ -499,24 +492,20 @@ class Processor {
             const dep = this._normalize(dependency);
             const depId = fileKey(dep);
             
-            this._graph.addNode(selectorId, 0);
-            this._graph.addNode(depId, 0);
+            this._graph.addNode(selectorId, { file : name, selector });
+            this._graph.addNode(depId, { file : dep });
             this._graph.addDependency(selectorId, fileId);
             this._graph.addDependency(fileId, depId);
 
             refs.forEach(({ name : depSelector }) => {
                 const depSelectorId = selectorKey(dep, depSelector);
 
-                this._graph.addNode(depSelectorId, 0);
+                this._graph.addNode(depSelectorId, { file : dep, selector : depSelector });
                 this._graph.addDependency(depSelectorId, depId);
                 this._graph.addDependency(selectorId, depSelectorId);
                 this._graph.addDependency(fileId, depSelectorId);
             });
         });
-
-        // console.log(this._graph);
-        // console.log(this._graph.overallOrder());
-        // console.log(this._graph.dependenciesOf(fileId));
 
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
@@ -537,5 +526,8 @@ class Processor {
         walked();
     }
 }
+
+Processor.selectorKey = selectorKey;
+Processor.fileKey = fileKey;
 
 module.exports = Processor;

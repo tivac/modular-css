@@ -415,8 +415,11 @@ console.log(styles);
 `;
 
 exports[`/rollup.js should respect the CSS dependency tree 1`] = `
-"var css = {
-    \\"wooga\\": \\"fooga wooga\\"
+"const fooga = \\"fooga\\";
+
+const wooga = fooga + \\" \\" + \\"wooga\\";
+var css = {
+    \\"wooga\\" : wooga
 };
 
 console.log(css);

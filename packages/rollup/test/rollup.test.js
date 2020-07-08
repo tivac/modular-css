@@ -438,7 +438,7 @@ describe("/rollup.js", () => {
         expect(read("./no-maps/assets/simple.css")).toMatchSnapshot();
     });
 
-    it.only("should respect the CSS dependency tree", async () => {
+    it("should respect the CSS dependency tree", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/dependencies.js"),
             plugins : [
