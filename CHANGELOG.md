@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [25.8.1](https://github.com/tivac/modular-css/compare/v25.8.0...v25.8.1) (2020-07-30)
+
+
+### Bug Fixes
+
+* **rollup:** update peerDep to rollup@2 ([#777](https://github.com/tivac/modular-css/issues/777)) ([69ee5c4](https://github.com/tivac/modular-css/commit/69ee5c455f4583d72bbb02ce4435c4625c1e31d6))
+
+
+
+
+
 # [25.8.0](https://github.com/tivac/modular-css/compare/v25.7.0...v25.8.0) (2020-06-29)
 
 
