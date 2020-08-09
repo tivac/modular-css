@@ -30,39 +30,30 @@ Object {
 .a {
     color: aqua;
 }
-
-/*# sourceMappingURL=a-890c0aa5.css.map */",
-  "assets/a-890c0aa5.css.map": "
-{\\"version\\":3,\\"sources\\":[\\"../packages/rollup/test/specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n    \\\\n    color: aqua;\\\\n}\\\\n\\"]}",
+",
   "assets/a-a56cc35c.css": "
 /* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */
-.a { color: azure; }
-/*# sourceMappingURL=a-a56cc35c.css.map */",
-  "assets/a-a56cc35c.css.map": "
-{\\"version\\":3,\\"sources\\":[\\"../packages/rollup/test/specimens/multiple-chunks/subfolder/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,mEAAA;AAAA,KAAK,YAAY,EAAE\\",\\"file\\":\\"a-[hash].css\\",\\"sourcesContent\\":[\\".a { color: azure; }\\"]}",
+.a { color: azure; }",
   "assets/b-097f3a93.css": "
 /* packages/rollup/test/specimens/multiple-chunks/b.css */
 .b {
     color: blue;
 }
-
-/*# sourceMappingURL=b-097f3a93.css.map */",
-  "assets/b-097f3a93.css.map": "
-{\\"version\\":3,\\"sources\\":[\\"../packages/rollup/test/specimens/multiple-chunks/packages/rollup/test/specimens/multiple-chunks/a.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,yDAAA;AAAA;IAGI,WAAW;AACf\\",\\"file\\":\\"b-[hash].css\\",\\"sourcesContent\\":[\\".a {\\\\n    composes: a from \\\\\\"./subfolder/a.css\\\\\\";\\\\n    \\\\n    color: aqua;\\\\n}\\\\n\\"]}",
+",
 }
 `;
 
 exports[`/rollup.js code splitting should dedupe chunk names using rollup's incrementing counter logic 1`] = `
 Object {
   "assets/a.css": "
-/* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */
-.a { color: azure; }",
-  "assets/a2.css": "
 /* packages/rollup/test/specimens/multiple-chunks/a.css */
 .a {
     color: aqua;
 }
 ",
+  "assets/a2.css": "
+/* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */
+.a { color: azure; }",
   "assets/b.css": "
 /* packages/rollup/test/specimens/multiple-chunks/b.css */
 .b {

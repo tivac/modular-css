@@ -33,11 +33,11 @@ const DEFAULTS = {
     include : /\.css$/i,
 };
 
-const deconflict = (ident, conflicts) => {
+const deconflict = (ident, existing) => {
     let proposal = ident;
     let idx = 0;
 
-    while(conflicts.has(proposal)) {
+    while(existing.has(proposal)) {
         proposal = `${ident}${++idx}`;
     }
 
@@ -51,15 +51,16 @@ module.exports = (opts = {}) => {
         ...opts,
     };
 
-    const filter = utils.createFilter(options.include, options.exclude);
-
     const {
         dev,
         done,
         map,
         styleExport,
         verbose,
+        processor = new Processor(options),
     } = options;
+
+    const filter = utils.createFilter(options.include, options.exclude);
 
     // eslint-disable-next-line no-console, no-empty-function
     const log = verbose ? console.log.bind(console, "[rollup]") : () => {};
@@ -69,8 +70,6 @@ module.exports = (opts = {}) => {
         // But default to true otherwise
         options.map = !styleExport;
     }
-
-    const processor = options.processor || new Processor(options);
 
     return {
         name : "@modular-css/rollup",
@@ -121,21 +120,18 @@ module.exports = (opts = {}) => {
             }
 
             const { details, exports } = processed;
+            const { graph } = processor;
 
             const exported = output.join(exports);
+            const exportedKeys = Object.keys(exported);
             const relative = path.relative(processor.options.cwd, id);
             const compositions = processor.dependencies(id, { filesOnly : false });
             const dependencies = processor.dependencies(id, { filesOnly : true });
-            const { graph } = processor;
 
             const imported = new Set();
             const defined = new Map();
             
             const out = [];
-
-            dependencies.forEach((dep) => {
-                this.addWatchFile(dep);
-            });
 
             // create import statements for all of the values used in compositions
             compositions.forEach((comp) => {
@@ -180,7 +176,7 @@ module.exports = (opts = {}) => {
                 out.push(`const ${ident} = ${classes.join(` + " " + `)}`);
             }
 
-            const defaultExports = Object.keys(exported)
+            const defaultExports = exportedKeys
                 .map((key) => `${JSON.stringify(key)} : ${defined.get(key)}`)
                 .join(`,\n`);
 
@@ -211,12 +207,8 @@ module.exports = (opts = {}) => {
             }
 
             if(options.namedExports) {
-                const namedExports = Object.keys(exported)
-                    .map((key) => {
-                        const val = defined.get(key);
-
-                        return val === key ? key : `${val} as ${key}`;
-                    })
+                const namedExports = exportedKeys
+                    .map((key) => `${defined.get(key)} as ${key}`)
                     .join(`,\n`);
 
                 out.push(dedent(`
@@ -230,14 +222,19 @@ module.exports = (opts = {}) => {
                 out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
             }
 
-            console.log(out.join("\n"));
+            // Watch all the CSS files this file depends on
+            dependencies.forEach((dep) => {
+                this.addWatchFile(dep);
+            });
 
+            // Return JS representation to rollup
             return {
                 code : out.join("\n"),
                 map  : emptyMappings,
 
-                // Disable tree-shaking for CSS modules
-                // moduleSideEffects : "no-treeshake",
+                // Disable tree-shaking for CSS modules w/o any classes to export
+                // To make sure they're included in the bundle
+                moduleSideEffects : exportedKeys.length || "no-treeshake",
             };
         },
 
@@ -247,9 +244,11 @@ module.exports = (opts = {}) => {
                 return;
             }
 
-            const { file, dir, assetFileNames } = outputOptions;
-
-            // console.log(bundle);
+            const {
+                file,
+                dir,
+                assetFileNames,
+            } = outputOptions;
 
             const chunks = new Map();
 
@@ -257,31 +256,34 @@ module.exports = (opts = {}) => {
             const to = (!file && !dir) ?
                 path.join(processor.options.cwd, assetFileNames) :
                 path.join(
-                    dir ? dir : path.dirname(outputOptions.file),
+                    dir ? dir : path.dirname(file),
                     assetFileNames
                 );
-
+            
             // Walk bundle, create CSS output files
             Object.keys(bundle).forEach((entry) => {
-                const { type, modules } = bundle[entry];
-
+                const { type, modules, name } = bundle[entry];
+                
+                
                 /* istanbul ignore if */
                 if(type === "asset") {
                     return;
                 }
 
-                const deps = Object.keys(modules)
-                    .filter((f) => processor.has(f))
-                    .map((f) => processor.normalize(f));
+                const deps = Object.keys(modules).reduce((acc, f) => {
+                    if(processor.has(f)) {
+                        acc.push(processor.normalize(f));
+                    }
+
+                    return acc;
+                }, []);
 
                 if(!deps.length) {
                     return;
                 }
 
-                chunks.set(entry, deps);
+                chunks.set(entry, { deps, name });
             });
-
-            console.log(chunks);
 
             // If assets are being hashed then the automatic annotation has to be disabled
             // because it won't include the hashed value and will lead to badness
@@ -301,9 +303,8 @@ module.exports = (opts = {}) => {
             // Track chunks that don't actually need to be output
             const duds = new Set();
 
-            for(const [ entry, css ] of chunks) {
+            for(const [ entry, { deps, name }] of chunks) {
                 const ext = ".css";
-                const { name } = path.parse(entry);
 
                 /* eslint-disable-next-line no-await-in-loop */
                 const result = await processor.output({
@@ -312,7 +313,7 @@ module.exports = (opts = {}) => {
                     to  : to.replace(/\[(name|extname)\]/g, (match, field) => (field === "name" ? name : ext)),
                     map : mapOpt,
 
-                    files : css,
+                    files : deps,
                 });
 
                 // Don't output empty files if empties is falsey
