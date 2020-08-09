@@ -33,6 +33,17 @@ const DEFAULTS = {
     include : /\.css$/i,
 };
 
+const deconflict = (ident, conflicts) => {
+    let proposal = ident;
+    let idx = 0;
+
+    while(conflicts.has(proposal)) {
+        proposal = `${ident}${++idx}`;
+    }
+
+    return proposal;
+};
+
 module.exports = (opts = {}) => {
     const options = {
         __proto__ : null,
@@ -109,8 +120,6 @@ module.exports = (opts = {}) => {
                 return this.error(e);
             }
 
-            // console.log(processed);
-
             const { details, exports } = processed;
 
             const exported = output.join(exports);
@@ -119,9 +128,9 @@ module.exports = (opts = {}) => {
             const dependencies = processor.dependencies(id, { filesOnly : true });
             const { graph } = processor;
 
-            // console.log({ id, exported, compositions, dependencies });
-            // console.log(graph);
-
+            const imported = new Set();
+            const defined = new Map();
+            
             const out = [];
 
             dependencies.forEach((dep) => {
@@ -136,10 +145,12 @@ module.exports = (opts = {}) => {
                     return;
                 }
 
+                imported.add(selector);
+
                 out.push(`import { ${selector} } from "${slash(file)}";`);
             });
 
-            // Create vars representing exported values & use them in local var definitions
+            // Create vars representing exported @values & use them in local var definitions
             for(const key in exported) {
                 const classes = [];
 
@@ -159,13 +170,18 @@ module.exports = (opts = {}) => {
                     });
                 }
 
+                // Change identifier value if it overlaps with one that was imported
+                const ident = deconflict(key, imported);
+
+                defined.set(key, ident);
+
                 classes.push(JSON.stringify(exported[key]));
                 
-                out.push(`const ${key} = ${classes.join(` + " " + `)}`);
+                out.push(`const ${ident} = ${classes.join(` + " " + `)}`);
             }
 
             const defaultExports = Object.keys(exported)
-                .map((key) => `${JSON.stringify(key)} : ${key}`)
+                .map((key) => `${JSON.stringify(key)} : ${defined.get(key)}`)
                 .join(`,\n`);
 
             if(dev) {
@@ -195,7 +211,13 @@ module.exports = (opts = {}) => {
             }
 
             if(options.namedExports) {
-                const namedExports = Object.keys(exported).join(`,\n`);
+                const namedExports = Object.keys(exported)
+                    .map((key) => {
+                        const val = defined.get(key);
+
+                        return val === key ? key : `${val} as ${key}`;
+                    })
+                    .join(`,\n`);
 
                 out.push(dedent(`
                     export {
@@ -207,6 +229,8 @@ module.exports = (opts = {}) => {
             if(styleExport) {
                 out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
             }
+
+            console.log(out.join("\n"));
 
             return {
                 code : out.join("\n"),
@@ -335,50 +359,54 @@ module.exports = (opts = {}) => {
                 }
             }
 
-            // if(options.json) {
-            //     const dest = typeof options.json === "string" ? options.json : "exports.json";
+            if(options.json) {
+                const dest = typeof options.json === "string" ? options.json : "exports.json";
 
-            //     log("json output", dest);
+                log("json output", dest);
 
-            //     const compositions = await processor.compositions;
+                const compositions = await processor.compositions;
 
-            //     this.emitFile({
-            //         type   : "asset",
-            //         name   : dest,
-            //         source : JSON.stringify(compositions, null, 4),
-            //     });
-            // }
+                this.emitFile({
+                    type   : "asset",
+                    name   : dest,
+                    source : JSON.stringify(compositions, null, 4),
+                });
+            }
 
-            // const meta = {};
+            if(options.meta) {
+                const meta = {};
 
-            // entries.forEach((entry) => {
-            //     const chunk = bundle[entry];
+                for(const [ entry, css ] of chunks) {
+                    const chunk = bundle[entry];
 
-            //     // Attach info about this asset to the bundle
-            //     const { assets = [] } = chunk;
+                    // Attach info about this asset to the bundle
+                    const { assets = [] } = chunk;
 
-            //     chunked.dependenciesOf(entry)
-            //         .filter((dep) => !duds.has(dep))
-            //         .forEach((dep) => assets.push(names.get(dep)));
+                    css.forEach((dep) => {
+                        if(duds.has(dep)) {
+                            return;
+                        }
 
-            //     chunk.assets = assets;
+                        assets.push(names.get(dep));
+                    });
 
-            //     meta[entry] = {
-            //         assets,
-            //     };
-            // });
+                    chunk.assets = assets;
 
-            // if(options.meta) {
-            //     const dest = typeof options.meta === "string" ? options.meta : "metadata.json";
+                    meta[entry] = {
+                        assets,
+                    };
+                }
+            
+                const dest = typeof options.meta === "string" ? options.meta : "metadata.json";
 
-            //     log("metadata output", dest);
+                log("metadata output", dest);
 
-            //     this.emitFile({
-            //         type   : "asset",
-            //         source : JSON.stringify(meta, null, 4),
-            //         name   : dest,
-            //     });
-            // }
+                this.emitFile({
+                    type   : "asset",
+                    source : JSON.stringify(meta, null, 4),
+                    name   : dest,
+                });
+            }
         },
     };
 };
