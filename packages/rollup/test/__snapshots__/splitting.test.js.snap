@@ -344,7 +344,7 @@ exports[`/rollup.js code splitting shouldn't break when dynamic imports are tree
 
 exports[`/rollup.js code splitting shouldn't put bundle-specific CSS in common.css 1`] = `
 Object {
-  "assets/b.css": "
+  "assets/a.css": "
 /* packages/rollup/test/specimens/common-splitting/shared.css */
 .shared {
     color: snow;
