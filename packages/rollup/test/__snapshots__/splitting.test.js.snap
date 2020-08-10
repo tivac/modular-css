@@ -215,7 +215,7 @@ Object {
     color: blue;
 }
 ",
-  "assets/c.css": "
+  "assets/shared.css": "
 /* packages/rollup/test/specimens/manual-chunks/d.css */
 /* packages/rollup/test/specimens/manual-chunks/c.css */
 .c {
