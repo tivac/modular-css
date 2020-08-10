@@ -3,7 +3,6 @@
 
 const path = require("path");
 
-const { keyword } = require("esutils");
 const utils = require("rollup-pluginutils");
 const dedent = require("dedent");
 const slash = require("slash");
@@ -11,7 +10,7 @@ const slash = require("slash");
 const Processor = require("@modular-css/processor");
 const output = require("@modular-css/processor/lib/output.js");
 
-const chunker = require("./chunker.js");
+const DEFAULT_EXT = ".css";
 
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
@@ -251,6 +250,8 @@ module.exports = (opts = {}) => {
             } = outputOptions;
 
             const chunks = new Map();
+            const used = new Set();
+            const unused = [];
 
             // Determine the correct to option for PostCSS by doing a bit of a dance
             const to = (!file && !dir) ?
@@ -264,7 +265,6 @@ module.exports = (opts = {}) => {
             Object.keys(bundle).forEach((entry) => {
                 const { type, modules, name } = bundle[entry];
                 
-                
                 /* istanbul ignore if */
                 if(type === "asset") {
                     return;
@@ -272,7 +272,10 @@ module.exports = (opts = {}) => {
 
                 const deps = Object.keys(modules).reduce((acc, f) => {
                     if(processor.has(f)) {
-                        acc.push(processor.normalize(f));
+                        const css = processor.normalize(f);
+                        
+                        used.add(css);
+                        acc.push(css);
                     }
 
                     return acc;
@@ -284,6 +287,21 @@ module.exports = (opts = {}) => {
 
                 chunks.set(entry, { deps, name });
             });
+
+            // Add any bare CSS files to be output as part of the common chunk
+            processor.dependencies().forEach((css) => {
+                if(used.has(css)) {
+                    return;
+                }
+
+                unused.push(css);
+            });
+
+            if(unused.length) {
+                const { name } = path.parse(options.common);
+
+                chunks.set("common", { deps : unused, name });
+            }
 
             // If assets are being hashed then the automatic annotation has to be disabled
             // because it won't include the hashed value and will lead to badness
@@ -304,13 +322,13 @@ module.exports = (opts = {}) => {
             const duds = new Set();
 
             for(const [ entry, { deps, name }] of chunks) {
-                const ext = ".css";
-
                 /* eslint-disable-next-line no-await-in-loop */
                 const result = await processor.output({
                     // Can't use this.getAssetFileName() here, because the source hasn't been set yet
-                    // Have to do our best to come up with a valid final location though...
-                    to  : to.replace(/\[(name|extname)\]/g, (match, field) => (field === "name" ? name : ext)),
+                    //  Have to do our best to come up with a valid final location though...
+                    to : to.replace(/\[(name|extname)\]/g,  (match, field) =>
+                        (field === "name" ? name : DEFAULT_EXT)
+                    ),
                     map : mapOpt,
 
                     files : deps,
@@ -325,7 +343,7 @@ module.exports = (opts = {}) => {
 
                 const id = this.emitFile({
                     type   : "asset",
-                    name   : `${name}${ext}`,
+                    name   : `${name}${DEFAULT_EXT}`,
                     source : result.css,
                 });
 
@@ -339,7 +357,7 @@ module.exports = (opts = {}) => {
                 if(result.map) {
                     // Make sure to use the rollup name as the base, otherwise it won't
                     // automatically handle duplicate names correctly
-                    const fileName = dest.replace(ext, `${ext}.map`);
+                    const fileName = dest.replace(DEFAULT_EXT, `${DEFAULT_EXT}.map`);
 
                     log("map output", fileName);
 
@@ -377,19 +395,17 @@ module.exports = (opts = {}) => {
             if(options.meta) {
                 const meta = {};
 
-                for(const [ entry, css ] of chunks) {
+                for(const [ entry ] of chunks) {
                     const chunk = bundle[entry];
+
+                    if(!chunk) {
+                        continue;
+                    }
 
                     // Attach info about this asset to the bundle
                     const { assets = [] } = chunk;
 
-                    css.forEach((dep) => {
-                        if(duds.has(dep)) {
-                            return;
-                        }
-
-                        assets.push(names.get(dep));
-                    });
+                    assets.push(names.get(entry));
 
                     chunk.assets = assets;
 

@@ -100,13 +100,13 @@ Object {
 /* packages/rollup/test/specimens/metadata/b.css */
 .mc04101138_b { color: blue; }
 ",
+  "assets/common.css": "
+/* fake.css */
+.mc2c838439_fake { color: red; }",
   "assets/d.css": "
 /* packages/rollup/test/specimens/metadata/d.css */
 .mc7de0d66b_d { color: darkkhaki; }
 ",
-  "assets/fake.css": "
-/* fake.css */
-.mc2c838439_fake { color: red; }",
   "assets/metadata.json": "
 {
     \\"a.js\\": {
@@ -304,7 +304,7 @@ Object {
     background: blue;
 }
 ",
-  "assets/simple2.css": "
+  "assets/simple.css": "
 /* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
