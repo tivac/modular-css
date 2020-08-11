@@ -43,8 +43,8 @@ handlers.import = ({ source }) => ({
 
 // Find @value entries & catalog/remove them
 module.exports = (css, { opts }) => {
-    const { files, resolve, from } = opts;
-    const file = files[from];
+    const { from, processor } = opts;
+    const file = processor.files[from];
 
     let values = { __proto__ : null };
     
@@ -53,7 +53,7 @@ module.exports = (css, { opts }) => {
         let source;
 
         if(parsed.source) {
-            source = files[resolve(from, parsed.source)];
+            source = processor.files[processor.resolve(from, parsed.source)];
         }
 
         values = handlers[parsed.type]({

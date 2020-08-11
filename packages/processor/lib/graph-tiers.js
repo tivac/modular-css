@@ -6,7 +6,7 @@ const leaves = (graph) => graph.overallOrder(true);
 module.exports = (graph) => {
     const clone = graph.clone();
     const tiers = [];
-    
+
     let tier = leaves(clone);
 
     while(tier.length) {
@@ -23,5 +23,5 @@ module.exports = (graph) => {
         tier = leaves(clone);
     }
 
-    return tiers.reduce((a, b) => a.concat(b), []);
+    return [].concat(...tiers);
 };

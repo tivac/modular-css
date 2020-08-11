@@ -15,6 +15,14 @@ const tiered        = require("./lib/graph-tiers.js");
 const normalize     = require("./lib/normalize.js");
 const { resolvers } = require("./lib/resolve.js");
 
+const {
+    selectorKey,
+    fileKey,
+    filterByPrefix,
+    FILE_PREFIX,
+    SELECTOR_PREFIX,
+} = require("./lib/keys.js");
+
 let fs;
 
 const noop = () => true;
@@ -29,27 +37,22 @@ const defaultLoadFile = (id) => {
     return fs.readFileSync(id, "utf8");
 };
 
-const GRAPH_SEP = "::";
-const FILE_PREFIX = `file${GRAPH_SEP}`;
-const SELECTOR_PREFIX = `selector${GRAPH_SEP}`;
+const params = (processor, args) => {
+    const { _options } = processor;
+    
+    return {
+        __proto__ : null,
+        
+        ..._options,
+        ..._options.postcss,
 
-const selectorKey = (file, selector) => `${SELECTOR_PREFIX}${file}${GRAPH_SEP}${selector}`;
-const fileKey = (file) => `${FILE_PREFIX}${file}`;
-
-const justFiles = (files) => files
-    .filter((f) => f.startsWith(FILE_PREFIX))
-    .map((f) => f.replace(FILE_PREFIX, ""));
-
-const params = ({ _options, _files, _graph, _resolve }, args) => ({
-    __proto__ : null,
-    ..._options,
-    ..._options.postcss,
-    from      : null,
-    files     : _files,
-    graph     : _graph,
-    resolve   : _resolve,
-    ...args,
-});
+        from : null,
+        
+        processor,
+        
+        ...args,
+    };
+};
 
 const DEFAULTS = {
     cwd : process.cwd(),
@@ -237,7 +240,11 @@ class Processor {
             results = this._graph.overallOrder(leavesOnly);
         }
 
-        return filesOnly ? justFiles(results) : results;
+        if(filesOnly) {
+            return filterByPrefix(FILE_PREFIX, results);
+        }
+
+        return results;
     }
 
     // TODO: fully deprecate/remove usage
@@ -252,10 +259,10 @@ class Processor {
         let { files } = args;
 
         if(!Array.isArray(files)) {
-            files = tiered(this._graph);
+            files = filterByPrefix(FILE_PREFIX, tiered(this._graph));
         }
 
-        // Throw normalize values into a Set to remove dupes
+        // Throw normalized values into a Set to remove dupes
         files = new Set(files.map(this._normalize));
 
         // Then turn it back into array because the iteration story is better
@@ -340,6 +347,7 @@ class Processor {
             params(this, args)
         );
 
+        // Lazily-compute compositions if they're asked for
         Object.defineProperty(result, "compositions", {
             get : () => output.compositions(this),
         });
@@ -371,6 +379,36 @@ class Processor {
         .then(() => output.compositions(this));
     }
 
+    _addFile(file, opts = false) {
+        const key = fileKey(file);
+        
+        if(!this._graph.hasNode(key)) {
+            this._graph.addNode(key, { file, ...opts });
+        }
+
+        return key;
+    }
+
+    _addSelector(file, selector, opts = false) {
+        const key = selectorKey(file, selector);
+        
+        if(!this._graph.hasNode(key)) {
+            this._graph.addNode(key, { file, selector, ...opts });
+        }
+
+        return key;
+    }
+
+    _addGlobal(selector, opts = false) {
+        const key = selectorKey("global", selector);
+
+        if(!this._graph.hasNode(key)) {
+            this._graph.addNode(key, { file : "global", selector, global : true, ...opts });
+        }
+
+        return key;
+    }
+
     // Take a file id and some text, walk it for dependencies, then
     // process and return details
     async _add(id, src) {
@@ -392,7 +430,7 @@ class Processor {
 
         await this._walk(id, src);
 
-        const deps = [ ...justFiles(this._graph.dependenciesOf(fileKey(id))), id ];
+        const deps = [ ...filterByPrefix(FILE_PREFIX, this._graph.dependenciesOf(fileKey(id))), id ];
 
         for(const dep of deps) {
             const file = this._files[dep];
@@ -467,6 +505,7 @@ class Processor {
         let walked;
 
         const file = this._files[name] = {
+            name,
             text    : typeof src === "string" ? src : src.source.input.css,
             exports : false,
             values  : false,
@@ -488,19 +527,16 @@ class Processor {
                 return;
             }
 
-            const selectorId = selectorKey(name, selector);
+            const selectorId = this._addSelector(name, selector);
             const dep = this._normalize(dependency);
-            const depId = fileKey(dep);
+            const depId = this._addFile(dep);
             
-            this._graph.addNode(selectorId, { file : name, selector });
-            this._graph.addNode(depId, { file : dep });
             this._graph.addDependency(selectorId, fileId);
             this._graph.addDependency(fileId, depId);
 
             refs.forEach(({ name : depSelector }) => {
-                const depSelectorId = selectorKey(dep, depSelector);
+                const depSelectorId = this._addSelector(dep, depSelector);
 
-                this._graph.addNode(depSelectorId, { file : dep, selector : depSelector });
                 this._graph.addDependency(depSelectorId, depId);
                 this._graph.addDependency(selectorId, depSelectorId);
                 this._graph.addDependency(fileId, depSelectorId);
@@ -509,7 +545,7 @@ class Processor {
 
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
-            justFiles(this._graph.dependenciesOf(fileId)).map((dependency) => {
+            filterByPrefix(FILE_PREFIX, this._graph.dependenciesOf(fileId)).map((dependency) => {
                 const { valid, walked : complete } = this._files[dependency] || false;
 
                 // If the file hasn't been invalidated wait for it to be done processing

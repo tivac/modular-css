@@ -9,8 +9,8 @@ const values = require("../../parsers/values.js");
 
 const plugin = "modular-css-graph-nodes";
 
-module.exports = (css, result) => {
-    const { opts } = result;
+module.exports = (css, { opts, messages }) => {
+    const { processor, from } = opts;
 
     let current;
 
@@ -29,12 +29,14 @@ module.exports = (css, result) => {
             return;
         }
 
-        const dependency = opts.resolve(opts.from, parsed.source);
+        const { source, refs } = parsed;
+
+        const dependency = processor.resolve(from, source);
 
         if(!dependency) {
             throw rule.error(
-                `Unable to locate "${parsed.source}" from "${opts.from}"`,
-                { word : parsed.source }
+                `Unable to locate "${source}" from "${from}"`,
+                { word : source }
             );
         }
 
@@ -42,13 +44,13 @@ module.exports = (css, result) => {
             rule.parent.selector.slice(1) :
             null;
 
-        result.messages.push({
+        messages.push({
             type : "modular-css",
 
             plugin,
             selector,
             dependency,
-            refs : parsed.refs,
+            refs,
         });
     };
     

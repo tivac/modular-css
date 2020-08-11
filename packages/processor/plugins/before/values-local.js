@@ -6,8 +6,9 @@ const plugin = "modular-css-values-local";
 
 // Find @value fooga: wooga entries & catalog/remove them
 module.exports = (css, { opts }) => {
-    const { files, from } = opts;
-    const file = files[from];
+    const { processor, from } = opts;
+    
+    const file = processor.files[from];
 
     const values = Object.create(null);
 
