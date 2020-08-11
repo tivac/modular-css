@@ -135,9 +135,11 @@ exports[`/rollup.js should generate JSON with a custom name 1`] = `
 exports[`/rollup.js should generate exports 1`] = `
 Object {
   "simple": "
+const str = \\"\\\\\\"string\\\\\\"\\";
+const fooga = \\"fooga\\";
 var css = {
-    \\"str\\": \\"\\\\\\"string\\\\\\"\\",
-    \\"fooga\\": \\"fooga\\"
+    \\"str\\" : str,
+\\"fooga\\" : fooga
 };
 
 console.log(css);
