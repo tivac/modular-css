@@ -8,9 +8,7 @@ const plugin = "modular-css-values-local";
 module.exports = (css, { opts }) => {
     const { processor, from } = opts;
     
-    const file = processor.files[from];
-
-    const values = Object.create(null);
+    const { values } = processor.files[from];
 
     css.walkAtRules("value", (rule) => {
         let parsed;
@@ -33,13 +31,6 @@ module.exports = (css, { opts }) => {
 
         rule.remove();
     });
-
-    file.values = {
-        __proto__ : null,
-        
-        ...(file.values || {}),
-        ...values,
-    };
 };
 
 module.exports.postcssPlugin = plugin;

@@ -3,17 +3,18 @@
 const selector = require("postcss-selector-parser");
 const value    = require("postcss-value-parser");
 const escape   = require("escape-string-regexp");
-const get      = require("lodash/get");
-const Graph    = require("dependency-graph").DepGraph;
+const { DepGraph } = require("dependency-graph");
 
 module.exports = (css, { opts }) => {
-    const graph = new Graph();
+    const { processor, from } = opts;
+    
+    const graph = new DepGraph();
 
     // Create local copy of values since we're going to merge in namespace stuff
     const values = {
         __proto__ : null,
         
-        ...get(opts, [ "files", opts.from, "values" ]),
+        ...processor.files[from].values,
     };
 
     // Bail if no work to do

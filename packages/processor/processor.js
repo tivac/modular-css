@@ -507,8 +507,8 @@ class Processor {
         const file = this._files[name] = {
             name,
             text    : typeof src === "string" ? src : src.source.input.css,
-            exports : false,
-            values  : false,
+            exports : Object.create(null),
+            values  : Object.create(null),
             valid   : true,
             before  : this._before.process(
                 src,
@@ -522,7 +522,7 @@ class Processor {
         await file.before;
 
         // Add all the found dependencies to the graph
-        file.before.messages.forEach(({ plugin, selector, refs, dependency }) => {
+        file.before.messages.forEach(({ plugin, selector, refs = [], dependency }) => {
             if(plugin !== "modular-css-graph-nodes") {
                 return;
             }
@@ -533,6 +533,7 @@ class Processor {
             
             this._graph.addDependency(selectorId, fileId);
             this._graph.addDependency(fileId, depId);
+
 
             refs.forEach(({ name : depSelector }) => {
                 const depSelectorId = this._addSelector(dep, depSelector);

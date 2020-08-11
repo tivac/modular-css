@@ -7,13 +7,13 @@ const parser = require("../parsers/external.js");
 // Find :external(<rule> from <file>) references and update them to be
 // the namespaced selector instead
 module.exports = (css, { opts }) => {
-    const { files, resolve, from } = opts;
+    const { processor, from } = opts;
 
     const process = (rule, pseudo) => {
         const params = pseudo.nodes.toString();
         const { source, ref } = parser.parse(params);
         const { name } = ref;
-        const file = files[resolve(from, source)];
+        const file = processor.files[processor.resolve(from, source)];
         
         if(!file) {
             throw rule.error(`Unable to locate file: ${source}`, { word : source });
