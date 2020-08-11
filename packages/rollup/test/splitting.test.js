@@ -278,7 +278,7 @@ describe("/rollup.js", () => {
             })).toMatchRollupAssetSnapshot();
         });
 
-        it("should ouput only 1 JSON file", async () => {
+        it("should output only 1 JSON file", async () => {
             const bundle = await rollup({
                 input : [
                     require.resolve("./specimens/simple.js"),

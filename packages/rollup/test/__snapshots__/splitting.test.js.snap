@@ -63,7 +63,7 @@ Object {
 }
 `;
 
-exports[`/rollup.js code splitting should ouput only 1 JSON file 1`] = `
+exports[`/rollup.js code splitting should output only 1 JSON file 1`] = `
 Object {
   "assets/dependencies.css": "
 /* packages/rollup/test/specimens/dependencies.css */
