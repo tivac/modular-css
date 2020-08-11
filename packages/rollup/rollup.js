@@ -8,7 +8,6 @@ const dedent = require("dedent");
 const slash = require("slash");
 
 const Processor = require("@modular-css/processor");
-const output = require("@modular-css/processor/lib/output.js");
 
 const DEFAULT_EXT = ".css";
 
@@ -32,13 +31,15 @@ const DEFAULTS = {
     include : /\.css$/i,
 };
 
-const deconflict = (ident, existing) => {
+const deconflict = (map, ident) => {
     let proposal = ident;
     let idx = 0;
 
-    while(existing.has(proposal)) {
+    while(map.has(proposal)) {
         proposal = `${ident}${++idx}`;
     }
+
+    map.set(proposal, ident);
 
     return proposal;
 };
@@ -126,10 +127,12 @@ module.exports = (opts = {}) => {
             const compositions = processor.dependencies(id, { filesOnly : false });
             const dependencies = processor.dependencies(id, { filesOnly : true });
             
-            const imported = new Set();
-            const defined = new Map();
-            
+            const identifiers = new Map();
+            const importsMap = new Map();
+
             const out = [];
+            const defaultExports = [];
+            const namedExports = [];
 
             // create import statements for all of the values used in compositions
             compositions.forEach((comp) => {
@@ -139,49 +142,48 @@ module.exports = (opts = {}) => {
                     return;
                 }
 
-                imported.add(selector);
+                const unique = deconflict(identifiers, selector);
 
-                out.push(`import { ${selector} } from "${slash(file)}";`);
+                out.push(`import { ${selector} as ${unique} } from "${slash(file)}";`);
+
+                importsMap.set(`${file}${selector}`, unique);
             });
 
             // Create vars representing exported classes/values & use them in local var definitions
-            for(const key in content) {
+            exportedKeys.forEach((key) => {
                 const elements = [];
 
                 const selectorKey = Processor.selectorKey(id, key);
                 
                 if(graph.hasNode(selectorKey)) {
-                    const composed = graph.dependenciesOf(selectorKey);
-
-                    composed.forEach((dep) => {
-                        const { selector } = graph.getNodeData(dep);
+                    graph.dependenciesOf(selectorKey).forEach((dep) => {
+                        const { file, selector } = graph.getNodeData(dep);
                         
                         if(!selector) {
                             return;
                         }
 
-                        elements.push(selector);
+                        elements.push(importsMap.get(`${file}${selector}`));
                     });
                 }
 
-                // Change identifier value if it overlaps with one that was imported
-                const ident = deconflict(key, imported);
-
-                defined.set(key, ident);
+                const unique = deconflict(identifiers, key);
 
                 elements.push(...content[key].map((t) => JSON.stringify(t)));
 
-                out.push(`const ${ident} = ${elements.join(` + " " + `)}`);
-            }
+                out.push(`const ${unique} = ${elements.join(` + " " + `)}`);
 
-            const defaultExports = exportedKeys
-                .map((key) => `${JSON.stringify(key)} : ${defined.get(key)}`)
-                .join(`,\n`);
+                defaultExports.push(`${JSON.stringify(key)} : ${unique}`);
+
+                if(namedExports) {
+                    namedExports.push(`${unique} as ${key}`);
+                }
+            });
 
             if(dev) {
                 out.push(dedent(`
                     const data = {
-                        ${defaultExports}
+                        ${defaultExports.join(",\n")}
                     };
 
                     export default new Proxy(data, {
@@ -199,19 +201,15 @@ module.exports = (opts = {}) => {
             } else {
                 out.push(dedent(`
                     export default {
-                        ${defaultExports}
+                        ${defaultExports.join(",\n")}
                     };
                 `));
             }
 
             if(options.namedExports) {
-                const namedExports = exportedKeys
-                    .map((key) => `${defined.get(key)} as ${key}`)
-                    .join(`,\n`);
-
                 out.push(dedent(`
                     export {
-                        ${namedExports}
+                        ${namedExports.join(`,\n`)}
                     };
                 `));
             }
@@ -224,6 +222,8 @@ module.exports = (opts = {}) => {
             dependencies.forEach((dep) => {
                 this.addWatchFile(dep);
             });
+
+            // console.log(id, "\n", out.join("\n"));
 
             // Return JS representation to rollup
             return {

@@ -596,13 +596,14 @@ describe("/rollup.js", () => {
         expect(result).toMatchRollupSnapshot();
     });
 
-    it("should write out empty CSS files by default", async () => {
+    it("should write out empty CSS files when empties is enabled", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/empty.js"),
             plugins : [
                 plugin({
                     namer,
                     map,
+                    empties : true,
 
                     done : [
                         cssnano(),
@@ -620,14 +621,13 @@ describe("/rollup.js", () => {
         expect(read("./empty-css/assets/empty.css")).toMatchSnapshot();
     });
 
-    it("should not write out empty CSS files when empties is falsey", async () => {
+    it("should not write out empty CSS files by default", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/empty.js"),
             plugins : [
                 plugin({
                     namer,
                     map,
-                    empties : false,
 
                     done : [
                         cssnano(),

@@ -485,7 +485,7 @@ Array [
 ]
 `;
 
-exports[`/rollup.js should write out empty CSS files by default 1`] = `""`;
+exports[`/rollup.js should write out empty CSS files when empties is enabled 1`] = `""`;
 
 exports[`/rollup.js shouldn't disable sourcemap generation 1`] = `
 SourceMap {
