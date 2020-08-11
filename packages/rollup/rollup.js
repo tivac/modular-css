@@ -250,7 +250,6 @@ module.exports = (opts = {}) => {
 
             const chunks = new Map();
             const used = new Set();
-            const unused = [];
 
             // Determine the correct to option for PostCSS by doing a bit of a dance
             const to = (!file && !dir) ?
@@ -293,14 +292,10 @@ module.exports = (opts = {}) => {
                     return;
                 }
 
-                unused.push(css);
+                const { name } = path.parse(css);
+
+                chunks.set(name, { deps : [ css ], name });
             });
-
-            if(unused.length) {
-                const { name } = path.parse(options.common);
-
-                chunks.set("common", { deps : unused, name });
-            }
 
             // If assets are being hashed then the automatic annotation has to be disabled
             // because it won't include the hashed value and will lead to badness
