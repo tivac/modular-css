@@ -118,19 +118,24 @@ module.exports = (opts = {}) => {
                 return this.error(e);
             }
 
-            const { details, exports } = processed;
+            const { details, exports : content } = processed;
             const { graph } = processor;
 
-            const exported = output.join(exports);
-            const exportedKeys = Object.keys(exported);
+            const exportedKeys = Object.keys(content);
             const relative = path.relative(processor.options.cwd, id);
             const compositions = processor.dependencies(id, { filesOnly : false });
             const dependencies = processor.dependencies(id, { filesOnly : true });
-
+            
             const imported = new Set();
             const defined = new Map();
             
             const out = [];
+
+            // console.log({
+            //     id,
+            //     compositions,
+            //     dependencies,
+            // });
 
             // create import statements for all of the values used in compositions
             compositions.forEach((comp) => {
@@ -146,7 +151,7 @@ module.exports = (opts = {}) => {
             });
 
             // Create vars representing exported @values & use them in local var definitions
-            for(const key in exported) {
+            for(const key in content) {
                 const classes = [];
 
                 const selectorKey = Processor.selectorKey(id, key);
@@ -170,7 +175,7 @@ module.exports = (opts = {}) => {
 
                 defined.set(key, ident);
 
-                classes.push(JSON.stringify(exported[key]));
+                classes.push(...(Array.isArray(content[key]) ? content[key] : [ content[key] ]));
                 
                 out.push(`const ${ident} = ${classes.join(` + " " + `)}`);
             }
