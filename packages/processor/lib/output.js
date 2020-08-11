@@ -41,12 +41,16 @@ exports.compositions = ({ options, files, graph }) => {
                         if(global) {
                             compositions.push(depSelector);
                         } else {
-                            compositions.push(...files[depFile].exports[depSelector]);
+                            const composition = files[depFile].exports[depSelector];
+
+                            compositions.push(...(Array.isArray(composition) ? composition : [ composition ]));
                         }
                     });
                 }
 
-                compositions.push(...classes[selector]);
+                const source = classes[selector];
+
+                compositions.push(...(Array.isArray(source) ? source : [ source ]));
 
                 out[selector] = compositions.join(" ");
             });
