@@ -20,7 +20,6 @@ const {
     fileKey,
     filterByPrefix,
     FILE_PREFIX,
-    SELECTOR_PREFIX,
 } = require("./lib/keys.js");
 
 let fs;
