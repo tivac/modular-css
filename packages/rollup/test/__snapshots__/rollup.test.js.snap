@@ -457,7 +457,7 @@ Object {
   "code": "PLUGIN_WARNING",
   "hook": "transform",
   "id": Any<String>,
-  "message": "Invalid JS identifier \\"fooga-wooga\\", unable to export",
+  "message": "Invalid JS identifier \\"fooga-wooga\\", unable use as named export",
   "plugin": "@modular-css/rollup",
   "toString": [Function],
 }
@@ -466,11 +466,12 @@ Object {
 exports[`/rollup.js should warn & not export individual keys when they are not valid identifiers 2`] = `
 Object {
   "invalid-name": "
+const fooga = \\"fooga\\";
+const foogaWooga = \\"fooga-wooga\\";
 var css = {
-    \\"fooga\\": \\"fooga\\",
-    \\"fooga-wooga\\": \\"fooga-wooga\\"
+    \\"fooga\\" : fooga,
+\\"fooga-wooga\\" : foogaWooga
 };
-var fooga = \\"fooga\\";
 
 console.log(css, fooga);
 ",

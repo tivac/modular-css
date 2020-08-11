@@ -29,6 +29,7 @@
     "@modular-css/processor": "file:../processor",
     "dedent": "0.7.0",
     "esutils": "^2.0.2",
+    "identifierfy": "^2.0.0",
     "rollup-pluginutils": "^2.0.1",
     "slash": "^3.0.0"
   },

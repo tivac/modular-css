@@ -6,6 +6,7 @@ const path = require("path");
 const utils = require("rollup-pluginutils");
 const dedent = require("dedent");
 const slash = require("slash");
+const identifierfy = require("identifierfy");
 
 const Processor = require("@modular-css/processor");
 
@@ -18,21 +19,24 @@ const emptyMappings = {
 };
 
 const DEFAULTS = {
-    common       : "common.css",
-    dev          : false,
-    json         : false,
-    meta         : false,
-    namedExports : true,
-    styleExport  : false,
-    verbose      : false,
-    empties      : false,
+    common      : "common.css",
+    dev         : false,
+    json        : false,
+    meta        : false,
+    styleExport : false,
+    verbose     : false,
+    empties     : false,
+    
+    namedExports : {
+        rewriteInvalid : true,
+    },
 
     // Regexp to work around https://github.com/rollup/rollup-pluginutils/issues/39
     include : /\.css$/i,
 };
 
 const deconflict = (map, ident) => {
-    let proposal = ident;
+    let proposal = identifierfy(ident);
     let idx = 0;
 
     while(map.has(proposal)) {
@@ -175,8 +179,18 @@ module.exports = (opts = {}) => {
 
                 defaultExports.push(`${JSON.stringify(key)} : ${unique}`);
 
-                if(namedExports) {
-                    namedExports.push(`${unique} as ${key}`);
+                if(options.namedExports) {
+                    const namedExport = identifierfy(key);
+                    
+                    if(namedExport === key) {
+                        namedExports.push(`${unique} as ${key}`);
+                    } else if(options.namedExports.rewriteInvalid) {
+                        this.warn(`Invalid JS identifier "${key}" rewritten to "${namedExport}"`);
+                        
+                        namedExports.push(`${unique} as ${namedExport}`);
+                    } else {
+                        this.warn(`Invalid JS identifier "${key}", unable use as named export`);
+                    }
                 }
             });
 
