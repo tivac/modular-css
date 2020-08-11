@@ -1,6 +1,107 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/rollup.js should accept an existing processor instance (no css in bundle) 1`] = `
+exports[`/rollup.js empties option should write out empty CSS files when empties is enabled 1`] = `""`;
+
+exports[`/rollup.js json option should generate JSON 1`] = `
+"{
+    \\"packages/rollup/test/specimens/simple.css\\": {
+        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
+        \\"fooga\\": \\"fooga\\"
+    }
+}"
+`;
+
+exports[`/rollup.js json option should generate JSON with a custom name 1`] = `
+"{
+    \\"packages/rollup/test/specimens/simple.css\\": {
+        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
+        \\"fooga\\": \\"fooga\\"
+    }
+}"
+`;
+
+exports[`/rollup.js namedExports option should allow disabling of named exports 1`] = `
+Object {
+  "simple": "
+const str = \\"\\\\\\"string\\\\\\"\\";
+const fooga = \\"fooga\\";
+var css = {
+    \\"str\\" : str,
+\\"fooga\\" : fooga
+};
+
+console.log(css);
+",
+}
+`;
+
+exports[`/rollup.js namedExports option should provide named exports by default 1`] = `
+Object {
+  "named": "
+const str = \\"\\\\\\"string\\\\\\"\\";
+const num = \\"10\\";
+const dim = \\"10px\\";
+const mix = \\"1px solid red\\";
+const a = \\"a\\";
+
+console.log(a, str, num, dim, mix);
+",
+}
+`;
+
+exports[`/rollup.js namedExports option should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false) 1`] = `
+Object {
+  "code": "PLUGIN_WARNING",
+  "hook": "transform",
+  "id": Any<String>,
+  "message": "Invalid JS identifier \\"fooga-wooga\\", unable use as named export",
+  "plugin": "@modular-css/rollup",
+  "toString": [Function],
+}
+`;
+
+exports[`/rollup.js namedExports option should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false) 2`] = `
+Object {
+  "invalid-name": "
+const fooga = \\"fooga\\";
+const foogaWooga = \\"fooga-wooga\\";
+var css = {
+    \\"fooga\\" : fooga,
+\\"fooga-wooga\\" : foogaWooga
+};
+
+console.log(css, fooga);
+",
+}
+`;
+
+exports[`/rollup.js namedExports option should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true) 1`] = `
+Object {
+  "code": "PLUGIN_WARNING",
+  "hook": "transform",
+  "id": Any<String>,
+  "message": "Invalid JS identifier \\"fooga-wooga\\" rewritten to \\"foogaWooga\\"",
+  "plugin": "@modular-css/rollup",
+  "toString": [Function],
+}
+`;
+
+exports[`/rollup.js namedExports option should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true) 2`] = `
+Object {
+  "invalid-name": "
+const fooga = \\"fooga\\";
+const foogaWooga = \\"fooga-wooga\\";
+var css = {
+    \\"fooga\\" : fooga,
+\\"fooga-wooga\\" : foogaWooga
+};
+
+console.log(css, fooga);
+",
+}
+`;
+
+exports[`/rollup.js processor option should accept an existing processor instance (no css in bundle) 1`] = `
 Object {
   "assets/fake.css": "
 /* packages/rollup/test/specimens/fake.css */
@@ -10,7 +111,7 @@ Object {
 }
 `;
 
-exports[`/rollup.js should accept an existing processor instance 1`] = `
+exports[`/rollup.js processor option should accept an existing processor instance 1`] = `
 Object {
   "assets/fake.css": "
 /* packages/rollup/test/specimens/fake.css */
@@ -22,21 +123,6 @@ Object {
 .fooga {
     color: red;
 }
-",
-}
-`;
-
-exports[`/rollup.js should allow disabling of named exports 1`] = `
-Object {
-  "simple": "
-const str = \\"\\\\\\"string\\\\\\"\\";
-const fooga = \\"fooga\\";
-var css = {
-    \\"str\\" : str,
-\\"fooga\\" : fooga
-};
-
-console.log(css);
 ",
 }
 `;
@@ -120,24 +206,6 @@ exports[`/rollup.js should generate CSS 1`] = `
 "
 `;
 
-exports[`/rollup.js should generate JSON 1`] = `
-"{
-    \\"packages/rollup/test/specimens/simple.css\\": {
-        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
-        \\"fooga\\": \\"fooga\\"
-    }
-}"
-`;
-
-exports[`/rollup.js should generate JSON with a custom name 1`] = `
-"{
-    \\"packages/rollup/test/specimens/simple.css\\": {
-        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
-        \\"fooga\\": \\"fooga\\"
-    }
-}"
-`;
-
 exports[`/rollup.js should generate exports 1`] = `
 Object {
   "simple": "
@@ -153,7 +221,101 @@ console.log(css);
 }
 `;
 
-exports[`/rollup.js should generate external source maps 1`] = `
+exports[`/rollup.js should handle assetFileNames being undefined 1`] = `
+"/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+"
+`;
+
+exports[`/rollup.js should output a proxy in dev mode 1`] = `
+Object {
+  "simple": "
+const str = \\"\\\\\\"string\\\\\\"\\";
+const fooga = \\"fooga\\";
+const data = {
+    \\"str\\" : str,
+\\"fooga\\" : fooga
+};
+
+var css = new Proxy(data, {
+    get(tgt, key) {
+        if(key in tgt) {
+            return tgt[key];
+        }
+
+        throw new ReferenceError(
+            key + \\" is not exported by \\" + \\"packages/rollup/test/specimens/simple.css\\"
+        );
+    }
+});
+
+console.log(css);
+",
+}
+`;
+
+exports[`/rollup.js should output assets with a .css file extension 1`] = `
+Object {
+  "assets/entry.css": "
+/* packages/rollup/test/specimens/file-extension/style.cssx */
+.style {
+    color: salmon;
+}
+",
+  "entry.js": "
+const style = \\"style\\";
+var style$1 = {
+    \\"style\\" : style
+};
+
+console.log(style$1);
+",
+}
+`;
+
+exports[`/rollup.js should output unreferenced CSS 1`] = `
+Object {
+  "assets/fake.css": "
+/* packages/rollup/test/specimens/fake.css */
+.fake {
+    color: yellow;
+}",
+  "assets/simple.css": "
+/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+",
+}
+`;
+
+exports[`/rollup.js should respect the CSS dependency tree 1`] = `
+"const fooga = \\"fooga\\";
+
+const wooga = fooga + \\" \\" + \\"wooga\\";
+var css = {
+    \\"wooga\\" : wooga
+};
+
+console.log(css);
+"
+`;
+
+exports[`/rollup.js should respect the CSS dependency tree 2`] = `
+"/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+/* packages/rollup/test/specimens/dependencies.css */
+.wooga {
+    background: blue;
+}
+"
+`;
+
+exports[`/rollup.js source maps should generate external source maps 1`] = `
 Object {
   "file": Any<String>,
   "mappings": "AAAA,8CAAA;AAEA;IACI,UAAU;AACd",
@@ -173,7 +335,7 @@ Object {
 }
 `;
 
-exports[`/rollup.js should generate external source maps 2`] = `
+exports[`/rollup.js source maps should generate external source maps 2`] = `
 "/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
@@ -182,7 +344,7 @@ exports[`/rollup.js should generate external source maps 2`] = `
 /*# sourceMappingURL=simple.css.map */"
 `;
 
-exports[`/rollup.js should handle assetFileNames being undefined 1`] = `
+exports[`/rollup.js source maps should not output sourcemaps when they are disabled 1`] = `
 "/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
@@ -190,7 +352,43 @@ exports[`/rollup.js should handle assetFileNames being undefined 1`] = `
 "
 `;
 
-exports[`/rollup.js should log in verbose mode 1`] = `
+exports[`/rollup.js source maps shouldn't disable sourcemap generation 1`] = `
+SourceMap {
+  "file": "simple.js",
+  "mappings": ";;;;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC",
+  "names": Array [],
+  "sources": Array [
+    "packages/rollup/test/specimens/simple.js",
+  ],
+  "sourcesContent": Array [
+    "import css from \\"./simple.css\\";
+
+console.log(css);
+",
+  ],
+  "version": 3,
+}
+`;
+
+exports[`/rollup.js styleExport option should provide style export 1`] = `
+Object {
+  "style-export": "
+var styles = \\".ooh {\\\\n    content: \\\\\\"string\\\\\\";\\\\n}\\\\n\\";
+
+console.log(styles);
+",
+}
+`;
+
+exports[`/rollup.js styleExport option should warn that styleExport and done aren't compatible 1`] = `
+Array [
+  Array [
+    "Any plugins defined during the \\"done\\" lifecycle won't run when \\"styleExport\\" is set!",
+  ],
+]
+`;
+
+exports[`/rollup.js verbose option should log in verbose mode 1`] = `
 Array [
   Array [
     "[rollup]",
@@ -332,176 +530,4 @@ Array [
     "packages/processor/test/specimens/start.css",
   ],
 ]
-`;
-
-exports[`/rollup.js should not output sourcemaps when they are disabled 1`] = `
-"/* packages/rollup/test/specimens/simple.css */
-.fooga {
-    color: red;
-}
-"
-`;
-
-exports[`/rollup.js should output a proxy in dev mode 1`] = `
-Object {
-  "simple": "
-const str = \\"\\\\\\"string\\\\\\"\\";
-const fooga = \\"fooga\\";
-const data = {
-    \\"str\\" : str,
-\\"fooga\\" : fooga
-};
-
-var css = new Proxy(data, {
-    get(tgt, key) {
-        if(key in tgt) {
-            return tgt[key];
-        }
-
-        throw new ReferenceError(
-            key + \\" is not exported by \\" + \\"packages/rollup/test/specimens/simple.css\\"
-        );
-    }
-});
-
-console.log(css);
-",
-}
-`;
-
-exports[`/rollup.js should output assets with a .css file extension 1`] = `
-Object {
-  "assets/entry.css": "
-/* packages/rollup/test/specimens/file-extension/style.cssx */
-.style {
-    color: salmon;
-}
-",
-  "entry.js": "
-const style = \\"style\\";
-var style$1 = {
-    \\"style\\" : style
-};
-
-console.log(style$1);
-",
-}
-`;
-
-exports[`/rollup.js should output unreferenced CSS 1`] = `
-Object {
-  "assets/fake.css": "
-/* packages/rollup/test/specimens/fake.css */
-.fake {
-    color: yellow;
-}",
-  "assets/simple.css": "
-/* packages/rollup/test/specimens/simple.css */
-.fooga {
-    color: red;
-}
-",
-}
-`;
-
-exports[`/rollup.js should provide named exports 1`] = `
-Object {
-  "named": "
-const str = \\"\\\\\\"string\\\\\\"\\";
-const num = \\"10\\";
-const dim = \\"10px\\";
-const mix = \\"1px solid red\\";
-const a = \\"a\\";
-
-console.log(a, str, num, dim, mix);
-",
-}
-`;
-
-exports[`/rollup.js should provide style export 1`] = `
-Object {
-  "style-export": "
-var styles = \\".ooh {\\\\n    content: \\\\\\"string\\\\\\";\\\\n}\\\\n\\";
-
-console.log(styles);
-",
-}
-`;
-
-exports[`/rollup.js should respect the CSS dependency tree 1`] = `
-"const fooga = \\"fooga\\";
-
-const wooga = fooga + \\" \\" + \\"wooga\\";
-var css = {
-    \\"wooga\\" : wooga
-};
-
-console.log(css);
-"
-`;
-
-exports[`/rollup.js should respect the CSS dependency tree 2`] = `
-"/* packages/rollup/test/specimens/simple.css */
-.fooga {
-    color: red;
-}
-/* packages/rollup/test/specimens/dependencies.css */
-.wooga {
-    background: blue;
-}
-"
-`;
-
-exports[`/rollup.js should warn & not export individual keys when they are not valid identifiers 1`] = `
-Object {
-  "code": "PLUGIN_WARNING",
-  "hook": "transform",
-  "id": Any<String>,
-  "message": "Invalid JS identifier \\"fooga-wooga\\", unable use as named export",
-  "plugin": "@modular-css/rollup",
-  "toString": [Function],
-}
-`;
-
-exports[`/rollup.js should warn & not export individual keys when they are not valid identifiers 2`] = `
-Object {
-  "invalid-name": "
-const fooga = \\"fooga\\";
-const foogaWooga = \\"fooga-wooga\\";
-var css = {
-    \\"fooga\\" : fooga,
-\\"fooga-wooga\\" : foogaWooga
-};
-
-console.log(css, fooga);
-",
-}
-`;
-
-exports[`/rollup.js should warn that styleExport and done aren't compatible 1`] = `
-Array [
-  Array [
-    "Any plugins defined during the \\"done\\" lifecycle won't run when \\"styleExport\\" is set!",
-  ],
-]
-`;
-
-exports[`/rollup.js should write out empty CSS files when empties is enabled 1`] = `""`;
-
-exports[`/rollup.js shouldn't disable sourcemap generation 1`] = `
-SourceMap {
-  "file": "simple.js",
-  "mappings": ";;;;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC",
-  "names": Array [],
-  "sources": Array [
-    "packages/rollup/test/specimens/simple.js",
-  ],
-  "sourcesContent": Array [
-    "import css from \\"./simple.css\\";
-
-console.log(css);
-",
-  ],
-  "version": 3,
-}
 `;
