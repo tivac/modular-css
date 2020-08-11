@@ -131,12 +131,6 @@ module.exports = (opts = {}) => {
             
             const out = [];
 
-            // console.log({
-            //     id,
-            //     compositions,
-            //     dependencies,
-            // });
-
             // create import statements for all of the values used in compositions
             compositions.forEach((comp) => {
                 const { file, selector } = graph.getNodeData(comp);
@@ -150,9 +144,9 @@ module.exports = (opts = {}) => {
                 out.push(`import { ${selector} } from "${slash(file)}";`);
             });
 
-            // Create vars representing exported @values & use them in local var definitions
+            // Create vars representing exported classes/values & use them in local var definitions
             for(const key in content) {
-                const classes = [];
+                const elements = [];
 
                 const selectorKey = Processor.selectorKey(id, key);
                 
@@ -166,7 +160,7 @@ module.exports = (opts = {}) => {
                             return;
                         }
 
-                        classes.push(selector);
+                        elements.push(selector);
                     });
                 }
 
@@ -175,9 +169,9 @@ module.exports = (opts = {}) => {
 
                 defined.set(key, ident);
 
-                classes.push(...(Array.isArray(content[key]) ? content[key] : [ content[key] ]));
-                
-                out.push(`const ${ident} = ${classes.join(` + " " + `)}`);
+                elements.push(...content[key].map((t) => JSON.stringify(t)));
+
+                out.push(`const ${ident} = ${elements.join(` + " " + `)}`);
             }
 
             const defaultExports = exportedKeys

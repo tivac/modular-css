@@ -48,9 +48,7 @@ exports.compositions = ({ options, files, graph }) => {
                     });
                 }
 
-                const source = classes[selector];
-
-                compositions.push(...(Array.isArray(source) ? source : [ source ]));
+                compositions.push(...classes[selector]);
 
                 out[selector] = compositions.join(" ");
             });

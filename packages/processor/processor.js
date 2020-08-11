@@ -457,7 +457,7 @@ class Processor {
                 // optionally export @value entries
                 ...(
                     this._options.exportValues ?
-                        mapValues(file.values, ({ value }) => value) :
+                        mapValues(file.values, ({ value }) => [ value ]) :
                         null
                 ),
 

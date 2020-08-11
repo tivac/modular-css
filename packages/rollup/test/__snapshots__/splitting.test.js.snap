@@ -63,33 +63,6 @@ Object {
 }
 `;
 
-exports[`/rollup.js code splitting should output only 1 JSON file 1`] = `
-Object {
-  "assets/dependencies.css": "
-/* packages/rollup/test/specimens/dependencies.css */
-.wooga {
-    background: blue;
-}
-",
-  "assets/exports.json": "
-{
-    \\"packages/rollup/test/specimens/dependencies.css\\": {
-        \\"wooga\\": \\"fooga wooga\\"
-    },
-    \\"packages/rollup/test/specimens/simple.css\\": {
-        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
-        \\"fooga\\": \\"fooga\\"
-    }
-}",
-  "assets/simple.css": "
-/* packages/rollup/test/specimens/simple.css */
-.fooga {
-    color: red;
-}
-",
-}
-`;
-
 exports[`/rollup.js code splitting should output metadata successfully when unreferenced CSS is output to common 1`] = `
 Object {
   "assets/a.css": "
@@ -125,6 +98,33 @@ Object {
         ]
     }
 }",
+}
+`;
+
+exports[`/rollup.js code splitting should output only 1 JSON file 1`] = `
+Object {
+  "assets/dependencies.css": "
+/* packages/rollup/test/specimens/dependencies.css */
+.wooga {
+    background: blue;
+}
+",
+  "assets/exports.json": "
+{
+    \\"packages/rollup/test/specimens/dependencies.css\\": {
+        \\"wooga\\": \\"fooga wooga\\"
+    },
+    \\"packages/rollup/test/specimens/simple.css\\": {
+        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
+        \\"fooga\\": \\"fooga\\"
+    }
+}",
+  "assets/simple.css": "
+/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+",
 }
 `;
 
@@ -394,10 +394,12 @@ Object {
     color: red;
 }
 ",
-  "simple.336b919d.js": "
+  "simple.7df05804.js": "
+const str = \\"\\\\\\"string\\\\\\"\\";
+const fooga = \\"fooga\\";
 var css = {
-    \\"str\\": \\"\\\\\\"string\\\\\\"\\",
-    \\"fooga\\": \\"fooga\\"
+    \\"str\\" : str,
+\\"fooga\\" : fooga
 };
 
 console.log(css);
