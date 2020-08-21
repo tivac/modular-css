@@ -3,17 +3,28 @@
 
 const path = require("path");
 
-const Graph     = require("dependency-graph").DepGraph;
-const postcss   = require("postcss");
-const slug      = require("unique-slug");
-const mapValues = require("lodash/mapValues");
+const Graph = require("dependency-graph").DepGraph;
+const postcss = require("postcss");
+const slug = require("unique-slug");
+const postcssUrl = require("postcss-url");
 
-const output        = require("./lib/output.js");
-const message       = require("./lib/message.js");
-const relative      = require("./lib/relative.js");
-const tiered        = require("./lib/graph-tiers.js");
-const normalize     = require("./lib/normalize.js");
+const { compositions, fileCompositions } = require("./lib/output.js");
+
+const message = require("./lib/message.js");
+const relative = require("./lib/relative.js");
+const tiered = require("./lib/graph-tiers.js");
+const normalize = require("./lib/normalize.js");
 const { resolvers } = require("./lib/resolve.js");
+
+const pluginAtComposes = require("./plugins/at-composes.js");
+const pluginComposition = require("./plugins/composition.js");
+const pluginExternals = require("./plugins/externals.js");
+const pluginGraphNodes = require("./plugins/before/graph-nodes.js");
+const pluginKeyframes = require("./plugins/keyframes.js");
+const pluginScoping = require("./plugins/scoping.js");
+const pluginValuesImport = require("./plugins/values-import.js");
+const pluginValuesLocal = require("./plugins/before/values-local.js");
+const pluginValuesReplace = require("./plugins/values-replace.js");
 
 const {
     selectorKey,
@@ -108,19 +119,19 @@ class Processor {
 
         this._before = postcss([
             ...(options.before || []),
-            require("./plugins/before/values-local.js"),
-            require("./plugins/values-replace.js"),
-            require("./plugins/before/graph-nodes.js"),
+            pluginValuesLocal,
+            pluginValuesReplace,
+            pluginGraphNodes,
         ]);
 
         this._process = postcss([
-            require("./plugins/at-composes.js"),
-            require("./plugins/values-import.js"),
-            require("./plugins/values-replace.js"),
-            require("./plugins/scoping.js"),
-            require("./plugins/externals.js"),
-            require("./plugins/composition.js"),
-            require("./plugins/keyframes.js"),
+            pluginAtComposes,
+            pluginValuesImport,
+            pluginValuesReplace,
+            pluginScoping,
+            pluginExternals,
+            pluginComposition,
+            pluginKeyframes,
             ...(options.processing || []),
         ]);
 
@@ -128,7 +139,7 @@ class Processor {
 
         // Add postcss-url to the afters if requested
         if(options.rewrite) {
-            this._after.use(require("postcss-url")(options.rewrite));
+            this._after.use(postcssUrl(options.rewrite));
         }
 
         this._done = postcss(options.done || [ noop ]);
@@ -166,20 +177,21 @@ class Processor {
     // Remove a file from the dependency graph
     remove(input) {
         // Only want files actually in the array
-        const files = (Array.isArray(input) ? input : [ input ])
-            .map(this._normalize)
-            .filter((file) => this._graph.hasNode(file));
-
-        if(!files.length) {
-            return files;
-        }
-
+        const files = Array.isArray(input) ? input : [ input ];
+        
         files.forEach((file) => {
+            const normalized = this._normalize(file);
+            const key = fileKey(normalized);
+
+            if(!this._graph.hasNode(key)) {
+                return;
+            }
+            
+            this._graph.removeNode(key);
+
             delete this._files[file];
 
-            this._graph.removeNode(file);
-
-            this._log("remove()", file);
+            this._log("remove()", normalized);
         });
 
         return files;
@@ -202,23 +214,23 @@ class Processor {
         return file in this._files;
     }
 
-    // Mark a file and everything that depends on it as invalid so
-    // it can be overwritten
+    // Mark a file and everything that depends on it as invalid
     invalidate(input) {
         if(!input) {
             throw new Error("invalidate() requires a file argument");
         }
 
         // Only want files actually in the array
-        const source = this._normalize(input);
+        const normalized = this._normalize(input);
+        const key = fileKey(normalized);
 
-        if(!this._graph.hasNode(source)) {
-            throw new Error(`Unknown file: ${input}`);
+        if(!this._graph.hasNode(key)) {
+            throw new Error(`Unknown file: ${normalized}`);
         }
 
-        const deps = this.dependencies(source, { filesOnly : true });
+        const results = this._graph.dependantsOf(key);
 
-        [ ...deps, source ].forEach((file) => {
+        [ ...filterByPrefix(FILE_PREFIX, results), normalized ].forEach((file) => {
             this._log("invalidate()", file);
 
             this._files[file].valid = false;
@@ -232,9 +244,14 @@ class Processor {
         let results;
 
         if(file) {
-            const id = this._normalize(file);
+            const normalized = this._normalize(file);
+            const key = fileKey(normalized);
 
-            results = this._graph.dependenciesOf(fileKey(id), leavesOnly);
+            if(!this._graph.hasNode(key)) {
+                throw new Error(`Unknown file: ${normalized}`);
+            }
+
+            results = this._graph.dependenciesOf(key, leavesOnly);
         } else {
             results = this._graph.overallOrder(leavesOnly);
         }
@@ -348,7 +365,7 @@ class Processor {
 
         // Lazily-compute compositions if they're asked for
         Object.defineProperty(result, "compositions", {
-            get : () => output.compositions(this),
+            get : () => compositions(this),
         });
 
         return result;
@@ -375,7 +392,7 @@ class Processor {
         return Promise.all(
             Object.values(this._files).map(({ result }) => result)
         )
-        .then(() => output.compositions(this));
+        .then(() => compositions(this));
     }
 
     _addFile(file, opts = false) {
@@ -449,38 +466,34 @@ class Processor {
             file.result = await file.processed;
 
             const { result } = file;
+            const { messages } = result;
 
-            file.exports = {
-                __proto__ : null,
+            // export the last "classes" message that was sent
+            Object.assign(file.classes, message(result, "classes"));
 
-                // optionally export @value entries
-                ...(
-                    this._options.exportValues ?
-                        mapValues(file.values, ({ value }) => [ value ]) :
-                        null
-                ),
+            // Save off anything from plugins named "modular-css-export*"
+            // https://github.com/tivac/modular-css/pull/404
+            Object.assign(file.exported, messages.reduce((out, { plugin, exports : exported }) => {
+                if(plugin && plugin.startsWith("modular-css-export") && exported) {
+                    Object.assign(out, exported);
+                }
 
-                // TODO: clean up invalid identifiers here!
-                // export classes
-                ...message(result, "classes"),
-
-                // Export anything from plugins named "modular-css-export*"
-                ...result.messages.reduce((out, { plugin, exports : exported }) => {
-                    if(!plugin || plugin.indexOf("modular-css-export") !== 0) {
-                        return out;
-                    }
-
-                    return Object.assign(out, exported);
-                }, Object.create(null)),
-            };
+                return out;
+            }, Object.create(null)));
         }
 
+        const self = this;
+
         return {
+            __proto__ : null,
+
             id,
-            file    : id,
-            files   : this._files,
             details : this._files[id],
-            exports : this._files[id].exports,
+
+            // Lazily-compute compositions if they're asked for
+            get exports() {
+                return fileCompositions(this.details, self);
+            },
         };
     }
 
@@ -505,42 +518,53 @@ class Processor {
 
         const file = this._files[name] = {
             name,
-            text    : typeof src === "string" ? src : src.source.input.css,
-            exports : Object.create(null),
-            values  : Object.create(null),
-            valid   : true,
-            before  : this._before.process(
+            text  : typeof src === "string" ? src : src.source.input.css,
+            valid : true,
+            
+            classes  : Object.create(null),
+            values   : Object.create(null),
+            exported : Object.create(null),
+            
+            walked : new Promise((done) => (walked = done)),
+            
+            before : this._before.process(
                 src,
                 params(this, {
                     from : name,
                 })
             ),
-            walked : new Promise((done) => (walked = done)),
         };
 
         await file.before;
 
         // Add all the found dependencies to the graph
         file.before.messages.forEach(({ plugin, selector, refs = [], dependency }) => {
-            if(plugin !== "modular-css-graph-nodes") {
+            if(plugin !== pluginGraphNodes.postcssPlugin) {
                 return;
             }
 
-            const selectorId = this._addSelector(name, selector);
             const dep = this._normalize(dependency);
             const depId = this._addFile(dep);
             
-            this._graph.addDependency(selectorId, fileId);
             this._graph.addDependency(fileId, depId);
+            
+            let selectorId;
+            
+            // @values and others don't have a selector field, so only run this
+            // if it exists to avoid polluting the dependency graph
+            if(selector) {
+                selectorId = this._addSelector(name, selector);
+            
+                this._graph.addDependency(selectorId, fileId);
 
+                refs.forEach(({ name : depSelector }) => {
+                    const depSelectorId = this._addSelector(dep, depSelector);
 
-            refs.forEach(({ name : depSelector }) => {
-                const depSelectorId = this._addSelector(dep, depSelector);
-
-                this._graph.addDependency(depSelectorId, depId);
-                this._graph.addDependency(selectorId, depSelectorId);
-                this._graph.addDependency(fileId, depSelectorId);
-            });
+                    this._graph.addDependency(depSelectorId, depId);
+                    this._graph.addDependency(selectorId, depSelectorId);
+                    this._graph.addDependency(fileId, depSelectorId);
+                });
+            }
         });
 
         // Walk this node's dependencies, reading new files from disk as necessary

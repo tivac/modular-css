@@ -17,7 +17,7 @@ module.exports = (graph) => {
             
             clone.removeNode(node);
         });
-        
+
         tiers.push(tier.sort());
 
         tier = leaves(clone);

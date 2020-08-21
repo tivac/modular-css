@@ -7,6 +7,7 @@ const composes = require("../../parsers/composes.js");
 const external = require("../../parsers/external.js");
 const values = require("../../parsers/values.js");
 
+const type = "modular-css";
 const plugin = "modular-css-graph-nodes";
 
 module.exports = (css, { opts, messages }) => {
@@ -45,9 +46,9 @@ module.exports = (css, { opts, messages }) => {
             null;
 
         messages.push({
-            type : "modular-css",
-
+            type,
             plugin,
+
             selector,
             dependency,
             refs,

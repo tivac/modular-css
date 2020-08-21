@@ -24,49 +24,43 @@ describe("/processor.js", () => {
             it("should process a postcss Root", async () => {
                 const file = "./simple.css";
                 const root = postcss.parse(".wooga { }", { from : file });
-                const result = await processor.root(
-                    file, root
-                );
+                const { exports : compositions, details } = await processor.root(file, root);
 
-                expect(result.exports).toMatchSnapshot();
-                expect(result.details.exports).toMatchSnapshot();
-                expect(result.details.text).toMatchSnapshot();
-                expect(result.details.processed.root.toResult().css).toMatchSnapshot();
+                expect(compositions).toMatchSnapshot();
+                expect(details.classes).toMatchSnapshot();
+                expect(details.processed.root.toResult().css).toMatchSnapshot();
             });
         });
 
         describe(".string()", () => {
             it("should process a string", async () => {
-                const result = await processor.string(
-                    "./simple.css", ".wooga { }"
-                );
+                const { exports : compositions, details } = await processor.string("./simple.css", ".wooga { }");
 
-                expect(result.exports).toMatchSnapshot();
-                expect(result.details.exports).toMatchSnapshot();
-                expect(result.details.text).toMatchSnapshot();
-                expect(result.details.processed.root.toResult().css).toMatchSnapshot();
+                expect(compositions).toMatchSnapshot();
+                expect(details.classes).toMatchSnapshot();
+                expect(details.processed.root.toResult().css).toMatchSnapshot();
             });
         });
 
         describe(".file()", () => {
             it("should process a relative file", async () => {
-                const result = await processor.file("./packages/processor/test/specimens/simple.css");
+                const { exports : compositions, details } = await processor.file(
+                    "./packages/processor/test/specimens/simple.css"
+                );
 
-                expect(result.exports).toMatchSnapshot();
-                expect(result.details.exports).toMatchSnapshot();
-                expect(result.details.text).toMatchSnapshot();
-                expect(result.details.processed.root.toResult().css).toMatchSnapshot();
+                expect(compositions).toMatchSnapshot();
+                expect(details.classes).toMatchSnapshot();
+                expect(details.processed.root.toResult().css).toMatchSnapshot();
             });
 
             it("should process an absolute file", async () => {
-                const result = await processor.file(
+                const { exports : compositions, details } = await processor.file(
                     require.resolve("./specimens/simple.css")
                 );
 
-                expect(result.exports).toMatchSnapshot();
-                expect(result.details.exports).toMatchSnapshot();
-                expect(result.details.text).toMatchSnapshot();
-                expect(result.details.processed.root.toResult().css).toMatchSnapshot();
+                expect(compositions).toMatchSnapshot();
+                expect(details.classes).toMatchSnapshot();
+                expect(details.processed.root.toResult().css).toMatchSnapshot();
             });
 
             it("should wait for dependencies to be processed before composing", async () => {
@@ -195,7 +189,7 @@ describe("/processor.js", () => {
             it("should throw if an invalid file is passed", async () => {
                 await processor.file("./packages/processor/test/specimens/start.css");
 
-                expect(() => processor.invalidate("nope.css")).toThrowErrorMatchingSnapshot();
+                expect(() => processor.invalidate("nope.css")).toThrow(/Unknown file: .+\bnope.css/);
             });
 
             it("should invalidate all dependents as well", async () => {
