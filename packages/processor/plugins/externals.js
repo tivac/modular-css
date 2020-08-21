@@ -19,14 +19,14 @@ module.exports = (css, { opts }) => {
             throw rule.error(`Unable to locate file: ${source}`, { word : source });
         }
 
-        if(!file.exports[name]) {
+        if(!file.classes[name]) {
             throw rule.error(`Invalid external reference: ${name}`, { word : name });
         }
         
         // This was a... poor naming choice
         const s = selector.selector();
         
-        file.exports[name].forEach((value) =>
+        file.classes[name].forEach((value) =>
             s.append(selector.className({ value }))
         );
         
