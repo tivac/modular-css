@@ -11,6 +11,7 @@ const identifierfy = require("identifierfy");
 const Processor = require("@modular-css/processor");
 
 const DEFAULT_EXT = ".css";
+const VALUES_VAR = "$$values";
 
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
@@ -24,6 +25,7 @@ const DEFAULTS = {
     json        : false,
     meta        : false,
     styleExport : false,
+    valueExport : true,
     verbose     : false,
     empties     : false,
     
@@ -56,24 +58,21 @@ module.exports = (opts = {}) => {
     };
 
     const {
-        dev,
-        done,
-        map,
-        styleExport,
-        verbose,
         processor = new Processor(options),
     } = options;
 
     const filter = utils.createFilter(options.include, options.exclude);
 
     // eslint-disable-next-line no-console, no-empty-function
-    const log = verbose ? console.log.bind(console, "[rollup]") : () => {};
+    const log = options.verbose ? console.log.bind(console, "[rollup]") : () => {};
 
-    if(typeof map === "undefined") {
+    if(typeof options.map === "undefined") {
         // Sourcemaps don't make much sense in styleExport mode
         // But default to true otherwise
-        options.map = !styleExport;
+        options.map = !options.styleExport;
     }
+
+    const { graph } = processor;
 
     return {
         name : "@modular-css/rollup",
@@ -84,7 +83,7 @@ module.exports = (opts = {}) => {
             // done lifecycle won't ever be called on per-component styles since
             // it only happens at bundle compilation time
             // Need to do this on buildStart so it has access to this.warn() o_O
-            if(styleExport && done) {
+            if(options.styleExport && options.done) {
                 this.warn(
                     `Any plugins defined during the "done" lifecycle won't run when "styleExport" is set!`
                 );
@@ -123,10 +122,10 @@ module.exports = (opts = {}) => {
                 return this.error(e);
             }
 
-            const { details, exports : content } = processed;
-            const { graph } = processor;
+            const { details } = processed;
+            const { classes } = details;
 
-            const exportedKeys = Object.keys(content);
+            const exportedKeys = Object.keys(classes);
             const relative = path.relative(processor.options.cwd, id);
             const compositions = processor.dependencies(id, { filesOnly : false });
             const dependencies = processor.dependencies(id, { filesOnly : true });
@@ -153,6 +152,8 @@ module.exports = (opts = {}) => {
                 importsMap.set(`${file}${selector}`, unique);
             });
 
+            // console.log({ classes, importsMap });
+
             // Create vars representing exported classes/values & use them in local var definitions
             exportedKeys.forEach((key) => {
                 const elements = [];
@@ -173,7 +174,7 @@ module.exports = (opts = {}) => {
 
                 const unique = deconflict(identifiers, key);
 
-                elements.push(...content[key].map((t) => JSON.stringify(t)));
+                elements.push(...classes[key].map((t) => JSON.stringify(t)));
 
                 out.push(`const ${unique} = ${elements.join(` + " " + `)}`);
 
@@ -194,7 +195,27 @@ module.exports = (opts = {}) => {
                 }
             });
 
-            if(dev) {
+            const values = Object.keys(details.values);
+
+            if(options.valueExport && values.length) {
+                const exported = [];
+
+                values.forEach((key) => {
+                    const { value } = details.values[key];
+
+                    exported.push(`${JSON.stringify(key)} : ${JSON.stringify(value)}`);
+                });
+
+                const ident = deconflict(identifiers, VALUES_VAR);
+
+                out.push(dedent(`const ${ident} = {
+                    ${exported.join(",\n")}
+                }`));
+                
+                namedExports.push(`${ident} as ${VALUES_VAR}`);
+            }
+
+            if(options.dev) {
                 out.push(dedent(`
                     const data = {
                         ${defaultExports.join(",\n")}
@@ -223,12 +244,12 @@ module.exports = (opts = {}) => {
             if(options.namedExports) {
                 out.push(dedent(`
                     export {
-                        ${namedExports.join(`,\n`)}
+                        ${namedExports.join(",\n")}
                     };
                 `));
             }
 
-            if(styleExport) {
+            if(options.styleExport) {
                 out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
             }
 
@@ -252,7 +273,7 @@ module.exports = (opts = {}) => {
 
         async generateBundle(outputOptions, bundle) {
             // styleExport disables all output file generation
-            if(styleExport) {
+            if(options.styleExport) {
                 return;
             }
 
@@ -313,7 +334,7 @@ module.exports = (opts = {}) => {
 
             // If assets are being hashed then the automatic annotation has to be disabled
             // because it won't include the hashed value and will lead to badness
-            let mapOpt = map;
+            let mapOpt = options.map;
 
             if(assetFileNames.includes("[hash]") && typeof mapOpt === "object") {
                 mapOpt = {

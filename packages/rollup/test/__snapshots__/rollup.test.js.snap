@@ -1,6 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/rollup.js empties option should write out empty CSS files when empties is enabled 1`] = `""`;
+exports[`/rollup.js dev mode option should output a proxy 1`] = `
+Object {
+  "simple": "
+const fooga = \\"fooga\\";
+const data = {
+    \\"fooga\\" : fooga
+};
+
+var css = new Proxy(data, {
+    get(tgt, key) {
+        if(key in tgt) {
+            return tgt[key];
+        }
+
+        throw new ReferenceError(
+            key + \\" is not exported by \\" + \\"packages/rollup/test/specimens/simple.css\\"
+        );
+    }
+});
+
+console.log(css);
+",
+}
+`;
+
+exports[`/rollup.js empties option should not write out empty CSS files by default 1`] = `Object {}`;
+
+exports[`/rollup.js empties option should write out empty CSS files when empties is enabled 1`] = `
+Object {
+  "assets/empty.css": "
+",
+}
+`;
 
 exports[`/rollup.js json option should generate JSON 1`] = `
 "{
@@ -23,11 +55,9 @@ exports[`/rollup.js json option should generate JSON with a custom name 1`] = `
 exports[`/rollup.js namedExports option should allow disabling of named exports 1`] = `
 Object {
   "simple": "
-const str = \\"\\\\\\"string\\\\\\"\\";
 const fooga = \\"fooga\\";
 var css = {
-    \\"str\\" : str,
-\\"fooga\\" : fooga
+    \\"fooga\\" : fooga
 };
 
 console.log(css);
@@ -38,13 +68,9 @@ console.log(css);
 exports[`/rollup.js namedExports option should provide named exports by default 1`] = `
 Object {
   "named": "
-const str = \\"\\\\\\"string\\\\\\"\\";
-const num = \\"10\\";
-const dim = \\"10px\\";
-const mix = \\"1px solid red\\";
 const a = \\"a\\";
 
-console.log(a, str, num, dim, mix);
+console.log(a);
 ",
 }
 `;
@@ -127,6 +153,8 @@ Object {
 }
 `;
 
+exports[`/rollup.js should avoid generating empty CSS 1`] = `Object {}`;
+
 exports[`/rollup.js should be able to tree-shake results 1`] = `
 Object {
   "tree-shaking": "
@@ -145,12 +173,10 @@ Object {
     color: red;
 }
 ",
-  "hashes.js": "
-const str = \\"\\\\\\"string\\\\\\"\\";
+  "simple.js": "
 const fooga = \\"fooga\\";
 var css = {
-    \\"str\\" : str,
-\\"fooga\\" : fooga
+    \\"fooga\\" : fooga
 };
 
 console.log(css);
@@ -190,71 +216,69 @@ console.log(css);
 `;
 
 exports[`/rollup.js should correctly pass to/from params for relative paths 1`] = `
-"/* packages/rollup/test/specimens/relative-paths.css */
+Object {
+  "assets/relative-paths.css": "
+/* packages/rollup/test/specimens/relative-paths.css */
 .wooga {
     color: red;
     background: url(\\"../../../specimens/folder/to.png\\");
 }
-"
+",
+}
 `;
 
 exports[`/rollup.js should generate CSS 1`] = `
-"/* packages/rollup/test/specimens/simple.css */
+Object {
+  "assets/simple.css": "
+/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }
-"
+",
+}
 `;
 
-exports[`/rollup.js should generate exports 1`] = `
+exports[`/rollup.js should generate exports (simple.js) 1`] = `
 Object {
   "simple": "
-const str = \\"\\\\\\"string\\\\\\"\\";
 const fooga = \\"fooga\\";
 var css = {
-    \\"str\\" : str,
-\\"fooga\\" : fooga
+    \\"fooga\\" : fooga
 };
 
 console.log(css);
+",
+}
+`;
+
+exports[`/rollup.js should generate exports (simple-values.js) 1`] = `
+Object {
+  "simple-values": "
+const fooga = \\"fooga\\";
+const $$values = {
+    \\"str\\" : \\"\\\\\\"string\\\\\\"\\"
+};
+var css = {
+    \\"fooga\\" : fooga
+};
+
+console.log(css, $$values);
 ",
 }
 `;
 
 exports[`/rollup.js should handle assetFileNames being undefined 1`] = `
-"/* packages/rollup/test/specimens/simple.css */
+Object {
+  "assets/simple-8ed43a0c.css": "
+/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }
-"
-`;
-
-exports[`/rollup.js should output a proxy in dev mode 1`] = `
-Object {
-  "simple": "
-const str = \\"\\\\\\"string\\\\\\"\\";
-const fooga = \\"fooga\\";
-const data = {
-    \\"str\\" : str,
-\\"fooga\\" : fooga
-};
-
-var css = new Proxy(data, {
-    get(tgt, key) {
-        if(key in tgt) {
-            return tgt[key];
-        }
-
-        throw new ReferenceError(
-            key + \\" is not exported by \\" + \\"packages/rollup/test/specimens/simple.css\\"
-        );
-    }
-});
-
-console.log(css);
 ",
 }
 `;
+
+exports[`/rollup.js should ignore external modules 1`] = `Object {}`;
 
 exports[`/rollup.js should output assets with a .css file extension 1`] = `
 Object {
@@ -292,19 +316,9 @@ Object {
 `;
 
 exports[`/rollup.js should respect the CSS dependency tree 1`] = `
-"const fooga = \\"fooga\\";
-
-const wooga = fooga + \\" \\" + \\"wooga\\";
-var css = {
-    \\"wooga\\" : wooga
-};
-
-console.log(css);
-"
-`;
-
-exports[`/rollup.js should respect the CSS dependency tree 2`] = `
-"/* packages/rollup/test/specimens/simple.css */
+Object {
+  "assets/dependencies.css": "
+/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }
@@ -312,7 +326,18 @@ exports[`/rollup.js should respect the CSS dependency tree 2`] = `
 .wooga {
     background: blue;
 }
-"
+",
+  "dependencies.js": "
+const fooga = \\"fooga\\";
+
+const wooga = fooga + \\" \\" + \\"wooga\\";
+var css = {
+    \\"wooga\\" : wooga
+};
+
+console.log(css);
+",
+}
 `;
 
 exports[`/rollup.js source maps should generate external source maps 1`] = `
@@ -355,7 +380,7 @@ exports[`/rollup.js source maps should not output sourcemaps when they are disab
 exports[`/rollup.js source maps shouldn't disable sourcemap generation 1`] = `
 SourceMap {
   "file": "simple.js",
-  "mappings": ";;;;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC",
+  "mappings": ";;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC",
   "names": Array [],
   "sources": Array [
     "packages/rollup/test/specimens/simple.js",
