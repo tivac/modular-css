@@ -92,7 +92,7 @@ describe("/processor.js", () => {
         });
 
         it("should support local values in value composition", async () => {
-            const { exports } = await processor.string(
+            await processor.string(
                 "./packages/processor/test/specimens/simple.css",
                 dedent(`
                     @value o: one;
@@ -102,7 +102,9 @@ describe("/processor.js", () => {
                 `)
             );
 
-            expect(exports).toMatchSnapshot();
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
         });
 
         it("should support importing variables from a file", async () => {

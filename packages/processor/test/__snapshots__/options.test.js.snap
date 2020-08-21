@@ -8,23 +8,6 @@ Object {
 }
 `;
 
-exports[`/processor.js options exportValues should export @values by default 1`] = `
-Object {
-  "a": "#F00",
-  "b": Array [
-    "mc61ce7a4a_b",
-  ],
-}
-`;
-
-exports[`/processor.js options exportValues should not export @values when exportValues is false 1`] = `
-Object {
-  "b": Array [
-    "mc8df92ddf_b",
-  ],
-}
-`;
-
 exports[`/processor.js options lifecycle options after should run async postcss plugins 1`] = `
 "/* packages/processor/test/specimens/relative.css */
 .wooga {
@@ -246,9 +229,7 @@ Object {
 }
 `;
 
-exports[`/processor.js options namer should use a custom naming function 2`] = `".wooga { }"`;
-
-exports[`/processor.js options namer should use a custom naming function 3`] = `
+exports[`/processor.js options namer should use a custom naming function 2`] = `
 Object {
   "wooga": Array [
     "packages_processor_test_specimens_simple_css_wooga",
@@ -256,7 +237,7 @@ Object {
 }
 `;
 
-exports[`/processor.js options namer should use a custom naming function 4`] = `".packages_processor_test_specimens_simple_css_wooga { }"`;
+exports[`/processor.js options namer should use a custom naming function 3`] = `".packages_processor_test_specimens_simple_css_wooga { }"`;
 
 exports[`/processor.js options namer should use the default naming function if a non-function is passed 1`] = `
 Object {

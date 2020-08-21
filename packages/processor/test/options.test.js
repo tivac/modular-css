@@ -29,10 +29,10 @@ describe("/processor.js", () => {
 
                 const processor = new Processor({ cwd });
 
-                const { file } = await processor.file("./folder.css");
+                const { id } = await processor.file("./folder.css");
 
                 expect(processor.options.cwd).toBe(cwd);
-                expect(file).toBe(require.resolve("./specimens/folder/folder.css"));
+                expect(id).toBe(require.resolve("./specimens/folder/folder.css"));
             });
 
             it("should accept a relative path but make it absolute", async () => {
@@ -40,10 +40,10 @@ describe("/processor.js", () => {
 
                 const processor = new Processor({ cwd });
 
-                const { file } = await processor.file("./folder.css");
+                const { id } = await processor.file("./folder.css");
 
                 expect(processor.options.cwd).toBe(path.resolve(cwd));
-                expect(file).toBe(require.resolve("./specimens/folder/folder.css"));
+                expect(id).toBe(require.resolve("./specimens/folder/folder.css"));
             });
         });
 
@@ -54,15 +54,14 @@ describe("/processor.js", () => {
                         `${relative([ filename ])[0].replace(/[\/\.]/g, "_")}_${selector}`,
                 });
 
-                const result = await processor.string(
+                const { exports : compositions, details } = await processor.string(
                     "./packages/processor/test/specimens/simple.css",
                     ".wooga { }"
                 );
 
-                expect(result.exports).toMatchSnapshot();
-                expect(result.details.text).toMatchSnapshot();
-                expect(result.details.exports).toMatchSnapshot();
-                expect(result.details.processed.root.toResult().css).toMatchSnapshot();
+                expect(compositions).toMatchSnapshot();
+                expect(details.classes).toMatchSnapshot();
+                expect(details.processed.root.toResult().css).toMatchSnapshot();
             });
 
             it("should require a namer if a string is passed", async () => {
@@ -138,38 +137,6 @@ describe("/processor.js", () => {
                     "./exportGlobals.css",
                     dedent(`
                         :global(.a) {}
-                        .b {}
-                    `)
-                );
-
-                expect(exports).toMatchSnapshot();
-            });
-        });
-
-        describe("exportValues", () => {
-            it("should export @values by default", async () => {
-                const processor = new Processor({});
-
-                const { exports } = await processor.string(
-                    "./exportValues.css",
-                    dedent(`
-                        @value a: #F00;
-                        .b {}
-                    `)
-                );
-
-                expect(exports).toMatchSnapshot();
-            });
-
-            it("should not export @values when exportValues is false", async () => {
-                const processor = new Processor({
-                    exportValues : false,
-                });
-
-                const { exports } = await processor.string(
-                    "./exportGlobals.css",
-                    dedent(`
-                        @value a: #F00;
                         .b {}
                     `)
                 );
@@ -361,12 +328,12 @@ describe("/processor.js", () => {
                         } ],
                     });
 
-                    const { exports } = await processor.string(
+                    const { details } = await processor.string(
                         "packages/processor/test/specimens/async-processing.css",
                         ""
                     );
 
-                    expect(exports).toMatchSnapshot();
+                    expect(details.exported).toMatchSnapshot();
                 });
             });
 

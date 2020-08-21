@@ -3,8 +3,13 @@
 exports[`/processor.js composition should allow comments before composes 1`] = `
 Object {
   "multiple-composes.css": Object {
-    "a": "a",
-    "b": "a b",
+    "a": Array [
+      "a",
+    ],
+    "b": Array [
+      "a",
+      "b",
+    ],
   },
 }
 `;
@@ -12,9 +17,18 @@ Object {
 exports[`/processor.js composition should allow composes anywhere 1`] = `
 Object {
   "multiple-composes.css": Object {
-    "a": "a",
-    "b": "a b",
-    "c": "a b c",
+    "a": Array [
+      "a",
+    ],
+    "b": Array [
+      "a",
+      "b",
+    ],
+    "c": Array [
+      "a",
+      "b",
+      "c",
+    ],
   },
 }
 `;
@@ -22,8 +36,13 @@ Object {
 exports[`/processor.js composition should compose a single class 1`] = `
 Object {
   "single-composes.css": Object {
-    "a": "a",
-    "b": "a b",
+    "a": Array [
+      "a",
+    ],
+    "b": Array [
+      "a",
+      "b",
+    ],
   },
 }
 `;
@@ -31,7 +50,12 @@ Object {
 exports[`/processor.js composition should compose from global keyword 1`] = `
 Object {
   "global-compose.css": Object {
-    "a": "b c d a",
+    "a": Array [
+      "b",
+      "c",
+      "d",
+      "a",
+    ],
   },
 }
 `;
@@ -39,7 +63,10 @@ Object {
 exports[`/processor.js composition should compose from globals 1`] = `
 Object {
   "global-compose.css": Object {
-    "a": "b a",
+    "a": Array [
+      "b",
+      "a",
+    ],
   },
 }
 `;
@@ -47,20 +74,51 @@ Object {
 exports[`/processor.js composition should compose from other files 1`] = `
 Object {
   "packages/processor/test/specimens/composes.css": Object {
-    "composes": "folder2 composes",
+    "composes": Array [
+      "folder2",
+      "composes",
+    ],
   },
   "packages/processor/test/specimens/folder/folder2.css": Object {
-    "folder2": "folder2",
+    "folder2": Array [
+      "folder2",
+    ],
   },
 }
 `;
 
-exports[`/processor.js composition should compose multiple classes 1`] = `
+exports[`/processor.js composition should compose multiple classes (multiple declarations) 1`] = `
 Object {
   "multiple-composes.css": Object {
-    "a": "a",
-    "b": "b",
-    "c": "a b c",
+    "a": Array [
+      "a",
+    ],
+    "b": Array [
+      "b",
+    ],
+    "c": Array [
+      "a",
+      "b",
+      "c",
+    ],
+  },
+}
+`;
+
+exports[`/processor.js composition should compose multiple classes (single declaration) 1`] = `
+Object {
+  "multiple-composes.css": Object {
+    "a": Array [
+      "a",
+    ],
+    "b": Array [
+      "b",
+    ],
+    "c": Array [
+      "a",
+      "b",
+      "c",
+    ],
   },
 }
 `;
@@ -68,8 +126,13 @@ Object {
 exports[`/processor.js composition should compose with escaped classes 1`] = `
 Object {
   "escaped-classes.css": Object {
-    "c": "sm:foo c",
-    "sm:foo": "sm:foo",
+    "c": Array [
+      "sm:foo",
+      "c",
+    ],
+    "sm:foo": Array [
+      "sm:foo",
+    ],
   },
 }
 `;

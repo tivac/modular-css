@@ -229,18 +229,6 @@ new Processor({
 */
 ```
 
-### `exportValues`
-
-Enable exporting `@value` identifiers.
-
-**Default**: `true`
-
-```js
-new Processor({
-    exportValues : false
-});
-```
-
 ## Properties
 
 ### `.files`

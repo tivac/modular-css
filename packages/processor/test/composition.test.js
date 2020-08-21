@@ -147,7 +147,7 @@ describe("/processor.js", () => {
             expect(compositions).toMatchSnapshot();
         });
 
-        it("should compose multiple classes", async () => {
+        it("should compose multiple classes (multiple declarations)", async () => {
             await processor.string(
                 "./multiple-composes.css",
                 dedent(`
@@ -156,6 +156,23 @@ describe("/processor.js", () => {
                     .c {
                         composes: a;
                         composes: b;
+                    }
+                `)
+            );
+
+            const { compositions } = await processor.output();
+
+            expect(compositions).toMatchSnapshot();
+        });
+        
+        it("should compose multiple classes (single declaration)", async () => {
+            await processor.string(
+                "./multiple-composes.css",
+                dedent(`
+                    .a { color: red; }
+                    .b { color: blue; }
+                    .c {
+                        composes: a, b;
                     }
                 `)
             );

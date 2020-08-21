@@ -68,13 +68,12 @@ const DEFAULTS = {
     cwd : process.cwd(),
     map : false,
 
-    dupewarn     : true,
-    exportValues : true,
-    loadFile     : defaultLoadFile,
-    postcss      : {},
-    resolvers    : [],
-    rewrite      : true,
-    verbose      : false,
+    dupewarn  : true,
+    loadFile  : defaultLoadFile,
+    postcss   : {},
+    resolvers : [],
+    rewrite   : true,
+    verbose   : false,
 };
 
 class Processor {
