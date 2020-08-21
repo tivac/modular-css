@@ -31,6 +31,10 @@ describe("/processor.js", () => {
             `));
 
             expect(exports).toMatchSnapshot();
+
+            const { css } = await processor.output();
+
+            expect(css).toMatchSnapshot();
         });
 
         it("should not include exported values from the composed file", async () => {

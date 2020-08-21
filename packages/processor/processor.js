@@ -468,6 +468,9 @@ class Processor {
             const { result } = file;
             const { messages } = result;
 
+            // Pull in any classes from an @composes command
+            Object.assign(file.classes, message(result, "atcomposes"));
+
             // export the last "classes" message that was sent
             Object.assign(file.classes, message(result, "classes"));
 

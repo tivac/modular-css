@@ -67,6 +67,21 @@ Object {
 }
 `;
 
+exports[`/processor.js @composes should include exported classes from the composed file 2`] = `
+"/* packages/processor/test/specimens/folder/folder.css */
+.folder { margin: 2px; }
+/* packages/processor/test/specimens/local.css */
+.booga { background: green; }
+/* packages/processor/test/specimens/at-composes.css */
+.a {
+    color: aqua;
+}
+.b {
+    color: blue;
+}
+"
+`;
+
 exports[`/processor.js @composes should not include exported values from the composed file 1`] = `Object {}`;
 
 exports[`/processor.js @composes should output css from the composed file 1`] = `
