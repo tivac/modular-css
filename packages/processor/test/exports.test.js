@@ -2,6 +2,7 @@
 
 const dedent = require("dedent");
 const namer  = require("@modular-css/test-utils/namer.js");
+
 const Processor = require("../processor.js");
 
 describe("/processor.js", () => {
