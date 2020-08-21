@@ -39,12 +39,21 @@ Object {
 exports[`/processor.js @composes should include compositions from the composed file 1`] = `
 Object {
   "packages/processor/test/specimens/at-composes.css": Object {
-    "a": "a",
-    "b": "wooga b",
-    "wooga": "wooga",
+    "a": Array [
+      "a",
+    ],
+    "b": Array [
+      "wooga",
+      "b",
+    ],
+    "wooga": Array [
+      "wooga",
+    ],
   },
   "packages/processor/test/specimens/simple.css": Object {
-    "wooga": "wooga",
+    "wooga": Array [
+      "wooga",
+    ],
   },
 }
 `;

@@ -35,12 +35,17 @@ module.exports = (css, { opts, messages }) => {
 
     const fkey = fileKey(from);
 
-    // Create a copy of each defined class and also the dependency graph
+    // Create a copy of each defined class and also the dependency graph (if it has dependencies)
     const atcomposes = Object.keys(source.classes).reduce((acc, key) => {
         acc[key] = [ ...source.classes[key] ];
 
         source.classes[key].forEach((selector) => {
             const skey = selectorKey(source.name, selector);
+
+            if(!graph.hasNode(skey)) {
+                return;
+            }
+
             const dkey = processor._addSelector(from, selector);
 
             graph.addDependency(dkey, fkey);

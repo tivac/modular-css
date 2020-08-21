@@ -510,9 +510,7 @@ class Processor {
             return;
         }
 
-        const fileId = fileKey(name);
-
-        this._graph.addNode(fileId, { file : name });
+        const fileId = this._addFile(name);
 
         this._log("_before()", name);
 
