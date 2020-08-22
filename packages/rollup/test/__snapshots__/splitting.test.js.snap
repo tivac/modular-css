@@ -112,11 +112,15 @@ Object {
   "assets/exports.json": "
 {
     \\"packages/rollup/test/specimens/dependencies.css\\": {
-        \\"wooga\\": \\"fooga wooga\\"
+        \\"wooga\\": [
+            \\"fooga\\",
+            \\"wooga\\"
+        ]
     },
     \\"packages/rollup/test/specimens/simple.css\\": {
-        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
-        \\"fooga\\": \\"fooga\\"
+        \\"fooga\\": [
+            \\"fooga\\"
+        ]
     }
 }",
   "assets/simple.css": "
@@ -217,8 +221,10 @@ Object {
     color: blue;
 }
 ",
-  "assets/shared.css": "
+  "assets/d.css": "
 /* packages/rollup/test/specimens/manual-chunks/d.css */
+",
+  "assets/shared.css": "
 /* packages/rollup/test/specimens/manual-chunks/c.css */
 .c {
     color: green;
@@ -396,12 +402,10 @@ Object {
     color: red;
 }
 ",
-  "simple.7df05804.js": "
-const str = \\"\\\\\\"string\\\\\\"\\";
+  "simple.ffd25c97.js": "
 const fooga = \\"fooga\\";
 var css = {
-    \\"str\\" : str,
-\\"fooga\\" : fooga
+    \\"fooga\\" : fooga
 };
 
 console.log(css);

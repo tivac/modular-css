@@ -152,8 +152,6 @@ module.exports = (opts = {}) => {
                 importsMap.set(`${file}${selector}`, unique);
             });
 
-            // console.log({ classes, importsMap });
-
             // Create vars representing exported classes/values & use them in local var definitions
             exportedKeys.forEach((key) => {
                 const elements = [];
@@ -421,28 +419,29 @@ module.exports = (opts = {}) => {
                 });
             }
 
-            if(options.meta) {
-                const meta = {};
+            // Always attach meta info to bundle chunks
+            const meta = {};
 
-                for(const [ entry ] of chunks) {
-                    const chunk = bundle[entry];
+            for(const [ entry ] of chunks) {
+                const chunk = bundle[entry];
 
-                    if(!chunk) {
-                        continue;
-                    }
-
-                    // Attach info about this asset to the bundle
-                    const { assets = [] } = chunk;
-
-                    assets.push(names.get(entry));
-
-                    chunk.assets = assets;
-
-                    meta[entry] = {
-                        assets,
-                    };
+                if(!chunk) {
+                    continue;
                 }
+
+                // Attach info about this asset to the bundle
+                const { assets = [] } = chunk;
+
+                assets.push(names.get(entry));
+
+                chunk.assets = assets;
+
+                meta[entry] = {
+                    assets,
+                };
+            }
             
+            if(options.meta) {
                 const dest = typeof options.meta === "string" ? options.meta : "metadata.json";
 
                 log("metadata output", dest);
