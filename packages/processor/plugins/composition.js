@@ -12,6 +12,7 @@ const plugin = "modular-css-composition";
 module.exports = (css, result) => {
     const { opts } = result;
     const { from, processor } = opts;
+    const { graph } = processor;
 
     const available = {
         ...message(result, "atcomposes"),
@@ -77,7 +78,7 @@ module.exports = (css, result) => {
                 parts.forEach((part) => {
                     const src = processor._addSelector(from, part);
 
-                    processor.graph.addDependency(src, ref);
+                    graph.addDependency(src, ref);
                 })
             );
         });

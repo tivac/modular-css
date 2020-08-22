@@ -10,7 +10,7 @@ Array [
 
 exports[`/svelte.js should extract CSS from a <link> tag (existing script) 1`] = `
 "<div class=\\"flex wrapper\\">
-    <h1 class=\\"flex fooga hd\\">Head</h1>
+    <h1 class=\\"fooga wooga flex hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
         <p class=\\"{bool ? \\"text\\" : \\"active\\" }\\">Text</p>
     </div>
@@ -61,7 +61,7 @@ exports[`/svelte.js should extract CSS from a <link> tag (existing script) 2`] =
 
 exports[`/svelte.js should extract CSS from a <link> tag (no script) 1`] = `
 "<div class=\\"flex wrapper\\">
-    <h1 class=\\"flex fooga hd\\">Head</h1>
+    <h1 class=\\"fooga wooga flex hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
         <p class=\\"{bool ? \\"text\\" : \\"active\\" }\\">Text</p>
     </div>
@@ -93,7 +93,7 @@ exports[`/svelte.js should extract CSS from a <link> tag (no script) 2`] = `
 
 exports[`/svelte.js should extract CSS from a <link> tag (single quotes) 1`] = `
 "<div class=\\"flex wrapper\\">
-    <h1 class=\\"flex fooga hd\\">Head</h1>
+    <h1 class=\\"fooga wooga flex hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
         <p class=\\"{bool ? \\"text\\" : \\"active\\" }\\">Text</p>
     </div>
@@ -125,7 +125,7 @@ exports[`/svelte.js should extract CSS from a <link> tag (single quotes) 2`] = `
 
 exports[`/svelte.js should extract CSS from a <link> tag (unquoted) 1`] = `
 "<div class=\\"flex wrapper\\">
-    <h1 class=\\"flex fooga hd\\">Head</h1>
+    <h1 class=\\"fooga wooga flex hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
         <p class=\\"{bool ? \\"text\\" : \\"active\\" }\\">Text</p>
     </div>
@@ -201,7 +201,7 @@ exports[`/svelte.js should extract CSS from a <link> tag (values) 2`] = `
 
 exports[`/svelte.js should extract CSS from a <style> tag 1`] = `
 "<div class=\\"flex wrapper\\">
-    <h1 class=\\"flex fooga hd\\">Head</h1>
+    <h1 class=\\"fooga wooga flex hd\\">Head</h1>
     <div class=\\"fooga wooga bd\\">
         <p class=\\"{bool ? \\"text\\" : \\"active\\" }\\">Text</p>
     </div>
@@ -555,7 +555,16 @@ Array [
   ],
   Array [
     "[@modular-css/svelte]",
-    "[\\"color\\",\\"flex\\",\\"wrapper\\",\\"hd\\",\\"bd\\",\\"text\\",\\"active\\"]",
+    "[\\"flex\\",\\"wrapper\\",\\"hd\\",\\"bd\\",\\"text\\",\\"active\\"]",
+  ],
+  Array [
+    "[@modular-css/svelte]",
+    "updating source {cssvalue.<key>} references from",
+    "./external.css",
+  ],
+  Array [
+    "[@modular-css/svelte]",
+    "[\\"color\\"]",
   ],
   Array [
     "[processor]",

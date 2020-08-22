@@ -129,17 +129,17 @@ describe("/svelte.js", () => {
         expect(output.css).toMatchSnapshot();
     });
 
-    it.each`
-        specimen                    | title
-        ${"external.html"}          | ${"no script"}
-        ${"external-script.html"}   | ${"existing script"}
-        ${"external-single.html"}   | ${"single quotes"}
-        ${"external-unquoted.html"} | ${"unquoted"}
-        ${"external-values.html"}   | ${"values"}
-    `("should extract CSS from a <link> tag ($title)", async ({ specimen }) => {
+    it.each([
+        [ "no script", "external.html" ],
+        [ "existing script", "external-script.html" ],
+        [ "single quotes", "external-single.html" ],
+        [ "unquoted", "external-unquoted.html" ],
+        [ "values", "external-values.html" ],
+    ])("should extract CSS from a <link> tag (%s)", async (title, specimen) => {
         const filename = require.resolve(`./specimens/${specimen}`);
         const { processor, preprocess } = plugin({
             namer,
+            values : true,
         });
 
         const processed = await svelte.preprocess(
@@ -175,15 +175,14 @@ describe("/svelte.js", () => {
         expect(output.css).toMatchSnapshot();
     });
 
-    it.each`
-        title                                     | specimen
-        ${"invalid reference <script> - <style>"} | ${"invalid-inline-script.html"}
-        ${"invalid reference template - <style>"} | ${"invalid-inline-template.html"}
-        ${"invalid reference <script> - <link>"}  | ${"invalid-external-script.html"}
-        ${"invalid reference template - <link>"}  | ${"invalid-external-template.html"}
-        ${"empty css file - <style>"}             | ${"invalid-inline-empty.html"}
-        ${"empty css file - <link>"}              | ${"invalid-external-empty.html"}
-    `("should handle errors: $title", async ({ specimen }) => {
+    it.each([
+        [ "invalid reference <script> - <style>", "invalid-inline-script.html" ],
+        [ "invalid reference template - <style>", "invalid-inline-template.html" ],
+        [ "invalid reference <script> - <link>", "invalid-external-script.html" ],
+        [ "invalid reference template - <link>", "invalid-external-template.html" ],
+        [ "empty css file - <style>", "invalid-inline-empty.html" ],
+        [ "empty css file - <link>", "invalid-external-empty.html" ],
+    ])("should handle errors: %s", async (title, specimen) => {
         const filename = require.resolve(`./specimens/${specimen}`);
 
         // Set up strict plugin
@@ -240,11 +239,10 @@ describe("/svelte.js", () => {
         ).rejects.toThrowErrorMatchingSnapshot();
     });
 
-    it.each`
-        title        | specimen
-        ${"<style>"} | ${"style.html"}
-        ${"<link>"}  | ${"external.html"}
-    `("should support verbose output: $title", async ({ specimen }) => {
+    it.each([
+        [ "<style>", "style.html" ],
+        [ "<link>", "external.html" ],
+    ])("should support verbose output: %s", async (title, specimen) => {
         const { logSnapshot } = logs();
 
         const filename = require.resolve(`./specimens/${specimen}`);
@@ -252,6 +250,7 @@ describe("/svelte.js", () => {
         const { processor, preprocess } = plugin({
             namer,
             verbose : true,
+            values  : true,
         });
 
         await svelte.preprocess(

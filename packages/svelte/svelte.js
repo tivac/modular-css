@@ -8,16 +8,16 @@ const slash = require("slash");
 
 const Processor = require("@modular-css/processor");
 
+const replacer = require("./replacer.js");
+
 const styleRegex = /<style[\S\s]*?>([\S\s]*?)<\/style>/im;
 const scriptRegex = /<script[\S\s]*?>([\S\s]*?)<\/script>/im;
 const missedRegex = /css\.\w+/gim;
+const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/gm;
 
 const prefix = `[${require("./package.json").name}]`;
 
 module.exports = (config = false) => {
-    // Defined here to avoid .lastIndex bugs since /g is set
-    const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/gm;
-
     // Use a passed processor, or set up our own if necessary
     const { processor = new Processor(config) } = config;
 
@@ -33,6 +33,8 @@ module.exports = (config = false) => {
 
     // Check for and stringify any values in the template we couldn't convert
     const missing = ({ source, file }) => {
+        missedRegex.lastIndex = 0;
+
         const missed = source.match(missedRegex);
 
         if(!missed) {
@@ -67,6 +69,9 @@ module.exports = (config = false) => {
 
         let source = content;
         let dependencies = [];
+
+        linkRegex.lastIndex = 0;
+        styleRegex.lastIndex = 0;
 
         const links = source.match(linkRegex);
         const style = source.match(styleRegex);
@@ -126,6 +131,7 @@ module.exports = (config = false) => {
                 }
 
                 if(!href.endsWith(".css")) {
+                    // eslint-disable-next-line no-console
                     console.warn(`Possible invalid <link> href: ${href}`);
                 }
 
@@ -197,14 +203,16 @@ module.exports = (config = false) => {
 
         log("processed styles", file);
 
-        const exported = result.exports;
-        const keys = Object.keys(exported);
+        const { exports : exported, details } = result;
+        const { values } = details;
+        const classKeys = Object.keys(exported);
+        const valueKeys = Object.keys(values);
 
-        log("updating source {css.<key>} references from", css);
-        log(JSON.stringify(keys));
-
-        if(keys.length) {
-            const selectors = keys.join("|");
+        if(classKeys.length) {
+            log("updating source {css.<key>} references from", css);
+            log(JSON.stringify(classKeys));
+            
+            const selectors = [ ...classKeys, ...valueKeys ].join("|");
 
             // Look for instances of class={css.foo} to warn about
             const matches = source.match(new RegExp(`class={css\.(?:${selectors})}`, "g"));
@@ -215,27 +223,31 @@ module.exports = (config = false) => {
                 }
             }
 
-            source = source
-                // Replace {css.<key>} values
-                // Note extra exclusion to avoid accidentally matching ${css.<key>}
-                .replace(
-                    new RegExp(`([^$]){css\\.(${selectors})}`, "gm"),
-                    (match, before, key) => {
-                        const replacement = Array.isArray(exported[key]) ? exported[key].join(" ") : exported[key];
+            // Replace css.<key> values
+            source = replacer(source, {
+                identifier : "css",
+                keys       : classKeys,
+                lookup     : classKeys.reduce((acc, curr) => {
+                    acc[curr] = exported[curr].join(" ");
 
-                        return `${before}${replacement}`;
-                    }
-                )
+                    return acc;
+                }, Object.create(null)),
+            });
+        }
+        
+        if(config.values && valueKeys.length) {
+            log("updating source {cssvalue.<key>} references from", css);
+            log(JSON.stringify(valueKeys));
 
-                // Then any remaining css.<key> values
-                .replace(
-                    new RegExp(`(\\b)css\\.(${selectors})(\\b)`, "gm"),
-                    (match, before, key, suffix) => {
-                        const replacement = Array.isArray(exported[key]) ? exported[key].join(" ") : exported[key];
+            source = replacer(source, {
+                identifier : "cssvalue",
+                keys       : valueKeys,
+                lookup     : valueKeys.reduce((acc, curr) => {
+                    acc[curr] = values[curr].value;
 
-                        return `${before}"${replacement}"${suffix}`;
-                    }
-                );
+                    return acc;
+                }, Object.create(null)),
+            });
         }
 
         return {
