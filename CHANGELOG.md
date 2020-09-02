@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [25.8.2](https://github.com/tivac/modular-css/compare/v25.8.1...v25.8.2) (2020-09-02)
+
+
+### Bug Fixes
+
+* **processor:** don't scope [@keyframes](https://github.com/keyframes) contents ([#781](https://github.com/tivac/modular-css/issues/781)) ([dd41bf1](https://github.com/tivac/modular-css/commit/dd41bf111158be235fa50c52d10c6ca203994e4f))
+
+
+
+
+
 ## [25.8.1](https://github.com/tivac/modular-css/compare/v25.8.0...v25.8.1) (2020-07-30)
 
 
