@@ -95,10 +95,15 @@ module.exports = (css, { opts, messages }) => {
 
     // Walk all rules and save off rewritten selectors
     css.walkRules((rule) => {
+        // Don't process the children of @keyframes, they don't need scoping
+        if(rule.parent.type === "atrule" && rule.parent.name === "keyframes") {
+            return;
+        }
+        
         // Save closure ref to this rule
         current = rule;
         lookup = classes;
-        
+
         rule.selector = parser.processSync(rule);
     });
 
