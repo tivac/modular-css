@@ -57,6 +57,14 @@ exports.compositions = (processor) => {
 
             json[relative(cwd, file)] = out;
         });
+    
+    console.log(json);
 
     return json;
 };
+
+exports.json = (compositions) => Object.keys(compositions).reduce((acc, key) => {
+    acc[key] = exports.join(compositions[key]);
+
+    return acc;
+}, Object.create(null));

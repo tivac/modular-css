@@ -46,6 +46,9 @@ describe("/cli.js", () => {
             "./packages/cli/test/specimens/simple.css"
         );
 
+        console.log(out.stdout);
+        console.log(out.stderr);
+
         expect(out.code).toBe(0);
         expect(read("classes.json")).toMatchSnapshot();
     });
