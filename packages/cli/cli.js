@@ -53,9 +53,19 @@ glob({
     if(cli.flags.json) {
         mkdirp.sync(path.dirname(cli.flags.json));
         
+        const json = Object.keys(compositions).reduce((acc, file) => {
+            acc[file] = Object.keys(compositions[file]).reduce((out, selector) => {
+                out[selector] = output.join(compositions[file][selector]);
+        
+                return out;
+            }, Object.create(null));
+        
+            return acc;
+        }, Object.create(null));
+
         fs.writeFileSync(
             cli.flags.json,
-            JSON.stringify(output.json(compositions), null, 4),
+            JSON.stringify(json, null, 4),
             "utf8"
         );
     }
