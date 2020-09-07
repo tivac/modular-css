@@ -60,3 +60,13 @@ exports.compositions = (processor) => {
     
     return json;
 };
+
+exports.json = (compositions) => Object.keys(compositions).reduce((acc, file) => {
+    acc[file] = Object.keys(compositions[file]).reduce((out, selector) => {
+        out[selector] = exports.join(compositions[file][selector]);
+
+        return out;
+    }, Object.create(null));
+
+    return acc;
+}, Object.create(null));

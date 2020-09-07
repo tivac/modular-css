@@ -6,16 +6,10 @@ exports[`/postcss.js should accept a \`json\` property and write exports to that
         \\"folder\\": \\"folder\\"
     },
     \\"packages/postcss/test/specimens/local.css\\": {
-        \\"folder\\": \\"white\\",
-        \\"one\\": \\"red\\",
-        \\"two\\": \\"blue\\",
         \\"booga\\": \\"booga\\",
         \\"looga\\": \\"booga looga\\"
     },
     \\"packages/postcss/test/specimens/start.css\\": {
-        \\"one\\": \\"red\\",
-        \\"two\\": \\"blue\\",
-        \\"folder\\": \\"white\\",
         \\"wooga\\": \\"booga wooga\\",
         \\"booga\\": \\"booga\\",
         \\"tooga\\": \\"tooga\\"
@@ -81,16 +75,10 @@ exports[`/postcss.js should use output filepath for json if a custom path isn't 
         \\"folder\\": \\"folder\\"
     },
     \\"packages/postcss/test/specimens/local.css\\": {
-        \\"folder\\": \\"white\\",
-        \\"one\\": \\"red\\",
-        \\"two\\": \\"blue\\",
         \\"booga\\": \\"booga\\",
         \\"looga\\": \\"booga looga\\"
     },
     \\"packages/postcss/test/specimens/start.css\\": {
-        \\"one\\": \\"red\\",
-        \\"two\\": \\"blue\\",
-        \\"folder\\": \\"white\\",
         \\"wooga\\": \\"booga wooga\\",
         \\"booga\\": \\"booga\\",
         \\"tooga\\": \\"tooga\\"
