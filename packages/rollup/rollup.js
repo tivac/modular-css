@@ -5,13 +5,13 @@ const path = require("path");
 
 const utils = require("rollup-pluginutils");
 const dedent = require("dedent");
-const slash = require("slash");
 const identifierfy = require("identifierfy");
 
 const Processor = require("@modular-css/processor");
+const output = require("@modular-css/processor/lib/output.js");
+const relative = require("@modular-css/processor/lib/relative.js");
 
 const DEFAULT_EXT = ".css";
-const VALUES_VAR = "$$values";
 
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
@@ -126,7 +126,7 @@ module.exports = (opts = {}) => {
             const { classes } = details;
 
             const exportedKeys = Object.keys(classes);
-            const relative = path.relative(processor.options.cwd, id);
+            const fileId = relative(processor.options.cwd, id);
             const compositions = processor.dependencies(id, { filesOnly : false });
             const dependencies = processor.dependencies(id, { filesOnly : true });
             
@@ -147,12 +147,41 @@ module.exports = (opts = {}) => {
 
                 const unique = deconflict(identifiers, selector);
 
-                out.push(`import { ${selector} as ${unique} } from "${slash(file)}";`);
+                out.push(`import { ${selector} as ${unique} } from "${fileId}";`);
 
                 importsMap.set(`${file}${selector}`, unique);
             });
 
-            // Create vars representing exported classes/values & use them in local var definitions
+            const values = Object.keys(details.values);
+
+            // Add default exports for all the @values
+            if(options.valueExport && values.length) {
+                values.forEach((key) => {
+                    const { value } = details.values[key];
+
+                    const unique = deconflict(identifiers, key);
+
+                    out.push(`const ${unique} = ${JSON.stringify(value)}`);
+
+                    defaultExports.push(`${JSON.stringify(key)} : ${unique}`);
+                    
+                    if(options.namedExports) {
+                        const namedExport = identifierfy(key);
+                        
+                        if(namedExport === key) {
+                            namedExports.push(`${unique} as ${key}`);
+                        } else if(options.namedExports.rewriteInvalid) {
+                            this.warn(`Invalid JS identifier "${key}" rewritten to "${namedExport}"`);
+                            
+                            namedExports.push(`${unique} as ${namedExport}`);
+                        } else {
+                            this.warn(`Invalid JS identifier "${key}", unable use as named export`);
+                        }
+                    }
+                });
+            }
+
+            // Create vars representing exported classes & use them in local var definitions
             exportedKeys.forEach((key) => {
                 const elements = [];
 
@@ -193,26 +222,6 @@ module.exports = (opts = {}) => {
                 }
             });
 
-            const values = Object.keys(details.values);
-
-            if(options.valueExport && values.length) {
-                const exported = [];
-
-                values.forEach((key) => {
-                    const { value } = details.values[key];
-
-                    exported.push(`${JSON.stringify(key)} : ${JSON.stringify(value)}`);
-                });
-
-                const ident = deconflict(identifiers, VALUES_VAR);
-
-                out.push(dedent(`const ${ident} = {
-                    ${exported.join(",\n")}
-                }`));
-                
-                namedExports.push(`${ident} as ${VALUES_VAR}`);
-            }
-
             if(options.dev) {
                 out.push(dedent(`
                     const data = {
@@ -226,7 +235,7 @@ module.exports = (opts = {}) => {
                             }
 
                             throw new ReferenceError(
-                                key + " is not exported by " + ${JSON.stringify(slash(relative))}
+                                key + " is not exported by " + ${JSON.stringify(fileId)}
                             );
                         }
                     })
@@ -263,9 +272,9 @@ module.exports = (opts = {}) => {
                 code : out.join("\n"),
                 map  : emptyMappings,
 
-                // Disable tree-shaking for CSS modules w/o any classes to export
-                // To make sure they're included in the bundle
-                moduleSideEffects : exportedKeys.length || "no-treeshake",
+                // Disable tree-shaking for CSS modules w/o any classes/values to export
+                // to make sure they're included in the bundle
+                moduleSideEffects : namedExports.length || "no-treeshake",
             };
         },
 
@@ -410,12 +419,29 @@ module.exports = (opts = {}) => {
 
                 log("json output", dest);
 
-                const compositions = await processor.compositions;
+                const files = Object.keys(processor.files);
+
+                // Wait to ensure that all files have completed processing
+                await Promise.all(
+                    files.map((id) => processor.files[id].result)
+                );
+
+                const json = Object.create(null);
+
+                files.forEach((id) => {
+                    json[relative(processor.options.cwd, id)] = {
+                        // TODO: Add @values first
+                        // processor.files[id]
+
+                        // TODO: these values are still arrays?
+                        ...output.fileCompositions(processor.files[id], processor),
+                    };
+                });
 
                 this.emitFile({
                     type   : "asset",
                     name   : dest,
-                    source : JSON.stringify(compositions, null, 4),
+                    source : JSON.stringify(json, null, 4),
                 });
             }
 

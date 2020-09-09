@@ -272,8 +272,8 @@ describe("/rollup.js", () => {
         });
     });
 
-    describe.skip("json option", () => {
-        it("should generate JSON", async () => {
+    describe("json option", () => {
+        it.only("should generate JSON", async () => {
             const bundle = await rollup({
                 input   : require.resolve("./specimens/simple.js"),
                 plugins : [
