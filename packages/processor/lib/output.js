@@ -8,7 +8,7 @@ exports.join = (value) => (Array.isArray(value) ?
     value.toString()
 );
 
-exports.fileCompositions = ({ classes, name }, { files, graph }) => {
+exports.fileCompositions = ({ classes, name }, { files, graph }, { joined = false } = false) => {
     const out = Object.create(null);
 
     Object.keys(classes).forEach((selector) => {
@@ -39,7 +39,7 @@ exports.fileCompositions = ({ classes, name }, { files, graph }) => {
 
         compositions.push(...classes[selector]);
 
-        out[selector] = compositions;
+        out[selector] = joined ? exports.join(compositions) : compositions;
     });
 
     return out;
@@ -70,3 +70,9 @@ exports.json = (compositions) => Object.keys(compositions).reduce((acc, file) =>
 
     return acc;
 }, Object.create(null));
+
+exports.values = (values) => Object.keys(values).reduce((acc, key) => {
+        acc[key] = values[key].value;
+
+        return acc;
+    }, Object.create(null));

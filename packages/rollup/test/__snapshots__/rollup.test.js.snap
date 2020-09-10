@@ -3,9 +3,11 @@
 exports[`/rollup.js dev mode option should output a proxy 1`] = `
 Object {
   "simple": "
+const str = \\"\\\\\\"string\\\\\\"\\";
 const fooga = \\"fooga\\";
 const data = {
-    \\"fooga\\" : fooga
+    \\"str\\" : str,
+\\"fooga\\" : fooga
 };
 
 var css = new Proxy(data, {
@@ -35,29 +37,49 @@ Object {
 `;
 
 exports[`/rollup.js json option should generate JSON 1`] = `
-"{
+Object {
+  "assets/exports.json": "
+{
     \\"packages/rollup/test/specimens/simple.css\\": {
         \\"str\\": \\"\\\\\\"string\\\\\\"\\",
         \\"fooga\\": \\"fooga\\"
     }
-}"
+}",
+  "assets/simple.css": "
+/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+",
+}
 `;
 
 exports[`/rollup.js json option should generate JSON with a custom name 1`] = `
-"{
+Object {
+  "assets/custom.json": "
+{
     \\"packages/rollup/test/specimens/simple.css\\": {
         \\"str\\": \\"\\\\\\"string\\\\\\"\\",
         \\"fooga\\": \\"fooga\\"
     }
-}"
+}",
+  "assets/simple.css": "
+/* packages/rollup/test/specimens/simple.css */
+.fooga {
+    color: red;
+}
+",
+}
 `;
 
 exports[`/rollup.js namedExports option should allow disabling of named exports 1`] = `
 Object {
   "simple": "
+const str = \\"\\\\\\"string\\\\\\"\\";
 const fooga = \\"fooga\\";
 var css = {
-    \\"fooga\\" : fooga
+    \\"str\\" : str,
+\\"fooga\\" : fooga
 };
 
 console.log(css);
@@ -174,9 +196,11 @@ Object {
 }
 ",
   "simple.js": "
+const str = \\"\\\\\\"string\\\\\\"\\";
 const fooga = \\"fooga\\";
 var css = {
-    \\"fooga\\" : fooga
+    \\"str\\" : str,
+\\"fooga\\" : fooga
 };
 
 console.log(css);
@@ -201,8 +225,8 @@ Object {
 
 /*# sourceMappingURL=simple-8ed43a0c.css.map */",
   "assets/simple-8ed43a0c.css.map": "
-{\\"version\\":3,\\"sources\\":[\\"../../../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,8CAAA;AAEA;IACI,UAAU;AACd\\",\\"file\\":\\"simple-[hash].css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
-  "hashes.js": "
+{\\"version\\":3,\\"sources\\":[\\"../packages/rollup/test/specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,8CAAA;AAEA;IACI,UAAU;AACd\\",\\"file\\":\\"simple-[hash].css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
+  "simple.js": "
 const str = \\"\\\\\\"string\\\\\\"\\";
 const fooga = \\"fooga\\";
 var css = {
@@ -238,31 +262,17 @@ Object {
 }
 `;
 
-exports[`/rollup.js should generate exports (simple.js) 1`] = `
+exports[`/rollup.js should generate exports 1`] = `
 Object {
   "simple": "
+const str = \\"\\\\\\"string\\\\\\"\\";
 const fooga = \\"fooga\\";
 var css = {
-    \\"fooga\\" : fooga
+    \\"str\\" : str,
+\\"fooga\\" : fooga
 };
 
 console.log(css);
-",
-}
-`;
-
-exports[`/rollup.js should generate exports (simple-values.js) 1`] = `
-Object {
-  "simple-values": "
-const fooga = \\"fooga\\";
-const $$values = {
-    \\"str\\" : \\"\\\\\\"string\\\\\\"\\"
-};
-var css = {
-    \\"fooga\\" : fooga
-};
-
-console.log(css, $$values);
 ",
 }
 `;
@@ -370,17 +380,20 @@ exports[`/rollup.js source maps should generate external source maps 2`] = `
 `;
 
 exports[`/rollup.js source maps should not output sourcemaps when they are disabled 1`] = `
-"/* packages/rollup/test/specimens/simple.css */
+Object {
+  "assets/simple.css": "
+/* packages/rollup/test/specimens/simple.css */
 .fooga {
     color: red;
 }
-"
+",
+}
 `;
 
 exports[`/rollup.js source maps shouldn't disable sourcemap generation 1`] = `
 SourceMap {
   "file": "simple.js",
-  "mappings": ";;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC",
+  "mappings": ";;;;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC",
   "names": Array [],
   "sources": Array [
     "packages/rollup/test/specimens/simple.js",

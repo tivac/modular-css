@@ -9,7 +9,6 @@ const cssnano = require("cssnano");
 const files = require("rollup-plugin-hypothetical");
 
 const read    = require("@modular-css/test-utils/read.js")(__dirname);
-const exists  = require("@modular-css/test-utils/exists.js")(__dirname);
 const prefix  = require("@modular-css/test-utils/prefix.js")(__dirname);
 const namer   = require("@modular-css/test-utils/namer.js");
 const logs    = require("@modular-css/test-utils/logs.js");
@@ -41,12 +40,9 @@ describe("/rollup.js", () => {
         expect(typeof plugin).toBe("function")
     );
 
-    it.each([
-        "simple.js",
-        "simple-values.js",
-    ])("should generate exports (%s)", async (file) => {
+    it("should generate exports", async () => {
         const bundle = await rollup({
-            input   : require.resolve(`./specimens/${file}`),
+            input   : require.resolve(`./specimens/simple.js`),
             plugins : [
                 createPlugin(),
             ],
@@ -133,11 +129,12 @@ describe("/rollup.js", () => {
         expect(
             await bundle.generate({
                 format,
+                assetFileNames : "assets/[name]-[hash][extname]",
             })
         ).toMatchRollupSnapshot();
     });
 
-    it.skip("should correctly handle hashed output with external source maps & json files", async () => {
+    it("should correctly handle hashed output with external source maps & json files", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
@@ -151,6 +148,7 @@ describe("/rollup.js", () => {
         expect(
             await bundle.generate({
                 format,
+                assetFileNames : "assets/[name]-[hash][extname]",
             })
         ).toMatchRollupSnapshot();
     });
@@ -273,7 +271,7 @@ describe("/rollup.js", () => {
     });
 
     describe("json option", () => {
-        it.only("should generate JSON", async () => {
+        it("should generate JSON", async () => {
             const bundle = await rollup({
                 input   : require.resolve("./specimens/simple.js"),
                 plugins : [
@@ -283,13 +281,12 @@ describe("/rollup.js", () => {
                 ],
             });
     
-            await bundle.write({
-                format,
-                assetFileNames,
-                file : prefix(`./output/json/simple.js`),
-            });
-    
-            expect(read("./json/assets/exports.json")).toMatchSnapshot();
+            expect(
+                await bundle.generate({
+                    format,
+                    assetFileNames,
+                })
+            ).toMatchRollupAssetSnapshot();
         });
     
         it("should generate JSON with a custom name", async () => {
@@ -301,14 +298,13 @@ describe("/rollup.js", () => {
                     }),
                 ],
             });
-    
-            await bundle.write({
-                format,
-                assetFileNames,
-                file : prefix(`./output/json-named/simple.js`),
-            });
-    
-            expect(read("./json-named/assets/custom.json")).toMatchSnapshot();
+
+            expect(
+                await bundle.generate({
+                    format,
+                    assetFileNames,
+                })
+            ).toMatchRollupAssetSnapshot();
         });
     });
 
@@ -380,12 +376,12 @@ describe("/rollup.js", () => {
                 ],
             });
     
-            const result = await bundle.generate({
-                format,
-                assetFileNames,
-            });
-    
-            expect(result).toMatchRollupCodeSnapshot();
+            expect(
+                await bundle.generate({
+                    format,
+                    assetFileNames,
+                })
+            ).toMatchRollupCodeSnapshot();
         });
     });
 
@@ -485,14 +481,12 @@ describe("/rollup.js", () => {
                 ],
             });
     
-            await bundle.write({
-                assetFileNames,
-                format,
-    
-                file : prefix(`./output/no-maps/no-maps.js`),
-            });
-    
-            expect(read("./no-maps/assets/simple.css")).toMatchSnapshot();
+            expect(
+                await bundle.generate({
+                    assetFileNames,
+                    format,
+                })
+            ).toMatchRollupAssetSnapshot();
         });
     });
 

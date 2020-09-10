@@ -147,7 +147,7 @@ module.exports = (opts = {}) => {
 
                 const unique = deconflict(identifiers, selector);
 
-                out.push(`import { ${selector} as ${unique} } from "${fileId}";`);
+                out.push(`import { ${selector} as ${unique} } from ${JSON.stringify(file)};`);
 
                 importsMap.set(`${file}${selector}`, unique);
             });
@@ -430,11 +430,11 @@ module.exports = (opts = {}) => {
 
                 files.forEach((id) => {
                     json[relative(processor.options.cwd, id)] = {
-                        // TODO: Add @values first
-                        // processor.files[id]
+                        // @values
+                        ...output.values(processor.files[id].values),
 
-                        // TODO: these values are still arrays?
-                        ...output.fileCompositions(processor.files[id], processor),
+                        // classes
+                        ...output.fileCompositions(processor.files[id], processor, { joined : true }),
                     };
                 });
 
