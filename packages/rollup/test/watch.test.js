@@ -69,6 +69,7 @@ describe("/rollup.js", () => {
             expect(v1).toMatchDiffSnapshot(v2);
         });
 
+        // TODO: very broken, second version is entirely missing composition information
         it("should generate updated output for composes changes", async () => {
             // Create v1 of the files
             write(`./watch/change-composes/watched.css`, `

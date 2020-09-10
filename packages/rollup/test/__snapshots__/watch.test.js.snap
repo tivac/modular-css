@@ -12,9 +12,11 @@ Snapshot Diff:
 + .mc5f9237d4_two {
 +     color: blue;
   }",
-    "output.js": "var css = {
--     \\"one\\": \\"mc5f9237d4_one\\"
-+     \\"two\\": \\"mc5f9237d4_two\\"
+-   "output.js": "const one = \\"mc5f9237d4_one\\";
++   "output.js": "const two = \\"mc5f9237d4_two\\";
+  var css = {
+-     \\"one\\" : one
++     \\"two\\" : two
   };
 
   console.log(css);
