@@ -131,7 +131,8 @@ module.exports = (opts = {}) => {
             const dependencies = processor.dependencies(id, { filesOnly : true });
             
             const identifiers = new Map();
-            const importsMap = new Map();
+            const externalsMap = new Map();
+            const internalsMap = new Map();
 
             const out = [];
             const defaultExports = [];
@@ -147,9 +148,9 @@ module.exports = (opts = {}) => {
 
                 const unique = deconflict(identifiers, selector);
 
-                out.push(`import { ${selector} as ${unique} } from ${JSON.stringify(file)};`);
+                externalsMap.set(`${file}${selector}`, unique);
 
-                importsMap.set(`${file}${selector}`, unique);
+                out.push(`import { ${selector} as ${unique} } from ${JSON.stringify(file)};`);
             });
 
             const values = Object.keys(details.values);
@@ -160,6 +161,8 @@ module.exports = (opts = {}) => {
                     const { value } = details.values[key];
 
                     const unique = deconflict(identifiers, key);
+
+                    internalsMap.set(value, unique);
 
                     out.push(`const ${unique} = ${JSON.stringify(value)}`);
 
@@ -181,12 +184,23 @@ module.exports = (opts = {}) => {
                 });
             }
 
+            // Figure out unique idents for all local classes first since
+            // the order isn't topologically sorted in the next loop
+            exportedKeys.forEach((key) => {
+                const unique = deconflict(identifiers, key);
+
+                internalsMap.set(key, unique);
+            });
+
+            // console.log(graph);
+
             // Create vars representing exported classes & use them in local var definitions
             exportedKeys.forEach((key) => {
                 const elements = [];
 
+                // Build the list of composed classes for this class
                 const selectorKey = Processor.selectorKey(id, key);
-                
+
                 if(graph.hasNode(selectorKey)) {
                     graph.dependenciesOf(selectorKey).forEach((dep) => {
                         const { file, selector } = graph.getNodeData(dep);
@@ -195,11 +209,15 @@ module.exports = (opts = {}) => {
                             return;
                         }
 
-                        elements.push(importsMap.get(`${file}${selector}`));
+                        if(file !== id) {
+                            elements.push(externalsMap.get(`${file}${selector}`));
+                        } else {
+                            elements.push(internalsMap.get(selector));
+                        }
                     });
                 }
 
-                const unique = deconflict(identifiers, key);
+                const unique = internalsMap.get(key);
 
                 elements.push(...classes[key].map((t) => JSON.stringify(t)));
 
@@ -301,7 +319,8 @@ module.exports = (opts = {}) => {
                     assetFileNames
                 );
             
-            // Walk bundle, create CSS output files
+            // Walk bundle, determine CSS output files
+            // TODO: remove any files that only export @values but no classes?
             Object.keys(bundle).forEach((entry) => {
                 const { type, modules, name } = bundle[entry];
                 
@@ -415,10 +434,6 @@ module.exports = (opts = {}) => {
             }
 
             if(options.json) {
-                const dest = typeof options.json === "string" ? options.json : "exports.json";
-
-                log("json output", dest);
-
                 const files = Object.keys(processor.files);
 
                 // Wait to ensure that all files have completed processing
@@ -438,11 +453,25 @@ module.exports = (opts = {}) => {
                     };
                 });
 
-                this.emitFile({
-                    type   : "asset",
-                    name   : dest,
-                    source : JSON.stringify(json, null, 4),
-                });
+                const source = JSON.stringify(json, null, 4);
+                
+                if(typeof options.json === "string") {
+                    log("json output", options.json);
+
+                    this.emitFile({
+                        type     : "asset",
+                        fileName : options.json,
+                        source,
+                    });
+                } else {
+                    log("json output", "exports.json");
+
+                    this.emitFile({
+                        type : "asset",
+                        name : "exports.json",
+                        source,
+                    });
+                }
             }
 
             // Always attach meta info to bundle chunks

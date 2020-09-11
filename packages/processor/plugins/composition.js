@@ -18,7 +18,16 @@ module.exports = (css, result) => {
         ...message(result, "atcomposes"),
         ...message(result, "classes"),
     };
-    
+
+    // Map of scoped classnames to the originals
+    const selectorMap = new Map();
+
+    Object.keys(available).forEach((src) =>
+        available[src].forEach((scoped) =>
+            selectorMap.set(scoped, src)
+        )
+    );
+
     // Go look up "composes" declarations and update dependency graph
     css.walkDecls("composes", (decl) => {
         const { parent, value } = decl;
@@ -74,9 +83,10 @@ module.exports = (css, result) => {
                 }
             }
 
+            // Update graph with all the dependency information
             selectors.forEach((parts) =>
                 parts.forEach((part) => {
-                    const src = processor._addSelector(from, part);
+                    const src = processor._addSelector(from, selectorMap.get(part));
 
                     graph.addDependency(src, ref);
                 })

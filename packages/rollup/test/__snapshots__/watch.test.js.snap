@@ -7,13 +7,13 @@ Snapshot Diff:
 
   Object {
     "assets/watched.css": "/* packages/rollup/test/output/watch/change/watched.css */
-- .mc5f9237d4_one {
+- .mc_one {
 -     color: red;
-+ .mc5f9237d4_two {
++ .mc_two {
 +     color: blue;
   }",
--   "output.js": "const one = \\"mc5f9237d4_one\\";
-+   "output.js": "const two = \\"mc5f9237d4_two\\";
+-   "output.js": "const one = \\"mc_one\\";
++   "output.js": "const two = \\"mc_two\\";
   var css = {
 -     \\"one\\" : one
 +     \\"two\\" : two
@@ -32,27 +32,27 @@ Snapshot Diff:
 @@ --- --- @@
   Object {
     "assets/watched.css": "/* packages/rollup/test/output/watch/change-composes/watched.css */
-  .mc0f3c579a_one {
+  .mc_one {
 -     color: red;
 +     color: green;
   }
 
-  .mc0f3c579a_two {
+  .mc_two {
       background: blue;
   }
 @@ --- --- @@
+  .mc_three {
       color: teal;
   }",
-    "output.js": "var css = {
-      \\"one\\": \\"mc0f3c579a_one\\",
-      \\"two\\": \\"mc0f3c579a_one mc0f3c579a_two\\",
--     \\"three\\": \\"mc0f3c579a_three\\"
-+     \\"three\\": \\"mc0f3c579a_one mc0f3c579a_three\\"
+    "output.js": "const one = \\"mc_one\\";
+  const two = one + \\" \\" + \\"mc_two\\";
+- const three = \\"mc_three\\";
++ const three = one + \\" \\" + \\"mc_three\\";
+  var css = {
+      \\"one\\" : one,
+  \\"two\\" : two,
+  \\"three\\" : three
   };
-
-  console.log(css);
-  ",
-  }
 `;
 
 exports[`/rollup.js watch mode should update when a dependency changes 1`] = `
@@ -62,13 +62,13 @@ Snapshot Diff:
 
 @@ --- --- @@
   Object {
-    "assets/one.css": "/* packages/rollup/test/output/watch/dep-graph/two.css */
-  .mc6f857f1c_two {
+    "assets/watch.css": "/* packages/rollup/test/output/watch/dep-graph/two.css */
+  .mc_two {
 -     color: blue;
 +     color: green;
   }
   /* packages/rollup/test/output/watch/dep-graph/three.css */
-  .mc7228cc44_three {
+  .mc_three {
       color: green;
   }
 `;
@@ -80,29 +80,19 @@ Snapshot Diff:
 
 @@ --- --- @@
   Object {
-    "assets/one.css": "/* packages/rollup/test/output/watch/shared-deps/values.css */
-  /* packages/rollup/test/output/watch/shared-deps/one.css */
-  .mca79168b9_one {
+    "assets/values.css": "/* packages/rollup/test/output/watch/shared-deps/values.css */",
+    "assets/watch.css": "/* packages/rollup/test/output/watch/shared-deps/one.css */
+  .mc_one {
 -     color: blue;
 +     color: red;
   }",
-    "assets/three.css": "/* packages/rollup/test/output/watch/shared-deps/two.css */
-  .mc5067d789_two {
-      color: yellow;
-  }
-@@ --- --- @@
-  /* packages/rollup/test/output/watch/shared-deps/three.css */
-  .mc4ec9318b_three {
-      color: teal;
-  }",
-    "output.js": "var css = {
--     \\"baloo\\": \\"blue\\",
-+     \\"baloo\\": \\"red\\",
-      \\"one\\": \\"mca79168b9_one\\"
+-   "output.js": "const baloo = \\"blue\\";
++   "output.js": "const baloo = \\"red\\";
+  const one = \\"mc_one\\";
+  var css = {
+      \\"baloo\\" : baloo,
+  \\"one\\" : one
   };
-
-  console.log(css);
-  ",
 `;
 
 exports[`/rollup.js watch mode should update when a shared dependency changes 1`] = `
@@ -112,13 +102,13 @@ Snapshot Diff:
 
 @@ --- --- @@
   Object {
-    "assets/three.css": "/* packages/rollup/test/output/watch/shared-deps/two.css */
-  .mc5067d789_two {
+    "assets/watch.css": "/* packages/rollup/test/output/watch/shared-deps/two.css */
+  .mc_two {
 -     color: green;
 +     color: yellow;
   }
   /* packages/rollup/test/output/watch/shared-deps/one.css */
-  .mca79168b9_one {
+  .mc_one {
       color: red;
   }
 `;
@@ -130,12 +120,13 @@ Snapshot Diff:
 
   Object {
 -   "output.js": "console.log(\\"hello\\");
-+   "assets/one.css": "/* packages/rollup/test/output/watch/new-file/one.css */
-+ .mc54f12712_one {
++   "assets/watch.css": "/* packages/rollup/test/output/watch/new-file/one.css */
++ .mc_one {
 +     color: red;
 + }",
-+   "output.js": "var css = {
-+     \\"one\\": \\"mc54f12712_one\\"
++   "output.js": "const one = \\"mc_one\\";
++ var css = {
++     \\"one\\" : one
 + };
 +
 + console.log(css);
@@ -149,16 +140,14 @@ Snapshot Diff:
 + Second value
 
 @@ --- --- @@
-  .mc204ad279_one {
-      color: red;
-  }",
-    "assets/shared.css": "/* packages/rollup/test/output/watch/code-splitting/shared.css */
-  .mc4002e81f_shared {
+  Object {
+    "assets/one.css": "/* packages/rollup/test/output/watch/code-splitting/shared.css */
+  .mc_shared {
 -     color: blue;
 +     color: seafoam;
-  }",
-    "assets/two.css": "/* packages/rollup/test/output/watch/code-splitting/two.css */
-  .mc3861d3af_two {
-      color: green;
+  }
+  /* packages/rollup/test/output/watch/code-splitting/one.css */
+  .mc_one {
+      color: red;
   }",
 `;

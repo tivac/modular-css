@@ -4,7 +4,7 @@ exports[`/rollup.js dev mode option should output a proxy 1`] = `
 Object {
   "simple": "
 const str = \\"\\\\\\"string\\\\\\"\\";
-const fooga = \\"fooga\\";
+const fooga = \\"mc_fooga\\";
 const data = {
     \\"str\\" : str,
 \\"fooga\\" : fooga
@@ -42,12 +42,12 @@ Object {
 {
     \\"packages/rollup/test/specimens/simple.css\\": {
         \\"str\\": \\"\\\\\\"string\\\\\\"\\",
-        \\"fooga\\": \\"fooga\\"
+        \\"fooga\\": \\"mc_fooga\\"
     }
 }",
   "assets/simple.css": "
 /* packages/rollup/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 ",
@@ -56,19 +56,19 @@ Object {
 
 exports[`/rollup.js json option should generate JSON with a custom name 1`] = `
 Object {
-  "assets/custom.json": "
-{
-    \\"packages/rollup/test/specimens/simple.css\\": {
-        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
-        \\"fooga\\": \\"fooga\\"
-    }
-}",
   "assets/simple.css": "
 /* packages/rollup/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 ",
+  "custom.json": "
+{
+    \\"packages/rollup/test/specimens/simple.css\\": {
+        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
+        \\"fooga\\": \\"mc_fooga\\"
+    }
+}",
 }
 `;
 
@@ -76,7 +76,7 @@ exports[`/rollup.js namedExports option should allow disabling of named exports 
 Object {
   "simple": "
 const str = \\"\\\\\\"string\\\\\\"\\";
-const fooga = \\"fooga\\";
+const fooga = \\"mc_fooga\\";
 var css = {
     \\"str\\" : str,
 \\"fooga\\" : fooga
@@ -90,7 +90,7 @@ console.log(css);
 exports[`/rollup.js namedExports option should provide named exports by default 1`] = `
 Object {
   "named": "
-const a = \\"a\\";
+const a = \\"mc_a\\";
 
 console.log(a);
 ",
@@ -111,8 +111,8 @@ Object {
 exports[`/rollup.js namedExports option should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false) 2`] = `
 Object {
   "invalid-name": "
-const fooga = \\"fooga\\";
-const foogaWooga = \\"fooga-wooga\\";
+const fooga = \\"mc_fooga\\";
+const foogaWooga = \\"mc_fooga-wooga\\";
 var css = {
     \\"fooga\\" : fooga,
 \\"fooga-wooga\\" : foogaWooga
@@ -137,8 +137,8 @@ Object {
 exports[`/rollup.js namedExports option should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true) 2`] = `
 Object {
   "invalid-name": "
-const fooga = \\"fooga\\";
-const foogaWooga = \\"fooga-wooga\\";
+const fooga = \\"mc_fooga\\";
+const foogaWooga = \\"mc_fooga-wooga\\";
 var css = {
     \\"fooga\\" : fooga,
 \\"fooga-wooga\\" : foogaWooga
@@ -153,7 +153,7 @@ exports[`/rollup.js processor option should accept an existing processor instanc
 Object {
   "assets/fake.css": "
 /* packages/rollup/test/specimens/fake.css */
-.fake {
+.mc_fake {
     color: yellow;
 }",
 }
@@ -163,12 +163,12 @@ exports[`/rollup.js processor option should accept an existing processor instanc
 Object {
   "assets/fake.css": "
 /* packages/rollup/test/specimens/fake.css */
-.fake {
+.mc_fake {
     color: yellow;
 }",
   "assets/simple.css": "
 /* packages/rollup/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 ",
@@ -180,7 +180,7 @@ exports[`/rollup.js should avoid generating empty CSS 1`] = `Object {}`;
 exports[`/rollup.js should be able to tree-shake results 1`] = `
 Object {
   "tree-shaking": "
-const fooga = \\"fooga\\";
+const fooga = \\"mc_fooga\\";
 
 console.log(fooga);
 ",
@@ -189,15 +189,15 @@ console.log(fooga);
 
 exports[`/rollup.js should correctly handle hashed output 1`] = `
 Object {
-  "assets/simple-8ed43a0c.css": "
+  "assets/simple-0a80c138.css": "
 /* packages/rollup/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 ",
   "simple.js": "
 const str = \\"\\\\\\"string\\\\\\"\\";
-const fooga = \\"fooga\\";
+const fooga = \\"mc_fooga\\";
 var css = {
     \\"str\\" : str,
 \\"fooga\\" : fooga
@@ -210,25 +210,25 @@ console.log(css);
 
 exports[`/rollup.js should correctly handle hashed output with external source maps & json files 1`] = `
 Object {
-  "assets/exports-2733b4a4.json": "
+  "assets/exports-aed5307a.json": "
 {
     \\"packages/rollup/test/specimens/simple.css\\": {
         \\"str\\": \\"\\\\\\"string\\\\\\"\\",
-        \\"fooga\\": \\"fooga\\"
+        \\"fooga\\": \\"mc_fooga\\"
     }
 }",
-  "assets/simple-8ed43a0c.css": "
+  "assets/simple-0a80c138.css": "
 /* packages/rollup/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 
-/*# sourceMappingURL=simple-8ed43a0c.css.map */",
-  "assets/simple-8ed43a0c.css.map": "
+/*# sourceMappingURL=simple-0a80c138.css.map */",
+  "assets/simple-0a80c138.css.map": "
 {\\"version\\":3,\\"sources\\":[\\"../packages/rollup/test/specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,8CAAA;AAEA;IACI,UAAU;AACd\\",\\"file\\":\\"simple-[hash].css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
   "simple.js": "
 const str = \\"\\\\\\"string\\\\\\"\\";
-const fooga = \\"fooga\\";
+const fooga = \\"mc_fooga\\";
 var css = {
     \\"str\\" : str,
 \\"fooga\\" : fooga
@@ -243,10 +243,34 @@ exports[`/rollup.js should correctly pass to/from params for relative paths 1`] 
 Object {
   "assets/relative-paths.css": "
 /* packages/rollup/test/specimens/relative-paths.css */
-.wooga {
+.mc_wooga {
     color: red;
     background: url(\\"../../../specimens/folder/to.png\\");
 }
+",
+}
+`;
+
+exports[`/rollup.js should express locally-composed classes correctly 1`] = `
+Object {
+  "assets/local-composition-cd5990b5.css": "
+/* packages/rollup/test/specimens/local-composition.css */
+.mc_one {
+    color: red;
+}
+
+.mc_two {
+    background: blue;
+}",
+  "local-composition.js": "
+const one = \\"mc_one\\";
+const two = one + \\" \\" + \\"mc_two\\";
+var css = {
+    \\"one\\" : one,
+\\"two\\" : two
+};
+
+console.log(css);
 ",
 }
 `;
@@ -255,7 +279,7 @@ exports[`/rollup.js should generate CSS 1`] = `
 Object {
   "assets/simple.css": "
 /* packages/rollup/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 ",
@@ -266,7 +290,7 @@ exports[`/rollup.js should generate exports 1`] = `
 Object {
   "simple": "
 const str = \\"\\\\\\"string\\\\\\"\\";
-const fooga = \\"fooga\\";
+const fooga = \\"mc_fooga\\";
 var css = {
     \\"str\\" : str,
 \\"fooga\\" : fooga
@@ -279,9 +303,9 @@ console.log(css);
 
 exports[`/rollup.js should handle assetFileNames being undefined 1`] = `
 Object {
-  "assets/simple-8ed43a0c.css": "
+  "assets/simple-0a80c138.css": "
 /* packages/rollup/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 ",
@@ -294,12 +318,12 @@ exports[`/rollup.js should output assets with a .css file extension 1`] = `
 Object {
   "assets/entry.css": "
 /* packages/rollup/test/specimens/file-extension/style.cssx */
-.style {
+.mc_style {
     color: salmon;
 }
 ",
   "entry.js": "
-const style = \\"style\\";
+const style = \\"mc_style\\";
 var style$1 = {
     \\"style\\" : style
 };
@@ -313,12 +337,12 @@ exports[`/rollup.js should output unreferenced CSS 1`] = `
 Object {
   "assets/fake.css": "
 /* packages/rollup/test/specimens/fake.css */
-.fake {
+.mc_fake {
     color: yellow;
 }",
   "assets/simple.css": "
 /* packages/rollup/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 ",
@@ -329,18 +353,18 @@ exports[`/rollup.js should respect the CSS dependency tree 1`] = `
 Object {
   "assets/dependencies.css": "
 /* packages/rollup/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 /* packages/rollup/test/specimens/dependencies.css */
-.wooga {
+.mc_wooga {
     background: blue;
 }
 ",
   "dependencies.js": "
-const fooga = \\"fooga\\";
+const fooga = \\"mc_fooga\\";
 
-const wooga = fooga + \\" \\" + \\"wooga\\";
+const wooga = fooga + \\" \\" + \\"mc_wooga\\";
 var css = {
     \\"wooga\\" : wooga
 };
@@ -372,7 +396,7 @@ Object {
 
 exports[`/rollup.js source maps should generate external source maps 2`] = `
 "/* packages/rollup/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 
@@ -383,7 +407,7 @@ exports[`/rollup.js source maps should not output sourcemaps when they are disab
 Object {
   "assets/simple.css": "
 /* packages/rollup/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 ",
@@ -411,7 +435,7 @@ console.log(css);
 exports[`/rollup.js styleExport option should provide style export 1`] = `
 Object {
   "style-export": "
-var styles = \\".ooh {\\\\n    content: \\\\\\"string\\\\\\";\\\\n}\\\\n\\";
+var styles = \\".mc_ooh {\\\\n    content: \\\\\\"string\\\\\\";\\\\n}\\\\n\\";
 
 console.log(styles);
 ",

@@ -22,387 +22,334 @@ const map = false;
 const sourcemap = false;
 const json = true;
 
-describe("/rollup.js", () => {
-    describe("code splitting", () => {
-        it("should support splitting up CSS files", async () => {
-            const bundle = await rollup({
-                input : [
-                    require.resolve("./specimens/simple.js"),
-                    require.resolve("./specimens/dependencies.js"),
-                ],
+describe("/rollup.js code splitting", () => {
+    const createPlugin = (opts = {}) => plugin({
+        namer,
+        map,
+        ...opts,
+    });
 
-                plugins : [
-                    plugin({
-                        namer,
-                        map,
-                    }),
-                ],
-            });
+    it("should support splitting up CSS files", async () => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/simple.js"),
+                require.resolve("./specimens/dependencies.js"),
+            ],
 
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
-
-                assetFileNames,
-                chunkFileNames,
-            })).toMatchRollupAssetSnapshot();
+            plugins : [
+                createPlugin(),
+            ],
         });
 
-        it("should correctly chunk up CSS files", async () => {
-            const bundle = await rollup({
-                input : [
-                    require.resolve("./specimens/css-dependencies/a.js"),
-                    require.resolve("./specimens/css-dependencies/b.js"),
-                ],
+        await expect(await bundle.generate({
+            format,
+            sourcemap,
 
-                plugins : [
-                    plugin({
-                        namer,
-                        map,
-                        // verbose : true,
-                    }),
-                ],
-            });
+            assetFileNames,
+            chunkFileNames,
+        })).toMatchRollupAssetSnapshot();
+    });
 
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
+    it("should correctly chunk up CSS files", async () => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/css-dependencies/a.js"),
+                require.resolve("./specimens/css-dependencies/b.js"),
+            ],
 
-                assetFileNames,
-                chunkFileNames,
-            })).toMatchRollupAssetSnapshot();
+            plugins : [
+                createPlugin(),
+            ],
         });
 
-        it("should support outputting metadata about CSS dependencies", async () => {
-            const bundle = await rollup({
-                input : [
-                    require.resolve("./specimens/metadata/a.js"),
-                    require.resolve("./specimens/metadata/b.js"),
-                ],
+        await expect(await bundle.generate({
+            format,
+            sourcemap,
 
-                plugins : [
-                    plugin({
-                        namer,
-                        map,
-                        meta : true,
-                    }),
-                ],
-            });
+            assetFileNames,
+            chunkFileNames,
+        })).toMatchRollupAssetSnapshot();
+    });
 
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
+    it("should support outputting metadata about CSS dependencies", async () => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/metadata/a.js"),
+                require.resolve("./specimens/metadata/b.js"),
+            ],
 
-                assetFileNames,
-                chunkFileNames,
-            })).toMatchRollupAssetSnapshot();
+            plugins : [
+                createPlugin({
+                    meta : true,
+                }),
+            ],
         });
 
-        it("should output metadata successfully when unreferenced CSS is output to common", async () => {
-            const processor = new Processor();
+        await expect(await bundle.generate({
+            format,
+            sourcemap,
 
-            await processor.string("./fake.css", ".fake { color: red; }");
+            assetFileNames,
+            chunkFileNames,
+        })).toMatchRollupAssetSnapshot();
+    });
 
-            const bundle = await rollup({
-                input : [
-                    require.resolve("./specimens/metadata/a.js"),
-                    require.resolve("./specimens/metadata/b.js"),
-                ],
+    it("should output metadata successfully when unreferenced CSS is output to common", async () => {
+        const processor = new Processor();
 
-                plugins : [
-                    plugin({
-                        namer,
-                        map,
-                        processor,
-                        meta : true,
-                    }),
-                ],
-            });
+        await processor.string("./fake.css", ".fake { color: red; }");
 
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/metadata/a.js"),
+                require.resolve("./specimens/metadata/b.js"),
+            ],
 
-                assetFileNames,
-                chunkFileNames,
-            })).toMatchRollupAssetSnapshot();
+            plugins : [
+                createPlugin({
+                    processor,
+                    meta : true,
+                }),
+            ],
         });
 
-        it("should support outputting metadata about CSS dependencies to a named file ", async () => {
-            const bundle = await rollup({
-                input : [
-                    require.resolve("./specimens/metadata/a.js"),
-                    require.resolve("./specimens/metadata/b.js"),
-                ],
+        await expect(await bundle.generate({
+            format,
+            sourcemap,
 
-                plugins : [
-                    plugin({
-                        namer,
-                        map,
-                        meta : "chunks.json",
-                    }),
-                ],
-            });
+            assetFileNames,
+            chunkFileNames,
+        })).toMatchRollupAssetSnapshot();
+    });
 
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
+    it("should support outputting metadata about CSS dependencies to a named file ", async () => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/metadata/a.js"),
+                require.resolve("./specimens/metadata/b.js"),
+            ],
 
-                assetFileNames,
-                chunkFileNames,
-            })).toMatchRollupAssetSnapshot();
+            plugins : [
+                createPlugin({
+                    meta : "chunks.json",
+                }),
+            ],
         });
 
-        it("should support splitting up CSS files w/ shared assets", async () => {
-            const bundle = await rollup({
-                input : [
-                    require.resolve("./specimens/css-chunks/a.js"),
-                    require.resolve("./specimens/css-chunks/b.js"),
-                ],
+        await expect(await bundle.generate({
+            format,
+            sourcemap,
 
-                plugins : [
-                    plugin({
-                        namer,
-                        map,
-                    }),
-                ],
-            });
+            assetFileNames,
+            chunkFileNames,
+        })).toMatchRollupAssetSnapshot();
+    });
 
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
+    it("should support splitting up CSS files w/ shared assets", async () => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/css-chunks/a.js"),
+                require.resolve("./specimens/css-chunks/b.js"),
+            ],
 
-                assetFileNames,
-                chunkFileNames,
-            })).toMatchRollupAssetSnapshot();
+            plugins : [
+                createPlugin(),
+            ],
         });
 
-        it("shouldn't put bundle-specific CSS in common.css", async () => {
-            const bundle = await rollup({
-                input : [
-                    require.resolve("./specimens/common-splitting/a.js"),
-                    require.resolve("./specimens/common-splitting/c.js"),
-                ],
+        await expect(await bundle.generate({
+            format,
+            sourcemap,
 
-                plugins : [
-                    plugin({
-                        namer,
-                        map,
-                    }),
-                ],
-            });
+            assetFileNames,
+            chunkFileNames,
+        })).toMatchRollupAssetSnapshot();
+    });
 
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
+    it("shouldn't put bundle-specific CSS in common.css", async () => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/common-splitting/a.js"),
+                require.resolve("./specimens/common-splitting/c.js"),
+            ],
 
-                assetFileNames,
-                chunkFileNames,
-            })).toMatchRollupAssetSnapshot();
+            plugins : [
+                createPlugin(),
+            ],
         });
 
-        it("should support manual chunks", async () => {
-            const bundle = await rollup({
-                input : [
-                    require.resolve("./specimens/manual-chunks/a.js"),
-                    require.resolve("./specimens/manual-chunks/b.js"),
+        await expect(await bundle.generate({
+            format,
+            sourcemap,
+
+            assetFileNames,
+            chunkFileNames,
+        })).toMatchRollupAssetSnapshot();
+    });
+
+    it("should support manual chunks", async () => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/manual-chunks/a.js"),
+                require.resolve("./specimens/manual-chunks/b.js"),
+            ],
+
+            manualChunks : {
+                shared : [
+                    require.resolve("./specimens/manual-chunks/c.js"),
                 ],
+            },
 
-                manualChunks : {
-                    shared : [
-                        require.resolve("./specimens/manual-chunks/c.js"),
-                    ],
-                },
-
-                plugins : [
-                    plugin({
-                        namer,
-                        map,
-                    }),
-                ],
-            });
-
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
-
-                assetFileNames,
-                chunkFileNames,
-            })).toMatchRollupAssetSnapshot();
+            plugins : [
+                createPlugin(),
+            ],
         });
 
-        it("should support dynamic imports", async () => {
-            const bundle = await rollup({
-                input : [
-                    require.resolve("./specimens/dynamic-imports/a.js"),
-                    require.resolve("./specimens/dynamic-imports/b.js"),
-                ],
+        await expect(await bundle.generate({
+            format,
+            sourcemap,
 
-                plugins : [
-                    plugin({
-                        namer,
-                        map,
-                    }),
-                ],
-            });
+            assetFileNames,
+            chunkFileNames,
+        })).toMatchRollupAssetSnapshot();
+    });
 
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
+    it("should support dynamic imports", async () => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/dynamic-imports/a.js"),
+                require.resolve("./specimens/dynamic-imports/b.js"),
+            ],
 
-                assetFileNames,
-                chunkFileNames,
-            })).toMatchRollupAssetSnapshot();
+            plugins : [
+                createPlugin(),
+            ],
         });
 
-        it("shouldn't break when dynamic imports are tree-shaken away (rollup/rollup#2659)", async () => {
-            const bundle = await rollup({
-                input : [
-                    require.resolve("./specimens/stripped-dynamic-imports/a.js"),
-                ],
+        await expect(await bundle.generate({
+            format,
+            sourcemap,
 
-                plugins : [
-                    plugin({
-                        namer,
-                        map,
-                    }),
-                ],
-            });
+            assetFileNames,
+            chunkFileNames,
+        })).toMatchRollupAssetSnapshot();
+    });
 
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
+    it("shouldn't break when dynamic imports are tree-shaken away (rollup/rollup#2659)", async () => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/stripped-dynamic-imports/a.js"),
+            ],
 
-                assetFileNames,
-                chunkFileNames,
-            })).toMatchRollupAssetSnapshot();
+            plugins : [
+                createPlugin(),
+            ],
         });
 
-        it("should output only 1 JSON file", async () => {
-            const bundle = await rollup({
-                input : [
-                    require.resolve("./specimens/simple.js"),
-                    require.resolve("./specimens/dependencies.js"),
-                ],
+        await expect(await bundle.generate({
+            format,
+            sourcemap,
 
-                plugins : [
-                    plugin({
-                        namer,
-                        map,
-                        json,
-                    }),
-                ],
-            });
+            assetFileNames,
+            chunkFileNames,
+        })).toMatchRollupAssetSnapshot();
+    });
 
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
+    it("should output only 1 JSON file", async () => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/simple.js"),
+                require.resolve("./specimens/dependencies.js"),
+            ],
 
-                assetFileNames,
-                chunkFileNames,
-            })).toMatchRollupAssetSnapshot();
+            plugins : [
+                createPlugin({
+                    json,
+                }),
+            ],
         });
 
-        it("shouldn't use entry hashes as part of the CSS file names", async () => {
-            const bundle = await rollup({
-                input : [
-                    require.resolve("./specimens/simple.js"),
-                ],
+        await expect(await bundle.generate({
+            format,
+            sourcemap,
 
-                plugins : [
-                    plugin({
-                        namer,
-                        map,
-                    }),
-                ],
+            assetFileNames,
+            chunkFileNames,
+        })).toMatchRollupAssetSnapshot();
+    });
 
-            });
+    it("shouldn't use entry hashes as part of the CSS file names", async () => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/simple.js"),
+            ],
 
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
+            plugins : [
+                createPlugin(),
+            ],
 
-                entryFileNames : "[name].[hash].js",
-            })).toMatchRollupSnapshot();
         });
 
-        it("should dedupe chunk names using rollup's incrementing counter logic", async () => {
-            const bundle = await rollup({
-                input : [
-                    require.resolve("./specimens/multiple-chunks/a.js"),
-                    require.resolve("./specimens/multiple-chunks/b.js"),
-                ],
+        await expect(await bundle.generate({
+            format,
+            sourcemap,
 
-                plugins : [
-                    plugin({
-                        namer,
-                        map : false,
-                    }),
-                ],
+            entryFileNames : "[name].[hash].js",
+        })).toMatchRollupSnapshot();
+    });
 
-            });
+    it.each([
+        [ "not hashed", { assetFileNames, chunkFileNames }],
+        [ "hashed", {}],
+    ])("should support deduping names via rollup (%s)", async (name, args) => {
+        const bundle = await rollup({
+            input : [
+                require.resolve("./specimens/multiple-chunks/a.js"),
+                require.resolve("./specimens/multiple-chunks/b.js"),
+            ],
 
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
+            plugins : [
+                createPlugin({
+                    map : false,
+                }),
+            ],
 
-                assetFileNames,
-                chunkFileNames,
-            })).toMatchRollupAssetSnapshot();
         });
 
-        it("should dedupe chunk names using rollup's incrementing counter logic (hashed)", async () => {
-            const bundle = await rollup({
-                input : [
-                    require.resolve("./specimens/multiple-chunks/a.js"),
-                    require.resolve("./specimens/multiple-chunks/b.js"),
-                ],
+        await expect(await bundle.generate({
+            format,
+            sourcemap,
 
-                plugins : [
-                    plugin({
-                        namer,
-                        map : false,
-                    }),
-                ],
+            ...args,
+        })).toMatchRollupAssetSnapshot();
+    });
 
-            });
+    it("should support circular JS dependencies", async () => {
+        const bundle = await rollup({
+            onwarn(warning, handler) {
+                if(warning.code === "CIRCULAR_DEPENDENCY") {
+                    return;
+                }
 
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
-            })).toMatchRollupAssetSnapshot();
+                handler(warning);
+            },
+
+            input : [
+                require.resolve("./specimens/circular-dependencies/a.js"),
+                require.resolve("./specimens/circular-dependencies/b.js"),
+            ],
+
+            plugins : [
+                createPlugin(),
+            ],
         });
 
-        it("should support circular JS dependencies", async () => {
-            const bundle = await rollup({
-                onwarn(warning, handler) {
-                    if(warning.code === "CIRCULAR_DEPENDENCY") {
-                        return;
-                    }
+        await expect(await bundle.generate({
+            format,
+            sourcemap,
 
-                    handler(warning);
-                },
-
-                input : [
-                    require.resolve("./specimens/circular-dependencies/a.js"),
-                    require.resolve("./specimens/circular-dependencies/b.js"),
-                ],
-
-                plugins : [
-                    plugin({
-                        namer,
-                        map,
-                    }),
-                ],
-            });
-
-            await expect(await bundle.generate({
-                format,
-                sourcemap,
-
-                assetFileNames,
-                chunkFileNames,
-            })).toMatchRollupSnapshot();
-        });
+            assetFileNames,
+            chunkFileNames,
+        })).toMatchRollupSnapshot();
     });
 });
