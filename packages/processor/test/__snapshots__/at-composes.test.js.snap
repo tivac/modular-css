@@ -3,14 +3,14 @@
 exports[`/processor.js @composes should allow composing classes from the composed file 1`] = `
 Object {
   "a": Array [
-    "wooga",
-    "a",
+    "mc_wooga",
+    "mc_a",
   ],
   "b": Array [
-    "b",
+    "mc_b",
   ],
   "wooga": Array [
-    "wooga",
+    "mc_wooga",
   ],
 }
 `;
@@ -18,20 +18,18 @@ Object {
 exports[`/processor.js @composes should allow for chains of @composes-included files 1`] = `
 Object {
   "a": Array [
-    "wooga",
-    "notblue",
-    "a",
+    "mc_notblue",
+    "mc_a",
   ],
   "b": Array [
-    "wooga",
-    "b",
+    "mc_wooga",
+    "mc_b",
   ],
   "notblue": Array [
-    "wooga",
-    "notblue",
+    "mc_notblue",
   ],
   "wooga": Array [
-    "wooga",
+    "mc_wooga",
   ],
 }
 `;
@@ -40,19 +38,19 @@ exports[`/processor.js @composes should include compositions from the composed f
 Object {
   "packages/processor/test/specimens/at-composes.css": Object {
     "a": Array [
-      "a",
+      "mc_a",
     ],
     "b": Array [
-      "wooga",
-      "b",
+      "mc_wooga",
+      "mc_b",
     ],
     "wooga": Array [
-      "wooga",
+      "mc_wooga",
     ],
   },
   "packages/processor/test/specimens/simple.css": Object {
     "wooga": Array [
-      "wooga",
+      "mc_wooga",
     ],
   },
 }
@@ -61,31 +59,30 @@ Object {
 exports[`/processor.js @composes should include exported classes from the composed file 1`] = `
 Object {
   "a": Array [
-    "a",
+    "mc_a",
   ],
   "b": Array [
-    "b",
+    "mc_b",
   ],
   "booga": Array [
-    "booga",
+    "mc_booga",
   ],
   "looga": Array [
-    "booga",
-    "looga",
+    "mc_looga",
   ],
 }
 `;
 
 exports[`/processor.js @composes should include exported classes from the composed file 2`] = `
 "/* packages/processor/test/specimens/folder/folder.css */
-.folder { margin: 2px; }
+.mc_folder { margin: 2px; }
 /* packages/processor/test/specimens/local.css */
-.booga { background: green; }
+.mc_booga { background: green; }
 /* packages/processor/test/specimens/at-composes.css */
-.a {
+.mc_a {
     color: aqua;
 }
-.b {
+.mc_b {
     color: blue;
 }
 "
@@ -95,12 +92,12 @@ exports[`/processor.js @composes should not include exported values from the com
 
 exports[`/processor.js @composes should output css from the composed file 1`] = `
 "/* packages/processor/test/specimens/simple.css */
-.wooga { color: red; }
+.mc_wooga { color: red; }
 /* packages/processor/test/specimens/at-composes.css */
-.a {
+.mc_a {
     color: aqua;
 }
-.b {
+.mc_b {
     color: blue;
 }
 "

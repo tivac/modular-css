@@ -2,19 +2,19 @@
 
 exports[`/processor.js externals should support overriding external values 1`] = `
 "/* packages/processor/test/specimens/folder/folder.css */
-.folder { margin: 2px; }
+.mc_folder { margin: 2px; }
 /* packages/processor/test/specimens/simple.css */
-.wooga { color: red; }
+.mc_wooga { color: red; }
 /* packages/processor/test/specimens/local.css */
-.booga { background: green; }
+.mc_booga { background: green; }
 /* packages/processor/test/specimens/externals.css */
-.a .wooga {
+.mc_a .mc_wooga {
     color: green;
 }
-.b:hover .booga {
+.mc_b:hover .mc_booga {
     background: blue;
 }
-.wooga .booga {
+.mc_wooga .mc_booga {
     color: red;
 }
 "

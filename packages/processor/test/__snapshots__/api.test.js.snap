@@ -20,7 +20,7 @@ Array [
 exports[`/processor.js API .file() should process a relative file 1`] = `
 Object {
   "wooga": Array [
-    "wooga",
+    "mc_wooga",
   ],
 }
 `;
@@ -28,20 +28,20 @@ Object {
 exports[`/processor.js API .file() should process a relative file 2`] = `
 Object {
   "wooga": Array [
-    "wooga",
+    "mc_wooga",
   ],
 }
 `;
 
 exports[`/processor.js API .file() should process a relative file 3`] = `
-".wooga { color: red; }
+".mc_wooga { color: red; }
 "
 `;
 
 exports[`/processor.js API .file() should process an absolute file 1`] = `
 Object {
   "wooga": Array [
-    "wooga",
+    "mc_wooga",
   ],
 }
 `;
@@ -49,13 +49,13 @@ Object {
 exports[`/processor.js API .file() should process an absolute file 2`] = `
 Object {
   "wooga": Array [
-    "wooga",
+    "mc_wooga",
   ],
 }
 `;
 
 exports[`/processor.js API .file() should process an absolute file 3`] = `
-".wooga { color: red; }
+".mc_wooga { color: red; }
 "
 `;
 
@@ -63,18 +63,18 @@ exports[`/processor.js API .file() should wait for dependencies to be processed 
 Array [
   Object {
     "one": Array [
-      "three",
-      "two",
-      "one",
-      "one",
+      "mc_three",
+      "mc_two",
+      "mc_one",
+      "mc_one",
     ],
   },
   Object {
     "two": Array [
-      "three",
-      "two",
-      "one",
-      "two",
+      "mc_three",
+      "mc_two",
+      "mc_one",
+      "mc_two",
     ],
   },
 ]
@@ -143,7 +143,7 @@ Array [
 exports[`/processor.js API .output() should allow for seperate source map output 1`] = `
 Object {
   "file": "to.css",
-  "mappings": "AAAA,wDAAA;AACA,UAAU,WAAW,EAAE;ACDvB,gDAAA;AAIA,SAAS,iBAAiB,EAAE;ACJ5B,gDAAA;AAEA,SDFA,UAAe,EACf,gBAAgB,ECCsB;AACtC,SFHA,uBAAoB,EEGe",
+  "mappings": "AAAA,wDAAA;AACA,aAAU,WAAW,EAAE;ACDvB,gDAAA;AAIA,YAAS,iBAAiB,EAAE;ACJ5B,gDAAA;AAEA,YDFA,UAAe,EACf,gBAAgB,ECCsB;AACtC,YFHA,uBAAoB,EEGe",
   "names": Array [],
   "sources": Array [
     "packages/processor/test/specimens/folder/folder.css",
@@ -173,12 +173,12 @@ Object {
 
 exports[`/processor.js API .output() should avoid duplicating files in the output 1`] = `
 "/* packages/processor/test/specimens/folder/folder.css */
-.folder { margin: 2px; }
+.mc_folder { margin: 2px; }
 /* packages/processor/test/specimens/local.css */
-.booga { background: green; }
+.mc_booga { background: green; }
 /* packages/processor/test/specimens/start.css */
-.booga { color: red; background: blue; }
-.tooga { border: 1px solid white; }
+.mc_booga { color: red; background: blue; }
+.mc_tooga { border: 1px solid white; }
 "
 `;
 
@@ -186,28 +186,28 @@ exports[`/processor.js API .output() should generate a JSON structure of all the
 Object {
   "packages/processor/test/specimens/folder/folder.css": Object {
     "folder": Array [
-      "folder",
+      "mc_folder",
     ],
   },
   "packages/processor/test/specimens/local.css": Object {
     "booga": Array [
-      "booga",
+      "mc_booga",
     ],
     "looga": Array [
-      "booga",
-      "looga",
+      "mc_booga",
+      "mc_looga",
     ],
   },
   "packages/processor/test/specimens/start.css": Object {
     "booga": Array [
-      "booga",
+      "mc_booga",
     ],
     "tooga": Array [
-      "tooga",
+      "mc_tooga",
     ],
     "wooga": Array [
-      "booga",
-      "wooga",
+      "mc_booga",
+      "mc_wooga",
     ],
   },
 }
@@ -215,59 +215,59 @@ Object {
 
 exports[`/processor.js API .output() should generate css representing the output from all added files 1`] = `
 "/* packages/processor/test/specimens/folder/folder.css */
-.folder { margin: 2px; }
+.mc_folder { margin: 2px; }
 /* packages/processor/test/specimens/simple.css */
-.wooga { color: red; }
+.mc_wooga { color: red; }
 /* packages/processor/test/specimens/local.css */
-.booga { background: green; }
+.mc_booga { background: green; }
 /* packages/processor/test/specimens/start.css */
-.booga { color: red; background: blue; }
-.tooga { border: 1px solid white; }
+.mc_booga { color: red; background: blue; }
+.mc_tooga { border: 1px solid white; }
 "
 `;
 
 exports[`/processor.js API .output() should order output by dependencies, then alphabetically 1`] = `
 "/* packages/processor/test/specimens/folder/folder.css */
-.folder { margin: 2px; }
+.mc_folder { margin: 2px; }
 /* packages/processor/test/specimens/folder/folder2.css */
-.folder2 { color: green; }
+.mc_folder2 { color: green; }
 /* packages/processor/test/specimens/folder/subfolder/subfolder.css */
-.subfolder { color: yellow; }
+.mc_subfolder { color: yellow; }
 /* packages/processor/test/specimens/local.css */
-.booga { background: green; }
+.mc_booga { background: green; }
 /* packages/processor/test/specimens/composes.css */
 /* packages/processor/test/specimens/deep.css */
-.deep {
+.mc_deep {
     color: black;
 }
 /* packages/processor/test/specimens/start.css */
-.booga { color: red; background: blue; }
-.tooga { border: 1px solid white; }
+.mc_booga { color: red; background: blue; }
+.mc_tooga { border: 1px solid white; }
 "
 `;
 
 exports[`/processor.js API .output() should return a postcss result 1`] = `
 "/* packages/processor/test/specimens/folder/folder.css */
-.folder { margin: 2px; }
+.mc_folder { margin: 2px; }
 /* packages/processor/test/specimens/local.css */
-.booga { background: green; }
+.mc_booga { background: green; }
 /* packages/processor/test/specimens/start.css */
-.booga { color: red; background: blue; }
-.tooga { border: 1px solid white; }
+.mc_booga { color: red; background: blue; }
+.mc_tooga { border: 1px solid white; }
 "
 `;
 
 exports[`/processor.js API .output() should support returning output for specified absolute files 1`] = `
 "/* packages/processor/test/specimens/start.css */
-.booga { color: red; background: blue; }
-.tooga { border: 1px solid white; }
+.mc_booga { color: red; background: blue; }
+.mc_tooga { border: 1px solid white; }
 "
 `;
 
 exports[`/processor.js API .output() should support returning output for specified relative files 1`] = `
 "/* packages/processor/test/specimens/start.css */
-.booga { color: red; background: blue; }
-.tooga { border: 1px solid white; }
+.mc_booga { color: red; background: blue; }
+.mc_tooga { border: 1px solid white; }
 "
 `;
 
@@ -303,7 +303,7 @@ Array [
 exports[`/processor.js API .root() should process a postcss Root 1`] = `
 Object {
   "wooga": Array [
-    "wooga",
+    "mc_wooga",
   ],
 }
 `;
@@ -311,17 +311,17 @@ Object {
 exports[`/processor.js API .root() should process a postcss Root 2`] = `
 Object {
   "wooga": Array [
-    "wooga",
+    "mc_wooga",
   ],
 }
 `;
 
-exports[`/processor.js API .root() should process a postcss Root 3`] = `".wooga { }"`;
+exports[`/processor.js API .root() should process a postcss Root 3`] = `".mc_wooga { }"`;
 
 exports[`/processor.js API .string() should process a string 1`] = `
 Object {
   "wooga": Array [
-    "wooga",
+    "mc_wooga",
   ],
 }
 `;
@@ -329,9 +329,9 @@ Object {
 exports[`/processor.js API .string() should process a string 2`] = `
 Object {
   "wooga": Array [
-    "wooga",
+    "mc_wooga",
   ],
 }
 `;
 
-exports[`/processor.js API .string() should process a string 3`] = `".wooga { }"`;
+exports[`/processor.js API .string() should process a string 3`] = `".mc_wooga { }"`;

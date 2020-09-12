@@ -3,16 +3,16 @@
 exports[`/processor.js scoping should handle pseudo classes correctly 1`] = `
 Object {
   "b": Array [
-    "b",
+    "mc_b",
   ],
   "c": Array [
     "c",
   ],
   "d": Array [
-    "d",
+    "mc_d",
   ],
   "e": Array [
-    "e",
+    "mc_e",
   ],
   "g1": Array [
     "g1",
@@ -26,34 +26,34 @@ Object {
 exports[`/processor.js scoping should handle pseudo classes correctly 2`] = `
 "/* simple.css */
 .g1 {}
-.b .g2 {}
+.mc_b .g2 {}
 #c {}
-.d:hover {}
-.e:not(.e) {}"
+.mc_d:hover {}
+.mc_e:not(.mc_e) {}"
 `;
 
 exports[`/processor.js scoping should scope classes, ids, and keyframes 1`] = `
 Object {
   "fooga": Array [
-    "fooga",
+    "mc_fooga",
   ],
   "one": Array [
-    "one",
+    "mc_one",
   ],
   "two": Array [
-    "two",
+    "mc_two",
   ],
   "wooga": Array [
-    "wooga",
+    "mc_wooga",
   ],
 }
 `;
 
 exports[`/processor.js scoping should scope classes, ids, and keyframes 2`] = `
 "/* simple.css */
-@keyframes kooga { }
-#fooga { }
-.wooga { }
-.one,
-.two { }"
+@keyframes mc_kooga { }
+#mc_fooga { }
+.mc_wooga { }
+.mc_one,
+.mc_two { }"
 `;
