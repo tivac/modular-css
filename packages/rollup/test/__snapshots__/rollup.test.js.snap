@@ -253,7 +253,7 @@ Object {
 
 exports[`/rollup.js should express locally-composed classes correctly 1`] = `
 Object {
-  "assets/local-composition-cd5990b5.css": "
+  "assets/local-composition-eb6d490a.css": "
 /* packages/rollup/test/specimens/local-composition.css */
 .mc_one {
     color: red;
@@ -261,7 +261,8 @@ Object {
 
 .mc_two {
     background: blue;
-}",
+}
+",
   "local-composition.js": "
 const one = \\"mc_one\\";
 const two = one + \\" \\" + \\"mc_two\\";
