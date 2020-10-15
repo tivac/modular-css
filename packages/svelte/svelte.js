@@ -53,7 +53,7 @@ module.exports = (config = false) => {
 
         // Turn all missing values into strings so nothing explodes
         return source.replace(
-            new RegExp(`(${missed.map((ref) => escape(ref)).join("|")})`, "g"),
+            new RegExp(`(\\b)(${missed.map((ref) => escape(ref)).join("|")})(\\b)`, "g"),
             (match) => JSON.stringify(match)
         );
     };
