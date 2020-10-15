@@ -241,7 +241,7 @@ exports[`/svelte.js should extract CSS from a <style> tag 2`] = `
 "
 `;
 
-exports[`/svelte.js should handle errors: empty css file - <link> 1`] = `"[@modular-css/svelte] Unable to find .nope, .alsonope in \\"./empty.css\\""`;
+exports[`/svelte.js should handle errors: empty css file - <link> 1`] = `"[@modular-css/svelte] Unable to find .nope, .nopedynope, .alsonope in \\"./empty.css\\""`;
 
 exports[`/svelte.js should handle errors: empty css file - <link> 2`] = `
 Array [
@@ -253,6 +253,11 @@ Array [
   Array [
     "[@modular-css/svelte]",
     "WARN",
+    "Unable to find .nopedynope in ./empty.css",
+  ],
+  Array [
+    "[@modular-css/svelte]",
+    "WARN",
     "Unable to find .alsonope in ./empty.css",
   ],
 ]
@@ -260,6 +265,7 @@ Array [
 
 exports[`/svelte.js should handle errors: empty css file - <link> 3`] = `
 "<div class=\\"{\\"css.nope\\"}\\">NOPE</div>
+<div class=\\"{\\"css.nopedynope\\"}\\">NOPEDY NOPE</div>
 <div class=\\"{\\"css.alsonope\\"}\\">STILL NOPE</div>
 <script>import css from \\"./empty.css\\";</script>"
 `;
