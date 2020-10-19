@@ -16,7 +16,7 @@ describe("/browserify.js", () => {
         describe("/58", () => {
             afterAll(() => shell.rm("-rf", "./packages/browserify/test/output/issues"));
             
-            it("should update when CSS dependencies change", (done) => {
+            it("should update when CSS dependencies change", () => new Promise((done) => {
                 const build = browserify();
                 
                 write("./issues/58/issue.css", `
@@ -66,7 +66,7 @@ describe("/browserify.js", () => {
                         .other3 { composes: other2; background: white; }
                     `);
                 });
-            });
+            }));
         });
     });
 });
