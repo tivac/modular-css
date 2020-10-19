@@ -140,17 +140,25 @@ module.exports = (opts = {}) => {
 
             // create import statements for all of the values used in compositions
             compositions.forEach((comp) => {
-                const { file, selector } = graph.getNodeData(comp);
+                const { file, selectors } = graph.getNodeData(comp);
 
-                if(!selector || file === id) {
+                if(file === id) {
                     return;
                 }
 
-                const unique = deconflict(identifiers, selector);
+                const imported = [];
 
-                externalsMap.set(`${file}${selector}`, unique);
+                selectors.forEach((key) => {
+                    const { selector } = graph.getNodeData(key);
 
-                out.push(`import { ${selector} as ${unique} } from ${JSON.stringify(file)};`);
+                    const unique = deconflict(identifiers, selector);
+    
+                    externalsMap.set(Processor.selectorKey(file, selector), unique);
+
+                    imported.push(`${selector} as ${unique}`);
+                });
+
+                out.push(`import { ${imported.join(", ")} } from ${JSON.stringify(file)};`);
             });
 
             const values = Object.keys(details.values);
@@ -192,8 +200,6 @@ module.exports = (opts = {}) => {
                 internalsMap.set(key, unique);
             });
 
-            // console.log(graph);
-
             // Create vars representing exported classes & use them in local var definitions
             exportedKeys.forEach((key) => {
                 const elements = [];
@@ -204,13 +210,13 @@ module.exports = (opts = {}) => {
                 if(graph.hasNode(selectorKey)) {
                     graph.dependenciesOf(selectorKey).forEach((dep) => {
                         const { file, selector } = graph.getNodeData(dep);
-                        
+
                         if(!selector) {
                             return;
                         }
 
                         if(file !== id) {
-                            elements.push(externalsMap.get(`${file}${selector}`));
+                            elements.push(externalsMap.get(Processor.selectorKey(file, selector)));
                         } else {
                             elements.push(internalsMap.get(selector));
                         }
@@ -282,8 +288,6 @@ module.exports = (opts = {}) => {
             dependencies.forEach((dep) => {
                 this.addWatchFile(dep);
             });
-
-            // console.log(id, "\n", out.join("\n"));
 
             // Return JS representation to rollup
             return {

@@ -398,20 +398,34 @@ class Processor {
         const key = fileKey(file);
         
         if(!this._graph.hasNode(key)) {
-            this._graph.addNode(key, { file, ...opts });
+            this._graph.addNode(key, {
+                file,
+                selectors : [],
+                ...opts,
+            });
         }
 
         return key;
     }
 
     _addSelector(file, selector, opts = false) {
-        const key = selectorKey(file, selector);
+        const fKey = fileKey(file);
+        const sKey = selectorKey(file, selector);
         
-        if(!this._graph.hasNode(key)) {
-            this._graph.addNode(key, { file, selector, ...opts });
+        // Ensure the file always exists
+        this._addFile(file, opts);
+
+        if(!this._graph.hasNode(sKey)) {
+            this._graph.addNode(sKey, {
+                file,
+                selector,
+                ...opts,
+            });
+
+            this._graph.getNodeData(fKey).selectors.push(sKey);
         }
 
-        return key;
+        return sKey;
     }
 
     _addGlobal(selector, opts = false) {
@@ -558,11 +572,7 @@ class Processor {
                 refs.forEach(({ name : depSelector }) => {
                     const depSelectorId = this._addSelector(dep, depSelector);
 
-                    // Can't add dependency from dependent selector -> file,
-                    // because it ends up adding extra output when walking dependencies
-                    // in some cases.
                     this._graph.addDependency(selectorId, depSelectorId);
-                    this._graph.addDependency(fileId, depSelectorId);
                 });
             }
         });
