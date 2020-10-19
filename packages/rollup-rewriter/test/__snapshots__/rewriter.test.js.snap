@@ -1,15 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`rollup-rewriter should error on unsupported formats ("cjs") 1`] = `"Unsupported format: cjs. Supported formats are [\\"amd\\",\\"es\\",\\"esm\\",\\"system\\"]"`;
+exports[`rollup-rewriter should error on unsupported formats (cjs) 1`] = `"Unsupported format: cjs. Supported formats are [\\"amd\\",\\"es\\",\\"esm\\",\\"system\\"]"`;
 
-exports[`rollup-rewriter should ignore unknown imports 1`] = `
+exports[`rollup-rewriter should ignore unknown imports (amd) 1`] = `
 Object {
   "a.js": "
 define(['require', 'external'], function (require, external) { 'use strict';
 
-    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-    var external__default = /*#__PURE__*/_interopDefaultLegacy(external);
+    external = external && Object.prototype.hasOwnProperty.call(external, 'default') ? external['default'] : external;
 
     const a = \\"mc_a\\";
     var css = {
@@ -17,7 +15,7 @@ define(['require', 'external'], function (require, external) { 'use strict';
     };
 
     function a$1() {
-        console.log(css, external__default['default']);
+        console.log(css, external);
 
         new Promise(function (resolve, reject) { Promise.all([
     lazyload(\\"./assets/c.css\\"),
@@ -58,7 +56,7 @@ define(['exports'], function (exports) { 'use strict';
 }
 `;
 
-exports[`rollup-rewriter should ignore unknown imports 2`] = `
+exports[`rollup-rewriter should ignore unknown imports (es) 1`] = `
 Object {
   "a.js": "
 import external from 'external';
@@ -103,7 +101,7 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter should ignore unknown imports 3`] = `
+exports[`rollup-rewriter should ignore unknown imports (esm) 1`] = `
 Object {
   "a.js": "
 import external from 'external';
@@ -148,7 +146,7 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter should ignore unknown imports 4`] = `
+exports[`rollup-rewriter should ignore unknown imports (system) 1`] = `
 Object {
   "a.js": "
 System.register(['external'], function (exports, module) {
@@ -211,7 +209,7 @@ System.register([], function (exports) {
 }
 `;
 
-exports[`rollup-rewriter should include css for static imports used by a dynamic import ("amd") 1`] = `
+exports[`rollup-rewriter should include css for static imports used by a dynamic import (amd) 1`] = `
 Object {
   "assets/dynamic1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/dynamic1.css */
@@ -306,7 +304,7 @@ define(['exports'], function (exports) { 'use strict';
 }
 `;
 
-exports[`rollup-rewriter should include css for static imports used by a dynamic import ("es") 1`] = `
+exports[`rollup-rewriter should include css for static imports used by a dynamic import (es) 1`] = `
 Object {
   "assets/dynamic1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/dynamic1.css */
@@ -388,7 +386,7 @@ export { static1$1 as s };
 }
 `;
 
-exports[`rollup-rewriter should include css for static imports used by a dynamic import ("esm") 1`] = `
+exports[`rollup-rewriter should include css for static imports used by a dynamic import (esm) 1`] = `
 Object {
   "assets/dynamic1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/dynamic1.css */
@@ -470,7 +468,7 @@ export { static1$1 as s };
 }
 `;
 
-exports[`rollup-rewriter should include css for static imports used by a dynamic import ("system") 1`] = `
+exports[`rollup-rewriter should include css for static imports used by a dynamic import (system) 1`] = `
 Object {
   "assets/dynamic1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/dynamic1.css */
@@ -603,7 +601,7 @@ Array [
 ]
 `;
 
-exports[`rollup-rewriter should only rewrite when necessary ("amd") 1`] = `
+exports[`rollup-rewriter should only rewrite when necessary (amd) 1`] = `
 Object {
   "a.js": "
 define(['require'], function (require) { 'use strict';
@@ -678,7 +676,7 @@ define(['exports'], function (exports) { 'use strict';
 }
 `;
 
-exports[`rollup-rewriter should only rewrite when necessary ("es") 1`] = `
+exports[`rollup-rewriter should only rewrite when necessary (es) 1`] = `
 Object {
   "a.js": "
 const a = \\"mc_a\\";
@@ -736,7 +734,7 @@ export default d;
 }
 `;
 
-exports[`rollup-rewriter should only rewrite when necessary ("esm") 1`] = `
+exports[`rollup-rewriter should only rewrite when necessary (esm) 1`] = `
 Object {
   "a.js": "
 const a = \\"mc_a\\";
@@ -794,7 +792,7 @@ export default d;
 }
 `;
 
-exports[`rollup-rewriter should only rewrite when necessary ("system") 1`] = `
+exports[`rollup-rewriter should only rewrite when necessary (system) 1`] = `
 Object {
   "a.js": "
 System.register([], function (exports, module) {
@@ -884,7 +882,7 @@ System.register([], function (exports) {
 }
 `;
 
-exports[`rollup-rewriter should support loader & loadfn ("amd") 1`] = `
+exports[`rollup-rewriter should support loader & loadfn (amd) 1`] = `
 Object {
   "a.js": "
 define(['require'], function (require) { 'use strict';
@@ -989,7 +987,7 @@ define(['exports'], function (exports) { 'use strict';
 }
 `;
 
-exports[`rollup-rewriter should support loader & loadfn ("es") 1`] = `
+exports[`rollup-rewriter should support loader & loadfn (es) 1`] = `
 Object {
   "a.js": "
 import lazyload from \\"./css.js\\";
@@ -1076,7 +1074,7 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter should support loader & loadfn ("esm") 1`] = `
+exports[`rollup-rewriter should support loader & loadfn (esm) 1`] = `
 Object {
   "a.js": "
 import lazyload from \\"./css.js\\";
@@ -1163,7 +1161,7 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter should support loader & loadfn ("system") 1`] = `
+exports[`rollup-rewriter should support loader & loadfn (system) 1`] = `
 Object {
   "a.js": "
 System.register([], function (exports, module) {
@@ -1282,7 +1280,7 @@ System.register([], function (exports) {
 }
 `;
 
-exports[`rollup-rewriter should support loader being a function ("amd") 1`] = `
+exports[`rollup-rewriter should support loader being a function (amd) 1`] = `
 Object {
   "a": "
 define(['require'], function (require) { 'use strict';
@@ -1363,7 +1361,7 @@ define(['exports'], function (exports) { 'use strict';
 }
 `;
 
-exports[`rollup-rewriter should support loader being a function ("es") 1`] = `
+exports[`rollup-rewriter should support loader being a function (es) 1`] = `
 Object {
   "a": "
 import chunkCountIs8 from \\"./css.js\\";
@@ -1426,7 +1424,7 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter should support loader being a function ("esm") 1`] = `
+exports[`rollup-rewriter should support loader being a function (esm) 1`] = `
 Object {
   "a": "
 import chunkCountIs8 from \\"./css.js\\";
@@ -1489,7 +1487,7 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter should support loader being a function ("system") 1`] = `
+exports[`rollup-rewriter should support loader being a function (system) 1`] = `
 Object {
   "a": "
 System.register([], function (exports, module) {
@@ -1584,7 +1582,7 @@ System.register([], function (exports) {
 }
 `;
 
-exports[`rollup-rewriter shouldn't require a loader ("amd") 1`] = `
+exports[`rollup-rewriter shouldn't require a loader (amd) 1`] = `
 Object {
   "a.js": "
 define(['require'], function (require) { 'use strict';
@@ -1687,7 +1685,7 @@ define(['exports'], function (exports) { 'use strict';
 }
 `;
 
-exports[`rollup-rewriter shouldn't require a loader ("es") 1`] = `
+exports[`rollup-rewriter shouldn't require a loader (es) 1`] = `
 Object {
   "a.js": "
 const a = \\"mc_a\\";
@@ -1772,7 +1770,7 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter shouldn't require a loader ("esm") 1`] = `
+exports[`rollup-rewriter shouldn't require a loader (esm) 1`] = `
 Object {
   "a.js": "
 const a = \\"mc_a\\";
@@ -1857,7 +1855,7 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter shouldn't require a loader ("system") 1`] = `
+exports[`rollup-rewriter shouldn't require a loader (system) 1`] = `
 Object {
   "a.js": "
 System.register([], function (exports, module) {

@@ -354,7 +354,7 @@ module.exports = (opts = {}) => {
                 chunks.set(entry, { deps, name });
             });
 
-            // Add any bare CSS files to be output as part of the common chunk
+            // Add any bare CSS files to be output
             processor.dependencies().forEach((css) => {
                 if(used.has(css)) {
                     return;
