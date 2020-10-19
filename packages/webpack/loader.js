@@ -37,7 +37,7 @@ module.exports = async function(source) {
     try {
         const result = await processor.string(this.resourcePath, source);
 
-        const exported = output.join(result.exports);
+        const exported = output.fileCompositions(processor.files[this.resourcePath], processor, { joined : true });
         const out = [];
 
         if(options.defaultExport) {
