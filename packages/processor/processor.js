@@ -555,12 +555,12 @@ class Processor {
             if(selector) {
                 selectorId = this._addSelector(name, selector);
             
-                this._graph.addDependency(selectorId, fileId);
-
                 refs.forEach(({ name : depSelector }) => {
                     const depSelectorId = this._addSelector(dep, depSelector);
 
-                    this._graph.addDependency(depSelectorId, depId);
+                    // Can't add dependency from dependent selector -> file,
+                    // because it ends up adding extra output when walking dependencies
+                    // in some cases.
                     this._graph.addDependency(selectorId, depSelectorId);
                     this._graph.addDependency(fileId, depSelectorId);
                 });
