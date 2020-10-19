@@ -20,14 +20,17 @@ const emptyMappings = {
 };
 
 const DEFAULTS = {
+    // TODO: still used?
     common      : "common.css",
+    
     dev         : false,
+    empties     : false,
     json        : false,
+    map         : false,
     meta        : false,
     styleExport : false,
     valueExport : true,
     verbose     : false,
-    empties     : false,
     
     namedExports : {
         rewriteInvalid : true,

@@ -227,9 +227,7 @@ class Processor {
             throw new Error(`Unknown file: ${normalized}`);
         }
 
-        const results = this._graph.dependantsOf(key);
-
-        [ ...filterByPrefix(FILE_PREFIX, results), normalized ].forEach((file) => {
+        [ ...filterByPrefix(FILE_PREFIX, this._graph.dependantsOf(key)), normalized ].forEach((file) => {
             this._log("invalidate()", file);
 
             this._files[file].valid = false;
@@ -396,7 +394,7 @@ class Processor {
 
     _addFile(file, opts = false) {
         const key = fileKey(file);
-        
+
         if(!this._graph.hasNode(key)) {
             this._graph.addNode(key, {
                 file,
@@ -411,7 +409,7 @@ class Processor {
     _addSelector(file, selector, opts = false) {
         const fKey = fileKey(file);
         const sKey = selectorKey(file, selector);
-        
+
         // Ensure the file always exists
         this._addFile(file, opts);
 
@@ -516,10 +514,12 @@ class Processor {
     // Process files and walk their composition/value dependency tree to find
     // new files we need to process
     async _walk(name, src) {
+        const { _graph : graph, _files : files } = this;
+        
         // No need to re-process files unless they've been marked invalid
-        if(this._files[name] && this._files[name].valid) {
+        if(files[name] && files[name].valid) {
             // Do want to wait until they're done being processed though
-            await this._files[name].walked;
+            await files[name].walked;
 
             return;
         }
@@ -530,7 +530,7 @@ class Processor {
 
         let walked;
 
-        const file = this._files[name] = {
+        const file = files[name] = {
             name,
             text  : typeof src === "string" ? src : src.source.input.css,
             valid : true,
@@ -551,6 +551,11 @@ class Processor {
 
         await file.before;
 
+        // Remove any existing dependencies for this file
+        graph.dependenciesOf(fileId).forEach((other) => {
+            graph.removeDependency(fileId, other);
+        });
+
         // Add all the found dependencies to the graph
         file.before.messages.forEach(({ plugin, selector, refs = [], dependency }) => {
             if(plugin !== pluginGraphNodes.postcssPlugin) {
@@ -560,7 +565,7 @@ class Processor {
             const dep = this._normalize(dependency);
             const depId = this._addFile(dep);
             
-            this._graph.addDependency(fileId, depId);
+            graph.addDependency(fileId, depId);
             
             let selectorId;
             
@@ -568,19 +573,24 @@ class Processor {
             // if it exists to avoid polluting the dependency graph
             if(selector) {
                 selectorId = this._addSelector(name, selector);
-            
+
+                // Remove any existing dependencies for the selector
+                graph.dependenciesOf(selectorId).forEach((other) => {
+                    graph.removeDependency(selectorId, other);
+                });
+
                 refs.forEach(({ name : depSelector }) => {
                     const depSelectorId = this._addSelector(dep, depSelector);
 
-                    this._graph.addDependency(selectorId, depSelectorId);
+                    graph.addDependency(selectorId, depSelectorId);
                 });
             }
         });
 
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
-            filterByPrefix(FILE_PREFIX, this._graph.dependenciesOf(fileId)).map((dependency) => {
-                const { valid, walked : complete } = this._files[dependency] || false;
+            filterByPrefix(FILE_PREFIX, graph.dependenciesOf(fileId)).map((dependency) => {
+                const { valid, walked : complete } = files[dependency] || false;
 
                 // If the file hasn't been invalidated wait for it to be done processing
                 if(valid) {
