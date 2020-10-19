@@ -3,16 +3,16 @@
 exports[`/postcss.js should accept a \`json\` property and write exports to that file 1`] = `
 "{
     \\"packages/postcss/test/specimens/folder/folder.css\\": {
-        \\"folder\\": \\"folder\\"
+        \\"folder\\": \\"mc_folder\\"
     },
     \\"packages/postcss/test/specimens/local.css\\": {
-        \\"booga\\": \\"booga\\",
-        \\"looga\\": \\"booga looga\\"
+        \\"booga\\": \\"mc_booga\\",
+        \\"looga\\": \\"mc_booga mc_looga\\"
     },
     \\"packages/postcss/test/specimens/start.css\\": {
-        \\"wooga\\": \\"booga wooga\\",
-        \\"booga\\": \\"booga\\",
-        \\"tooga\\": \\"tooga\\"
+        \\"wooga\\": \\"mc_booga mc_wooga\\",
+        \\"booga\\": \\"mc_booga\\",
+        \\"tooga\\": \\"mc_tooga\\"
     }
 }"
 `;
@@ -20,7 +20,7 @@ exports[`/postcss.js should accept a \`json\` property and write exports to that
 exports[`/postcss.js should accept json args in either position with postcss 1`] = `
 "{
     \\"packages/postcss/test/specimens/simple.css\\": {
-        \\"wooga\\": \\"wooga\\"
+        \\"wooga\\": \\"mc_wooga\\"
     }
 }"
 `;
@@ -40,7 +40,7 @@ exports[`/postcss.js should be usable like a normal postcss plugin 1`] = `
 exports[`/postcss.js should output json when used within postcss 1`] = `
 "{
     \\"packages/postcss/test/specimens/simple.css\\": {
-        \\"wooga\\": \\"wooga\\"
+        \\"wooga\\": \\"mc_wooga\\"
     }
 }"
 `;
@@ -50,7 +50,7 @@ Array [
   Object {
     "exports": Object {
       "wooga": Array [
-        "wooga",
+        "mc_wooga",
       ],
     },
     "type": "modular-css-exports",
@@ -59,29 +59,29 @@ Array [
 `;
 
 exports[`/postcss.js should process CSS and output the result 1`] = `
-".wooga { color: red; }
+".mc_wooga { color: red; }
 "
 `;
 
 exports[`/postcss.js should process CSS with dependencies and output the result 1`] = `
-".booga { color: red; background: blue; }
-.tooga { border: 1px solid white; }
+".mc_booga { color: red; background: blue; }
+.mc_tooga { border: 1px solid white; }
 "
 `;
 
 exports[`/postcss.js should use output filepath for json if a custom path isn't provided 1`] = `
 "{
     \\"packages/postcss/test/specimens/folder/folder.css\\": {
-        \\"folder\\": \\"folder\\"
+        \\"folder\\": \\"mc_folder\\"
     },
     \\"packages/postcss/test/specimens/local.css\\": {
-        \\"booga\\": \\"booga\\",
-        \\"looga\\": \\"booga looga\\"
+        \\"booga\\": \\"mc_booga\\",
+        \\"looga\\": \\"mc_booga mc_looga\\"
     },
     \\"packages/postcss/test/specimens/start.css\\": {
-        \\"wooga\\": \\"booga wooga\\",
-        \\"booga\\": \\"booga\\",
-        \\"tooga\\": \\"tooga\\"
+        \\"wooga\\": \\"mc_booga mc_wooga\\",
+        \\"booga\\": \\"mc_booga\\",
+        \\"tooga\\": \\"mc_tooga\\"
     }
 }"
 `;
