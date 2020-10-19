@@ -21,8 +21,8 @@ const prefixed = (cwd, file) => {
     return out;
 };
 
-const outputs = ({ exports }) => `module.exports = ${
-    JSON.stringify(output.join(exports), null, 4)
+const outputs = (processor, file) => `module.exports = ${
+    JSON.stringify(output.fileCompositions(processor.files[file], processor, { joined : true }), null, 4)
 };`;
 
 module.exports = (browserify, opts) => {
@@ -88,7 +88,7 @@ module.exports = (browserify, opts) => {
                         browserify.emit("file", dep, dep)
                     );
 
-                    push(outputs(result));
+                    push(outputs(processor, file));
 
                     done();
                 },
@@ -132,7 +132,7 @@ module.exports = (browserify, opts) => {
             push({
                 id     : path.resolve(options.cwd, dep),
                 file   : path.resolve(options.cwd, dep),
-                source : outputs(processor.files[dep]),
+                source : outputs(processor, dep),
                 deps   : processor.dependencies(dep).reduce(depReducer, {}),
             });
         });
@@ -159,11 +159,7 @@ module.exports = (browserify, opts) => {
     // to remove the changed files from its cache so they will be re-processed
     browserify.on("update", (files) => {
         files.forEach((file) => {
-            processor.dependents(file).forEach((dep) =>
-                processor.remove(dep)
-            );
-
-            processor.remove(file);
+            processor.invalidate(file);
         });
     });
 
