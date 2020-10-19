@@ -9,10 +9,10 @@ Array [
 `;
 
 exports[`/svelte.js should extract CSS from a <link> tag (existing script) 1`] = `
-"<div class=\\"flex wrapper\\">
-    <h1 class=\\"fooga wooga flex hd\\">Head</h1>
-    <div class=\\"fooga wooga bd\\">
-        <p class=\\"{bool ? \\"text\\" : \\"active\\" }\\">Text</p>
+"<div class=\\"mc_flex mc_wrapper\\">
+    <h1 class=\\"mc_fooga mc_wooga mc_flex mc_hd\\">Head</h1>
+    <div class=\\"mc_fooga mc_wooga mc_bd\\">
+        <p class=\\"{bool ? \\"mc_text\\" : \\"mc_active\\" }\\">Text</p>
     </div>
 </div>
 
@@ -39,31 +39,31 @@ export default {
 
 exports[`/svelte.js should extract CSS from a <link> tag (existing script) 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 /* packages/svelte/test/specimens/dependencies.css */
-.wooga {
+.mc_wooga {
     background: blue;
 }
 /* packages/svelte/test/specimens/external.css */
-.flex {
+.mc_flex {
     display: flex;
 }
-.text {
+.mc_text {
     color: #000;
 }
-.active {
+.mc_active {
     color: #F00;
 }
 "
 `;
 
 exports[`/svelte.js should extract CSS from a <link> tag (no script) 1`] = `
-"<div class=\\"flex wrapper\\">
-    <h1 class=\\"fooga wooga flex hd\\">Head</h1>
-    <div class=\\"fooga wooga bd\\">
-        <p class=\\"{bool ? \\"text\\" : \\"active\\" }\\">Text</p>
+"<div class=\\"mc_flex mc_wrapper\\">
+    <h1 class=\\"mc_fooga mc_wooga mc_flex mc_hd\\">Head</h1>
+    <div class=\\"mc_fooga mc_wooga mc_bd\\">
+        <p class=\\"{bool ? \\"mc_text\\" : \\"mc_active\\" }\\">Text</p>
     </div>
 </div>
 <script>import css from \\"./external.css\\";</script>"
@@ -71,31 +71,31 @@ exports[`/svelte.js should extract CSS from a <link> tag (no script) 1`] = `
 
 exports[`/svelte.js should extract CSS from a <link> tag (no script) 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 /* packages/svelte/test/specimens/dependencies.css */
-.wooga {
+.mc_wooga {
     background: blue;
 }
 /* packages/svelte/test/specimens/external.css */
-.flex {
+.mc_flex {
     display: flex;
 }
-.text {
+.mc_text {
     color: #000;
 }
-.active {
+.mc_active {
     color: #F00;
 }
 "
 `;
 
 exports[`/svelte.js should extract CSS from a <link> tag (single quotes) 1`] = `
-"<div class=\\"flex wrapper\\">
-    <h1 class=\\"fooga wooga flex hd\\">Head</h1>
-    <div class=\\"fooga wooga bd\\">
-        <p class=\\"{bool ? \\"text\\" : \\"active\\" }\\">Text</p>
+"<div class=\\"mc_flex mc_wrapper\\">
+    <h1 class=\\"mc_fooga mc_wooga mc_flex mc_hd\\">Head</h1>
+    <div class=\\"mc_fooga mc_wooga mc_bd\\">
+        <p class=\\"{bool ? \\"mc_text\\" : \\"mc_active\\" }\\">Text</p>
     </div>
 </div>
 <script>import css from \\"./external.css\\";</script>"
@@ -103,31 +103,31 @@ exports[`/svelte.js should extract CSS from a <link> tag (single quotes) 1`] = `
 
 exports[`/svelte.js should extract CSS from a <link> tag (single quotes) 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 /* packages/svelte/test/specimens/dependencies.css */
-.wooga {
+.mc_wooga {
     background: blue;
 }
 /* packages/svelte/test/specimens/external.css */
-.flex {
+.mc_flex {
     display: flex;
 }
-.text {
+.mc_text {
     color: #000;
 }
-.active {
+.mc_active {
     color: #F00;
 }
 "
 `;
 
 exports[`/svelte.js should extract CSS from a <link> tag (unquoted) 1`] = `
-"<div class=\\"flex wrapper\\">
-    <h1 class=\\"fooga wooga flex hd\\">Head</h1>
-    <div class=\\"fooga wooga bd\\">
-        <p class=\\"{bool ? \\"text\\" : \\"active\\" }\\">Text</p>
+"<div class=\\"mc_flex mc_wrapper\\">
+    <h1 class=\\"mc_fooga mc_wooga mc_flex mc_hd\\">Head</h1>
+    <div class=\\"mc_fooga mc_wooga mc_bd\\">
+        <p class=\\"{bool ? \\"mc_text\\" : \\"mc_active\\" }\\">Text</p>
     </div>
 </div>
 <script>import css from \\"./external.css\\";</script>"
@@ -135,21 +135,21 @@ exports[`/svelte.js should extract CSS from a <link> tag (unquoted) 1`] = `
 
 exports[`/svelte.js should extract CSS from a <link> tag (unquoted) 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 /* packages/svelte/test/specimens/dependencies.css */
-.wooga {
+.mc_wooga {
     background: blue;
 }
 /* packages/svelte/test/specimens/external.css */
-.flex {
+.mc_flex {
     display: flex;
 }
-.text {
+.mc_text {
     color: #000;
 }
-.active {
+.mc_active {
     color: #F00;
 }
 "
@@ -179,31 +179,31 @@ import css from \\"./external.css\\";
 
 exports[`/svelte.js should extract CSS from a <link> tag (values) 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 /* packages/svelte/test/specimens/dependencies.css */
-.wooga {
+.mc_wooga {
     background: blue;
 }
 /* packages/svelte/test/specimens/external.css */
-.flex {
+.mc_flex {
     display: flex;
 }
-.text {
+.mc_text {
     color: #000;
 }
-.active {
+.mc_active {
     color: #F00;
 }
 "
 `;
 
 exports[`/svelte.js should extract CSS from a <style> tag 1`] = `
-"<div class=\\"flex wrapper\\">
-    <h1 class=\\"fooga wooga flex hd\\">Head</h1>
-    <div class=\\"fooga wooga bd\\">
-        <p class=\\"{bool ? \\"text\\" : \\"active\\" }\\">Text</p>
+"<div class=\\"mc_flex mc_wrapper\\">
+    <h1 class=\\"mc_fooga mc_wooga mc_flex mc_hd\\">Head</h1>
+    <div class=\\"mc_fooga mc_wooga mc_bd\\">
+        <p class=\\"{bool ? \\"mc_text\\" : \\"mc_active\\" }\\">Text</p>
     </div>
 </div>
 
@@ -221,21 +221,21 @@ export default {
 
 exports[`/svelte.js should extract CSS from a <style> tag 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 /* packages/svelte/test/specimens/dependencies.css */
-.wooga {
+.mc_wooga {
     background: blue;
 }
 /* packages/svelte/test/specimens/style.html */
-.flex {
+.mc_flex {
         display: flex;
     }
-.text {
+.mc_text {
         color: #000;
     }
-.active {
+.mc_active {
         color: #F00;
     }
 "
@@ -313,7 +313,7 @@ Array [
 `;
 
 exports[`/svelte.js should handle errors: invalid reference <script> - <link> 3`] = `
-"<h2 class=\\"yup\\">Yup</h2>
+"<h2 class=\\"mc_yup\\">Yup</h2>
 
 <script>
 import css from \\"./invalid.css\\";
@@ -343,7 +343,7 @@ Array [
 `;
 
 exports[`/svelte.js should handle errors: invalid reference <script> - <style> 3`] = `
-"<h2 class=\\"yup\\">Yup</h2>
+"<h2 class=\\"mc_yup\\">Yup</h2>
 
 <style>/* replaced by modular-css */</style>
 
@@ -373,7 +373,7 @@ Array [
 
 exports[`/svelte.js should handle errors: invalid reference template - <link> 3`] = `
 "<h1 class=\\"{\\"css.nope\\"}\\">Nope</h1>
-<h2 class=\\"yup\\">Yup</h2>
+<h2 class=\\"mc_yup\\">Yup</h2>
 <h3 class=\\"{\\"css.stillnope\\"}\\">Still Nope</h3>
 <script>import css from \\"./invalid.css\\";</script>"
 `;
@@ -397,7 +397,7 @@ Array [
 
 exports[`/svelte.js should handle errors: invalid reference template - <style> 3`] = `
 "<h1 class=\\"{\\"css.nope\\"}\\">Nope</h1>
-<h2 class=\\"yup\\">Yup</h2>
+<h2 class=\\"mc_yup\\">Yup</h2>
 <h3 class=\\"{\\"css.alsonope\\"}\\">Also Nope</h3>
 
 <style>/* replaced by modular-css */</style>
@@ -406,13 +406,13 @@ exports[`/svelte.js should handle errors: invalid reference template - <style> 3
 
 exports[`/svelte.js should ignore <links> that reference a URL 1`] = `
 "<link rel=\\"stylesheet\\" href=\\"http://example.com/styles.css\\" />
-<div class=\\"fooga\\">fooga</div>
+<div class=\\"mc_fooga\\">fooga</div>
 <script>import css from \\"./simple.css\\";</script>"
 `;
 
 exports[`/svelte.js should ignore <links> that reference a URL 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 "
@@ -425,42 +425,42 @@ exports[`/svelte.js should ignore files without <style> blocks 1`] = `
 
 exports[`/svelte.js should ignore files without <style> blocks 2`] = `""`;
 
-exports[`/svelte.js should invalidate files before reprocessing (<link>) 1`] = `"<div class=\\"source\\">Source</div><script>import css from \\"./source.css\\";</script>"`;
+exports[`/svelte.js should invalidate files before reprocessing (<link>) 1`] = `"<div class=\\"mc_source\\">Source</div><script>import css from \\"./source.css\\";</script>"`;
 
 exports[`/svelte.js should invalidate files before reprocessing (<link>) 2`] = `
 "/* packages/svelte/test/output/source.css */
-.source {
+.mc_source {
     color: red;
 }"
 `;
 
-exports[`/svelte.js should invalidate files before reprocessing (<link>) 3`] = `"<div class=\\"source\\">Source</div><script>import css from \\"./source.css\\";</script>"`;
+exports[`/svelte.js should invalidate files before reprocessing (<link>) 3`] = `"<div class=\\"mc_source\\">Source</div><script>import css from \\"./source.css\\";</script>"`;
 
 exports[`/svelte.js should invalidate files before reprocessing (<link>) 4`] = `
 "/* packages/svelte/test/output/source.css */
-.source {
+.mc_source {
     color: blue;
 }"
 `;
 
 exports[`/svelte.js should invalidate files before reprocessing (<style>) 1`] = `
 "<style>/* replaced by modular-css */</style>
-<div class=\\"source\\">Source</div>"
+<div class=\\"mc_source\\">Source</div>"
 `;
 
 exports[`/svelte.js should invalidate files before reprocessing (<style>) 2`] = `
 "/* packages/svelte/test/output/source.html */
-.source { color: red; }"
+.mc_source { color: red; }"
 `;
 
 exports[`/svelte.js should invalidate files before reprocessing (<style>) 3`] = `
 "<style>/* replaced by modular-css */</style>
-<div class=\\"source\\">Source</div>"
+<div class=\\"mc_source\\">Source</div>"
 `;
 
 exports[`/svelte.js should invalidate files before reprocessing (<style>) 4`] = `
 "/* packages/svelte/test/output/source.html */
-.source { color: blue; }"
+.mc_source { color: blue; }"
 `;
 
 exports[`/svelte.js should no-op if all <link>s reference a URL 1`] = `
@@ -692,27 +692,27 @@ exports[`/svelte.js should throw on both <style> and <link> in one file 1`] = `"
 
 exports[`/svelte.js should use an already-created processor 1`] = `
 "<link rel=\\"stylesheet\\" href=\\"http://example.com/styles.css\\" />
-<div class=\\"fooga\\">fooga</div>
+<div class=\\"mc_fooga\\">fooga</div>
 <script>import css from \\"./simple.css\\";</script>"
 `;
 
 exports[`/svelte.js should use an already-created processor 2`] = `
 "/* fake.css */
-.fake { color: #F00; }
+.mc_fake { color: #F00; }
 /* packages/svelte/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }"
 `;
 
 exports[`/svelte.js should use modular-css's file resolver 1`] = `
-"<div class=\\"fooga\\">fooga</div>
+"<div class=\\"mc_fooga\\">fooga</div>
 <script>import css from \\"./does-not-exist.css\\";</script>"
 `;
 
 exports[`/svelte.js should use modular-css's file resolver 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 "
@@ -749,14 +749,14 @@ Array [
 exports[`/svelte.js should warn when multiple <link> elements are in the html 1`] = `
 "<link rel=\\"stylesheet\\" href=\\"./simple2.css\\" />
 
-<div class=\\"fooga\\">fooga</div>
+<div class=\\"mc_fooga\\">fooga</div>
 <div class=\\"{\\"css.booga\\"}\\">booga</div>
 <script>import css from \\"./simple.css\\";</script>"
 `;
 
 exports[`/svelte.js should warn when multiple <link> elements are in the html 2`] = `
 "/* packages/svelte/test/specimens/simple.css */
-.fooga {
+.mc_fooga {
     color: red;
 }
 "
