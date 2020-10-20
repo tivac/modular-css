@@ -215,7 +215,7 @@ module.exports = (config = false) => {
             const selectors = [ ...classKeys, ...valueKeys ].join("|");
 
             // Look for instances of class={css.foo} to warn about
-            const matches = source.match(new RegExp(`class={css\.(?:${selectors})}`, "g"));
+            const matches = source.match(new RegExp(`class={css\\.(?:${selectors})}`, "g"));
 
             if(matches) {
                 for(const match of matches) {
