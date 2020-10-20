@@ -20,9 +20,6 @@ const emptyMappings = {
 };
 
 const DEFAULTS = {
-    // TODO: still used?
-    common      : "common.css",
-    
     dev         : false,
     empties     : false,
     json        : false,
