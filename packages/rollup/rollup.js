@@ -312,7 +312,9 @@ module.exports = (opts = {}) => {
             const {
                 file,
                 dir,
-                assetFileNames,
+
+                // TODO: why doesn't rollup provide this? :(
+                assetFileNames = "assets/[name]-[hash][extname]",
             } = outputOptions;
 
             const chunks = new Map();
