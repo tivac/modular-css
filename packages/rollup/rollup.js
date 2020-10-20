@@ -12,6 +12,9 @@ const output = require("@modular-css/processor/lib/output.js");
 const relative = require("@modular-css/processor/lib/relative.js");
 
 const DEFAULT_EXT = ".css";
+const DEFAULT_VALUES = "$values";
+
+const { selectorKey, isSelector } = Processor;
 
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
@@ -58,10 +61,6 @@ module.exports = (opts = {}) => {
         ...opts,
     };
 
-    if(!options.namedExports) {
-        throw new Error("@modular-css/rollup requires that namedExports be enabled");
-    }
-
     const {
         processor = new Processor(options),
     } = options;
@@ -84,6 +83,12 @@ module.exports = (opts = {}) => {
 
         buildStart() {
             log("build start");
+
+            if(!options.namedExports) {
+                this.error("@modular-css/rollup requires that namedExports be enabled");
+
+                return;
+            }
 
             // done lifecycle won't ever be called on per-component styles since
             // it only happens at bundle compilation time
@@ -130,7 +135,6 @@ module.exports = (opts = {}) => {
             const { details } = processed;
             const { classes } = details;
 
-            const exportedKeys = Object.keys(classes);
             const fileId = relative(processor.options.cwd, id);
             const compositions = processor.dependencies(id, { filesOnly : false });
             const dependencies = processor.dependencies(id, { filesOnly : true });
@@ -147,7 +151,7 @@ module.exports = (opts = {}) => {
             compositions.forEach((comp) => {
                 const { file, selectors } = graph.getNodeData(comp);
 
-                if(!selectors.length || file === id) {
+                if(file === id || isSelector(comp) || !selectors.length) {
                     return;
                 }
 
@@ -158,7 +162,7 @@ module.exports = (opts = {}) => {
 
                     const unique = deconflict(identifiers, selector);
     
-                    externalsMap.set(Processor.selectorKey(file, selector), unique);
+                    externalsMap.set(selectorKey(file, selector), unique);
 
                     imported.push(`${selector} as ${unique}`);
                 });
@@ -170,7 +174,7 @@ module.exports = (opts = {}) => {
 
             // Add default exports for all the @values
             if(options.valueExport && values.length) {
-                values.forEach((key) => {
+                const valueExports = values.map((key) => {
                     const { value } = details.values[key];
 
                     const unique = deconflict(identifiers, key);
@@ -179,56 +183,59 @@ module.exports = (opts = {}) => {
 
                     out.push(`const ${unique} = ${JSON.stringify(value)}`);
 
-                    defaultExports.push(`${JSON.stringify(key)} : ${unique}`);
-                    
-                    const namedExport = identifierfy(key);
-                    
-                    if(namedExport === key) {
-                        namedExports.push(`${unique} as ${key}`);
-                    } else if(options.namedExports.rewriteInvalid) {
-                        if(options.namedExports.warn) {
-                            this.warn(`.${key} is not a valid JS identifier, exported as "${namedExport}"`);
-                        }
-    
-                        namedExports.push(`${unique} as ${namedExport}`);
-                    } else if(options.namedExports.warn) {
-                        this.warn(`.${key} is not a valid JS identifier`);
-                    }
+                    return `${JSON.stringify(key)} : ${unique}`;
                 });
+
+                
+                out.push(dedent(`const ${DEFAULT_VALUES} = {
+                    ${valueExports.join(",\n")}
+                };`));
+                
+                defaultExports.push(DEFAULT_VALUES);
+                
+                if(options.namedExports) {
+                    namedExports.push(DEFAULT_VALUES);
+                }
             }
+            
+            // TODO: figure out topological sort for classes
+            const exportedKeys = new Set();
+            
+            compositions.forEach((key) => {
+                const { selector, file } = graph.getNodeData(key);
 
-            // Figure out unique idents for all local classes first since
-            // the order isn't topologically sorted in the next loop
-            exportedKeys.forEach((key) => {
-                const unique = deconflict(identifiers, key);
-
-                internalsMap.set(key, unique);
+                if(selector && file === id) {
+                    exportedKeys.add(selector);
+                }
             });
+
+            Object.keys(classes).forEach((key) => exportedKeys.add(key));
 
             // Create vars representing exported classes & use them in local var definitions
             exportedKeys.forEach((key) => {
                 const elements = [];
+                const unique = deconflict(identifiers, key);
+                const sKey = selectorKey(id, key);
 
+                internalsMap.set(key, unique);
+                
                 // Build the list of composed classes for this class
-                const selectorKey = Processor.selectorKey(id, key);
-
-                if(graph.hasNode(selectorKey)) {
-                    graph.dependenciesOf(selectorKey).forEach((dep) => {
+                if(graph.hasNode(sKey)) {
+                    graph.dependenciesOf(sKey).forEach((dep) => {
                         const { file, selector } = graph.getNodeData(dep);
 
                         if(!selector) {
                             return;
                         }
 
+                        // Get the value from the right place
                         if(file !== id) {
-                            elements.push(externalsMap.get(Processor.selectorKey(file, selector)));
+                            elements.push(externalsMap.get(dep));
                         } else {
                             elements.push(internalsMap.get(selector));
                         }
                     });
                 }
-
-                const unique = internalsMap.get(key);
 
                 elements.push(...classes[key].map((t) => JSON.stringify(t)));
 
@@ -241,13 +248,11 @@ module.exports = (opts = {}) => {
                 if(namedExport === key) {
                     namedExports.push(`${unique} as ${key}`);
                 } else if(options.namedExports.rewriteInvalid) {
-                    if(options.namedExports.warn) {
-                        this.warn(`.${key} is not a valid JS identifier, exported as "${namedExport}"`);
-                    }
+                    this.warn(`"${key}" is not a valid JS identifier, exported as "${namedExport}"`);
 
                     namedExports.push(`${unique} as ${namedExport}`);
-                } else if(options.namedExports.warn) {
-                    this.warn(`.${key} is not a valid JS identifier`);
+                } else {
+                    this.warn(`"${key}" is not a valid JS identifier`);
                 }
             });
 
@@ -277,6 +282,8 @@ module.exports = (opts = {}) => {
                 `));
             }
 
+            out.push("");
+
             out.push(dedent(`
                 export {
                     ${namedExports.join(",\n")}
@@ -291,6 +298,8 @@ module.exports = (opts = {}) => {
             dependencies.forEach((dep) => {
                 this.addWatchFile(dep);
             });
+
+            // console.log(id, "\n", out.join("\n"));
 
             // Return JS representation to rollup
             return {

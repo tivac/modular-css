@@ -4,9 +4,12 @@ exports[`/rollup.js dev mode option should output a proxy 1`] = `
 Object {
   "simple": "
 const str = \\"\\\\\\"string\\\\\\"\\";
+const $values = {
+    \\"str\\" : str
+};
 const fooga = \\"mc_fooga\\";
 const data = {
-    \\"str\\" : str,
+    $values,
 \\"fooga\\" : fooga
 };
 
@@ -72,21 +75,6 @@ Object {
 }
 `;
 
-exports[`/rollup.js namedExports option should allow disabling of named exports 1`] = `
-Object {
-  "simple": "
-const str = \\"\\\\\\"string\\\\\\"\\";
-const fooga = \\"mc_fooga\\";
-var css = {
-    \\"str\\" : str,
-\\"fooga\\" : fooga
-};
-
-console.log(css);
-",
-}
-`;
-
 exports[`/rollup.js namedExports option should provide named exports by default 1`] = `
 Object {
   "named": "
@@ -102,7 +90,7 @@ Object {
   "code": "PLUGIN_WARNING",
   "hook": "transform",
   "id": Any<String>,
-  "message": "Invalid JS identifier \\"fooga-wooga\\", unable use as named export",
+  "message": "\\"fooga-wooga\\" is not a valid JS identifier",
   "plugin": "@modular-css/rollup",
   "toString": [Function],
 }
@@ -128,7 +116,7 @@ Object {
   "code": "PLUGIN_WARNING",
   "hook": "transform",
   "id": Any<String>,
-  "message": "Invalid JS identifier \\"fooga-wooga\\" rewritten to \\"foogaWooga\\"",
+  "message": "\\"fooga-wooga\\" is not a valid JS identifier, exported as \\"foogaWooga\\"",
   "plugin": "@modular-css/rollup",
   "toString": [Function],
 }
@@ -197,9 +185,12 @@ Object {
 ",
   "simple.js": "
 const str = \\"\\\\\\"string\\\\\\"\\";
+const $values = {
+    \\"str\\" : str
+};
 const fooga = \\"mc_fooga\\";
 var css = {
-    \\"str\\" : str,
+    $values,
 \\"fooga\\" : fooga
 };
 
@@ -228,9 +219,12 @@ Object {
 {\\"version\\":3,\\"sources\\":[\\"../packages/rollup/test/specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,8CAAA;AAEA;IACI,UAAU;AACd\\",\\"file\\":\\"simple-[hash].css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
   "simple.js": "
 const str = \\"\\\\\\"string\\\\\\"\\";
+const $values = {
+    \\"str\\" : str
+};
 const fooga = \\"mc_fooga\\";
 var css = {
-    \\"str\\" : str,
+    $values,
 \\"fooga\\" : fooga
 };
 
@@ -291,9 +285,12 @@ exports[`/rollup.js should generate exports 1`] = `
 Object {
   "simple": "
 const str = \\"\\\\\\"string\\\\\\"\\";
+const $values = {
+    \\"str\\" : str
+};
 const fooga = \\"mc_fooga\\";
 var css = {
-    \\"str\\" : str,
+    $values,
 \\"fooga\\" : fooga
 };
 
@@ -330,6 +327,31 @@ var style$1 = {
 };
 
 console.log(style$1);
+",
+}
+`;
+
+exports[`/rollup.js should output classes in topological order 1`] = `
+Object {
+  "assets/topological-order.css": "
+/* packages/rollup/test/specimens/topological-order/topological-order.css */
+.mc_a {
+    background: blue;
+}
+
+.mc_b {
+    border: 1px solid red;
+}
+",
+  "topological-order.js": "
+const b = \\"mc_b\\";
+const a = b + \\" \\" + \\"mc_a\\";
+var css = {
+    \\"b\\" : b,
+\\"a\\" : a
+};
+
+console.log(css);
 ",
 }
 `;
@@ -375,21 +397,42 @@ console.log(css);
 }
 `;
 
-exports[`/rollup.js should support multiple selectors 1`] = `
+exports[`/rollup.js should support @value and class overlap 1`] = `
 Object {
   "assets/index.css": "
 /* index.css */
-.mc_m,
-                            .mc_m:visited {
-                                color: red;
-                            }
-                        ",
+.mc_foo { color: blue; }",
   "index.js": "
-const a = \\"mc_a\\";
-const m = \\"mc_m\\";
+const foo = \\"blue\\";
+const $values = {
+    \\"foo\\" : foo
+};
+const foo1 = \\"mc_foo\\";
 var css = {
-    \\"a\\" : a,
-\\"m\\" : m
+    $values,
+\\"foo\\" : foo1
+};
+
+console.log(css);
+",
+}
+`;
+
+exports[`/rollup.js should support multiple selectors 1`] = `
+Object {
+  "assets/multi-selector.css": "
+/* packages/rollup/test/specimens/multi-selector/other.css */
+.mc_other,
+.mc_other:visited {
+    color: red;
+}
+/* packages/rollup/test/specimens/multi-selector/multi-selector.css */",
+  "multi-selector.js": "
+const other = \\"mc_other\\";
+
+const ms = other + \\" \\" + \\"mc_ms\\";
+var css = {
+    \\"ms\\" : ms
 };
 
 console.log(css);
@@ -409,10 +452,13 @@ Object {
   "namespaced.js": "
 const nsColor = \\"red\\";
 const nsOther = \\"blue\\";
+const $values = {
+    \\"ns.color\\" : nsColor,
+\\"ns.other\\" : nsOther
+};
 const namespaced = \\"mc_namespaced\\";
 var css = {
-    \\"ns.color\\" : nsColor,
-\\"ns.other\\" : nsOther,
+    $values,
 \\"namespaced\\" : namespaced
 };
 
@@ -464,7 +510,7 @@ Object {
 exports[`/rollup.js source maps shouldn't disable sourcemap generation 1`] = `
 SourceMap {
   "file": "simple.js",
-  "mappings": ";;;;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC",
+  "mappings": ";;;;;;;;;;AAEA,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC",
   "names": Array [],
   "sources": Array [
     "packages/rollup/test/specimens/simple.js",

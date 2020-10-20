@@ -1,0 +1,8 @@
+.a {
+    composes: b;
+    background: blue;
+}
+
+.b {
+    border: 1px solid red;
+}

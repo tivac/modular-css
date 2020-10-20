@@ -282,11 +282,59 @@ describe("/rollup.js", () => {
         ).toMatchRollupSnapshot();
     });
 
-    it.only("should support multiple selectors", async () => {
+    it("should support multiple selectors", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/multi-selector/multi-selector.js"),
             plugins : [
                 createPlugin(),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
+    it("should support @value and class overlap", async () => {
+        const bundle = await rollup({
+            input   : "index.js",
+            plugins : [
+                files({
+                    leaveIdsAlone : true,
+                    files         : {
+                        "index.js" : dedent(`
+                            import css from "index.css";
+
+                            console.log(css);
+                        `),
+                        "index.css" : dedent(`
+                            @value foo: blue;
+                            
+                            .foo { color: foo; }
+                        `),
+                    },
+                }),
+
+                createPlugin({ namer }),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
+    it("should output classes in topological order", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/topological-order/topological-order.js"),
+            plugins : [
+                createPlugin({ namer }),
             ],
         });
 
@@ -413,22 +461,15 @@ describe("/rollup.js", () => {
             expect(result).toMatchRollupCodeSnapshot();
         });
     
-        it("should allow disabling of named exports", async () => {
-            const bundle = await rollup({
+        it("shouldn't allow disabling of named exports", async () => {
+            await expect(rollup({
                 input   : require.resolve("./specimens/simple.js"),
                 plugins : [
                     createPlugin({
                         namedExports : false,
                     }),
                 ],
-            });
-    
-            expect(
-                await bundle.generate({
-                    format,
-                    assetFileNames,
-                })
-            ).toMatchRollupCodeSnapshot();
+            })).rejects.toThrow("@modular-css/rollup requires that namedExports be enabled");
         });
     });
 
