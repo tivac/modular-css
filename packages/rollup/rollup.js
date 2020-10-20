@@ -292,10 +292,6 @@ module.exports = (opts = {}) => {
                 this.addWatchFile(dep);
             });
 
-            if(id.endsWith("base.css") || id.endsWith("build-number.css")) {
-                console.log(id, "\n", out.join("\n"));
-            }
-
             // Return JS representation to rollup
             return {
                 code : out.join("\n"),
