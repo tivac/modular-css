@@ -260,12 +260,6 @@ class Processor {
         return results;
     }
 
-    // TODO: fully deprecate/remove usage
-    // Get the dependant files for a file
-    dependents() {
-        throw new Error("processor.dependents is redundant and should be removed");
-    }
-
     // Get the ultimate output for specific files or the entire tree
     async output(args = false) {
         const { to } = args;

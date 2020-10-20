@@ -89,10 +89,6 @@ Mark a file (and any files that depend on it) as invalid. If any of those files 
 
 Returns an array of file paths. Accepts a single file argument to get the dependencies for, will return entire dependency graph in order if argument is omitted.
 
-### `.dependents(file)`
-
-Returns an array of file paths. Accepts a single file argument to get dependents for.
-
 ###
 
 ## Options
