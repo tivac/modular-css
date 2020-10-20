@@ -217,8 +217,10 @@ Object {
     color: blue;
 }
 ",
-  "assets/shared.css": "
+  "assets/d.css": "
 /* packages/rollup/test/specimens/manual-chunks/d.css */
+",
+  "assets/shared.css": "
 /* packages/rollup/test/specimens/manual-chunks/c.css */
 .mc_c {
     color: green;
@@ -396,11 +398,14 @@ Object {
     color: red;
 }
 ",
-  "simple.43108c99.js": "
+  "simple.80c30226.js": "
 const str = \\"\\\\\\"string\\\\\\"\\";
+const $values = {
+    \\"str\\" : str
+};
 const fooga = \\"mc_fooga\\";
 var css = {
-    \\"str\\" : str,
+    $values,
 \\"fooga\\" : fooga
 };
 
