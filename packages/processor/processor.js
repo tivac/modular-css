@@ -421,10 +421,16 @@ class Processor {
     }
 
     _addGlobal(selector, opts = false) {
-        const key = selectorKey("global", selector);
+        const file = "global";
+        const key = selectorKey(file, selector);
 
         if(!this._graph.hasNode(key)) {
-            this._graph.addNode(key, { file : "global", selector, global : true, ...opts });
+            this._graph.addNode(key, {
+                file,
+                selector,
+                global : true,
+                ...opts,
+            });
         }
 
         return key;
