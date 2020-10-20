@@ -3,11 +3,6 @@
 const relative = require("./relative.js");
 const { SELECTOR_PREFIX, selectorKey } = require("./keys.js");
 
-exports.join = (value) => (Array.isArray(value) ?
-    value.join(" ") :
-    value.toString()
-);
-
 exports.fileCompositions = ({ classes, name }, { files, graph }, { joined = false } = false) => {
     const out = Object.create(null);
 
