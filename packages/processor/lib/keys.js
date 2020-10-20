@@ -19,5 +19,8 @@ exports.filterByPrefix = (prefix, things, { clean = true } = false) => things.re
     return acc;
 }, []);
 
+exports.isFile = (key) => key.startsWith(FILE_PREFIX);
+exports.isSelector = (key) => key.startsWith(SELECTOR_PREFIX);
+
 exports.FILE_PREFIX = FILE_PREFIX;
 exports.SELECTOR_PREFIX = SELECTOR_PREFIX;

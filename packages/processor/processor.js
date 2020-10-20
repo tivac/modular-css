@@ -30,6 +30,8 @@ const {
     selectorKey,
     fileKey,
     filterByPrefix,
+    isFile,
+    isSelector,
     FILE_PREFIX,
 } = require("./lib/keys.js");
 
@@ -401,11 +403,10 @@ class Processor {
     }
 
     _addSelector(file, selector, opts = false) {
-        const fKey = fileKey(file);
         const sKey = selectorKey(file, selector);
 
         // Ensure the file always exists
-        this._addFile(file, opts);
+        const fKey = this._addFile(file, opts);
 
         if(!this._graph.hasNode(sKey)) {
             this._graph.addNode(sKey, {
@@ -415,6 +416,7 @@ class Processor {
             });
 
             this._graph.getNodeData(fKey).selectors.push(sKey);
+            this._graph.addDependency(fKey, sKey);
         }
 
         return sKey;
@@ -609,5 +611,7 @@ class Processor {
 
 Processor.selectorKey = selectorKey;
 Processor.fileKey = fileKey;
+Processor.isFile = isFile;
+Processor.isSelector = isSelector;
 
 module.exports = Processor;
