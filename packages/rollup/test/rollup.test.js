@@ -266,6 +266,38 @@ describe("/rollup.js", () => {
         ).toMatchRollupSnapshot();
     });
 
+    it("should support namedspace @value imports", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/namespaced/namespaced.js"),
+            plugins : [
+                createPlugin(),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
+    it.only("should support multiple selectors", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/multi-selector/multi-selector.js"),
+            plugins : [
+                createPlugin(),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
     describe("dev mode option", () => {
         it("should output a proxy", async () => {
             const bundle = await rollup({

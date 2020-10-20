@@ -1,0 +1,3 @@
+.ms {
+    composes: other from "./other.css";
+}

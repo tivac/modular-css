@@ -7,13 +7,13 @@ const composes = require("../../parsers/composes.js");
 const external = require("../../parsers/external.js");
 const values = require("../../parsers/values.js");
 
+const identifiers = require("../../lib/identifiers.js");
+
 const type = "modular-css";
 const plugin = "modular-css-graph-nodes";
 
 module.exports = (css, { opts, messages }) => {
     const { processor, from } = opts;
-
-    let current;
 
     const parse = (parser, rule, value) => {
         let parsed;
@@ -41,30 +41,30 @@ module.exports = (css, { opts, messages }) => {
             );
         }
 
-        const selector = rule.type === "decl" ?
-            rule.parent.selector.slice(1) :
-            null;
+        if(rule.type !== "decl") {
+            messages.push({
+                type,
+                plugin,
+    
+                selector : null,
+                dependency,
+                refs,
+            });
 
-        messages.push({
+            return;
+        }
+        
+        const classes = new Set(identifiers.parse(rule.parent.selector));
+
+        classes.forEach((sel) => messages.push({
             type,
             plugin,
 
-            selector,
+            selector : sel,
             dependency,
             refs,
-        });
+        }));
     };
-    
-    const externals = selectorParser((selectors) =>
-        selectors.walkPseudos(({ value, nodes }) => {
-            // Need to ensure we only process :external pseudos, see #261
-            if(value !== ":external") {
-                return;
-            }
-            
-            parse(external, current, nodes.toString());
-        })
-    );
     
     // @value <value> from <file>
     css.walkAtRules("value", (rule) => parse(values, rule, rule.params));
@@ -75,13 +75,26 @@ module.exports = (css, { opts, messages }) => {
     // { composes: <rule> from <file> }
     css.walkDecls("composes", (rule) => parse(composes, rule, rule.value));
 
+    const externals = selectorParser((selectors) => {
+        const found = [];
+
+        selectors.walkPseudos(({ value, nodes }) => {
+            // Need to ensure we only process :external pseudos, see #261
+            if(value !== ":external") {
+                return;
+            }
+
+            found.push(nodes.toString());
+        });
+
+        return found;
+    });
+
     // :external(<rule> from <file>) { ... }
-    // Have to assign to current so postcss-selector-parser can reference the right thing
-    // in errors
     css.walkRules(/:external/, (rule) => {
-        current = rule;
-        
-        externals.processSync(rule);
+        externals.transformSync(rule).forEach((inner) =>
+            parse(external, rule, inner)
+        );
     });
 };
 

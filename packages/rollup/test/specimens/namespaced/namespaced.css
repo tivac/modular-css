@@ -1,0 +1,5 @@
+@value * as ns from "./values.css";
+
+.namespaced {
+    color: ns.color;
+}

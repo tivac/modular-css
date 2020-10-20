@@ -31,6 +31,7 @@ const DEFAULTS = {
     
     namedExports : {
         rewriteInvalid : true,
+        warn           : true,
     },
 
     // Regexp to work around https://github.com/rollup/rollup-pluginutils/issues/39
@@ -56,6 +57,10 @@ module.exports = (opts = {}) => {
         ...DEFAULTS,
         ...opts,
     };
+
+    if(!options.namedExports) {
+        throw new Error("@modular-css/rollup requires that namedExports be enabled");
+    }
 
     const {
         processor = new Processor(options),
@@ -142,7 +147,7 @@ module.exports = (opts = {}) => {
             compositions.forEach((comp) => {
                 const { file, selectors } = graph.getNodeData(comp);
 
-                if(file === id) {
+                if(!selectors.length || file === id) {
                     return;
                 }
 
@@ -176,18 +181,18 @@ module.exports = (opts = {}) => {
 
                     defaultExports.push(`${JSON.stringify(key)} : ${unique}`);
                     
-                    if(options.namedExports) {
-                        const namedExport = identifierfy(key);
-                        
-                        if(namedExport === key) {
-                            namedExports.push(`${unique} as ${key}`);
-                        } else if(options.namedExports.rewriteInvalid) {
-                            this.warn(`Invalid JS identifier "${key}" rewritten to "${namedExport}"`);
-                            
-                            namedExports.push(`${unique} as ${namedExport}`);
-                        } else {
-                            this.warn(`Invalid JS identifier "${key}", unable use as named export`);
+                    const namedExport = identifierfy(key);
+                    
+                    if(namedExport === key) {
+                        namedExports.push(`${unique} as ${key}`);
+                    } else if(options.namedExports.rewriteInvalid) {
+                        if(options.namedExports.warn) {
+                            this.warn(`.${key} is not a valid JS identifier, exported as "${namedExport}"`);
                         }
+    
+                        namedExports.push(`${unique} as ${namedExport}`);
+                    } else if(options.namedExports.warn) {
+                        this.warn(`.${key} is not a valid JS identifier`);
                     }
                 });
             }
@@ -231,18 +236,18 @@ module.exports = (opts = {}) => {
 
                 defaultExports.push(`${JSON.stringify(key)} : ${unique}`);
 
-                if(options.namedExports) {
-                    const namedExport = identifierfy(key);
-                    
-                    if(namedExport === key) {
-                        namedExports.push(`${unique} as ${key}`);
-                    } else if(options.namedExports.rewriteInvalid) {
-                        this.warn(`Invalid JS identifier "${key}" rewritten to "${namedExport}"`);
-                        
-                        namedExports.push(`${unique} as ${namedExport}`);
-                    } else {
-                        this.warn(`Invalid JS identifier "${key}", unable use as named export`);
+                const namedExport = identifierfy(key);
+                
+                if(namedExport === key) {
+                    namedExports.push(`${unique} as ${key}`);
+                } else if(options.namedExports.rewriteInvalid) {
+                    if(options.namedExports.warn) {
+                        this.warn(`.${key} is not a valid JS identifier, exported as "${namedExport}"`);
                     }
+
+                    namedExports.push(`${unique} as ${namedExport}`);
+                } else if(options.namedExports.warn) {
+                    this.warn(`.${key} is not a valid JS identifier`);
                 }
             });
 
@@ -272,13 +277,11 @@ module.exports = (opts = {}) => {
                 `));
             }
 
-            if(options.namedExports) {
-                out.push(dedent(`
-                    export {
-                        ${namedExports.join(",\n")}
-                    };
-                `));
-            }
+            out.push(dedent(`
+                export {
+                    ${namedExports.join(",\n")}
+                };
+            `));
 
             if(options.styleExport) {
                 out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
@@ -288,6 +291,10 @@ module.exports = (opts = {}) => {
             dependencies.forEach((dep) => {
                 this.addWatchFile(dep);
             });
+
+            if(id.endsWith("base.css") || id.endsWith("build-number.css")) {
+                console.log(id, "\n", out.join("\n"));
+            }
 
             // Return JS representation to rollup
             return {

@@ -375,6 +375,52 @@ console.log(css);
 }
 `;
 
+exports[`/rollup.js should support multiple selectors 1`] = `
+Object {
+  "assets/index.css": "
+/* index.css */
+.mc_m,
+                            .mc_m:visited {
+                                color: red;
+                            }
+                        ",
+  "index.js": "
+const a = \\"mc_a\\";
+const m = \\"mc_m\\";
+var css = {
+    \\"a\\" : a,
+\\"m\\" : m
+};
+
+console.log(css);
+",
+}
+`;
+
+exports[`/rollup.js should support namedspace @value imports 1`] = `
+Object {
+  "assets/namespaced.css": "
+/* packages/rollup/test/specimens/namespaced/namespaced.css */
+.mc_namespaced {
+    color: red;
+}",
+  "assets/values.css": "
+/* packages/rollup/test/specimens/namespaced/values.css */",
+  "namespaced.js": "
+const nsColor = \\"red\\";
+const nsOther = \\"blue\\";
+const namespaced = \\"mc_namespaced\\";
+var css = {
+    \\"ns.color\\" : nsColor,
+\\"ns.other\\" : nsOther,
+\\"namespaced\\" : namespaced
+};
+
+console.log(css);
+",
+}
+`;
+
 exports[`/rollup.js source maps should generate external source maps 1`] = `
 Object {
   "file": Any<String>,
