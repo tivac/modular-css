@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/processor.js externals should support overriding external values 1`] = `
-"/* packages/processor/test/specimens/folder/folder.css */
-.mc_folder { margin: 2px; }
-/* packages/processor/test/specimens/simple.css */
+"/* packages/processor/test/specimens/simple.css */
 .mc_wooga { color: red; }
+/* packages/processor/test/specimens/folder/folder.css */
+.mc_folder { margin: 2px; }
 /* packages/processor/test/specimens/local.css */
 .mc_booga { background: green; }
 /* packages/processor/test/specimens/externals.css */
