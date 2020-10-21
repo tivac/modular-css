@@ -1,0 +1,86 @@
+name: CI
+
+on: [pull_request, push]
+
+jobs:
+  
+  lint:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      
+      - name: Cache node modules
+        id: cache
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ env.cache-name }}-
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-:  
+
+      - name: npm install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+        
+      - name: lint
+        run: npm run lint --quiet
+
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node-version: [ 10, 12, 14 ]
+        os: [ ubuntu-latest, windows-latest ]
+
+    steps:
+    - uses: actions/checkout@v1
+    
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    
+    - name: Cache node_modules
+      id: cache
+      uses: actions/cache@v1
+      with:
+        path: node_modules
+        key: ${{ matrix.os }}-build-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ matrix.os }}-build-${{ env.cache-name }}-
+          ${{ matrix.os }}-build-
+          ${{ matrix.os }}-:  
+
+    - name: npm install
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci
+    
+    - name: npm build
+      run: npm run build --if-present
+    
+    - name: test
+      run: npm test
+      env:
+        CI: true
+        
+    # Run codecov after all builds, and only on a single environment
+    - name: Gather Coverage
+      if: matrix.os == 'ubuntu-latest' && matrix.node-version == 14
+      run: npm test -- --ci --coverage
+
+    - name: Upload Coverage
+      uses: codecov/codecov-action@v1.0.14
+      if: matrix.os == 'ubuntu-latest' && matrix.node-version == 14
+      with:
+        file: ./coverage/coverage-final.json
