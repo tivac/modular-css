@@ -25,10 +25,10 @@ describe("/rollup.js watch mode", () => {
     });
 
     let watcher;
-    
+
     beforeAll(() => shell.rm("-rf", prefix(`./output/watch/*`)));
     afterEach(() => watcher.close());
-    
+
     it("should generate updated output", async () => {
         // Create v1 of the files
         write(`./watch/change/watched.css`, `
@@ -51,7 +51,7 @@ describe("/rollup.js watch mode", () => {
                 format,
                 assetFileNames,
             },
-            
+
             plugins : [
                 createPlugin(),
             ],
@@ -60,7 +60,7 @@ describe("/rollup.js watch mode", () => {
         const wait = watching.promise(watcher);
 
         await wait();
-        
+
         const v1 = dir("./watch/change/output/");
 
         setTimeout(() => write(`./watch/change/watched.css`, `
@@ -101,13 +101,13 @@ describe("/rollup.js watch mode", () => {
         // Start watching
         watcher = watch({
             input  : prefix(`./output/watch/change-composes/watched.js`),
-            
+
             output : {
                 file : prefix(`./output/watch/change-composes/output/output.js`),
                 format,
                 assetFileNames,
             },
-            
+
             plugins : [
                 createPlugin(),
             ],
@@ -116,7 +116,7 @@ describe("/rollup.js watch mode", () => {
         const wait = watching.promise(watcher);
 
         await wait();
-                
+
         const v1 = dir("./watch/change-composes/output/");
 
         setTimeout(() => write(`./watch/change-composes/watched.css`, `
@@ -157,13 +157,13 @@ describe("/rollup.js watch mode", () => {
                 color: blue;
             }
         `);
-        
+
         write(`./watch/dep-graph/three.css`, `
             .three {
                 color: green;
             }
         `);
-        
+
         write(`./watch/dep-graph/watch.js`, `
             import css from "./one.css";
             console.log(css);
@@ -178,7 +178,7 @@ describe("/rollup.js watch mode", () => {
                 format,
                 assetFileNames,
             },
-            
+
             plugins : [
                 createPlugin(),
             ],
@@ -218,13 +218,13 @@ describe("/rollup.js watch mode", () => {
         // Start watching
         watcher = watch({
             input  : require.resolve(prefix("./output/watch/new-file/watch.js")),
-            
+
             output : {
                 file : prefix(`./output/watch/new-file/output/output.js`),
                 format,
                 assetFileNames,
             },
-            
+
             plugins : [
                 createPlugin(),
             ],
@@ -263,7 +263,7 @@ describe("/rollup.js watch mode", () => {
                 color: green;
             }
         `);
-        
+
         write(`./watch/shared-deps/three.css`, `
             .three {
                 composes: two from "./two.css";
@@ -281,13 +281,13 @@ describe("/rollup.js watch mode", () => {
         // Start watching
         watcher = watch({
             input  : require.resolve(prefix("./output/watch/shared-deps/watch.js")),
-            
+
             output : {
                 file : prefix(`./output/watch/shared-deps/output/output.js`),
                 format,
                 assetFileNames,
             },
-            
+
             plugins : [
                 createPlugin(),
             ],
@@ -298,13 +298,13 @@ describe("/rollup.js watch mode", () => {
         await wait();
 
         const v1 = dir("./watch/shared-deps/output");
-                
+
         setTimeout(() => write(`./watch/shared-deps/two.css`, `
             .two {
                 color: yellow;
             }
         `), 100);
-            
+
         await wait();
 
         const v2 = dir("./watch/shared-deps/output");
@@ -340,7 +340,7 @@ describe("/rollup.js watch mode", () => {
                 format,
                 assetFileNames,
             },
-            
+
             plugins : [
                 createPlugin(),
             ],
@@ -349,9 +349,9 @@ describe("/rollup.js watch mode", () => {
         const wait = watching.promise(watcher);
 
         await wait();
-        
+
         const v1 = dir("./watch/shared-deps/output");
-                
+
         setTimeout(() => write(`./watch/shared-deps/values.css`, `
             @value baloo: red;
         `), 100);
@@ -362,7 +362,7 @@ describe("/rollup.js watch mode", () => {
 
         expect(v1).toMatchDiffSnapshot(v2);
     });
-    
+
     it("should watch when using code splitting", async () => {
         // Create v1 of the files
         write(`./watch/code-splitting/one.css`, `
@@ -377,19 +377,19 @@ describe("/rollup.js watch mode", () => {
                 color: green;
             }
         `);
-        
+
         write(`./watch/code-splitting/shared.css`, `
             .shared {
                 color: blue;
             }
         `);
-        
+
         write(`./watch/code-splitting/one.js`, `
             import css from "./one.css";
 
             console.log(css);
         `);
-        
+
         write(`./watch/code-splitting/two.js`, `
             import two from "./two.css";
             import "./shared.css";
@@ -409,7 +409,7 @@ describe("/rollup.js watch mode", () => {
                 format,
                 assetFileNames,
             },
-            
+
             plugins : [
                 createPlugin(),
             ],
@@ -421,13 +421,13 @@ describe("/rollup.js watch mode", () => {
 
 
         const v1 = dir("./watch/code-splitting/output");
-        
+
         setTimeout(() => write(`./watch/code-splitting/shared.css`, `
             .shared {
                 color: seafoam;
             }
         `), 100);
-                
+
         await wait();
 
         const v2 = dir("./watch/code-splitting/output");

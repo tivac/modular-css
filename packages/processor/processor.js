@@ -36,7 +36,7 @@ const {
     isFile,
     isSelector,
     isValue,
-    
+
     FILE_PREFIX,
 } = require("./lib/keys.js");
 
@@ -47,26 +47,26 @@ const noop = () => true;
 const defaultLoadFile = (id) => {
     if(!fs) {
         const name = "fs";
-        
+
         fs = require(name);
     }
-    
+
     return fs.readFileSync(id, "utf8");
 };
 
 const params = (processor, args) => {
     const { _options } = processor;
-    
+
     return {
         __proto__ : null,
-        
+
         ..._options,
         ..._options.postcss,
 
         from : null,
-        
+
         processor,
-        
+
         ...args,
     };
 };
@@ -184,7 +184,7 @@ class Processor {
     remove(input) {
         // Only want files actually in the array
         const files = Array.isArray(input) ? input : [ input ];
-        
+
         files.forEach((file) => {
             const normalized = this._normalize(file);
             const key = fileKey(normalized);
@@ -192,7 +192,7 @@ class Processor {
             if(!this._graph.hasNode(key)) {
                 return;
             }
-            
+
             this._graph.removeNode(key);
 
             delete this._files[file];
@@ -397,6 +397,8 @@ class Processor {
         const key = fileKey(file);
 
         if(!this._graph.hasNode(key)) {
+            // console.log("_addFile", { file });
+
             this._graph.addNode(key, {
                 file,
                 selectors : [],
@@ -414,6 +416,8 @@ class Processor {
         const fKey = this._addFile(file);
 
         if(!this._graph.hasNode(sKey)) {
+            // console.log("_addSelector", { file, selector });
+
             this._graph.addNode(sKey, {
                 file,
                 selector,
@@ -449,6 +453,8 @@ class Processor {
         const fKey = this._addFile(file);
 
         if(!this._graph.hasNode(vKey)) {
+            // console.log("_addValue", { file, name, opts });
+
             this._graph.addNode(vKey, {
                 file,
                 value : name,
@@ -541,7 +547,7 @@ class Processor {
     // new files we need to process
     async _walk(name, src) {
         const { _graph : graph, _files : files } = this;
-        
+
         // No need to re-process files unless they've been marked invalid
         if(files[name] && files[name].valid) {
             // Do want to wait until they're done being processed though
@@ -550,7 +556,7 @@ class Processor {
             return;
         }
 
-        const fileId = this._addFile(name);
+        const fKey = this._addFile(name);
 
         this._log("_before()", name);
 
@@ -560,13 +566,13 @@ class Processor {
             name,
             text  : typeof src === "string" ? src : src.source.input.css,
             valid : true,
-            
+
             classes  : Object.create(null),
             values   : Object.create(null),
             exported : Object.create(null),
-            
+
             walked : new Promise((done) => (walked = done)),
-            
+
             before : this._before.process(
                 src,
                 params(this, {
@@ -577,13 +583,6 @@ class Processor {
 
         await file.before;
 
-        // Remove any existing dependencies for this file because
-        // they will all need to be recreated when it's processed again
-        graph.dependenciesOf(fileId).forEach((other) => {
-            graph.removeDependency(fileId, other);
-            graph.removeNode(other);
-        });
-
         // Add all the found dependencies to the graph
         file.before.messages.forEach(({ plugin, selector, refs = [], dependency }) => {
             if(plugin !== pluginGraphNodes.postcssPlugin) {
@@ -591,33 +590,43 @@ class Processor {
             }
 
             const dep = this._normalize(dependency);
-            const depId = this._addFile(dep);
-            
-            graph.addDependency(fileId, depId);
-            
-            let selectorId;
-            
-            // @values and others don't have a selector field, so only run this
-            // if it exists to avoid polluting the dependency graph
-            if(selector) {
-                selectorId = this._addSelector(name, selector);
+            const dKey = this._addFile(dep);
 
-                // Remove any existing dependencies for the selector
+            // console.log({ fKey, dKey, refs, selector });
+
+            graph.addDependency(fKey, dKey);
+
+            // @values and don't have a selector field
+            if(!selector) {
+                refs.forEach(({ name : depValue }) => {
+                    this._addValue(dep, depValue);
+                });
+
+                return;
+            }
+
+            // Add selector and its dependencies to the graph
+            const selectorId = selectorKey(name, selector);
+
+            // Remove any existing dependencies for the selector
+            if(graph.hasNode(selectorId)) {
                 graph.dependenciesOf(selectorId).forEach((other) => {
                     graph.removeDependency(selectorId, other);
                 });
-
-                refs.forEach(({ name : depSelector }) => {
-                    const depSelectorId = this._addSelector(dep, depSelector);
-
-                    graph.addDependency(selectorId, depSelectorId);
-                });
             }
+
+            this._addSelector(name, selector);
+
+            refs.forEach(({ name : depSelector }) => {
+                const depSelectorId = this._addSelector(dep, depSelector);
+
+                graph.addDependency(selectorId, depSelectorId);
+            });
         });
 
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
-            filterByPrefix(FILE_PREFIX, graph.dependenciesOf(fileId)).map((dependency) => {
+            filterByPrefix(FILE_PREFIX, graph.dependenciesOf(fKey)).map((dependency) => {
                 const { valid, walked : complete } = files[dependency] || false;
 
                 // If the file hasn't been invalidated wait for it to be done processing
