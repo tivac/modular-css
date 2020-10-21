@@ -80,8 +80,7 @@ jobs:
       run: npm test -- --ci --coverage
 
     - name: Upload Coverage
-      uses: codecov/codecov-action@v1.0.2
+      uses: codecov/codecov-action@v1.0.14
       if: matrix.os == 'ubuntu-latest' && matrix.node-version == 14
       with:
-        token: ${{secrets.CODECOV_TOKEN}}
         file: ./coverage/coverage-final.json
