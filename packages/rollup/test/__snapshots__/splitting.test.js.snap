@@ -71,12 +71,12 @@ Object {
 ",
   "assets/exports.json": "
 {
+    \\"packages/rollup/test/specimens/dependencies.css\\": {
+        \\"wooga\\": \\"mc_fooga mc_wooga\\"
+    },
     \\"packages/rollup/test/specimens/simple.css\\": {
         \\"str\\": \\"\\\\\\"string\\\\\\"\\",
         \\"fooga\\": \\"mc_fooga\\"
-    },
-    \\"packages/rollup/test/specimens/dependencies.css\\": {
-        \\"wooga\\": \\"mc_fooga mc_wooga\\"
     }
 }",
   "assets/simple.css": "
@@ -96,7 +96,7 @@ export { a as default } from './a2.js';
   "a2.js": "
 const b = \\"mc_b\\";
 var css = {
-    \\"b\\" : b
+    b
 };
 
 console.log(css, a$1);
@@ -105,7 +105,7 @@ var b$1 = \\"b\\";
 
 const a = \\"mc_a\\";
 var css$1 = {
-    \\"a\\" : a
+    a
 };
 
 console.log(css$1, b$1);
@@ -217,10 +217,8 @@ Object {
     color: blue;
 }
 ",
-  "assets/d.css": "
-/* packages/rollup/test/specimens/manual-chunks/d.css */
-",
   "assets/shared.css": "
+/* packages/rollup/test/specimens/manual-chunks/d.css */
 /* packages/rollup/test/specimens/manual-chunks/c.css */
 .mc_c {
     color: green;
@@ -398,15 +396,15 @@ Object {
     color: red;
 }
 ",
-  "simple.80c30226.js": "
+  "simple.a2f4d1df.js": "
 const str = \\"\\\\\\"string\\\\\\"\\";
 const $values = {
-    \\"str\\" : str
+    str,
 };
 const fooga = \\"mc_fooga\\";
 var css = {
     $values,
-\\"fooga\\" : fooga
+fooga
 };
 
 console.log(css);

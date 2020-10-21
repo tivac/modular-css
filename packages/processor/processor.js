@@ -577,9 +577,11 @@ class Processor {
 
         await file.before;
 
-        // Remove any existing dependencies for this file
+        // Remove any existing dependencies for this file because
+        // they will all need to be recreated when it's processed again
         graph.dependenciesOf(fileId).forEach((other) => {
             graph.removeDependency(fileId, other);
+            graph.removeNode(other);
         });
 
         // Add all the found dependencies to the graph

@@ -15,8 +15,8 @@ Snapshot Diff:
 -   "output.js": "const one = \\"mc_one\\";
 +   "output.js": "const two = \\"mc_two\\";
   var css = {
--     \\"one\\" : one
-+     \\"two\\" : two
+-     one
++     two
   };
 
   console.log(css);
@@ -48,11 +48,11 @@ Snapshot Diff:
   const two = one + \\" \\" + \\"mc_two\\";
 - const three = \\"mc_three\\";
   var css = {
-      \\"one\\" : one,
-- \\"two\\" : two,
-- \\"three\\" : three
-+ \\"three\\" : three,
-+ \\"two\\" : two
+      one,
+- two,
+- three
++ three,
++ two
   };
 
   console.log(css);
@@ -85,8 +85,8 @@ Snapshot Diff:
 
 @@ --- --- @@
   Object {
-    "assets/values.css": "/* packages/rollup/test/output/watch/shared-deps/values.css */",
-    "assets/watch.css": "/* packages/rollup/test/output/watch/shared-deps/one.css */
+    "assets/watch.css": "/* packages/rollup/test/output/watch/shared-deps/values.css */
+  /* packages/rollup/test/output/watch/shared-deps/one.css */
   .mc_one {
 -     color: blue;
 +     color: red;
@@ -94,10 +94,10 @@ Snapshot Diff:
 -   "output.js": "const baloo = \\"blue\\";
 +   "output.js": "const baloo = \\"red\\";
   const $values = {
-      \\"baloo\\" : baloo
+      baloo,
   };
-  const one = \\"mc_one\\";
-  var css = {
+
+  const $values$1 = {
 `;
 
 exports[`/rollup.js watch mode should update when a shared dependency changes 1`] = `
@@ -131,7 +131,7 @@ Snapshot Diff:
 + }",
 +   "output.js": "const one = \\"mc_one\\";
 + var css = {
-+     \\"one\\" : one
++     one
 + };
 +
 + console.log(css);
