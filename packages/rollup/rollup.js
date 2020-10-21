@@ -530,6 +530,9 @@ module.exports = (opts = {}) => {
             if(options.json) {
                 const files = Object.keys(processor.files);
 
+                // Ensure file order is consistent
+                files.sort();
+
                 // Wait to ensure that all files have completed processing
                 await Promise.all(
                     files.map((id) => processor.files[id].result)
