@@ -14,7 +14,12 @@ const relative = require("@modular-css/processor/lib/relative.js");
 const DEFAULT_EXT = ".css";
 const DEFAULT_VALUES = "$values";
 
-const { selectorKey, isSelector } = Processor;
+const {
+    selectorKey,
+    isFile,
+    isSelector,
+    isValue,
+} = Processor;
 
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
@@ -31,7 +36,7 @@ const DEFAULTS = {
     styleExport : false,
     valueExport : true,
     verbose     : false,
-    
+
     namedExports : {
         rewriteInvalid : true,
         warn           : true,
@@ -54,6 +59,14 @@ const deconflict = (map, ident) => {
     return proposal;
 };
 
+const property = ([ key, value ]) => {
+    if(key === value) {
+        return key;
+    }
+
+    return `${JSON.stringify(key)} : ${value}`;
+};
+
 module.exports = (opts = {}) => {
     const options = {
         __proto__ : null,
@@ -68,7 +81,7 @@ module.exports = (opts = {}) => {
     const filter = utils.createFilter(options.include, options.exclude);
 
     // eslint-disable-next-line no-console, no-empty-function
-    const log = options.verbose ? console.log.bind(console, "[rollup]") : () => {};
+    const log = options.verbose ? console.log.bind(console, "[rollup]") : () => { };
 
     if(typeof options.map === "undefined") {
         // Sourcemaps don't make much sense in styleExport mode
@@ -133,49 +146,124 @@ module.exports = (opts = {}) => {
             }
 
             const { details } = processed;
-            const { classes } = details;
 
             const fileId = relative(processor.options.cwd, id);
-            const compositions = processor.dependencies(id, { filesOnly : false });
-            const dependencies = processor.dependencies(id, { filesOnly : true });
-            
+            const allDependencies = processor.dependencies(id, { filesOnly : false });
+
+            // All used identifiers
             const identifiers = new Map();
+
+            // External identifiers mapped to their unique names
             const externalsMap = new Map();
+
+            // Internal identifiers mapped to their unique names
             const internalsMap = new Map();
+
+            // Map of files & their imports
+            const importsMap = new Map();
 
             const out = [];
             const defaultExports = [];
             const namedExports = [];
+            const valueExports = [];
+
+            // All the class keys exported by this module
+            const exportedKeys = new Set();
 
             // create import statements for all of the values used in compositions
-            compositions.forEach((comp) => {
-                const { file, selectors } = graph.getNodeData(comp);
+            allDependencies.forEach((dep) => {
+                const data = graph.getNodeData(dep);
+                const { file } = data;
 
-                if(file === id || isSelector(comp) || !selectors.length) {
+                if(!importsMap.has(file)) {
+                    importsMap.set(file, new Map());
+                }
+
+                const imported = importsMap.get(file);
+
+                // File we're transforming
+                if(file === id) {
+                    // Track this selector as part of the keys to be exported, adding
+                    // here so it'll be sorted topologically
+                    if(isSelector(dep)) {
+                        exportedKeys.add(data.selector);
+                    }
+
                     return;
                 }
 
-                const imported = [];
+                if(isFile(dep)) {
+                    // Watch all the CSS files this file depends on
+                    this.addWatchFile(file);
 
-                selectors.forEach((key) => {
-                    const { selector } = graph.getNodeData(key);
+                    // Add each selector this file depends on to the imports list
+                    data.selectors.forEach((key) => {
+                        const { selector: name } = graph.getNodeData(key);
 
-                    const unique = deconflict(identifiers, selector);
-    
-                    externalsMap.set(selectorKey(file, selector), unique);
+                        const unique = deconflict(identifiers, name);
 
-                    imported.push(`${selector} as ${unique}`);
-                });
+                        externalsMap.set(selectorKey(file, name), unique);
 
-                out.push(`import { ${imported.join(", ")} } from ${JSON.stringify(file)};`);
+                        imported.set(name, unique);
+                    });
+                }
+
+                // @value namespaces need to be specially imported & handled
+                if(isValue(dep) && !imported.has(DEFAULT_VALUES)) {
+                    const { value, namespace } = data;
+                    const { name : filename } = path.parse(file);
+                    const importName = `$${filename}Values`;
+                    const unique = deconflict(identifiers, importName);
+
+                    // Add a values import to the imports list
+                    externalsMap.set(importName, unique);
+
+                    imported.set(DEFAULT_VALUES, unique);
+
+                    // Add @values namespace to the exported values block
+                    if(namespace) {
+                        valueExports.push([ value, unique ]);
+                    } else {
+                        valueExports.push([ value, `${unique}[${JSON.stringify(value)}]` ]);
+                    }
+                }
             });
 
-            const values = Object.keys(details.values);
+            // Write out all the imports
+            importsMap.forEach((imports, from) => {
+                if(!imports.size) {
+                    return;
+                }
+
+                const names = [ ...imports ].map(([ key, value ]) => `${key} as ${value}`);
+
+                out.push(`import { ${names.join(", ")} } from ${JSON.stringify(from)};`);
+            });
+
+            // Add the rest of the exported keys in whatever order because it doesn't matter
+            Object.keys(details.classes).forEach((key) => exportedKeys.add(key));
 
             // Add default exports for all the @values
-            if(options.valueExport && values.length) {
-                const valueExports = values.map((key) => {
-                    const { value } = details.values[key];
+            if(options.valueExport) {
+                const values = Object.keys(details.values);
+
+                values.forEach((key) => {
+                    const { value, external, key: vKey } = details.values[key];
+
+                    // Externally-imported @values were already added, so skip them
+                    if(external) {
+                        return;
+                    }
+
+                    if(vKey && graph.hasNode(vKey)) {
+                        const { file } = graph.getNodeData(vKey);
+                        const { name: filename } = path.parse(file);
+                        const name = `$${filename}Values`;
+
+                        valueExports.push([ key, `${externalsMap.get(name)}[${JSON.stringify(key)}]` ]);
+
+                        return;
+                    }
 
                     const unique = deconflict(identifiers, key);
 
@@ -183,33 +271,24 @@ module.exports = (opts = {}) => {
 
                     out.push(`const ${unique} = ${JSON.stringify(value)}`);
 
-                    return `${JSON.stringify(key)} : ${unique}`;
+                    valueExports.push([ key, unique ]);
                 });
 
-                
-                out.push(dedent(`const ${DEFAULT_VALUES} = {
-                    ${valueExports.join(",\n")}
-                };`));
-                
-                defaultExports.push(DEFAULT_VALUES);
-                
-                if(options.namedExports) {
-                    namedExports.push(DEFAULT_VALUES);
+                if(valueExports.length) {
+                    const unique = deconflict(identifiers, DEFAULT_VALUES);
+
+                    out.push(dedent(`const ${unique} = {
+                        ${valueExports.map(property).join(",\n")},
+                    };`));
+
+
+                    defaultExports.push([ DEFAULT_VALUES, unique ]);
+
+                    if(options.namedExports) {
+                        namedExports.push(`${unique} as ${DEFAULT_VALUES}`);
+                    }
                 }
             }
-            
-            // TODO: figure out topological sort for classes
-            const exportedKeys = new Set();
-            
-            compositions.forEach((key) => {
-                const { selector, file } = graph.getNodeData(key);
-
-                if(selector && file === id) {
-                    exportedKeys.add(selector);
-                }
-            });
-
-            Object.keys(classes).forEach((key) => exportedKeys.add(key));
 
             // Create vars representing exported classes & use them in local var definitions
             exportedKeys.forEach((key) => {
@@ -218,7 +297,7 @@ module.exports = (opts = {}) => {
                 const sKey = selectorKey(id, key);
 
                 internalsMap.set(key, unique);
-                
+
                 // Build the list of composed classes for this class
                 if(graph.hasNode(sKey)) {
                     graph.dependenciesOf(sKey).forEach((dep) => {
@@ -237,14 +316,14 @@ module.exports = (opts = {}) => {
                     });
                 }
 
-                elements.push(...classes[key].map((t) => JSON.stringify(t)));
+                elements.push(...details.classes[key].map((t) => JSON.stringify(t)));
 
                 out.push(`const ${unique} = ${elements.join(` + " " + `)}`);
 
-                defaultExports.push(`${JSON.stringify(key)} : ${unique}`);
+                defaultExports.push([ key, unique ]);
 
                 const namedExport = identifierfy(key);
-                
+
                 if(namedExport === key) {
                     namedExports.push(`${unique} as ${key}`);
                 } else if(options.namedExports.rewriteInvalid) {
@@ -259,7 +338,7 @@ module.exports = (opts = {}) => {
             if(options.dev) {
                 out.push(dedent(`
                     const data = {
-                        ${defaultExports.join(",\n")}
+                        ${defaultExports.map(property).join(",\n")}
                     };
 
                     export default new Proxy(data, {
@@ -277,7 +356,7 @@ module.exports = (opts = {}) => {
             } else {
                 out.push(dedent(`
                     export default {
-                        ${defaultExports.join(",\n")}
+                        ${defaultExports.map(property).join(",\n")}
                     };
                 `));
             }
@@ -294,12 +373,9 @@ module.exports = (opts = {}) => {
                 out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
             }
 
-            // Watch all the CSS files this file depends on
-            dependencies.forEach((dep) => {
-                this.addWatchFile(dep);
-            });
-
-            // console.log(id, "\n", out.join("\n"));
+            // if(id.endsWith("portrait.css")) {
+                // console.log(id, "\n", out.join("\n"));
+            // }
 
             // Return JS representation to rollup
             return {
@@ -336,12 +412,12 @@ module.exports = (opts = {}) => {
                     dir ? dir : path.dirname(file),
                     assetFileNames
                 );
-            
+
             // Walk bundle, determine CSS output files
             // TODO: remove any files that only export @values but no classes?
             Object.keys(bundle).forEach((entry) => {
                 const { type, modules, name } = bundle[entry];
-                
+
                 /* istanbul ignore if */
                 if(type === "asset") {
                     return;
@@ -350,7 +426,7 @@ module.exports = (opts = {}) => {
                 const deps = Object.keys(modules).reduce((acc, f) => {
                     if(processor.has(f)) {
                         const css = processor.normalize(f);
-                        
+
                         used.add(css);
                         acc.push(css);
                     }
@@ -399,7 +475,7 @@ module.exports = (opts = {}) => {
                 const result = await processor.output({
                     // Can't use this.getAssetFileName() here, because the source hasn't been set yet
                     //  Have to do our best to come up with a valid final location though...
-                    to : to.replace(/\[(name|extname)\]/g,  (match, field) =>
+                    to : to.replace(/\[(name|extname)\]/g, (match, field) =>
                         (field === "name" ? name : DEFAULT_EXT)
                     ),
                     map : mapOpt,
@@ -472,7 +548,7 @@ module.exports = (opts = {}) => {
                 });
 
                 const source = JSON.stringify(json, null, 4);
-                
+
                 if(typeof options.json === "string") {
                     log("json output", options.json);
 
@@ -513,7 +589,7 @@ module.exports = (opts = {}) => {
                     assets,
                 };
             }
-            
+
             if(options.meta) {
                 const dest = typeof options.meta === "string" ? options.meta : "metadata.json";
 

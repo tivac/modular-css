@@ -1,0 +1,10 @@
+@value * as ns from "./values1.css";
+@value background from "./values2.css";
+
+@value border: 1px solid black;
+
+.namespaced {
+    color: ns.color;
+    background: background;
+    border: border;
+}

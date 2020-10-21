@@ -266,9 +266,25 @@ describe("/rollup.js", () => {
         ).toMatchRollupSnapshot();
     });
 
-    it("should support namedspace @value imports", async () => {
+    it("should support namespaced @value imports", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/namespaced/namespaced.js"),
+            plugins : [
+                createPlugin(),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+    
+    it("should support mixing all @value types", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/all-value-types/all-value-types.js"),
             plugins : [
                 createPlugin(),
             ],

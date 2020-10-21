@@ -5,12 +5,12 @@ Object {
   "simple": "
 const str = \\"\\\\\\"string\\\\\\"\\";
 const $values = {
-    \\"str\\" : str
+    str,
 };
 const fooga = \\"mc_fooga\\";
 const data = {
     $values,
-\\"fooga\\" : fooga
+fooga
 };
 
 var css = new Proxy(data, {
@@ -102,7 +102,7 @@ Object {
 const fooga = \\"mc_fooga\\";
 const foogaWooga = \\"mc_fooga-wooga\\";
 var css = {
-    \\"fooga\\" : fooga,
+    fooga,
 \\"fooga-wooga\\" : foogaWooga
 };
 
@@ -128,7 +128,7 @@ Object {
 const fooga = \\"mc_fooga\\";
 const foogaWooga = \\"mc_fooga-wooga\\";
 var css = {
-    \\"fooga\\" : fooga,
+    fooga,
 \\"fooga-wooga\\" : foogaWooga
 };
 
@@ -186,12 +186,12 @@ Object {
   "simple.js": "
 const str = \\"\\\\\\"string\\\\\\"\\";
 const $values = {
-    \\"str\\" : str
+    str,
 };
 const fooga = \\"mc_fooga\\";
 var css = {
     $values,
-\\"fooga\\" : fooga
+fooga
 };
 
 console.log(css);
@@ -220,12 +220,12 @@ Object {
   "simple.js": "
 const str = \\"\\\\\\"string\\\\\\"\\";
 const $values = {
-    \\"str\\" : str
+    str,
 };
 const fooga = \\"mc_fooga\\";
 var css = {
     $values,
-\\"fooga\\" : fooga
+fooga
 };
 
 console.log(css);
@@ -261,8 +261,8 @@ Object {
 const one = \\"mc_one\\";
 const two = one + \\" \\" + \\"mc_two\\";
 var css = {
-    \\"one\\" : one,
-\\"two\\" : two
+    one,
+two
 };
 
 console.log(css);
@@ -286,12 +286,12 @@ Object {
   "simple": "
 const str = \\"\\\\\\"string\\\\\\"\\";
 const $values = {
-    \\"str\\" : str
+    str,
 };
 const fooga = \\"mc_fooga\\";
 var css = {
     $values,
-\\"fooga\\" : fooga
+fooga
 };
 
 console.log(css);
@@ -323,7 +323,7 @@ Object {
   "entry.js": "
 const style = \\"mc_style\\";
 var style$1 = {
-    \\"style\\" : style
+    style
 };
 
 console.log(style$1);
@@ -347,8 +347,8 @@ Object {
 const b = \\"mc_b\\";
 const a = b + \\" \\" + \\"mc_a\\";
 var css = {
-    \\"b\\" : b,
-\\"a\\" : a
+    b,
+a
 };
 
 console.log(css);
@@ -389,7 +389,7 @@ const fooga = \\"mc_fooga\\";
 
 const wooga = fooga + \\" \\" + \\"mc_wooga\\";
 var css = {
-    \\"wooga\\" : wooga
+    wooga
 };
 
 console.log(css);
@@ -405,7 +405,7 @@ Object {
   "index.js": "
 const foo = \\"blue\\";
 const $values = {
-    \\"foo\\" : foo
+    foo,
 };
 const foo1 = \\"mc_foo\\";
 var css = {
@@ -415,6 +415,47 @@ var css = {
 
 console.log(css);
 ",
+}
+`;
+
+exports[`/rollup.js should support mixing all @value types 1`] = `
+Object {
+  "all-value-types.js": "
+const color = \\"red\\";
+const other = \\"blue\\";
+const $values = {
+    color,
+other,
+};
+
+const background = \\"green\\";
+const $values$1 = {
+    background,
+};
+
+const border = \\"1px solid black\\";
+const $values$2 = {
+    \\"ns\\" : $values,
+\\"background\\" : $values$1[\\"background\\"],
+border,
+};
+const namespaced = \\"mc_namespaced\\";
+var css = {
+    $values: $values$2,
+namespaced
+};
+
+console.log(css);
+",
+  "assets/all-value-types.css": "
+/* packages/rollup/test/specimens/all-value-types/values1.css */
+/* packages/rollup/test/specimens/all-value-types/values2.css */
+/* packages/rollup/test/specimens/all-value-types/all-value-types.css */
+.mc_namespaced {
+    color: red;
+    background: green;
+    border: 1px solid black;
+}",
 }
 `;
 
@@ -432,7 +473,7 @@ const other = \\"mc_other\\";
 
 const ms = other + \\" \\" + \\"mc_ms\\";
 var css = {
-    \\"ms\\" : ms
+    ms
 };
 
 console.log(css);
@@ -440,26 +481,29 @@ console.log(css);
 }
 `;
 
-exports[`/rollup.js should support namedspace @value imports 1`] = `
+exports[`/rollup.js should support namespaced @value imports 1`] = `
 Object {
   "assets/namespaced.css": "
+/* packages/rollup/test/specimens/namespaced/values.css */
 /* packages/rollup/test/specimens/namespaced/namespaced.css */
 .mc_namespaced {
     color: red;
 }",
-  "assets/values.css": "
-/* packages/rollup/test/specimens/namespaced/values.css */",
   "namespaced.js": "
-const nsColor = \\"red\\";
-const nsOther = \\"blue\\";
+const color = \\"red\\";
+const other = \\"blue\\";
 const $values = {
-    \\"ns.color\\" : nsColor,
-\\"ns.other\\" : nsOther
+    color,
+other,
+};
+
+const $values$1 = {
+    \\"ns\\" : $values,
 };
 const namespaced = \\"mc_namespaced\\";
 var css = {
-    $values,
-\\"namespaced\\" : namespaced
+    $values: $values$1,
+namespaced
 };
 
 console.log(css);
@@ -667,12 +711,12 @@ Array [
   Array [
     "[processor]",
     "_after()",
-    "packages/processor/test/specimens/folder/folder.css",
+    "packages/processor/test/specimens/string.css",
   ],
   Array [
     "[processor]",
     "_after()",
-    "packages/processor/test/specimens/string.css",
+    "packages/processor/test/specimens/folder/folder.css",
   ],
   Array [
     "[processor]",

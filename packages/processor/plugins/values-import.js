@@ -7,22 +7,44 @@ const plugin = "modular-css-values-import";
 const handlers = Object.create(null);
 
 // fooga from "./wooga"
-handlers.composition = ({ parsed, source, rule, values }) => {
+handlers.composition = ({ parsed, rule, values, opts }) => {
+    const { from, processor } = opts;
+
+    const file = processor.resolve(from, parsed.source);
+    const source = processor.files[file];
+    
     parsed.refs.forEach(({ name }) => {
         if(!source.values[name]) {
             throw rule.error(`Could not find @value ${name} in "${parsed.source}"`);
         }
 
-        values[name] = source.values[name];
+        processor._addValue(file, name);
+
+        values[name] = {
+            ...source.values[name],
+            external : true,
+        };
     });
 
     return values;
 };
 
 // * as fooga from "./wooga"
-handlers.namespace = ({ parsed, source, values }) => {
+handlers.namespace = ({ opts, parsed, values }) => {
+    const { from, processor } = opts;
+
+    const file = processor.resolve(from, parsed.source);
+    const source = processor.files[file];
+
+    processor._addValue(file, parsed.name, { namespace : true });
+    
     for(const key in source.values) {
-        values[`${parsed.name}.${key}`] = source.values[key];
+        const name = `${parsed.name}.${key}`;
+
+        values[name] = {
+            ...source.values[key],
+            external : true,
+        };
     }
 
     return values;
@@ -50,15 +72,10 @@ module.exports = (css, { opts }) => {
     
     css.walkAtRules("value", (rule) => {
         const parsed = parser.parse(rule.params);
-        let source;
-
-        if(parsed.source) {
-            source = processor.files[processor.resolve(from, parsed.source)];
-        }
 
         values = handlers[parsed.type]({
+            opts,
             parsed,
-            source,
             rule,
             values,
         });

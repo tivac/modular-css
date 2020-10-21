@@ -29,9 +29,14 @@ const pluginValuesReplace = require("./plugins/values-replace.js");
 const {
     selectorKey,
     fileKey,
+    valueKey,
+
     filterByPrefix,
+
     isFile,
     isSelector,
+    isValue,
+    
     FILE_PREFIX,
 } = require("./lib/keys.js");
 
@@ -388,31 +393,30 @@ class Processor {
         .then(() => compositions(this));
     }
 
-    _addFile(file, opts = false) {
+    _addFile(file) {
         const key = fileKey(file);
 
         if(!this._graph.hasNode(key)) {
             this._graph.addNode(key, {
                 file,
                 selectors : [],
-                ...opts,
+                values    : [],
             });
         }
 
         return key;
     }
 
-    _addSelector(file, selector, opts = false) {
+    _addSelector(file, selector) {
         const sKey = selectorKey(file, selector);
 
         // Ensure the file always exists
-        const fKey = this._addFile(file, opts);
+        const fKey = this._addFile(file);
 
         if(!this._graph.hasNode(sKey)) {
             this._graph.addNode(sKey, {
                 file,
                 selector,
-                ...opts,
             });
 
             this._graph.getNodeData(fKey).selectors.push(sKey);
@@ -436,6 +440,26 @@ class Processor {
         }
 
         return key;
+    }
+
+    _addValue(file, name, opts = false) {
+        const vKey = valueKey(file, name);
+
+        // Ensure the file always exists
+        const fKey = this._addFile(file);
+
+        if(!this._graph.hasNode(vKey)) {
+            this._graph.addNode(vKey, {
+                file,
+                value : name,
+                ...opts,
+            });
+
+            this._graph.getNodeData(fKey).values.push(vKey);
+            this._graph.addDependency(fKey, vKey);
+        }
+
+        return vKey;
     }
 
     // Take a file id and some text, walk it for dependencies, then
@@ -609,9 +633,13 @@ class Processor {
     }
 }
 
+// Static exports of key.js functionality
 Processor.selectorKey = selectorKey;
 Processor.fileKey = fileKey;
+Processor.valueKey = valueKey;
+
 Processor.isFile = isFile;
 Processor.isSelector = isSelector;
+Processor.isValue = isValue;
 
 module.exports = Processor;
