@@ -169,12 +169,12 @@ Array [
   Array [
     "[processor]",
     "_after()",
-    "packages/processor/test/specimens/folder/folder.css",
+    "packages/processor/test/specimens/string.css",
   ],
   Array [
     "[processor]",
     "_after()",
-    "packages/processor/test/specimens/string.css",
+    "packages/processor/test/specimens/folder/folder.css",
   ],
   Array [
     "[processor]",
