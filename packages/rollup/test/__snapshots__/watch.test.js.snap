@@ -29,6 +29,7 @@ Snapshot Diff:
 - First value
 + Second value
 
+@@ --- --- @@
   Object {
     "assets/watched.css": "/* packages/rollup/test/output/watch/change-composes/watched.css */
   .mc_one {
@@ -39,25 +40,19 @@ Snapshot Diff:
   .mc_two {
       background: blue;
   }
-
+@@ --- --- @@
   .mc_three {
       color: teal;
   }",
     "output.js": "const one = \\"mc_one\\";
-+ const three = one + \\" \\" + \\"mc_three\\";
   const two = one + \\" \\" + \\"mc_two\\";
 - const three = \\"mc_three\\";
++ const three = one + \\" \\" + \\"mc_three\\";
   var css = {
       one,
-- two,
-- three
-+ three,
-+ two
+  two,
+  three
   };
-
-  console.log(css);
-  ",
-  }
 `;
 
 exports[`/rollup.js watch mode should update when a dependency changes 1`] = `
