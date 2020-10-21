@@ -71,12 +71,12 @@ Object {
 ",
   "assets/exports.json": "
 {
-    \\"packages/rollup/test/specimens/dependencies.css\\": {
-        \\"wooga\\": \\"mc_fooga mc_wooga\\"
-    },
     \\"packages/rollup/test/specimens/simple.css\\": {
         \\"str\\": \\"\\\\\\"string\\\\\\"\\",
         \\"fooga\\": \\"mc_fooga\\"
+    },
+    \\"packages/rollup/test/specimens/dependencies.css\\": {
+        \\"wooga\\": \\"mc_fooga mc_wooga\\"
     }
 }",
   "assets/simple.css": "

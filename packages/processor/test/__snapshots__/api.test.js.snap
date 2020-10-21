@@ -214,10 +214,10 @@ Object {
 `;
 
 exports[`/processor.js API .output() should generate css representing the output from all added files 1`] = `
-"/* packages/processor/test/specimens/folder/folder.css */
-.mc_folder { margin: 2px; }
-/* packages/processor/test/specimens/simple.css */
+"/* packages/processor/test/specimens/simple.css */
 .mc_wooga { color: red; }
+/* packages/processor/test/specimens/folder/folder.css */
+.mc_folder { margin: 2px; }
 /* packages/processor/test/specimens/local.css */
 .mc_booga { background: green; }
 /* packages/processor/test/specimens/start.css */
