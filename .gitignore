@@ -88,5 +88,8 @@ profiling
 # Generated website content
 dist/
 
+# Build output
+test/output
+
 # environment variables
 .env
