@@ -31,7 +31,7 @@ module.exports = (css, result) => {
     // Go look up "composes" declarations and update dependency graph
     css.walkDecls("composes", (decl) => {
         const { parent, value } = decl;
-        
+
         const selectors = parent.selectors.map(identifiers.parse);
 
         // https://github.com/tivac/modular-css/issues/238
@@ -55,17 +55,6 @@ module.exports = (css, result) => {
             if(details.source) {
                 // External refs should already exist, so they don't get added
                 ref = selectorKey(details.source, name);
-
-                // and if they don't exist, we need to throw a fit
-                if(!processor.graph.hasNode(ref)) {
-                    const rel = relative(processor.options.cwd, details.source);
-
-                    throw decl.error(
-                        `Invalid composes reference, .${name} does not exist in ${rel}`, {
-                            word : name,
-                        }
-                    );
-                }
             } else if(global) {
                 ref = processor._addGlobal(name);
             } else {
@@ -98,7 +87,7 @@ module.exports = (css, result) => {
             // If there's nodes after this one adjust their positioning
             // so it's like the composes was never there
             const next = decl.next();
-        
+
             if(next) {
                 next.raws.before = decl.raw("before");
             }
