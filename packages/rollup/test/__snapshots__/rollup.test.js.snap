@@ -1,5 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/rollup.js default options should default maps to true 1`] = `
+Object {
+  "assets/simple-0a80c138.css": "
+/* packages/rollup/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
+}
+",
+  "simple.js": "
+const str = \\"\\\\\\"string\\\\\\"\\";
+const $values = {
+    str,
+};
+const fooga = \\"mc_fooga\\";
+var css = {
+    $values,
+fooga
+};
+
+console.log(css);
+",
+}
+`;
+
 exports[`/rollup.js dev mode option should output a proxy 1`] = `
 Object {
   "simple": "
@@ -135,6 +159,14 @@ var css = {
 console.log(css, fooga);
 ",
 }
+`;
+
+exports[`/rollup.js namedExports option should warn if named exports are falsey 1`] = `
+Array [
+  Array [
+    "@modular-css/rollup doesn't allow namedExports to be disabled",
+  ],
+]
 `;
 
 exports[`/rollup.js processor option should accept an existing processor instance (no css in bundle) 1`] = `

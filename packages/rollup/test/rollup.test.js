@@ -477,15 +477,19 @@ describe("/rollup.js", () => {
             expect(result).toMatchRollupCodeSnapshot();
         });
     
-        it("shouldn't allow disabling of named exports", async () => {
-            await expect(rollup({
+        it("should warn if named exports are falsey", async () => {
+            const { calls } = logs("warn");
+    
+            await rollup({
                 input   : require.resolve("./specimens/simple.js"),
                 plugins : [
                     createPlugin({
                         namedExports : false,
                     }),
                 ],
-            })).rejects.toThrow("@modular-css/rollup requires that namedExports be enabled");
+            });
+
+            expect(calls()).toMatchSnapshot();
         });
     });
 
@@ -509,7 +513,7 @@ describe("/rollup.js", () => {
     
         // eslint-disable-next-line jest/expect-expect
         it("should warn that styleExport and done aren't compatible", async () => {
-            const { logSnapshot } = logs("warn");
+            const { calls } = logs("warn");
     
             await rollup({
                 input   : require.resolve("./specimens/style-export.js"),
@@ -523,7 +527,7 @@ describe("/rollup.js", () => {
                 ],
             });
     
-            logSnapshot();
+            expect(calls()).toMatchSnapshot();
         });
     });
 
@@ -661,7 +665,7 @@ describe("/rollup.js", () => {
     describe("verbose option", () => {
         // eslint-disable-next-line jest/expect-expect
         it("should log in verbose mode", async () => {
-            const { logSnapshot } = logs();
+            const { calls } = logs();
     
             const bundle = await rollup({
                 input   : require.resolve("./specimens/simple.js"),
@@ -690,7 +694,7 @@ describe("/rollup.js", () => {
     
             await processor.output();
     
-            logSnapshot();
+            expect(calls()).toMatchSnapshot();
         });
     });
 

@@ -243,7 +243,7 @@ describe("/svelte.js", () => {
         [ "<style>", "style.html" ],
         [ "<link>", "external.html" ],
     ])("should support verbose output: %s", async (title, specimen) => {
-        const { logSnapshot } = logs();
+        const { calls } = logs();
 
         const filename = require.resolve(`./specimens/${specimen}`);
 
@@ -263,7 +263,7 @@ describe("/svelte.js", () => {
 
         await processor.output();
 
-        logSnapshot();
+        expect(calls()).toMatchSnapshot();
     });
 
     it("should warn when multiple <link> elements are in the html", async () => {

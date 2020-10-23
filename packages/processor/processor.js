@@ -585,6 +585,7 @@ class Processor {
 
         // Add all the found dependencies to the graph
         file.before.messages.forEach(({ plugin, selector, refs = [], dependency }) => {
+            /* istanbul ignore if */
             if(plugin !== pluginGraphNodes.postcssPlugin) {
                 return;
             }

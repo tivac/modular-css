@@ -1,7 +1,10 @@
 "use strict";
 
-const postcss  = require("postcss");
-const namer    = require("@modular-css/test-utils/namer.js");
+const postcss = require("postcss");
+const dedent = require("dedent");
+
+
+const namer = require("@modular-css/test-utils/namer.js");
 const relative = require("@modular-css/test-utils/relative.js");
 
 const Processor = require("../processor.js");
@@ -225,6 +228,16 @@ describe("/processor.js", () => {
                 await processor.file("./packages/processor/test/specimens/start.css");
 
                 expect(relative(processor.dependencies())).toMatchSnapshot();
+            });
+
+            it("should throw on requesting an invalid file", async () => {
+                await processor.string("./does/not/exist.css", dedent(`
+                    .foo {
+                        color: red;
+                    }
+                `));
+
+                expect(() => processor.dependencies("./also/does/not/exist.css")).toThrow("Unknown file: ");
             });
         });
 

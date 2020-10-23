@@ -34,7 +34,6 @@ const DEFAULTS = {
     map         : false,
     meta        : false,
     styleExport : false,
-    valueExport : true,
     verbose     : false,
 
     namedExports : {
@@ -67,7 +66,10 @@ const property = ([ key, value ]) => {
     return `${JSON.stringify(key)} : ${value}`;
 };
 
-module.exports = (opts = {}) => {
+module.exports = (
+    /* istanbul ignore next: too painful to test */
+    opts = {}
+) => {
     const options = {
         __proto__ : null,
         ...DEFAULTS,
@@ -98,9 +100,7 @@ module.exports = (opts = {}) => {
             log("build start");
 
             if(!options.namedExports) {
-                this.error("@modular-css/rollup requires that namedExports be enabled");
-
-                return;
+                this.warn("@modular-css/rollup doesn't allow namedExports to be disabled");
             }
 
             // done lifecycle won't ever be called on per-component styles since
@@ -244,50 +244,46 @@ module.exports = (opts = {}) => {
             Object.keys(details.classes).forEach((key) => exportedKeys.add(key));
 
             // Add default exports for all the @values
-            if(options.valueExport) {
-                const values = Object.keys(details.values);
+            const values = Object.keys(details.values);
 
-                values.forEach((key) => {
-                    const { value, external, key: vKey } = details.values[key];
+            values.forEach((key) => {
+                const { value, external, key: vKey } = details.values[key];
 
-                    // Externally-imported @values were already added, so skip them
-                    if(external) {
-                        return;
-                    }
-
-                    if(vKey && graph.hasNode(vKey)) {
-                        const { file } = graph.getNodeData(vKey);
-                        const { name: filename } = path.parse(file);
-                        const name = `$${filename}Values`;
-
-                        valueExports.push([ key, `${externalsMap.get(name)}[${JSON.stringify(key)}]` ]);
-
-                        return;
-                    }
-
-                    const unique = deconflict(identifiers, key);
-
-                    internalsMap.set(value, unique);
-
-                    out.push(`const ${unique} = ${JSON.stringify(value)}`);
-
-                    valueExports.push([ key, unique ]);
-                });
-
-                if(valueExports.length) {
-                    const unique = deconflict(identifiers, DEFAULT_VALUES);
-
-                    out.push(dedent(`const ${unique} = {
-                        ${valueExports.map(property).join(",\n")},
-                    };`));
-
-
-                    defaultExports.push([ DEFAULT_VALUES, unique ]);
-
-                    if(options.namedExports) {
-                        namedExports.push(`${unique} as ${DEFAULT_VALUES}`);
-                    }
+                // Externally-imported @values were already added, so skip them
+                if(external) {
+                    return;
                 }
+
+                if(vKey && graph.hasNode(vKey)) {
+                    const { file } = graph.getNodeData(vKey);
+                    const { name: filename } = path.parse(file);
+                    const name = `$${filename}Values`;
+
+                    valueExports.push([ key, `${externalsMap.get(name)}[${JSON.stringify(key)}]` ]);
+
+                    return;
+                }
+
+                const unique = deconflict(identifiers, key);
+
+                internalsMap.set(value, unique);
+
+                out.push(`const ${unique} = ${JSON.stringify(value)}`);
+
+                valueExports.push([ key, unique ]);
+            });
+
+            if(valueExports.length) {
+                const unique = deconflict(identifiers, DEFAULT_VALUES);
+
+                out.push(dedent(`const ${unique} = {
+                    ${valueExports.map(property).join(",\n")},
+                };`));
+
+
+                defaultExports.push([ DEFAULT_VALUES, unique ]);
+
+                namedExports.push(`${unique} as ${DEFAULT_VALUES}`);
             }
 
             // Create vars representing exported classes & use them in local var definitions

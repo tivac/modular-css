@@ -12,7 +12,7 @@ module.exports = (method = "log") => {
     return {
         spy,
 
-        logSnapshot() {
+        calls() {
             // eslint-disable-next-line jest/no-standalone-expect
             expect(spy).toHaveBeenCalled();
             
@@ -23,8 +23,7 @@ module.exports = (method = "log") => {
                 ))
             );
 
-            // eslint-disable-next-line jest/no-standalone-expect
-            expect(calls).toMatchSnapshot();
+            return calls;
         },
     };
 };

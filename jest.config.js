@@ -10,7 +10,7 @@ module.exports = {
             coveragePathIgnorePatterns : [
                 "/node_modules/",
                 "/parsers/",
-                "/@modular-css/test-utils/",
+                "/packages/test-utils/",
             ],
 
             watchPathIgnorePatterns : [

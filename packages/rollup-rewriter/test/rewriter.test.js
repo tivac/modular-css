@@ -232,7 +232,7 @@ describe("rollup-rewriter", () => {
 
     // eslint-disable-next-line jest/expect-expect
     it("should log details in verbose mode", async () => {
-        const { logSnapshot } = logs();
+        const { calls } = logs();
 
         const bundle = await rollup({
             input : [
@@ -260,6 +260,6 @@ describe("rollup-rewriter", () => {
             exports : "auto",
         });
 
-        logSnapshot();
+        expect(calls()).toMatchSnapshot();
     });
 });

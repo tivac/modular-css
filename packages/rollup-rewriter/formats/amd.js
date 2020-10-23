@@ -21,10 +21,6 @@ exports.loader = ({ content, str }) => {
     const s = str.toString();
     const i = s.indexOf(search);
 
-    if(i === -1) {
-        throw new Error("Unable to find strict mode declaration");
-    }
-
     // + 1 is for the newline...
     str.appendRight(
         i + search.length + 1,
