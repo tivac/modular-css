@@ -6,6 +6,11 @@ const path = require("path");
 const shell = require("shelljs");
 const { rollup } = require("rollup");
 
+const { nodeResolve : resolvePlugin } = require("@rollup/plugin-node-resolve");
+const sveltePlugin = require("rollup-plugin-svelte");
+const mcssPlugin = require("@modular-css/rollup");
+const hypotheticalPlugin = require("rollup-plugin-hypothetical");
+
 const write = require("@modular-css/test-utils/write.js")(__dirname);
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
 const dir = require("@modular-css/test-utils/read-dir.js")(__dirname);
@@ -26,6 +31,9 @@ describe("/svelte.js", () => {
         afterEach(() => watcher.close());
 
         it("should generate updated output", async () => {
+            // Eat console.warn calls because we don't need 'em
+            logspy("warn");
+
             const { preprocess, processor } = plugin();
 
             // Create v1 of the files
@@ -47,10 +55,11 @@ describe("/svelte.js", () => {
                     assetFileNames,
                 },
                 plugins : [
-                    require("rollup-plugin-svelte")({
+                    resolvePlugin(),
+                    sveltePlugin({
                         preprocess,
                     }),
-                    require("@modular-css/rollup")({
+                    mcssPlugin({
                         processor,
                     }),
                 ],
@@ -127,10 +136,11 @@ describe("/svelte.js", () => {
                     assetFileNames,
                 },
                 plugins : [
-                    require("rollup-plugin-svelte")({
+                    resolvePlugin(),
+                    sveltePlugin({
                         preprocess,
                     }),
-                    require("@modular-css/rollup")({
+                    mcssPlugin({
                         processor,
                     }),
                 ],
@@ -171,7 +181,7 @@ describe("/svelte.js", () => {
                 input : "./error.js",
 
                 plugins : [
-                    require("rollup-plugin-hypothetical")({
+                    hypotheticalPlugin({
                         cwd   : path.join(__dirname, "./specimens"),
                         files : {
                             "./error.js" : `
@@ -183,10 +193,11 @@ describe("/svelte.js", () => {
 
                         allowFallthrough : true,
                     }),
-                    require("rollup-plugin-svelte")({
+                    resolvePlugin(),
+                    sveltePlugin({
                         preprocess,
                     }),
-                    require("@modular-css/rollup")({
+                    mcssPlugin({
                         processor,
                     }),
                 ],
@@ -202,7 +213,7 @@ describe("/svelte.js", () => {
                 input : "./error.js",
 
                 plugins : [
-                    require("rollup-plugin-hypothetical")({
+                    hypotheticalPlugin({
                         cwd   : path.join(__dirname, "./specimens"),
                         files : {
                             "./error.js" : `
@@ -214,10 +225,11 @@ describe("/svelte.js", () => {
 
                         allowFallthrough : true,
                     }),
-                    require("rollup-plugin-svelte")({
+                    resolvePlugin(),
+                    sveltePlugin({
                         preprocess,
                     }),
-                    require("@modular-css/rollup")({
+                    mcssPlugin({
                         processor,
                     }),
                 ],
@@ -239,10 +251,11 @@ describe("/svelte.js", () => {
                 ],
 
                 plugins : [
-                    require("rollup-plugin-svelte")({
+                    resolvePlugin(),
+                    sveltePlugin({
                         preprocess,
                     }),
-                    require("@modular-css/rollup")({
+                    mcssPlugin({
                         processor,
                     }),
                 ],
