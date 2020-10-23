@@ -18,12 +18,6 @@ const assetFileNames = "assets/[name][extname]";
 const format = "es";
 
 describe("/svelte.js", () => {
-    let warnSpy;
-
-    beforeEach(() => {
-        warnSpy = logspy("warn");
-    });
-
     describe("rollup watching", () => {
         const { watch } = require("rollup");
         let watcher;
@@ -200,6 +194,8 @@ describe("/svelte.js", () => {
         });
 
         it("should show useful errors from rollup (non-css file)", async () => {
+            const spy = logspy("warn");
+
             const { preprocess, processor } = plugin();
 
             await expect(rollup({
@@ -227,8 +223,8 @@ describe("/svelte.js", () => {
                 ],
             })).rejects.toThrow("error-link.html:1:1: Unknown word");
 
-            expect(warnSpy).toHaveBeenCalled();
-            expect(warnSpy.mock.calls).toMatchSnapshot();
+            expect(spy).toHaveBeenCalled();
+            expect(spy).toMatchLogspySnapshot();
         });
     });
 
