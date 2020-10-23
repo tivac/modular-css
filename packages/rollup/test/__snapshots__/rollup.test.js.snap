@@ -1,29 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/rollup.js default options should default maps to true 1`] = `
-Object {
-  "assets/simple-0a80c138.css": "
-/* packages/rollup/test/specimens/simple.css */
-.mc_fooga {
-    color: red;
-}
-",
-  "simple.js": "
-const str = \\"\\\\\\"string\\\\\\"\\";
-const $values = {
-    str,
-};
-const fooga = \\"mc_fooga\\";
-var css = {
-    $values,
-fooga
-};
-
-console.log(css);
-",
-}
-`;
-
 exports[`/rollup.js dev mode option should output a proxy 1`] = `
 Object {
   "simple": "
