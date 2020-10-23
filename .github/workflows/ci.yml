@@ -18,9 +18,10 @@ jobs:
       
       - name: Cache node modules
         id: cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
-          path: node_modules
+          path: |
+            **/node_modules
           key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-build-${{ env.cache-name }}-
@@ -53,9 +54,10 @@ jobs:
     
     - name: Cache node_modules
       id: cache
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
-        path: node_modules
+        path: |
+          **/node_modules
         key: ${{ matrix.os }}-build-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ matrix.os }}-build-${{ env.cache-name }}-
