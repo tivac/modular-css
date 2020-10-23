@@ -8,7 +8,7 @@ const dedent = require("dedent");
 
 const Processor = require("@modular-css/processor");
 const namer = require("@modular-css/test-utils/namer.js");
-const logs  = require("@modular-css/test-utils/logs.js");
+const logspy  = require("@modular-css/test-utils/logs.js");
 
 const plugin = require("../svelte.js");
 
@@ -16,7 +16,7 @@ describe("/svelte.js", () => {
     let warnSpy;
 
     beforeEach(() => {
-        warnSpy = logs("warn");
+        warnSpy = logspy("warn");
     });
 
     afterEach(() => require("shelljs").rm("-rf", "./packages/svelte/test/output/*"));
@@ -242,7 +242,7 @@ describe("/svelte.js", () => {
         [ "<style>", "style.html" ],
         [ "<link>", "external.html" ],
     ])("should support verbose output: %s", async (title, specimen) => {
-        const spy = logs();
+        const spy = logspy();
 
         const filename = require.resolve(`./specimens/${specimen}`);
 
@@ -262,7 +262,7 @@ describe("/svelte.js", () => {
 
         await processor.output();
 
-        expect(spy.calls()).toMatchSnapshot();
+        expect(spy).toMatchLogspySnapshot();
     });
 
     it("should warn when multiple <link> elements are in the html", async () => {

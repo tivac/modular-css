@@ -10,7 +10,7 @@ const write = require("@modular-css/test-utils/write.js")(__dirname);
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
 const dir = require("@modular-css/test-utils/read-dir.js")(__dirname);
 const watching = require("@modular-css/test-utils/rollup-watching.js");
-const logs = require("@modular-css/test-utils/logs.js");
+const logspy = require("@modular-css/test-utils/logs.js");
 
 const plugin = require("../svelte.js");
 
@@ -21,7 +21,7 @@ describe("/svelte.js", () => {
     let warnSpy;
 
     beforeEach(() => {
-        warnSpy = logs("warn");
+        warnSpy = logspy("warn");
     });
 
     describe("rollup watching", () => {

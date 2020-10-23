@@ -20,9 +20,10 @@ module.exports = {
 
             setupFilesAfterEnv : [
                 "<rootDir>/packages/test-utils/expect/toMatchDiffSnapshot.js",
-                "<rootDir>/packages/test-utils/expect/toMatchRollupSnapshot.js",
-                "<rootDir>/packages/test-utils/expect/toMatchRollupCodeSnapshot.js",
+                "<rootDir>/packages/test-utils/expect/toMatchLogspySnapshot.js",
                 "<rootDir>/packages/test-utils/expect/toMatchRollupAssetSnapshot.js",
+                "<rootDir>/packages/test-utils/expect/toMatchRollupCodeSnapshot.js",
+                "<rootDir>/packages/test-utils/expect/toMatchRollupSnapshot.js",
             ],
 
             snapshotSerializers : [

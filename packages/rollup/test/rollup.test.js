@@ -8,10 +8,10 @@ const shell = require("shelljs");
 const cssnano = require("cssnano");
 const files = require("rollup-plugin-hypothetical");
 
-const read    = require("@modular-css/test-utils/read.js")(__dirname);
-const prefix  = require("@modular-css/test-utils/prefix.js")(__dirname);
-const namer   = require("@modular-css/test-utils/namer.js");
-const logs    = require("@modular-css/test-utils/logs.js");
+const read = require("@modular-css/test-utils/read.js")(__dirname);
+const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
+const namer = require("@modular-css/test-utils/namer.js");
+const logspy = require("@modular-css/test-utils/logs.js");
 
 const Processor = require("@modular-css/processor");
 
@@ -478,7 +478,7 @@ describe("/rollup.js", () => {
         });
 
         it("should warn if named exports are falsey", async () => {
-            const spy = logs("warn");
+            const spy = logspy("warn");
 
             await rollup({
                 input   : require.resolve("./specimens/simple.js"),
@@ -489,7 +489,7 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            expect(spy.calls()).toMatchSnapshot();
+            expect(spy).toMatchLogspySnapshot();
         });
     });
 
@@ -513,7 +513,7 @@ describe("/rollup.js", () => {
 
         // eslint-disable-next-line jest/expect-expect
         it("should warn that styleExport and done aren't compatible", async () => {
-            const spy = logs("warn");
+            const spy = logspy("warn");
 
             await rollup({
                 input   : require.resolve("./specimens/style-export.js"),
@@ -527,7 +527,7 @@ describe("/rollup.js", () => {
                 ],
             });
 
-            expect(spy.calls()).toMatchSnapshot();
+            expect(spy).toMatchLogspySnapshot();
         });
     });
 
@@ -665,7 +665,7 @@ describe("/rollup.js", () => {
     describe("verbose option", () => {
         // eslint-disable-next-line jest/expect-expect
         it("should log in verbose mode", async () => {
-            const spy = logs();
+            const spy = logspy();
 
             const bundle = await rollup({
                 input   : require.resolve("./specimens/simple.js"),
@@ -694,7 +694,7 @@ describe("/rollup.js", () => {
 
             await processor.output();
 
-            expect(spy.calls()).toMatchSnapshot();
+            expect(spy).toMatchLogspySnapshot();
         });
     });
 
@@ -756,7 +756,7 @@ describe("/rollup.js", () => {
         }
 
         fn("should warn about repeated references that point at the same files", async () => {
-            const spy = logs("warn");
+            const spy = logspy("warn");
 
             const bundle = await rollup({
                 input   : require.resolve("./specimens/casing/main.js"),

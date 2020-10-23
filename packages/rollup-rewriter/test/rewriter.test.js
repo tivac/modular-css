@@ -7,7 +7,7 @@ const shell = require("shelljs");
 
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
 const namer  = require("@modular-css/test-utils/namer.js");
-const logs   = require("@modular-css/test-utils/logs.js");
+const logspy   = require("@modular-css/test-utils/logs.js");
 
 const css = require("@modular-css/rollup");
 
@@ -232,7 +232,7 @@ describe("rollup-rewriter", () => {
 
     // eslint-disable-next-line jest/expect-expect
     it("should log details in verbose mode", async () => {
-        const spy = logs();
+        const spy = logspy();
 
         const bundle = await rollup({
             input : [
@@ -260,6 +260,6 @@ describe("rollup-rewriter", () => {
             exports : "auto",
         });
 
-        expect(spy.calls()).toMatchSnapshot();
+        expect(spy).toMatchLogspySnapshot();
     });
 });

@@ -2,10 +2,10 @@
 
 const path = require("path");
 
-const dedent   = require("dedent");
-const namer    = require("@modular-css/test-utils/namer.js");
+const dedent = require("dedent");
+const namer = require("@modular-css/test-utils/namer.js");
 const relative = require("@modular-css/test-utils/relative.js");
-const logs     = require("@modular-css/test-utils/logs.js");
+const logspy = require("@modular-css/test-utils/logs.js");
 
 const Processor = require("../processor.js");
 
@@ -424,7 +424,7 @@ describe("/processor.js", () => {
 
             describe("verbose", () => {
                 it("should output debugging messages when verbose mode is enabled", async () => {
-                    const spy = logs();
+                    const spy = logspy();
 
                     const processor = new Processor({
                         namer,
@@ -439,7 +439,7 @@ describe("/processor.js", () => {
 
                     await processor.output();
 
-                    expect(spy.calls()).toMatchSnapshot();
+                    expect(spy).toMatchLogspySnapshot();
                 });
             });
 
@@ -447,7 +447,7 @@ describe("/processor.js", () => {
                 // const fn = cased ? it.skip : it;
 
                 it("should warn on potentially duplicate file paths", async () => {
-                    const spy = logs("warn");
+                    const spy = logspy("warn");
 
                     const processor = new Processor({
                         namer,
@@ -456,11 +456,11 @@ describe("/processor.js", () => {
                     await processor.string("packages/processor/test/specimens/start.css", ".start { color: red; }");
                     await processor.string("packages/processor/test/specimens/START.css", ".start { color: red; }");
 
-                    expect(spy.calls()).toMatchSnapshot();
+                    expect(spy).toMatchLogspySnapshot();
                 });
 
                 it("shouldn't warn if dupewarn is false", async () => {
-                    const spy = logs("warn");
+                    const spy = logspy("warn");
 
                     const processor = new Processor({
                         namer,
