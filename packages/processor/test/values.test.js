@@ -31,6 +31,15 @@ describe("/processor.js", () => {
             );
         });
 
+        it("should fail if a value imports a non-existant value", async () => {
+            await expect(processor.string(
+                "./packages/processor/test/specimens/simple.css",
+                "@value not-real from \"./local.css\";"
+            )).rejects.toThrow(
+                `Could not find @value not-real in "./local.css"`
+            );
+        });
+
         it("shouldn't replace values unless they're safe", async () => {
             await processor.string(
                 "./values.css",
