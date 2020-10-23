@@ -424,7 +424,7 @@ describe("/processor.js", () => {
 
             describe("verbose", () => {
                 it("should output debugging messages when verbose mode is enabled", async () => {
-                    const { calls } = logs();
+                    const spy = logs();
 
                     const processor = new Processor({
                         namer,
@@ -439,7 +439,7 @@ describe("/processor.js", () => {
 
                     await processor.output();
 
-                    expect(calls()).toMatchSnapshot();
+                    expect(spy.calls()).toMatchSnapshot();
                 });
             });
 
@@ -447,7 +447,7 @@ describe("/processor.js", () => {
                 // const fn = cased ? it.skip : it;
 
                 it("should warn on potentially duplicate file paths", async () => {
-                    const { calls } = logs("warn");
+                    const spy = logs("warn");
 
                     const processor = new Processor({
                         namer,
@@ -456,13 +456,11 @@ describe("/processor.js", () => {
                     await processor.string("packages/processor/test/specimens/start.css", ".start { color: red; }");
                     await processor.string("packages/processor/test/specimens/START.css", ".start { color: red; }");
 
-                    expect(calls()).toMatchSnapshot();
+                    expect(spy.calls()).toMatchSnapshot();
                 });
 
                 it("shouldn't warn if dupewarn is false", async () => {
-                    const spy = jest.spyOn(global.console, "warn");
-
-                    spy.mockImplementation(() => { /* NO-OP */ });
+                    const spy = logs("warn");
 
                     const processor = new Processor({
                         namer,

@@ -10,6 +10,7 @@ const write = require("@modular-css/test-utils/write.js")(__dirname);
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
 const dir = require("@modular-css/test-utils/read-dir.js")(__dirname);
 const watching = require("@modular-css/test-utils/rollup-watching.js");
+const logs = require("@modular-css/test-utils/logs.js");
 
 const plugin = require("../svelte.js");
 
@@ -20,8 +21,7 @@ describe("/svelte.js", () => {
     let warnSpy;
 
     beforeEach(() => {
-        warnSpy = jest.spyOn(global.console, "warn");
-        warnSpy.mockImplementation(() => { /* NO-OP */ });
+        warnSpy = logs("warn");
     });
 
     describe("rollup watching", () => {
@@ -113,7 +113,7 @@ describe("/svelte.js", () => {
                     color: red;
                 }
             `);
-            
+
             write(`./rollup-composes/input/other.css`, `
                 .b {
                     background: blue;
@@ -151,11 +151,11 @@ describe("/svelte.js", () => {
             setTimeout(() => write(`./rollup-composes/input/app.css`, `
                 .a {
                     composes: c from "./other.css";
-                    
+
                     color: red;
                 }
             `), 100);
-            
+
             await wait();
 
             const v2 = dir("./rollup-composes/output/");

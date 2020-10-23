@@ -16,8 +16,7 @@ describe("/svelte.js", () => {
     let warnSpy;
 
     beforeEach(() => {
-        warnSpy = jest.spyOn(global.console, "warn");
-        warnSpy.mockImplementation(() => { /* NO-OP */ });
+        warnSpy = logs("warn");
     });
 
     afterEach(() => require("shelljs").rm("-rf", "./packages/svelte/test/output/*"));
@@ -243,7 +242,7 @@ describe("/svelte.js", () => {
         [ "<style>", "style.html" ],
         [ "<link>", "external.html" ],
     ])("should support verbose output: %s", async (title, specimen) => {
-        const { calls } = logs();
+        const spy = logs();
 
         const filename = require.resolve(`./specimens/${specimen}`);
 
@@ -263,7 +262,7 @@ describe("/svelte.js", () => {
 
         await processor.output();
 
-        expect(calls()).toMatchSnapshot();
+        expect(spy.calls()).toMatchSnapshot();
     });
 
     it("should warn when multiple <link> elements are in the html", async () => {

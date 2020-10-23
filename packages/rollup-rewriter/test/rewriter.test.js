@@ -114,7 +114,7 @@ describe("rollup-rewriter", () => {
 
         expect(result).toMatchRollupSnapshot();
     });
-    
+
     it.each(formats)("should support loader being a function (%s)", async (format) => {
         const bundle = await rollup({
             input : [
@@ -232,7 +232,7 @@ describe("rollup-rewriter", () => {
 
     // eslint-disable-next-line jest/expect-expect
     it("should log details in verbose mode", async () => {
-        const { calls } = logs();
+        const spy = logs();
 
         const bundle = await rollup({
             input : [
@@ -260,6 +260,6 @@ describe("rollup-rewriter", () => {
             exports : "auto",
         });
 
-        expect(calls()).toMatchSnapshot();
+        expect(spy.calls()).toMatchSnapshot();
     });
 });

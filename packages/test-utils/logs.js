@@ -9,16 +9,12 @@ module.exports = (method = "log") => {
 
     spy.mockImplementation(() => { /* NO-OP */ });
 
-    return {
-        spy,
+    spy.calls = () => spy.mock.calls.map((call) =>
+        call.map((arg) => (path.isAbsolute(arg) ?
+            relative([ arg ])[0] :
+            arg
+        ))
+    );
 
-        calls() {
-            return spy.mock.calls.map((call) =>
-                call.map((arg) => (path.isAbsolute(arg) ?
-                    relative([ arg ])[0] :
-                    arg
-                ))
-            );
-        },
-    };
+    return spy;
 };
