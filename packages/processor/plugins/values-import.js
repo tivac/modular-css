@@ -65,6 +65,7 @@ module.exports = (css, { opts }) => {
             return changes.push(source.values);
         }
 
+        /* istanbul ignore next: This is worthwhile in case we add a new type to the parser */
         throw rule.error(`Unknown @value type, unable to process`);
     });
 
