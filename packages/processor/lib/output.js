@@ -72,7 +72,7 @@ exports.json = (compositions) => Object.keys(compositions).reduce((acc, file) =>
 }, Object.create(null));
 
 exports.values = (values) => Object.keys(values).reduce((acc, key) => {
-        acc[key] = values[key].value;
+    acc[key] = values[key].value;
 
-        return acc;
-    }, Object.create(null));
+    return acc;
+}, Object.create(null));

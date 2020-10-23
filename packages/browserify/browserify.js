@@ -21,9 +21,17 @@ const prefixed = (cwd, file) => {
     return out;
 };
 
-const outputs = (processor, file) => `module.exports = ${
-    JSON.stringify(output.fileCompositions(processor.files[file], processor, { joined : true }), null, 4)
-};`;
+const outputs = (processor, file) => {
+    const details = processor.files[file];
+
+    const classes = output.fileCompositions(details, processor, { joined : true });
+    const values = output.values(details.values);
+    
+    // Attach values to the compositions
+    classes.$values = values;
+
+    return `module.exports = ${JSON.stringify(classes, null, 4)};`;
+};
 
 module.exports = (browserify, opts) => {
     const options = {
