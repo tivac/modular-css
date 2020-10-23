@@ -1,12 +1,9 @@
 "use strict";
 
 const relative = require("./relative.js");
-const { SELECTOR_PREFIX, selectorKey } = require("./keys.js");
+const { selectorKey } = require("./keys.js");
 
-exports.join = (value) => (Array.isArray(value) ?
-    value.join(" ") :
-    value.toString()
-);
+exports.join = (value) => value.join(" ");
 
 exports.fileCompositions = ({ classes, name }, { files, graph }, { joined = false } = false) => {
     const out = Object.create(null);
@@ -17,10 +14,6 @@ exports.fileCompositions = ({ classes, name }, { files, graph }, { joined = fals
 
         if(graph.hasNode(key)) {
             graph.dependenciesOf(key).forEach((dep) => {
-                if(!dep.startsWith(SELECTOR_PREFIX)) {
-                    return;
-                }
-
                 const {
                     file : depFile,
                     selector : depSelector,
@@ -32,7 +25,7 @@ exports.fileCompositions = ({ classes, name }, { files, graph }, { joined = fals
                 } else {
                     const composition = files[depFile].classes[depSelector];
 
-                    compositions.push(...(Array.isArray(composition) ? composition : [ composition ]));
+                    compositions.push(...composition);
                 }
             });
         }
@@ -57,7 +50,7 @@ exports.compositions = (processor) => {
 
             json[relative(cwd, file)] = out;
         });
-    
+
     return json;
 };
 
