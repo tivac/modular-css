@@ -18,6 +18,7 @@ Object {
 exports[`/processor.js @composes should allow for chains of @composes-included files 1`] = `
 Object {
   "a": Array [
+    "mc_wooga",
     "mc_notblue",
     "mc_a",
   ],
@@ -26,6 +27,7 @@ Object {
     "mc_b",
   ],
   "notblue": Array [
+    "mc_wooga",
     "mc_notblue",
   ],
   "wooga": Array [
@@ -68,6 +70,7 @@ Object {
     "mc_booga",
   ],
   "looga": Array [
+    "mc_booga",
     "mc_looga",
   ],
 }
@@ -86,6 +89,57 @@ exports[`/processor.js @composes should include exported classes from the compos
     color: blue;
 }
 "
+`;
+
+exports[`/processor.js @composes should include external compositions from the composed file 1`] = `
+Object {
+  "packages/processor/test/specimens/at-composes.css": Object {
+    "a": Array [
+      "mc_a",
+    ],
+    "b": Array [
+      "mc_booga",
+      "mc_wooga",
+      "mc_b",
+    ],
+    "booga": Array [
+      "mc_booga",
+    ],
+    "tooga": Array [
+      "mc_tooga",
+    ],
+    "wooga": Array [
+      "mc_booga",
+      "mc_wooga",
+    ],
+  },
+  "packages/processor/test/specimens/folder/folder.css": Object {
+    "folder": Array [
+      "mc_folder",
+    ],
+  },
+  "packages/processor/test/specimens/local.css": Object {
+    "booga": Array [
+      "mc_booga",
+    ],
+    "looga": Array [
+      "mc_booga",
+      "mc_looga",
+    ],
+  },
+  "packages/processor/test/specimens/start.css": Object {
+    "booga": Array [
+      "mc_booga",
+    ],
+    "tooga": Array [
+      "mc_tooga",
+    ],
+    "wooga": Array [
+      "mc_booga",
+      "mc_wooga",
+    ],
+  },
+}
 `;
 
 exports[`/processor.js @composes should not include exported values from the composed file 1`] = `Object {}`;

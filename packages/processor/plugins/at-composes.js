@@ -2,17 +2,14 @@
 
 const parser = require("../parsers/at-composes.js");
 
-const {
-    selectorKey,
-    fileKey,
-} = require("../lib/keys.js");
+const { selectorKey } = require("../lib/keys.js");
 
 const plugin = "modular-css-at-composes";
 
 module.exports = (css, { opts, messages }) => {
     const { from, processor } = opts;
     const { files, graph } = processor;
-        
+
     let source;
 
     css.walkAtRules("composes", (rule) => {
@@ -33,26 +30,21 @@ module.exports = (css, { opts, messages }) => {
         return;
     }
 
-    const fkey = fileKey(from);
-
     // Create a copy of each defined class and also the dependency graph (if it has dependencies)
     const atcomposes = Object.keys(source.classes).reduce((acc, key) => {
         acc[key] = [ ...source.classes[key] ];
 
-        source.classes[key].forEach((selector) => {
-            const skey = selectorKey(source.name, selector);
+        const skey = selectorKey(source.name, key);
 
-            if(!graph.hasNode(skey)) {
-                return;
-            }
+        if(!graph.hasNode(skey)) {
+            return acc;
+        }
 
-            const dkey = processor._addSelector(from, selector);
+        const dkey = processor._addSelector(from, key);
 
-            graph.addDependency(dkey, fkey);
-
-            graph.dependenciesOf(skey).forEach((dep) => {
-                graph.addDependency(dkey, dep);
-            });
+        // Duplicate the source key's info to the new dependent key
+        graph.dependenciesOf(skey).forEach((dep) => {
+            graph.addDependency(dkey, dep);
         });
 
         return acc;

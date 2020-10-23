@@ -10,7 +10,7 @@ const id = "./packages/processor/test/specimens/at-composes.css";
 describe("/processor.js", () => {
     describe("@composes", () => {
         let processor;
-        
+
         beforeEach(() => {
             processor = new Processor({
                 namer,
@@ -24,7 +24,7 @@ describe("/processor.js", () => {
                 .a {
                     color: aqua;
                 }
-                
+
                 .b {
                     color: blue;
                 }
@@ -44,7 +44,7 @@ describe("/processor.js", () => {
 
             expect(exports).toMatchSnapshot();
         });
-        
+
         it("should allow composing classes from the composed file", async () => {
             const { exports } = await processor.string(id, dedent(`
                 @composes "./simple.css";
@@ -54,7 +54,7 @@ describe("/processor.js", () => {
 
                     color: aqua;
                 }
-                
+
                 .b {
                     color: blue;
                 }
@@ -70,19 +70,39 @@ describe("/processor.js", () => {
                 .a {
                     color: aqua;
                 }
-                
+
                 .b {
                     composes: wooga;
-                    
+
                     color: blue;
                 }
             `));
 
             const { compositions } = await processor.output();
-            
+
             expect(compositions).toMatchSnapshot();
         });
-        
+
+        it("should include external compositions from the composed file", async () => {
+            await processor.string(id, dedent(`
+                @composes "./start.css";
+
+                .a {
+                    color: aqua;
+                }
+
+                .b {
+                    composes: wooga;
+
+                    color: blue;
+                }
+            `));
+
+            const { compositions } = await processor.output();
+
+            expect(compositions).toMatchSnapshot();
+        });
+
         it("should output css from the composed file", async () => {
             await processor.string(id, dedent(`
                 @composes "./simple.css";
@@ -90,16 +110,16 @@ describe("/processor.js", () => {
                 .a {
                     color: aqua;
                 }
-                
+
                 .b {
                     composes: wooga;
-                    
+
                     color: blue;
                 }
             `));
 
             const { css } = await processor.output();
-            
+
             expect(css).toMatchSnapshot();
         });
 
@@ -112,7 +132,7 @@ describe("/processor.js", () => {
 
                     color: aqua;
                 }
-                
+
                 .b {
                     composes: wooga;
 
