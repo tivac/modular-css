@@ -35,9 +35,12 @@ module.exports = async function(source) {
     this.cacheable();
 
     try {
-        const result = await processor.string(this.resourcePath, source);
+        const { details } = await processor.string(this.resourcePath, source);
+        const exported = output.fileCompositions(details, processor, { joined : true });
+        const values = output.values(details.values);
 
-        const exported = output.fileCompositions(processor.files[this.resourcePath], processor, { joined : true });
+        exported.$values = values;
+
         const out = [];
 
         if(options.defaultExport) {
@@ -64,7 +67,7 @@ module.exports = async function(source) {
         });
 
         if(options.styleExport) {
-            out.push(`export var styles = ${JSON.stringify(result.details.result.css)};`);
+            out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
         }
 
         return done(null, out.join("\n"));
