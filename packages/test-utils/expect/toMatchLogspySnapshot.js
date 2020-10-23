@@ -9,6 +9,8 @@ const relative = require("../relative.js");
 expect.extend({
     toMatchLogspySnapshot(spy) {
         if(!spy || !spy.mock) {
+            console.log({ spy, "spy.mock" : spy.mock });
+
             return {
                 message : () => `Invalid spy passed to .toMatchLogspySnapshot()`,
                 pass    : false,
