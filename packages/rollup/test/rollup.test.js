@@ -282,6 +282,22 @@ describe("/rollup.js", () => {
         ).toMatchRollupSnapshot();
     });
 
+    it("should support external @value aliases", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/external-value-aliasing/external-value-aliasing.js"),
+            plugins : [
+                createPlugin(),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
     it("should support mixing all @value types", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/all-value-types/all-value-types.js"),
@@ -316,25 +332,9 @@ describe("/rollup.js", () => {
 
     it("should support @value and class overlap", async () => {
         const bundle = await rollup({
-            input   : "index.js",
+            input   : require.resolve("./specimens/class-value-overlap/class-value-overlap.js"),
             plugins : [
-                files({
-                    leaveIdsAlone : true,
-                    files         : {
-                        "index.js" : dedent(`
-                            import css from "index.css";
-
-                            console.log(css);
-                        `),
-                        "index.css" : dedent(`
-                            @value foo: blue;
-
-                            .foo { color: foo; }
-                        `),
-                    },
-                }),
-
-                createPlugin({ namer }),
+                createPlugin(),
             ],
         });
 

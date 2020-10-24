@@ -593,11 +593,9 @@ class Processor {
             const dep = this._normalize(dependency);
             const dKey = this._addFile(dep);
 
-            // console.log({ fKey, dKey, refs, selector });
-
             graph.addDependency(fKey, dKey);
 
-            // @values and don't have a selector field
+            // @values don't have a selector field
             if(!selector) {
                 refs.forEach(({ name : depValue }) => {
                     this._addValue(dep, depValue);

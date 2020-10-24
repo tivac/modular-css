@@ -147,8 +147,18 @@ module.exports = (
 
             const { details } = processed;
 
-            const fileId = relative(processor.options.cwd, id);
-            const allDependencies = processor.dependencies(id, { filesOnly : false });
+            const relativeId = relative(processor.options.cwd, id);
+            const dependencies = new Set();
+
+            // Only want direct dependencies and any first-level dependencies
+            // of this file to be processed
+            graph.outgoingEdges[Processor.fileKey(id)].forEach((dep) => {
+                dependencies.add(dep);
+
+                graph.outgoingEdges[dep].forEach((d) => {
+                    dependencies.add(d);
+                });
+            });
 
             // All used identifiers
             const identifiers = new Map();
@@ -165,13 +175,13 @@ module.exports = (
             const out = [];
             const defaultExports = [];
             const namedExports = [];
-            const valueExports = [];
+            const valueExports = new Map();
 
             // All the class keys exported by this module
             const exportedKeys = new Set();
 
             // create import statements for all of the values used in compositions
-            allDependencies.forEach((dep) => {
+            dependencies.forEach((dep) => {
                 const data = graph.getNodeData(dep);
                 const { file } = data;
 
@@ -206,28 +216,44 @@ module.exports = (
 
                         imported.set(name, unique);
                     });
+
+                    return;
                 }
 
-                // @value namespaces need to be specially imported & handled
-                if(isValue(dep) && !imported.has(DEFAULT_VALUES)) {
-                    const { value, namespace } = data;
+                // @value references need to be specially imported & handled
+                if(isValue(dep)) {
+                    const { value, namespace, alias } = data;
                     const { name : filename } = path.parse(file);
                     const importName = `$${filename}Values`;
-                    const unique = deconflict(identifiers, importName);
 
-                    // Add a values import to the imports list
-                    externalsMap.set(importName, unique);
+                    let unique;
+
+                    if(!externalsMap.has(importName)) {
+                        unique = deconflict(identifiers, importName);
+
+                        // Add a values import to the imports list
+                        externalsMap.set(importName, unique);
+                    } else {
+                        unique = externalsMap.get(importName);
+                    }
 
                     imported.set(DEFAULT_VALUES, unique);
 
                     // Add @values namespace to the exported values block
                     if(namespace) {
-                        valueExports.push([ value, unique ]);
+                        // Don't want to import namespaces multiple times
+                        // if(!imported.has(DEFAULT_VALUES)) {
+                            valueExports.set(value, unique);
+                        // }
                     } else {
-                        valueExports.push([ value, `${unique}[${JSON.stringify(value)}]` ]);
+                        valueExports.set(value, `${unique}[${JSON.stringify(alias || value)}]`);
                     }
+
+                    return;
                 }
             });
+
+            // console.log({ externalsMap, importsMap, valueExports });
 
             // Write out all the imports
             importsMap.forEach((imports, from) => {
@@ -243,24 +269,14 @@ module.exports = (
             // Add the rest of the exported keys in whatever order because it doesn't matter
             Object.keys(details.classes).forEach((key) => exportedKeys.add(key));
 
-            // Add default exports for all the @values
-            const values = Object.keys(details.values);
+            // console.log(id, details.values);
 
-            values.forEach((key) => {
-                const { value, external, key: vKey } = details.values[key];
+            // Add default exports for all the @values
+            Object.keys(details.values).forEach((key) => {
+                const { value, external } = details.values[key];
 
                 // Externally-imported @values were already added, so skip them
                 if(external) {
-                    return;
-                }
-
-                if(vKey && graph.hasNode(vKey)) {
-                    const { file } = graph.getNodeData(vKey);
-                    const { name: filename } = path.parse(file);
-                    const name = `$${filename}Values`;
-
-                    valueExports.push([ key, `${externalsMap.get(name)}[${JSON.stringify(key)}]` ]);
-
                     return;
                 }
 
@@ -270,14 +286,14 @@ module.exports = (
 
                 out.push(`const ${unique} = ${JSON.stringify(value)}`);
 
-                valueExports.push([ key, unique ]);
+                valueExports.set(key, unique);
             });
 
-            if(valueExports.length) {
+            if(valueExports.size) {
                 const unique = deconflict(identifiers, DEFAULT_VALUES);
 
                 out.push(dedent(`const ${unique} = {
-                    ${valueExports.map(property).join(",\n")},
+                    ${[ ...valueExports ].map(property).join(",\n")},
                 };`));
 
 
@@ -344,7 +360,7 @@ module.exports = (
                             }
 
                             throw new ReferenceError(
-                                key + " is not exported by " + ${JSON.stringify(fileId)}
+                                key + " is not exported by " + ${JSON.stringify(relativeId)}
                             );
                         }
                     })
@@ -369,9 +385,7 @@ module.exports = (
                 out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
             }
 
-            // if(id.endsWith("portrait.css")) {
-                // console.log(id, "\n", out.join("\n"));
-            // }
+            // console.log(id, "\n", out.join("\n"));
 
             // Return JS representation to rollup
             return {
@@ -400,6 +414,8 @@ module.exports = (
 
             const chunks = new Map();
             const used = new Set();
+
+            // console.log(processor.graph);
 
             // Determine the correct to option for PostCSS by doing a bit of a dance
             const to = (!file && !dir) ?

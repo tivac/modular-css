@@ -11,6 +11,7 @@ module.exports = (css, { opts }) => {
 
     const changes = [];
 
+    // eslint-disable-next-line max-statements
     css.walkAtRules("value", (rule) => {
         const parsed = parser.parse(rule.params);
         const file = processor.resolve(from, parsed.source);
@@ -22,14 +23,19 @@ module.exports = (css, { opts }) => {
         // fooga from "./wooga"
         if(parsed.type === "composition") {
             parsed.refs.forEach(({ name }) => {
-                if(!source.values[name]) {
+                const value = source.values[name];
+
+                if(!value) {
                     throw rule.error(`Could not find @value ${name} in "${parsed.source}"`);
                 }
 
-                processor._addValue(file, name);
+                const sourceKey = processor._addValue(file, name);
+                const nameKey = processor._addValue(from, name);
+
+                processor.graph.addDependency(nameKey, sourceKey);
 
                 values[name] = {
-                    ...source.values[name],
+                    ...value,
                     external : true,
                 };
             });
@@ -55,7 +61,22 @@ module.exports = (css, { opts }) => {
 
         // fooga as wooga from "./booga"
         if(parsed.type === "alias") {
-            values[parsed.alias] = source.values[parsed.name];
+            const [{ name }] = parsed.refs;
+            const value = source.values[name];
+
+            if(!value) {
+                throw rule.error(`Could not find @value ${name} in "${parsed.source}"`);
+            }
+
+            const sourceKey = processor._addValue(file, name);
+            const aliasKey = processor._addValue(from, parsed.alias, { alias : name });
+
+            processor.graph.addDependency(aliasKey, sourceKey);
+
+            values[parsed.alias] = {
+                ...value,
+                external : true,
+            };
 
             return changes.push(values);
         }
