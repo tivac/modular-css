@@ -385,7 +385,7 @@ module.exports = (
                 out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
             }
 
-            console.log(id, "\n", out.join("\n"));
+            // console.log(id, "\n", out.join("\n"));
 
             // Return JS representation to rollup
             return {
