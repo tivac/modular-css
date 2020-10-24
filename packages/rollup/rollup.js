@@ -85,6 +85,7 @@ module.exports = (
     // eslint-disable-next-line no-console, no-empty-function
     const log = options.verbose ? console.log.bind(console, "[rollup]") : () => { };
 
+    // istanbul ignore if: too hard to test this w/ defaults
     if(typeof options.map === "undefined") {
         // Sourcemaps don't make much sense in styleExport mode
         // But default to true otherwise
