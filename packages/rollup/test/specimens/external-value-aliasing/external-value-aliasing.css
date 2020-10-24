@@ -1,0 +1,7 @@
+@value a as colorRed from "./intermediate.css";
+@value b as colorBlue from "./intermediate.css";
+
+.aliased {
+    color: colorRed;
+    background: colorBlue;
+}
