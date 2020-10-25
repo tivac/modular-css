@@ -18,11 +18,9 @@ jobs:
       
       - name: Cache node modules
         id: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v1
         with:
-          path: |
-            node_modules
-            */*/node_modules
+          path: node_modules
           key: ${{ runner.OS }}-lint-${{ hashFiles('**/package-lock.json') }}
 
       - name: npm install
@@ -51,11 +49,9 @@ jobs:
     
     - name: Cache node_modules
       id: cache
-      uses: actions/cache@v2
+      uses: actions/cache@v1
       with:
-        path: |
-          node_modules
-          */*/node_modules
+        path: node_modules
         key: ${{ matrix.os }}-build-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
 
     - name: npm install
