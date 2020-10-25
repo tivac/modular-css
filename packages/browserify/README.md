@@ -56,7 +56,7 @@ build.plugin("@modular-css/browserify", {
 
 `@modular-css/browserify` is fully `factor-bundle` aware and will output correctly-partitioned CSS bundles to match the JS bundles created by `factor-bundle`.
 
-**WARNING**: Due to how `factor-bundle` works the `@modular-css/browserify` must be applied to the Browserify object **before** `factor-bundle`.
+**WARNING**: Due to how `factor-bundle` works the `@modular-css/browserify` plugin must be applied to the Browserify object **before** `factor-bundle`.
 
 ### CLI
 
@@ -71,9 +71,9 @@ $ browserify home.js account.js \
 
 ```js
 var build = browserify([
-        "./home.js",
-        "./account.js"
-    ]);
+    "./home.js",
+    "./account.js"
+]);
 
 // NOTE modular-css applied before factor-bundle, it won't work otherwise!
 build.plugin("@modular-css/browserify", {
