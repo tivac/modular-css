@@ -18,10 +18,11 @@ jobs:
       
       - name: Cache node modules
         id: cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
-          path: node_modules
-          key: ${{ runner.OS }}-lint-${{ hashFiles('**/package-lock.json') }}
+          path: |
+            node_modules
+          key: ${{ runner.OS }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: npm install
         if: steps.cache.outputs.cache-hit != 'true'
@@ -49,10 +50,12 @@ jobs:
     
     - name: Cache node_modules
       id: cache
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
-        path: node_modules
-        key: ${{ matrix.os }}-build-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
+        path: |
+          node_modules
+          */*/node_modules
+        key: ${{ matrix.os }}-${{ hashFiles('**/package-lock.json') }}
 
     - name: npm install
       if: steps.cache.outputs.cache-hit != 'true'
@@ -62,7 +65,7 @@ jobs:
       run: npm run build --if-present
     
     - name: test
-      run: npm test
+      run: npm test -- --ci --no-cache
       env:
         CI: true
         
