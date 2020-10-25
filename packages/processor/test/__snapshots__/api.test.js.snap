@@ -80,6 +80,21 @@ Array [
 ]
 `;
 
+exports[`/processor.js API .fileDependencies() should return the dependencies of the specified file 1`] = `
+Array [
+  "packages/processor/test/specimens/folder/folder.css",
+  "packages/processor/test/specimens/local.css",
+]
+`;
+
+exports[`/processor.js API .fileDependencies() should return the overall order of dependencies if no file is specified 1`] = `
+Array [
+  "packages/processor/test/specimens/folder/folder.css",
+  "packages/processor/test/specimens/local.css",
+  "packages/processor/test/specimens/start.css",
+]
+`;
+
 exports[`/processor.js API .invalidate() should invalidate a relative file 1`] = `
 Array [
   Array [

@@ -241,7 +241,7 @@ Returns a promise. Finalize processing of all added CSS and create combined CSS 
 
 Remove files from the `Processor` instance. Accepts a single file or array of files.
 
-##### `.dependencies([file])`
+##### `.fileDependencies([file])`
 
 Returns an array of file paths. Accepts a single file argument to get the dependencies for, will return entire dependency graph in order if argument is omitted.
 

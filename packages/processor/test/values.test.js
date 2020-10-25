@@ -39,6 +39,15 @@ describe("/processor.js", () => {
                 `Could not find @value not-real in "./local.css"`
             );
         });
+        
+        it("should fail if a value aliases a non-existant value", async () => {
+            await expect(processor.string(
+                "./packages/processor/test/specimens/simple.css",
+                "@value not-real as stil-no from \"./local.css\";"
+            )).rejects.toThrow(
+                `Could not find @value not-real in "./local.css"`
+            );
+        });
 
         it("shouldn't replace values unless they're safe", async () => {
             await processor.string(

@@ -198,7 +198,7 @@ module.exports = (config = false) => {
                 source += `<script>${inject}</script>`;
             }
 
-            dependencies = [ ...processor.dependencies(external), external ];
+            dependencies = [ ...processor.fileDependencies(external), external ];
         }
 
         log("processed styles", file);

@@ -244,7 +244,7 @@ class Processor {
     }
 
     // Get the dependency order for a file or the entire tree
-    dependencies(file, { leavesOnly = false, filesOnly = true } = false) {
+    fileDependencies(file) {
         let results;
 
         if(file) {
@@ -255,16 +255,12 @@ class Processor {
                 throw new Error(`Unknown file: ${normalized}`);
             }
 
-            results = this._graph.dependenciesOf(key, leavesOnly);
+            results = this._graph.dependenciesOf(key);
         } else {
-            results = this._graph.overallOrder(leavesOnly);
+            results = this._graph.overallOrder();
         }
 
-        if(filesOnly) {
-            return filterByPrefix(FILE_PREFIX, results);
-        }
-
-        return results;
+        return filterByPrefix(FILE_PREFIX, results);
     }
 
     // Get the ultimate output for specific files or the entire tree

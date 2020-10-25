@@ -82,11 +82,12 @@ module.exports = (css, { opts }) => {
         }
 
         // * from "./wooga"
+        // istanbul ignore else: This is worthwhile in case we add a new type to the parser
         if(parsed.type === "import") {
             return changes.push(source.values);
         }
 
-        /* istanbul ignore next: This is worthwhile in case we add a new type to the parser */
+        // istanbul ignore next: This is worthwhile in case we add a new type to the parser
         throw rule.error(`Unknown @value type, unable to process`);
     });
 
@@ -96,9 +97,11 @@ module.exports = (css, { opts }) => {
             __proto__ : null,
         },
         ...changes,
+        
         // Need to splat any existing values over the top of the ones we just calculated
         // because they'll have come from before/values-local.js and thus are considered
         // higher priority than any of the fancy stuff that happened here
+        // istanbul ignore next: not sure if this can really be hit but the safety doesn't hurt
         target.values || {},
     );
 };

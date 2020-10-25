@@ -316,10 +316,6 @@ module.exports = (
                     graph.dependenciesOf(sKey).forEach((dep) => {
                         const { file, selector } = graph.getNodeData(dep);
 
-                        if(!selector) {
-                            return;
-                        }
-
                         // Get the value from the right place
                         if(file !== id) {
                             elements.push(externalsMap.get(dep));
@@ -455,7 +451,7 @@ module.exports = (
             });
 
             // Add any bare CSS files to be output
-            processor.dependencies().forEach((css) => {
+            processor.fileDependencies().forEach((css) => {
                 if(used.has(css)) {
                     return;
                 }

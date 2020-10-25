@@ -112,7 +112,7 @@ describe("/processor.js", () => {
 
                 processor.remove("./simple.css");
 
-                expect(relative(processor.dependencies())).toMatchSnapshot();
+                expect(relative(processor.fileDependencies())).toMatchSnapshot();
             });
 
             it("should remove an absolute file", async () => {
@@ -123,7 +123,7 @@ describe("/processor.js", () => {
 
                 processor.remove(require.resolve("./specimens/simple.css"));
 
-                expect(relative(processor.dependencies())).toMatchSnapshot();
+                expect(relative(processor.fileDependencies())).toMatchSnapshot();
             });
 
             it("should remove multiple files", async () => {
@@ -136,7 +136,7 @@ describe("/processor.js", () => {
                     "./b.css",
                 ]);
 
-                expect(relative(processor.dependencies())).toMatchSnapshot();
+                expect(relative(processor.fileDependencies())).toMatchSnapshot();
             });
 
             it("should return an array of removed files", async () => {
@@ -214,12 +214,12 @@ describe("/processor.js", () => {
             });
         });
 
-        describe(".dependencies()", () => {
+        describe(".fileDependencies()", () => {
             it("should return the dependencies of the specified file", async () => {
                 await processor.file("./packages/processor/test/specimens/start.css");
 
                 expect(
-                    relative(processor.dependencies(require.resolve("./specimens/start.css")))
+                    relative(processor.fileDependencies(require.resolve("./specimens/start.css")))
                 )
                 .toMatchSnapshot();
             });
@@ -227,7 +227,7 @@ describe("/processor.js", () => {
             it("should return the overall order of dependencies if no file is specified", async () => {
                 await processor.file("./packages/processor/test/specimens/start.css");
 
-                expect(relative(processor.dependencies())).toMatchSnapshot();
+                expect(relative(processor.fileDependencies())).toMatchSnapshot();
             });
 
             it("should throw on requesting an invalid file", async () => {
@@ -237,7 +237,7 @@ describe("/processor.js", () => {
                     }
                 `));
 
-                expect(() => processor.dependencies("./also/does/not/exist.css")).toThrow("Unknown file: ");
+                expect(() => processor.fileDependencies("./also/does/not/exist.css")).toThrow("Unknown file: ");
             });
         });
 

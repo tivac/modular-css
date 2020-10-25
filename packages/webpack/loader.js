@@ -47,7 +47,7 @@ module.exports = async function(source) {
             out.push(`export default ${JSON.stringify(exported, null, 4)};`);
         }
 
-        processor.dependencies(this.resourcePath).forEach(this.addDependency);
+        processor.fileDependencies(this.resourcePath).forEach(this.addDependency);
 
         // Just default object export in this case
         if(!options.namedExports) {
