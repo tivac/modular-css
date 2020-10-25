@@ -254,8 +254,6 @@ module.exports = (
                 }
             });
 
-            // console.log({ externalsMap, importsMap, valueExports });
-
             // Write out all the imports
             importsMap.forEach((imports, from) => {
                 if(!imports.size) {
@@ -269,8 +267,6 @@ module.exports = (
 
             // Add the rest of the exported keys in whatever order because it doesn't matter
             Object.keys(details.classes).forEach((key) => exportedKeys.add(key));
-
-            // console.log(id, details.values);
 
             // Add default exports for all the @values
             Object.keys(details.values).forEach((key) => {
@@ -382,8 +378,6 @@ module.exports = (
                 out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
             }
 
-            // console.log(id, "\n", out.join("\n"));
-
             // Return JS representation to rollup
             return {
                 code : out.join("\n"),
@@ -411,8 +405,6 @@ module.exports = (
 
             const chunks = new Map();
             const used = new Set();
-
-            // console.log(processor.graph);
 
             // Determine the correct to option for PostCSS by doing a bit of a dance
             const to = (!file && !dir) ?
