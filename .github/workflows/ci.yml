@@ -21,6 +21,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
+            node_modules
             **/node_modules
           key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
@@ -57,6 +58,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
+          node_modules
           **/node_modules
         key: ${{ matrix.os }}-build-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
