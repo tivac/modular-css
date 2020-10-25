@@ -22,12 +22,8 @@ jobs:
         with:
           path: |
             node_modules
-            **/node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-build-${{ env.cache-name }}-
-            ${{ runner.OS }}-build-
-            ${{ runner.OS }}-:  
+            */*/node_modules
+          key: ${{ runner.OS }}-lint-${{ hashFiles('**/package-lock.json') }}
 
       - name: npm install
         if: steps.cache.outputs.cache-hit != 'true'
@@ -59,12 +55,8 @@ jobs:
       with:
         path: |
           node_modules
-          **/node_modules
-        key: ${{ matrix.os }}-build-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ matrix.os }}-build-${{ env.cache-name }}-
-          ${{ matrix.os }}-build-
-          ${{ matrix.os }}-:  
+          */*/node_modules
+        key: ${{ matrix.os }}-build-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
 
     - name: npm install
       if: steps.cache.outputs.cache-hit != 'true'
