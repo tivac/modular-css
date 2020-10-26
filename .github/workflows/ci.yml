@@ -32,6 +32,9 @@ jobs:
         run: npm run lint --quiet
 
   build:
+    env:
+      COVERAGE_NODE_VERSION: 14
+      COVERAGE_OS: 'ubuntu-latest'
 
     runs-on: ${{ matrix.os }}
 
@@ -71,11 +74,11 @@ jobs:
         
     # Run codecov after all builds, and only on a single environment
     - name: Gather Coverage
-      if: matrix.os == 'ubuntu-latest' && matrix.node-version == 14
+      if: matrix.os == $COVERAGE_OS && matrix.node-version == $COVERAGE_NODE_VERSION
       run: npm test -- --ci --coverage
 
     - name: Upload Coverage
-      uses: codecov/codecov-action@v1.0.14
-      if: matrix.os == 'ubuntu-latest' && matrix.node-version == 14
+      uses: codecov/codecov-action@v1
+      if: matrix.os == $COVERAGE_OS && matrix.node-version == $COVERAGE_NODE_VERSION
       with:
         file: ./coverage/coverage-final.json
