@@ -1,0 +1,27 @@
+.box {
+    width: 100px;
+    height: 100px;
+    background: #CCC;
+
+    border: 2px solid #000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box + .box {
+    margin-top: 5px;
+}
+
+.foo {
+    composes: box;
+    
+    color: red;
+}
+
+.bar {
+    composes: box;
+
+    background-color: blue;
+}
