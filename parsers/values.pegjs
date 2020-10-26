@@ -27,13 +27,14 @@ create_namespace
     }
 
 // fooga as wooga from "./booga"
+// TODO: The faked-out "refs" here are a bit unfortunate...
 create_alias
     = name:ident _ "as" _ alias:ident source:from_source {
         return {
             type : "alias",
-            name,
-            source,
             alias,
+            source,
+            refs : [ { name } ],
         };
     }
 

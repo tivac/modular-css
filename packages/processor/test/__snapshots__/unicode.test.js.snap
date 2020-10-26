@@ -2,13 +2,13 @@
 
 exports[`/processor.js unicode should support unicode classes & ids 1`] = `
 "/* packages/processor/test/specimens/unicode.css */
-#♥ { background: lime; }
-#© { background: lime; }
-#“‘’” { background: lime; }
-#☺☃ { background: lime; }
-#⌘⌥ { background: lime; }
-#𝄞♪♩♫♬ { background: lime; }
-#💩 { background: lime; }
+#mc_♥ { background: lime; }
+#mc_© { background: lime; }
+#mc_“‘’” { background: lime; }
+#mc_☺☃ { background: lime; }
+#mc_⌘⌥ { background: lime; }
+#mc_𝄞♪♩♫♬ { background: lime; }
+#mc_💩 { background: lime; }
 #\\\\? { background: lime; }
 #\\\\@ { background: lime; }
 #\\\\. { background: lime; }
@@ -37,39 +37,39 @@ exports[`/processor.js unicode should support unicode classes & ids 1`] = `
 #f\\\\~o\\\\~o { background: lime; }
 #f\\\\+o\\\\+o { background: lime; }
 
-.\\\\2665 { background: lime; }
-.\\\\A9 { background: lime; }
-.\\\\201C\\\\2018\\\\2019\\\\201D { background: lime; }
-.\\\\263A\\\\2603 { background: lime; }
-.\\\\2318\\\\2325 { background: lime; }
-.\\\\1D11E\\\\266A\\\\2669\\\\266B\\\\266C { background: lime; }
-.\\\\1F4A9 { background: lime; }
-.\\\\? { background: lime; }
-.\\\\@ { background: lime; }
-.\\\\. { background: lime; }
-.\\\\:\\\\) { background: lime; }
-.\\\\:\\\\\`\\\\( { background: lime; }
-.\\\\31 23 { background: lime; }
-.\\\\31 a2b3c { background: lime; }
-.\\\\<p\\\\> { background: lime; }
-.\\\\<\\\\>\\\\<\\\\<\\\\<\\\\>\\\\>\\\\<\\\\> { background: lime; }
-.\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\[\\\\>\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\>\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\>\\\\+\\\\+\\\\+\\\\>\\\\+\\\\<\\\\<\\\\<\\\\<-\\\\]\\\\>\\\\+\\\\+\\\\.\\\\>\\\\+\\\\.\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\.\\\\.\\\\+\\\\+\\\\+\\\\.\\\\>\\\\+\\\\+\\\\.\\\\<\\\\<\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\.\\\\>\\\\.\\\\+\\\\+\\\\+\\\\.------\\\\.--------\\\\.\\\\>\\\\+\\\\.\\\\>\\\\. { background: lime; }
-.\\\\# { background: lime; }
-.\\\\#\\\\# { background: lime; }
-.\\\\#\\\\.\\\\#\\\\.\\\\# { background: lime; }
-._ { background: lime; }
-.\\\\{\\\\} { background: lime; }
-.\\\\#fake-id { background: lime; }
-.foo\\\\.bar { background: lime; }
-.\\\\:hover { background: lime; }
-.\\\\:hover\\\\:focus\\\\:active { background: lime; }
-.\\\\[attr\\\\=value\\\\] { background: lime; }
-.f\\\\/o\\\\/o { background: lime; }
-.f\\\\\\\\o\\\\\\\\o { background: lime; }
-.f\\\\*o\\\\*o { background: lime; }
-.f\\\\!o\\\\!o { background: lime; }
-.f\\\\'o\\\\'o { background: lime; }
-.f\\\\~o\\\\~o { background: lime; }
-.f\\\\+o\\\\+o { background: lime; }
+.mc_\\\\2665 { background: lime; }
+.mc_\\\\A9 { background: lime; }
+.mc_\\\\201C\\\\2018\\\\2019\\\\201D { background: lime; }
+.mc_\\\\263A\\\\2603 { background: lime; }
+.mc_\\\\2318\\\\2325 { background: lime; }
+.mc_\\\\1D11E\\\\266A\\\\2669\\\\266B\\\\266C { background: lime; }
+.mc_\\\\1F4A9 { background: lime; }
+.mc_\\\\? { background: lime; }
+.mc_\\\\@ { background: lime; }
+.mc_\\\\. { background: lime; }
+.mc_\\\\:\\\\) { background: lime; }
+.mc_\\\\:\\\\\`\\\\( { background: lime; }
+.mc_123 { background: lime; }
+.mc_1a2b3c { background: lime; }
+.mc_\\\\<p\\\\> { background: lime; }
+.mc_\\\\<\\\\>\\\\<\\\\<\\\\<\\\\>\\\\>\\\\<\\\\> { background: lime; }
+.mc_\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\[\\\\>\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\>\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\>\\\\+\\\\+\\\\+\\\\>\\\\+\\\\<\\\\<\\\\<\\\\<-\\\\]\\\\>\\\\+\\\\+\\\\.\\\\>\\\\+\\\\.\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\.\\\\.\\\\+\\\\+\\\\+\\\\.\\\\>\\\\+\\\\+\\\\.\\\\<\\\\<\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\+\\\\.\\\\>\\\\.\\\\+\\\\+\\\\+\\\\.------\\\\.--------\\\\.\\\\>\\\\+\\\\.\\\\>\\\\. { background: lime; }
+.mc_\\\\# { background: lime; }
+.mc_\\\\#\\\\# { background: lime; }
+.mc_\\\\#\\\\.\\\\#\\\\.\\\\# { background: lime; }
+.mc__ { background: lime; }
+.mc_\\\\{\\\\} { background: lime; }
+.mc_\\\\#fake-id { background: lime; }
+.mc_foo\\\\.bar { background: lime; }
+.mc_\\\\:hover { background: lime; }
+.mc_\\\\:hover\\\\:focus\\\\:active { background: lime; }
+.mc_\\\\[attr\\\\=value\\\\] { background: lime; }
+.mc_f\\\\/o\\\\/o { background: lime; }
+.mc_f\\\\\\\\o\\\\\\\\o { background: lime; }
+.mc_f\\\\*o\\\\*o { background: lime; }
+.mc_f\\\\!o\\\\!o { background: lime; }
+.mc_f\\\\'o\\\\'o { background: lime; }
+.mc_f\\\\~o\\\\~o { background: lime; }
+.mc_f\\\\+o\\\\+o { background: lime; }
 "
 `;

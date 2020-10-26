@@ -16,24 +16,31 @@ exports[`/browserify.js basic functionality should include all CSS dependencies 
 require('./packages/browserify/test/specimens/start.css');
 },{\\"./packages/browserify/test/specimens/start.css\\":4}],2:[function(require,module,exports){
 module.exports = {
-    \\"folder\\": \\"mcd19f1319_folder\\"
+    \\"folder\\": \\"mcd19f1319_folder\\",
+    \\"$values\\": {
+        \\"folder\\": \\"white\\"
+    }
 };
 },{}],3:[function(require,module,exports){
 module.exports = {
-    \\"folder\\": \\"white\\",
-    \\"one\\": \\"red\\",
-    \\"two\\": \\"blue\\",
     \\"booga\\": \\"mcc4e2a8e1_booga\\",
-    \\"looga\\": \\"mcc4e2a8e1_booga mcc4e2a8e1_looga\\"
+    \\"looga\\": \\"mcc4e2a8e1_booga mcc4e2a8e1_looga\\",
+    \\"$values\\": {
+        \\"folder\\": \\"white\\",
+        \\"one\\": \\"red\\",
+        \\"two\\": \\"blue\\"
+    }
 };
 },{\\"./packages/browserify/test/specimens/folder/folder.css\\":2}],4:[function(require,module,exports){
 module.exports = {
-    \\"one\\": \\"red\\",
-    \\"two\\": \\"blue\\",
-    \\"folder\\": \\"white\\",
     \\"wooga\\": \\"mcc4e2a8e1_booga mc1c78395f_wooga\\",
     \\"booga\\": \\"mc1c78395f_booga\\",
-    \\"tooga\\": \\"mc1c78395f_tooga\\"
+    \\"tooga\\": \\"mc1c78395f_tooga\\",
+    \\"$values\\": {
+        \\"one\\": \\"red\\",
+        \\"two\\": \\"blue\\",
+        \\"folder\\": \\"white\\"
+    }
 };
 },{\\"./packages/browserify/test/specimens/folder/folder.css\\":2,\\"./packages/browserify/test/specimens/local.css\\":3}]},{},[1]);
 "
@@ -55,24 +62,31 @@ exports[`/browserify.js basic functionality should not include duplicate files i
 require('./packages/browserify/test/specimens/start.css'); require('./packages/browserify/test/specimens/local.css');
 },{\\"./packages/browserify/test/specimens/local.css\\":3,\\"./packages/browserify/test/specimens/start.css\\":4}],2:[function(require,module,exports){
 module.exports = {
-    \\"folder\\": \\"mcd19f1319_folder\\"
+    \\"folder\\": \\"mcd19f1319_folder\\",
+    \\"$values\\": {
+        \\"folder\\": \\"white\\"
+    }
 };
 },{}],3:[function(require,module,exports){
 module.exports = {
-    \\"folder\\": \\"white\\",
-    \\"one\\": \\"red\\",
-    \\"two\\": \\"blue\\",
     \\"booga\\": \\"mcc4e2a8e1_booga\\",
-    \\"looga\\": \\"mcc4e2a8e1_booga mcc4e2a8e1_looga\\"
+    \\"looga\\": \\"mcc4e2a8e1_booga mcc4e2a8e1_looga\\",
+    \\"$values\\": {
+        \\"folder\\": \\"white\\",
+        \\"one\\": \\"red\\",
+        \\"two\\": \\"blue\\"
+    }
 };
 },{\\"./packages/browserify/test/specimens/folder/folder.css\\":2}],4:[function(require,module,exports){
 module.exports = {
-    \\"one\\": \\"red\\",
-    \\"two\\": \\"blue\\",
-    \\"folder\\": \\"white\\",
     \\"wooga\\": \\"mcc4e2a8e1_booga mc1c78395f_wooga\\",
     \\"booga\\": \\"mc1c78395f_booga\\",
-    \\"tooga\\": \\"mc1c78395f_tooga\\"
+    \\"tooga\\": \\"mc1c78395f_tooga\\",
+    \\"$values\\": {
+        \\"one\\": \\"red\\",
+        \\"two\\": \\"blue\\",
+        \\"folder\\": \\"white\\"
+    }
 };
 },{\\"./packages/browserify/test/specimens/folder/folder.css\\":2,\\"./packages/browserify/test/specimens/local.css\\":3}]},{},[1]);
 "
@@ -120,7 +134,8 @@ exports[`/browserify.js basic functionality should replace require() calls with 
 require('./packages/browserify/test/specimens/simple.css');
 },{\\"./packages/browserify/test/specimens/simple.css\\":2}],2:[function(require,module,exports){
 module.exports = {
-    \\"wooga\\": \\"mc459e927d_wooga\\"
+    \\"wooga\\": \\"mc459e927d_wooga\\",
+    \\"$values\\": {}
 };
 },{}]},{},[1]);
 "
@@ -151,8 +166,13 @@ exports[`/browserify.js basic functionality should use the specified namer funct
 exports[`/browserify.js basic functionality should write out the complete exported identifiers when \`json\` is specified 1`] = `
 "{
     \\"packages/browserify/test/specimens/multiple.css\\": {
-        \\"fooga\\": \\"mc9a6b8d68_fooga\\",
-        \\"wooga\\": \\"mc9a6b8d68_fooga mc9a6b8d68_wooga\\"
+        \\"fooga\\": [
+            \\"mc9a6b8d68_fooga\\"
+        ],
+        \\"wooga\\": [
+            \\"mc9a6b8d68_fooga\\",
+            \\"mc9a6b8d68_wooga\\"
+        ]
     }
 }"
 `;

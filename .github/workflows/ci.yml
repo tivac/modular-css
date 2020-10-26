@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       - name: Setup Node
         uses: actions/setup-node@v1
@@ -18,10 +18,11 @@ jobs:
       
       - name: Cache node modules
         id: cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
-          path: node_modules
-          key: ${{ runner.OS }}-lint-${{ hashFiles('**/package-lock.json') }}
+          path: |
+            node_modules
+          key: ${{ runner.OS }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: npm install
         if: steps.cache.outputs.cache-hit != 'true'
@@ -31,16 +32,19 @@ jobs:
         run: npm run lint --quiet
 
   build:
+    env:
+      COVERAGE_NODE_VERSION: 14
+      COVERAGE_OS: 'ubuntu-latest'
 
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
         node-version: [ 10, 12, 14 ]
-        os: [ ubuntu-latest, windows-latest ]
+        os: [ ubuntu-latest ]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     
     - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -49,10 +53,12 @@ jobs:
     
     - name: Cache node_modules
       id: cache
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
-        path: node_modules
-        key: ${{ matrix.os }}-build-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
+        path: |
+          node_modules
+          */*/node_modules
+        key: ${{ matrix.os }}-${{ hashFiles('**/package-lock.json') }}
 
     - name: npm install
       if: steps.cache.outputs.cache-hit != 'true'
@@ -62,17 +68,17 @@ jobs:
       run: npm run build --if-present
     
     - name: test
-      run: npm test
+      run: npm test -- --ci --no-cache
       env:
         CI: true
         
     # Run codecov after all builds, and only on a single environment
     - name: Gather Coverage
-      if: matrix.os == 'ubuntu-latest' && matrix.node-version == 14
+      if: matrix.os == env.COVERAGE_OS && matrix.node-version == env.COVERAGE_NODE_VERSION
       run: npm test -- --ci --coverage
 
     - name: Upload Coverage
-      uses: codecov/codecov-action@v1.0.14
-      if: matrix.os == 'ubuntu-latest' && matrix.node-version == 14
+      uses: codecov/codecov-action@v1
+      if: matrix.os == env.COVERAGE_OS && matrix.node-version == env.COVERAGE_NODE_VERSION
       with:
         file: ./coverage/coverage-final.json

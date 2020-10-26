@@ -9,6 +9,9 @@ Rollup support for [`modular-css`](https://github.com/tivac/modular-css).
 - [Install](#install)
 - [Rollup Version support](#%EF%B8%8Frollup-version-support%EF%B8%8F)
 - [Usage](#usage)
+  - [API](#api)
+  - [Config file](#config-file)
+  - [In your code](#in-your-code)
 - [Options](#options)
 
 ## Install
@@ -56,6 +59,39 @@ export default {
 };
 ```
 
+### In your code
+
+Write your modular-css styles in a `.css` file
+
+```css
+/* style.css */
+@value error: red;
+
+.rule {
+    border: 1px solid error;
+}
+```
+
+import it from your JS, either as named exports
+
+```js
+// Named exports
+import { rule, $values } from "./style.css";
+
+console.log(rule); // .mc_abcdefrule
+console.log($values); // { error : "red" }
+```
+
+or using the default export
+
+```js
+// Default export
+import css from "./style.css";
+
+console.log(css.rule); // .mc_abcdefrule
+console.log(css.$values); // { error : "red" }
+```
+
 ## Options
 
 ### `common`
@@ -64,7 +100,7 @@ File name to use in case there are any CSS dependencies that appear in multiple 
 
 ### `dev`
 
-Enable dev mode. In dev mode the default export of a CSS file will be a `Proxy` instead of a bare object. Attempts to access non-existant properties on the proxy will throw a `ReferenceError` to assist in catching invalid usage.
+Enable dev mode. In dev mode the default export of a CSS file will be a `Proxy` instead of a bare object. Attempts to access non-existant properties on the proxy will throw a `ReferenceError` to assist in catching missing class references.
 
 ### `include`/`exclude`
 
@@ -86,9 +122,9 @@ Boolean/String to determine if chunk metadata should be output. If set to true w
 
 Currently the only metadata being written is CSS dependencies, but that may change in the future.
 
-### `namedExports`
+#### `namedExports.rewriteInvalid`
 
-By default this plugin will create both a default export and named `export`s for each class in a CSS file. You can disable this by setting `namedExports` to `false`.
+The rollup plugin will rewrite invalid identifiers using [`identifierfy`](https://github.com/novemberborn/identifierfy) by default. You can disable this behavior by setting `namedExports` to `{ rewriteInvalid : false }`.
 
 ### `styleExport`
 
@@ -100,9 +136,17 @@ import { styles } from "./styles.css";
 
 Enable `styleExport` will also disable the plugin from emitting any assets as well as sourcemaps (unless you explicitly opt-in to sourcemaps via the `map` option)
 
+### `empties`
+
+Set to `true` to enable writing out CSS files that don't contain any content (like if you have a CSS file that contains only `@value` rules).
+
 ### `processor`
 
 Pass an already-instantiated `Processor` instance to the rollup plugin. It will then add any files found when traversing the modules to it and both the rollup-discovered and any already-existing files will be output in the final CSS.
+
+### `verbose`
+
+Enable verbose logging while running to help diagnose issues
 
 ### Shared Options
 

@@ -1,0 +1,9 @@
+.one {
+    color: red;
+}
+
+.two {
+    composes: one;
+
+    background: blue;
+}

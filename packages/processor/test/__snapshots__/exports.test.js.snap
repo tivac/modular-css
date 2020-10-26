@@ -3,20 +3,20 @@
 exports[`/processor.js exports should export an object of arrays containing strings 1`] = `
 Object {
   "black": Array [
-    "black",
+    "mc_black",
   ],
   "one": Array [
-    "red",
-    "black",
-    "one",
+    "mc_red",
+    "mc_black",
+    "mc_one",
   ],
   "red": Array [
-    "red",
+    "mc_red",
   ],
   "two": Array [
-    "red",
-    "black",
-    "two",
+    "mc_red",
+    "mc_black",
+    "mc_two",
   ],
 }
 `;
@@ -24,22 +24,30 @@ Object {
 exports[`/processor.js exports should export identifiers and their classes 1`] = `
 Object {
   "packages/processor/test/specimens/folder/folder.css": Object {
-    "folder": "folder",
+    "folder": Array [
+      "mc_folder",
+    ],
   },
   "packages/processor/test/specimens/local.css": Object {
-    "booga": "booga",
-    "folder": "white",
-    "looga": "booga looga",
-    "one": "red",
-    "two": "blue",
+    "booga": Array [
+      "mc_booga",
+    ],
+    "looga": Array [
+      "mc_booga",
+      "mc_looga",
+    ],
   },
   "packages/processor/test/specimens/start.css": Object {
-    "booga": "booga",
-    "folder": "white",
-    "one": "red",
-    "tooga": "tooga",
-    "two": "blue",
-    "wooga": "booga wooga",
+    "booga": Array [
+      "mc_booga",
+    ],
+    "tooga": Array [
+      "mc_tooga",
+    ],
+    "wooga": Array [
+      "mc_booga",
+      "mc_wooga",
+    ],
   },
 }
 `;

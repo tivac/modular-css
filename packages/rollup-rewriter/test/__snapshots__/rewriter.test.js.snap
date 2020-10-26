@@ -1,20 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`rollup-rewriter should error on unsupported formats ("cjs") 1`] = `"Unsupported format: cjs. Supported formats are [\\"amd\\",\\"es\\",\\"esm\\",\\"system\\"]"`;
+exports[`rollup-rewriter should error on unsupported formats (cjs) 1`] = `"Unsupported format: cjs. Supported formats are [\\"amd\\",\\"es\\",\\"esm\\",\\"system\\"]"`;
 
-exports[`rollup-rewriter should ignore unknown imports 1`] = `
+exports[`rollup-rewriter should ignore unknown imports (amd) 1`] = `
 Object {
   "a.js": "
 define(['require', 'external'], function (require, external) { 'use strict';
 
-    external = external && Object.prototype.hasOwnProperty.call(external, 'default') ? external['default'] : external;
+    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
+    var external__default = /*#__PURE__*/_interopDefaultLegacy(external);
+
+    const a = \\"mc_a\\";
     var css = {
-        \\"a\\": \\"a\\"
+        a
     };
 
-    function a() {
-        console.log(css, external);
+    function a$1() {
+        console.log(css, external__default['default']);
 
         new Promise(function (resolve, reject) { Promise.all([
     lazyload(\\"./assets/c.css\\"),
@@ -24,25 +27,26 @@ define(['require', 'external'], function (require, external) { 'use strict';
 .catch(reject) }).then(console.log);
     }
 
-    return a;
+    return a$1;
 
 });
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/external-import/a.css */
-.a { color: aqua; }
+.mc_a { color: aqua; }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/external-import/c.css */
-.c {
+.mc_c {
     color: cyan;
 }
 ",
   "c.js": "
 define(['exports'], function (exports) { 'use strict';
 
+    const c = \\"mc_c\\";
     var css = {
-        \\"c\\": \\"c\\"
+        c
     };
 
     console.log(css);
@@ -54,16 +58,17 @@ define(['exports'], function (exports) { 'use strict';
 }
 `;
 
-exports[`rollup-rewriter should ignore unknown imports 2`] = `
+exports[`rollup-rewriter should ignore unknown imports (es) 1`] = `
 Object {
   "a.js": "
 import external from 'external';
 
+const a = \\"mc_a\\";
 var css = {
-    \\"a\\": \\"a\\"
+    a
 };
 
-function a() {
+function a$1() {
     console.log(css, external);
 
     Promise.all([
@@ -73,21 +78,22 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export default a$1;
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/external-import/a.css */
-.a { color: aqua; }
+.mc_a { color: aqua; }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/external-import/c.css */
-.c {
+.mc_c {
     color: cyan;
 }
 ",
   "c.js": "
+const c = \\"mc_c\\";
 var css = {
-    \\"c\\": \\"c\\"
+    c
 };
 
 console.log(css);
@@ -97,16 +103,17 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter should ignore unknown imports 3`] = `
+exports[`rollup-rewriter should ignore unknown imports (esm) 1`] = `
 Object {
   "a.js": "
 import external from 'external';
 
+const a = \\"mc_a\\";
 var css = {
-    \\"a\\": \\"a\\"
+    a
 };
 
-function a() {
+function a$1() {
     console.log(css, external);
 
     Promise.all([
@@ -116,21 +123,22 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export default a$1;
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/external-import/a.css */
-.a { color: aqua; }
+.mc_a { color: aqua; }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/external-import/c.css */
-.c {
+.mc_c {
     color: cyan;
 }
 ",
   "c.js": "
+const c = \\"mc_c\\";
 var css = {
-    \\"c\\": \\"c\\"
+    c
 };
 
 console.log(css);
@@ -140,7 +148,7 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter should ignore unknown imports 4`] = `
+exports[`rollup-rewriter should ignore unknown imports (system) 1`] = `
 Object {
   "a.js": "
 System.register(['external'], function (exports, module) {
@@ -152,13 +160,14 @@ System.register(['external'], function (exports, module) {
         }],
         execute: function () {
 
-            exports('default', a);
+            exports('default', a$1);
 
+            const a = \\"mc_a\\";
             var css = {
-                \\"a\\": \\"a\\"
+                a
             };
 
-            function a() {
+            function a$1() {
                 console.log(css, external);
 
                 Promise.all([
@@ -174,11 +183,11 @@ System.register(['external'], function (exports, module) {
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/external-import/a.css */
-.a { color: aqua; }
+.mc_a { color: aqua; }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/external-import/c.css */
-.c {
+.mc_c {
     color: cyan;
 }
 ",
@@ -188,8 +197,9 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
+            const c = \\"mc_c\\";
             var css = exports('default', {
-                \\"c\\": \\"c\\"
+                c
             });
 
             console.log(css);
@@ -201,52 +211,54 @@ System.register([], function (exports) {
 }
 `;
 
-exports[`rollup-rewriter should include css for static imports used by a dynamic import ("amd") 1`] = `
+exports[`rollup-rewriter should include css for static imports used by a dynamic import (amd) 1`] = `
 Object {
   "assets/dynamic1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/dynamic1.css */
-.dynamic1 {
+.mc_dynamic1 {
     color: dynamic1;
 }
 ",
   "assets/entry1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry1.css */
-.entry1 {
+.mc_entry1 {
     color: entry1;
 }
 ",
   "assets/entry2.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry2.css */
-.entry2 {
+.mc_entry2 {
     color: entry2;
 }
 ",
   "assets/static1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/static1.css */
-.static1 {
+.mc_static1 {
     color: static1;
 }
 ",
   "dynamic1.js": "
 define(['exports', './static1'], function (exports, static1) { 'use strict';
 
+    const dynamic1 = \\"mc_dynamic1\\";
     var css = {
-        \\"dynamic1\\": \\"dynamic1\\"
+        dynamic1
     };
 
     console.log(static1.static1, css);
 
-    var dynamic1 = \\"dynamic1.js\\";
+    var dynamic1$1 = \\"dynamic1.js\\";
 
-    exports.default = dynamic1;
+    exports.default = dynamic1$1;
 
 });
 ",
   "entry1.js": "
 define(['./static1'], function (static1) { 'use strict';
 
+    const entry1 = \\"mc_entry1\\";
     var css = {
-        \\"entry1\\": \\"entry1\\"
+        entry1
     };
 
     console.log(static1.static1, css);
@@ -256,8 +268,9 @@ define(['./static1'], function (static1) { 'use strict';
   "entry2.js": "
 define(['require'], function (require) { 'use strict';
 
+    const entry2 = \\"mc_entry2\\";
     var css = {
-        \\"entry2\\": \\"entry2\\"
+        entry2
     };
 
     console.log(css);
@@ -277,72 +290,76 @@ lazyload(\\"./assets/dynamic1.css\\"),
   "static1.js": "
 define(['exports'], function (exports) { 'use strict';
 
+    const static1 = \\"mc_static1\\";
     var css = {
-        \\"static1\\": \\"static1\\"
+        static1
     };
 
     console.log(css);
 
-    var static1 = \\"static1.js\\";
+    var static1$1 = \\"static1.js\\";
 
-    exports.static1 = static1;
+    exports.static1 = static1$1;
 
 });
 ",
 }
 `;
 
-exports[`rollup-rewriter should include css for static imports used by a dynamic import ("es") 1`] = `
+exports[`rollup-rewriter should include css for static imports used by a dynamic import (es) 1`] = `
 Object {
   "assets/dynamic1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/dynamic1.css */
-.dynamic1 {
+.mc_dynamic1 {
     color: dynamic1;
 }
 ",
   "assets/entry1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry1.css */
-.entry1 {
+.mc_entry1 {
     color: entry1;
 }
 ",
   "assets/entry2.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry2.css */
-.entry2 {
+.mc_entry2 {
     color: entry2;
 }
 ",
   "assets/static1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/static1.css */
-.static1 {
+.mc_static1 {
     color: static1;
 }
 ",
   "dynamic1.js": "
 import { s as static1 } from './static1.js';
 
+const dynamic1 = \\"mc_dynamic1\\";
 var css = {
-    \\"dynamic1\\": \\"dynamic1\\"
+    dynamic1
 };
 
 console.log(static1, css);
 
-var dynamic1 = \\"dynamic1.js\\";
+var dynamic1$1 = \\"dynamic1.js\\";
 
-export default dynamic1;
+export default dynamic1$1;
 ",
   "entry1.js": "
 import { s as static1 } from './static1.js';
 
+const entry1 = \\"mc_entry1\\";
 var css = {
-    \\"entry1\\": \\"entry1\\"
+    entry1
 };
 
 console.log(static1, css);
 ",
   "entry2.js": "
+const entry2 = \\"mc_entry2\\";
 var css = {
-    \\"entry2\\": \\"entry2\\"
+    entry2
 };
 
 console.log(css);
@@ -357,70 +374,74 @@ lazyload(\\"./assets/dynamic1.css\\"),
 }());
 ",
   "static1.js": "
+const static1 = \\"mc_static1\\";
 var css = {
-    \\"static1\\": \\"static1\\"
+    static1
 };
 
 console.log(css);
 
-var static1 = \\"static1.js\\";
+var static1$1 = \\"static1.js\\";
 
-export { static1 as s };
+export { static1$1 as s };
 ",
 }
 `;
 
-exports[`rollup-rewriter should include css for static imports used by a dynamic import ("esm") 1`] = `
+exports[`rollup-rewriter should include css for static imports used by a dynamic import (esm) 1`] = `
 Object {
   "assets/dynamic1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/dynamic1.css */
-.dynamic1 {
+.mc_dynamic1 {
     color: dynamic1;
 }
 ",
   "assets/entry1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry1.css */
-.entry1 {
+.mc_entry1 {
     color: entry1;
 }
 ",
   "assets/entry2.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry2.css */
-.entry2 {
+.mc_entry2 {
     color: entry2;
 }
 ",
   "assets/static1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/static1.css */
-.static1 {
+.mc_static1 {
     color: static1;
 }
 ",
   "dynamic1.js": "
 import { s as static1 } from './static1.js';
 
+const dynamic1 = \\"mc_dynamic1\\";
 var css = {
-    \\"dynamic1\\": \\"dynamic1\\"
+    dynamic1
 };
 
 console.log(static1, css);
 
-var dynamic1 = \\"dynamic1.js\\";
+var dynamic1$1 = \\"dynamic1.js\\";
 
-export default dynamic1;
+export default dynamic1$1;
 ",
   "entry1.js": "
 import { s as static1 } from './static1.js';
 
+const entry1 = \\"mc_entry1\\";
 var css = {
-    \\"entry1\\": \\"entry1\\"
+    entry1
 };
 
 console.log(static1, css);
 ",
   "entry2.js": "
+const entry2 = \\"mc_entry2\\";
 var css = {
-    \\"entry2\\": \\"entry2\\"
+    entry2
 };
 
 console.log(css);
@@ -435,42 +456,43 @@ lazyload(\\"./assets/dynamic1.css\\"),
 }());
 ",
   "static1.js": "
+const static1 = \\"mc_static1\\";
 var css = {
-    \\"static1\\": \\"static1\\"
+    static1
 };
 
 console.log(css);
 
-var static1 = \\"static1.js\\";
+var static1$1 = \\"static1.js\\";
 
-export { static1 as s };
+export { static1$1 as s };
 ",
 }
 `;
 
-exports[`rollup-rewriter should include css for static imports used by a dynamic import ("system") 1`] = `
+exports[`rollup-rewriter should include css for static imports used by a dynamic import (system) 1`] = `
 Object {
   "assets/dynamic1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/dynamic1.css */
-.dynamic1 {
+.mc_dynamic1 {
     color: dynamic1;
 }
 ",
   "assets/entry1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry1.css */
-.entry1 {
+.mc_entry1 {
     color: entry1;
 }
 ",
   "assets/entry2.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/entry2.css */
-.entry2 {
+.mc_entry2 {
     color: entry2;
 }
 ",
   "assets/static1.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-shared-imports/static1.css */
-.static1 {
+.mc_static1 {
     color: static1;
 }
 ",
@@ -484,13 +506,14 @@ System.register(['./static1.js'], function (exports) {
         }],
         execute: function () {
 
+            const dynamic1 = \\"mc_dynamic1\\";
             var css = {
-                \\"dynamic1\\": \\"dynamic1\\"
+                dynamic1
             };
 
             console.log(static1, css);
 
-            var dynamic1 = exports('default', \\"dynamic1.js\\");
+            var dynamic1$1 = exports('default', \\"dynamic1.js\\");
 
         }
     };
@@ -506,8 +529,9 @@ System.register(['./static1.js'], function () {
         }],
         execute: function () {
 
+            const entry1 = \\"mc_entry1\\";
             var css = {
-                \\"entry1\\": \\"entry1\\"
+                entry1
             };
 
             console.log(static1, css);
@@ -522,8 +546,9 @@ System.register([], function (exports, module) {
     return {
         execute: function () {
 
+            const entry2 = \\"mc_entry2\\";
             var css = {
-                \\"entry2\\": \\"entry2\\"
+                entry2
             };
 
             console.log(css);
@@ -547,13 +572,14 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
+            const static1 = \\"mc_static1\\";
             var css = {
-                \\"static1\\": \\"static1\\"
+                static1
             };
 
             console.log(css);
 
-            var static1 = exports('s', \\"static1.js\\");
+            var static1$1 = exports('s', \\"static1.js\\");
 
         }
     };
@@ -577,13 +603,14 @@ Array [
 ]
 `;
 
-exports[`rollup-rewriter should only rewrite when necessary ("amd") 1`] = `
+exports[`rollup-rewriter should only rewrite when necessary (amd) 1`] = `
 Object {
   "a.js": "
 define(['require'], function (require) { 'use strict';
 
+	const a = \\"mc_a\\";
 	var css = {
-	    \\"a\\": \\"a\\"
+	    a
 	};
 
 	console.log(css);
@@ -599,21 +626,22 @@ define(['require'], function (require) { 'use strict';
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/no-asset-imports/a.css */
-.a { color: aqua; }
+.mc_a { color: aqua; }
 ",
   "assets/b.css": "
 /* packages/rollup-rewriter/test/specimens/no-asset-imports/b.css */
-.b { color: blue; }
+.mc_b { color: blue; }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/no-asset-imports/c.css */
-.c { color: crimson; }
+.mc_c { color: crimson; }
 ",
   "b.js": "
 define(['require'], function (require) { 'use strict';
 
+	const b = \\"mc_b\\";
 	var css = {
-	    \\"b\\": \\"b\\"
+	    b
 	};
 
 	console.log(css);
@@ -625,15 +653,16 @@ define(['require'], function (require) { 'use strict';
   "c.js": "
 define(['exports'], function (exports) { 'use strict';
 
+	const c = \\"mc_c\\";
 	var css = {
-	    \\"c\\": \\"c\\"
+	    c
 	};
 
 	console.log(css);
 
-	var c = \\"c\\";
+	var c$1 = \\"c\\";
 
-	exports.default = c;
+	exports.default = c$1;
 
 });
 ",
@@ -649,11 +678,12 @@ define(['exports'], function (exports) { 'use strict';
 }
 `;
 
-exports[`rollup-rewriter should only rewrite when necessary ("es") 1`] = `
+exports[`rollup-rewriter should only rewrite when necessary (es) 1`] = `
 Object {
   "a.js": "
+const a = \\"mc_a\\";
 var css = {
-    \\"a\\": \\"a\\"
+    a
 };
 
 console.log(css);
@@ -666,19 +696,20 @@ Promise.all([
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/no-asset-imports/a.css */
-.a { color: aqua; }
+.mc_a { color: aqua; }
 ",
   "assets/b.css": "
 /* packages/rollup-rewriter/test/specimens/no-asset-imports/b.css */
-.b { color: blue; }
+.mc_b { color: blue; }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/no-asset-imports/c.css */
-.c { color: crimson; }
+.mc_c { color: crimson; }
 ",
   "b.js": "
+const b = \\"mc_b\\";
 var css = {
-    \\"b\\": \\"b\\"
+    b
 };
 
 console.log(css);
@@ -686,15 +717,16 @@ console.log(css);
 import('./d.js').then(console.log);
 ",
   "c.js": "
+const c = \\"mc_c\\";
 var css = {
-    \\"c\\": \\"c\\"
+    c
 };
 
 console.log(css);
 
-var c = \\"c\\";
+var c$1 = \\"c\\";
 
-export default c;
+export default c$1;
 ",
   "d.js": "
 var d = \\"d\\";
@@ -704,11 +736,12 @@ export default d;
 }
 `;
 
-exports[`rollup-rewriter should only rewrite when necessary ("esm") 1`] = `
+exports[`rollup-rewriter should only rewrite when necessary (esm) 1`] = `
 Object {
   "a.js": "
+const a = \\"mc_a\\";
 var css = {
-    \\"a\\": \\"a\\"
+    a
 };
 
 console.log(css);
@@ -721,19 +754,20 @@ Promise.all([
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/no-asset-imports/a.css */
-.a { color: aqua; }
+.mc_a { color: aqua; }
 ",
   "assets/b.css": "
 /* packages/rollup-rewriter/test/specimens/no-asset-imports/b.css */
-.b { color: blue; }
+.mc_b { color: blue; }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/no-asset-imports/c.css */
-.c { color: crimson; }
+.mc_c { color: crimson; }
 ",
   "b.js": "
+const b = \\"mc_b\\";
 var css = {
-    \\"b\\": \\"b\\"
+    b
 };
 
 console.log(css);
@@ -741,15 +775,16 @@ console.log(css);
 import('./d.js').then(console.log);
 ",
   "c.js": "
+const c = \\"mc_c\\";
 var css = {
-    \\"c\\": \\"c\\"
+    c
 };
 
 console.log(css);
 
-var c = \\"c\\";
+var c$1 = \\"c\\";
 
-export default c;
+export default c$1;
 ",
   "d.js": "
 var d = \\"d\\";
@@ -759,7 +794,7 @@ export default d;
 }
 `;
 
-exports[`rollup-rewriter should only rewrite when necessary ("system") 1`] = `
+exports[`rollup-rewriter should only rewrite when necessary (system) 1`] = `
 Object {
   "a.js": "
 System.register([], function (exports, module) {
@@ -767,8 +802,9 @@ System.register([], function (exports, module) {
 	return {
 		execute: function () {
 
+			const a = \\"mc_a\\";
 			var css = {
-			    \\"a\\": \\"a\\"
+			    a
 			};
 
 			console.log(css);
@@ -785,15 +821,15 @@ System.register([], function (exports, module) {
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/no-asset-imports/a.css */
-.a { color: aqua; }
+.mc_a { color: aqua; }
 ",
   "assets/b.css": "
 /* packages/rollup-rewriter/test/specimens/no-asset-imports/b.css */
-.b { color: blue; }
+.mc_b { color: blue; }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/no-asset-imports/c.css */
-.c { color: crimson; }
+.mc_c { color: crimson; }
 ",
   "b.js": "
 System.register([], function (exports, module) {
@@ -801,8 +837,9 @@ System.register([], function (exports, module) {
 	return {
 		execute: function () {
 
+			const b = \\"mc_b\\";
 			var css = {
-			    \\"b\\": \\"b\\"
+			    b
 			};
 
 			console.log(css);
@@ -819,13 +856,14 @@ System.register([], function (exports) {
 	return {
 		execute: function () {
 
+			const c = \\"mc_c\\";
 			var css = {
-			    \\"c\\": \\"c\\"
+			    c
 			};
 
 			console.log(css);
 
-			var c = exports('default', \\"c\\");
+			var c$1 = exports('default', \\"c\\");
 
 		}
 	};
@@ -846,17 +884,18 @@ System.register([], function (exports) {
 }
 `;
 
-exports[`rollup-rewriter should support loader & loadfn ("amd") 1`] = `
+exports[`rollup-rewriter should support loader & loadfn (amd) 1`] = `
 Object {
   "a.js": "
 define(['require'], function (require) { 'use strict';
 import lazyload from \\"./css.js\\";
 
+    const a = \\"mc_a\\";
     var css = {
-        \\"a\\": \\"a\\"
+        a
     };
 
-    function a() {
+    function a$1() {
         console.log(css);
 
         new Promise(function (resolve, reject) { Promise.all([
@@ -867,31 +906,31 @@ import lazyload from \\"./css.js\\";
 .catch(reject) }).then(console.log);
     }
 
-    return a;
+    return a$1;
 
 });
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
-.a {
+.mc_a {
     color: aqua;
 }
 ",
   "assets/b.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
-.b {
+.mc_b {
     color: blue;
 }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
-.c {
+.mc_c {
     color: cyan;
 }
 ",
   "assets/d.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
-.d {
+.mc_d {
     color: darkred;
 }
 ",
@@ -899,11 +938,12 @@ import lazyload from \\"./css.js\\";
 define(['require'], function (require) { 'use strict';
 import lazyload from \\"./css.js\\";
 
+    const b = \\"mc_b\\";
     var css = {
-        \\"b\\": \\"b\\"
+        b
     };
 
-    function b() {
+    function b$1() {
         console.log(css);
 
         new Promise(function (resolve, reject) { Promise.all([
@@ -914,15 +954,16 @@ import lazyload from \\"./css.js\\";
 .catch(reject) }).then(console.log);
     }
 
-    return b;
+    return b$1;
 
 });
 ",
   "c.js": "
 define(['exports'], function (exports) { 'use strict';
 
+    const c = \\"mc_c\\";
     var css = {
-        \\"c\\": \\"c\\"
+        c
     };
 
     console.log(css);
@@ -934,8 +975,9 @@ define(['exports'], function (exports) { 'use strict';
   "d.js": "
 define(['exports'], function (exports) { 'use strict';
 
+    const d = \\"mc_d\\";
     var css = {
-        \\"d\\": \\"d\\"
+        d
     };
 
     console.log(css);
@@ -947,15 +989,16 @@ define(['exports'], function (exports) { 'use strict';
 }
 `;
 
-exports[`rollup-rewriter should support loader & loadfn ("es") 1`] = `
+exports[`rollup-rewriter should support loader & loadfn (es) 1`] = `
 Object {
   "a.js": "
 import lazyload from \\"./css.js\\";
+const a = \\"mc_a\\";
 var css = {
-    \\"a\\": \\"a\\"
+    a
 };
 
-function a() {
+function a$1() {
     console.log(css);
 
     Promise.all([
@@ -965,39 +1008,40 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export default a$1;
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
-.a {
+.mc_a {
     color: aqua;
 }
 ",
   "assets/b.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
-.b {
+.mc_b {
     color: blue;
 }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
-.c {
+.mc_c {
     color: cyan;
 }
 ",
   "assets/d.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
-.d {
+.mc_d {
     color: darkred;
 }
 ",
   "b.js": "
 import lazyload from \\"./css.js\\";
+const b = \\"mc_b\\";
 var css = {
-    \\"b\\": \\"b\\"
+    b
 };
 
-function b() {
+function b$1() {
     console.log(css);
 
     Promise.all([
@@ -1007,11 +1051,12 @@ function b() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b;
+export default b$1;
 ",
   "c.js": "
+const c = \\"mc_c\\";
 var css = {
-    \\"c\\": \\"c\\"
+    c
 };
 
 console.log(css);
@@ -1019,8 +1064,9 @@ console.log(css);
 export default css;
 ",
   "d.js": "
+const d = \\"mc_d\\";
 var css = {
-    \\"d\\": \\"d\\"
+    d
 };
 
 console.log(css);
@@ -1030,15 +1076,16 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter should support loader & loadfn ("esm") 1`] = `
+exports[`rollup-rewriter should support loader & loadfn (esm) 1`] = `
 Object {
   "a.js": "
 import lazyload from \\"./css.js\\";
+const a = \\"mc_a\\";
 var css = {
-    \\"a\\": \\"a\\"
+    a
 };
 
-function a() {
+function a$1() {
     console.log(css);
 
     Promise.all([
@@ -1048,39 +1095,40 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export default a$1;
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
-.a {
+.mc_a {
     color: aqua;
 }
 ",
   "assets/b.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
-.b {
+.mc_b {
     color: blue;
 }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
-.c {
+.mc_c {
     color: cyan;
 }
 ",
   "assets/d.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
-.d {
+.mc_d {
     color: darkred;
 }
 ",
   "b.js": "
 import lazyload from \\"./css.js\\";
+const b = \\"mc_b\\";
 var css = {
-    \\"b\\": \\"b\\"
+    b
 };
 
-function b() {
+function b$1() {
     console.log(css);
 
     Promise.all([
@@ -1090,11 +1138,12 @@ function b() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b;
+export default b$1;
 ",
   "c.js": "
+const c = \\"mc_c\\";
 var css = {
-    \\"c\\": \\"c\\"
+    c
 };
 
 console.log(css);
@@ -1102,8 +1151,9 @@ console.log(css);
 export default css;
 ",
   "d.js": "
+const d = \\"mc_d\\";
 var css = {
-    \\"d\\": \\"d\\"
+    d
 };
 
 console.log(css);
@@ -1113,7 +1163,7 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter should support loader & loadfn ("system") 1`] = `
+exports[`rollup-rewriter should support loader & loadfn (system) 1`] = `
 Object {
   "a.js": "
 System.register([], function (exports, module) {
@@ -1122,13 +1172,14 @@ import lazyload from \\"./css.js\\";
     return {
         execute: function () {
 
-            exports('default', a);
+            exports('default', a$1);
 
+            const a = \\"mc_a\\";
             var css = {
-                \\"a\\": \\"a\\"
+                a
             };
 
-            function a() {
+            function a$1() {
                 console.log(css);
 
                 Promise.all([
@@ -1144,25 +1195,25 @@ import lazyload from \\"./css.js\\";
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
-.a {
+.mc_a {
     color: aqua;
 }
 ",
   "assets/b.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
-.b {
+.mc_b {
     color: blue;
 }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
-.c {
+.mc_c {
     color: cyan;
 }
 ",
   "assets/d.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
-.d {
+.mc_d {
     color: darkred;
 }
 ",
@@ -1173,13 +1224,14 @@ import lazyload from \\"./css.js\\";
     return {
         execute: function () {
 
-            exports('default', b);
+            exports('default', b$1);
 
+            const b = \\"mc_b\\";
             var css = {
-                \\"b\\": \\"b\\"
+                b
             };
 
-            function b() {
+            function b$1() {
                 console.log(css);
 
                 Promise.all([
@@ -1199,8 +1251,9 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
+            const c = \\"mc_c\\";
             var css = exports('default', {
-                \\"c\\": \\"c\\"
+                c
             });
 
             console.log(css);
@@ -1215,8 +1268,9 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
+            const d = \\"mc_d\\";
             var css = exports('default', {
-                \\"d\\": \\"d\\"
+                d
             });
 
             console.log(css);
@@ -1228,17 +1282,18 @@ System.register([], function (exports) {
 }
 `;
 
-exports[`rollup-rewriter should support loader being a function ("amd") 1`] = `
+exports[`rollup-rewriter should support loader being a function (amd) 1`] = `
 Object {
   "a": "
 define(['require'], function (require) { 'use strict';
 import chunkCountIs8 from \\"./css.js\\";
 
+    const a = \\"mc_a\\";
     var css = {
-        \\"a\\": \\"a\\"
+        a
     };
 
-    function a() {
+    function a$1() {
         console.log(css);
 
         new Promise(function (resolve, reject) { Promise.all([
@@ -1249,7 +1304,7 @@ import chunkCountIs8 from \\"./css.js\\";
 .catch(reject) }).then(console.log);
     }
 
-    return a;
+    return a$1;
 
 });
 ",
@@ -1257,11 +1312,12 @@ import chunkCountIs8 from \\"./css.js\\";
 define(['require'], function (require) { 'use strict';
 import chunkCountIs8 from \\"./css.js\\";
 
+    const b = \\"mc_b\\";
     var css = {
-        \\"b\\": \\"b\\"
+        b
     };
 
-    function b() {
+    function b$1() {
         console.log(css);
 
         new Promise(function (resolve, reject) { Promise.all([
@@ -1272,15 +1328,16 @@ import chunkCountIs8 from \\"./css.js\\";
 .catch(reject) }).then(console.log);
     }
 
-    return b;
+    return b$1;
 
 });
 ",
   "c": "
 define(['exports'], function (exports) { 'use strict';
 
+    const c = \\"mc_c\\";
     var css = {
-        \\"c\\": \\"c\\"
+        c
     };
 
     console.log(css);
@@ -1292,8 +1349,9 @@ define(['exports'], function (exports) { 'use strict';
   "d": "
 define(['exports'], function (exports) { 'use strict';
 
+    const d = \\"mc_d\\";
     var css = {
-        \\"d\\": \\"d\\"
+        d
     };
 
     console.log(css);
@@ -1305,15 +1363,16 @@ define(['exports'], function (exports) { 'use strict';
 }
 `;
 
-exports[`rollup-rewriter should support loader being a function ("es") 1`] = `
+exports[`rollup-rewriter should support loader being a function (es) 1`] = `
 Object {
   "a": "
 import chunkCountIs8 from \\"./css.js\\";
+const a = \\"mc_a\\";
 var css = {
-    \\"a\\": \\"a\\"
+    a
 };
 
-function a() {
+function a$1() {
     console.log(css);
 
     Promise.all([
@@ -1323,15 +1382,16 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export default a$1;
 ",
   "b": "
 import chunkCountIs8 from \\"./css.js\\";
+const b = \\"mc_b\\";
 var css = {
-    \\"b\\": \\"b\\"
+    b
 };
 
-function b() {
+function b$1() {
     console.log(css);
 
     Promise.all([
@@ -1341,11 +1401,12 @@ function b() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b;
+export default b$1;
 ",
   "c": "
+const c = \\"mc_c\\";
 var css = {
-    \\"c\\": \\"c\\"
+    c
 };
 
 console.log(css);
@@ -1353,8 +1414,9 @@ console.log(css);
 export default css;
 ",
   "d": "
+const d = \\"mc_d\\";
 var css = {
-    \\"d\\": \\"d\\"
+    d
 };
 
 console.log(css);
@@ -1364,15 +1426,16 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter should support loader being a function ("esm") 1`] = `
+exports[`rollup-rewriter should support loader being a function (esm) 1`] = `
 Object {
   "a": "
 import chunkCountIs8 from \\"./css.js\\";
+const a = \\"mc_a\\";
 var css = {
-    \\"a\\": \\"a\\"
+    a
 };
 
-function a() {
+function a$1() {
     console.log(css);
 
     Promise.all([
@@ -1382,15 +1445,16 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export default a$1;
 ",
   "b": "
 import chunkCountIs8 from \\"./css.js\\";
+const b = \\"mc_b\\";
 var css = {
-    \\"b\\": \\"b\\"
+    b
 };
 
-function b() {
+function b$1() {
     console.log(css);
 
     Promise.all([
@@ -1400,11 +1464,12 @@ function b() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b;
+export default b$1;
 ",
   "c": "
+const c = \\"mc_c\\";
 var css = {
-    \\"c\\": \\"c\\"
+    c
 };
 
 console.log(css);
@@ -1412,8 +1477,9 @@ console.log(css);
 export default css;
 ",
   "d": "
+const d = \\"mc_d\\";
 var css = {
-    \\"d\\": \\"d\\"
+    d
 };
 
 console.log(css);
@@ -1423,7 +1489,7 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter should support loader being a function ("system") 1`] = `
+exports[`rollup-rewriter should support loader being a function (system) 1`] = `
 Object {
   "a": "
 System.register([], function (exports, module) {
@@ -1432,13 +1498,14 @@ import chunkCountIs8 from \\"./css.js\\";
     return {
         execute: function () {
 
-            exports('default', a);
+            exports('default', a$1);
 
+            const a = \\"mc_a\\";
             var css = {
-                \\"a\\": \\"a\\"
+                a
             };
 
-            function a() {
+            function a$1() {
                 console.log(css);
 
                 Promise.all([
@@ -1459,13 +1526,14 @@ import chunkCountIs8 from \\"./css.js\\";
     return {
         execute: function () {
 
-            exports('default', b);
+            exports('default', b$1);
 
+            const b = \\"mc_b\\";
             var css = {
-                \\"b\\": \\"b\\"
+                b
             };
 
-            function b() {
+            function b$1() {
                 console.log(css);
 
                 Promise.all([
@@ -1485,8 +1553,9 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
+            const c = \\"mc_c\\";
             var css = exports('default', {
-                \\"c\\": \\"c\\"
+                c
             });
 
             console.log(css);
@@ -1501,8 +1570,9 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
+            const d = \\"mc_d\\";
             var css = exports('default', {
-                \\"d\\": \\"d\\"
+                d
             });
 
             console.log(css);
@@ -1514,16 +1584,17 @@ System.register([], function (exports) {
 }
 `;
 
-exports[`rollup-rewriter shouldn't require a loader ("amd") 1`] = `
+exports[`rollup-rewriter shouldn't require a loader (amd) 1`] = `
 Object {
   "a.js": "
 define(['require'], function (require) { 'use strict';
 
+    const a = \\"mc_a\\";
     var css = {
-        \\"a\\": \\"a\\"
+        a
     };
 
-    function a() {
+    function a$1() {
         console.log(css);
 
         new Promise(function (resolve, reject) { Promise.all([
@@ -1534,42 +1605,43 @@ define(['require'], function (require) { 'use strict';
 .catch(reject) }).then(console.log);
     }
 
-    return a;
+    return a$1;
 
 });
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
-.a {
+.mc_a {
     color: aqua;
 }
 ",
   "assets/b.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
-.b {
+.mc_b {
     color: blue;
 }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
-.c {
+.mc_c {
     color: cyan;
 }
 ",
   "assets/d.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
-.d {
+.mc_d {
     color: darkred;
 }
 ",
   "b.js": "
 define(['require'], function (require) { 'use strict';
 
+    const b = \\"mc_b\\";
     var css = {
-        \\"b\\": \\"b\\"
+        b
     };
 
-    function b() {
+    function b$1() {
         console.log(css);
 
         new Promise(function (resolve, reject) { Promise.all([
@@ -1580,15 +1652,16 @@ define(['require'], function (require) { 'use strict';
 .catch(reject) }).then(console.log);
     }
 
-    return b;
+    return b$1;
 
 });
 ",
   "c.js": "
 define(['exports'], function (exports) { 'use strict';
 
+    const c = \\"mc_c\\";
     var css = {
-        \\"c\\": \\"c\\"
+        c
     };
 
     console.log(css);
@@ -1600,8 +1673,9 @@ define(['exports'], function (exports) { 'use strict';
   "d.js": "
 define(['exports'], function (exports) { 'use strict';
 
+    const d = \\"mc_d\\";
     var css = {
-        \\"d\\": \\"d\\"
+        d
     };
 
     console.log(css);
@@ -1613,14 +1687,15 @@ define(['exports'], function (exports) { 'use strict';
 }
 `;
 
-exports[`rollup-rewriter shouldn't require a loader ("es") 1`] = `
+exports[`rollup-rewriter shouldn't require a loader (es) 1`] = `
 Object {
   "a.js": "
+const a = \\"mc_a\\";
 var css = {
-    \\"a\\": \\"a\\"
+    a
 };
 
-function a() {
+function a$1() {
     console.log(css);
 
     Promise.all([
@@ -1630,38 +1705,39 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export default a$1;
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
-.a {
+.mc_a {
     color: aqua;
 }
 ",
   "assets/b.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
-.b {
+.mc_b {
     color: blue;
 }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
-.c {
+.mc_c {
     color: cyan;
 }
 ",
   "assets/d.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
-.d {
+.mc_d {
     color: darkred;
 }
 ",
   "b.js": "
+const b = \\"mc_b\\";
 var css = {
-    \\"b\\": \\"b\\"
+    b
 };
 
-function b() {
+function b$1() {
     console.log(css);
 
     Promise.all([
@@ -1671,11 +1747,12 @@ function b() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b;
+export default b$1;
 ",
   "c.js": "
+const c = \\"mc_c\\";
 var css = {
-    \\"c\\": \\"c\\"
+    c
 };
 
 console.log(css);
@@ -1683,8 +1760,9 @@ console.log(css);
 export default css;
 ",
   "d.js": "
+const d = \\"mc_d\\";
 var css = {
-    \\"d\\": \\"d\\"
+    d
 };
 
 console.log(css);
@@ -1694,14 +1772,15 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter shouldn't require a loader ("esm") 1`] = `
+exports[`rollup-rewriter shouldn't require a loader (esm) 1`] = `
 Object {
   "a.js": "
+const a = \\"mc_a\\";
 var css = {
-    \\"a\\": \\"a\\"
+    a
 };
 
-function a() {
+function a$1() {
     console.log(css);
 
     Promise.all([
@@ -1711,38 +1790,39 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export default a$1;
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
-.a {
+.mc_a {
     color: aqua;
 }
 ",
   "assets/b.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
-.b {
+.mc_b {
     color: blue;
 }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
-.c {
+.mc_c {
     color: cyan;
 }
 ",
   "assets/d.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
-.d {
+.mc_d {
     color: darkred;
 }
 ",
   "b.js": "
+const b = \\"mc_b\\";
 var css = {
-    \\"b\\": \\"b\\"
+    b
 };
 
-function b() {
+function b$1() {
     console.log(css);
 
     Promise.all([
@@ -1752,11 +1832,12 @@ function b() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b;
+export default b$1;
 ",
   "c.js": "
+const c = \\"mc_c\\";
 var css = {
-    \\"c\\": \\"c\\"
+    c
 };
 
 console.log(css);
@@ -1764,8 +1845,9 @@ console.log(css);
 export default css;
 ",
   "d.js": "
+const d = \\"mc_d\\";
 var css = {
-    \\"d\\": \\"d\\"
+    d
 };
 
 console.log(css);
@@ -1775,7 +1857,7 @@ export default css;
 }
 `;
 
-exports[`rollup-rewriter shouldn't require a loader ("system") 1`] = `
+exports[`rollup-rewriter shouldn't require a loader (system) 1`] = `
 Object {
   "a.js": "
 System.register([], function (exports, module) {
@@ -1783,13 +1865,14 @@ System.register([], function (exports, module) {
     return {
         execute: function () {
 
-            exports('default', a);
+            exports('default', a$1);
 
+            const a = \\"mc_a\\";
             var css = {
-                \\"a\\": \\"a\\"
+                a
             };
 
-            function a() {
+            function a$1() {
                 console.log(css);
 
                 Promise.all([
@@ -1805,25 +1888,25 @@ System.register([], function (exports, module) {
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
-.a {
+.mc_a {
     color: aqua;
 }
 ",
   "assets/b.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/b.css */
-.b {
+.mc_b {
     color: blue;
 }
 ",
   "assets/c.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/c.css */
-.c {
+.mc_c {
     color: cyan;
 }
 ",
   "assets/d.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/d.css */
-.d {
+.mc_d {
     color: darkred;
 }
 ",
@@ -1833,13 +1916,14 @@ System.register([], function (exports, module) {
     return {
         execute: function () {
 
-            exports('default', b);
+            exports('default', b$1);
 
+            const b = \\"mc_b\\";
             var css = {
-                \\"b\\": \\"b\\"
+                b
             };
 
-            function b() {
+            function b$1() {
                 console.log(css);
 
                 Promise.all([
@@ -1859,8 +1943,9 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
+            const c = \\"mc_c\\";
             var css = exports('default', {
-                \\"c\\": \\"c\\"
+                c
             });
 
             console.log(css);
@@ -1875,8 +1960,9 @@ System.register([], function (exports) {
     return {
         execute: function () {
 
+            const d = \\"mc_d\\";
             var css = exports('default', {
-                \\"d\\": \\"d\\"
+                d
             });
 
             console.log(css);

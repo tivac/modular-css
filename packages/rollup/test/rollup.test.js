@@ -8,11 +8,10 @@ const shell = require("shelljs");
 const cssnano = require("cssnano");
 const files = require("rollup-plugin-hypothetical");
 
-const read    = require("@modular-css/test-utils/read.js")(__dirname);
-const exists  = require("@modular-css/test-utils/exists.js")(__dirname);
-const prefix  = require("@modular-css/test-utils/prefix.js")(__dirname);
-const namer   = require("@modular-css/test-utils/namer.js");
-const logs    = require("@modular-css/test-utils/logs.js");
+const read = require("@modular-css/test-utils/read.js")(__dirname);
+const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
+const namer = require("@modular-css/test-utils/namer.js");
+const logspy = require("@modular-css/test-utils/logs.js");
 
 const Processor = require("@modular-css/processor");
 
@@ -27,9 +26,14 @@ error.postcssPlugin = "error-plugin";
 const assetFileNames = "assets/[name][extname]";
 const format = "es";
 const map = false;
-const sourcemap = false;
 
 describe("/rollup.js", () => {
+    const createPlugin = (opts = {}) => plugin({
+        namer,
+        map,
+        ...opts,
+    });
+
     beforeAll(() => shell.rm("-rf", prefix("./output/*")));
 
     it("should be a function", () =>
@@ -38,212 +42,165 @@ describe("/rollup.js", () => {
 
     it("should generate exports", async () => {
         const bundle = await rollup({
-            input   : require.resolve("./specimens/simple.js"),
+            input   : require.resolve(`./specimens/simple.js`),
             plugins : [
-                plugin({
-                    namer,
-                }),
+                createPlugin(),
             ],
         });
 
-        const result = await bundle.generate({ format });
+        expect(
+            await bundle.generate({
+                format,
+            })
+        ).toMatchRollupCodeSnapshot();
+    });
 
-        expect(result).toMatchRollupCodeSnapshot();
+    it("should express locally-composed classes correctly", async () => {
+        const bundle = await rollup({
+            input   : require.resolve(`./specimens/local-composition.js`),
+            plugins : [
+                createPlugin(),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+            })
+        ).toMatchRollupSnapshot();
     });
 
     it("should be able to tree-shake results", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/tree-shaking.js"),
             plugins : [
-                plugin({
-                    namer,
-                }),
+                createPlugin(),
             ],
         });
 
-        const result = await bundle.generate({ format });
-
-        expect(result).toMatchRollupCodeSnapshot();
+        expect(
+            await bundle.generate({
+                format,
+            })
+        ).toMatchRollupCodeSnapshot();
     });
 
     it("should generate CSS", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
-                plugin({
-                    namer,
-                    map,
-                }),
+                createPlugin(),
             ],
         });
 
-        await bundle.write({
-            format,
-            assetFileNames,
-            file : prefix(`./output/css/simple.js`),
-        });
-
-        expect(read("./css/assets/simple.css")).toMatchSnapshot();
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupAssetSnapshot();
     });
 
     it("should handle assetFileNames being undefined", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
-                plugin({
-                    namer,
-                    map,
-                }),
+                createPlugin(),
             ],
         });
 
-        await bundle.write({
-            format,
-            file : prefix(`./output/assetFileNames/simple.js`),
-        });
-
-        const [ css ] = shell.ls(prefix(`./output/assetFileNames/assets`));
-
-        expect(read(`assetFileNames/assets/${css}`)).toMatchSnapshot();
+        expect(
+            await bundle.generate({
+                format,
+            })
+        ).toMatchRollupAssetSnapshot();
     });
 
     it("should correctly pass to/from params for relative paths", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/relative-paths.js"),
             plugins : [
-                plugin({
-                    namer,
-                    map,
-                }),
+                createPlugin(),
             ],
         });
 
-        await bundle.write({
-            format,
-            assetFileNames,
-            file : prefix(`./output/relative-paths/relative-paths.js`),
-        });
-
-        expect(read("./relative-paths/assets/relative-paths.css")).toMatchSnapshot();
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+                file : prefix(`./output/relative-paths/relative-paths.js`),
+            })
+        ).toMatchRollupAssetSnapshot();
     });
 
     it("should correctly handle hashed output", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
-                plugin({
-                    namer,
-                    map,
-                }),
+                createPlugin(),
             ],
         });
 
-        const result = await bundle.generate({
-            format,
-            file : prefix(`./output/hashes/hashes.js`),
-        });
-
-        expect(result).toMatchRollupSnapshot();
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames : "assets/[name]-[hash][extname]",
+            })
+        ).toMatchRollupSnapshot();
     });
 
     it("should correctly handle hashed output with external source maps & json files", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
-                plugin({
-                    namer,
+                createPlugin({
                     map  : { inline : false },
                     json : true,
                 }),
             ],
         });
 
-        const result = await bundle.generate({
-            format,
-            file : prefix(`./output/hashes/hashes.js`),
-        });
-
-        expect(result).toMatchRollupSnapshot();
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames : "assets/[name]-[hash][extname]",
+            })
+        ).toMatchRollupSnapshot();
     });
 
     it("should avoid generating empty CSS", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/no-css.js"),
             plugins : [
-                plugin({
-                    namer,
-                }),
+                createPlugin(),
             ],
         });
 
-        await bundle.write({
-            format,
-            assetFileNames,
-            file : prefix(`./output/no-css/no-css.js`),
-        });
-
-        expect(exists("./output/no-css/assets/no-css.css")).toBe(false);
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupAssetSnapshot();
     });
 
-    // eslint-disable-next-line jest/expect-expect
     it("should ignore external modules", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/external.js"),
             plugins : [
-                plugin({
-                    namer,
-                }),
+                createPlugin(),
             ],
             external : [
                 require.resolve("./specimens/simple.js"),
             ],
         });
 
-        await bundle.generate({
-            format,
-            assetFileNames,
-            file : prefix(`./output/no-css/no-css.js`),
-        });
-    });
-
-    it("should generate JSON", async () => {
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/simple.js"),
-            plugins : [
-                plugin({
-                    namer,
-                    json : true,
-                }),
-            ],
-        });
-
-        await bundle.write({
-            format,
-            assetFileNames,
-            file : prefix(`./output/json/simple.js`),
-        });
-
-        expect(read("./json/assets/exports.json")).toMatchSnapshot();
-    });
-
-    it("should generate JSON with a custom name", async () => {
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/simple.js"),
-            plugins : [
-                plugin({
-                    namer,
-                    json : "custom.json",
-                }),
-            ],
-        });
-
-        await bundle.write({
-            format,
-            assetFileNames,
-            file : prefix(`./output/json-named/simple.js`),
-        });
-
-        expect(read("./json-named/assets/custom.json")).toMatchSnapshot();
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupAssetSnapshot();
     });
 
     it("should output unreferenced CSS", async () => {
@@ -261,387 +218,528 @@ describe("/rollup.js", () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/simple.js"),
             plugins : [
-                plugin({
-                    namer,
+                createPlugin({
                     processor,
                 }),
             ],
         });
 
-        const result = await bundle.generate({
-            format,
-            assetFileNames,
-            file : prefix(`./output/common-option/simple.js`),
-        });
-
-        expect(result).toMatchRollupAssetSnapshot();
-    });
-
-    it("should provide named exports", async () => {
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/named.js"),
-            plugins : [
-                plugin({
-                    namer,
-                }),
-            ],
-        });
-
-        const result = await bundle.generate({ format });
-
-        expect(result).toMatchRollupCodeSnapshot();
-    });
-
-    it("should provide style export", async () => {
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/style-export.js"),
-            plugins : [
-                plugin({
-                    namer,
-                    styleExport : true,
-                }),
-            ],
-        });
-
-        const result = await bundle.generate({ format });
-
-        expect(result).toMatchRollupCodeSnapshot();
-    });
-
-    // eslint-disable-next-line jest/expect-expect
-    it("should warn that styleExport and done aren't compatible", async () => {
-        const { logSnapshot } = logs("warn");
-
-        await rollup({
-            input   : require.resolve("./specimens/style-export.js"),
-            plugins : [
-                plugin({
-                    namer,
-                    styleExport : true,
-                    done        : [
-                        () => { /* NO OP */ },
-                    ],
-                }),
-            ],
-        });
-
-        logSnapshot();
-    });
-
-    it("should generate external source maps", async () => {
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/simple.js"),
-            plugins : [
-                plugin({
-                    namer,
-                    map : {
-                        inline : false,
-                    },
-                }),
-            ],
-        });
-
-        await bundle.write({
-            format,
-            assetFileNames,
-            file : prefix(`./output/external-source-maps/simple.js`),
-        });
-
-        // Have to parse it into JSON so the propertyMatcher can exclude the file property
-        // since it is a hash value and changes constantly
-        expect(JSON.parse(read("./external-source-maps/assets/simple.css.map"))).toMatchSnapshot({
-            file : expect.any(String),
-        });
-
-        expect(read("./external-source-maps/assets/simple.css")).toMatchSnapshot();
-    });
-
-    it("should warn & not export individual keys when they are not valid identifiers", async () => {
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/invalid-name.js"),
-            onwarn  : (msg) => expect(msg).toMatchSnapshot({ id : expect.any(String) }),
-            plugins : [
-                plugin({
-                    namer,
-                }),
-            ],
-        });
-
-        const result = await bundle.generate({
-            format,
-            assetFileNames,
-        });
-
-        expect(result).toMatchRollupCodeSnapshot();
-    });
-
-    it("should allow disabling of named exports", async () => {
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/simple.js"),
-            plugins : [
-                plugin({
-                    namer,
-                    namedExports : false,
-                }),
-            ],
-        });
-
-        const result = await bundle.generate({
-            format,
-            assetFileNames,
-        });
-
-        expect(result).toMatchRollupCodeSnapshot();
-    });
-
-    it("shouldn't disable sourcemap generation", async () => {
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/simple.js"),
-            plugins : [
-                plugin({
-                    namer,
-                    sourcemap : true,
-                }),
-            ],
-        });
-
-        const { output } = await bundle.generate({
-            format,
-            assetFileNames,
-
-            sourcemap : true,
-        });
-
-        // Find first chunk w/ a .map property, then compare it to snapshot
-        expect(output.find((chunk) => chunk.map).map).toMatchSnapshot();
-    });
-
-    it("should not output sourcemaps when they are disabled", async () => {
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/simple.js"),
-            plugins : [
-                plugin({
-                    namer,
-                    map,
-                }),
-            ],
-        });
-
-        await bundle.write({
-            assetFileNames,
-            format,
-            sourcemap,
-
-            file : prefix(`./output/no-maps/no-maps.js`),
-        });
-
-        expect(read("./no-maps/assets/simple.css")).toMatchSnapshot();
-    });
-
-    it("should respect the CSS dependency tree", async () => {
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/dependencies.js"),
-            plugins : [
-                plugin({
-                    namer,
-                    map,
-                }),
-            ],
-        });
-
-        await bundle.write({
-            format,
-            assetFileNames,
-            sourcemap,
-
-            file : prefix(`./output/dependencies/dependencies.js`),
-        });
-
-        expect(read("./dependencies/dependencies.js")).toMatchSnapshot();
-        expect(read("./dependencies/assets/dependencies.css")).toMatchSnapshot();
-    });
-
-    it("should accept an existing processor instance", async () => {
-        const processor = new Processor({
-            namer,
-            map,
-        });
-
-        await processor.string("./packages/rollup/test/specimens/fake.css", dedent(`
-            .fake {
-                color: yellow;
-            }
-        `));
-
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/simple.js"),
-            plugins : [
-                plugin({
-                    processor,
-                }),
-            ],
-        });
-
-        const result = await bundle.generate({
-            format,
-            sourcemap,
-            assetFileNames,
-
-            file : prefix(`./output/existing-processor/existing-processor.js`),
-        });
-
-        expect(result).toMatchRollupAssetSnapshot();
-    });
-
-    it("should accept an existing processor instance (no css in bundle)", async () => {
-        const processor = new Processor({
-            namer,
-            map,
-        });
-
-        await processor.string("./packages/rollup/test/specimens/fake.css", dedent(`
-            .fake {
-                color: yellow;
-            }
-        `));
-
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/no-css.js"),
-            plugins : [
-                plugin({
-                    processor,
-                }),
-            ],
-        });
-
-        const result = await bundle.generate({
-            format,
-            sourcemap,
-            assetFileNames,
-
-            file : prefix(`./output/existing-processor-no-css/existing-processor-no-css.js`),
-        });
-
-        expect(result).toMatchRollupAssetSnapshot();
-    });
-
-    it("should output a proxy in dev mode", async () => {
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/simple.js"),
-            plugins : [
-                plugin({
-                    namer,
-                    dev : true,
-                }),
-            ],
-        });
-
-        const result = await bundle.generate({ format });
-
-        expect(result).toMatchRollupCodeSnapshot();
-    });
-
-    // eslint-disable-next-line jest/expect-expect
-    it("should log in verbose mode", async () => {
-        const { logSnapshot } = logs();
-
-        const bundle = await rollup({
-            input   : require.resolve("./specimens/simple.js"),
-            plugins : [
-                plugin({
-                    namer,
-                    verbose : true,
-                }),
-            ],
-        });
-
-        await bundle.generate({
-            format,
-            assetFileNames,
-        });
-
-        const processor = new Processor({
-            namer,
-            verbose : true,
-        });
-
-        await processor.file("./packages/processor/test/specimens/start.css");
-        await processor.string(
-            "packages/processor/test/specimens/string.css",
-            ".foo { color: fuschia; }"
-        );
-
-        await processor.output();
-
-        logSnapshot();
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupAssetSnapshot();
     });
 
     it("should output assets with a .css file extension", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/file-extension/entry.js"),
             plugins : [
-                plugin({
-                    namer,
+                createPlugin({
                     include : /\.cssx$/,
                 }),
             ],
         });
 
-        const result = await bundle.generate({
-            format,
-            assetFileNames,
-        });
-
-        expect(result).toMatchRollupSnapshot();
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
     });
 
-    it("should write out empty CSS files by default", async () => {
+    it("should respect the CSS dependency tree", async () => {
         const bundle = await rollup({
-            input   : require.resolve("./specimens/empty.js"),
+            input   : require.resolve("./specimens/dependencies.js"),
             plugins : [
-                plugin({
-                    namer,
-                    map,
-
-                    done : [
-                        cssnano(),
-                    ],
-                }),
+                createPlugin(),
             ],
         });
 
-        await bundle.write({
-            format,
-            assetFileNames,
-            file : prefix(`./output/empty-css/empty.js`),
-        });
-
-        expect(read("./empty-css/assets/empty.css")).toMatchSnapshot();
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
     });
 
-    it("should not write out empty CSS files when empties is falsey", async () => {
+    it("should support namespaced @value imports", async () => {
         const bundle = await rollup({
-            input   : require.resolve("./specimens/empty.js"),
+            input   : require.resolve("./specimens/namespaced/namespaced.js"),
             plugins : [
-                plugin({
-                    namer,
-                    map,
-                    empties : false,
-
-                    done : [
-                        cssnano(),
-                    ],
-                }),
+                createPlugin(),
             ],
         });
 
-        await bundle.write({
-            format,
-            assetFileNames,
-            file : prefix(`./output/no-empty-css/empty.js`),
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
+    it("should support external @value aliases", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/external-value-aliasing/external-value-aliasing.js"),
+            plugins : [
+                createPlugin(),
+            ],
         });
 
-        expect(exists("./output/no-empty-css/assets/empty.css")).toBe(false);
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
+    it("should support mixing all @value types", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/all-value-types/all-value-types.js"),
+            plugins : [
+                createPlugin(),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
+    it("should support multiple selectors", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/multi-selector/multi-selector.js"),
+            plugins : [
+                createPlugin(),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
+    it("should support @value and class overlap", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/class-value-overlap/class-value-overlap.js"),
+            plugins : [
+                createPlugin(),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
+    it("should output classes in topological order", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/topological-order/topological-order.js"),
+            plugins : [
+                createPlugin({ namer }),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
+    describe("dev mode option", () => {
+        it("should output a proxy", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/simple.js"),
+                plugins : [
+                    createPlugin({
+                        dev : true,
+                    }),
+                ],
+            });
+
+            expect(
+                await bundle.generate({
+                    format,
+                })
+            ).toMatchRollupCodeSnapshot();
+        });
+    });
+
+    describe("json option", () => {
+        it("should generate JSON", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/simple.js"),
+                plugins : [
+                    createPlugin({
+                        json : true,
+                    }),
+                ],
+            });
+
+            expect(
+                await bundle.generate({
+                    format,
+                    assetFileNames,
+                })
+            ).toMatchRollupAssetSnapshot();
+        });
+
+        it("should generate JSON with a custom name", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/simple.js"),
+                plugins : [
+                    createPlugin({
+                        json : "custom.json",
+                    }),
+                ],
+            });
+
+            expect(
+                await bundle.generate({
+                    format,
+                    assetFileNames,
+                })
+            ).toMatchRollupAssetSnapshot();
+        });
+    });
+
+    describe("namedExports option", () => {
+        it("should provide named exports by default", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/named.js"),
+                plugins : [
+                    createPlugin(),
+                ],
+            });
+
+            expect(
+                await bundle.generate({
+                    format,
+                })
+            ).toMatchRollupCodeSnapshot();
+        });
+
+        it("should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true)", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/invalid-name.js"),
+                onwarn  : (msg) => expect(msg).toMatchSnapshot({ id : expect.any(String) }),
+                plugins : [
+                    createPlugin({
+                        namedExports : {
+                            rewriteInvalid : true,
+                        },
+                    }),
+                ],
+            });
+
+            const result = await bundle.generate({
+                format,
+                assetFileNames,
+            });
+
+            expect(result).toMatchRollupCodeSnapshot();
+        });
+
+        it("should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false)", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/invalid-name.js"),
+                onwarn  : (msg) => expect(msg).toMatchSnapshot({ id : expect.any(String) }),
+                plugins : [
+                    createPlugin({
+                        namedExports : {
+                            rewriteInvalid : false,
+                        },
+                    }),
+                ],
+            });
+
+            const result = await bundle.generate({
+                format,
+                assetFileNames,
+            });
+
+            expect(result).toMatchRollupCodeSnapshot();
+        });
+
+        it("should warn if named exports are falsey", async () => {
+            const spy = logspy("warn");
+
+            await rollup({
+                input   : require.resolve("./specimens/simple.js"),
+                plugins : [
+                    createPlugin({
+                        namedExports : false,
+                    }),
+                ],
+            });
+
+            expect(spy).toMatchLogspySnapshot();
+        });
+    });
+
+    describe("styleExport option", () => {
+        it("should provide style export", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/style-export.js"),
+                plugins : [
+                    createPlugin({
+                        styleExport : true,
+                    }),
+                ],
+            });
+
+            const result = await bundle.generate({
+                format,
+            });
+
+            expect(result).toMatchRollupCodeSnapshot();
+        });
+
+        // eslint-disable-next-line jest/expect-expect
+        it("should warn that styleExport and done aren't compatible", async () => {
+            const spy = logspy("warn");
+
+            await rollup({
+                input   : require.resolve("./specimens/style-export.js"),
+                plugins : [
+                    createPlugin({
+                        styleExport : true,
+                        done        : [
+                            () => { /* NO OP */ },
+                        ],
+                    }),
+                ],
+            });
+
+            expect(spy).toMatchLogspySnapshot();
+        });
+    });
+
+    describe("source maps", () => {
+        it("should generate external source maps", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/simple.js"),
+                plugins : [
+                    createPlugin({
+                        map : {
+                            inline : false,
+                        },
+                    }),
+                ],
+            });
+
+            await bundle.write({
+                format,
+                assetFileNames,
+                file : prefix(`./output/external-source-maps/simple.js`),
+            });
+
+            // Have to parse it into JSON so the propertyMatcher can exclude the file property
+            // since it is a hash value and changes constantly
+            expect(JSON.parse(read("./external-source-maps/assets/simple.css.map"))).toMatchSnapshot({
+                file : expect.any(String),
+            });
+
+            expect(read("./external-source-maps/assets/simple.css")).toMatchSnapshot();
+        });
+
+
+        it("shouldn't disable sourcemap generation", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/simple.js"),
+                plugins : [
+                    createPlugin({
+                        sourcemap : true,
+                    }),
+                ],
+            });
+
+            const { output } = await bundle.generate({
+                format,
+                assetFileNames,
+                sourcemap : true,
+            });
+
+            // Find first chunk w/ a .map property, then compare it to snapshot
+            expect(output.find((chunk) => chunk.map).map).toMatchSnapshot();
+        });
+
+        it("should not output sourcemaps when they are disabled", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/simple.js"),
+                plugins : [
+                    createPlugin({
+                    }),
+                ],
+            });
+
+            expect(
+                await bundle.generate({
+                    assetFileNames,
+                    format,
+                })
+            ).toMatchRollupAssetSnapshot();
+        });
+    });
+
+    describe("processor option", () => {
+        it("should accept an existing processor instance", async () => {
+            const processor = new Processor({
+                namer,
+                map,
+            });
+
+            await processor.string("./packages/rollup/test/specimens/fake.css", dedent(`
+                .fake {
+                    color: yellow;
+                }
+            `));
+
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/simple.js"),
+                plugins : [
+                    createPlugin({
+                        processor,
+                    }),
+                ],
+            });
+
+            const result = await bundle.generate({
+                format,
+                assetFileNames,
+
+                file : prefix(`./output/existing-processor/existing-processor.js`),
+            });
+
+            expect(result).toMatchRollupAssetSnapshot();
+        });
+
+        it("should accept an existing processor instance (no css in bundle)", async () => {
+            const processor = new Processor({
+                namer,
+                map,
+            });
+
+            await processor.string("./packages/rollup/test/specimens/fake.css", dedent(`
+                .fake {
+                    color: yellow;
+                }
+            `));
+
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/no-css.js"),
+                plugins : [
+                    createPlugin({
+                        processor,
+                    }),
+                ],
+            });
+
+            const result = await bundle.generate({
+                format,
+                assetFileNames,
+
+                file : prefix(`./output/existing-processor-no-css/existing-processor-no-css.js`),
+            });
+
+            expect(result).toMatchRollupAssetSnapshot();
+        });
+    });
+
+    describe("verbose option", () => {
+        // eslint-disable-next-line jest/expect-expect
+        it("should log in verbose mode", async () => {
+            const spy = logspy();
+
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/simple.js"),
+                plugins : [
+                    createPlugin({
+                        verbose : true,
+                    }),
+                ],
+            });
+
+            await bundle.generate({
+                format,
+                assetFileNames,
+            });
+
+            const processor = new Processor({
+                namer,
+                verbose : true,
+            });
+
+            await processor.file("./packages/processor/test/specimens/start.css");
+            await processor.string(
+                "packages/processor/test/specimens/string.css",
+                ".foo { color: fuschia; }"
+            );
+
+            await processor.output();
+
+            expect(spy).toMatchLogspySnapshot();
+        });
+    });
+
+    describe("empties option", () => {
+        it("should write out empty CSS files when empties is enabled", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/empty.js"),
+                plugins : [
+                    createPlugin({
+                        empties : true,
+
+                        done : [
+                            cssnano(),
+                        ],
+                    }),
+                ],
+            });
+
+            expect(
+                await bundle.generate({
+                    format,
+                    assetFileNames,
+                })
+            ).toMatchRollupAssetSnapshot();
+        });
+
+        it("should not write out empty CSS files by default", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/empty.js"),
+                plugins : [
+                    createPlugin({
+                        done : [
+                            cssnano(),
+                        ],
+                    }),
+                ],
+            });
+
+            expect(
+                await bundle.generate({
+                    format,
+                    assetFileNames,
+                })
+            ).toMatchRollupAssetSnapshot();
+        });
     });
 
     describe("case sensitivity tests", () => {
@@ -658,13 +756,12 @@ describe("/rollup.js", () => {
         }
 
         fn("should warn about repeated references that point at the same files", async () => {
-            const { spy } = logs("warn");
+            const spy = logspy("warn");
 
             const bundle = await rollup({
                 input   : require.resolve("./specimens/casing/main.js"),
                 plugins : [
-                    plugin({
-                        map,
+                    createPlugin({
                     }),
                 ],
             });
@@ -672,7 +769,6 @@ describe("/rollup.js", () => {
             await bundle.write({
                 format,
                 assetFileNames,
-                sourcemap,
                 file : prefix(`./output/casing/main.js`),
             });
 
@@ -708,7 +804,7 @@ describe("/rollup.js", () => {
                         },
                     }),
 
-                    plugin({ namer }),
+                    createPlugin({ namer }),
                 ],
             })
             .catch((e) => expect(e.toString()).toMatch(".wooga"))
@@ -719,8 +815,7 @@ describe("/rollup.js", () => {
             rollup({
                 input   : require.resolve("./specimens/simple.js"),
                 plugins : [
-                    plugin({
-                        namer,
+                    createPlugin({
                         css    : prefix(`./output/errors.css`),
                         before : [ error ],
                     }),
@@ -734,8 +829,7 @@ describe("/rollup.js", () => {
             rollup({
                 input   : require.resolve("./specimens/simple.js"),
                 plugins : [
-                    plugin({
-                        namer,
+                    createPlugin({
                         css   : prefix(`./output/errors.css`),
                         after : [ error ],
                     }),
@@ -750,8 +844,7 @@ describe("/rollup.js", () => {
             rollup({
                 input   : require.resolve("./specimens/simple.js"),
                 plugins : [
-                    plugin({
-                        namer,
+                    createPlugin({
                         css  : prefix(`./output/errors.css`),
                         done : [ error ],
                     }),

@@ -7,7 +7,7 @@ const shell = require("shelljs");
 
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
 const namer  = require("@modular-css/test-utils/namer.js");
-const logs   = require("@modular-css/test-utils/logs.js");
+const logspy   = require("@modular-css/test-utils/logs.js");
 
 const css = require("@modular-css/rollup");
 
@@ -29,7 +29,7 @@ describe("rollup-rewriter", () => {
 
     it.each([
         "cjs",
-    ])("should error on unsupported formats (%p)", async (format) => {
+    ])("should error on unsupported formats (%s)", async (format) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/dynamic-imports/a.js"),
@@ -52,10 +52,11 @@ describe("rollup-rewriter", () => {
 
             assetFileNames,
             chunkFileNames,
+            exports : "auto",
         })).rejects.toThrowErrorMatchingSnapshot();
     });
 
-    it.each(formats)("shouldn't require a loader (%p)", async (format) => {
+    it.each(formats)("shouldn't require a loader (%s)", async (format) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/dynamic-imports/a.js"),
@@ -78,12 +79,13 @@ describe("rollup-rewriter", () => {
 
             assetFileNames,
             chunkFileNames,
+            exports : "auto",
         });
 
         expect(result).toMatchRollupSnapshot();
     });
 
-    it.each(formats)("should support loader & loadfn (%p)", async (format) => {
+    it.each(formats)("should support loader & loadfn (%s)", async (format) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/dynamic-imports/a.js"),
@@ -107,12 +109,13 @@ describe("rollup-rewriter", () => {
 
             assetFileNames,
             chunkFileNames,
+            exports : "auto",
         });
 
         expect(result).toMatchRollupSnapshot();
     });
-    
-    it.each(formats)("should support loader being a function (%p)", async (format) => {
+
+    it.each(formats)("should support loader being a function (%s)", async (format) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/dynamic-imports/a.js"),
@@ -136,12 +139,13 @@ describe("rollup-rewriter", () => {
 
             assetFileNames,
             chunkFileNames,
+            exports : "auto",
         });
 
         expect(result).toMatchRollupCodeSnapshot();
     });
 
-    it.each(formats)("should only rewrite when necessary (%p)", async (format) => {
+    it.each(formats)("should only rewrite when necessary (%s)", async (format) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/no-asset-imports/a.js"),
@@ -164,12 +168,13 @@ describe("rollup-rewriter", () => {
 
             assetFileNames,
             chunkFileNames,
+            exports : "auto",
         });
 
         expect(result).toMatchRollupSnapshot();
     });
 
-    it.each(formats)("should ignore unknown imports", async (format) => {
+    it.each(formats)("should ignore unknown imports (%s)", async (format) => {
         const bundle = await rollup({
             input    : require.resolve("./specimens/external-import/a.js"),
             external : [ "external" ],
@@ -190,12 +195,13 @@ describe("rollup-rewriter", () => {
 
             assetFileNames,
             chunkFileNames,
+            exports : "auto",
         });
 
         expect(result).toMatchRollupSnapshot();
     });
 
-    it.each(formats)("should include css for static imports used by a dynamic import (%p)", async (format) => {
+    it.each(formats)("should include css for static imports used by a dynamic import (%s)", async (format) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/dynamic-shared-imports/entry1.js"),
@@ -218,6 +224,7 @@ describe("rollup-rewriter", () => {
 
             assetFileNames,
             chunkFileNames,
+            exports : "auto",
         });
 
         expect(result).toMatchRollupSnapshot();
@@ -225,7 +232,7 @@ describe("rollup-rewriter", () => {
 
     // eslint-disable-next-line jest/expect-expect
     it("should log details in verbose mode", async () => {
-        const { logSnapshot } = logs();
+        const spy = logspy();
 
         const bundle = await rollup({
             input : [
@@ -250,8 +257,9 @@ describe("rollup-rewriter", () => {
             sourcemap,
             assetFileNames,
             chunkFileNames,
+            exports : "auto",
         });
 
-        logSnapshot();
+        expect(spy).toMatchLogspySnapshot();
     });
 });

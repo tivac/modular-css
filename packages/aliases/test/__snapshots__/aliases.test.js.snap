@@ -3,14 +3,20 @@
 exports[`@modular-css/path-aliases should be usable as a modular-css resolver 1`] = `
 Object {
   "packages/aliases/test/specimens/one/sub/sub.css": Object {
-    "sub": "sub",
+    "sub": Array [
+      "mc_sub",
+    ],
   },
   "packages/aliases/test/specimens/two/two.css": Object {
-    "two": "two",
+    "two": Array [
+      "mc_two",
+    ],
   },
   "packages/paths/test/specimens/one/start.css": Object {
-    "rule": "two rule",
-    "sub": "\\"sub\\"",
+    "rule": Array [
+      "mc_two",
+      "mc_rule",
+    ],
   },
 }
 `;
@@ -18,14 +24,20 @@ Object {
 exports[`@modular-css/path-aliases should fall through to the default resolver 1`] = `
 Object {
   "packages/aliases/test/specimens/two/two.css": Object {
-    "two": "two",
+    "two": Array [
+      "mc_two",
+    ],
   },
   "packages/paths/test/specimens/one/start.css": Object {
-    "rule": "two rule",
-    "sub": "\\"sub\\"",
+    "rule": Array [
+      "mc_two",
+      "mc_rule",
+    ],
   },
   "packages/paths/test/specimens/one/sub/sub.css": Object {
-    "sub": "sub",
+    "sub": Array [
+      "mc_sub",
+    ],
   },
 }
 `;

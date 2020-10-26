@@ -35,16 +35,19 @@ module.exports = async function(source) {
     this.cacheable();
 
     try {
-        const result = await processor.string(this.resourcePath, source);
+        const { details } = await processor.string(this.resourcePath, source);
+        const exported = output.fileCompositions(details, processor, { joined : true });
+        const values = output.values(details.values);
 
-        const exported = output.join(result.exports);
+        exported.$values = values;
+
         const out = [];
 
         if(options.defaultExport) {
             out.push(`export default ${JSON.stringify(exported, null, 4)};`);
         }
 
-        processor.dependencies(this.resourcePath).forEach(this.addDependency);
+        processor.fileDependencies(this.resourcePath).forEach(this.addDependency);
 
         // Just default object export in this case
         if(!options.namedExports) {
@@ -64,7 +67,7 @@ module.exports = async function(source) {
         });
 
         if(options.styleExport) {
-            out.push(`export var styles = ${JSON.stringify(result.details.result.css)};`);
+            out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
         }
 
         return done(null, out.join("\n"));

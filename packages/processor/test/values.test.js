@@ -8,13 +8,13 @@ const Processor = require("../processor.js");
 describe("/processor.js", () => {
     describe("values", () => {
         let processor;
-        
+
         beforeEach(() => {
             processor = new Processor({
                 namer,
             });
         });
-        
+
         it("should fail on invalid value syntax", async () => {
             await expect(processor.string(
                 "./invalid/value.css",
@@ -30,7 +30,25 @@ describe("/processor.js", () => {
                 `Unable to locate "../local.css" from "${path.resolve("invalid/value.css")}"`
             );
         });
+
+        it("should fail if a value imports a non-existant value", async () => {
+            await expect(processor.string(
+                "./packages/processor/test/specimens/simple.css",
+                "@value not-real from \"./local.css\";"
+            )).rejects.toThrow(
+                `Could not find @value not-real in "./local.css"`
+            );
+        });
         
+        it("should fail if a value aliases a non-existant value", async () => {
+            await expect(processor.string(
+                "./packages/processor/test/specimens/simple.css",
+                "@value not-real as stil-no from \"./local.css\";"
+            )).rejects.toThrow(
+                `Could not find @value not-real in "./local.css"`
+            );
+        });
+
         it("shouldn't replace values unless they're safe", async () => {
             await processor.string(
                 "./values.css",
@@ -66,7 +84,7 @@ describe("/processor.js", () => {
             );
 
             const { css } = await processor.output();
-            
+
             expect(css).toMatchSnapshot();
         });
 
@@ -87,12 +105,12 @@ describe("/processor.js", () => {
             );
 
             const { css } = await processor.output();
-            
+
             expect(css).toMatchSnapshot();
         });
 
         it("should support local values in value composition", async () => {
-            const { exports } = await processor.string(
+            await processor.string(
                 "./packages/processor/test/specimens/simple.css",
                 dedent(`
                     @value o: one;
@@ -102,14 +120,16 @@ describe("/processor.js", () => {
                 `)
             );
 
-            expect(exports).toMatchSnapshot();
+            const { css } = await processor.output();
+
+            expect(css).toMatchSnapshot();
         });
 
         it("should support importing variables from a file", async () => {
             await processor.file(require.resolve("./specimens/value-import.css"));
 
             const { css } = await processor.output();
-            
+
             expect(css).toMatchSnapshot();
         });
 
@@ -117,7 +137,7 @@ describe("/processor.js", () => {
             await processor.file(require.resolve("./specimens/value-export.css"));
 
             const { css } = await processor.output();
-            
+
             expect(css).toMatchSnapshot();
         });
 
@@ -125,7 +145,7 @@ describe("/processor.js", () => {
             await processor.file(require.resolve("./specimens/value-composition.css"));
 
             const { css } = await processor.output();
-            
+
             expect(css).toMatchSnapshot();
         });
 
@@ -133,7 +153,7 @@ describe("/processor.js", () => {
             await processor.file(require.resolve("./specimens/value-namespace.css"));
 
             const { css } = await processor.output();
-            
+
             expect(css).toMatchSnapshot();
         });
 
@@ -141,15 +161,15 @@ describe("/processor.js", () => {
             await processor.file(require.resolve("./specimens/externals.css"));
 
             const { css } = await processor.output();
-            
+
             expect(css).toMatchSnapshot();
         });
-        
+
         it("should support value aliasing", async () => {
             await processor.file(require.resolve("./specimens/value-alias.css"));
 
             const { css } = await processor.output();
-            
+
             expect(css).toMatchSnapshot();
         });
     });

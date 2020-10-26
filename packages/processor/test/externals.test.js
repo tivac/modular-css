@@ -24,7 +24,9 @@ describe("/processor.js", () => {
         });
 
         it("should fail on bad class references", async () => {
-            await expect(processor.file(require.resolve("./specimens/externals-invalid.css"))).rejects.toThrow(
+            const invalid = require.resolve("./specimens/externals-invalid.css");
+            
+            await expect(processor.file(invalid)).rejects.toThrow(
                 `Invalid external reference: nopenopenope`
             );
         });

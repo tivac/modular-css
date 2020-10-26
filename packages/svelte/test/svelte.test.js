@@ -8,18 +8,11 @@ const dedent = require("dedent");
 
 const Processor = require("@modular-css/processor");
 const namer = require("@modular-css/test-utils/namer.js");
-const logs  = require("@modular-css/test-utils/logs.js");
+const logspy  = require("@modular-css/test-utils/logs.js");
 
 const plugin = require("../svelte.js");
 
 describe("/svelte.js", () => {
-    let warnSpy;
-
-    beforeEach(() => {
-        warnSpy = jest.spyOn(global.console, "warn");
-        warnSpy.mockImplementation(() => { /* NO-OP */ });
-    });
-
     afterEach(() => require("shelljs").rm("-rf", "./packages/svelte/test/output/*"));
 
     it("should extract CSS from a <style> tag", async () => {
@@ -62,23 +55,24 @@ describe("/svelte.js", () => {
     });
 
     it("should expose CSS errors in a useful way (non-css file)", async () => {
-            const filename = require.resolve(`./specimens/error-link-non-css.html`);
-            const { preprocess } = plugin({
-                namer,
-            });
+        const spy = logspy("warn");
 
-            await expect(svelte.preprocess(
-                fs.readFileSync(filename, "utf8"),
-                {
-                    ...preprocess,
-                    filename,
-                },
-            )).rejects.toThrow("error-link.html:1:1: Unknown word");
+        const filename = require.resolve(`./specimens/error-link-non-css.html`);
+        const { preprocess } = plugin({
+            namer,
+        });
 
-            expect(warnSpy).toHaveBeenCalled();
-            expect(warnSpy.mock.calls).toMatchSnapshot();
-        }
-    );
+        await expect(svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            {
+                ...preprocess,
+                filename,
+            },
+        )).rejects.toThrow("error-link.html:1:1: Unknown word");
+
+        expect(spy).toHaveBeenCalled();
+        expect(spy).toMatchLogspySnapshot();
+    });
 
     it("should ignore <links> that reference a URL", async () => {
         const filename = require.resolve("./specimens/url.html");
@@ -129,17 +123,17 @@ describe("/svelte.js", () => {
         expect(output.css).toMatchSnapshot();
     });
 
-    it.each`
-        specimen                    | title
-        ${"external.html"}          | ${"no script"}
-        ${"external-script.html"}   | ${"existing script"}
-        ${"external-single.html"}   | ${"single quotes"}
-        ${"external-unquoted.html"} | ${"unquoted"}
-        ${"external-values.html"}   | ${"values"}
-    `("should extract CSS from a <link> tag ($title)", async ({ specimen }) => {
+    it.each([
+        [ "no script", "external.html" ],
+        [ "existing script", "external-script.html" ],
+        [ "single quotes", "external-single.html" ],
+        [ "unquoted", "external-unquoted.html" ],
+        [ "values", "external-values.html" ],
+    ])("should extract CSS from a <link> tag (%s)", async (title, specimen) => {
         const filename = require.resolve(`./specimens/${specimen}`);
         const { processor, preprocess } = plugin({
             namer,
+            values : true,
         });
 
         const processed = await svelte.preprocess(
@@ -175,16 +169,17 @@ describe("/svelte.js", () => {
         expect(output.css).toMatchSnapshot();
     });
 
-    it.each`
-        title                                     | specimen
-        ${"invalid reference <script> - <style>"} | ${"invalid-inline-script.html"}
-        ${"invalid reference template - <style>"} | ${"invalid-inline-template.html"}
-        ${"invalid reference <script> - <link>"}  | ${"invalid-external-script.html"}
-        ${"invalid reference template - <link>"}  | ${"invalid-external-template.html"}
-        ${"empty css file - <style>"}             | ${"invalid-inline-empty.html"}
-        ${"empty css file - <link>"}              | ${"invalid-external-empty.html"}
-    `("should handle errors: $title", async ({ specimen }) => {
+    it.each([
+        [ "invalid reference <script> - <style>", "invalid-inline-script.html" ],
+        [ "invalid reference template - <style>", "invalid-inline-template.html" ],
+        [ "invalid reference <script> - <link>", "invalid-external-script.html" ],
+        [ "invalid reference template - <link>", "invalid-external-template.html" ],
+        [ "empty css file - <style>", "invalid-inline-empty.html" ],
+        [ "empty css file - <link>", "invalid-external-empty.html" ],
+    ])("should handle errors: %s", async (title, specimen) => {
         const filename = require.resolve(`./specimens/${specimen}`);
+
+        const spy = logspy("warn");
 
         // Set up strict plugin
         const { preprocess : strict } = plugin({
@@ -215,8 +210,8 @@ describe("/svelte.js", () => {
             }
         );
 
-        expect(warnSpy).toHaveBeenCalled();
-        expect(warnSpy.mock.calls).toMatchSnapshot();
+        expect(spy).toHaveBeenCalled();
+        expect(spy).toMatchLogspySnapshot();
 
         expect(processed.toString()).toMatchSnapshot();
     });
@@ -240,18 +235,18 @@ describe("/svelte.js", () => {
         ).rejects.toThrowErrorMatchingSnapshot();
     });
 
-    it.each`
-        title        | specimen
-        ${"<style>"} | ${"style.html"}
-        ${"<link>"}  | ${"external.html"}
-    `("should support verbose output: $title", async ({ specimen }) => {
-        const { logSnapshot } = logs();
+    it.each([
+        [ "<style>", "style.html" ],
+        [ "<link>", "external.html" ],
+    ])("should support verbose output: %s", async (title, specimen) => {
+        const spy = logspy();
 
         const filename = require.resolve(`./specimens/${specimen}`);
 
         const { processor, preprocess } = plugin({
             namer,
             verbose : true,
+            values  : true,
         });
 
         await svelte.preprocess(
@@ -264,11 +259,13 @@ describe("/svelte.js", () => {
 
         await processor.output();
 
-        logSnapshot();
+        expect(spy).toMatchLogspySnapshot();
     });
 
     it("should warn when multiple <link> elements are in the html", async () => {
         const filename = require.resolve(`./specimens/multiple-link.html`);
+
+        const spy = logspy("warn");
 
         const { processor, preprocess } = plugin({
             namer,
@@ -288,8 +285,8 @@ describe("/svelte.js", () => {
 
         expect(output.css).toMatchSnapshot();
 
-        expect(warnSpy).toHaveBeenCalled();
-        expect(warnSpy.mock.calls).toMatchSnapshot();
+        expect(spy).toHaveBeenCalled();
+        expect(spy).toMatchLogspySnapshot();
     });
 
     it("should no-op if all <link>s reference a URL", async () => {
@@ -464,6 +461,8 @@ describe("/svelte.js", () => {
     });
 
     it("should warn about unquoted class attributes", async () => {
+        const spy = logspy("warn");
+
         const filename = require.resolve("./specimens/unquoted.html");
         const { preprocess } = plugin({
             namer,
@@ -477,11 +476,13 @@ describe("/svelte.js", () => {
             },
         );
 
-        expect(warnSpy).toHaveBeenCalled();
-        expect(warnSpy.mock.calls).toMatchSnapshot();
+        expect(spy).toHaveBeenCalled();
+        expect(spy).toMatchLogspySnapshot();
     });
 
     it("should ignore <Link />", async () => {
+        const spy = logspy("warn");
+
         const filename = require.resolve("./specimens/link-component.html");
         const { preprocess } = plugin({
             namer,
@@ -495,6 +496,6 @@ describe("/svelte.js", () => {
             },
         );
 
-        expect(warnSpy).not.toHaveBeenCalled();
+        expect(spy).not.toHaveBeenCalled();
     });
 });

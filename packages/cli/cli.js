@@ -6,6 +6,8 @@ const path = require("path");
 
 const mkdirp = require("mkdirp");
 const glob = require("@modular-css/glob");
+const output = require("@modular-css/processor/lib/output.js");
+
 const cli = require("meow")(`
     Usage
     $ modular-css [options] <glob>...
@@ -51,9 +53,11 @@ glob({
     if(cli.flags.json) {
         mkdirp.sync(path.dirname(cli.flags.json));
         
+        const json = output.json(compositions);
+
         fs.writeFileSync(
             cli.flags.json,
-            JSON.stringify(compositions, null, 4),
+            JSON.stringify(json, null, 4),
             "utf8"
         );
     }
@@ -67,6 +71,8 @@ glob({
     return process.stdout.write(`${css}\n`);
 })
 .catch((error) => {
+    console.log(error);
+
     process.stderr.write(error.toString());
 
     process.exit(1);

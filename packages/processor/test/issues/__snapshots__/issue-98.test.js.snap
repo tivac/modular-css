@@ -3,17 +3,17 @@
 exports[`/issues /98 should prune rules that only compose, but leave them in the exports 1`] = `
 Object {
   "booga": Array [
-    "booga",
+    "mc_booga",
   ],
   "fooga": Array [
-    "booga",
-    "fooga",
+    "mc_booga",
+    "mc_fooga",
   ],
 }
 `;
 
 exports[`/issues /98 should prune rules that only compose, but leave them in the exports 2`] = `
 "/* packages/processor/test/specimens/issues/98.css */
-.booga { color: red }
-.fooga + .fooga { color: blue }"
+.mc_booga { color: red }
+.mc_fooga + .mc_fooga { color: blue }"
 `;

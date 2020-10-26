@@ -1,7 +1,10 @@
 "use strict";
 
-const postcss  = require("postcss");
-const namer    = require("@modular-css/test-utils/namer.js");
+const postcss = require("postcss");
+const dedent = require("dedent");
+
+
+const namer = require("@modular-css/test-utils/namer.js");
 const relative = require("@modular-css/test-utils/relative.js");
 
 const Processor = require("../processor.js");
@@ -24,49 +27,43 @@ describe("/processor.js", () => {
             it("should process a postcss Root", async () => {
                 const file = "./simple.css";
                 const root = postcss.parse(".wooga { }", { from : file });
-                const result = await processor.root(
-                    file, root
-                );
+                const { exports : compositions, details } = await processor.root(file, root);
 
-                expect(result.exports).toMatchSnapshot();
-                expect(result.details.exports).toMatchSnapshot();
-                expect(result.details.text).toMatchSnapshot();
-                expect(result.details.processed.root.toResult().css).toMatchSnapshot();
+                expect(compositions).toMatchSnapshot();
+                expect(details.classes).toMatchSnapshot();
+                expect(details.processed.root.toResult().css).toMatchSnapshot();
             });
         });
 
         describe(".string()", () => {
             it("should process a string", async () => {
-                const result = await processor.string(
-                    "./simple.css", ".wooga { }"
-                );
+                const { exports : compositions, details } = await processor.string("./simple.css", ".wooga { }");
 
-                expect(result.exports).toMatchSnapshot();
-                expect(result.details.exports).toMatchSnapshot();
-                expect(result.details.text).toMatchSnapshot();
-                expect(result.details.processed.root.toResult().css).toMatchSnapshot();
+                expect(compositions).toMatchSnapshot();
+                expect(details.classes).toMatchSnapshot();
+                expect(details.processed.root.toResult().css).toMatchSnapshot();
             });
         });
 
         describe(".file()", () => {
             it("should process a relative file", async () => {
-                const result = await processor.file("./packages/processor/test/specimens/simple.css");
+                const { exports : compositions, details } = await processor.file(
+                    "./packages/processor/test/specimens/simple.css"
+                );
 
-                expect(result.exports).toMatchSnapshot();
-                expect(result.details.exports).toMatchSnapshot();
-                expect(result.details.text).toMatchSnapshot();
-                expect(result.details.processed.root.toResult().css).toMatchSnapshot();
+                expect(compositions).toMatchSnapshot();
+                expect(details.classes).toMatchSnapshot();
+                expect(details.processed.root.toResult().css).toMatchSnapshot();
             });
 
             it("should process an absolute file", async () => {
-                const result = await processor.file(
+                const { exports : compositions, details } = await processor.file(
                     require.resolve("./specimens/simple.css")
                 );
 
-                expect(result.exports).toMatchSnapshot();
-                expect(result.details.exports).toMatchSnapshot();
-                expect(result.details.text).toMatchSnapshot();
-                expect(result.details.processed.root.toResult().css).toMatchSnapshot();
+                expect(compositions).toMatchSnapshot();
+                expect(details.classes).toMatchSnapshot();
+                expect(details.processed.root.toResult().css).toMatchSnapshot();
             });
 
             it("should wait for dependencies to be processed before composing", async () => {
@@ -115,7 +112,7 @@ describe("/processor.js", () => {
 
                 processor.remove("./simple.css");
 
-                expect(relative(processor.dependencies())).toMatchSnapshot();
+                expect(relative(processor.fileDependencies())).toMatchSnapshot();
             });
 
             it("should remove an absolute file", async () => {
@@ -126,7 +123,7 @@ describe("/processor.js", () => {
 
                 processor.remove(require.resolve("./specimens/simple.css"));
 
-                expect(relative(processor.dependencies())).toMatchSnapshot();
+                expect(relative(processor.fileDependencies())).toMatchSnapshot();
             });
 
             it("should remove multiple files", async () => {
@@ -139,7 +136,7 @@ describe("/processor.js", () => {
                     "./b.css",
                 ]);
 
-                expect(relative(processor.dependencies())).toMatchSnapshot();
+                expect(relative(processor.fileDependencies())).toMatchSnapshot();
             });
 
             it("should return an array of removed files", async () => {
@@ -195,7 +192,7 @@ describe("/processor.js", () => {
             it("should throw if an invalid file is passed", async () => {
                 await processor.file("./packages/processor/test/specimens/start.css");
 
-                expect(() => processor.invalidate("nope.css")).toThrowErrorMatchingSnapshot();
+                expect(() => processor.invalidate("nope.css")).toThrow(/Unknown file: .+\bnope.css/);
             });
 
             it("should invalidate all dependents as well", async () => {
@@ -217,12 +214,12 @@ describe("/processor.js", () => {
             });
         });
 
-        describe(".dependencies()", () => {
+        describe(".fileDependencies()", () => {
             it("should return the dependencies of the specified file", async () => {
                 await processor.file("./packages/processor/test/specimens/start.css");
 
                 expect(
-                    relative(processor.dependencies(require.resolve("./specimens/start.css")))
+                    relative(processor.fileDependencies(require.resolve("./specimens/start.css")))
                 )
                 .toMatchSnapshot();
             });
@@ -230,24 +227,17 @@ describe("/processor.js", () => {
             it("should return the overall order of dependencies if no file is specified", async () => {
                 await processor.file("./packages/processor/test/specimens/start.css");
 
-                expect(relative(processor.dependencies())).toMatchSnapshot();
-            });
-        });
-
-        describe(".dependents()", () => {
-            it("should return the dependents of the specified file", async () => {
-                await processor.file("./packages/processor/test/specimens/start.css");
-
-                expect(
-                    relative(processor.dependents(require.resolve("./specimens/local.css")))
-                )
-                .toMatchSnapshot();
+                expect(relative(processor.fileDependencies())).toMatchSnapshot();
             });
 
-            it("should throw if no file is passed", async () => {
-                await processor.file("./packages/processor/test/specimens/start.css");
+            it("should throw on requesting an invalid file", async () => {
+                await processor.string("./does/not/exist.css", dedent(`
+                    .foo {
+                        color: red;
+                    }
+                `));
 
-                expect(() => processor.dependents()).toThrowErrorMatchingSnapshot();
+                expect(() => processor.fileDependencies("./also/does/not/exist.css")).toThrow("Unknown file: ");
             });
         });
 

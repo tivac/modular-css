@@ -2,19 +2,19 @@
 
 exports[`/glob.js should find files on disk & output css 1`] = `
 "/* 1.css */
-.one {
+.mc_one {
+    color: red;
+}
+/* exclude/4.css */
+.mc_four {
     color: red;
 }
 /* dir/3.css */
-.three {
+.mc_three {
     color: white;
 }
-/* exclude/4.css */
-.four {
-    color: red;
-}
 /* dir/2.css */
-.two {
+.mc_two {
     background: blue;
 }
 "
@@ -22,15 +22,15 @@ exports[`/glob.js should find files on disk & output css 1`] = `
 
 exports[`/glob.js should support exclusion patterns 1`] = `
 "/* 1.css */
-.one {
+.mc_one {
     color: red;
 }
 /* dir/3.css */
-.three {
+.mc_three {
     color: white;
 }
 /* dir/2.css */
-.two {
+.mc_two {
     background: blue;
 }
 "
@@ -38,19 +38,19 @@ exports[`/glob.js should support exclusion patterns 1`] = `
 
 exports[`/glob.js should use a default search 1`] = `
 "/* 1.css */
-.one {
+.mc_one {
+    color: red;
+}
+/* exclude/4.css */
+.mc_four {
     color: red;
 }
 /* dir/3.css */
-.three {
+.mc_three {
     color: white;
 }
-/* exclude/4.css */
-.four {
-    color: red;
-}
 /* dir/2.css */
-.two {
+.mc_two {
     background: blue;
 }
 "

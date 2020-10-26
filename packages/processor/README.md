@@ -85,13 +85,9 @@ Remove files from the `Processor` instance. Accepts a single file or array of fi
 
 Mark a file (and any files that depend on it) as invalid. If any of those files are then re-added via either `.string()` or `.file()` they will be replaced with the new values instead of using the cached results from the previous run.
 
-### `.dependencies([file])`
+### `.fileDependencies([file])`
 
 Returns an array of file paths. Accepts a single file argument to get the dependencies for, will return entire dependency graph in order if argument is omitted.
-
-### `.dependents(file)`
-
-Returns an array of file paths. Accepts a single file argument to get dependents for.
 
 ###
 
@@ -227,18 +223,6 @@ new Processor({
     "a" : "mc12345_a"
 }
 */
-```
-
-### `exportValues`
-
-Enable exporting `@value` identifiers.
-
-**Default**: `true`
-
-```js
-new Processor({
-    exportValues : false
-});
 ```
 
 ## Properties

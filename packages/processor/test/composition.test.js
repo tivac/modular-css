@@ -16,24 +16,30 @@ describe("/processor.js", () => {
         });
 
         it("should fail on invalid composes syntax", async () => {
-            await expect(processor.string(
+            const result = processor.string(
                 "./invalid/value.css",
                 ".a { composes: b from nowhere.css; }"
-            )).rejects.toThrow(`SyntaxError: Expected global or source but "n" found.`);
+            );
+            
+            await expect(result).rejects.toThrow(`SyntaxError: Expected global or source but "n" found.`);
         });
 
         it("should fail if a composition references a non-existant class", async () => {
-            await expect(processor.string(
+            const result = processor.string(
                 "./invalid-composition.css",
                 ".a { composes: b; }"
-            )).rejects.toThrow(`Invalid composes reference`);
+            );
+            
+            await expect(result).rejects.toThrow(`Invalid composes reference, .b does not exist in invalid-composition.css`);
         });
 
         it("should fail if a composition references a non-existant file", async () => {
-            await expect(processor.string(
+            const result = processor.string(
                 "./invalid-composition.css",
                 `.a { composes: b from "../local.css"; }`
-            )).rejects.toThrow(
+            );
+            
+            await expect(result).rejects.toThrow(
                 `Unable to locate "../local.css" from "${path.resolve("invalid-composition.css")}"`
             );
         });
@@ -141,7 +147,7 @@ describe("/processor.js", () => {
             expect(compositions).toMatchSnapshot();
         });
 
-        it("should compose multiple classes", async () => {
+        it("should compose multiple classes (multiple declarations)", async () => {
             await processor.string(
                 "./multiple-composes.css",
                 dedent(`
@@ -150,6 +156,23 @@ describe("/processor.js", () => {
                     .c {
                         composes: a;
                         composes: b;
+                    }
+                `)
+            );
+
+            const { compositions } = await processor.output();
+
+            expect(compositions).toMatchSnapshot();
+        });
+        
+        it("should compose multiple classes (single declaration)", async () => {
+            await processor.string(
+                "./multiple-composes.css",
+                dedent(`
+                    .a { color: red; }
+                    .b { color: blue; }
+                    .c {
+                        composes: a, b;
                     }
                 `)
             );

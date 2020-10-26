@@ -3,7 +3,10 @@
 const globule = require("globule");
 const Processor = require("@modular-css/processor");
 
-module.exports = async (opts = {}) => {
+module.exports = async (
+    /* istanbul ignore next: can't test this */
+    opts = {}
+) => {
     const options = {
         __proto__ : null,
         

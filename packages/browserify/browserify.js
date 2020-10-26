@@ -21,9 +21,17 @@ const prefixed = (cwd, file) => {
     return out;
 };
 
-const outputs = ({ exports }) => `module.exports = ${
-    JSON.stringify(output.join(exports), null, 4)
-};`;
+const outputs = (processor, file) => {
+    const details = processor.files[file];
+
+    const classes = output.fileCompositions(details, processor, { joined : true });
+    const values = output.values(details.values);
+    
+    // Attach values to the compositions
+    classes.$values = values;
+
+    return `module.exports = ${JSON.stringify(classes, null, 4)};`;
+};
 
 module.exports = (browserify, opts) => {
     const options = {
@@ -84,11 +92,11 @@ module.exports = (browserify, opts) => {
                     // Tell watchers about dependencies by emitting "file" events
                     // AFAIK this is only useful to watchify, to ensure that it watches
                     // everyone in the dependency graph
-                    processor.dependencies(result.id).forEach((dep) =>
+                    processor.fileDependencies(result.id).forEach((dep) =>
                         browserify.emit("file", dep, dep)
                     );
 
-                    push(outputs(result));
+                    push(outputs(processor, file));
 
                     done();
                 },
@@ -116,7 +124,7 @@ module.exports = (browserify, opts) => {
 
         // Ensure that browserify knows about the CSS dependency tree by updating
         // any referenced entries w/ their dependencies
-        row.deps = processor.dependencies(row.file).reduce(depReducer, {});
+        row.deps = processor.fileDependencies(row.file).reduce(depReducer, {});
 
         return done(null, row);
     }, function(done) {
@@ -124,7 +132,7 @@ module.exports = (browserify, opts) => {
         // injected into the stream of files being managed
         const push = this.push.bind(this);
 
-        processor.dependencies().forEach((dep) => {
+        processor.fileDependencies().forEach((dep) => {
             if(dep in handled) {
                 return;
             }
@@ -132,8 +140,8 @@ module.exports = (browserify, opts) => {
             push({
                 id     : path.resolve(options.cwd, dep),
                 file   : path.resolve(options.cwd, dep),
-                source : outputs(processor.files[dep]),
-                deps   : processor.dependencies(dep).reduce(depReducer, {}),
+                source : outputs(processor, dep),
+                deps   : processor.fileDependencies(dep).reduce(depReducer, {}),
             });
         });
 
@@ -159,11 +167,7 @@ module.exports = (browserify, opts) => {
     // to remove the changed files from its cache so they will be re-processed
     browserify.on("update", (files) => {
         files.forEach((file) => {
-            processor.dependents(file).forEach((dep) =>
-                processor.remove(dep)
-            );
-
-            processor.remove(file);
+            processor.invalidate(file);
         });
     });
 
@@ -197,7 +201,7 @@ module.exports = (browserify, opts) => {
                 return;
             }
 
-            const common = processor.dependencies();
+            const common = processor.fileDependencies();
 
             mkdirp.sync(path.dirname(options.css));
 

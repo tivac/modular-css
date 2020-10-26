@@ -1,25 +1,71 @@
 "use strict";
 
-const map = require("lodash/mapValues");
-
 const relative = require("./relative.js");
+const { selectorKey } = require("./keys.js");
 
-exports.join = (output) =>
-    map(output, (classes) => (
-        Array.isArray(classes) ?
-            classes.join(" ") :
-            classes.toString()
-    ));
+exports.join = (value) => value.join(" ");
 
-exports.compositions = ({ options, files }) => {
+exports.fileCompositions = ({ classes, name }, { files, graph }, { joined = false } = false) => {
+    const out = Object.create(null);
+
+    Object.keys(classes).forEach((selector) => {
+        const key = selectorKey(name, selector);
+        const compositions = [];
+
+        if(graph.hasNode(key)) {
+            graph.dependenciesOf(key).forEach((dep) => {
+                const {
+                    file : depFile,
+                    selector : depSelector,
+                    global,
+                } = graph.getNodeData(dep);
+
+                if(global) {
+                    compositions.push(depSelector);
+                } else {
+                    const composition = files[depFile].classes[depSelector];
+
+                    compositions.push(...composition);
+                }
+            });
+        }
+
+        compositions.push(...classes[selector]);
+
+        out[selector] = joined ? exports.join(compositions) : compositions;
+    });
+
+    return out;
+};
+
+exports.compositions = (processor) => {
+    const { options, files } = processor;
     const { cwd } = options;
-    const json = {};
+    const json = Object.create(null);
 
     Object.keys(files)
         .sort()
-        .forEach((file) =>
-            (json[relative(cwd, file)] = exports.join(files[file].exports))
-        );
+        .forEach((file) => {
+            const out = exports.fileCompositions(files[file], processor);
+
+            json[relative(cwd, file)] = out;
+        });
 
     return json;
 };
+
+exports.json = (compositions) => Object.keys(compositions).reduce((acc, file) => {
+    acc[file] = Object.keys(compositions[file]).reduce((out, selector) => {
+        out[selector] = exports.join(compositions[file][selector]);
+
+        return out;
+    }, Object.create(null));
+
+    return acc;
+}, Object.create(null));
+
+exports.values = (values) => Object.keys(values).reduce((acc, key) => {
+    acc[key] = values[key].value;
+
+    return acc;
+}, Object.create(null));

@@ -3,8 +3,13 @@
 exports[`/processor.js composition should allow comments before composes 1`] = `
 Object {
   "multiple-composes.css": Object {
-    "a": "a",
-    "b": "a b",
+    "a": Array [
+      "mc_a",
+    ],
+    "b": Array [
+      "mc_a",
+      "mc_b",
+    ],
   },
 }
 `;
@@ -12,9 +17,18 @@ Object {
 exports[`/processor.js composition should allow composes anywhere 1`] = `
 Object {
   "multiple-composes.css": Object {
-    "a": "a",
-    "b": "a b",
-    "c": "a b c",
+    "a": Array [
+      "mc_a",
+    ],
+    "b": Array [
+      "mc_a",
+      "mc_b",
+    ],
+    "c": Array [
+      "mc_a",
+      "mc_b",
+      "mc_c",
+    ],
   },
 }
 `;
@@ -22,8 +36,13 @@ Object {
 exports[`/processor.js composition should compose a single class 1`] = `
 Object {
   "single-composes.css": Object {
-    "a": "a",
-    "b": "a b",
+    "a": Array [
+      "mc_a",
+    ],
+    "b": Array [
+      "mc_a",
+      "mc_b",
+    ],
   },
 }
 `;
@@ -31,7 +50,12 @@ Object {
 exports[`/processor.js composition should compose from global keyword 1`] = `
 Object {
   "global-compose.css": Object {
-    "a": "b c d a",
+    "a": Array [
+      "b",
+      "c",
+      "d",
+      "mc_a",
+    ],
   },
 }
 `;
@@ -39,7 +63,10 @@ Object {
 exports[`/processor.js composition should compose from globals 1`] = `
 Object {
   "global-compose.css": Object {
-    "a": "b a",
+    "a": Array [
+      "b",
+      "mc_a",
+    ],
   },
 }
 `;
@@ -47,20 +74,51 @@ Object {
 exports[`/processor.js composition should compose from other files 1`] = `
 Object {
   "packages/processor/test/specimens/composes.css": Object {
-    "composes": "folder2 composes",
+    "composes": Array [
+      "mc_folder2",
+      "mc_composes",
+    ],
   },
   "packages/processor/test/specimens/folder/folder2.css": Object {
-    "folder2": "folder2",
+    "folder2": Array [
+      "mc_folder2",
+    ],
   },
 }
 `;
 
-exports[`/processor.js composition should compose multiple classes 1`] = `
+exports[`/processor.js composition should compose multiple classes (multiple declarations) 1`] = `
 Object {
   "multiple-composes.css": Object {
-    "a": "a",
-    "b": "b",
-    "c": "a b c",
+    "a": Array [
+      "mc_a",
+    ],
+    "b": Array [
+      "mc_b",
+    ],
+    "c": Array [
+      "mc_a",
+      "mc_b",
+      "mc_c",
+    ],
+  },
+}
+`;
+
+exports[`/processor.js composition should compose multiple classes (single declaration) 1`] = `
+Object {
+  "multiple-composes.css": Object {
+    "a": Array [
+      "mc_a",
+    ],
+    "b": Array [
+      "mc_b",
+    ],
+    "c": Array [
+      "mc_a",
+      "mc_b",
+      "mc_c",
+    ],
   },
 }
 `;
@@ -68,31 +126,36 @@ Object {
 exports[`/processor.js composition should compose with escaped classes 1`] = `
 Object {
   "escaped-classes.css": Object {
-    "c": "sm:foo c",
-    "sm:foo": "sm:foo",
+    "c": Array [
+      "mc_sm:foo",
+      "mc_c",
+    ],
+    "sm:foo": Array [
+      "mc_sm:foo",
+    ],
   },
 }
 `;
 
 exports[`/processor.js composition should remove \`composes\` from the output css (composes first) 1`] = `
 "/* remove-composes.css */
-.a { color: red; }
-.b { background: blue; }"
+.mc_a { color: red; }
+.mc_b { background: blue; }"
 `;
 
 exports[`/processor.js composition should remove \`composes\` from the output css (composes last) 1`] = `
 "/* remove-composes.css */
-.a { color: red; }
-.b { background: blue; }"
+.mc_a { color: red; }
+.mc_b { background: blue; }"
 `;
 
 exports[`/processor.js composition should remove \`composes\` from the output css (composes middle) 1`] = `
 "/* remove-composes.css */
-.a { color: red; }
-.b { background: blue; border-color: green; }"
+.mc_a { color: red; }
+.mc_b { background: blue; border-color: green; }"
 `;
 
 exports[`/processor.js composition should remove \`composes\` from the output css (only composes) 1`] = `
 "/* remove-composes.css */
-.a { color: red; }"
+.mc_a { color: red; }"
 `;

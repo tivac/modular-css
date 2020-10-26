@@ -1,11 +1,9 @@
 "use strict";
 
-const Graph = require("dependency-graph").DepGraph;
-const invert = require("lodash/invert");
-const mapvalues = require("lodash/mapValues");
-
 const message = require("../lib/message.js");
 const identifiers = require("../lib/identifiers.js");
+const { selectorKey } = require("../lib/keys.js");
+const relative = require("../lib/relative.js");
 
 const parser = require("../parsers/composes.js");
 
@@ -13,78 +11,83 @@ const plugin = "modular-css-composition";
 
 module.exports = (css, result) => {
     const { opts } = result;
-    
-    const refs = {
+    const { from, processor } = opts;
+    const { graph } = processor;
+
+    const available = {
         ...message(result, "atcomposes"),
         ...message(result, "classes"),
     };
 
-    const map = invert(refs);
-    const out = { ...refs };
-    const graph = new Graph();
+    // Map of scoped classnames to the originals
+    const selectorMap = new Map();
 
-    Object.keys(refs).forEach((key) => graph.addNode(key));
+    Object.keys(available).forEach((src) =>
+        available[src].forEach((scoped) =>
+            selectorMap.set(scoped, src)
+        )
+    );
 
-    // Go look up "composes" declarations and populate dependency graph
+    // Go look up "composes" declarations and update dependency graph
     css.walkDecls("composes", (decl) => {
-        /* eslint max-statements: "off" */
-        const details = parser.parse(decl.value);
-        const selectors = decl.parent.selectors.map(identifiers.parse);
+        const { parent, value } = decl;
+
+        const selectors = parent.selectors.map(identifiers.parse);
 
         // https://github.com/tivac/modular-css/issues/238
         if(selectors.some(({ length }) => length > 1)) {
             throw decl.error(
                 "Only simple singular selectors may use composition", {
-                    word : decl.parent.selector,
+                    word : parent.selector,
                 }
             );
         }
 
+        const details = parser.parse(value);
+
         if(details.source) {
-            details.source = opts.resolve(opts.from, details.source);
+            details.source = processor.resolve(from, details.source);
         }
 
-        // Add references and update graph
         details.refs.forEach(({ global, name }) => {
-            let scoped;
-
-            if(global) {
-                scoped = `global-${name}`;
-            } else {
-                scoped = (details.source ? `${details.source}-` : "") + name;
-            }
-
-            graph.addNode(scoped);
-
-            selectors.forEach((parts) =>
-                parts.forEach((part) =>
-                    graph.addDependency(map[part], scoped)
-                )
-            );
-
-            if(global) {
-                refs[scoped] = [ name ];
-
-                return;
-            }
+            let ref;
 
             if(details.source) {
-                refs[scoped] = opts.files[details.source].exports[name];
+                // External refs should already exist, so they don't get added
+                ref = selectorKey(details.source, name);
+            } else if(global) {
+                ref = processor._addGlobal(name);
+            } else {
+                // Internal refs are created if necessary here
+                ref = processor._addSelector(from, name);
+
+                if(!available[name]) {
+                    const rel = relative(processor.options.cwd, from);
+
+                    throw decl.error(
+                        `Invalid composes reference, .${name} does not exist in ${rel}`, {
+                            word : name,
+                        }
+                    );
+                }
             }
 
-            if(!refs[scoped]) {
-                throw decl.error("Invalid composes reference", {
-                    word : name,
-                });
-            }
+            // Update graph with all the dependency information
+            selectors.forEach((parts) =>
+                parts.forEach((part) => {
+                    const src = processor._addSelector(from, selectorMap.get(part));
+
+                    graph.addDependency(src, ref);
+                })
+            );
         });
 
         // Remove just the composes declaration if there are other declarations
-        if(decl.parent.nodes.length > 1) {
+        if(parent.nodes.length > 1) {
             // If there's nodes after this one adjust their positioning
             // so it's like the composes was never there
             const next = decl.next();
-        
+
             if(next) {
                 next.raws.before = decl.raw("before");
             }
@@ -93,27 +96,7 @@ module.exports = (css, result) => {
         }
 
         // Remove the entire rule because it only contained the composes declaration
-        return decl.parent.remove();
-    });
-
-    // Update out by walking dep graph and updating classes
-    graph.overallOrder().forEach((selector) =>
-        graph.dependenciesOf(selector)
-            .reverse()
-            .forEach((dep) => {
-                out[selector] = refs[dep].concat(out[selector]);
-            })
-    );
-
-    result.messages.push({
-        type : "modular-css",
-        plugin,
-
-        classes : mapvalues(out, (val) => {
-            const classes = new Set(val);
-
-            return [ ...classes ];
-        }),
+        return parent.remove();
     });
 };
 

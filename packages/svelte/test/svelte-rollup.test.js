@@ -6,10 +6,16 @@ const path = require("path");
 const shell = require("shelljs");
 const { rollup } = require("rollup");
 
+const { nodeResolve : resolvePlugin } = require("@rollup/plugin-node-resolve");
+const sveltePlugin = require("rollup-plugin-svelte");
+const mcssPlugin = require("@modular-css/rollup");
+const hypotheticalPlugin = require("rollup-plugin-hypothetical");
+
 const write = require("@modular-css/test-utils/write.js")(__dirname);
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
 const dir = require("@modular-css/test-utils/read-dir.js")(__dirname);
 const watching = require("@modular-css/test-utils/rollup-watching.js");
+const logspy = require("@modular-css/test-utils/logs.js");
 
 const plugin = require("../svelte.js");
 
@@ -17,13 +23,6 @@ const assetFileNames = "assets/[name][extname]";
 const format = "es";
 
 describe("/svelte.js", () => {
-    let warnSpy;
-
-    beforeEach(() => {
-        warnSpy = jest.spyOn(global.console, "warn");
-        warnSpy.mockImplementation(() => { /* NO-OP */ });
-    });
-
     describe("rollup watching", () => {
         const { watch } = require("rollup");
         let watcher;
@@ -32,6 +31,9 @@ describe("/svelte.js", () => {
         afterEach(() => watcher.close());
 
         it("should generate updated output", async () => {
+            // Eat console.warn calls because we don't need 'em
+            logspy("warn");
+
             const { preprocess, processor } = plugin();
 
             // Create v1 of the files
@@ -53,10 +55,11 @@ describe("/svelte.js", () => {
                     assetFileNames,
                 },
                 plugins : [
-                    require("rollup-plugin-svelte")({
+                    resolvePlugin(),
+                    sveltePlugin({
                         preprocess,
                     }),
-                    require("@modular-css/rollup")({
+                    mcssPlugin({
                         processor,
                     }),
                 ],
@@ -113,7 +116,7 @@ describe("/svelte.js", () => {
                     color: red;
                 }
             `);
-            
+
             write(`./rollup-composes/input/other.css`, `
                 .b {
                     background: blue;
@@ -133,10 +136,11 @@ describe("/svelte.js", () => {
                     assetFileNames,
                 },
                 plugins : [
-                    require("rollup-plugin-svelte")({
+                    resolvePlugin(),
+                    sveltePlugin({
                         preprocess,
                     }),
-                    require("@modular-css/rollup")({
+                    mcssPlugin({
                         processor,
                     }),
                 ],
@@ -151,11 +155,11 @@ describe("/svelte.js", () => {
             setTimeout(() => write(`./rollup-composes/input/app.css`, `
                 .a {
                     composes: c from "./other.css";
-                    
+
                     color: red;
                 }
             `), 100);
-            
+
             await wait();
 
             const v2 = dir("./rollup-composes/output/");
@@ -177,7 +181,7 @@ describe("/svelte.js", () => {
                 input : "./error.js",
 
                 plugins : [
-                    require("rollup-plugin-hypothetical")({
+                    hypotheticalPlugin({
                         cwd   : path.join(__dirname, "./specimens"),
                         files : {
                             "./error.js" : `
@@ -189,10 +193,11 @@ describe("/svelte.js", () => {
 
                         allowFallthrough : true,
                     }),
-                    require("rollup-plugin-svelte")({
+                    resolvePlugin(),
+                    sveltePlugin({
                         preprocess,
                     }),
-                    require("@modular-css/rollup")({
+                    mcssPlugin({
                         processor,
                     }),
                 ],
@@ -200,13 +205,15 @@ describe("/svelte.js", () => {
         });
 
         it("should show useful errors from rollup (non-css file)", async () => {
+            const spy = logspy("warn");
+
             const { preprocess, processor } = plugin();
 
             await expect(rollup({
                 input : "./error.js",
 
                 plugins : [
-                    require("rollup-plugin-hypothetical")({
+                    hypotheticalPlugin({
                         cwd   : path.join(__dirname, "./specimens"),
                         files : {
                             "./error.js" : `
@@ -218,17 +225,18 @@ describe("/svelte.js", () => {
 
                         allowFallthrough : true,
                     }),
-                    require("rollup-plugin-svelte")({
+                    resolvePlugin(),
+                    sveltePlugin({
                         preprocess,
                     }),
-                    require("@modular-css/rollup")({
+                    mcssPlugin({
                         processor,
                     }),
                 ],
             })).rejects.toThrow("error-link.html:1:1: Unknown word");
 
-            expect(warnSpy).toHaveBeenCalled();
-            expect(warnSpy.mock.calls).toMatchSnapshot();
+            expect(spy).toHaveBeenCalled();
+            expect(spy).toMatchLogspySnapshot();
         });
     });
 
@@ -243,10 +251,11 @@ describe("/svelte.js", () => {
                 ],
 
                 plugins : [
-                    require("rollup-plugin-svelte")({
+                    resolvePlugin(),
+                    sveltePlugin({
                         preprocess,
                     }),
-                    require("@modular-css/rollup")({
+                    mcssPlugin({
                         processor,
                     }),
                 ],
