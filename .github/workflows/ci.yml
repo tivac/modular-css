@@ -74,11 +74,11 @@ jobs:
         
     # Run codecov after all builds, and only on a single environment
     - name: Gather Coverage
-      if: matrix.os == $COVERAGE_OS && matrix.node-version == $COVERAGE_NODE_VERSION
+      if: matrix.os == env.COVERAGE_OS && matrix.node-version == env.COVERAGE_NODE_VERSION
       run: npm test -- --ci --coverage
 
     - name: Upload Coverage
       uses: codecov/codecov-action@v1
-      if: matrix.os == $COVERAGE_OS && matrix.node-version == $COVERAGE_NODE_VERSION
+      if: matrix.os == env.COVERAGE_OS && matrix.node-version == env.COVERAGE_NODE_VERSION
       with:
         file: ./coverage/coverage-final.json
