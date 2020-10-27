@@ -1,0 +1,12 @@
+.foo {
+    composes: box from "./style-dep.css";
+    
+    color: red;
+}
+
+.bar {
+    composes: box from "./style-dep.css";
+    composes: foo;
+
+    background-color: blue;
+}
