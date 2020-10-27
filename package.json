@@ -69,6 +69,7 @@
     "@modular-css/rollup": "file:packages/rollup",
     "@modular-css/rollup-rewriter": "file:packages/rollup-rewriter",
     "@modular-css/shortnames": "file:packages/namer",
+    "@modular-css/snowpack": "file:packages/snowpack",
     "@modular-css/svelte": "file:packages/svelte",
     "@modular-css/webpack": "file:packages/webpack"
   }
