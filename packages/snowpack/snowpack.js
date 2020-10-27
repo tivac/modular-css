@@ -43,6 +43,9 @@ module.exports = (snowpackConfig, options) => {
             
             console.log("TRANSFORM", id);
             
+            // TODO: need to know what svelte files depend on this CSS file and call
+            // this.markChanged() on them, will need to add that to @modular-css/svelte
+            // and store it in the processor instance somewhere
             const deps = processor.fileDependencies(id);
 
             const result = await processor.output({
