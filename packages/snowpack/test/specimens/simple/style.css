@@ -24,4 +24,5 @@
     composes: box;
 
     background-color: blue;
+    color: white;
 }

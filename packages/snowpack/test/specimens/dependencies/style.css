@@ -5,7 +5,6 @@
 }
 
 .bar {
-    composes: box from "./style-dep.css";
     composes: foo;
 
     background-color: blue;
