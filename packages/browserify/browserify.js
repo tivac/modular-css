@@ -132,7 +132,7 @@ module.exports = (browserify, opts) => {
         // injected into the stream of files being managed
         const push = this.push.bind(this);
 
-        processor.fileDependencies().forEach((dep) => {
+        processor.fileOrder().forEach((dep) => {
             if(dep in handled) {
                 return;
             }
@@ -201,7 +201,7 @@ module.exports = (browserify, opts) => {
                 return;
             }
 
-            const common = processor.fileDependencies();
+            const common = processor.fileOrder();
 
             mkdirp.sync(path.dirname(options.css));
 
