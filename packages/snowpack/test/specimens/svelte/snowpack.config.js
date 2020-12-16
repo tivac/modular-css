@@ -1,6 +1,6 @@
 "use strict";
 
-const { processor, preprocess } = require("@modular-css/svelte")({ verbose : true });
+const { processor, preprocess } = require("@modular-css/svelte")();
 
 module.exports = {
     devOptions : {
