@@ -1,0 +1,6 @@
+# snowpack build output
+build
+web_modules
+
+# don't care about these for test specimens
+package-lock.json

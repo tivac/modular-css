@@ -443,7 +443,7 @@ module.exports = (
             });
 
             // Add any bare CSS files to be output
-            processor.fileDependencies().forEach((css) => {
+            processor.fileOrder().forEach((css) => {
                 if(used.has(css)) {
                     return;
                 }

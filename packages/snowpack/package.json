@@ -1,0 +1,34 @@
+{
+  "name": "@modular-css/snowpack",
+  "version": "25.8.2",
+  "description": "Add modular-css support to snowpack",
+  "main": "./snowpack.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tivac/modular-css.git",
+    "directory": "packages/snowpack"
+  },
+  "bugs": {
+    "url": "https://github.com/tivac/modular-css/issues"
+  },
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "homepage": "https://m-css.com",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "snowpack",
+    "snowpack-plugin",
+    "css",
+    "css-modules",
+    "modular-css",
+    "postcss"
+  ],
+  "dependencies": {
+    "@modular-css/processor": "file:../processor"
+  },
+  "devDependencies": {
+    "simple-test": "file:./test/specimens/simple"
+  }
+}

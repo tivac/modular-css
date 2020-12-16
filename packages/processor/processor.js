@@ -243,22 +243,37 @@ class Processor {
         });
     }
 
-    // Get the dependency order for a file or the entire tree
+    // Get overall dependency order of all files
+    fileOrder() {
+        const results = this._graph.overallOrder();
+
+        return filterByPrefix(FILE_PREFIX, results);
+    }
+
+    // Get the dependencies in order for a file
     fileDependencies(file) {
-        let results;
+        const normalized = this._normalize(file);
+        const key = fileKey(normalized);
 
-        if(file) {
-            const normalized = this._normalize(file);
-            const key = fileKey(normalized);
-
-            if(!this._graph.hasNode(key)) {
-                throw new Error(`Unknown file: ${normalized}`);
-            }
-
-            results = this._graph.dependenciesOf(key);
-        } else {
-            results = this._graph.overallOrder();
+        if(!this._graph.hasNode(key)) {
+            throw new Error(`Unknown file: ${normalized}`);
         }
+
+        const results = this._graph.dependenciesOf(key);
+
+        return filterByPrefix(FILE_PREFIX, results);
+    }
+
+    // Get the dependents in order for a file
+    fileDependents(file) {
+        const normalized = this._normalize(file);
+        const key = fileKey(normalized);
+
+        if(!this._graph.hasNode(key)) {
+            throw new Error(`Unknown file: ${normalized}`);
+        }
+
+        const results = this._graph.dependantsOf(key);
 
         return filterByPrefix(FILE_PREFIX, results);
     }

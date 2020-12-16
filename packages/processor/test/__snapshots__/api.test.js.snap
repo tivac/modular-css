@@ -65,14 +65,21 @@ Array [
 ]
 `;
 
-exports[`/processor.js API .fileDependencies() should return the dependencies of the specified file 1`] = `
+exports[`/processor.js API .fileDependencies(<file>) should return the dependencies of the specified file 1`] = `
 Array [
   "packages/processor/test/specimens/folder/folder.css",
   "packages/processor/test/specimens/local.css",
 ]
 `;
 
-exports[`/processor.js API .fileDependencies() should return the overall order of dependencies if no file is specified 1`] = `
+exports[`/processor.js API .fileDependents(<file>) should return the dependents of the specified file 1`] = `
+Array [
+  "packages/processor/test/specimens/start.css",
+  "packages/processor/test/specimens/local.css",
+]
+`;
+
+exports[`/processor.js API .fileOrder() should return the overall order of dependencies 1`] = `
 Array [
   "packages/processor/test/specimens/folder/folder.css",
   "packages/processor/test/specimens/local.css",

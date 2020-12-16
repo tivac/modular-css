@@ -1,0 +1,8 @@
+{
+  "name": "simple",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@modular-css/snowpack": "file:../../../",
+    "snowpack": "^2.15.1"
+  }
+}

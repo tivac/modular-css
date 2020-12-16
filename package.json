@@ -28,6 +28,7 @@
     "@modular-css/test-utils": "file:packages/test-utils",
     "@modular-css/website": "file:packages/www",
     "@rollup/plugin-node-resolve": "^9.0.0",
+    "@snowpack/plugin-svelte": "^3.4.0",
     "@tivac/eslint-config": "^2.4.0",
     "babel-eslint": "^10.1.0",
     "browserify": "^16.2.3",
@@ -52,6 +53,7 @@
     "shelljs": "^0.8.3",
     "sirv": "^0.4.2",
     "snapshot-diff": "^0.7.0",
+    "snowpack": "^2.15.1",
     "sugarss": "^2.0.0",
     "svelte": "^3.6.9",
     "watchify": "^3.11.1",
@@ -68,6 +70,7 @@
     "@modular-css/rollup": "file:packages/rollup",
     "@modular-css/rollup-rewriter": "file:packages/rollup-rewriter",
     "@modular-css/shortnames": "file:packages/namer",
+    "@modular-css/snowpack": "file:packages/snowpack",
     "@modular-css/svelte": "file:packages/svelte",
     "@modular-css/webpack": "file:packages/webpack"
   }
