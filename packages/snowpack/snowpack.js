@@ -16,6 +16,23 @@ module.exports = (snowpackConfig, options) => {
             output : [ ".js", ".css" ],
         },
 
+        async onChange({ filePath }) {
+            console.log("onChange", filePath);
+
+            if(!processor.has(filePath)) {
+                return;
+            }
+
+            // TODO: should the file be removed if it's gone?
+            processor.invalidate(filePath);
+
+            const deps = processor.fileDependents(filePath);
+
+            console.log(deps);
+
+            deps.forEach((dep) => this.markChanged(dep));
+        },
+
         async load({ filePath }) {
             console.log("LOAD", filePath);
 
