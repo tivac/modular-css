@@ -6,8 +6,7 @@
       "message": "release: %s :tada: :rocket:"
     },
     "version": {
-      "conventionalCommits": true,
-      "createRelease": "github"
+      "conventionalCommits": true
     }
   },
   "packages": [
