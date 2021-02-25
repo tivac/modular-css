@@ -11,6 +11,7 @@ const plugin = require("../browserify.js");
 describe("/browserify.js", () => {
     describe("/issues", () => {
         describe("/313", () => {
+            // eslint-disable-next-line jest/no-test-callback
             it("should include all dependencies after watchify update", (done) => {
                 const build = browserify(
                         from(dedent(`

@@ -4,7 +4,7 @@ module.exports = {
         "plugin:jest/recommended",
     ],
 
-    parser: "babel-eslint",
+    parser : "babel-eslint",
 
     env : {
         node : true,
@@ -17,22 +17,24 @@ module.exports = {
     ],
 
     rules : {
-        "max-statements" : [ "warn", 25 ],
-        "newline-after-var" : "off",
-        "newline-before-return" : "off",
+        "max-statements"         : [ "warn", 25 ],
+        "newline-after-var"      : "off",
+        "newline-before-return"  : "off",
         "lines-around-directive" : "off",
+        
         "padding-line-between-statements" : [
             "warn",
             // Always want a newline before "return"
             { blankLine : "always", prev : "*", next : "return" },
             // Newline after variable declarations
-            { blankLine : "always", prev : [ "const", "let", "var" ], next : "*"},
+            { blankLine : "always", prev : [ "const", "let", "var" ], next : "*" },
             { blankLine : "any",    prev : [ "const", "let", "var" ], next : [ "const", "let", "var" ] },
             // Newline after directives
             { blankLine : "always", prev : "directive", next : "*" },
-            { blankLine : "any", prev : "directive", next : "directive" }
+            { blankLine : "any", prev : "directive", next : "directive" },
         ],
-        "jest/no-test-callback": "warn",
-        "jest/no-try-expect": "warn",
+        
+        "jest/no-test-callback" : "warn",
+        "jest/no-try-expect"    : "warn",
     },
 };

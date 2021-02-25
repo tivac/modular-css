@@ -343,6 +343,7 @@ describe("/webpack.js", () => {
             });
     });
 
+    // eslint-disable-next-line jest/no-test-callback
     it("should accept an existing processor instance", async (done) => {
         const processor = new Processor();
 

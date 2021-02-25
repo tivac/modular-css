@@ -13,6 +13,7 @@ describe("/browserify.js", () => {
             // These tests can't be run until I can get onto a POSIX system and submit a symlink (ugh)
             
             // This test in particular is probably very broken now
+            // eslint-disable-next-line jest/no-disabled-tests
             it.skip("should be able to compose using a symlink", () => {
                 const processor = new Processor();
                 
@@ -20,6 +21,7 @@ describe("/browserify.js", () => {
                     .then((result) => expect(result).toMatchSnapshot());
             });
             
+            // eslint-disable-next-line jest/no-disabled-tests
             it.skip("should be able to reference symlinked files when running through browserify", () => {
                 const build = browserify({
                         entries : from("require('./packages/browserify/test/specimens/issues/105/symlink.css');"),
