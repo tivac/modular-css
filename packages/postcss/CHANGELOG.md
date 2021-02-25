@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [26.0.0](https://github.com/tivac/modular-css/compare/v25.8.2...v26.0.0) (2021-02-25)
+
+
+### Features
+
+* fine-grained dependency tracking ([597ae42](https://github.com/tivac/modular-css/commit/597ae42183b4c15bee368609a84e4e991b497e30))
+* postcss@8 support ([#789](https://github.com/tivac/modular-css/issues/789)) ([340a38e](https://github.com/tivac/modular-css/commit/340a38e45bbb64d2e1ee7fc82882995383466bd3))
+
+
+### BREAKING CHANGES
+
+* postcss@8 drops support for node version 6.x, 8.x, 11.x, and 13.x.
+
+
+
+
+
 ## [25.8.2](https://github.com/tivac/modular-css/compare/v25.8.1...v25.8.2) (2020-09-02)
 
 **Note:** Version bump only for package @modular-css/postcss

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [26.0.0](https://github.com/tivac/modular-css/compare/v25.8.2...v26.0.0) (2021-02-25)
+
+
+### Bug Fixes
+
+* **svelte:** Match missed classes to word boundaries ([#780](https://github.com/tivac/modular-css/issues/780)) ([#783](https://github.com/tivac/modular-css/issues/783)) ([1ac9af5](https://github.com/tivac/modular-css/commit/1ac9af5f1bf679e677b6fd1e7631802d3db56551))
+
+
+### Features
+
+* fine-grained dependency tracking ([597ae42](https://github.com/tivac/modular-css/commit/597ae42183b4c15bee368609a84e4e991b497e30))
+
+
+
+
+
 ## [25.8.2](https://github.com/tivac/modular-css/compare/v25.8.1...v25.8.2) (2020-09-02)
 
 **Note:** Version bump only for package @modular-css/svelte
