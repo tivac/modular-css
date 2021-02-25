@@ -7,7 +7,9 @@ const namer   = require("@modular-css/test-utils/namer.js");
 const plugin  = require("../postcss.js");
 
 function process(file, opts = {}) {
-    return plugin.process(
+    const processor = postcss().use(plugin);
+    
+    return processor.process(
         fs.readFileSync(file),
         {
             __proto__ : null,
@@ -46,9 +48,6 @@ describe("/postcss.js", () => {
 
     it("should accept normal processor options", async () => {
         const { css } = await process("./packages/postcss/test/specimens/simple.css", {
-            map : {
-                inline : true,
-            },
             namer : (f, s) => `fooga_${s}`,
         });
     
@@ -89,9 +88,6 @@ describe("/postcss.js", () => {
             fs.readFileSync("./packages/postcss/test/specimens/simple.css"),
             {
                 from : "./packages/postcss/test/specimens/simple.css",
-                map  : {
-                    inline : true,
-                },
             }
         );
     
