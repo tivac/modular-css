@@ -7,7 +7,9 @@ const namer   = require("@modular-css/test-utils/namer.js");
 const plugin  = require("../postcss.js");
 
 function process(file, opts = {}) {
-    return plugin.process(
+    const processor = postcss().use(plugin);
+    
+    return processor.process(
         fs.readFileSync(file),
         {
             __proto__ : null,

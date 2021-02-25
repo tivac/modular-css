@@ -2,14 +2,14 @@
 
 const fs   = require("fs");
 const path = require("path");
-const postcss = require("postcss");
 const mkdirp  = require("mkdirp");
 
 const Processor = require("@modular-css/processor");
 const { json : createJson } = require("@modular-css/processor/lib/output.js");
 
-module.exports = postcss.plugin("modular-css", (opts = {}) =>
-    async (root, result) => {
+module.exports = (opts = {}) => ({
+    postcssPlugin : "modular-css-postcss",
+    Once          : async (root, { result }) => {
         const processor = new Processor({
             __proto__ : null,
             ...opts,
@@ -49,5 +49,7 @@ module.exports = postcss.plugin("modular-css", (opts = {}) =>
         }
 
         return output;
-    }
-);
+    },
+});
+
+module.exports.postcss = true;

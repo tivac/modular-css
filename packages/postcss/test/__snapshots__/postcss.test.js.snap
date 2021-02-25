@@ -28,13 +28,13 @@ exports[`/postcss.js should accept json args in either position with postcss 1`]
 exports[`/postcss.js should accept normal processor options 1`] = `
 ".fooga_wooga { color: red; }
 
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3Bvc3Rjc3MvdGVzdC9zcGVjaW1lbnMvc2ltcGxlLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxlQUFTLFVBQVUsRUFBRSIsImZpbGUiOiJwYWNrYWdlcy9wb3N0Y3NzL3Rlc3Qvc3BlY2ltZW5zL3NpbXBsZS5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIud29vZ2EgeyBjb2xvcjogcmVkOyB9XG4iXX0= */"
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3Bvc3Rjc3MvdGVzdC9zcGVjaW1lbnMvc2ltcGxlLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxlQUFTLFVBQVUsRUFBRSIsImZpbGUiOiJwYWNrYWdlc1xccG9zdGNzc1xcdGVzdFxcc3BlY2ltZW5zXFxzaW1wbGUuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLndvb2dhIHsgY29sb3I6IHJlZDsgfVxuIl19 */"
 `;
 
 exports[`/postcss.js should be usable like a normal postcss plugin 1`] = `
 ".a { color: red; }
 
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3Bvc3Rjc3MvdGVzdC9zcGVjaW1lbnMvc2ltcGxlLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxLQUFTLFVBQVUsRUFBRSIsImZpbGUiOiJwYWNrYWdlcy9wb3N0Y3NzL3Rlc3Qvc3BlY2ltZW5zL3NpbXBsZS5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIud29vZ2EgeyBjb2xvcjogcmVkOyB9XG4iXX0= */"
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3Bvc3Rjc3MvdGVzdC9zcGVjaW1lbnMvc2ltcGxlLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxLQUFTLFVBQVUsRUFBRSIsImZpbGUiOiJwYWNrYWdlc1xccG9zdGNzc1xcdGVzdFxcc3BlY2ltZW5zXFxzaW1wbGUuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLndvb2dhIHsgY29sb3I6IHJlZDsgfVxuIl19 */"
 `;
 
 exports[`/postcss.js should output json when used within postcss 1`] = `

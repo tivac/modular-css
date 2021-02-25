@@ -14,7 +14,7 @@ PostCSS plugin to use [`modular-css`](https://github.com/tivac/modular-css) with
 ## Install
 
 ```bash
-> npm i @modular-css/postcss
+> npm i @modular-css/postcss postcss
 ```
 
 ## Usage
