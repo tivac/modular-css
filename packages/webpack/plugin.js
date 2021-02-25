@@ -71,44 +71,42 @@ ModularCSS.prototype.apply = function(compiler) {
         }
     });
 
-    compiler.plugin("emit", (compilation, done) => {
+    compiler.plugin("emit", async (compilation, done) => {
         // Don't even bother if errors happened
         if(compilation.errors.length) {
             return done();
         }
 
-        this.processor.output({
+        const data = await this.processor.output({
             to : this.options.css || false,
-        })
-        .then((data) => {
-            if(this.options.css) {
-                compilation.assets[this.options.css] = data.map ?
-                    new sources.SourceMapSource(
-                        data.css,
-                        this.options.css,
-                        data.map
-                    ) :
-                    new sources.RawSource(
-                        data.css
-                    );
+        });
 
-                // Write out external source map if it exists
-                if(data.map) {
-                    compilation.assets[`${this.options.css}.map`] = new sources.RawSource(
-                        data.map.toString()
-                    );
-                }
-            }
+        if(this.options.css) {
+            compilation.assets[this.options.css] = data.map ?
+                new sources.SourceMapSource(
+                    data.css,
+                    this.options.css,
+                    data.map
+                ) :
+                new sources.RawSource(
+                    data.css
+                );
 
-            if(this.options.json) {
-                compilation.assets[this.options.json] = new sources.RawSource(
-                    JSON.stringify(data.compositions, null, 4)
+            // Write out external source map if it exists
+            if(data.map) {
+                compilation.assets[`${this.options.css}.map`] = new sources.RawSource(
+                    data.map.toString()
                 );
             }
+        }
 
-            return done();
-        })
-        .catch(done);
+        if(this.options.json) {
+            compilation.assets[this.options.json] = new sources.RawSource(
+                JSON.stringify(data.compositions, null, 4)
+            );
+        }
+
+        return done();
     });
 };
 

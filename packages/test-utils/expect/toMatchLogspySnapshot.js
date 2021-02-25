@@ -9,6 +9,7 @@ const relative = require("../relative.js");
 expect.extend({
     toMatchLogspySnapshot(spy) {
         if(!spy || !spy.mock) {
+            // eslint-disable-next-line no-console
             console.log({ spy, "spy.mock" : spy.mock });
 
             return {

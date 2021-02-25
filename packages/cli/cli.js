@@ -71,6 +71,7 @@ glob({
     return process.stdout.write(`${css}\n`);
 })
 .catch((error) => {
+    // eslint-disable-next-line no-console
     console.log(error);
 
     process.stderr.write(error.toString());
