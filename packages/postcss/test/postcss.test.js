@@ -48,9 +48,6 @@ describe("/postcss.js", () => {
 
     it("should accept normal processor options", async () => {
         const { css } = await process("./packages/postcss/test/specimens/simple.css", {
-            map : {
-                inline : true,
-            },
             namer : (f, s) => `fooga_${s}`,
         });
     
@@ -91,9 +88,6 @@ describe("/postcss.js", () => {
             fs.readFileSync("./packages/postcss/test/specimens/simple.css"),
             {
                 from : "./packages/postcss/test/specimens/simple.css",
-                map  : {
-                    inline : true,
-                },
             }
         );
     
