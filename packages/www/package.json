@@ -1,13 +1,13 @@
 {
 	"name": "@modular-css/website",
 	"version": "26.0.0",
+	"type": "module",
 	"scripts": {
 		"dev": "svelte-kit dev",
 		"build": "svelte-kit build",
 		"start": "svelte-kit start"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-netlify": "^1.0.0-next.4",
 		"@sveltejs/adapter-node": "next",
 		"@sveltejs/adapter-static": "^1.0.0-next.4",
 		"@sveltejs/kit": "next",

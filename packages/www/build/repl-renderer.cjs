@@ -1,6 +1,6 @@
 "use strict";
 
-const lz = require("lznext");
+const lz = require("lz-string");
 const dedent = require("dedent");
 
 const hash = (data) => lz.compressToEncodedURIComponent(JSON.stringify(data));

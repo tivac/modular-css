@@ -15,10 +15,8 @@ require(`codemirror/mode/javascript/javascript.js`);
 require(`codemirror/mode/shell/shell.js`);
 require(`codemirror/mode/htmlmixed/htmlmixed.js`);
 
-const { createFilter } = require("rollup-pluginutils");
-
-const replRenderer = require("./repl-renderer.js");
-const mcssMime = require("./codemirror-mcss-mime.js");
+const replRenderer = require("./repl-renderer.cjs");
+const mcssMime = require("./codemirror-mcss-mime.cjs");
 
 mcssMime(codemirror);
 
@@ -28,19 +26,16 @@ const MODE_MAP = new Map([
     [ "css", "text/modular-css" ],
 ]);
 
-module.exports = ({ include = "**/*.md", exclude } = false) => {
-    const filter = createFilter(include, exclude, { resolve : false });
-
-    return {
+module.exports = () => ({
         name : "rollup-plugin-md",
 
         async transform(src, id) {
-            if(!filter(id)) {
+            const { dir, ext } = path.parse(id);
+
+            if(ext !== ".md") {
                 return;
             }
             
-            const { dir } = path.parse(id);
-
             const md = markdown({
                 html        : true,
                 linkify     : true,
@@ -115,5 +110,4 @@ module.exports = ({ include = "**/*.md", exclude } = false) => {
                 };
             `;
         },
-    };
-};
+    });

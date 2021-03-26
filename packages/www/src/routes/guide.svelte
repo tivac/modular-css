@@ -1,5 +1,5 @@
 {@html content}
 
 <script>
-import { content } from "$lib/content/guide/guide.md";
+import { content } from "$md/guide/guide.md";
 </script>
