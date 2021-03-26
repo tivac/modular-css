@@ -11,13 +11,6 @@
 		"@sveltejs/adapter-node": "next",
 		"@sveltejs/adapter-static": "^1.0.0-next.4",
 		"@sveltejs/kit": "next",
-		"codemirror": "^5.60.0",
-		"dedent": "^0.7.0",
-		"lz-string": "^1.4.4",
-		"markdown-it-anchor": "^7.1.0",
-		"markdown-it-container": "^3.0.0",
-		"markdown-it-include": "^2.0.0",
-		"markdown-it-toc-done-right": "^4.2.0",
 		"svelte": "^3.29.0",
 		"vite": "^2.1.0"
 	}
