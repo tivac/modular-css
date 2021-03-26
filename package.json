@@ -37,6 +37,7 @@
     "cli-tester": "2.0.0",
     "codemirror": "^5.60.0",
     "cssnano": "^4.1.10",
+    "debounce": "^1.2.1",
     "dedent": "0.7.0",
     "dentist": "1.0.3",
     "env-cmd": "^10.0.1",
