@@ -20,7 +20,7 @@
     "test": "jest",
     "watch": "jest --watch",
     "www:build": "lerna run --scope @modular-css/website --stream build",
-    "www:start": "lerna run --scope @modular-css/website --stream start",
+    "www:start": "lerna run --scope @modular-css/website --stream dev",
     "prewww:deploy": "npm run parsers",
     "www:deploy": "lerna run --scope @modular-css/website --stream deploy"
   },

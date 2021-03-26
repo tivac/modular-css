@@ -7,16 +7,16 @@
     </div>
 
     <ul class="{css.navitems}">
-    {#each links as { text, url, external }}
+    {#each links as { text, url, target }}
         <li class="{css.navitem}">
-            <a href="{url}" class="{css.link}">{text}</a>
+            <a href="{url}" {target} class="{css.link}">{text}</a>
         </li>
     {/each}
     </ul>
 </div>
 
 <script>
-import { version } from "../../../../package.json";
+import { version } from "../../package.json";
 
 const css = {};
 
@@ -36,10 +36,12 @@ const links = [
     {
         text : "Chat",
         url  : "https://gitter.im/modular-css/modular-css",
+        target : "_blank",
     },
     {
         text : "GitHub",
         url  : "https://github.com/tivac/modular-css",
+        target : "_blank",
     },
 ];
 </script>

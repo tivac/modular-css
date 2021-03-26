@@ -1,5 +1,5 @@
 {@html content}
 
 <script>
-import { content } from "$md/api/api.md";
+import { content } from "./api/api.md";
 </script>
