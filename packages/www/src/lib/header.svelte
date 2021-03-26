@@ -1,4 +1,8 @@
-<link href="./header.css" />
+<!-- <link href="./header.css" /> -->
+
+<svelte:head>
+	<title>modular-css{subtitle ? ` | ${subtitle.text.toLowerCase()}` : ""}</title>
+</svelte:head>
 
 <div class="{css.header}">
     <div class="{css.title}">
@@ -16,6 +20,7 @@
 </div>
 
 <script>
+import { page } from "$app/stores";
 import { version } from "../../package.json";
 
 const css = {};
@@ -23,15 +28,15 @@ const css = {};
 const links = [
     {
         text : "Overview",
-        url  : "/guide/",
+        url  : "/guide",
     },
     {
         text : "API",
-        url  : "/api/",
+        url  : "/api",
     },
     {
         text : "REPL",
-        url  : "/repl/",
+        url  : "/repl",
     },
     {
         text : "Chat",
@@ -44,4 +49,6 @@ const links = [
         target : "_blank",
     },
 ];
+
+$: subtitle = links.find(({ url }) => url === $page.path);
 </script>
