@@ -34,7 +34,7 @@ module.exports = {
             { blankLine : "any", prev : "directive", next : "directive" },
         ],
         
-        "jest/no-test-callback" : "warn",
+        "jest/no-done-callback" : "warn",
         "jest/no-try-expect"    : "warn",
     },
 };

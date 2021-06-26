@@ -335,7 +335,7 @@ describe("/processor.js", () => {
         });
 
         describe(".warnings", () => {
-            it.only("should have warnings from files that have been added", async () => {
+            it("should have warnings from files that have been added", async () => {
                 await processor.file("./packages/processor/test/specimens/warnings.css");
 
                 expect(processor.warnings.length).toBeGreaterThan(0);

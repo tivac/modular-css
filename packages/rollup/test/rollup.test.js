@@ -785,7 +785,9 @@ describe("/rollup.js", () => {
             expect(err.toString()).toMatch("error-plugin:");
         }
 
-        it("should show useful CSS error messages", () =>
+        it("should show useful CSS error messages", () => {
+            let e;
+
             rollup({
                 input   : "error.js",
                 plugins : [
@@ -807,8 +809,11 @@ describe("/rollup.js", () => {
                     createPlugin({ namer }),
                 ],
             })
-            .catch((e) => expect(e.toString()).toMatch(".wooga"))
-        );
+            .catch((err) => {
+                e = err;
+            })
+            .finally(() => expect(e.toString()).toMatch(".wooga"));
+        });
 
         // eslint-disable-next-line jest/expect-expect
         it("should throw errors in in before plugins", () =>

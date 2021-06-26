@@ -25,7 +25,7 @@ describe("/browserify.js", () => {
             expect(error).not.toHaveBeenCalled();
         });
         
-        // eslint-disable-next-line jest/no-test-callback
+        // eslint-disable-next-line jest/no-done-callback
         it("should error if an invalid extension is applied", (done) => {
             const build = browserify();
             
@@ -38,7 +38,7 @@ describe("/browserify.js", () => {
             build.plugin(plugin, { ext : false });
         });
 
-        // eslint-disable-next-line jest/no-test-callback
+        // eslint-disable-next-line jest/no-done-callback
         it("should error on invalid CSS", (done) => {
             const build = browserify({
                     entries : from("require('./packages/browserify/test/specimens/invalid.css');"),
@@ -54,6 +54,7 @@ describe("/browserify.js", () => {
                 expect(err).toBeTruthy();
                 
                 if(errors === 1) {
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(err.name).toMatch(/SyntaxError|CssSyntaxError/);
                     
                     return false;

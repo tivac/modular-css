@@ -335,6 +335,7 @@ describe("/webpack.js", () => {
             })
             // This build fails because the file is missing
             .catch((stats) => {
+                // eslint-disable-next-line jest/no-conditional-expect
                 expect(stats.toJson().errors[0]).toMatch("no such file or directory");
 
                 fs.writeFileSync(changed, ".three { color: green; }");
@@ -343,7 +344,7 @@ describe("/webpack.js", () => {
             });
     });
 
-    // eslint-disable-next-line jest/no-test-callback
+    // eslint-disable-next-line jest/no-done-callback
     it("should accept an existing processor instance", async (done) => {
         const processor = new Processor();
 
