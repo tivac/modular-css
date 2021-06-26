@@ -20,7 +20,6 @@ const pluginAtComposes = require("./plugins/at-composes.js");
 const pluginComposition = require("./plugins/composition.js");
 const pluginExternals = require("./plugins/externals.js");
 const pluginGraphNodes = require("./plugins/before/graph-nodes.js");
-const pluginKeyframes = require("./plugins/keyframes.js");
 const pluginScoping = require("./plugins/scoping.js");
 const pluginValuesImport = require("./plugins/values-import.js");
 const pluginValuesLocal = require("./plugins/before/values-local.js");
@@ -122,6 +121,7 @@ class Processor {
         this._files = Object.create(null);
         this._graph = new Graph();
         this._ids = new Map();
+        this._warnings = [];
 
         this._before = postcss([
             ...(options.before || []),
@@ -137,7 +137,6 @@ class Processor {
             pluginScoping,
             pluginExternals,
             pluginComposition,
-            pluginKeyframes,
             ...(options.processing || []),
         ]);
 
@@ -319,6 +318,8 @@ class Processor {
         root.removeAll();
 
         results.forEach((result) => {
+            result.warnings().forEach((warning) => this._warnings.push(warning));
+
             // Add file path comment
             const comment = postcss.comment({
                 text : relative(this._options.cwd, result.opts.from),
@@ -357,6 +358,8 @@ class Processor {
             params(this, args)
         );
 
+        result.warnings().forEach((warning) => this._warnings.push(warning));
+
         // Lazily-compute compositions if they're asked for
         Object.defineProperty(result, "compositions", {
             get : () => compositions(this),
@@ -387,6 +390,10 @@ class Processor {
             Object.values(this._files).map(({ result }) => result)
         )
         .then(() => compositions(this));
+    }
+
+    get warnings() {
+        return this._warnings;
     }
 
     _addFile(file) {
@@ -507,6 +514,8 @@ class Processor {
             const { result } = file;
             const { messages } = result;
 
+            result.warnings().forEach((warning) => this._warnings.push(warning));
+
             // Pull in any classes from an @composes command
             Object.assign(file.classes, message(result, "atcomposes"));
 
@@ -580,11 +589,19 @@ class Processor {
         await file.before;
 
         // Add all the found dependencies to the graph
-        file.before.messages.forEach(({ plugin, selector, refs = [], dependency }) => {
-            /* istanbul ignore if */
-            if(plugin !== pluginGraphNodes.postcssPlugin) {
+        file.before.messages.forEach((msg) => {
+            if(msg.type === "warning") {
+                this._warnings.push(msg);
+
                 return;
             }
+            
+            /* istanbul ignore if */
+            if(msg.plugin !== pluginGraphNodes.postcssPlugin) {
+                return;
+            }
+
+            const { selector, refs = [], dependency } = msg;
 
             const dep = this._normalize(dependency);
             const dKey = this._addFile(dep);

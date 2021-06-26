@@ -334,6 +334,15 @@ describe("/processor.js", () => {
             });
         });
 
+        describe(".warnings", () => {
+            it.only("should have warnings from files that have been added", async () => {
+                await processor.file("./packages/processor/test/specimens/warnings.css");
+
+                expect(processor.warnings.length).toBeGreaterThan(0);
+                expect(processor.warnings.map((warning) => warning.text)).toMatchSnapshot();
+            });
+        });
+
         describe(".compositions", () => {
             it("should return compositions for loaded files", async () => {
                 await processor.file(require.resolve("./specimens/start.css"));
