@@ -5,7 +5,7 @@ const processor = require("postcss-selector-parser");
 const identifiers = require("../lib/identifiers.js");
 
 const STAMP = Symbol("Scoped");
-
+    
 const reuse  = "Unable to re-use the same selector for global & local";
 const plugin = "modular-css-scoping";
 
@@ -25,15 +25,16 @@ const rename = ({ name }, { type, value }) => {
 module.exports = () => ({
     postcssPlugin : plugin,
 
-    prepare({ opts, messages }) {
-        const classes   = Object.create(null);
-        const keyframes = Object.create(null);
-        const globals   = Object.create(null);
+    prepare(result) {
+        const classes = new Map();
+        const keyframes = new Map();
+        const globals = new Set();
+        const animations = new Set();
         
         let current;
         let lookup;
 
-        const { exportGlobals, namer, from } = opts;
+        const { exportGlobals, namer, from } = result.opts;
         
         const parser = processor((selectors) => {
             const pseudos = [];
@@ -66,14 +67,14 @@ module.exports = () => ({
                     }
     
                     // Don't allow local/global overlap (but globals can overlap each other nbd)
-                    if(key in lookup && !globals[key]) {
+                    if(lookup.has(key) && !globals.has(key)) {
                         throw current.error(reuse, { word : key });
                     }
     
-                    globals[key] = true;
+                    globals.add(key);
                     
                     if(exportGlobals !== false) {
-                        lookup[key] = [ child.value ];
+                        lookup.set(key, [ child.value ]);
                     }
                     
                     child.ignore = true;
@@ -88,17 +89,28 @@ module.exports = () => ({
                 }
     
                 // Don't allow local/global overlap
-                if(key in globals) {
+                if(globals.has(key)) {
                     throw current.error(reuse, { word : key });
                 }
     
                 node.value = namer(from, node.value);
     
-                lookup[key] = [ node.value ];
+                lookup.set(key, [ node.value ]);
     
                 return;
             });
         });
+
+        const animDecl = (decl) => {
+            // Don't re-scope
+            if(decl[STAMP]) {
+                return;
+            }
+
+            stamp(decl);
+
+            animations.add(decl);
+        };
 
         return {
             // Walk all rules and save off rewritten selectors
@@ -123,41 +135,55 @@ module.exports = () => ({
             },
     
             // Also scope @keyframes rules so they don't leak globally
-            AtRule : {
-                keyframes(rule) {
-                    // Don't re-scope rules
-                    if(rule[STAMP]) {
-                        return;
-                    }
+            AtRule(rule) {
+                // Don't re-scope rules, and only care about @keyframes or prefixed variations
+                if(rule[STAMP] || !identifiers.keyframes.test(rule.name)) {
+                    return;
+                }
 
-                    stamp(rule);
+                stamp(rule);
 
-                    // Save closure ref to this rule
-                    current = rule;
-    
-                    lookup = keyframes;
-    
-                    rule.params = parser.processSync(rule.params);
-                },
+                // Save closure ref to this rule
+                current = rule;
+
+                lookup = keyframes;
+
+                rule.params = parser.processSync(rule.params);
             },
 
-            // TODO: can't push these at the end, has to happen in real time
-            OnceExit() {
-                console.log("onceExit");
+            Declaration : {
+                animation        : animDecl,
+                "animation-name" : animDecl,
+            },
 
-                if(Object.keys(keyframes).length) {
-                    messages.push({
-                        type : "modular-css",
+            OnceExit() {
+                const search = new RegExp(
+                    [ ...keyframes.keys() ]
+                    .map((ref) => `(\\b${escape(ref)}\\b)`)
+                    .join("|"),
+                    "g"
+                );
+
+                animations.forEach((decl) => {
+                    if(keyframes.size) {
+                        // TODO: Should this use a value parser instead?
+                        decl.value = decl.value.replace(search, (match) => keyframes.get(match));
+                    } else {
+                        result.warn(`${decl.prop} declaration w/o a matching @keyframes rule`, {
+                            node : decl,
+                            word : decl.value,
+                        });
+                    }
+
+                    animations.delete(decl);
+                });
+
+                // TODO: can't push these at the end, has to happen in real time
+                if(classes.size) {
+                    result.messages.push({
+                        type    : "modular-css",
                         plugin,
-                        keyframes,
-                    });
-                }
-            
-                if(Object.keys(classes).length) {
-                    messages.push({
-                        type : "modular-css",
-                        plugin,
-                        classes,
+                        classes : Object.fromEntries(classes),
                     });
                 }
             },

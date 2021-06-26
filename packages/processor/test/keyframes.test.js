@@ -23,6 +23,7 @@ describe("/processor.js", () => {
             const { css } = await processor.output();
 
             expect(css).toMatchSnapshot();
+            expect(processor.warnings.map((warning) => warning.text)).toMatchSnapshot();
         });
 
         it("should not scope rules within @keyframes", async () => {

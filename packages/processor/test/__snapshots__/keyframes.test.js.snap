@@ -6,6 +6,13 @@ exports[`/processor.js @keyframes scoping should leave unknown animation names a
 .mc_b { animation-name: b; }"
 `;
 
+exports[`/processor.js @keyframes scoping should leave unknown animation names alone 2`] = `
+Array [
+  "animation declaration w/o a matching @keyframes rule",
+  "animation-name declaration w/o a matching @keyframes rule",
+]
+`;
+
 exports[`/processor.js @keyframes scoping should not scope rules within @keyframes 1`] = `
 "/* unknown-name.css */
 .mc_a { animation: mc_a; }
