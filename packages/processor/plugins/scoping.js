@@ -1,15 +1,12 @@
 "use strict";
 
-const processor = require("postcss-selector-parser");
+const selectorParser = require("postcss-selector-parser");
+const valueParser = require("postcss-value-parser");
 
 const identifiers = require("../lib/identifiers.js");
 
-const STAMP = Symbol("Scoped");
-    
 const reuse  = "Unable to re-use the same selector for global & local";
 const plugin = "modular-css-scoping";
-
-const stamp = (obj) => Object.defineProperty(obj, STAMP, { value : true });
 
 // Validate whether a selector should be renamed, returns the key to use
 const rename = ({ name }, { type, value }) => {
@@ -26,17 +23,17 @@ module.exports = () => ({
     postcssPlugin : plugin,
 
     prepare(result) {
+        const rewritten = new Set();
         const classes = new Map();
         const keyframes = new Map();
         const globals = new Set();
-        const animations = new Set();
         
         let current;
         let lookup;
 
         const { exportGlobals, namer, from } = result.opts;
         
-        const parser = processor((selectors) => {
+        const parser = selectorParser((selectors) => {
             const pseudos = [];
     
             selectors.walkPseudos((node) => {
@@ -54,7 +51,7 @@ module.exports = () => ({
     
             pseudos.forEach((node) => {
                 // Replace the :global(...) with its contents
-                node.replaceWith(processor.selector({
+                node.replaceWith(selectorParser.selector({
                     nodes  : node.nodes,
                     source : node.source,
                 }));
@@ -101,22 +98,11 @@ module.exports = () => ({
             });
         });
 
-        const animDecl = (decl) => {
-            // Don't re-scope
-            if(decl[STAMP]) {
-                return;
-            }
-
-            stamp(decl);
-
-            animations.add(decl);
-        };
-
         return {
             // Walk all rules and save off rewritten selectors
             Rule(rule) {
                 // Don't re-scope rules
-                if(rule[STAMP]) {
+                if(rewritten.has(rule.selector)) {
                     return;
                 }
 
@@ -125,60 +111,63 @@ module.exports = () => ({
                     return;
                 }
 
-                stamp(rule);
-                
                 // Save closure ref to this rule
                 current = rule;
                 lookup = classes;
-    
+                
                 rule.selector = parser.processSync(rule);
+                
+                rewritten.add(rule.selector);
             },
     
             // Also scope @keyframes rules so they don't leak globally
             AtRule(rule) {
                 // Don't re-scope rules, and only care about @keyframes or prefixed variations
-                if(rule[STAMP] || !identifiers.keyframes.test(rule.name)) {
+                if(!identifiers.keyframes.test(rule.name) || rewritten.has(rule.params)) {
                     return;
                 }
 
-                stamp(rule);
-
                 // Save closure ref to this rule
                 current = rule;
-
+                
                 lookup = keyframes;
-
+                
                 rule.params = parser.processSync(rule.params);
+                
+                rewritten.add(rule.params);
             },
 
-            Declaration : {
-                animation        : animDecl,
-                "animation-name" : animDecl,
+            Declaration(decl) {
+                if(!identifiers.animations.test(decl.prop) || rewritten.has(decl.value)) {
+                    return;
+                }
+    
+                const parsed = valueParser(decl.value);
+    
+                let replaced = false;
+    
+                parsed.walk((node) => {
+                    if(node.type !== "word" || !keyframes.has(node.value)) {
+                        return;
+                    }
+    
+                    replaced = true;
+    
+                    node.value = keyframes.get(node.value);
+                });
+    
+                if(!replaced) {
+                    return;
+                }
+    
+                decl.value = parsed.toString();
+                
+                rewritten.add(decl.value);
             },
 
             OnceExit() {
-                const search = new RegExp(
-                    [ ...keyframes.keys() ]
-                    .map((ref) => `(\\b${escape(ref)}\\b)`)
-                    .join("|"),
-                    "g"
-                );
-
-                animations.forEach((decl) => {
-                    if(keyframes.size) {
-                        // TODO: Should this use a value parser instead?
-                        decl.value = decl.value.replace(search, (match) => keyframes.get(match));
-                    } else {
-                        result.warn(`${decl.prop} declaration w/o a matching @keyframes rule`, {
-                            node : decl,
-                            word : decl.value,
-                        });
-                    }
-
-                    animations.delete(decl);
-                });
-
                 // TODO: can't push these at the end, has to happen in real time
+                // TODO: but to where?
                 if(classes.size) {
                     result.messages.push({
                         type    : "modular-css",

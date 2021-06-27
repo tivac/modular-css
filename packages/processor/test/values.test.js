@@ -2,7 +2,7 @@
 
 const path = require("path");
 const dedent = require("dedent");
-const namer  = require("@modular-css/test-utils/namer.js");
+const namer = require("@modular-css/test-utils/namer.js");
 const Processor = require("../processor.js");
 
 describe("/processor.js", () => {
@@ -109,7 +109,7 @@ describe("/processor.js", () => {
             expect(css).toMatchSnapshot();
         });
 
-        it("should support local values in value composition", async () => {
+        it.only("should support local values in value composition", async () => {
             await processor.string(
                 "./packages/processor/test/specimens/simple.css",
                 dedent(`

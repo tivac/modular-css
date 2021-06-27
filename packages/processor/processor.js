@@ -471,6 +471,43 @@ class Processor {
         return vKey;
     }
 
+    _addDependency({ selector, refs = [], dependency, name }) {
+        const { _graph : graph } = this;
+        
+        const dep = this._normalize(dependency);
+        const fKey = this._addFile(name);
+        const dKey = this._addFile(dep);
+
+        graph.addDependency(fKey, dKey);
+
+        // @values don't have a selector field
+        if(!selector) {
+            refs.forEach(({ name : depValue }) => {
+                this._addValue(dep, depValue);
+            });
+
+            return;
+        }
+
+        // Add selector and its dependencies to the graph
+        const selectorId = selectorKey(name, selector);
+
+        // Remove any existing dependencies for the selector
+        if(graph.hasNode(selectorId)) {
+            graph.dependenciesOf(selectorId).forEach((other) => {
+                graph.removeDependency(selectorId, other);
+            });
+        }
+
+        this._addSelector(name, selector);
+
+        refs.forEach(({ name : depSelector }) => {
+            const depSelectorId = this._addSelector(dep, depSelector);
+
+            graph.addDependency(selectorId, depSelectorId);
+        });
+    }
+
     // Take a file id and some text, walk it for dependencies, then
     // process and return details
     async _add(id, src) {
@@ -578,13 +615,15 @@ class Processor {
 
             walked : new Promise((done) => (walked = done)),
 
-            before : this._before.process(
-                src,
-                params(this, {
-                    from : name,
-                })
-            ),
+            before : null,
         };
+
+        file.before = this._before.process(
+            src,
+            params(this, {
+                from : name,
+            })
+        );
 
         await file.before;
 
@@ -595,45 +634,6 @@ class Processor {
 
                 return;
             }
-            
-            /* istanbul ignore if */
-            if(msg.plugin !== pluginGraphNodes.postcssPlugin) {
-                return;
-            }
-
-            const { selector, refs = [], dependency } = msg;
-
-            const dep = this._normalize(dependency);
-            const dKey = this._addFile(dep);
-
-            graph.addDependency(fKey, dKey);
-
-            // @values don't have a selector field
-            if(!selector) {
-                refs.forEach(({ name : depValue }) => {
-                    this._addValue(dep, depValue);
-                });
-
-                return;
-            }
-
-            // Add selector and its dependencies to the graph
-            const selectorId = selectorKey(name, selector);
-
-            // Remove any existing dependencies for the selector
-            if(graph.hasNode(selectorId)) {
-                graph.dependenciesOf(selectorId).forEach((other) => {
-                    graph.removeDependency(selectorId, other);
-                });
-            }
-
-            this._addSelector(name, selector);
-
-            refs.forEach(({ name : depSelector }) => {
-                const depSelectorId = this._addSelector(dep, depSelector);
-
-                graph.addDependency(selectorId, depSelectorId);
-            });
         });
 
         // Walk this node's dependencies, reading new files from disk as necessary

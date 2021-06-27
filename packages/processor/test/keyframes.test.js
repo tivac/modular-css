@@ -23,18 +23,17 @@ describe("/processor.js", () => {
             const { css } = await processor.output();
 
             expect(css).toMatchSnapshot();
-            expect(processor.warnings.map((warning) => warning.text)).toMatchSnapshot();
         });
 
         it("should not scope rules within @keyframes", async () => {
             await processor.string("./unknown-name.css", dedent(`
-                .a { animation: a; }
-
                 @keyframes a {
                     from { color: white; }
                     50.25% { color: red; }
                     to { color: black; }
                 }
+
+                .a { animation: a; }
             `));
 
             const { css } = await processor.output();
