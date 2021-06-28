@@ -2,8 +2,6 @@
 
 const selector = require("postcss-selector-parser");
 const value = require("postcss-value-parser");
-const escape = require("escape-string-regexp");
-const { DepGraph } = require("dependency-graph");
 
 const identifiers = require("../lib/identifiers.js");
 
@@ -13,31 +11,34 @@ module.exports = () => ({
     prepare({ opts }) {
         const { processor, from } = opts;
         
-        const graph = new DepGraph();
+        // const graph = new DepGraph();
         const rewritten = new Set();
 
-        // Create local copy of values since we're going to merge in namespace stuff
-        const values = {
-            __proto__ : null,
-            
-            ...processor.files[from].values,
-        };
+        const { values } = processor.files[from];
+
+        const parser = selector();
 
         const external = selector((selectors) =>
             selectors.walkTags((tag) => {
-                if(!values[tag.value]) {
+                const source = values[tag.value];
+                
+                if(!source) {
                     return;
                 }
 
-                tag.replaceWith(selector.tag(values[tag.value]));
+                const ast = parser.astSync(source.value);
+                const { type } = ast.first.first;
+
+                tag.replaceWith(selector[type](source));
             })
         );
 
         // Replace values inside specific values
         const replacer = (prop) =>
             (thing) => {
-                console.log(thing[prop]);
+                // console.log(thing[prop]);
 
+                // TODO: this is too simple and is causing failures if the same value shows up multiple times
                 if(rewritten.has(thing[prop])) {
                     return;
                 }
@@ -49,48 +50,37 @@ module.exports = () => ({
                         return;
                     }
 
+                    let current = values[node.value];
+                    let next = current;
+                    let count = 0;
+
+                    while(next && count < 10) {
+                        next = values[current];
+
+                        if(next) {
+                            current = next;
+                        }
+
+                        count++;
+                    }
+
+                    if(!current) {
+                        throw thing.error(`Unable to follow value chain`, { word : node.value });
+                    }
+
                     // Source map support
-                    thing.source = values[node.value].source;
+                    thing.source = current.source;
 
                     // Replace any value instances
-                    node.value = values[node.value].value;
+                    node.value = current.value;
                 });
 
+                // console.log({ before : thing[prop], after : parsed.toString() });
+                
                 thing[prop] = parsed.toString();
 
                 rewritten.add(thing[prop]);
             };
-
-        // TODO: this can't work any more, because the values aren't known yet on the first pass
-        // TODO: maybe need a basic replacer solely for the first pass?
-        // Walk through all values & build dependency graph
-        Object.entries(values).forEach(([ name, details ]) => {
-            graph.addNode(name);
-
-            value(details.value).walk((node) => {
-                if(node.type !== "word" || !values[node.value]) {
-                    return;
-                }
-
-                graph.addNode(node.value);
-                graph.addDependency(name, node.value);
-            });
-        });
-
-        // Walk through values in dependency order & update any inter-dependent values
-        graph.overallOrder().forEach((name) => {
-            const parsed = value(values[name].value);
-
-            parsed.walk((node) => {
-                if(node.type !== "word" || !values[node.value]) {
-                    return;
-                }
-
-                node.value = values[node.value].value;
-            });
-
-            values[name].value = parsed.toString();
-        });
 
         return {
             Declaration : replacer("value"),
@@ -101,13 +91,13 @@ module.exports = () => ({
             },
             
             Rule(rule) {
-                if(rewritten.has(rule.selector) || !identifiers.externals.test(rule.selector)) {
+                if(!identifiers.externals.test(rule.selector)) {
                     return;
                 }
 
                 rule.selector = external.processSync(rule);
 
-                rewritten.add(rule.selector);
+                console.log("values-replace", rule.selector);
             },
         };
     },

@@ -14,6 +14,9 @@ module.exports = () => ({
 
         const process = (rule, pseudo) => {
             const params = pseudo.nodes.toString();
+            
+            console.log(rule.toString(), params);
+            
             const { source, ref } = parser.parse(params);
             const { name } = ref;
             const file = processor.files[processor.resolve(from, source)];
@@ -39,20 +42,17 @@ module.exports = () => ({
         return {
             Rule(rule) {
                 const externals = selector((selectors) => {
-                    const found = [];
-    
                     selectors.walkPseudos((pseudo) => {
                         // Need to ensure we only process :external pseudos, see #261
                         if(pseudo.value !== ":external") {
                             return;
                         }
     
-                        // Can't replace here, see postcss/postcss-selector-parser#105
-                        found.push(pseudo);
+                        process(rule, pseudo);
                     });
-    
-                    found.forEach((pseudo) => process(rule, pseudo));
                 });
+
+                console.log("externals", rule.selector);
     
                 rule.selector = externals.processSync(rule);
             },

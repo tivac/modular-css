@@ -8,11 +8,9 @@ const plugin = "modular-css-values-import";
 module.exports = () => ({
     postcssPlugin : plugin,
 
-    prepare({ opts }) {
-        const { from, processor } = opts;
-        const target = processor.files[from];
-
-        const changes = [];
+    prepare(result) {
+        const { from, processor } = result.opts;
+        const { values } = processor.files[from];
 
         return {
             AtRule : {
@@ -20,7 +18,6 @@ module.exports = () => ({
                 value(rule) {
                     const parsed = parser.parse(rule.params);
                     const file = processor.resolve(from, parsed.source);
-                    const values = { __proto__ : null };
                     const source = processor.files[file];
 
                     rule.remove();
@@ -28,6 +25,10 @@ module.exports = () => ({
                     // fooga from "./wooga"
                     if(parsed.type === "composition") {
                         parsed.refs.forEach(({ name }) => {
+                            if(name in values) {
+                                return;
+                            }
+
                             const value = source.values[name];
 
                             if(!value) {
@@ -45,11 +46,15 @@ module.exports = () => ({
                             };
                         });
 
-                        return changes.push(values);
+                        return;
                     }
 
                     // * as fooga from "./wooga"
                     if(parsed.type === "namespace") {
+                        if(parsed.name in values) {
+                            throw rule.error(`Cannot import values as ${parsed.name}, it already exists`, { word : parsed.name });
+                        }
+                        
                         processor._addValue(file, parsed.name, { namespace : true });
 
                         for(const key in source.values) {
@@ -61,12 +66,17 @@ module.exports = () => ({
                             };
                         }
 
-                        return changes.push(values);
+                        return;
                     }
 
                     // fooga as wooga from "./booga"
                     if(parsed.type === "alias") {
                         const [{ name }] = parsed.refs;
+
+                        if(name in values) {
+                            throw rule.error(`Cannot alias ${name} as ${parsed.alias}, it already exists`, { word : parsed.alias });
+                        }
+
                         const value = source.values[name];
 
                         if(!value) {
@@ -83,34 +93,28 @@ module.exports = () => ({
                             external : true,
                         };
 
-                        return changes.push(values);
+                        return;
                     }
 
                     // * from "./wooga"
                     // istanbul ignore else: This is worthwhile in case we add a new type to the parser
                     if(parsed.type === "import") {
-                        return changes.push(source.values);
+                        for(const name in source.values) {
+                            if(name in values) {
+                                result.warn(`Imported value ${name} overlaps with a local value and will be ignored`, { node : rule });
+
+                                continue;
+                            }
+
+                            values[name] = source.values[name];
+                        }
+
+                        return;
                     }
 
                     // istanbul ignore next: This is worthwhile in case we add a new type to the parser
                     throw rule.error(`Unknown @value type, unable to process`);
                 },
-            },
-
-            OnceExit() {
-                // Object.assign to splat array of objects together using spread
-                target.values = Object.assign(
-                    {
-                        __proto__ : null,
-                    },
-                    ...changes,
-                    
-                    // Need to splat any existing values over the top of the ones we just calculated
-                    // because they'll have come from before/values-local.js and thus are considered
-                    // higher priority than any of the fancy stuff that happened here
-                    // istanbul ignore next: not sure if this can really be hit but the safety doesn't hurt
-                    target.values || {},
-                );
             },
         };
     },

@@ -23,15 +23,16 @@ module.exports = () => ({
     postcssPlugin : plugin,
 
     prepare(result) {
+        const { from, processor, exportGlobals, namer } = result.opts;
+        const { classes } = processor.files[from];
+        
         const rewritten = new Set();
-        const classes = new Map();
-        const keyframes = new Map();
         const globals = new Set();
+
+        const keyframes = Object.create(null);
         
         let current;
         let lookup;
-
-        const { exportGlobals, namer, from } = result.opts;
         
         const parser = selectorParser((selectors) => {
             const pseudos = [];
@@ -64,14 +65,14 @@ module.exports = () => ({
                     }
     
                     // Don't allow local/global overlap (but globals can overlap each other nbd)
-                    if(lookup.has(key) && !globals.has(key)) {
+                    if(lookup[key] && !globals.has(key)) {
                         throw current.error(reuse, { word : key });
                     }
     
                     globals.add(key);
                     
                     if(exportGlobals !== false) {
-                        lookup.set(key, [ child.value ]);
+                        lookup[key] = [ child.value ];
                     }
                     
                     child.ignore = true;
@@ -92,7 +93,7 @@ module.exports = () => ({
     
                 node.value = namer(from, node.value);
     
-                lookup.set(key, [ node.value ]);
+                lookup[key] = [ node.value ];
     
                 return;
             });
@@ -147,13 +148,13 @@ module.exports = () => ({
                 let replaced = false;
     
                 parsed.walk((node) => {
-                    if(node.type !== "word" || !keyframes.has(node.value)) {
+                    if(node.type !== "word" || !keyframes[node.value]) {
                         return;
                     }
     
                     replaced = true;
     
-                    node.value = keyframes.get(node.value);
+                    node.value = keyframes[node.value];
                 });
     
                 if(!replaced) {
@@ -163,18 +164,6 @@ module.exports = () => ({
                 decl.value = parsed.toString();
                 
                 rewritten.add(decl.value);
-            },
-
-            OnceExit() {
-                // TODO: can't push these at the end, has to happen in real time
-                // TODO: but to where?
-                if(classes.size) {
-                    result.messages.push({
-                        type    : "modular-css",
-                        plugin,
-                        classes : Object.fromEntries(classes),
-                    });
-                }
             },
         };
     },

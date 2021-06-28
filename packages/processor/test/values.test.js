@@ -109,7 +109,7 @@ describe("/processor.js", () => {
             expect(css).toMatchSnapshot();
         });
 
-        it.only("should support local values in value composition", async () => {
+        it("should support local values in value composition", async () => {
             await processor.string(
                 "./packages/processor/test/specimens/simple.css",
                 dedent(`
@@ -157,7 +157,7 @@ describe("/processor.js", () => {
             expect(css).toMatchSnapshot();
         });
 
-        it("should support value replacement in :external(...)", async () => {
+        it.only("should support value replacement in :external(...)", async () => {
             await processor.file(require.resolve("./specimens/externals.css"));
 
             const { css } = await processor.output();

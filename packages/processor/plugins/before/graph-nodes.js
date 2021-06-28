@@ -20,8 +20,6 @@ module.exports = () => ({
         const parse = (parser, rule, value) => {
             let parsed;
 
-            console.log(value);
-
             try {
                 parsed = parser.parse(value);
             } catch(e) {

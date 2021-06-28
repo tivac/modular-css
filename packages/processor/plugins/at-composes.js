@@ -10,6 +10,11 @@ module.exports = () => ({
     postcssPlugin : plugin,
 
     prepare(result) {
+        const { from, processor } = result.opts;
+        const { files, graph } = processor;
+
+        const target = files[from];
+
         let source = false;
 
         return {
@@ -19,9 +24,6 @@ module.exports = () => ({
                         throw rule.error(`Only one @composes rule per file`, { word : "composes" });
                     }
 
-                    const { from, processor } = result.opts;
-                    const { files, graph } = processor;
-            
                     // We know it's safe, otherwise it would have failed in graph-nodes pass
                     const parsed = parser.parse(rule.params);
             
@@ -31,13 +33,13 @@ module.exports = () => ({
                     rule.remove();
 
                     // Create a copy of each defined class and also the dependency graph (if it has dependencies)
-                    const atcomposes = Object.keys(source.classes).reduce((acc, key) => {
-                        acc[key] = [ ...source.classes[key] ];
+                    Object.keys(source.classes).forEach((key) => {
+                        target[key] = [ ...source.classes[key] ];
 
                         const skey = selectorKey(source.name, key);
 
                         if(!graph.hasNode(skey)) {
-                            return acc;
+                            return;
                         }
 
                         const dkey = processor._addSelector(from, key);
@@ -46,15 +48,6 @@ module.exports = () => ({
                         graph.dependenciesOf(skey).forEach((dep) => {
                             graph.addDependency(dkey, dep);
                         });
-
-                        return acc;
-                    }, Object.create(null));
-
-                    result.messages.push({
-                        type : "modular-css",
-                        plugin,
-                
-                        atcomposes,
                     });
                 },
             },
