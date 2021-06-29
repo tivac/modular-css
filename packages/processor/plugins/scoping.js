@@ -4,6 +4,7 @@ const selectorParser = require("postcss-selector-parser");
 const valueParser = require("postcss-value-parser");
 
 const identifiers = require("../lib/identifiers.js");
+const { isStamped, stamp } = require("../lib/stamp.js");
 
 const reuse  = "Unable to re-use the same selector for global & local";
 const plugin = "modular-css-scoping";
@@ -23,10 +24,10 @@ module.exports = () => ({
     postcssPlugin : plugin,
 
     prepare(result) {
-        const { from, processor, exportGlobals, namer } = result.opts;
+        const { from, processor, namer } = result.opts;
+        const { exportGlobals } = processor.options;
         const { classes } = processor.files[from];
-        
-        const rewritten = new Set();
+
         const globals = new Set();
 
         const keyframes = Object.create(null);
@@ -35,8 +36,6 @@ module.exports = () => ({
         let lookup;
         
         const parser = selectorParser((selectors) => {
-            const pseudos = [];
-    
             selectors.walkPseudos((node) => {
                 if(node.value !== ":global") {
                     return;
@@ -45,17 +44,16 @@ module.exports = () => ({
                 if(!node.length || !node.first.length) {
                     throw current.error(":global(...) must not be empty", { word : ":global" });
                 }
-    
-                // Can't remove here, see #277 or postcss/postcss-selector-parser#105
-                pseudos.push(node);
-            });
-    
-            pseudos.forEach((node) => {
-                // Replace the :global(...) with its contents
-                node.replaceWith(selectorParser.selector({
+
+                const replacement = selectorParser.selector({
                     nodes  : node.nodes,
                     source : node.source,
-                }));
+                });
+    
+                // Replace the :global(...) with its contents
+                node.replaceWith(replacement);
+
+                node = replacement;
     
                 node.walk((child) => {
                     const key = rename(current, child);
@@ -64,8 +62,9 @@ module.exports = () => ({
                         return;
                     }
     
-                    // Don't allow local/global overlap (but globals can overlap each other nbd)
-                    if(lookup[key] && !globals.has(key)) {
+                    // Don't allow local/global overlap if they're being exported
+                    // (but globals can overlap each other nbd)
+                    if(exportGlobals && lookup[key] && !globals.has(key)) {
                         throw current.error(reuse, { word : key });
                     }
     
@@ -78,16 +77,16 @@ module.exports = () => ({
                     child.ignore = true;
                 });
             });
-    
+
             selectors.walk((node) => {
                 const key = rename(current, node);
     
                 if(!key || node.ignore) {
                     return;
                 }
-    
-                // Don't allow local/global overlap
-                if(globals.has(key)) {
+
+                // Don't allow local/global overlap if they're being exported
+                if(exportGlobals && globals.has(key)) {
                     throw current.error(reuse, { word : key });
                 }
     
@@ -103,7 +102,7 @@ module.exports = () => ({
             // Walk all rules and save off rewritten selectors
             Rule(rule) {
                 // Don't re-scope rules
-                if(rewritten.has(rule.selector)) {
+                if(isStamped(rule)) {
                     return;
                 }
 
@@ -117,14 +116,14 @@ module.exports = () => ({
                 lookup = classes;
                 
                 rule.selector = parser.processSync(rule);
-                
-                rewritten.add(rule.selector);
+
+                stamp(rule);
             },
     
             // Also scope @keyframes rules so they don't leak globally
             AtRule(rule) {
                 // Don't re-scope rules, and only care about @keyframes or prefixed variations
-                if(!identifiers.keyframes.test(rule.name) || rewritten.has(rule.params)) {
+                if(!identifiers.keyframes.test(rule.name) || isStamped(rule)) {
                     return;
                 }
 
@@ -135,11 +134,11 @@ module.exports = () => ({
                 
                 rule.params = parser.processSync(rule.params);
                 
-                rewritten.add(rule.params);
+                stamp(rule);
             },
 
             Declaration(decl) {
-                if(!identifiers.animations.test(decl.prop) || rewritten.has(decl.value)) {
+                if(!identifiers.animations.test(decl.prop) || isStamped(decl)) {
                     return;
                 }
     
@@ -163,7 +162,7 @@ module.exports = () => ({
     
                 decl.value = parsed.toString();
                 
-                rewritten.add(decl.value);
+                stamp(decl);
             },
         };
     },
