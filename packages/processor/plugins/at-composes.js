@@ -13,7 +13,7 @@ module.exports = () => ({
         const { from, processor } = result.opts;
         const { files, graph } = processor;
 
-        const target = files[from];
+        const { classes : target } = files[from];
 
         let source = false;
 
@@ -28,7 +28,7 @@ module.exports = () => ({
                     const parsed = parser.parse(rule.params);
             
                     source = files[processor.resolve(from, parsed.source)];
-            
+
                     // Remove the @composes from the output
                     rule.remove();
 
