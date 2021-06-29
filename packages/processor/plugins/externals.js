@@ -15,8 +15,6 @@ module.exports = () => ({
         const process = (rule, pseudo) => {
             const params = pseudo.nodes.toString();
             
-            console.log(rule.toString(), params);
-            
             const { source, ref } = parser.parse(params);
             const { name } = ref;
             const file = processor.files[processor.resolve(from, source)];
@@ -52,8 +50,6 @@ module.exports = () => ({
                     });
                 });
 
-                console.log("externals", rule.selector);
-    
                 rule.selector = externals.processSync(rule);
             },
         };

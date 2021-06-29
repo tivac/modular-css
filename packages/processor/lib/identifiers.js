@@ -12,7 +12,7 @@ const parser = createParser((selectors) => {
 
 exports.keyframes = /keyframes$/i;
 exports.animations = /animation$|animation-name$/i;
-exports.externals = /^:external\(/i;
+exports.externals = /:external\(/i;
 
 // Find all classes that comprise a selector and return 'em
 exports.parse = (selector) => parser.transformSync(selector);

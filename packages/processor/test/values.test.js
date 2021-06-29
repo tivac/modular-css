@@ -157,7 +157,7 @@ describe("/processor.js", () => {
             expect(css).toMatchSnapshot();
         });
 
-        it.only("should support value replacement in :external(...)", async () => {
+        it("should support value replacement in :external(...)", async () => {
             await processor.file(require.resolve("./specimens/externals.css"));
 
             const { css } = await processor.output();
