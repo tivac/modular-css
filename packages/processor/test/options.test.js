@@ -94,9 +94,9 @@ describe("/processor.js", () => {
         describe("map", () => {
             it("should generate source maps", async () => {
                 const processor = new Processor({
-                        namer,
-                        map : true,
-                    });
+                    namer,
+                    map : true,
+                });
 
                 await processor.file("./packages/processor/test/specimens/start.css");
 
@@ -110,11 +110,11 @@ describe("/processor.js", () => {
 
             it("should generate external source maps", async () => {
                 const processor = new Processor({
-                        namer,
-                        map : {
-                            internal : false,
-                        },
-                    });
+                    namer,
+                    map : {
+                        internal : false,
+                    },
+                });
 
                 await processor.file("./packages/processor/test/specimens/start.css");
 
@@ -130,8 +130,8 @@ describe("/processor.js", () => {
         describe("exportGlobals", () => {
             it("should not export :global values when exportGlobals is false", async () => {
                 const processor = new Processor({
-                        exportGlobals : false,
-                    });
+                    exportGlobals : false,
+                });
 
                 const { exports } = await processor.string(
                     "./exportGlobals.css",
