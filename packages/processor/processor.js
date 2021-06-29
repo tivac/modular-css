@@ -80,6 +80,8 @@ const DEFAULTS = {
     resolvers : [],
     rewrite   : true,
     verbose   : false,
+    
+    exportGlobals : true,
 };
 
 class Processor {
