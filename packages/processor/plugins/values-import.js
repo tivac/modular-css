@@ -25,8 +25,9 @@ module.exports = () => ({
                     // fooga from "./wooga"
                     if(parsed.type === "composition") {
                         parsed.refs.forEach(({ name }) => {
+                            /* istanbul ignore next: probably unnecssary but makes me feel better */
                             if(name in values) {
-                                return;
+                                throw rule.error(`Cannot import ${parsed.name}, it already exists`, { word : parsed.name });
                             }
 
                             const value = source.values[name];
@@ -51,6 +52,7 @@ module.exports = () => ({
 
                     // * as fooga from "./wooga"
                     if(parsed.type === "namespace") {
+                        /* istanbul ignore next: probably unnecssary but makes me feel better */
                         if(parsed.name in values) {
                             throw rule.error(`Cannot import values as ${parsed.name}, it already exists`, { word : parsed.name });
                         }
@@ -73,6 +75,7 @@ module.exports = () => ({
                     if(parsed.type === "alias") {
                         const [{ name }] = parsed.refs;
 
+                        /* istanbul ignore next: probably unnecssary but makes me feel better */
                         if(name in values) {
                             throw rule.error(`Cannot alias ${name} as ${parsed.alias}, it already exists`, { word : parsed.alias });
                         }
