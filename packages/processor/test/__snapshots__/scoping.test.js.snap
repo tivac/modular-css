@@ -55,5 +55,6 @@ exports[`/processor.js scoping should scope classes, ids, and keyframes 2`] = `
 #mc_fooga { }
 .mc_wooga { }
 .mc_one,
-.mc_two { }"
+.mc_two { }
+.mc_one { }"
 `;
