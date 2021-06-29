@@ -51,3 +51,13 @@ Object {
   },
 }
 `;
+
+exports[`/processor.js exports should include :global values by default 1`] = `
+Object {
+  "a": Array [
+    "a",
+  ],
+}
+`;
+
+exports[`/processor.js exports should not include :global values when exportGlobals : false 1`] = `Object {}`;
