@@ -18,12 +18,23 @@ describe("/processor.js", () => {
             const { exports } = await processor.string(
                 "./simple.css",
                 dedent(`
-                    @keyframes kooga { }
+                    @keyframes kooga {
+                        from {}
+                        to {}
+                        50% {}
+                    }
                     #fooga { }
                     .wooga { }
                     .one,
                     .two { }
                     .one { }
+                    @media print {
+                        .three {}
+                    }
+                    .anim {
+                        animation: kooga 50s ease-in;
+                        animation-name: something-else;
+                    }
                 `)
             );
             
@@ -64,6 +75,25 @@ describe("/processor.js", () => {
             )).rejects.toThrow(`Unable to re-use the same selector for global & local`);
         });
 
+        it("should allow :global classes to overlap with local ones (local before global) with exportGlobals : false", async () => {
+            processor = new Processor({
+                namer,
+                exportGlobals : false,
+            });
+            
+            await processor.string(
+                "./valid/global.css",
+                dedent(`
+                    .a {}
+                    :global(.a) {}
+                `)
+            );
+
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
+        });
+
         it("should not allow :global classes to overlap with local ones (global before local)", async () => {
             await expect(processor.string(
                 "./invalid/global.css",
@@ -72,6 +102,25 @@ describe("/processor.js", () => {
                     .a {}
                 `)
             )).rejects.toThrow(`Unable to re-use the same selector for global & local`);
+        });
+
+        it("should allow :global classes to overlap with local ones (global before local) with exportGlobals : false", async () => {
+            processor = new Processor({
+                namer,
+                exportGlobals : false,
+            });
+            
+            await processor.string(
+                "./valid/global.css",
+                dedent(`
+                    :global(.a) {}
+                    .a {}
+                `)
+            );
+
+            const { css } = await processor.output();
+            
+            expect(css).toMatchSnapshot();
         });
 
         it("should not allow empty :global() selectors", async () => {

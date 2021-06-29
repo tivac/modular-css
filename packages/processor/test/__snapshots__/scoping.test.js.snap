@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/processor.js scoping should allow :global classes to overlap with local ones (global before local) with exportGlobals : false 1`] = `
+"/* valid/global.css */
+.a {}
+.mc_a {}"
+`;
+
+exports[`/processor.js scoping should allow :global classes to overlap with local ones (local before global) with exportGlobals : false 1`] = `
+"/* valid/global.css */
+.mc_a {}
+.a {}"
+`;
+
 exports[`/processor.js scoping should handle pseudo classes correctly 1`] = `
 Object {
   "b": Array [
@@ -34,11 +46,17 @@ exports[`/processor.js scoping should handle pseudo classes correctly 2`] = `
 
 exports[`/processor.js scoping should scope classes, ids, and keyframes 1`] = `
 Object {
+  "anim": Array [
+    "mc_anim",
+  ],
   "fooga": Array [
     "mc_fooga",
   ],
   "one": Array [
     "mc_one",
+  ],
+  "three": Array [
+    "mc_three",
   ],
   "two": Array [
     "mc_two",
@@ -51,10 +69,21 @@ Object {
 
 exports[`/processor.js scoping should scope classes, ids, and keyframes 2`] = `
 "/* simple.css */
-@keyframes mc_kooga { }
+@keyframes mc_kooga {
+    from {}
+    to {}
+    50% {}
+}
 #mc_fooga { }
 .mc_wooga { }
 .mc_one,
 .mc_two { }
-.mc_one { }"
+.mc_one { }
+@media print {
+    .mc_three {}
+}
+.mc_anim {
+    animation: mc_kooga 50s ease-in;
+    animation-name: something-else;
+}"
 `;
