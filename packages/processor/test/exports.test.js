@@ -37,32 +37,5 @@ describe("/processor.js", () => {
             
             expect(compositions).toMatchSnapshot();
         });
-
-        it("should include :global values by default", async () => {
-            const { exports } = await processor.string(
-                "./simple.css",
-                dedent(`
-                    :global(.a) { }
-                `)
-            );
-
-            expect(exports).toMatchSnapshot();
-        });
-
-        it("should not include :global values when exportGlobals : false", async () => {
-            processor = new Processor({
-                namer,
-                exportGlobals : false,
-            });
-            
-            const { exports } = await processor.string(
-                "./simple.css",
-                dedent(`
-                    :global(.a) { }
-                `)
-            );
-
-            expect(exports).toMatchSnapshot();
-        });
     });
 });

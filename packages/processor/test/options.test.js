@@ -128,6 +128,22 @@ describe("/processor.js", () => {
         });
 
         describe("exportGlobals", () => {
+            it("should export :global values by default", async () => {
+                const processor = new Processor({
+                    exportGlobals : false,
+                });
+
+                const { exports } = await processor.string(
+                    "./exportGlobals.css",
+                    dedent(`
+                        :global(.a) {}
+                        .b {}
+                    `)
+                );
+
+                expect(exports).toMatchSnapshot();
+            });
+            
             it("should not export :global values when exportGlobals is false", async () => {
                 const processor = new Processor({
                     exportGlobals : false,
