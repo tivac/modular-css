@@ -1,1 +1,2 @@
-.rule { animation: nonexistent; }
+@value one: green;
+@value * from "./local.css";

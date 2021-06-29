@@ -338,6 +338,6 @@ exports[`/processor.js API .string() should process a string 3`] = `".mc_wooga {
 
 exports[`/processor.js API .warnings should have warnings from files that have been added 1`] = `
 Array [
-  "animation declaration w/o a matching @keyframes rule",
+  "Imported value one overlaps with a local value and will be ignored",
 ]
 `;
