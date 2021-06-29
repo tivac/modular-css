@@ -629,14 +629,8 @@ class Processor {
 
         await file.before;
 
-        // Add all the found dependencies to the graph
-        file.before.messages.forEach((msg) => {
-            if(msg.type === "warning") {
-                this._warnings.push(msg);
-
-                return;
-            }
-        });
+        // Surface any warnings from that run
+        file.before.warnings().forEach((msg) => this._warnings.push(msg));
 
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(
