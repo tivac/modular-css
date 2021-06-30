@@ -54,9 +54,7 @@ Snapshot Diff:
 +     color: blue;
 + }",
 @@ --- --- @@
-- 	let div_class_value;
-@@ --- --- @@
-- 			attr(div, \\"class\\", div_class_value = \\"css.nope\\");
+- 			attr(div, \\"class\\", \\"css.nope\\");
 + 			attr(div, \\"class\\", \\"mc043115d5_nope\\");
 `;
 
