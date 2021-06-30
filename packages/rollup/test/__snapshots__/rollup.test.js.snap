@@ -539,17 +539,17 @@ Object {
   "namespaced.js": "
 const color = \\"red\\";
 const other = \\"blue\\";
-const $values = {
+const $values$1 = {
     color,
 other,
 };
 
-const $values$1 = {
-    \\"ns\\" : $values,
+const $values = {
+    \\"ns\\" : $values$1,
 };
 const namespaced = \\"mc_namespaced\\";
 var css = {
-    $values: $values$1,
+    $values,
 namespaced
 };
 
