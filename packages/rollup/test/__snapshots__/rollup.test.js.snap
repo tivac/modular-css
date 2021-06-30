@@ -470,7 +470,7 @@ Object {
   "all-value-types.js": "
 const color = \\"red\\";
 const other = \\"blue\\";
-const $values = {
+const $values$2 = {
     color,
 other,
 };
@@ -481,14 +481,14 @@ const $values$1 = {
 };
 
 const border = \\"1px solid black\\";
-const $values$2 = {
-    \\"ns\\" : $values,
+const $values = {
+    \\"ns\\" : $values$2,
 \\"background\\" : $values$1[\\"background\\"],
 border,
 };
 const namespaced = \\"mc_namespaced\\";
 var css = {
-    $values: $values$2,
+    $values,
 namespaced
 };
 
