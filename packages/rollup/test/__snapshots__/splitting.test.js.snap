@@ -94,25 +94,25 @@ Object {
 export { a as default } from './a2.js';
 ",
   "a2.js": "
-const b = \\"mc_b\\";
-var css = {
-    b
-};
-
-console.log(css, a$1);
-
-var b$1 = \\"b\\";
-
-const a = \\"mc_a\\";
+const b$1 = \\"mc_b\\";
 var css$1 = {
-    a
+    b: b$1
 };
 
-console.log(css$1, b$1);
+console.log(css$1, a);
 
-var a$1 = \\"a\\";
+var b = \\"b\\";
 
-export { a$1 as a, b$1 as b };
+const a$1 = \\"mc_a\\";
+var css = {
+    a: a$1
+};
+
+console.log(css, b);
+
+var a = \\"a\\";
+
+export { a, b };
 ",
   "assets/a.css": "
 /* packages/rollup/test/specimens/circular-dependencies/b.css */
@@ -263,7 +263,7 @@ Object {
 }
 `;
 
-exports[`/rollup.js code splitting should support outputting metadata about CSS dependencies to a named file  1`] = `
+exports[`/rollup.js code splitting should support outputting metadata about CSS dependencies to a named file 1`] = `
 Object {
   "assets/a.css": "
 /* packages/rollup/test/specimens/metadata/a.css */
