@@ -440,23 +440,23 @@ Object {
   "external-value-aliasing.js": "
 const a = \\"red\\";
 const b = \\"blue\\";
-const $values = {
+const $values$2 = {
     a,
 b,
 };
 
 const $values$1 = {
-    \\"a\\" : $values[\\"a\\"],
-\\"b\\" : $values[\\"b\\"],
+    \\"a\\" : $values$2[\\"a\\"],
+\\"b\\" : $values$2[\\"b\\"],
 };
 
-const $values$2 = {
+const $values = {
     \\"a\\" : $values$1[\\"a\\"],
 \\"b\\" : $values$1[\\"b\\"],
 };
 const aliased = \\"mc_aliased\\";
 var css = {
-    $values: $values$2,
+    $values,
 aliased
 };
 
