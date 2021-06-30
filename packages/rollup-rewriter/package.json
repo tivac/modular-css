@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "dedent": "^0.7.0",
-    "dependency-graph": "^0.10.0",
+    "dependency-graph": "^0.11.0",
     "escape-string-regexp": "^4.0.0",
     "magic-string": "^0.25.1"
   },
