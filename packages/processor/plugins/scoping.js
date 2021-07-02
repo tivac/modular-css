@@ -99,6 +99,27 @@ module.exports = () => ({
         });
 
         return {
+            Root(root) {
+                // Scope @keyframes so they don't leak globally
+                // Has to be done via .walk() API so that it happens before
+                // animation declarations are parsed, otherwise we don't know
+                // which part to update w/o building a smarter parser
+                root.walkAtRules(identifiers.keyframes, (rule) => {
+                    if(isStamped(rule)) {
+                        return;
+                    }
+                    
+                    // Save closure ref to this rule
+                    current = rule;
+                    
+                    lookup = keyframes;
+                    
+                    rule.params = parser.processSync(rule.params);
+
+                    stamp(rule);
+                });
+            },
+
             // Walk all rules and save off rewritten selectors
             Rule(rule) {
                 // Don't re-scope rules
@@ -121,21 +142,21 @@ module.exports = () => ({
             },
     
             // Also scope @keyframes rules so they don't leak globally
-            AtRule(rule) {
-                // Don't re-scope rules, and only care about @keyframes or prefixed variations
-                if(!identifiers.keyframes.test(rule.name) || isStamped(rule)) {
-                    return;
-                }
+            // AtRule(rule) {
+            //     // Don't re-scope rules, and only care about @keyframes or prefixed variations
+            //     if(!identifiers.keyframes.test(rule.name) || isStamped(rule)) {
+            //         return;
+            //     }
 
-                // Save closure ref to this rule
-                current = rule;
+            //     // Save closure ref to this rule
+            //     current = rule;
                 
-                lookup = keyframes;
+            //     lookup = keyframes;
                 
-                rule.params = parser.processSync(rule.params);
+            //     rule.params = parser.processSync(rule.params);
                 
-                stamp(rule);
-            },
+            //     stamp(rule);
+            // },
 
             Declaration(decl) {
                 if(!identifiers.animations.test(decl.prop) || isStamped(decl)) {

@@ -149,7 +149,7 @@ describe("/processor.js", () => {
             expect(css).toMatchSnapshot();
         });
         
-        it("should update scoped animations from the scoping plugin's message", async () => {
+        it("should update animation declarations", async () => {
             await processor.string("./animation.css", dedent(`
                 @keyframes a {}
                 .b { animation: a; }
@@ -160,7 +160,7 @@ describe("/processor.js", () => {
             expect(css).toMatchSnapshot();
         });
 
-        it("should update the animation-name property", async () => {
+        it("should update animation-name declarations", async () => {
             await processor.string("./animation-name.css", dedent(`
                 @keyframes a {}
                 .b { animation-name: a; }
@@ -184,10 +184,21 @@ describe("/processor.js", () => {
             expect(css).toMatchSnapshot();
         });
 
-        it("should update scoped prefixed animations from the scoping plugin's message", async () => {
+        it("should update prefixed @keyframes", async () => {
             await processor.string("./prefixed-animations.css", dedent(`
                 @-webkit-keyframes a {}
                 .b { animation: a; }
+            `));
+
+            const { css } = await processor.output();
+
+            expect(css).toMatchSnapshot();
+        });
+
+        it("should update animation-name declarations when @keyframes come after", async () => {
+            await processor.string("./animation-name.css", dedent(`
+                .b { animation-name: a; }
+                @keyframes a {}
             `));
 
             const { css } = await processor.output();

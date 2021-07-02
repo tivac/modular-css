@@ -94,6 +94,24 @@ exports[`/processor.js scoping should scope classes, ids, and keyframes 2`] = `
 }"
 `;
 
+exports[`/processor.js scoping should update animation declarations 1`] = `
+"/* animation.css */
+@keyframes mc_a {}
+.mc_b { animation: mc_a; }"
+`;
+
+exports[`/processor.js scoping should update animation-name declarations 1`] = `
+"/* animation-name.css */
+@keyframes mc_a {}
+.mc_b { animation-name: mc_a; }"
+`;
+
+exports[`/processor.js scoping should update animation-name declarations when @keyframes come after 1`] = `
+"/* animation-name.css */
+.mc_b { animation-name: mc_a; }
+@keyframes mc_a {}"
+`;
+
 exports[`/processor.js scoping should update multiple animations properly 1`] = `
 "/* multiple-animations.css */
 @keyframes mc_a {}
@@ -101,20 +119,8 @@ exports[`/processor.js scoping should update multiple animations properly 1`] = 
 .mc_c { animation: mc_a 10s linear, mc_b 0.2s infinite; }"
 `;
 
-exports[`/processor.js scoping should update scoped animations from the scoping plugin's message 1`] = `
-"/* animation.css */
-@keyframes mc_a {}
-.mc_b { animation: mc_a; }"
-`;
-
-exports[`/processor.js scoping should update scoped prefixed animations from the scoping plugin's message 1`] = `
+exports[`/processor.js scoping should update prefixed @keyframes 1`] = `
 "/* prefixed-animations.css */
 @-webkit-keyframes mc_a {}
 .mc_b { animation: mc_a; }"
-`;
-
-exports[`/processor.js scoping should update the animation-name property 1`] = `
-"/* animation-name.css */
-@keyframes mc_a {}
-.mc_b { animation-name: mc_a; }"
 `;
