@@ -45,7 +45,7 @@
     "lerna": "^4.0.0",
     "node-notifier": "^10.0.0",
     "p-defer": "^3.0.0",
-    "pegjs": "0.10.0",
+    "peggy": "^1.2.0",
     "read-dir-deep": "^7.0.1",
     "rollup": "^2.52.4",
     "rollup-plugin-hypothetical": "^2.1.0",
