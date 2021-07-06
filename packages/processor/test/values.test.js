@@ -19,7 +19,7 @@ describe("/processor.js", () => {
             await expect(processor.string(
                 "./invalid/value.css",
                 "@value foo, bar from nowhere.css"
-            )).rejects.toThrow(`SyntaxError: Expected source but "n" found.`);
+            )).rejects.toThrow(`SyntaxError: Expected source or whitespace but "n" found.`);
         });
 
         it("should fail if a value imports a non-existant reference", async () => {
