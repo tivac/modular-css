@@ -74,14 +74,14 @@ module.exports = () => ({
                         lookup[key] = [ child.value ];
                     }
                     
-                    child.ignore = true;
+                    child.global = true;
                 });
             });
 
             selectors.walk((node) => {
                 const key = rename(current, node);
     
-                if(!key || node.ignore) {
+                if(!key || node.global) {
                     return;
                 }
 
@@ -158,6 +158,7 @@ module.exports = () => ({
             //     stamp(rule);
             // },
 
+            // Replace animation/animation-name entries with scoped @keyframes references
             Declaration(decl) {
                 if(!identifiers.animations.test(decl.prop) || isStamped(decl)) {
                     return;
