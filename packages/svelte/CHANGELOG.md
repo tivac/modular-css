@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.0.0](https://github.com/tivac/modular-css/compare/v26.0.0...v27.0.0) (2021-07-06)
+
+**Note:** Version bump only for package @modular-css/svelte
+
+
+
+
+
 # [26.0.0](https://github.com/tivac/modular-css/compare/v25.8.2...v26.0.0) (2021-02-25)
 
 
