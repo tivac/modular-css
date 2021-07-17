@@ -88,11 +88,11 @@ Snapshot Diff:
   }",
 -   "output.js": "const baloo = \\"blue\\";
 +   "output.js": "const baloo = \\"red\\";
-  const $values = {
+  const $values$1 = {
       baloo,
   };
 
-  const $values$1 = {
+  const $values = {
 `;
 
 exports[`/rollup.js watch mode should update when a shared dependency changes 1`] = `

@@ -335,6 +335,7 @@ describe("/webpack.js", () => {
             })
             // This build fails because the file is missing
             .catch((stats) => {
+                // eslint-disable-next-line jest/no-conditional-expect
                 expect(stats.toJson().errors[0]).toMatch("no such file or directory");
 
                 fs.writeFileSync(changed, ".three { color: green; }");
@@ -343,8 +344,8 @@ describe("/webpack.js", () => {
             });
     });
 
-    // eslint-disable-next-line jest/no-test-callback
-    it("should accept an existing processor instance", async (done) => {
+    // eslint-disable-next-line jest/no-done-callback
+    it("should accept an existing processor instance", async () => {
         const processor = new Processor();
 
         await processor.string("./packages/webpack/test/specimens/fake.css", dedent(`
@@ -353,7 +354,7 @@ describe("/webpack.js", () => {
             }
         `));
 
-        webpack(config({
+        return new Promise((resolve) => webpack(config({
             entry  : "./packages/webpack/test/specimens/simple.js",
             plugin : {
                 processor,
@@ -364,7 +365,7 @@ describe("/webpack.js", () => {
             expect(read("output.js")).toMatchSnapshot();
             expect(read("output.css")).toMatchSnapshot();
 
-            done();
-        });
+            resolve();
+        }));
     });
 });

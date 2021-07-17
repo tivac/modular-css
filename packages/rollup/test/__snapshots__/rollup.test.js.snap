@@ -440,23 +440,23 @@ Object {
   "external-value-aliasing.js": "
 const a = \\"red\\";
 const b = \\"blue\\";
-const $values = {
+const $values$2 = {
     a,
 b,
 };
 
 const $values$1 = {
-    \\"a\\" : $values[\\"a\\"],
-\\"b\\" : $values[\\"b\\"],
+    \\"a\\" : $values$2[\\"a\\"],
+\\"b\\" : $values$2[\\"b\\"],
 };
 
-const $values$2 = {
+const $values = {
     \\"a\\" : $values$1[\\"a\\"],
 \\"b\\" : $values$1[\\"b\\"],
 };
 const aliased = \\"mc_aliased\\";
 var css = {
-    $values: $values$2,
+    $values,
 aliased
 };
 
@@ -470,7 +470,7 @@ Object {
   "all-value-types.js": "
 const color = \\"red\\";
 const other = \\"blue\\";
-const $values = {
+const $values$2 = {
     color,
 other,
 };
@@ -481,14 +481,14 @@ const $values$1 = {
 };
 
 const border = \\"1px solid black\\";
-const $values$2 = {
-    \\"ns\\" : $values,
+const $values = {
+    \\"ns\\" : $values$2,
 \\"background\\" : $values$1[\\"background\\"],
 border,
 };
 const namespaced = \\"mc_namespaced\\";
 var css = {
-    $values: $values$2,
+    $values,
 namespaced
 };
 
@@ -539,17 +539,17 @@ Object {
   "namespaced.js": "
 const color = \\"red\\";
 const other = \\"blue\\";
-const $values = {
+const $values$1 = {
     color,
 other,
 };
 
-const $values$1 = {
-    \\"ns\\" : $values,
+const $values = {
+    \\"ns\\" : $values$1,
 };
 const namespaced = \\"mc_namespaced\\";
 var css = {
-    $values: $values$1,
+    $values,
 namespaced
 };
 

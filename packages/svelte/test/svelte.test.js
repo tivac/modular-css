@@ -16,7 +16,7 @@ describe("/svelte.js", () => {
     afterEach(() => require("shelljs").rm("-rf", "./packages/svelte/test/output/*"));
 
     it("should extract CSS from a <style> tag", async () => {
-        const filename = require.resolve("./specimens/style.html");
+        const filename = require.resolve("./specimens/style.svelte");
         const { processor, preprocess } = plugin({
             namer,
         });
@@ -40,7 +40,7 @@ describe("/svelte.js", () => {
         "style",
         "link",
     ])("should expose CSS errors in a useful way (<%s>)", async (type) => {
-        const filename = require.resolve(`./specimens/error-${type}.html`);
+        const filename = require.resolve(`./specimens/error-${type}.svelte`);
         const { preprocess } = plugin({
             namer,
         });
@@ -57,7 +57,7 @@ describe("/svelte.js", () => {
     it("should expose CSS errors in a useful way (non-css file)", async () => {
         const spy = logspy("warn");
 
-        const filename = require.resolve(`./specimens/error-link-non-css.html`);
+        const filename = require.resolve(`./specimens/error-link-non-css.svelte`);
         const { preprocess } = plugin({
             namer,
         });
@@ -68,14 +68,14 @@ describe("/svelte.js", () => {
                 ...preprocess,
                 filename,
             },
-        )).rejects.toThrow("error-link.html:1:1: Unknown word");
+        )).rejects.toThrow("error-link.svelte:1:1: Unknown word");
 
         expect(spy).toHaveBeenCalled();
         expect(spy).toMatchLogspySnapshot();
     });
 
     it("should ignore <links> that reference a URL", async () => {
-        const filename = require.resolve("./specimens/url.html");
+        const filename = require.resolve("./specimens/url.svelte");
         const { preprocess, processor } = plugin({
             namer,
         });
@@ -103,7 +103,7 @@ describe("/svelte.js", () => {
             ".fake { color: #F00; }"
         );
 
-        const filename = require.resolve("./specimens/url.html");
+        const filename = require.resolve("./specimens/url.svelte");
         const { preprocess } = plugin({
             processor,
         });
@@ -124,11 +124,11 @@ describe("/svelte.js", () => {
     });
 
     it.each([
-        [ "no script", "external.html" ],
-        [ "existing script", "external-script.html" ],
-        [ "single quotes", "external-single.html" ],
-        [ "unquoted", "external-unquoted.html" ],
-        [ "values", "external-values.html" ],
+        [ "no script", "external.svelte" ],
+        [ "existing script", "external-script.svelte" ],
+        [ "single quotes", "external-single.svelte" ],
+        [ "unquoted", "external-unquoted.svelte" ],
+        [ "values", "external-values.svelte" ],
     ])("should extract CSS from a <link> tag (%s)", async (title, specimen) => {
         const filename = require.resolve(`./specimens/${specimen}`);
         const { processor, preprocess } = plugin({
@@ -170,12 +170,12 @@ describe("/svelte.js", () => {
     });
 
     it.each([
-        [ "invalid reference <script> - <style>", "invalid-inline-script.html" ],
-        [ "invalid reference template - <style>", "invalid-inline-template.html" ],
-        [ "invalid reference <script> - <link>", "invalid-external-script.html" ],
-        [ "invalid reference template - <link>", "invalid-external-template.html" ],
-        [ "empty css file - <style>", "invalid-inline-empty.html" ],
-        [ "empty css file - <link>", "invalid-external-empty.html" ],
+        [ "invalid reference <script> - <style>", "invalid-inline-script.svelte" ],
+        [ "invalid reference template - <style>", "invalid-inline-template.svelte" ],
+        [ "invalid reference <script> - <link>", "invalid-external-script.svelte" ],
+        [ "invalid reference template - <link>", "invalid-external-template.svelte" ],
+        [ "empty css file - <style>", "invalid-inline-empty.svelte" ],
+        [ "empty css file - <link>", "invalid-external-empty.svelte" ],
     ])("should handle errors: %s", async (title, specimen) => {
         const filename = require.resolve(`./specimens/${specimen}`);
 
@@ -222,7 +222,7 @@ describe("/svelte.js", () => {
             namer,
         });
 
-        const filename = require.resolve("./specimens/both.html");
+        const filename = require.resolve("./specimens/both.svelte");
 
         await expect(
             svelte.preprocess(
@@ -236,8 +236,8 @@ describe("/svelte.js", () => {
     });
 
     it.each([
-        [ "<style>", "style.html" ],
-        [ "<link>", "external.html" ],
+        [ "<style>", "style.svelte" ],
+        [ "<link>", "external.svelte" ],
     ])("should support verbose output: %s", async (title, specimen) => {
         const spy = logspy();
 
@@ -263,7 +263,7 @@ describe("/svelte.js", () => {
     });
 
     it("should warn when multiple <link> elements are in the html", async () => {
-        const filename = require.resolve(`./specimens/multiple-link.html`);
+        const filename = require.resolve(`./specimens/multiple-link.svelte`);
 
         const spy = logspy("warn");
 
@@ -290,7 +290,7 @@ describe("/svelte.js", () => {
     });
 
     it("should no-op if all <link>s reference a URL", async () => {
-        const filename = require.resolve("./specimens/multiple-url.html");
+        const filename = require.resolve("./specimens/multiple-url.svelte");
 
         const { preprocess } = plugin({
             namer,
@@ -310,7 +310,7 @@ describe("/svelte.js", () => {
 
     it("should invalidate files before reprocessing (<link>)", async () => {
         // V1 of files
-        fs.writeFileSync(path.resolve(__dirname, "./output/source.html"), dedent(`
+        fs.writeFileSync(path.resolve(__dirname, "./output/source.svelte"), dedent(`
             <link rel="stylesheet" href="./source.css" />
             <div class="{css.source}">Source</div>
         `));
@@ -321,7 +321,7 @@ describe("/svelte.js", () => {
             }
         `));
 
-        const filename = require.resolve(`./output/source.html`);
+        const filename = require.resolve(`./output/source.svelte`);
         const { processor, preprocess } = plugin({
             namer,
         });
@@ -364,12 +364,12 @@ describe("/svelte.js", () => {
 
     it("should invalidate files before reprocessing (<style>)", async () => {
         // V1 of files
-        fs.writeFileSync(path.resolve(__dirname, "./output/source.html"), dedent(`
+        fs.writeFileSync(path.resolve(__dirname, "./output/source.svelte"), dedent(`
             <style>.source { color: red; }</style>
             <div class="{css.source}">Source</div>
         `));
 
-        const filename = require.resolve(`./output/source.html`);
+        const filename = require.resolve(`./output/source.svelte`);
         const { processor, preprocess } = plugin({
             namer,
         });
@@ -389,7 +389,7 @@ describe("/svelte.js", () => {
         expect(output.css).toMatchSnapshot();
 
         // V2 of CSS
-        fs.writeFileSync(path.resolve(__dirname, "./output/source.html"), dedent(`
+        fs.writeFileSync(path.resolve(__dirname, "./output/source.svelte"), dedent(`
             <style>.source { color: blue; }</style>
             <div class="{css.source}">Source</div>
         `));
@@ -416,8 +416,8 @@ describe("/svelte.js", () => {
 
         const results = await Promise.all(
             [
-                require.resolve("./specimens/overlapping/entry1.html"),
-                require.resolve("./specimens/overlapping/entry2.html"),
+                require.resolve("./specimens/overlapping/entry1.svelte"),
+                require.resolve("./specimens/overlapping/entry2.svelte"),
             ]
             .map((filename) => svelte.preprocess(
                 fs.readFileSync(filename, "utf8"),
@@ -440,7 +440,7 @@ describe("/svelte.js", () => {
             ],
         });
 
-        const filename = require.resolve("./specimens/link-resolving.html");
+        const filename = require.resolve("./specimens/link-resolving.svelte");
         const { preprocess } = plugin({
             processor,
         });
@@ -463,7 +463,7 @@ describe("/svelte.js", () => {
     it("should warn about unquoted class attributes", async () => {
         const spy = logspy("warn");
 
-        const filename = require.resolve("./specimens/unquoted.html");
+        const filename = require.resolve("./specimens/unquoted.svelte");
         const { preprocess } = plugin({
             namer,
         });
@@ -483,7 +483,7 @@ describe("/svelte.js", () => {
     it("should ignore <Link />", async () => {
         const spy = logspy("warn");
 
-        const filename = require.resolve("./specimens/link-component.html");
+        const filename = require.resolve("./specimens/link-component.svelte");
         const { preprocess } = plugin({
             namer,
         });

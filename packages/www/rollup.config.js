@@ -13,7 +13,6 @@ const { processor, preprocess } = require("@modular-css/svelte")({
     ],
     
     after : [
-        require("postcss-color-function")(),
         require("postcss-import")(),
         require("postcss-calc")(),
     ],
@@ -90,8 +89,10 @@ module.exports = [
             
             require("rollup-plugin-svelte")({
                 preprocess,
-                generate : "ssr",
-                dev      : isProduction,
+                compilerOptions : {
+                    generate : "ssr",
+                    dev      : isProduction,
+                },
             }),
 
             require("@modular-css/rollup")({
@@ -159,7 +160,9 @@ module.exports = [
             
             require("rollup-plugin-svelte")({
                 preprocess,
-                dev : isProduction,
+                compilerOptions : {
+                    dev : isProduction,
+                },
             }),
 
             require("@modular-css/rollup")({

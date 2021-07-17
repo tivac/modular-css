@@ -122,7 +122,7 @@ describe("/rollup.js code splitting", () => {
         })).toMatchRollupAssetSnapshot();
     });
 
-    it("should support outputting metadata about CSS dependencies to a named file ", async () => {
+    it("should support outputting metadata about CSS dependencies to a named file", async () => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/metadata/a.js"),

@@ -38,11 +38,11 @@ describe("/svelte.js", () => {
 
             // Create v1 of the files
             write(`./rollup/input/index.js`, `
-                import app from "./app.html";
+                import app from "./app.svelte";
                 console.log(app);
             `);
 
-            write(`./rollup/input/app.html`, `
+            write(`./rollup/input/app.svelte`, `
                 <div class="{css.nope}">Hi</div>
             `);
 
@@ -78,7 +78,7 @@ describe("/svelte.js", () => {
                     }
                 `);
 
-                write(`./rollup/input/app.html`, `
+                write(`./rollup/input/app.svelte`, `
                     <link rel="stylesheet" href="./app.css" />
                     <div class="{css.nope}">Hi</div>
                 `);
@@ -100,11 +100,11 @@ describe("/svelte.js", () => {
 
             // Create v1 of the files
             write(`./rollup-composes/input/index.js`, `
-                import app from "./app.html";
+                import app from "./app.svelte";
                 console.log(app);
             `);
 
-            write(`./rollup-composes/input/app.html`, `
+            write(`./rollup-composes/input/app.svelte`, `
                 <link rel="stylesheet" href="./app.css" />
                 <div class="{css.a}">Hi</div>
             `);
@@ -185,7 +185,7 @@ describe("/svelte.js", () => {
                         cwd   : path.join(__dirname, "./specimens"),
                         files : {
                             "./error.js" : `
-                                import Component from "./error-${type}.html";
+                                import Component from "./error-${type}.svelte";
 
                                 console.log(Component);
                             `,
@@ -217,7 +217,7 @@ describe("/svelte.js", () => {
                         cwd   : path.join(__dirname, "./specimens"),
                         files : {
                             "./error.js" : `
-                                import Component from "./error-link-non-css.html";
+                                import Component from "./error-link-non-css.svelte";
 
                                 console.log(Component);
                             `,
@@ -233,7 +233,7 @@ describe("/svelte.js", () => {
                         processor,
                     }),
                 ],
-            })).rejects.toThrow("error-link.html:1:1: Unknown word");
+            })).rejects.toThrow("error-link.svelte:1:1: Unknown word");
 
             expect(spy).toHaveBeenCalled();
             expect(spy).toMatchLogspySnapshot();
@@ -246,8 +246,8 @@ describe("/svelte.js", () => {
 
             const bundle = await rollup({
                 input : [
-                    require.resolve("./specimens/inline-chunking/a.html"),
-                    require.resolve("./specimens/inline-chunking/b.html"),
+                    require.resolve("./specimens/inline-chunking/a.svelte"),
+                    require.resolve("./specimens/inline-chunking/b.svelte"),
                 ],
 
                 plugins : [
