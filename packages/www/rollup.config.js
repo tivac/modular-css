@@ -160,7 +160,9 @@ module.exports = [
             
             require("rollup-plugin-svelte")({
                 preprocess,
-                dev : isProduction,
+                compilerOptions : {
+                    dev : isProduction,
+                },
             }),
 
             require("@modular-css/rollup")({
