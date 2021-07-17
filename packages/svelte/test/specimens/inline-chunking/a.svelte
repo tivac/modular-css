@@ -1,4 +1,4 @@
-<div class="{css.a}">A.HTML</div>
+<div class="{css.a}">A.SVELTE</div>
 
 <style>
 .a {
