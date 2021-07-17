@@ -3,7 +3,7 @@
 exports[`/svelte.js should expose CSS errors in a useful way (non-css file) 1`] = `
 Array [
   Array [
-    "Possible invalid <link> href: ./error-link.html",
+    "Possible invalid <link> href: ./error-link.svelte",
   ],
 ]
 `;
@@ -228,7 +228,7 @@ exports[`/svelte.js should extract CSS from a <style> tag 2`] = `
 .mc_wooga {
     background: blue;
 }
-/* packages/svelte/test/specimens/style.html */
+/* packages/svelte/test/specimens/style.svelte */
 .mc_flex {
         display: flex;
     }
@@ -449,7 +449,7 @@ exports[`/svelte.js should invalidate files before reprocessing (<style>) 1`] = 
 `;
 
 exports[`/svelte.js should invalidate files before reprocessing (<style>) 2`] = `
-"/* packages/svelte/test/output/source.html */
+"/* packages/svelte/test/output/source.svelte */
 .mc_source { color: red; }"
 `;
 
@@ -459,7 +459,7 @@ exports[`/svelte.js should invalidate files before reprocessing (<style>) 3`] = 
 `;
 
 exports[`/svelte.js should invalidate files before reprocessing (<style>) 4`] = `
-"/* packages/svelte/test/output/source.html */
+"/* packages/svelte/test/output/source.svelte */
 .mc_source { color: blue; }"
 `;
 
@@ -476,7 +476,7 @@ Array [
   Array [
     "[@modular-css/svelte]",
     "Processing",
-    "packages/svelte/test/specimens/external.html",
+    "packages/svelte/test/specimens/external.svelte",
   ],
   Array [
     "[@modular-css/svelte]",
@@ -546,7 +546,7 @@ Array [
   Array [
     "[@modular-css/svelte]",
     "processed styles",
-    "packages/svelte/test/specimens/external.html",
+    "packages/svelte/test/specimens/external.svelte",
   ],
   Array [
     "[@modular-css/svelte]",
@@ -589,27 +589,27 @@ Array [
   Array [
     "[@modular-css/svelte]",
     "Processing",
-    "packages/svelte/test/specimens/style.html",
+    "packages/svelte/test/specimens/style.svelte",
   ],
   Array [
     "[@modular-css/svelte]",
     "extract <style>",
-    "packages/svelte/test/specimens/style.html",
+    "packages/svelte/test/specimens/style.svelte",
   ],
   Array [
     "[processor]",
     "string()",
-    "packages/svelte/test/specimens/style.html",
+    "packages/svelte/test/specimens/style.svelte",
   ],
   Array [
     "[processor]",
     "_add()",
-    "packages/svelte/test/specimens/style.html",
+    "packages/svelte/test/specimens/style.svelte",
   ],
   Array [
     "[processor]",
     "_before()",
-    "packages/svelte/test/specimens/style.html",
+    "packages/svelte/test/specimens/style.svelte",
   ],
   Array [
     "[processor]",
@@ -654,12 +654,12 @@ Array [
   Array [
     "[processor]",
     "_process()",
-    "packages/svelte/test/specimens/style.html",
+    "packages/svelte/test/specimens/style.svelte",
   ],
   Array [
     "[@modular-css/svelte]",
     "processed styles",
-    "packages/svelte/test/specimens/style.html",
+    "packages/svelte/test/specimens/style.svelte",
   ],
   Array [
     "[@modular-css/svelte]",
@@ -683,12 +683,12 @@ Array [
   Array [
     "[processor]",
     "_after()",
-    "packages/svelte/test/specimens/style.html",
+    "packages/svelte/test/specimens/style.svelte",
   ],
 ]
 `;
 
-exports[`/svelte.js should throw on both <style> and <link> in one file 1`] = `"[@modular-css/svelte] Use <style> OR <link>, but not both in \\"packages/svelte/test/specimens/both.html\\""`;
+exports[`/svelte.js should throw on both <style> and <link> in one file 1`] = `"[@modular-css/svelte] Use <style> OR <link>, but not both in \\"packages/svelte/test/specimens/both.svelte\\""`;
 
 exports[`/svelte.js should use an already-created processor 1`] = `
 "<link rel=\\"stylesheet\\" href=\\"http://example.com/styles.css\\" />
@@ -735,13 +735,13 @@ Array [
     "[@modular-css/svelte]",
     "WARN",
     "Unquoted class attribute! class={css.b}",
-    "packages/svelte/test/specimens/unquoted.html",
+    "packages/svelte/test/specimens/unquoted.svelte",
   ],
   Array [
     "[@modular-css/svelte]",
     "WARN",
     "Unquoted class attribute! class={css.a}",
-    "packages/svelte/test/specimens/unquoted.html",
+    "packages/svelte/test/specimens/unquoted.svelte",
   ],
 ]
 `;
@@ -768,7 +768,7 @@ Array [
     "[@modular-css/svelte]",
     "WARN",
     "Only the first local <link> tag will be used",
-    "packages/svelte/test/specimens/multiple-link.html",
+    "packages/svelte/test/specimens/multiple-link.svelte",
   ],
   Array [
     "[@modular-css/svelte]",
