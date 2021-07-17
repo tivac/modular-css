@@ -807,6 +807,7 @@ describe("/rollup.js", () => {
                     createPlugin({ namer }),
                 ],
             })
+            // eslint-disable-next-line jest/no-conditional-expect
             .catch((e) => expect(e.toString()).toMatch(".wooga"))
         );
 

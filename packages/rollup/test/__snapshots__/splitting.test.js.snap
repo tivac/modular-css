@@ -263,7 +263,7 @@ Object {
 }
 `;
 
-exports[`/rollup.js code splitting should support outputting metadata about CSS dependencies to a named file  1`] = `
+exports[`/rollup.js code splitting should support outputting metadata about CSS dependencies to a named file 1`] = `
 Object {
   "assets/a.css": "
 /* packages/rollup/test/specimens/metadata/a.css */
