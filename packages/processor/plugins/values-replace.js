@@ -40,7 +40,6 @@ module.exports = () => ({
                         return;
                     }
                     
-                    
                     const current = values[node.value];
                     
                     // Source map support

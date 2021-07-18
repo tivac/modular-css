@@ -157,6 +157,21 @@ describe("/processor.js", () => {
             expect(css).toMatchSnapshot();
         });
 
+        it("should support value replacement in @value", async () => {
+            await processor.string(
+                "./packages/processor/test/specimens/simple.css",
+                dedent(`
+                    @value calcAlias from './values.css';
+                    
+                    .fooga { width: calcAlias; }
+                `)
+            );
+
+            const { css } = await processor.output();
+
+            expect(css).toMatchSnapshot();
+        });
+
         it("should support value replacement in :external(...)", async () => {
             await processor.file(require.resolve("./specimens/externals.css"));
 

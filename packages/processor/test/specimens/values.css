@@ -5,3 +5,8 @@
 
 @value alias: b;
 @value alias2: alias;
+
+@value width: 1rem;
+@value height: 1rem;
+
+@value calcAlias: calc(width + height);
