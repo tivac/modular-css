@@ -82,10 +82,8 @@
     transition: background-color site.hoverOutTime ease-in;
 }
 
-@value hoverAdjust: lightness(-20%);
-
 .cta:hover {
-    background: color(ctaBg hoverAdjust);
+    background: ctaBg;
 
     /* needed to override the default <a> styling */
     color: ctaText;

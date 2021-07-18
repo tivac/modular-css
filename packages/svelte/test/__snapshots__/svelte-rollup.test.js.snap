@@ -9,8 +9,8 @@ Object {
 }
 ",
   "a.css": "
-/* packages/svelte/test/specimens/inline-chunking/a.html */
-.mc80aa5044_a {
+/* packages/svelte/test/specimens/inline-chunking/a.svelte */
+.mc95c9e282_a {
     color: aqua;
 }
 ",
@@ -21,8 +21,8 @@ Object {
 }
 ",
   "b.css": "
-/* packages/svelte/test/specimens/inline-chunking/b.html */
-.mcbb945b2f_b {
+/* packages/svelte/test/specimens/inline-chunking/b.svelte */
+.mc39b698fc_b {
     color: blue;
 }
 ",
@@ -38,7 +38,7 @@ Object {
 exports[`/svelte.js rollup errors should show useful errors from rollup (non-css file) 1`] = `
 Array [
   Array [
-    "Possible invalid <link> href: ./error-link.html",
+    "Possible invalid <link> href: ./error-link.svelte",
   ],
 ]
 `;
