@@ -19,8 +19,7 @@ exports[`/processor.js values should support exporting imported variables 1`] = 
 
 .mc_green {
     color: green;
-}
-"
+}"
 `;
 
 exports[`/processor.js values should support importing variables from a file 1`] = `
@@ -32,8 +31,7 @@ exports[`/processor.js values should support importing variables from a file 1`]
 
 .mc_green {
     color: green;
-}
-"
+}"
 `;
 
 exports[`/processor.js values should support local values in value composition 1`] = `
@@ -44,6 +42,15 @@ exports[`/processor.js values should support local values in value composition 1
 /* packages/processor/test/specimens/simple.css */
 .mc_fooga { background: red; }
 "
+`;
+
+exports[`/processor.js values should support several layers of value references 1`] = `
+"/* packages/processor/test/specimens/values.css */
+/* packages/processor/test/specimens/value-references.css */
+.mc_aliased {
+    color: blue;
+    background: blue;
+}"
 `;
 
 exports[`/processor.js values should support simple values 1`] = `
@@ -61,8 +68,7 @@ exports[`/processor.js values should support value aliasing 1`] = `
 .mc_aliased {
     color: red;
     background: blue;
-}
-"
+}"
 `;
 
 exports[`/processor.js values should support value composition 1`] = `
@@ -71,8 +77,7 @@ exports[`/processor.js values should support value composition 1`] = `
 .mc_red {
     color: red;
     background: blue;
-}
-"
+}"
 `;
 
 exports[`/processor.js values should support value namespaces 1`] = `
@@ -88,8 +93,7 @@ exports[`/processor.js values should support value namespaces 1`] = `
 
 .mc_other {
     color: #000;
-}
-"
+}"
 `;
 
 exports[`/processor.js values should support value replacement in :external(...) 1`] = `

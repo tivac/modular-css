@@ -172,5 +172,13 @@ describe("/processor.js", () => {
 
             expect(css).toMatchSnapshot();
         });
+
+        it("should support several layers of value references", async () => {
+            await processor.file(require.resolve("./specimens/value-references.css"));
+
+            const { css } = await processor.output();
+
+            expect(css).toMatchSnapshot();
+        });
     });
 });

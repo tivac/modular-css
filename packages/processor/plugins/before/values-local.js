@@ -28,12 +28,18 @@ module.exports = () => ({
                     if(parsed.type !== "assignment") {
                         return;
                     }
-                
-                    values[parsed.name] = {
-                        value  : parsed.value,
-                        source : rule.source,
-                    };
-                
+
+                    // References to existing values are handled as object references,
+                    // so they're always kept up-to-date
+                    if(values[parsed.value]) {
+                        values[parsed.name] = values[parsed.value];
+                    } else {
+                        values[parsed.name] = {
+                            value  : parsed.value,
+                            source : rule.source,
+                        };
+                    }
+                    
                     rule.remove();
                 },
             },
