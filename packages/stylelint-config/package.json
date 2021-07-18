@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/stylelint-config",
-  "version": "26.0.0",
+  "version": "27.0.0",
   "description": "Stylelint config to suport modular-css syntax",
   "main": "./stylelint.js",
   "repository": {

@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { promisify } = require("util");
 
-const peg = require("pegjs");
+const peg = require("peggy");
 
 const read = promisify(fs.readFile);
 const write = promisify(fs.writeFile);

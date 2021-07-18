@@ -6,56 +6,53 @@ const { selectorKey } = require("../lib/keys.js");
 
 const plugin = "modular-css-at-composes";
 
-module.exports = (css, { opts, messages }) => {
-    const { from, processor } = opts;
-    const { files, graph } = processor;
+module.exports = () => ({
+    postcssPlugin : plugin,
 
-    let source;
+    prepare(result) {
+        const { from, processor } = result.opts;
+        const { files, graph } = processor;
 
-    css.walkAtRules("composes", (rule) => {
-        if(source) {
-            throw rule.error(`Only one @composes rule per file`, { word : "composes" });
-        }
+        const { classes : target } = files[from];
 
-        // We know it's safe, otherwise it would have failed in graph-nodes pass
-        const parsed = parser.parse(rule.params);
+        let source = false;
 
-        source = files[processor.resolve(from, parsed.source)];
+        return {
+            AtRule : {
+                composes(rule) {
+                    if(source) {
+                        throw rule.error(`Only one @composes rule per file`, { word : "composes" });
+                    }
 
-        // Remove the @composes from the output
-        rule.remove();
-    });
+                    // We know it's safe, otherwise it would have failed in graph-nodes pass
+                    const parsed = parser.parse(rule.params);
+            
+                    source = files[processor.resolve(from, parsed.source)];
 
-    if(!source) {
-        return;
-    }
+                    // Remove the @composes from the output
+                    rule.remove();
 
-    // Create a copy of each defined class and also the dependency graph (if it has dependencies)
-    const atcomposes = Object.keys(source.classes).reduce((acc, key) => {
-        acc[key] = [ ...source.classes[key] ];
+                    // Create a copy of each defined class and also the dependency graph (if it has dependencies)
+                    Object.keys(source.classes).forEach((key) => {
+                        target[key] = [ ...source.classes[key] ];
 
-        const skey = selectorKey(source.name, key);
+                        const skey = selectorKey(source.name, key);
 
-        if(!graph.hasNode(skey)) {
-            return acc;
-        }
+                        if(!graph.hasNode(skey)) {
+                            return;
+                        }
 
-        const dkey = processor._addSelector(from, key);
+                        const dkey = processor._addSelector(from, key);
 
-        // Duplicate the source key's info to the new dependent key
-        graph.dependenciesOf(skey).forEach((dep) => {
-            graph.addDependency(dkey, dep);
-        });
+                        // Duplicate the source key's info to the new dependent key
+                        graph.dependenciesOf(skey).forEach((dep) => {
+                            graph.addDependency(dkey, dep);
+                        });
+                    });
+                },
+            },
+        };
+    },
+});
 
-        return acc;
-    }, Object.create(null));
-
-    messages.push({
-        type : "modular-css",
-        plugin,
-
-        atcomposes,
-    });
-};
-
-module.exports.postcssPlugin = plugin;
+module.exports.postcss = true;

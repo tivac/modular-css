@@ -46,6 +46,16 @@ exports[`/processor.js values should support local values in value composition 1
 "
 `;
 
+exports[`/processor.js values should support several layers of value references 1`] = `
+"/* packages/processor/test/specimens/values.css */
+/* packages/processor/test/specimens/value-references.css */
+.mc_aliased {
+    color: blue;
+    background: blue;
+}
+"
+`;
+
 exports[`/processor.js values should support simple values 1`] = `
 "/* values.css */
 .mc_a {
@@ -109,6 +119,12 @@ exports[`/processor.js values should support value replacement in :external(...)
 .mc_wooga .mc_booga {
     color: red;
 }
+"
+`;
+
+exports[`/processor.js values should support value replacement in @value 1`] = `
+"/* packages/processor/test/specimens/values.css */ /* packages/processor/test/specimens/simple.css */
+.mc_fooga { width: calc(1rem + 1rem); }
 "
 `;
 

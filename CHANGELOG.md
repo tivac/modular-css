@@ -3,6 +3,56 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.0.2](https://github.com/tivac/modular-css/compare/v27.0.1...v27.0.2) (2021-07-18)
+
+
+### Bug Fixes
+
+* support complex [@value](https://github.com/value) replacements ([06eb52c](https://github.com/tivac/modular-css/commit/06eb52ccf63ca6de2828d50abded6b79070e1e4d))
+
+
+
+
+
+## [27.0.1](https://github.com/tivac/modular-css/compare/v27.0.0...v27.0.1) (2021-07-18)
+
+
+### Bug Fixes
+
+* local references as references ([aeba154](https://github.com/tivac/modular-css/commit/aeba154d07e53c76643f2838621a30c4dcec0c36))
+* **www:** get REPL working again ([#797](https://github.com/tivac/modular-css/issues/797)) ([c6ffbb5](https://github.com/tivac/modular-css/commit/c6ffbb54a025f4809c7a6a9d12606e54fa1d2d28))
+
+
+
+
+
+# [27.0.0](https://github.com/tivac/modular-css/compare/v26.0.0...v27.0.0) (2021-07-06)
+
+
+### Bug Fixes
+
+* [@composes](https://github.com/composes) working again ([f48bc5f](https://github.com/tivac/modular-css/commit/f48bc5f9b6515c9fa7ce4581258ba02fa58f05b7))
+* [@keyframes](https://github.com/keyframes) can be anywhere ([b6dddc7](https://github.com/tivac/modular-css/commit/b6dddc759233f7148f0add32104a23c41d923a19))
+
+
+### Code Refactoring
+
+* remove postcss as dep ([ca67c39](https://github.com/tivac/modular-css/commit/ca67c39dee4b98e0528e2543e556e735f2ed8bf8))
+
+
+### Features
+
+* Add .warnings to processor ([eb0e117](https://github.com/tivac/modular-css/commit/eb0e1174ea10892d396c87298508bba1acd233ae))
+
+
+### BREAKING CHANGES
+
+* - Requires `postcss@8` be installed alongside to function.
+
+
+
+
+
 # [26.0.0](https://github.com/tivac/modular-css/compare/v25.8.2...v26.0.0) (2021-02-25)
 
 

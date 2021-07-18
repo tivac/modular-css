@@ -5,105 +5,122 @@ const parser = require("../parsers/values.js");
 const plugin = "modular-css-values-import";
 
 // Find @value entries & catalog/remove them
-module.exports = (css, { opts }) => {
-    const { from, processor } = opts;
-    const target = processor.files[from];
+module.exports = () => ({
+    postcssPlugin : plugin,
 
-    const changes = [];
+    prepare(result) {
+        const { from, processor } = result.opts;
+        const { values } = processor.files[from];
 
-    // eslint-disable-next-line max-statements
-    css.walkAtRules("value", (rule) => {
-        const parsed = parser.parse(rule.params);
-        const file = processor.resolve(from, parsed.source);
-        const values = { __proto__ : null };
-        const source = processor.files[file];
+        return {
+            AtRule : {
+                // eslint-disable-next-line max-statements
+                value(rule) {
+                    const parsed = parser.parse(rule.params);
+                    const file = processor.resolve(from, parsed.source);
+                    const source = processor.files[file];
 
-        rule.remove();
+                    rule.remove();
 
-        // fooga from "./wooga"
-        if(parsed.type === "composition") {
-            parsed.refs.forEach(({ name }) => {
-                const value = source.values[name];
+                    // fooga from "./wooga"
+                    if(parsed.type === "composition") {
+                        parsed.refs.forEach(({ name }) => {
+                            /* istanbul ignore next: probably unnecssary but makes me feel better */
+                            if(name in values) {
+                                throw rule.error(`Cannot import ${parsed.name}, it already exists`, { word : parsed.name });
+                            }
 
-                if(!value) {
-                    throw rule.error(`Could not find @value ${name} in "${parsed.source}"`);
-                }
+                            const value = source.values[name];
 
-                const sourceKey = processor._addValue(file, name);
-                const nameKey = processor._addValue(from, name);
+                            if(!value) {
+                                throw rule.error(`Could not find @value ${name} in "${parsed.source}"`);
+                            }
 
-                processor.graph.addDependency(nameKey, sourceKey);
+                            const sourceKey = processor._addValue(file, name);
+                            const nameKey = processor._addValue(from, name);
 
-                values[name] = {
-                    ...value,
-                    external : true,
-                };
-            });
+                            processor.graph.addDependency(nameKey, sourceKey);
 
-            return changes.push(values);
-        }
+                            values[name] = {
+                                ...value,
+                                external : true,
+                            };
+                        });
 
-        // * as fooga from "./wooga"
-        if(parsed.type === "namespace") {
-            processor._addValue(file, parsed.name, { namespace : true });
+                        return;
+                    }
 
-            for(const key in source.values) {
-                const name = `${parsed.name}.${key}`;
+                    // * as fooga from "./wooga"
+                    if(parsed.type === "namespace") {
+                        /* istanbul ignore next: probably unnecssary but makes me feel better */
+                        if(parsed.name in values) {
+                            throw rule.error(`Cannot import values as ${parsed.name}, it already exists`, { word : parsed.name });
+                        }
+                        
+                        processor._addValue(file, parsed.name, { namespace : true });
 
-                values[name] = {
-                    ...source.values[key],
-                    external : true,
-                };
-            }
+                        for(const key in source.values) {
+                            const name = `${parsed.name}.${key}`;
 
-            return changes.push(values);
-        }
+                            values[name] = {
+                                ...source.values[key],
+                                external : true,
+                            };
+                        }
 
-        // fooga as wooga from "./booga"
-        if(parsed.type === "alias") {
-            const [{ name }] = parsed.refs;
-            const value = source.values[name];
+                        return;
+                    }
 
-            if(!value) {
-                throw rule.error(`Could not find @value ${name} in "${parsed.source}"`);
-            }
+                    // fooga as wooga from "./booga"
+                    if(parsed.type === "alias") {
+                        const [{ name }] = parsed.refs;
 
-            const sourceKey = processor._addValue(file, name);
-            const aliasKey = processor._addValue(from, parsed.alias, { alias : name });
+                        /* istanbul ignore next: probably unnecssary but makes me feel better */
+                        if(name in values) {
+                            throw rule.error(`Cannot alias ${name} as ${parsed.alias}, it already exists`, { word : parsed.alias });
+                        }
 
-            processor.graph.addDependency(aliasKey, sourceKey);
+                        const value = source.values[name];
 
-            values[parsed.alias] = {
-                ...value,
-                external : true,
-            };
+                        if(!value) {
+                            throw rule.error(`Could not find @value ${name} in "${parsed.source}"`);
+                        }
 
-            return changes.push(values);
-        }
+                        const sourceKey = processor._addValue(file, name);
+                        const aliasKey = processor._addValue(from, parsed.alias, { alias : name });
 
-        // * from "./wooga"
-        // istanbul ignore else: This is worthwhile in case we add a new type to the parser
-        if(parsed.type === "import") {
-            return changes.push(source.values);
-        }
+                        processor.graph.addDependency(aliasKey, sourceKey);
 
-        // istanbul ignore next: This is worthwhile in case we add a new type to the parser
-        throw rule.error(`Unknown @value type, unable to process`);
-    });
+                        values[parsed.alias] = {
+                            ...value,
+                            external : true,
+                        };
 
-    // Object.assign to splat array of objects together using spread
-    target.values = Object.assign(
-        {
-            __proto__ : null,
-        },
-        ...changes,
-        
-        // Need to splat any existing values over the top of the ones we just calculated
-        // because they'll have come from before/values-local.js and thus are considered
-        // higher priority than any of the fancy stuff that happened here
-        // istanbul ignore next: not sure if this can really be hit but the safety doesn't hurt
-        target.values || {},
-    );
-};
+                        return;
+                    }
 
-module.exports.postcssPlugin = plugin;
+                    // * from "./wooga"
+                    // istanbul ignore else: This is worthwhile in case we add a new type to the parser
+                    if(parsed.type === "import") {
+                        for(const name in source.values) {
+                            if(name in values) {
+                                result.warn(`Imported value ${name} overlaps with a local value and will be ignored`, { node : rule });
+
+                                continue;
+                            }
+
+                            values[name] = source.values[name];
+                        }
+
+                        return;
+                    }
+
+                    // istanbul ignore next: This is worthwhile in case we add a new type to the parser
+                    throw rule.error(`Unknown @value type, unable to process`);
+                },
+            },
+        };
+    },
+});
+
+module.exports.postcss = true;

@@ -1,0 +1,6 @@
+@value * as vals from "./values.css";
+
+.aliased {
+    color: vals.alias;
+    background: vals.alias2;
+}

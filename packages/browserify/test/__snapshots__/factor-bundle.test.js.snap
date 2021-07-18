@@ -21,9 +21,9 @@ module.exports = {
     \\"booga\\": \\"mcc4e2a8e1_booga\\",
     \\"looga\\": \\"mcc4e2a8e1_booga mcc4e2a8e1_looga\\",
     \\"$values\\": {
-        \\"folder\\": \\"white\\",
         \\"one\\": \\"red\\",
-        \\"two\\": \\"blue\\"
+        \\"two\\": \\"blue\\",
+        \\"folder\\": \\"white\\"
     }
 };
 },{\\"./packages/browserify/test/specimens/folder/folder.css\\":4}],3:[function(require,module,exports){

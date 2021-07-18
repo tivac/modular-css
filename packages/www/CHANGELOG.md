@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.0.2](https://github.com/tivac/modular-css/compare/v27.0.1...v27.0.2) (2021-07-18)
+
+**Note:** Version bump only for package @modular-css/website
+
+
+
+
+
+## [27.0.1](https://github.com/tivac/modular-css/compare/v27.0.0...v27.0.1) (2021-07-18)
+
+
+### Bug Fixes
+
+* **www:** get REPL working again ([#797](https://github.com/tivac/modular-css/issues/797)) ([c6ffbb5](https://github.com/tivac/modular-css/commit/c6ffbb54a025f4809c7a6a9d12606e54fa1d2d28))
+
+
+
+
+
+# [27.0.0](https://github.com/tivac/modular-css/compare/v26.0.0...v27.0.0) (2021-07-06)
+
+**Note:** Version bump only for package @modular-css/website
+
+
+
+
+
 # [26.0.0](https://github.com/tivac/modular-css/compare/v25.8.2...v26.0.0) (2021-02-25)
 
 

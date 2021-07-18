@@ -21,7 +21,7 @@ describe("/processor.js", () => {
                 ".a { composes: b from nowhere.css; }"
             );
             
-            await expect(result).rejects.toThrow(`SyntaxError: Expected global or source but "n" found.`);
+            await expect(result).rejects.toThrow(`SyntaxError: Expected global, source, or whitespace but "n" found.`);
         });
 
         it("should fail if a composition references a non-existant class", async () => {

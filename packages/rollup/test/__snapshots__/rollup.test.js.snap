@@ -343,12 +343,12 @@ exports[`/rollup.js should output classes in topological order 1`] = `
 Object {
   "assets/topological-order.css": "
 /* packages/rollup/test/specimens/topological-order/topological-order.css */
-.mc_a {
-    background: blue;
-}
-
 .mc_b {
     border: 1px solid red;
+}
+
+.mc_a {
+    background: blue;
 }
 ",
   "topological-order.js": "

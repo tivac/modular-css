@@ -6,52 +6,54 @@ const parser = require("../parsers/external.js");
 
 // Find :external(<rule> from <file>) references and update them to be
 // the namespaced selector instead
-module.exports = (css, { opts }) => {
-    const { processor, from } = opts;
+module.exports = () => ({
+    postcssPlugin : "modular-css-externals",
 
-    const process = (rule, pseudo) => {
-        const params = pseudo.nodes.toString();
-        const { source, ref } = parser.parse(params);
-        const { name } = ref;
-        const file = processor.files[processor.resolve(from, source)];
+    prepare(result) {
+        const { processor, from } = result.opts;
 
-        if(!file.classes[name]) {
-            throw rule.error(`Invalid external reference: ${name}`, { word : name });
-        }
+        const process = (rule, pseudo) => {
+            const params = pseudo.nodes.toString();
+            
+            const { source, ref } = parser.parse(params);
+            const { name } = ref;
+            const file = processor.files[processor.resolve(from, source)];
 
-        // This was a... poor naming choice
-        const s = selector.selector();
+            if(!file.classes[name]) {
+                throw rule.error(`Invalid external reference: ${name}`, { word : name });
+            }
 
-        file.classes[name].forEach((value) =>
-            s.append(selector.className({ value }))
-        );
+            // This was a... poor naming choice
+            const s = selector.selector();
 
-        const root = selector.root();
+            file.classes[name].forEach((value) =>
+                s.append(selector.className({ value }))
+            );
 
-        root.append(s);
+            const root = selector.root();
 
-        pseudo.replaceWith(root);
-    };
+            root.append(s);
 
-    css.walkRules(/:external/, (rule) => {
-        const externals = selector((selectors) => {
-            const found = [];
+            pseudo.replaceWith(root);
+        };
 
-            selectors.walkPseudos((pseudo) => {
-                // Need to ensure we only process :external pseudos, see #261
-                if(pseudo.value !== ":external") {
-                    return;
-                }
+        return {
+            Rule(rule) {
+                const externals = selector((selectors) => {
+                    selectors.walkPseudos((pseudo) => {
+                        // Need to ensure we only process :external pseudos, see #261
+                        if(pseudo.value !== ":external") {
+                            return;
+                        }
+    
+                        process(rule, pseudo);
+                    });
+                });
 
-                // Can't replace here, see postcss/postcss-selector-parser#105
-                found.push(pseudo);
-            });
+                rule.selector = externals.processSync(rule);
+            },
+        };
+    },
+});
 
-            found.forEach((pseudo) => process(rule, pseudo));
-        });
-
-        rule.selector = externals.processSync(rule);
-    });
-};
-
-module.exports.postcssPlugin = "modular-css-externals";
+module.exports.postcss = true;

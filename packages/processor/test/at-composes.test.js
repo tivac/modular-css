@@ -46,7 +46,7 @@ describe("/processor.js", () => {
         });
 
         it("should allow composing classes from the composed file", async () => {
-            const { exports } = await processor.string(id, dedent(`
+            const { exports } = await processor.string("./packages/processor/test/specimens/a-t-c-o-m-p-o-s-e-s.css", dedent(`
                 @composes "./simple.css";
 
                 .a {
