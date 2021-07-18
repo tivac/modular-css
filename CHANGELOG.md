@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.0.2](https://github.com/tivac/modular-css/compare/v27.0.1...v27.0.2) (2021-07-18)
+
+
+### Bug Fixes
+
+* support complex [@value](https://github.com/value) replacements ([06eb52c](https://github.com/tivac/modular-css/commit/06eb52ccf63ca6de2828d50abded6b79070e1e4d))
+
+
+
+
+
 ## [27.0.1](https://github.com/tivac/modular-css/compare/v27.0.0...v27.0.1) (2021-07-18)
 
 
