@@ -5,7 +5,7 @@ exports[`rollup-rewriter should error on unsupported formats (cjs) 1`] = `"Unsup
 exports[`rollup-rewriter should ignore unknown imports (amd) 1`] = `
 Object {
   "a.js": "
-define(['require', 'external'], function (require, external) { 'use strict';
+define(['require', 'external'], (function (require, external) { 'use strict';
 
     function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -17,19 +17,19 @@ define(['require', 'external'], function (require, external) { 'use strict';
     };
 
     function a() {
-        console.log(css, external__default['default']);
+        console.log(css, external__default[\\"default\\"]);
 
         new Promise(function (resolve, reject) { Promise.all([
     lazyload(\\"./assets/c.css\\"),
     new Promise(function (resolve, reject) { require(['./c'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
-.catch(reject) }).then(console.log);
+.catch(reject); }).then(console.log);
     }
 
     return a;
 
-});
+}));
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/external-import/a.css */
@@ -42,7 +42,7 @@ define(['require', 'external'], function (require, external) { 'use strict';
 }
 ",
   "c.js": "
-define(['exports'], function (exports) { 'use strict';
+define(['exports'], (function (exports) { 'use strict';
 
     const c = \\"mc_c\\";
     var css = {
@@ -51,9 +51,9 @@ define(['exports'], function (exports) { 'use strict';
 
     console.log(css);
 
-    exports.default = css;
+    exports[\\"default\\"] = css;
 
-});
+}));
 ",
 }
 `;
@@ -78,7 +78,7 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export { a as default };
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/external-import/a.css */
@@ -98,7 +98,7 @@ var css = {
 
 console.log(css);
 
-export default css;
+export { css as default };
 ",
 }
 `;
@@ -123,7 +123,7 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export { a as default };
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/external-import/a.css */
@@ -143,7 +143,7 @@ var css = {
 
 console.log(css);
 
-export default css;
+export { css as default };
 ",
 }
 `;
@@ -151,14 +151,14 @@ export default css;
 exports[`rollup-rewriter should ignore unknown imports (system) 1`] = `
 Object {
   "a.js": "
-System.register(['external'], function (exports, module) {
+System.register(['external'], (function (exports, module) {
     'use strict';
     var external;
     return {
         setters: [function (module) {
-            external = module.default;
+            external = module[\\"default\\"];
         }],
-        execute: function () {
+        execute: (function () {
 
             exports('default', a);
 
@@ -177,9 +177,9 @@ System.register(['external'], function (exports, module) {
 .then((results) => results[results.length - 1]).then(console.log);
             }
 
-        }
+        })
     };
-});
+}));
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/external-import/a.css */
@@ -192,10 +192,10 @@ System.register(['external'], function (exports, module) {
 }
 ",
   "c.js": "
-System.register([], function (exports) {
+System.register([], (function (exports) {
     'use strict';
     return {
-        execute: function () {
+        execute: (function () {
 
             const c = \\"mc_c\\";
             var css = exports('default', {
@@ -204,9 +204,9 @@ System.register([], function (exports) {
 
             console.log(css);
 
-        }
+        })
     };
-});
+}));
 ",
 }
 `;
@@ -238,7 +238,7 @@ Object {
 }
 ",
   "dynamic1.js": "
-define(['exports', './static1'], function (exports, static1) { 'use strict';
+define(['exports', './static1'], (function (exports, static1) { 'use strict';
 
     const dynamic1$1 = \\"mc_dynamic1\\";
     var css = {
@@ -249,12 +249,12 @@ define(['exports', './static1'], function (exports, static1) { 'use strict';
 
     var dynamic1 = \\"dynamic1.js\\";
 
-    exports.default = dynamic1;
+    exports[\\"default\\"] = dynamic1;
 
-});
+}));
 ",
   "entry1.js": "
-define(['./static1'], function (static1) { 'use strict';
+define(['./static1'], (function (static1) { 'use strict';
 
     const entry1 = \\"mc_entry1\\";
     var css = {
@@ -263,10 +263,10 @@ define(['./static1'], function (static1) { 'use strict';
 
     console.log(static1.static1, css);
 
-});
+}));
 ",
   "entry2.js": "
-define(['require'], function (require) { 'use strict';
+define(['require'], (function (require) { 'use strict';
 
     const entry2 = \\"mc_entry2\\";
     var css = {
@@ -282,13 +282,13 @@ lazyload(\\"./assets/dynamic1.css\\"),
     new Promise(function (resolve, reject) { require(['./dynamic1'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
-.catch(reject) }).then(console.log);
+.catch(reject); }).then(console.log);
     }());
 
-});
+}));
 ",
   "static1.js": "
-define(['exports'], function (exports) { 'use strict';
+define(['exports'], (function (exports) { 'use strict';
 
     const static1$1 = \\"mc_static1\\";
     var css = {
@@ -301,7 +301,7 @@ define(['exports'], function (exports) { 'use strict';
 
     exports.static1 = static1;
 
-});
+}));
 ",
 }
 `;
@@ -344,7 +344,7 @@ console.log(static1, css);
 
 var dynamic1 = \\"dynamic1.js\\";
 
-export default dynamic1;
+export { dynamic1 as default };
 ",
   "entry1.js": "
 import { s as static1 } from './static1.js';
@@ -426,7 +426,7 @@ console.log(static1, css);
 
 var dynamic1 = \\"dynamic1.js\\";
 
-export default dynamic1;
+export { dynamic1 as default };
 ",
   "entry1.js": "
 import { s as static1 } from './static1.js';
@@ -497,14 +497,14 @@ Object {
 }
 ",
   "dynamic1.js": "
-System.register(['./static1.js'], function (exports) {
+System.register(['./static1.js'], (function (exports) {
     'use strict';
     var static1;
     return {
         setters: [function (module) {
             static1 = module.s;
         }],
-        execute: function () {
+        execute: (function () {
 
             const dynamic1$1 = \\"mc_dynamic1\\";
             var css = {
@@ -515,19 +515,19 @@ System.register(['./static1.js'], function (exports) {
 
             var dynamic1 = exports('default', \\"dynamic1.js\\");
 
-        }
+        })
     };
-});
+}));
 ",
   "entry1.js": "
-System.register(['./static1.js'], function () {
+System.register(['./static1.js'], (function () {
     'use strict';
     var static1;
     return {
         setters: [function (module) {
             static1 = module.s;
         }],
-        execute: function () {
+        execute: (function () {
 
             const entry1 = \\"mc_entry1\\";
             var css = {
@@ -536,15 +536,15 @@ System.register(['./static1.js'], function () {
 
             console.log(static1, css);
 
-        }
+        })
     };
-});
+}));
 ",
   "entry2.js": "
-System.register([], function (exports, module) {
+System.register([], (function (exports, module) {
     'use strict';
     return {
-        execute: function () {
+        execute: (function () {
 
             const entry2 = \\"mc_entry2\\";
             var css = {
@@ -562,15 +562,15 @@ lazyload(\\"./assets/dynamic1.css\\"),
 .then((results) => results[results.length - 1]).then(console.log);
             }());
 
-        }
+        })
     };
-});
+}));
 ",
   "static1.js": "
-System.register([], function (exports) {
+System.register([], (function (exports) {
     'use strict';
     return {
-        execute: function () {
+        execute: (function () {
 
             const static1$1 = \\"mc_static1\\";
             var css = {
@@ -581,9 +581,9 @@ System.register([], function (exports) {
 
             var static1 = exports('s', \\"static1.js\\");
 
-        }
+        })
     };
-});
+}));
 ",
 }
 `;
@@ -606,7 +606,7 @@ Array [
 exports[`rollup-rewriter should only rewrite when necessary (amd) 1`] = `
 Object {
   "a.js": "
-define(['require'], function (require) { 'use strict';
+define(['require'], (function (require) { 'use strict';
 
 	const a = \\"mc_a\\";
 	var css = {
@@ -620,9 +620,9 @@ define(['require'], function (require) { 'use strict';
     new Promise(function (resolve, reject) { require(['./c'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
-.catch(reject) }).then(console.log);
+.catch(reject); }).then(console.log);
 
-});
+}));
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/no-asset-imports/a.css */
@@ -637,7 +637,7 @@ define(['require'], function (require) { 'use strict';
 .mc_c { color: crimson; }
 ",
   "b.js": "
-define(['require'], function (require) { 'use strict';
+define(['require'], (function (require) { 'use strict';
 
 	const b = \\"mc_b\\";
 	var css = {
@@ -646,12 +646,12 @@ define(['require'], function (require) { 'use strict';
 
 	console.log(css);
 
-	new Promise(function (resolve, reject) { require(['./d'], resolve, reject) }).then(console.log);
+	new Promise(function (resolve, reject) { require(['./d'], resolve, reject); }).then(console.log);
 
-});
+}));
 ",
   "c.js": "
-define(['exports'], function (exports) { 'use strict';
+define(['exports'], (function (exports) { 'use strict';
 
 	const c$1 = \\"mc_c\\";
 	var css = {
@@ -662,18 +662,18 @@ define(['exports'], function (exports) { 'use strict';
 
 	var c = \\"c\\";
 
-	exports.default = c;
+	exports[\\"default\\"] = c;
 
-});
+}));
 ",
   "d.js": "
-define(['exports'], function (exports) { 'use strict';
+define(['exports'], (function (exports) { 'use strict';
 
 	var d = \\"d\\";
 
-	exports.default = d;
+	exports[\\"default\\"] = d;
 
-});
+}));
 ",
 }
 `;
@@ -726,12 +726,12 @@ console.log(css);
 
 var c = \\"c\\";
 
-export default c;
+export { c as default };
 ",
   "d.js": "
 var d = \\"d\\";
 
-export default d;
+export { d as default };
 ",
 }
 `;
@@ -784,12 +784,12 @@ console.log(css);
 
 var c = \\"c\\";
 
-export default c;
+export { c as default };
 ",
   "d.js": "
 var d = \\"d\\";
 
-export default d;
+export { d as default };
 ",
 }
 `;
@@ -797,10 +797,10 @@ export default d;
 exports[`rollup-rewriter should only rewrite when necessary (system) 1`] = `
 Object {
   "a.js": "
-System.register([], function (exports, module) {
+System.register([], (function (exports, module) {
 	'use strict';
 	return {
-		execute: function () {
+		execute: (function () {
 
 			const a = \\"mc_a\\";
 			var css = {
@@ -815,9 +815,9 @@ System.register([], function (exports, module) {
 ])
 .then((results) => results[results.length - 1]).then(console.log);
 
-		}
+		})
 	};
-});
+}));
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/no-asset-imports/a.css */
@@ -832,10 +832,10 @@ System.register([], function (exports, module) {
 .mc_c { color: crimson; }
 ",
   "b.js": "
-System.register([], function (exports, module) {
+System.register([], (function (exports, module) {
 	'use strict';
 	return {
-		execute: function () {
+		execute: (function () {
 
 			const b = \\"mc_b\\";
 			var css = {
@@ -846,15 +846,15 @@ System.register([], function (exports, module) {
 
 			module.import('./d.js').then(console.log);
 
-		}
+		})
 	};
-});
+}));
 ",
   "c.js": "
-System.register([], function (exports) {
+System.register([], (function (exports) {
 	'use strict';
 	return {
-		execute: function () {
+		execute: (function () {
 
 			const c$1 = \\"mc_c\\";
 			var css = {
@@ -865,21 +865,21 @@ System.register([], function (exports) {
 
 			var c = exports('default', \\"c\\");
 
-		}
+		})
 	};
-});
+}));
 ",
   "d.js": "
-System.register([], function (exports) {
+System.register([], (function (exports) {
 	'use strict';
 	return {
-		execute: function () {
+		execute: (function () {
 
 			var d = exports('default', \\"d\\");
 
-		}
+		})
 	};
-});
+}));
 ",
 }
 `;
@@ -887,7 +887,7 @@ System.register([], function (exports) {
 exports[`rollup-rewriter should support loader & loadfn (amd) 1`] = `
 Object {
   "a.js": "
-define(['require'], function (require) { 'use strict';
+define(['require'], (function (require) { 'use strict';
 import lazyload from \\"./css.js\\";
 
     const a$1 = \\"mc_a\\";
@@ -903,12 +903,12 @@ import lazyload from \\"./css.js\\";
     new Promise(function (resolve, reject) { require(['./c'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
-.catch(reject) }).then(console.log);
+.catch(reject); }).then(console.log);
     }
 
     return a;
 
-});
+}));
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
@@ -935,7 +935,7 @@ import lazyload from \\"./css.js\\";
 }
 ",
   "b.js": "
-define(['require'], function (require) { 'use strict';
+define(['require'], (function (require) { 'use strict';
 import lazyload from \\"./css.js\\";
 
     const b$1 = \\"mc_b\\";
@@ -951,15 +951,15 @@ import lazyload from \\"./css.js\\";
     new Promise(function (resolve, reject) { require(['./d'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
-.catch(reject) }).then(console.log);
+.catch(reject); }).then(console.log);
     }
 
     return b;
 
-});
+}));
 ",
   "c.js": "
-define(['exports'], function (exports) { 'use strict';
+define(['exports'], (function (exports) { 'use strict';
 
     const c = \\"mc_c\\";
     var css = {
@@ -968,12 +968,12 @@ define(['exports'], function (exports) { 'use strict';
 
     console.log(css);
 
-    exports.default = css;
+    exports[\\"default\\"] = css;
 
-});
+}));
 ",
   "d.js": "
-define(['exports'], function (exports) { 'use strict';
+define(['exports'], (function (exports) { 'use strict';
 
     const d = \\"mc_d\\";
     var css = {
@@ -982,9 +982,9 @@ define(['exports'], function (exports) { 'use strict';
 
     console.log(css);
 
-    exports.default = css;
+    exports[\\"default\\"] = css;
 
-});
+}));
 ",
 }
 `;
@@ -1008,7 +1008,7 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export { a as default };
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
@@ -1051,7 +1051,7 @@ function b() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b;
+export { b as default };
 ",
   "c.js": "
 const c = \\"mc_c\\";
@@ -1061,7 +1061,7 @@ var css = {
 
 console.log(css);
 
-export default css;
+export { css as default };
 ",
   "d.js": "
 const d = \\"mc_d\\";
@@ -1071,7 +1071,7 @@ var css = {
 
 console.log(css);
 
-export default css;
+export { css as default };
 ",
 }
 `;
@@ -1095,7 +1095,7 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export { a as default };
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
@@ -1138,7 +1138,7 @@ function b() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b;
+export { b as default };
 ",
   "c.js": "
 const c = \\"mc_c\\";
@@ -1148,7 +1148,7 @@ var css = {
 
 console.log(css);
 
-export default css;
+export { css as default };
 ",
   "d.js": "
 const d = \\"mc_d\\";
@@ -1158,7 +1158,7 @@ var css = {
 
 console.log(css);
 
-export default css;
+export { css as default };
 ",
 }
 `;
@@ -1166,11 +1166,11 @@ export default css;
 exports[`rollup-rewriter should support loader & loadfn (system) 1`] = `
 Object {
   "a.js": "
-System.register([], function (exports, module) {
+System.register([], (function (exports, module) {
     'use strict';
 import lazyload from \\"./css.js\\";
     return {
-        execute: function () {
+        execute: (function () {
 
             exports('default', a);
 
@@ -1189,9 +1189,9 @@ import lazyload from \\"./css.js\\";
 .then((results) => results[results.length - 1]).then(console.log);
             }
 
-        }
+        })
     };
-});
+}));
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
@@ -1218,11 +1218,11 @@ import lazyload from \\"./css.js\\";
 }
 ",
   "b.js": "
-System.register([], function (exports, module) {
+System.register([], (function (exports, module) {
     'use strict';
 import lazyload from \\"./css.js\\";
     return {
-        execute: function () {
+        execute: (function () {
 
             exports('default', b);
 
@@ -1241,15 +1241,15 @@ import lazyload from \\"./css.js\\";
 .then((results) => results[results.length - 1]).then(console.log);
             }
 
-        }
+        })
     };
-});
+}));
 ",
   "c.js": "
-System.register([], function (exports) {
+System.register([], (function (exports) {
     'use strict';
     return {
-        execute: function () {
+        execute: (function () {
 
             const c = \\"mc_c\\";
             var css = exports('default', {
@@ -1258,15 +1258,15 @@ System.register([], function (exports) {
 
             console.log(css);
 
-        }
+        })
     };
-});
+}));
 ",
   "d.js": "
-System.register([], function (exports) {
+System.register([], (function (exports) {
     'use strict';
     return {
-        execute: function () {
+        execute: (function () {
 
             const d = \\"mc_d\\";
             var css = exports('default', {
@@ -1275,9 +1275,9 @@ System.register([], function (exports) {
 
             console.log(css);
 
-        }
+        })
     };
-});
+}));
 ",
 }
 `;
@@ -1285,7 +1285,7 @@ System.register([], function (exports) {
 exports[`rollup-rewriter should support loader being a function (amd) 1`] = `
 Object {
   "a": "
-define(['require'], function (require) { 'use strict';
+define(['require'], (function (require) { 'use strict';
 import chunkCountIs8 from \\"./css.js\\";
 
     const a$1 = \\"mc_a\\";
@@ -1301,15 +1301,15 @@ import chunkCountIs8 from \\"./css.js\\";
     new Promise(function (resolve, reject) { require(['./c'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
-.catch(reject) }).then(console.log);
+.catch(reject); }).then(console.log);
     }
 
     return a;
 
-});
+}));
 ",
   "b": "
-define(['require'], function (require) { 'use strict';
+define(['require'], (function (require) { 'use strict';
 import chunkCountIs8 from \\"./css.js\\";
 
     const b$1 = \\"mc_b\\";
@@ -1325,15 +1325,15 @@ import chunkCountIs8 from \\"./css.js\\";
     new Promise(function (resolve, reject) { require(['./d'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
-.catch(reject) }).then(console.log);
+.catch(reject); }).then(console.log);
     }
 
     return b;
 
-});
+}));
 ",
   "c": "
-define(['exports'], function (exports) { 'use strict';
+define(['exports'], (function (exports) { 'use strict';
 
     const c = \\"mc_c\\";
     var css = {
@@ -1342,12 +1342,12 @@ define(['exports'], function (exports) { 'use strict';
 
     console.log(css);
 
-    exports.default = css;
+    exports[\\"default\\"] = css;
 
-});
+}));
 ",
   "d": "
-define(['exports'], function (exports) { 'use strict';
+define(['exports'], (function (exports) { 'use strict';
 
     const d = \\"mc_d\\";
     var css = {
@@ -1356,9 +1356,9 @@ define(['exports'], function (exports) { 'use strict';
 
     console.log(css);
 
-    exports.default = css;
+    exports[\\"default\\"] = css;
 
-});
+}));
 ",
 }
 `;
@@ -1382,7 +1382,7 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export { a as default };
 ",
   "b": "
 import chunkCountIs8 from \\"./css.js\\";
@@ -1401,7 +1401,7 @@ function b() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b;
+export { b as default };
 ",
   "c": "
 const c = \\"mc_c\\";
@@ -1411,7 +1411,7 @@ var css = {
 
 console.log(css);
 
-export default css;
+export { css as default };
 ",
   "d": "
 const d = \\"mc_d\\";
@@ -1421,7 +1421,7 @@ var css = {
 
 console.log(css);
 
-export default css;
+export { css as default };
 ",
 }
 `;
@@ -1445,7 +1445,7 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export { a as default };
 ",
   "b": "
 import chunkCountIs8 from \\"./css.js\\";
@@ -1464,7 +1464,7 @@ function b() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b;
+export { b as default };
 ",
   "c": "
 const c = \\"mc_c\\";
@@ -1474,7 +1474,7 @@ var css = {
 
 console.log(css);
 
-export default css;
+export { css as default };
 ",
   "d": "
 const d = \\"mc_d\\";
@@ -1484,7 +1484,7 @@ var css = {
 
 console.log(css);
 
-export default css;
+export { css as default };
 ",
 }
 `;
@@ -1492,11 +1492,11 @@ export default css;
 exports[`rollup-rewriter should support loader being a function (system) 1`] = `
 Object {
   "a": "
-System.register([], function (exports, module) {
+System.register([], (function (exports, module) {
     'use strict';
 import chunkCountIs8 from \\"./css.js\\";
     return {
-        execute: function () {
+        execute: (function () {
 
             exports('default', a);
 
@@ -1515,16 +1515,16 @@ import chunkCountIs8 from \\"./css.js\\";
 .then((results) => results[results.length - 1]).then(console.log);
             }
 
-        }
+        })
     };
-});
+}));
 ",
   "b": "
-System.register([], function (exports, module) {
+System.register([], (function (exports, module) {
     'use strict';
 import chunkCountIs8 from \\"./css.js\\";
     return {
-        execute: function () {
+        execute: (function () {
 
             exports('default', b);
 
@@ -1543,15 +1543,15 @@ import chunkCountIs8 from \\"./css.js\\";
 .then((results) => results[results.length - 1]).then(console.log);
             }
 
-        }
+        })
     };
-});
+}));
 ",
   "c": "
-System.register([], function (exports) {
+System.register([], (function (exports) {
     'use strict';
     return {
-        execute: function () {
+        execute: (function () {
 
             const c = \\"mc_c\\";
             var css = exports('default', {
@@ -1560,15 +1560,15 @@ System.register([], function (exports) {
 
             console.log(css);
 
-        }
+        })
     };
-});
+}));
 ",
   "d": "
-System.register([], function (exports) {
+System.register([], (function (exports) {
     'use strict';
     return {
-        execute: function () {
+        execute: (function () {
 
             const d = \\"mc_d\\";
             var css = exports('default', {
@@ -1577,9 +1577,9 @@ System.register([], function (exports) {
 
             console.log(css);
 
-        }
+        })
     };
-});
+}));
 ",
 }
 `;
@@ -1587,7 +1587,7 @@ System.register([], function (exports) {
 exports[`rollup-rewriter shouldn't require a loader (amd) 1`] = `
 Object {
   "a.js": "
-define(['require'], function (require) { 'use strict';
+define(['require'], (function (require) { 'use strict';
 
     const a$1 = \\"mc_a\\";
     var css = {
@@ -1602,12 +1602,12 @@ define(['require'], function (require) { 'use strict';
     new Promise(function (resolve, reject) { require(['./c'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
-.catch(reject) }).then(console.log);
+.catch(reject); }).then(console.log);
     }
 
     return a;
 
-});
+}));
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
@@ -1634,7 +1634,7 @@ define(['require'], function (require) { 'use strict';
 }
 ",
   "b.js": "
-define(['require'], function (require) { 'use strict';
+define(['require'], (function (require) { 'use strict';
 
     const b$1 = \\"mc_b\\";
     var css = {
@@ -1649,15 +1649,15 @@ define(['require'], function (require) { 'use strict';
     new Promise(function (resolve, reject) { require(['./d'], resolve, reject) })
 ])
 .then((results) => resolve(results[results.length - 1]))
-.catch(reject) }).then(console.log);
+.catch(reject); }).then(console.log);
     }
 
     return b;
 
-});
+}));
 ",
   "c.js": "
-define(['exports'], function (exports) { 'use strict';
+define(['exports'], (function (exports) { 'use strict';
 
     const c = \\"mc_c\\";
     var css = {
@@ -1666,12 +1666,12 @@ define(['exports'], function (exports) { 'use strict';
 
     console.log(css);
 
-    exports.default = css;
+    exports[\\"default\\"] = css;
 
-});
+}));
 ",
   "d.js": "
-define(['exports'], function (exports) { 'use strict';
+define(['exports'], (function (exports) { 'use strict';
 
     const d = \\"mc_d\\";
     var css = {
@@ -1680,9 +1680,9 @@ define(['exports'], function (exports) { 'use strict';
 
     console.log(css);
 
-    exports.default = css;
+    exports[\\"default\\"] = css;
 
-});
+}));
 ",
 }
 `;
@@ -1705,7 +1705,7 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export { a as default };
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
@@ -1747,7 +1747,7 @@ function b() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b;
+export { b as default };
 ",
   "c.js": "
 const c = \\"mc_c\\";
@@ -1757,7 +1757,7 @@ var css = {
 
 console.log(css);
 
-export default css;
+export { css as default };
 ",
   "d.js": "
 const d = \\"mc_d\\";
@@ -1767,7 +1767,7 @@ var css = {
 
 console.log(css);
 
-export default css;
+export { css as default };
 ",
 }
 `;
@@ -1790,7 +1790,7 @@ function a() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default a;
+export { a as default };
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
@@ -1832,7 +1832,7 @@ function b() {
 .then((results) => results[results.length - 1]).then(console.log);
 }
 
-export default b;
+export { b as default };
 ",
   "c.js": "
 const c = \\"mc_c\\";
@@ -1842,7 +1842,7 @@ var css = {
 
 console.log(css);
 
-export default css;
+export { css as default };
 ",
   "d.js": "
 const d = \\"mc_d\\";
@@ -1852,7 +1852,7 @@ var css = {
 
 console.log(css);
 
-export default css;
+export { css as default };
 ",
 }
 `;
@@ -1860,10 +1860,10 @@ export default css;
 exports[`rollup-rewriter shouldn't require a loader (system) 1`] = `
 Object {
   "a.js": "
-System.register([], function (exports, module) {
+System.register([], (function (exports, module) {
     'use strict';
     return {
-        execute: function () {
+        execute: (function () {
 
             exports('default', a);
 
@@ -1882,9 +1882,9 @@ System.register([], function (exports, module) {
 .then((results) => results[results.length - 1]).then(console.log);
             }
 
-        }
+        })
     };
-});
+}));
 ",
   "assets/a.css": "
 /* packages/rollup-rewriter/test/specimens/dynamic-imports/a.css */
@@ -1911,10 +1911,10 @@ System.register([], function (exports, module) {
 }
 ",
   "b.js": "
-System.register([], function (exports, module) {
+System.register([], (function (exports, module) {
     'use strict';
     return {
-        execute: function () {
+        execute: (function () {
 
             exports('default', b);
 
@@ -1933,15 +1933,15 @@ System.register([], function (exports, module) {
 .then((results) => results[results.length - 1]).then(console.log);
             }
 
-        }
+        })
     };
-});
+}));
 ",
   "c.js": "
-System.register([], function (exports) {
+System.register([], (function (exports) {
     'use strict';
     return {
-        execute: function () {
+        execute: (function () {
 
             const c = \\"mc_c\\";
             var css = exports('default', {
@@ -1950,15 +1950,15 @@ System.register([], function (exports) {
 
             console.log(css);
 
-        }
+        })
     };
-});
+}));
 ",
   "d.js": "
-System.register([], function (exports) {
+System.register([], (function (exports) {
     'use strict';
     return {
-        execute: function () {
+        execute: (function () {
 
             const d = \\"mc_d\\";
             var css = exports('default', {
@@ -1967,9 +1967,9 @@ System.register([], function (exports) {
 
             console.log(css);
 
-        }
+        })
     };
-});
+}));
 ",
 }
 `;
