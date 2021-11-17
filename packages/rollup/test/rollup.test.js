@@ -788,7 +788,7 @@ describe("/rollup.js", () => {
         it("should show useful CSS error messages", () => {
             let e;
 
-            rollup({
+            return rollup({
                 input   : "error.js",
                 plugins : [
                     files({
@@ -844,7 +844,7 @@ describe("/rollup.js", () => {
         );
 
         // Skipped because I can't figure out how to catch the error being thrown?
-        // eslint-disable-next-line jest/no-disabled-tests
+        // eslint-disable-next-line jest/no-disabled-tests, jest/expect-expect
         it.skip("should throw errors in done plugins", () =>
             rollup({
                 input   : require.resolve("./specimens/simple.js"),

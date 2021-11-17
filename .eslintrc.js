@@ -4,7 +4,11 @@ module.exports = {
         "plugin:jest/recommended",
     ],
 
-    parser : "babel-eslint",
+    parser : "@babel/eslint-parser",
+
+    parserOptions : {
+        requireConfigFile : false,
+    },
 
     env : {
         node : true,
@@ -33,7 +37,5 @@ module.exports = {
             { blankLine : "always", prev : "directive", next : "*" },
             { blankLine : "any", prev : "directive", next : "directive" },
         ],
-        
-        "jest/no-try-expect" : "warn",
     },
 };
