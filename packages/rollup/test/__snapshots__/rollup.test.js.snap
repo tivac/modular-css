@@ -32,8 +32,6 @@ console.log(css);
 
 exports[`/rollup.js empties option should not write out empty CSS files by default 1`] = `Object {}`;
 
-exports[`/rollup.js empties option should not write out empty CSS files by default 2`] = `Object {}`;
-
 exports[`/rollup.js empties option should write out empty CSS files when empties is enabled 1`] = `
 Object {
   "assets/empty.css": "
