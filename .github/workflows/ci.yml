@@ -14,7 +14,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       
       - name: Cache node modules
         id: cache
@@ -22,7 +22,7 @@ jobs:
         with:
           path: |
             node_modules
-          key: ${{ runner.OS }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.OS }}-${{ secrets.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: npm install
         if: steps.cache.outputs.cache-hit != 'true'
@@ -40,7 +40,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 10, 12, 14 ]
+        node-version: [ 12, 14 ]
         os: [ ubuntu-latest ]
 
     steps:
@@ -58,7 +58,7 @@ jobs:
         path: |
           node_modules
           */*/node_modules
-        key: ${{ matrix.os }}-${{ hashFiles('**/package-lock.json') }}
+        key: ${{ matrix.os }}-${{ secrets.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
 
     - name: npm install
       if: steps.cache.outputs.cache-hit != 'true'

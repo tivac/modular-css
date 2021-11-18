@@ -2,7 +2,7 @@
 
 const path = require("path");
 const dedent = require("dedent");
-const namer  = require("@modular-css/test-utils/namer.js");
+const namer = require("@modular-css/test-utils/namer.js");
 const Processor = require("../processor.js");
 
 describe("/processor.js", () => {
@@ -19,7 +19,7 @@ describe("/processor.js", () => {
             await expect(processor.string(
                 "./invalid/value.css",
                 "@value foo, bar from nowhere.css"
-            )).rejects.toThrow(`SyntaxError: Expected source but "n" found.`);
+            )).rejects.toThrow(`SyntaxError: Expected source or whitespace but "n" found.`);
         });
 
         it("should fail if a value imports a non-existant reference", async () => {
@@ -157,6 +157,21 @@ describe("/processor.js", () => {
             expect(css).toMatchSnapshot();
         });
 
+        it("should support value replacement in @value", async () => {
+            await processor.string(
+                "./packages/processor/test/specimens/simple.css",
+                dedent(`
+                    @value calcAlias from './values.css';
+                    
+                    .fooga { width: calcAlias; }
+                `)
+            );
+
+            const { css } = await processor.output();
+
+            expect(css).toMatchSnapshot();
+        });
+
         it("should support value replacement in :external(...)", async () => {
             await processor.file(require.resolve("./specimens/externals.css"));
 
@@ -167,6 +182,14 @@ describe("/processor.js", () => {
 
         it("should support value aliasing", async () => {
             await processor.file(require.resolve("./specimens/value-alias.css"));
+
+            const { css } = await processor.output();
+
+            expect(css).toMatchSnapshot();
+        });
+
+        it("should support several layers of value references", async () => {
+            await processor.file(require.resolve("./specimens/value-references.css"));
 
             const { css } = await processor.output();
 

@@ -785,8 +785,10 @@ describe("/rollup.js", () => {
             expect(err.toString()).toMatch("error-plugin:");
         }
 
-        it("should show useful CSS error messages", () =>
-            rollup({
+        it("should show useful CSS error messages", () => {
+            let e;
+
+            return rollup({
                 input   : "error.js",
                 plugins : [
                     files({
@@ -807,9 +809,11 @@ describe("/rollup.js", () => {
                     createPlugin({ namer }),
                 ],
             })
-            // eslint-disable-next-line jest/no-conditional-expect
-            .catch((e) => expect(e.toString()).toMatch(".wooga"))
-        );
+            .catch((err) => {
+                e = err;
+            })
+            .finally(() => expect(e.toString()).toMatch(".wooga"));
+        });
 
         // eslint-disable-next-line jest/expect-expect
         it("should throw errors in in before plugins", () =>
@@ -840,7 +844,7 @@ describe("/rollup.js", () => {
         );
 
         // Skipped because I can't figure out how to catch the error being thrown?
-        // eslint-disable-next-line jest/no-disabled-tests
+        // eslint-disable-next-line jest/no-disabled-tests, jest/expect-expect
         it.skip("should throw errors in done plugins", () =>
             rollup({
                 input   : require.resolve("./specimens/simple.js"),

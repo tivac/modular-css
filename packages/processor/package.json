@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/processor",
-  "version": "26.0.0",
+  "version": "27.0.2",
   "description": "A streamlined reinterpretation of CSS Modules",
   "main": "./processor.js",
   "repository": {
@@ -24,10 +24,9 @@
     "postcss"
   ],
   "dependencies": {
-    "dependency-graph": "^0.10.0",
+    "dependency-graph": "^0.11.0",
     "escape-string-regexp": "^4.0.0",
     "lodash": "^4.17.0",
-    "postcss": "^8.0.0",
     "postcss-selector-parser": "^6.0.2",
     "postcss-url": "^10.0.0",
     "postcss-value-parser": "^4.0.0",

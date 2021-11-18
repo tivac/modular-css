@@ -344,7 +344,6 @@ describe("/webpack.js", () => {
             });
     });
 
-    // eslint-disable-next-line jest/no-done-callback
     it("should accept an existing processor instance", async () => {
         const processor = new Processor();
 
@@ -354,18 +353,20 @@ describe("/webpack.js", () => {
             }
         `));
 
-        return new Promise((resolve) => webpack(config({
-            entry  : "./packages/webpack/test/specimens/simple.js",
-            plugin : {
-                processor,
-            },
-        }), (err, stats) => {
-            success(err, stats);
+        return new Promise((resolve) => {
+            webpack(config({
+                entry  : "./packages/webpack/test/specimens/simple.js",
+                plugin : {
+                    processor,
+                },
+            }), (err, stats) => {
+                success(err, stats);
 
-            expect(read("output.js")).toMatchSnapshot();
-            expect(read("output.css")).toMatchSnapshot();
+                expect(read("output.js")).toMatchSnapshot();
+                expect(read("output.css")).toMatchSnapshot();
 
-            resolve();
-        }));
+                resolve();
+            });
+        });
     });
 });

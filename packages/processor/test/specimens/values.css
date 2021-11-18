@@ -2,3 +2,11 @@
 @value b: blue;
 @value base: #FFF;
 @value base-other: #000;
+
+@value alias: b;
+@value alias2: alias;
+
+@value width: 1rem;
+@value height: 1rem;
+
+@value calcAlias: calc(width + height);

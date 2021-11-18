@@ -26,9 +26,9 @@ module.exports = {
     \\"booga\\": \\"mcc4e2a8e1_booga\\",
     \\"looga\\": \\"mcc4e2a8e1_booga mcc4e2a8e1_looga\\",
     \\"$values\\": {
-        \\"folder\\": \\"white\\",
         \\"one\\": \\"red\\",
-        \\"two\\": \\"blue\\"
+        \\"two\\": \\"blue\\",
+        \\"folder\\": \\"white\\"
     }
 };
 },{\\"./packages/browserify/test/specimens/folder/folder.css\\":2}],4:[function(require,module,exports){
@@ -72,9 +72,9 @@ module.exports = {
     \\"booga\\": \\"mcc4e2a8e1_booga\\",
     \\"looga\\": \\"mcc4e2a8e1_booga mcc4e2a8e1_looga\\",
     \\"$values\\": {
-        \\"folder\\": \\"white\\",
         \\"one\\": \\"red\\",
-        \\"two\\": \\"blue\\"
+        \\"two\\": \\"blue\\",
+        \\"folder\\": \\"white\\"
     }
 };
 },{\\"./packages/browserify/test/specimens/folder/folder.css\\":2}],4:[function(require,module,exports){

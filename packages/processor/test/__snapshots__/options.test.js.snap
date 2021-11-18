@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/processor.js options exportGlobals should export :global values by default 1`] = `
+Object {
+  "b": Array [
+    "mc8df92ddf_b",
+  ],
+}
+`;
+
 exports[`/processor.js options exportGlobals should not export :global values when exportGlobals is false 1`] = `
 Object {
   "b": Array [
