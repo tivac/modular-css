@@ -9,6 +9,8 @@ const identifierfy = require("identifierfy");
 const Processor = require("@modular-css/processor");
 const relative = require("@modular-css/processor/lib/relative.js");
 
+const slash = (file) => file.replace(/\/|\\/g, "/");
+
 const DEFAULT_VALUES = "$values";
 
 const DEFAULTS = {
@@ -41,23 +43,19 @@ const deconflict = (map, ident) => {
     return proposal;
 };
 
-const property = ([ key, value ]) => {
-    if(key === value) {
-        return key;
-    }
+const prop = ([ key, value ]) => (key === value ? key : `${JSON.stringify(key)} : ${value}`);
+const esm = (key, value) => (key === value ? key : `${key} as ${value}`);
 
-    return `${JSON.stringify(key)} : ${value}`;
-};
-
-exports.transform = (id, processor, opts = {}) => {
+exports.transform = (file, processor, opts = {}) => {
     const options = {
             __proto__ : null,
             ...DEFAULTS,
             ...opts,
         };
 
+    const id = processor.normalize(file);
     const warnings = [];
-    const details = processor.files[id];
+    const details = processor.files[file];
     const { graph } = processor;
 
     const relativeId = relative(processor.options.cwd, id);
@@ -94,35 +92,35 @@ exports.transform = (id, processor, opts = {}) => {
     const exportedKeys = new Set();
 
     // create import statements for all of the values used in compositions
-    dependencies.forEach((dep) => {
-        const data = graph.getNodeData(dep);
-        const { file } = data;
+    dependencies.forEach((depKey) => {
+        const data = graph.getNodeData(depKey);
+        const { file: depFile } = data;
 
-        if(!importsMap.has(file)) {
-            importsMap.set(file, new Map());
+        if(!importsMap.has(depFile)) {
+            importsMap.set(depFile, new Map());
         }
 
-        const imported = importsMap.get(file);
+        const imported = importsMap.get(depFile);
 
         // File we're transforming
-        if(file === id) {
+        if(depFile === id) {
             // Track this selector as part of the keys to be exported, adding
             // here so it'll be sorted topologically
-            if(isSelector(dep)) {
+            if(isSelector(depKey)) {
                 exportedKeys.add(data.selector);
             }
 
             return;
         }
 
-        if(isFile(dep)) {
+        if(isFile(depKey)) {
             // Add each selector this file depends on to the imports list
             data.selectors.forEach((key) => {
                 const { selector: name } = graph.getNodeData(key);
 
                 const unique = deconflict(identifiers, name);
 
-                externalsMap.set(selectorKey(file, name), unique);
+                externalsMap.set(selectorKey(depFile, name), unique);
 
                 imported.set(name, unique);
             });
@@ -131,9 +129,9 @@ exports.transform = (id, processor, opts = {}) => {
         }
 
         // @value references need to be specially imported & handled
-        if(isValue(dep)) {
+        if(isValue(depKey)) {
             const { value, namespace, alias } = data;
-            const { name : filename } = path.parse(file);
+            const { name : filename } = path.parse(depFile);
             const importName = `$${filename}Values`;
 
             let unique;
@@ -169,9 +167,9 @@ exports.transform = (id, processor, opts = {}) => {
             return;
         }
 
-        const names = [ ...imports ].map(([ key, value ]) => `${key} as ${value}`);
+        const names = [ ...imports ].map(([ key, value ]) => esm(key, value));
 
-        out.push(`import { ${names.join(", ")} } from ${JSON.stringify(from)};`);
+        out.push(`import { ${names.join(", ")} } from "${slash(from)}";`);
     });
 
     // Add the rest of the exported keys in whatever order because it doesn't matter
@@ -199,13 +197,13 @@ exports.transform = (id, processor, opts = {}) => {
         const unique = deconflict(identifiers, DEFAULT_VALUES);
 
         out.push(dedent(`const ${unique} = {
-            ${[ ...valueExports ].map(property).join(",\n")},
+            ${[ ...valueExports ].map(prop).join(",\n")},
         };`));
 
 
         defaultExports.push([ DEFAULT_VALUES, unique ]);
 
-        namedExports.push(`${unique} as ${DEFAULT_VALUES}`);
+        namedExports.push(esm(unique, DEFAULT_VALUES));
     }
 
     // Create vars representing exported classes & use them in local var definitions
@@ -219,10 +217,10 @@ exports.transform = (id, processor, opts = {}) => {
         // Build the list of composed classes for this class
         if(graph.hasNode(sKey)) {
             graph.dependenciesOf(sKey).forEach((dep) => {
-                const { file, selector } = graph.getNodeData(dep);
+                const { file: src, selector } = graph.getNodeData(dep);
 
                 // Get the value from the right place
-                if(file !== id) {
+                if(src !== id) {
                     elements.push(externalsMap.get(dep));
                 } else {
                     elements.push(internalsMap.get(selector));
@@ -239,12 +237,12 @@ exports.transform = (id, processor, opts = {}) => {
         const namedExport = identifierfy(key);
 
         if(namedExport === key) {
-            namedExports.push(`${unique} as ${key}`);
+            namedExports.push(esm(unique, key));
         } else if(options.namedExports.rewriteInvalid) {
             // eslint-disable-next-line no-console
             warnings.push(`"${key}" is not a valid JS identifier, exported as "${namedExport}"`);
 
-            namedExports.push(`${unique} as ${namedExport}`);
+            namedExports.push(esm(unique, namedExport));
         } else {
             // eslint-disable-next-line no-console
             warnings.push(`"${key}" is not a valid JS identifier`);
@@ -254,7 +252,7 @@ exports.transform = (id, processor, opts = {}) => {
     if(options.dev) {
         out.push(dedent(`
             const data = {
-                ${defaultExports.map(property).join(",\n")}
+                ${defaultExports.map(prop).join(",\n")}
             };
 
             export default new Proxy(data, {
@@ -272,7 +270,7 @@ exports.transform = (id, processor, opts = {}) => {
     } else {
         out.push(dedent(`
             export default {
-                ${defaultExports.map(property).join(",\n")}
+                ${defaultExports.map(prop).join(",\n")}
             };
         `));
     }
