@@ -245,22 +245,20 @@ class Processor {
 
     // Get the dependency order for a file or the entire tree
     fileDependencies(file) {
-        let results;
-
-        if(file) {
-            const normalized = this._normalize(file);
-            const key = fileKey(normalized);
-
-            if(!this._graph.hasNode(key)) {
-                throw new Error(`Unknown file: ${normalized}`);
-            }
-
-            results = this._graph.dependenciesOf(key);
-        } else {
-            results = this._graph.overallOrder();
+        if(!file) {
+            return filterByPrefix(FILE_PREFIX, this._graph.overallOrder());
         }
 
-        return filterByPrefix(FILE_PREFIX, results);
+        const normalized = this._normalize(file);
+        const key = fileKey(normalized);
+
+        if(!this._graph.hasNode(key)) {
+            throw new Error(`Unknown file: ${normalized}`);
+        }
+
+        const dependencies = this._graph.dependenciesOf(key);
+
+        return filterByPrefix(FILE_PREFIX, dependencies);
     }
 
     // Get the ultimate output for specific files or the entire tree
@@ -401,8 +399,6 @@ class Processor {
         const key = fileKey(file);
 
         if(!this._graph.hasNode(key)) {
-            // console.log("_addFile", { file });
-
             this._graph.addNode(key, {
                 file,
                 selectors : [],
@@ -420,8 +416,6 @@ class Processor {
         const fKey = this._addFile(file);
 
         if(!this._graph.hasNode(sKey)) {
-            // console.log("_addSelector", { file, selector });
-
             this._graph.addNode(sKey, {
                 file,
                 selector,
@@ -457,8 +451,6 @@ class Processor {
         const fKey = this._addFile(file);
 
         if(!this._graph.hasNode(vKey)) {
-            // console.log("_addValue", { file, name, opts });
-
             this._graph.addNode(vKey, {
                 file,
                 value : name,

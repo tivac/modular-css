@@ -6,9 +6,9 @@ const path = require("path");
 const utils = require("@rollup/pluginutils");
 
 const Processor = require("@modular-css/processor");
-const { transform } = require("@modular-css/css-to-js");
 const output = require("@modular-css/processor/lib/output.js");
 const relative = require("@modular-css/processor/lib/relative.js");
+const { transform } = require("@modular-css/css-to-js");
 
 const DEFAULT_EXT = ".css";
 
@@ -102,7 +102,7 @@ module.exports = (
             processor.invalidate(file);
         },
 
-        async transform(code, id) {
+        async transform(src, id) {
             if(!filter(id)) {
                 return null;
             }
@@ -110,7 +110,7 @@ module.exports = (
             log("transform", id);
 
             try {
-                await processor.string(id, code);
+                await processor.string(id, src);
             } catch(e) {
                 // Replace the default message with the much more verbose one
                 e.message = e.toString();
@@ -118,23 +118,24 @@ module.exports = (
                 return this.error(e);
             }
 
-            const { code : css, namedExports, dependencies, warnings } = transform(id, processor, opts);
+            const { code, namedExports, dependencies, warnings } = transform(id, processor, opts);
 
             warnings.forEach((warning) => {
                 this.warn(warning);
             });
 
-            dependencies.forEach((dep) => {
-                const { file } = graph.getNodeData(dep);
-
-                if(isFile(file)) {
-                    this.addWatchFile(file);
+            dependencies.forEach((depKey) => {
+                if(!isFile(depKey)) {
+                    return;
                 }
+                
+                // Watch all the CSS files this file depends on
+                this.addWatchFile(graph.getNodeData(depKey).file);
             });
-            
+
             // Return JS representation to rollup
             return {
-                code : css,
+                code,
                 map  : emptyMappings,
 
                 // Disable tree-shaking for CSS modules w/o any classes/values to export
