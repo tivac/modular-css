@@ -1,12 +1,12 @@
 {
-  "name": "@modular-css/rollup",
+  "name": "@modular-css/css-to-js",
   "version": "27.0.3",
-  "description": "Add modular-css support to rollup",
-  "main": "./rollup.js",
+  "description": "modular-css powered conversion of CSS to JavaScript",
+  "main": "./css-to-js.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/tivac/modular-css.git",
-    "directory": "packages/rollup"
+    "directory": "packages/css-to-js"
   },
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
@@ -18,26 +18,13 @@
     "access": "public"
   },
   "keywords": [
-    "rollup",
-    "rollup-plugin",
     "css",
     "css-modules",
     "modular-css",
     "postcss"
   ],
-  "devDependencies": {
-    "cssnano": "^5.0.16",
-    "rollup-plugin-hypothetical": "^2.1.1"
-  },
   "dependencies": {
     "@modular-css/processor": "file:../processor",
-    "@modular-css/css-to-js": "file:../css-to-js",
-    "dedent": "0.7.0",
-    "identifierfy": "^2.0.0",
-    "rollup-pluginutils": "^2.0.1",
-    "slash": "^3.0.0"
-  },
-  "peerDependencies": {
-    "rollup": "^2.21.0"
+    "dedent": "^0.7.0"
   }
 }
