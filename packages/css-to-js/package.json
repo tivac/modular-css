@@ -25,6 +25,7 @@
   ],
   "dependencies": {
     "@modular-css/processor": "file:../processor",
-    "dedent": "^0.7.0"
+    "dedent": "^0.7.0",
+    "identifierfy": "^2.0.0"
   }
 }
