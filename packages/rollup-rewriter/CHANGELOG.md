@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.0.3](https://github.com/tivac/modular-css/compare/v26.0.0...v27.0.3) (2021-12-17)
+
+
+### Bug Fixes
+
+* **www:** get REPL working again ([#797](https://github.com/tivac/modular-css/issues/797)) ([c6ffbb5](https://github.com/tivac/modular-css/commit/c6ffbb54a025f4809c7a6a9d12606e54fa1d2d28))
+
+
+### Code Refactoring
+
+* postcss8 native support ([#795](https://github.com/tivac/modular-css/issues/795)) ([331b833](https://github.com/tivac/modular-css/commit/331b833e8de6a4f952be0735441c5d7589aa2ed0))
+
+
+### BREAKING CHANGES
+
+* - Only supports `postcss@8` and higher
+- `composes` and `@values` that reference other entries will need to be listed in dependency order.
+
+
+
+
+
 # [27.0.0](https://github.com/tivac/modular-css/compare/v26.0.0...v27.0.0) (2021-07-06)
 
 **Note:** Version bump only for package @modular-css/rollup-rewriter

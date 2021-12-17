@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/rollup-rewriter",
-  "version": "27.0.0",
+  "version": "27.0.3",
   "description": "Rewrite dynamic imports to include all their CSS dependencies",
   "main": "./rewriter.js",
   "repository": {
