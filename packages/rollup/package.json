@@ -30,11 +30,9 @@
     "rollup-plugin-hypothetical": "^2.1.1"
   },
   "dependencies": {
-    "@modular-css/processor": "file:../processor",
     "@modular-css/css-to-js": "file:../css-to-js",
-    "dedent": "0.7.0",
-    "identifierfy": "^2.0.0",
-    "rollup-pluginutils": "^2.0.1",
+    "@modular-css/processor": "file:../processor",
+    "@rollup/pluginutils": "^4.1.2",
     "slash": "^3.0.0"
   },
   "peerDependencies": {
