@@ -36,10 +36,7 @@ module.exports = () => ({
                                 throw rule.error(`Could not find @value ${name} in "${parsed.source}"`);
                             }
 
-                            const sourceKey = processor._addValue(file, name);
-                            const nameKey = processor._addValue(from, name);
-
-                            processor.graph.addDependency(nameKey, sourceKey);
+                            processor._addDependency({ name : from, dependency : file, refs : [{ name }] });
 
                             values[name] = {
                                 ...value,
@@ -58,10 +55,10 @@ module.exports = () => ({
                         }
                         
                         processor._addValue(file, parsed.name, { namespace : true });
-
+                        
                         for(const key in source.values) {
                             const name = `${parsed.name}.${key}`;
-
+                            
                             values[name] = {
                                 ...source.values[key],
                                 external : true,

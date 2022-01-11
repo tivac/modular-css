@@ -24,6 +24,8 @@ const pluginValuesImport = require("./plugins/values-import.js");
 const pluginValuesLocal = require("./plugins/before/values-local.js");
 const pluginValuesReplace = require("./plugins/values-replace.js");
 
+const keys = require("./lib/keys.js");
+
 const {
     selectorKey,
     fileKey,
@@ -31,12 +33,8 @@ const {
 
     filterByPrefix,
 
-    isFile,
-    isSelector,
-    isValue,
-
     FILE_PREFIX,
-} = require("./lib/keys.js");
+} = keys;
 
 let fs;
 
@@ -638,12 +636,6 @@ class Processor {
 }
 
 // Static exports of key.js functionality
-Processor.selectorKey = selectorKey;
-Processor.fileKey = fileKey;
-Processor.valueKey = valueKey;
-
-Processor.isFile = isFile;
-Processor.isSelector = isSelector;
-Processor.isValue = isValue;
+Object.assign(Processor, keys);
 
 module.exports = Processor;
