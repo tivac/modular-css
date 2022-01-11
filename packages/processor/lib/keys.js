@@ -27,3 +27,4 @@ exports.isValue = (key) => key.startsWith(VALUE_PREFIX);
 
 exports.FILE_PREFIX = FILE_PREFIX;
 exports.SELECTOR_PREFIX = SELECTOR_PREFIX;
+exports.VALUE_PREFIX = VALUE_PREFIX;
