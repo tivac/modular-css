@@ -1,0 +1,25 @@
+.changelog a,
+.changelog a:hover {
+    text-decoration: underline;
+}
+
+.changelog ul {
+    margin: 2rem 0;
+}
+
+.changelog li + li {
+    margin-top: 1rem;
+}
+
+.changelog :global(.toc) {
+    display: none;
+}
+
+.changelog {
+    h3,
+    h4 {
+        :global(.anchor) {
+            display: none;
+        }
+    }
+}

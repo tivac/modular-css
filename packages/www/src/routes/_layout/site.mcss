@@ -1,0 +1,208 @@
+@value bgColor: #ECEFF4;
+@value headerColor: hsl(219, 28%, 88%);
+@value headerBg: hsl(220, 16%, 22%);
+@value textColor: hsl(0, 0%, 10%);
+@value borderColor: #D8DEE9;
+@value accentColor: #5E81AC;
+@value linkcolor: accentColor;
+
+@value hoverInTime: 100ms;
+@value hoverOutTime: 250ms;
+
+@value bigSize: screen and (min-width: 768px);
+
+@import "codemirror/lib/codemirror.css";
+@import "codemirror/theme/nord.css";
+
+html {
+    box-sizing: border-box;
+    
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    width: 100%;
+    min-height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    color: textColor;
+    background: bgColor;
+
+    overflow: hidden;
+}
+
+pre,
+textarea,
+code,
+:global(.code),
+:global(.CodeMirror) {
+    white-space: pre;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+a,
+a:visited {
+    color: linkcolor;
+    transition: color hoverOutTime ease-out;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #d08770;
+    text-decoration: underline;
+
+    transition: color hoverInTime ease-in;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button {
+    background-color: rgba(0,0,0,0);
+    border-color: rgb(0, 0, 238);
+    border-style: none;
+    box-sizing: content-box;
+    color: rgb(0, 0, 238);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font: inherit;
+    height: auto;
+    padding: 0;
+    perspective-origin: 0 0;
+    text-align: start;
+    text-decoration: none;
+    transform-origin: 0 0;
+    width: auto;
+    -moz-appearance: none;
+    -webkit-logical-height: 1em;
+    -webkit-logical-width: auto;
+}
+  
+@supports (-moz-appearance:none) {
+    .button::-moz-focus-inner {
+        border: none;
+        padding: 0;
+    }
+  
+    .button:focus {
+        outline-style: dotted;
+        outline-width: 1px;
+    }
+}
+
+h2 {
+    margin: 2rem 0;
+    font-size: 1.75rem;
+}
+
+h3,
+h4,
+h5,
+h6 {
+    font-size: 1.1rem;
+    margin: 2rem 0 1rem 0;
+    scroll-margin-top: 0.5rem;
+}
+
+h3 { 
+    font-size: 1.25rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+
+    :global(.anchor) {
+        position: absolute;
+        
+        display: block;
+        text-decoration: none;
+        
+        opacity: 0.2;
+        transition: opacity 150ms;
+        
+        transform: translateX(-130%);
+
+        &:hover {
+            opacity: 1;
+        
+            text-decoration: none;
+        }
+    }
+}
+
+p + ul {
+    margin-top: 0;
+}
+
+p img {
+    width: 100%;
+}
+
+/* Examples that link off to the REPL */
+:global(.repl-code) {
+    position: relative;
+
+    & :global(.repl-link) {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        padding: 0.5rem 0.5rem;
+
+        z-index: 1;
+
+        background: #666;
+        color: #FFF;
+
+        font-size: 0.85rem;
+
+        opacity: 0.25;
+
+        transition: opacity 250ms ease-in;
+    }
+
+    &:hover :global(.repl-link) {
+        opacity: 0.6;
+
+        transition: opacity 100ms ease-out;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+:global(.code) :global(.CodeMirror) {
+    height: auto;
+
+    padding: 1em;
+}
+
+/* Nord's comment color is hard to read, this is a lightly-lightened version of it */
+:global(.cm-s-nord span.cm-comment) {
+    color: hsl(220, 16%, 46%);
+}
