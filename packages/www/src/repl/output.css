@@ -1,7 +1,0 @@
-.output {
-    composes: column from "./repl.css";
-
-    grid-area: output;
-
-    position: relative;
-}

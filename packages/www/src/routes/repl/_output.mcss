@@ -1,0 +1,7 @@
+.output {
+    composes: column from "./_repl.mcss";
+
+    grid-area: output;
+
+    position: relative;
+}

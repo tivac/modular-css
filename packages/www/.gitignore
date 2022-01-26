@@ -1,1 +1,10 @@
-dist/*
+.DS_Store
+node_modules
+build/
+.svelte-kit/
+package/
+.env
+.env.*
+!.env.example
+__old__/
+.netlify/

@@ -1,0 +1,97 @@
+@value * as site from "./site.mcss";
+@value bigSize from "./site.mcss";
+
+.header {
+    composes: header from "./layout.mcss";
+
+    display: grid;
+    grid-template:
+        "name version" auto
+        "links links" /
+        2fr 1fr;
+    
+    row-gap: 0.5rem;
+    align-items: center;
+
+    padding: 1rem;
+
+    color: site.headerColor;
+    background-color: site.headerBg;
+
+    border-bottom: 2px solid site.accentColor;
+
+    /* Necessary to force it above codemirror on /repl */
+    z-index: 100;
+
+    @media bigSize {
+        grid-template:
+            "name spacer links" auto 
+            "version spacer links" auto /
+            auto 1fr 0.5fr;
+        
+        row-gap: 0;
+    }
+    
+    a,
+    a:visited {
+        color: site.headerColor;
+    }
+    
+    a:hover {
+        color: site.linkcolor;
+    }
+}
+
+.name {
+    grid-area: name;
+
+    font-size: 1.5rem;
+}
+
+.version {
+    grid-area: version;
+    justify-self: flex-end;
+    
+    font-size: 0.9rem;
+
+    @media bigSize {
+        align-self: end;
+    }
+}
+
+.links {
+    grid-area: links;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    margin-top: 0.75rem;
+    padding: 0;
+    
+    @media bigSize {
+        margin: 0;
+        justify-content: flex-end;
+    }
+}
+
+.link {
+    flex: 1;
+    padding: 0.5rem;
+    text-transform: uppercase;
+    text-align: center;
+
+    @media bigSize {
+        flex: 0;
+    }
+
+    + .link {
+        @media bigSize {
+            margin-left: 0.5rem;
+            padding-left: 0.5rem;
+
+            /* border-left: 2px solid hsl(0, 0%, 54%); */
+        }
+    }
+}

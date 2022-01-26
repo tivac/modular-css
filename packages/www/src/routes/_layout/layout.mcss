@@ -1,0 +1,93 @@
+@value bigSize from "./site.mcss";
+
+.page {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template:
+        "header" auto
+        "content" 1fr;
+
+    @media bigSize {
+        grid-template:
+            "header header" auto
+            "toc content" 1fr /
+            12rem auto;
+
+        &[data-fullscreen="true"] {
+            grid-template-areas:
+                "header header"
+                "content content";
+        }
+    }
+}
+
+.header {
+    grid-area: header;
+}
+  
+.content {
+    grid-area: content;
+
+    overflow: auto;
+
+    display: flex;
+    flex-flow: column nowrap;
+
+    padding: 0 5vw;
+    
+    @media bigSize {
+        padding-left: 1.8rem;
+
+    }
+    
+    .page[data-fullscreen="true"] & {
+        padding: 0;
+    }
+}
+
+.prose {
+    max-width: 50rem;
+}
+
+.toc {
+    grid-area: toc;
+    display: none;
+    
+    padding-left: 1rem;
+    
+    font-size: 85%;
+
+    @media bigSize {
+        display: flex;
+        min-width: 5rem;
+    }
+    
+    :global(.toc-item) {
+        list-style: none;
+
+        & + :global(.toc-item) {
+            margin-top: 0.3rem;
+        }
+    }
+
+    :global(.toc-item-h2 + .toc-item-h2) {
+        margin-top: 1rem;
+    }
+    
+    :global(.toc-link-h2) {
+        text-transform: uppercase;
+    }
+    
+    :global(.toc-level) {
+        padding-left: 0;
+
+        display: flex;
+        flex-flow: column nowrap;
+    }
+
+    :global(.toc-level-2) {
+        margin-top: 0.5rem;
+        padding-left: 1rem;
+    }
+}

@@ -1,0 +1,99 @@
+@value site: "../_layout/site.mcss";
+@value * as main from site;
+
+.home {
+    width: 90vw;
+    display: flex;
+    flex-flow: column nowrap;
+    align-self: center;
+
+    
+    @media main.bigSize {
+        width: 80vw;
+        max-width: 60rem;
+        display: grid;
+        grid-template:
+            " title    title  " 10rem
+            " intro   example " auto /
+            50% 50%;
+        
+            margin-top: 2rem;
+    }
+}
+
+.title {
+    grid-area: title;
+}
+
+.head {
+    font-size: 3rem;
+    font-weight: bold;
+
+    margin-bottom: 1rem;
+}
+
+.headline {
+    margin: 0;
+    font-weight: 400;
+}
+
+.intro {
+    grid-area: intro;
+
+    margin-top: 0;
+    margin-right: 2rem;
+}
+
+.introtext {
+    line-height: 2rem;
+
+    p {
+        margin: 0;
+    }
+}
+
+.introtext a {
+    font-weight: bold;
+}
+
+.example {
+    grid-area: example;
+}
+
+.learn {
+    composes: center from site;
+
+    margin-top: 1rem;
+}
+
+@value ctaBg: #A3BE8C;
+@value ctaText: #ECEFF4;
+
+.cta,
+.cta:visited {
+    composes: center from site;
+
+    margin-top: 2rem;
+
+    padding: 2rem 4rem;
+    background: ctaBg;
+    
+    color: ctaText;
+    font-weight: bold;
+    font-size: 1.3rem;
+
+    border-radius: 0.25rem;
+
+    transition: background-color main.hoverOutTime ease-in;
+}
+
+.cta:hover {
+    background: main.headerBg;
+
+    /* needed to override the default <a> styling */
+    color: ctaText;
+
+    text-decoration: none;
+
+    transition: background-color main.hoverInTime ease-out;
+}

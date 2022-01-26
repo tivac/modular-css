@@ -17,13 +17,7 @@ const emptyMappings = {
 };
 
 const DEFAULTS = {
-    dev     : false,
     verbose : false,
-
-    namedExports : {
-        rewriteInvalid : true,
-        warn           : true,
-    },
 
     // Regexp to work around https://github.com/rollup/rollup-pluginutils/issues/39
     include : /\.mcss$/i,
@@ -90,10 +84,6 @@ module.exports = (
 
         buildStart() {
             log("build start");
-
-            if(!options.namedExports) {
-                this.warn("@modular-css/rollup doesn't allow namedExports to be disabled");
-            }
 
             // Watch any files already in the procesor
             Object.keys(processor.files).forEach((file) => this.addWatchFile(file));

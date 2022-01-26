@@ -1,25 +1,38 @@
-# @modular-css/www
+# create-svelte
 
-Code + content that becomes m-css.com
+Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
+
+## Creating a project
+
+If you're seeing this, you've probably already done this step. Congrats!
+
+```bash
+# create a new project in the current directory
+npm init svelte@next
+
+# create a new project in my-app
+npm init svelte@next my-app
+```
+
+> Note: the `@next` is temporary
+
+## Developing
+
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+
+```bash
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
 
 ## Building
 
-From the root, `npm run www:build` will build a static copy of the site to the `packages/www/dist` folder.
+Before creating a production version of your app, install an [adapter](https://kit.svelte.dev/docs#adapters) for your target environment. Then:
 
-`npm run www:start` will start a rollup watcher as well as a server.
+```bash
+npm run build
+```
 
-## Hosting
-
-Site is hosted by netlify.com, auto-builds and deploys from the `main` branch. Should keep it up to date with future releases.
-
-## Notes
-
-1. `postcss` is bundled by using webpack within a rollup plugin, because rollup doesn't handle all the circular references in postcss very well.
-2. Rollup is being used to generate static sites in a rather circuitous way, by compiling svelte components to common js w/ SSR enabled & `require()`ing them.
-3. Uses Shimport to load REPL JS as ESM
-
-## TODO
-
-- [ ] See if the webpack-built `postcss` can be trimmed down at all by excluding packages rollup can bundle fine
-- [ ] Allow for giving new REPL tabs a name
-- [ ] Figure out how to get REPL build to not output CSS
+> You can preview the built app with `npm run preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.

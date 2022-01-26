@@ -68,7 +68,7 @@ const params = (processor, args) => {
 };
 
 const DEFAULTS = {
-    cwd : process.cwd(),
+    cwd : false,
     map : false,
 
     dupewarn  : true,
@@ -88,6 +88,8 @@ class Processor {
             __proto__ : null,
             ...DEFAULTS,
             ...opts,
+
+            cwd : opts.cwd || process.cwd(),
         };
 
         this._options = options;
@@ -292,6 +294,8 @@ class Processor {
 
         for(const dep of files) {
             this._log("_after()", dep);
+
+            await this._files[dep].walked;
 
             const result = await this._after.process(
                 // NOTE: the call to .clone() is really important here, otherwise this call
