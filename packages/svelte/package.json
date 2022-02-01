@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@modular-css/processor": "file:../processor",
+    "@rollup/pluginutils": "^4.1.2",
     "escape-string-regexp": "^4.0.0",
     "is-url": "^1.2.4",
     "slash": "^3.0.0"
