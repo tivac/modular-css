@@ -5,6 +5,7 @@ const path = require("path");
 const isUrl = require("is-url");
 const escape = require("escape-string-regexp");
 const slash = require("slash");
+const utils = require("@rollup/pluginutils");
 
 const Processor = require("@modular-css/processor");
 
@@ -17,19 +18,35 @@ const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]
 
 const prefix = `[${require("./package.json").name}]`;
 
-module.exports = (config = false) => {
+const CONFIG_DEFAULTS = {
+    verbose : false,
+    values  : false,
+
+    // Regexp to work around https://github.com/rollup/rollup-pluginutils/issues/39
+    include : /\.css$/i,
+};
+
+module.exports = (opts = {}) => {
+    const options = {
+        __proto__ : null,
+        ...CONFIG_DEFAULTS,
+        ...opts,
+    };
+
     // Use a passed processor, or set up our own if necessary
-    const { processor = new Processor(config) } = config;
+    const { processor = new Processor(options) } = options;
 
     const { cwd } = processor.options;
 
     // eslint-disable-next-line no-console, no-empty-function
-    const log = config.verbose ? console.log.bind(console, prefix) : () => {};
+    const log = options.verbose ? console.log.bind(console, prefix) : () => {};
 
     // eslint-disable-next-line no-console
     const warn = console.warn.bind(console, prefix, "WARN");
 
     const relative = (file) => slash(path.relative(cwd, file));
+
+    const filter = utils.createFilter(options.include, options.exclude);
 
     // Check for and stringify any values in the template we couldn't convert
     const missing = ({ source, file }) => {
@@ -130,7 +147,7 @@ module.exports = (config = false) => {
                     return out;
                 }
 
-                if(!href.endsWith(".css")) {
+                if(!filter(href)) {
                     // eslint-disable-next-line no-console
                     console.warn(`Possible invalid <link> href: ${href}`);
                 }
@@ -235,7 +252,7 @@ module.exports = (config = false) => {
             });
         }
         
-        if(config.values && valueKeys.length) {
+        if(options.values && valueKeys.length) {
             log("updating source {cssvalue.<key>} references from", css);
             log(JSON.stringify(valueKeys));
 
