@@ -26,12 +26,6 @@ module.exports = async function(source) {
         // Webpack 4
         this._compiler.options.processor;
 
-    if(options.cjs) {
-        this.emitWarning(
-            new Error("cjs option is deprecated, used namedExports: false instead")
-        );
-    }
-
     this.cacheable();
 
     try {
