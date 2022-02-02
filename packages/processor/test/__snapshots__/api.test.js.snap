@@ -336,6 +336,58 @@ Object {
 
 exports[`/processor.js API .string() should process a string 3`] = `".mc_wooga { }"`;
 
+exports[`/processor.js API .warnings should expose warnings from after hook 1`] = `
+Object {
+  "column": 1,
+  "endColumn": 23,
+  "endLine": 1,
+  "line": 1,
+  "node": Any<Object>,
+  "plugin": "after-warnings",
+  "text": "This is a warning from after plugin",
+  "type": "warning",
+}
+`;
+
+exports[`/processor.js API .warnings should expose warnings from before hook 1`] = `
+Object {
+  "column": 1,
+  "endColumn": 23,
+  "endLine": 1,
+  "line": 1,
+  "node": Any<Object>,
+  "plugin": "before-warnings",
+  "text": "This is a warning from before plugin",
+  "type": "warning",
+}
+`;
+
+exports[`/processor.js API .warnings should expose warnings from done hook 1`] = `
+Object {
+  "column": 1,
+  "endColumn": 23,
+  "endLine": 1,
+  "line": 1,
+  "node": Any<Object>,
+  "plugin": "done-warnings",
+  "text": "This is a warning from done plugin",
+  "type": "warning",
+}
+`;
+
+exports[`/processor.js API .warnings should expose warnings from processing hook 1`] = `
+Object {
+  "column": 1,
+  "endColumn": 23,
+  "endLine": 1,
+  "line": 1,
+  "node": Any<Object>,
+  "plugin": "processing-warnings",
+  "text": "This is a warning from processing plugin",
+  "type": "warning",
+}
+`;
+
 exports[`/processor.js API .warnings should have warnings from files that have been added 1`] = `
 Array [
   "Imported value one overlaps with a local value and will be ignored",

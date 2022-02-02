@@ -10,7 +10,6 @@ const postcssUrl = require("postcss-url");
 
 const { compositions, fileCompositions } = require("./lib/output.js");
 
-const message = require("./lib/message.js");
 const relative = require("./lib/relative.js");
 const tiered = require("./lib/graph-tiers.js");
 const normalize = require("./lib/normalize.js");
@@ -554,12 +553,6 @@ class Processor {
             const { messages } = result;
 
             result.warnings().forEach((warning) => this._warnings.push(warning));
-
-            // Pull in any classes from an @composes command
-            Object.assign(file.classes, message(result, "atcomposes"));
-
-            // export the last "classes" message that was sent
-            Object.assign(file.classes, message(result, "classes"));
 
             // Save off anything from plugins named "modular-css-export*"
             // https://github.com/tivac/modular-css/pull/404

@@ -341,6 +341,30 @@ describe("/processor.js", () => {
                 expect(processor.warnings.length).toBeGreaterThan(0);
                 expect(processor.warnings.map((warning) => warning.text)).toMatchSnapshot();
             });
+
+            it.each([
+                "before",
+                "processing",
+                "after",
+                "done",
+            ])("should expose warnings from %s hook", async (hook) => {
+                processor = new Processor({
+                    [hook] : [{
+                        postcssPlugin : `${hook}-warnings`,
+                        Rule(rule, { result }) {
+                            rule.warn(result, `This is a warning from ${hook} plugin`);
+                        },
+                    }],
+                });
+
+                await processor.file("./packages/processor/test/specimens/simple.css");
+
+                await processor.output();
+
+                expect(processor.warnings[[ 0 ]]).toMatchSnapshot({
+                    node : expect.any(Object),
+                });
+            });
         });
 
         describe(".compositions", () => {
