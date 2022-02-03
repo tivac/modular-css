@@ -72,10 +72,6 @@ const config = {
                     ],
                 },
             },
-
-            build : {
-                minify : false,
-            },
         },
 
         trailingSlash : "always",
