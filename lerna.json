@@ -3,7 +3,8 @@
   "command": {
     "publish": {
       "conventionalCommits": true,
-      "message": "release: %s :tada: :rocket:"
+      "message": "release: %s :tada: :rocket:",
+      "createRelease": "github"
     },
     "version": {
       "conventionalCommits": true
