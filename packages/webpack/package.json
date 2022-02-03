@@ -27,6 +27,9 @@
     "modular-css",
     "postcss"
   ],
+  "devDependencies": {
+    "webpack": "^4.30.0"
+  },
   "dependencies": {
     "@modular-css/processor": "file:../processor",
     "esutils": "^2.0.2",

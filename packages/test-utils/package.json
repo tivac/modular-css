@@ -12,7 +12,9 @@
     "directory": "packages/test-utils"
   },
   "license": "MIT",
-  "scripts": {
-    "test": "true"
+  "devDependencies": {
+    "p-defer": "^3.0.0",
+    "read-dir-deep": "^7.0.1",
+    "snapshot-diff": "^0.9.0"
   }
 }

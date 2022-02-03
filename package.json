@@ -19,58 +19,31 @@
     "pretest": "npm run parsers",
     "test": "jest",
     "watch": "jest --watch",
-    "www:build": "lerna run --scope @modular-css/website --stream build",
-    "www:start": "lerna run --scope @modular-css/website --stream start",
+    "www:build": "npm run build --workspace=www",
+    "www:start": "npm start --workspace=www",
     "prewww:deploy": "npm run parsers",
-    "www:deploy": "lerna run --scope @modular-css/website --stream deploy"
+    "www:deploy": "npm run deploy --workspace=www"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.5",
-    "@modular-css/test-utils": "file:packages/test-utils",
-    "@modular-css/website": "file:packages/www",
-    "@rollup/plugin-node-resolve": "^13.1.1",
+    "@rollup/plugin-node-resolve": "^13.1.3",
     "@tivac/eslint-config": "^2.4.0",
-    "browserify": "^16.2.3",
     "cli-tester": "2.0.0",
-    "cssnano": "^5.0.11",
     "dedent": "0.7.0",
     "dentist": "1.0.3",
     "env-cmd": "^10.0.1",
     "eslint": "^8.4.1",
     "eslint-plugin-jest": "^25.3.0",
-    "factor-bundle": "2.5.0",
-    "from2-string": "1.1.0",
     "jest": "^27.4.5",
     "jest-cli": "^27.4.5",
     "lerna": "^4.0.0",
     "node-notifier": "^10.0.0",
-    "p-defer": "^3.0.0",
     "peggy": "^1.2.0",
     "postcss": "^8.4.5",
-    "read-dir-deep": "^7.0.1",
-    "rollup": "^2.61.1",
-    "rollup-plugin-hypothetical": "^2.1.1",
-    "rollup-plugin-svelte": "^7.1.0",
-    "shelljs": "^0.8.4",
-    "sirv": "^0.4.2",
-    "snapshot-diff": "^0.9.0",
-    "sugarss": "^4.0.1",
-    "svelte": "^3.44.1",
-    "watchify": "^3.11.1",
-    "webpack": "^4.30.0"
+    "rollup": "^2.66.1",
+    "shelljs": "^0.8.4"
   },
-  "dependencies": {
-    "@modular-css/browserify": "file:packages/browserify",
-    "@modular-css/cli": "file:packages/cli",
-    "@modular-css/glob": "file:packages/glob",
-    "@modular-css/path-aliases": "file:packages/aliases",
-    "@modular-css/path-resolver": "file:packages/paths",
-    "@modular-css/postcss": "file:packages/postcss",
-    "@modular-css/processor": "file:packages/processor",
-    "@modular-css/rollup": "file:packages/rollup",
-    "@modular-css/rollup-rewriter": "file:packages/rollup-rewriter",
-    "@modular-css/shortnames": "file:packages/namer",
-    "@modular-css/svelte": "file:packages/svelte",
-    "@modular-css/webpack": "file:packages/webpack"
-  }
+  "workspaces": [
+    "packages/*"
+  ]
 }
