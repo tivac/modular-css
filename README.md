@@ -1,4 +1,4 @@
-modular-css ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/tivac/modular-css/CI) [!![GitHub issues](https://img.shields.io/github/issues/tivac/modular-css) ![GitHub Discussions](https://img.shields.io/github/discussions/tivac/modular-css)
+modular-css ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/tivac/modular-css/CI) ![GitHub issues](https://img.shields.io/github/issues/tivac/modular-css) ![GitHub Discussions](https://img.shields.io/github/discussions/tivac/modular-css)
 ===========
 
 A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/css-modules)
@@ -86,4 +86,4 @@ More detailed descriptions are available on [the website](https://m-css.com/guid
 
 ## Install
 
-https://m-css.com/guide/#usage
+https://m-css.com/overview/#how
