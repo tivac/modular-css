@@ -12,7 +12,6 @@
   "scripts": {
     "cover": "jest --coverage",
     "lint": "eslint .",
-    "outdated": "lerna exec -- node ../../lerna/outdated.js",
     "parsers": "node parsers/build.js",
     "release": "env-cmd lerna publish",
     "prepublishOnly": "npm run parsers",
