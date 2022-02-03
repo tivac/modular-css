@@ -1,10 +1,6 @@
 @modular-css/browserify  [![NPM Version](https://img.shields.io/npm/v/@modular-css/browserify.svg)](https://www.npmjs.com/package/@modular-css/browserify) [![NPM License](https://img.shields.io/npm/l/@modular-css/browserify.svg)](https://www.npmjs.com/package/@modular-css/browserify) [![NPM Downloads](https://img.shields.io/npm/dm/@modular-css/browserify.svg)](https://www.npmjs.com/package/@modular-css/browserify)
 ===========
 
-<p align="center">
-    <a href="https://gitter.im/modular-css/modular-css"><img src="https://img.shields.io/gitter/room/modular-css/modular-css.svg" alt="Gitter" /></a>
-</p>
-
 Browserify support for [`modular-css`](https://github.com/tivac/modular-css).
 
 This plugin can be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.

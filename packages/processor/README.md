@@ -1,10 +1,6 @@
 @modular-css/processor  [![NPM Version](https://img.shields.io/npm/v/@modular-css/processor.svg)](https://www.npmjs.com/package/@modular-css/processor) [![NPM License](https://img.shields.io/npm/l/@modular-css/processor.svg)](https://www.npmjs.com/package/@modular-css/processor) [![NPM Downloads](https://img.shields.io/npm/dm/@modular-css/processor.svg)](https://www.npmjs.com/package/@modular-css/processor)
 ===========
 
-<p align="center">
-    <a href="https://gitter.im/modular-css/modular-css"><img src="https://img.shields.io/gitter/room/modular-css/modular-css.svg" alt="Gitter" /></a>
-</p>
-
 The core functionality of [`modular-css`](https://npmjs.com/modular-css) exposed as a JS API.
 
 - [Install](#install)

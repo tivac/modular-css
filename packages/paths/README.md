@@ -1,10 +1,6 @@
 @modular-css/path-resolver [![NPM Version](https://img.shields.io/npm/v/@modular-css/path-resolver.svg)](https://www.npmjs.com/package/@modular-css/path-resolver) [![NPM License](https://img.shields.io/npm/l/@modular-css/path-resolver.svg)](https://www.npmjs.com/package/@modular-css/path-resolver) [![NPM Downloads](https://img.shields.io/npm/dm/@modular-css/path-resolver.svg)](https://www.npmjs.com/package/@modular-css/path-resolver)
 ===========
 
-<p align="center">
-    <a href="https://gitter.im/modular-css/modular-css"><img src="https://img.shields.io/gitter/room/modular-css/modular-css.svg" alt="Gitter" /></a>
-</p>
-
 A resolver for [`modular-css`](https://github.com/tivac/modular-css) that will let you resolve file references against arbitrary paths. Useful to avoid code like
 
 ```

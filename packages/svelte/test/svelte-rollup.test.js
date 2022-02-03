@@ -89,7 +89,7 @@ describe("/svelte.js", () => {
             const v2 = dir("./rollup/output/");
 
             expect(v1).toMatchDiffSnapshot(v2, {
-                // Get specific to avoid some travis-related weirdness
+                // Get specific to avoid some build-related weirdness
                 contextLines     : 0,
                 stablePatchmarks : true,
             });

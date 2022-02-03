@@ -1,4 +1,4 @@
-modular-css [![Build Status](https://img.shields.io/travis/tivac/modular-css/main.svg)](https://travis-ci.org/tivac/modular-css) [![Gitter](https://img.shields.io/gitter/room/modular-css/modular-css.svg)](https://gitter.im/modular-css/modular-css)
+modular-css ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/tivac/modular-css/CI) [!![GitHub issues](https://img.shields.io/github/issues/tivac/modular-css) ![GitHub Discussions](https://img.shields.io/github/discussions/tivac/modular-css)
 ===========
 
 A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/css-modules)
