@@ -37,8 +37,6 @@ const decode = (hash) => {
     let data;
 
     try {
-        console.log(lz.decompressFromEncodedURIComponent(hash));
-
         data = JSON.parse(
             lz.decompressFromEncodedURIComponent(hash)
         );
