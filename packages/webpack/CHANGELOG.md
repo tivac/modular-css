@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.1.0](https://github.com/tivac/modular-css/compare/v27.0.3...v27.1.0) (2022-02-03)
+
+
+### Bug Fixes
+
+* **webpack:** remove deprecated cjs option ([3489907](https://github.com/tivac/modular-css/commit/3489907e69ccd2fec69fc015cefbb6b87225cc3e))
+
+
+
+
+
 ## [27.0.3](https://github.com/tivac/modular-css/compare/v26.0.0...v27.0.3) (2021-12-17)
 
 

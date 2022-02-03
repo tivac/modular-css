@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/shortnames",
-  "version": "27.0.3",
+  "version": "27.1.0",
   "description": "Helper function to make tiny classnames for modular-css",
   "main": "namer.js",
   "repository": {

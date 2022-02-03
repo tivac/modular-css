@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.1.0](https://github.com/tivac/modular-css/compare/v27.0.3...v27.1.0) (2022-02-03)
+
+
+### Bug Fixes
+
+* **test-utils:** don't try to check non-strings ([4fb497e](https://github.com/tivac/modular-css/commit/4fb497edce27e2d7a72c65e8c6394f7eb712db6a))
+
+
+
+
+
 ## [27.0.3](https://github.com/tivac/modular-css/compare/v26.0.0...v27.0.3) (2021-12-17)
 
 

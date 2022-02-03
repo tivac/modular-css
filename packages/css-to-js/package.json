@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/css-to-js",
-  "version": "27.0.3",
+  "version": "27.1.0",
   "description": "modular-css powered conversion of CSS to JavaScript",
   "main": "./css-to-js.js",
   "repository": {

@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.1.0](https://github.com/tivac/modular-css/compare/v27.0.3...v27.1.0) (2022-02-03)
+
+
+### Bug Fixes
+
+* **processor:** cleaning up ([897a2c5](https://github.com/tivac/modular-css/commit/897a2c52acc1b507452654c48360e469e2468a69))
+* **svelte:** support non .css extensions ([8bf5a18](https://github.com/tivac/modular-css/commit/8bf5a180caf9f4d8445f5596c9f16833cdcb6783))
+* **test-utils:** don't try to check non-strings ([4fb497e](https://github.com/tivac/modular-css/commit/4fb497edce27e2d7a72c65e8c6394f7eb712db6a))
+* **webpack:** remove deprecated cjs option ([3489907](https://github.com/tivac/modular-css/commit/3489907e69ccd2fec69fc015cefbb6b87225cc3e))
+
+
+### Features
+
+* **css-to-js:** extract css-to-js from rollup ([85aac89](https://github.com/tivac/modular-css/commit/85aac8966adf73f22ed599fa3884db97530c208d))
+* **vite:** vite plugin ([46c80da](https://github.com/tivac/modular-css/commit/46c80dab3c552b5ddf2c43683984d6c9112ecd39))
+* **www:** m-css.com on sveltekit ([d434f92](https://github.com/tivac/modular-css/commit/d434f927a4201df8d66cd7ed5ea2be63daa42b7a))
+
+
+
+
+
 ## [27.0.3](https://github.com/tivac/modular-css/compare/v26.0.0...v27.0.3) (2021-12-17)
 
 
