@@ -31,10 +31,6 @@ const virtualize = (file) => `${file}?${CSS_QUERY}`;
 const devirtualize = (file) => `${file.split("?")[0]}`;
 const isVirtual = (file) => file.endsWith(`?${CSS_QUERY}`);
 
-// NOTE: Can't use basic isAbsolute check because of paths vite passes in. On windows they can be
-// "/foo/bar/baz.mcss" which isAbsolute will treat as absolute, even though it definitely isn't
-const isPartial = (file) => (process.platform !== "win32" ? !path.isAbsolute(file) : path.parse(file).root === "/");
-
 module.exports = (
     /* istanbul ignore next: too painful to test */
     pluginOptions = {}
@@ -89,15 +85,26 @@ module.exports = (
             Object.keys(processor.files).forEach((file) => this.addWatchFile(file));
         },
 
-        resolveId(source) {
+        async resolveId(source) {
+            // Only care about our particular type of virtual file
             if(!isVirtual(source)) {
                 return null;
             }
 
-            let resolved = source;
+            log("resolving", source);
 
-            if(isPartial(resolved)) {
-                resolved = path.join(process.cwd(), resolved);
+            let resolved = source;
+            
+            // Check file as passed (minus the query params)
+            if(processor.has(devirtualize(resolved))) {
+                return resolved;
+            }
+
+            resolved = path.join(process.cwd(), resolved);
+
+            // Check file as an asbolute path (minus the query params)
+            if(!processor.has(devirtualize(resolved))) {
+                return null;
             }
 
             resolved = slash(resolved);
@@ -118,15 +125,9 @@ module.exports = (
 
             log("loading", id);
 
-            let file = devirtualize(id);
-
-            if(isPartial(file)) {
-                file = path.join(process.cwd(), file);
-            }
+            const file = devirtualize(id);
 
             if(!processor.has(file)) {
-                log("no loading", file);
-
                 return null;
             }
 
