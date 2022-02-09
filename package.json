@@ -11,7 +11,7 @@
   },
   "scripts": {
     "cover": "jest --coverage",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
     "parsers": "node parsers/build.js",
     "release": "env-cmd lerna publish",
     "prepublishOnly": "npm run parsers",
