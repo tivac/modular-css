@@ -2,13 +2,13 @@
 
 Vite support for [`modular-css`](https://github.com/tivac/modular-css).
 
-#### Install
+#### vite Install
 
 ```shell
 > npm i @modular-css/vite
 ```
 
-#### Usage
+#### vite Usage
 
 ```javascript
 // vite.config.js

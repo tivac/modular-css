@@ -1,8 +1,8 @@
-### svelte
+### svelte preprocessor
 
-Svelte preprocessor support for [`modular-css`](https://github.com/tivac/modular-css). Process inline `<style>` or `<link>` references inside your Svelte components using the full power of `modular-css` while also providing compile-time optimizations for smaller bundles and even faster runtime performance!
+Svelte preprocessor for [`modular-css`](https://github.com/tivac/modular-css). Process inline `<style>` or `<link>` references inside your Svelte components using the full power of `modular-css` while also providing compile-time optimizations for smaller bundles and even faster runtime performance!
 
-#### Example
+#### svelte Example
 
 Turns this
 
@@ -30,23 +30,32 @@ into this by running it through `modular-css` and then statically replacing ever
 </div>
 ```
 
-You could also use `<link href="./file.css" />` tags to reference CSS external to the component, but the component must have only **one** `<link>` (links to URLs are fine and ignored) or `<style>`. Combining them is not supported.
+You can also use `<link href="./file.css" />` tags to reference CSS external to the component, but the component must have only **one** `<link>` (links to URLs are fine and ignored) or `<style>`. Combining them is not supported.
 
-#### Install
+```html
+<link href="./style.css" />
+
+<div class="{css.main}">
+    <h1 class="{css.title}">Title</h1>
+</div>
+```
+
+#### svelte Install
 
 ```shell
 > npm i @modular-css/svelte -D
 ```
 
-#### Usage
+#### svelte Usage
 
-##### `svelte.preprocess()`
+##### Usage via `svelte.preprocess()`
 
 ```javascript
 const filename = "./Component.svelte";
 
 const { processor, preprocess } = require("@modular-css/svelte")({
     // Processor options
+    // ...
 });
 
 const processed = await svelte.preprocess(
@@ -59,45 +68,13 @@ const result = await processor.output();
 fs.writeFileSync("./dist/bundle.css", result.css);
 ```
 
-##### `@modular-css/rollup`
-
-###### API
+##### Usage via `rollup`
 
 ```javascript
-const rollup = require("rollup").rollup;
-
+// rollup.config.js
 const { preprocess, processor } = require("@modular-css/svelte")({
     // Processor options
-});
-
-const bundle = await rollup({
-    input   : "./Component.svelte",
-    
-    plugins : [
-        require("rollup-plugin-svelte")({
-            preprocess,
-        }),
-
-        require("@modular-css/rollup")({
-            processor,
-
-            common : "common.css",
-        }),
-    ]
-});
-
-// bundle.write will also write out the CSS to the path specified in the `css` arg
-bundle.write({
-    format : "es",
-    file   : "./dist/bundle.js"
-});
-```
-
-###### `rollup.config.js`
-
-```javascript
-const { preprocess, processor } = require("@modular-css/svelte")({
-    // Processor options
+    // ...
 });
 
 module.exports = {
@@ -115,14 +92,39 @@ module.exports = {
         
         require("@modular-css/rollup")({
             processor,
-
-            common : "common.css",
         }),
     ]
 };
 ```
 
-#### Options
+##### Usage via `vite`
+
+```javascript
+// vite.config.js
+import { defineConfig } from "vite";
+import preprocessor from "@modular-css/svelte";
+import mcssVite from "@modular-css/vite";
+
+// Set up the svelte preprocessor and get a reference to the
+// mcss processor so we can pass it into the vite plugin
+const { preprocess, processor } = preprocessor({
+    // Default is .css but we need .mcss because of vite
+    include : /\.mcss$/i,
+
+    // Other processor options
+    // ...
+});
+
+export default defineConfig({
+    plugins : [
+        mcssVite({
+            processor,
+        }),
+    ],
+});
+```
+
+#### svelte Options
 
 ##### `strict`
 

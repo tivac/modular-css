@@ -11,7 +11,7 @@ import "codemirror/mode/shell/shell.js";
 import "codemirror/mode/htmlmixed/htmlmixed.js";
 
 // Load up m-css codemirror mode
-import mcssMime from "../src/lib/codemirror-mcss-mime.js";
+import mcssMime from "../../src/lib/codemirror-mcss-mime.js";
 
 mcssMime(codemirror);
 

@@ -7,8 +7,8 @@ import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
 import rehypeTableOfContents from "rehype-toc";
 
-import remarkImport from "./remark-import.js";
-import rehypeCode from "./rehype-code.js";
+import remarkImport from "./md/remark-import.js";
+import rehypeCode from "./md/rehype-code.js";
 
 const ESCAPES = new Map([
     [ "`", "\\`" ],

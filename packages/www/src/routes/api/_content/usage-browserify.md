@@ -6,29 +6,21 @@ This plugin can be combined with the `factor-bundle` plugin to output a common C
 
 `@modular-css/browserify` will use the `basedir` passed to browserify as it's `cwd` parameter.
 
-#### Install
+#### browserify Install
 
 ```shell
 $ npm i @modular-css/browserify
 ```
 
-#### Options
+#### browserify Usage
 
-##### `css`
-
-Location to write the generated CSS file to.
-
-##### Shared Options
-
-All other options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).
-
-#### CLI
+##### CLI
 
 ```
 $ browserify -p [ @modular-css/browserify --css "./style.css" ] entry.js
 ```
 
-#### API
+##### API
 
 ```javascript
 var browserify = require("browserify"),
@@ -41,13 +33,13 @@ build.plugin("@modular-css/browserify", {
 });
 ```
 
-#### factor-bundle
+##### factor-bundle
 
 `@modular-css/browserify` is fully `factor-bundle` aware and will output correctly-partitioned CSS bundles to match the JS bundles created by `factor-bundle`.
 
 **WARNING**: Due to how `factor-bundle` works the `@modular-css/browserify` must be applied to the Browserify object **before** `factor-bundle`.
 
-##### CLI
+###### CLI
 
 ```
 $ browserify home.js account.js \
@@ -56,7 +48,7 @@ $ browserify home.js account.js \
     -o bundle/common.js
 ```
 
-##### API
+###### API
 
 ```javascript
 var build = browserify([
@@ -76,3 +68,13 @@ build.plugin("factor-bundle", {
     ]
 });
 ```
+
+#### Options
+
+##### `css`
+
+Location to write the generated CSS file to.
+
+##### Shared Options
+
+All other options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).
