@@ -1,5 +1,6 @@
 "use strict";
 
+const fs = require("fs/promises");
 const path = require("path");
 
 const utils = require("@rollup/pluginutils");
@@ -33,7 +34,21 @@ const isVirtual = (file) => file.endsWith(`?${CSS_QUERY}`);
 
 // NOTE: Can't use basic isAbsolute check because of paths vite passes in. On windows they can be
 // "/foo/bar/baz.mcss" which isAbsolute will treat as absolute, even though it definitely isn't
-const isPartial = (file) => (process.platform !== "win32" ? !path.isAbsolute(file) : path.parse(file).root === "/");
+// And on linux they're absolute-looking but actually local?
+const isPartial = async (file) => {
+    try {
+        await fs.stat(path.join(process.cwd(), file));
+
+        return true;
+    } catch(e) {
+        // NO-OP
+    }
+
+    return (process.platform !== "win32" ?
+        !path.isAbsolute(file) :
+        path.parse(file).root === "/"
+    );
+};
 
 module.exports = (
     /* istanbul ignore next: too painful to test */
@@ -89,14 +104,17 @@ module.exports = (
             Object.keys(processor.files).forEach((file) => this.addWatchFile(file));
         },
 
-        resolveId(source) {
+        async resolveId(source) {
             if(!isVirtual(source)) {
                 return null;
             }
 
-            let resolved = source;
+            log("resolving", source);
 
-            if(isPartial(resolved)) {
+            let resolved = source;
+            const file = devirtualize(resolved);
+
+            if(await isPartial(file)) {
                 resolved = path.join(process.cwd(), resolved);
             }
 
@@ -118,11 +136,11 @@ module.exports = (
 
             log("loading", id);
 
-            let file = devirtualize(id);
+            const file = devirtualize(id);
 
-            if(isPartial(file)) {
-                file = path.join(process.cwd(), file);
-            }
+            // if(await isPartial(file)) {
+            //     file = path.join(process.cwd(), file);
+            // }
 
             if(!processor.has(file)) {
                 log("no loading", file);
