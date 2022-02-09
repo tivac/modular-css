@@ -59,15 +59,6 @@ const config = {
                 include : [
                     "@modular-css/processor",
                 ],
-
-                esbuildOptions : {
-                    plugins : [
-                        modulesPolyfill(),
-                        globalsPolyfill({
-                            process : true,
-                        }),
-                    ],
-                },
             },
 
             server : {
