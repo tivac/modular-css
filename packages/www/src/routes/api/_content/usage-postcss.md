@@ -8,7 +8,9 @@
 > npm i @modular-css/postcss
 ```
 
-#### postcss Usage (via API)
+#### postcss Usage
+
+##### API
 
 ```javascript
 const postcss = require("postcss");
@@ -26,7 +28,7 @@ const result = await processor.process("<css>")
 // etc
 ```
 
-#### postcss Usage (via config)
+##### config
 
 ```shell
 > postcss --config postcss.json input.css
@@ -43,13 +45,13 @@ const result = await processor.process("<css>")
 
 ```
 
-#### postcss Usage (via CLI)
+##### CLI
 
 ```shell
 > postcss --use @modular-css/postcss input.css
 ```
 
-#### PostCSS Options
+#### postcss Options
 
 ##### `json`
 

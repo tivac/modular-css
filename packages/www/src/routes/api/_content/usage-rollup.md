@@ -2,13 +2,15 @@
 
 Rollup support for [`modular-css`](https://github.com/tivac/modular-css).
 
-#### Install
+#### rollup Install
 
 ```shell
 > npm i @modular-css/rollup
 ```
 
-#### Usage via API
+#### rollup Usage
+
+##### API
 
 ```javascript
 const bundle = await rollup({
@@ -19,7 +21,7 @@ const bundle = await rollup({
 });
 ```
 
-#### Usage via `rollup.config.js`
+##### `rollup.config.js`
 
 ```javascript
 import css from "@modular-css/rollup";
