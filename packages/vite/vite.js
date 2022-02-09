@@ -1,6 +1,5 @@
 "use strict";
 
-const fs = require("fs/promises");
 const path = require("path");
 
 const utils = require("@rollup/pluginutils");
