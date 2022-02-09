@@ -32,24 +32,6 @@ const virtualize = (file) => `${file}?${CSS_QUERY}`;
 const devirtualize = (file) => `${file.split("?")[0]}`;
 const isVirtual = (file) => file.endsWith(`?${CSS_QUERY}`);
 
-// NOTE: Can't use basic isAbsolute check because of paths vite passes in. On windows they can be
-// "/foo/bar/baz.mcss" which isAbsolute will treat as absolute, even though it definitely isn't
-// And on linux they're absolute-looking but actually local?
-const isPartial = async (file) => {
-    try {
-        await fs.stat(path.join(process.cwd(), file));
-
-        return true;
-    } catch(e) {
-        // NO-OP
-    }
-
-    return (process.platform !== "win32" ?
-        !path.isAbsolute(file) :
-        path.parse(file).root === "/"
-    );
-};
-
 module.exports = (
     /* istanbul ignore next: too painful to test */
     pluginOptions = {}
@@ -105,6 +87,7 @@ module.exports = (
         },
 
         async resolveId(source) {
+            // Only care about our particular type of virtual file
             if(!isVirtual(source)) {
                 return null;
             }
@@ -112,10 +95,17 @@ module.exports = (
             log("resolving", source);
 
             let resolved = source;
-            const file = devirtualize(resolved);
+            
+            // Check file as passed (minus the query params)
+            if(processor.has(devirtualize(resolved))) {
+                return resolved;
+            }
 
-            if(await isPartial(file)) {
-                resolved = path.join(process.cwd(), resolved);
+            resolved = path.join(process.cwd(), resolved);
+
+            // Check file as an asbolute path (minus the query params)
+            if(!processor.has(devirtualize(resolved))) {
+                return null;
             }
 
             resolved = slash(resolved);
@@ -138,13 +128,7 @@ module.exports = (
 
             const file = devirtualize(id);
 
-            // if(await isPartial(file)) {
-            //     file = path.join(process.cwd(), file);
-            // }
-
             if(!processor.has(file)) {
-                log("no loading", file);
-
                 return null;
             }
 
