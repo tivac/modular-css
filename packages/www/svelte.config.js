@@ -5,8 +5,8 @@ import preprocessor from "@modular-css/svelte";
 import mcss from "@modular-css/vite";
 import postcssNested from "postcss-nested";
 
-import viteMd from "./util/vite-md.js";
-import viteBuildMcss from "./util/vite-build-mcss.js";
+import viteMd from "./build/vite-md.js";
+import viteBuildMcss from "./build/vite-build-mcss.js";
 
 // Set up the svelte preprocessor and get a reference to the
 // mcss processor so we can pass it into the vite plugin
