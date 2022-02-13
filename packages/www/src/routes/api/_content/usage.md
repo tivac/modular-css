@@ -10,7 +10,7 @@ You can use `modular-css` a variety of ways. The easiest is with one of the bund
 
 @import "./usage-browserify.md"
 
-## API
+## Direct Usage
 
 @import "./usage-js.md"
 

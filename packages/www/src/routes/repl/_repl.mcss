@@ -1,5 +1,5 @@
-@value borderColor from "../_layout/site.mcss";
-@value bigSize from "../_layout/site.mcss";
+@value borderColor from "$lib/site.mcss";
+@value bigSize from "$lib/site.mcss";
 
 @value tabHeight: 2.5rem;
 

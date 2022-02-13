@@ -1,5 +1,5 @@
-@value * as site from "./site.mcss";
-@value bigSize from "./site.mcss";
+@value * as site from "$lib/site.mcss";
+@value bigSize from "$lib/site.mcss";
 
 .header {
     composes: header from "./layout.mcss";

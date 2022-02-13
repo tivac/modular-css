@@ -1,5 +1,4 @@
-@value site: "../_layout/site.mcss";
-@value * as main from site;
+@value * as main from "$lib/site.mcss";
 
 .home {
     width: 90vw;
@@ -61,7 +60,7 @@
 }
 
 .learn {
-    composes: center from site;
+    composes: center from "$lib/site.mcss";
 
     margin-top: 1rem;
 }
@@ -71,7 +70,7 @@
 
 .cta,
 .cta:visited {
-    composes: center from site;
+    composes: center from "$lib/site.mcss";
 
     margin-top: 2rem;
 
