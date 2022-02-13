@@ -2,6 +2,8 @@ import path from "path";
 
 import staticAdapter from "@sveltejs/adapter-static";
 import vitePluginInspector from "vite-plugin-inspect";
+import { NodeModulesPolyfillPlugin as modulesPolyfill } from "@esbuild-plugins/node-modules-polyfill";
+import { NodeGlobalsPolyfillPlugin as globalsPolyfill } from "@esbuild-plugins/node-globals-polyfill";
 
 import preprocessor from "@modular-css/svelte";
 import mcss from "@modular-css/vite";
@@ -77,6 +79,17 @@ const config = {
                 include : [
                     "@modular-css/processor",
                 ],
+
+                // Teach esbuild how to bundle modular-css since it's CJS that assumes a node
+                // environment, and by default esbuild chokes on it in devserver mode
+                esbuildOptions : {
+                    plugins : [
+                        modulesPolyfill(),
+                        globalsPolyfill({
+                            process : true,
+                        }),
+                    ],
+                },
             },
 
             server : {

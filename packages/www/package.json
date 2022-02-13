@@ -27,6 +27,8 @@
   "devDependencies": {
     "@codemirror/state": "^0.19.6",
     "@codemirror/view": "^0.19.40",
+    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
+    "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
     "@modular-css/path-aliases": "file:../aliases",
     "@modular-css/processor": "file:../processor",
     "@modular-css/svelte": "file:../svelte",
