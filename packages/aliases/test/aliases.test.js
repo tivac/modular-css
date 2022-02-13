@@ -28,6 +28,16 @@ describe("@modular-css/path-aliases", () => {
         expect(fn(".", "one/one.css")).toBe(require.resolve("./specimens/one/one.css"));
     });
 
+    it("should allow regex characters in keys", () => {
+        const fn = aliases({
+            aliases : {
+                $one : "./packages/aliases/test/specimens/one",
+            },
+        });
+
+        expect(fn(".", "$one/one.css")).toBe(require.resolve("./specimens/one/one.css"));
+    });
+
     it("should check multiple aliases for files & return the first match", () => {
         const fn = aliases({
             aliases : {
