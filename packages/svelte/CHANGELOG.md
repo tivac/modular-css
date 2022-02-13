@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.2.0](https://github.com/tivac/modular-css/compare/v27.1.1...v27.2.0) (2022-02-13)
+
+
+### Bug Fixes
+
+* **svelte:** escape regex characters ([9345aed](https://github.com/tivac/modular-css/commit/9345aeddb6147d228fd6c973f7411f29bf2a3730))
+
+
+
+
+
 # [27.1.0](https://github.com/tivac/modular-css/compare/v27.0.3...v27.1.0) (2022-02-03)
 
 
