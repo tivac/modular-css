@@ -1,17 +1,18 @@
 "use strict";
 
 const from = require("resolve-from");
+const escape = require("escape-string-regexp");
 
-module.exports = (args) => {
+module.exports = (opts) => {
     const options = {
         __proto__ : null,
         aliases   : {},
-        ...args,
+        ...opts,
     };
 
     const aliases = Object.keys(options.aliases).map((alias) => ({
         name   : alias,
-        search : new RegExp(`^${alias}\\b`),
+        search : new RegExp(`^${escape(alias)}\\b`),
     }));
 
     return (src, file) => {
