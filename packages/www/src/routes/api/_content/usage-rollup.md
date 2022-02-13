@@ -1,11 +1,11 @@
 ### rollup
 
-Rollup support for [`modular-css`](https://github.com/tivac/modular-css).
+Rollup support for modular-css is provided by the `@modular-css/rollup package`.
 
 #### rollup Install
 
 ```shell
-> npm i @modular-css/rollup
+> npm i @modular-css/rollup --save-dev
 ```
 
 #### rollup Usage

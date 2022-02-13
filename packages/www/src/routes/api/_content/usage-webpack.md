@@ -1,6 +1,6 @@
 ### webpack
 
-Webpack 2/3/4 support for [`modular-css`](https://github.com/tivac/modular-css).
+Webpack 2/3/4 support for modular-css is provided by `@modular-css/webpack`.
 
 This package contains two entry points, you will need to use **both** in tandem for things to work!
 
@@ -11,7 +11,7 @@ This package contains two entry points, you will need to use **both** in tandem 
 #### webpack Install
 
 ```shell
-> npm i @modular-css/webpack
+> npm i @modular-css/webpack --save-dev
 ```
 
 #### Usage

@@ -1,11 +1,11 @@
 ### vite
 
-Vite support for [`modular-css`](https://github.com/tivac/modular-css).
+Vite support for modular-css is provided by `@modular-css/vite`.
 
 #### vite Install
 
 ```shell
-> npm i @modular-css/vite
+> npm i @modular-css/vite --save-dev
 ```
 
 #### vite Usage

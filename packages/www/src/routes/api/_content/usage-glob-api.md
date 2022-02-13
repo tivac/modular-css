@@ -1,4 +1,4 @@
-### glob API
+### globbing API
 
 A JS API for using glob patterns with [`modular-css`](https://github.com/tivac/modular-css).
 

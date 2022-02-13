@@ -16,14 +16,10 @@ You can use `modular-css` a variety of ways. The easiest is with one of the bund
 
 @import "./usage-glob-api.md"
 
-<!-- No header -->
-
 @import "./usage-cli.md"
 
-## Other Integrations
+## Other Tools
 
 @import "./usage-svelte.md"
 
 @import "./usage-postcss.md"
-
-
