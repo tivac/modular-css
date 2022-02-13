@@ -1,4 +1,4 @@
-@value site: "../_layout/site.mcss";
+@value site: "$lib/site.mcss";
 
 @value hoverInTime from site;
 

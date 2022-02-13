@@ -1,6 +1,6 @@
 ### browserify
 
-Browserify support for [`modular-css`](https://github.com/tivac/modular-css).
+Browserify support for `modular-css` via `@modular-css/browserify` package.
 
 This plugin can be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
 
@@ -9,7 +9,7 @@ This plugin can be combined with the `factor-bundle` plugin to output a common C
 #### browserify Install
 
 ```shell
-$ npm i @modular-css/browserify
+$ npm i @modular-css/browserify --save-dev
 ```
 
 #### browserify Usage

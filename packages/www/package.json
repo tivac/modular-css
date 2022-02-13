@@ -27,6 +27,7 @@
   "devDependencies": {
     "@codemirror/state": "^0.19.6",
     "@codemirror/view": "^0.19.40",
+    "@modular-css/path-aliases": "file:../aliases",
     "@modular-css/processor": "file:../processor",
     "@modular-css/svelte": "file:../svelte",
     "@modular-css/vite": "file:../vite",
@@ -52,6 +53,7 @@
     "to-vfile": "^7.2.3",
     "unified": "^10.1.1",
     "unist-builder": "^3.0.0",
-    "unist-util-visit": "^4.1.0"
+    "unist-util-visit": "^4.1.0",
+    "vite-plugin-inspect": "^0.3.14"
   }
 }

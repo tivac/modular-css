@@ -1,4 +1,4 @@
-@value bigSize from "./site.mcss";
+@value bigSize from "$lib/site.mcss";
 
 .page {
     width: 100vw;

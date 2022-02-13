@@ -1,8 +1,11 @@
 import path from "path";
 
 import staticAdapter from "@sveltejs/adapter-static";
+import vitePluginInspector from "vite-plugin-inspect";
+
 import preprocessor from "@modular-css/svelte";
 import mcss from "@modular-css/vite";
+import aliases from "@modular-css/path-aliases";
 import postcssNested from "postcss-nested";
 
 import viteMd from "./build/vite-md.js";
@@ -18,6 +21,18 @@ const { preprocess, processor } = preprocessor({
     // they don't make nice JS identifiers usually, so disabled
     exportGlobals : false,
 
+    // Enable for debugging, but disabled because NOISY
+    verbose : false,
+
+    // Bring sveltekit aliases into m-css
+    resolvers : [
+        aliases({
+            aliases : {
+                $lib : "./src/lib",
+            },
+        }),
+    ],
+    
     // I like nesting, so sue me
     before : [
         postcssNested(),
@@ -39,6 +54,9 @@ const config = {
 
         vite : {
             plugins : [
+                // Vite plugin inspector
+                vitePluginInspector(),
+
                 // Bundle @modular-css/processor and its dependencies via
                 // embedded rollup within rollup because vite doesn't handle
                 // cjs modules and node globals very well

@@ -2,6 +2,6 @@
 
 @import "./usage.md"
 
-@import "./extending.md"
-
 @import "./utilities.md"
+
+@import "./extending.md"
