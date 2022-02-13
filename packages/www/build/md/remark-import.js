@@ -5,9 +5,11 @@ import remarkParse from "remark-parse";
 import { visit, SKIP, CONTINUE } from "unist-util-visit";
 import { readSync } from "to-vfile";
 
-const remarkImport = () => {
+const remarkImport = (options = false) => {
     // TODO: this may need to be configurable some day
     const parser = unified().use(remarkParse);
+
+    const { imported } = options;
 
     const plugin = (tree, file) => {
         // Need history length to resolve files, if it doesn't exist we bail
@@ -32,6 +34,10 @@ const remarkImport = () => {
             const { name } = matched.groups;
 
             const target = path.resolve(dir, name);
+
+            if(imported) {
+                imported(target);
+            }
 
             const md = readSync(target);
 
