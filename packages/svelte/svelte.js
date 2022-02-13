@@ -229,7 +229,7 @@ module.exports = (opts = {}) => {
             log("updating source {css.<key>} references from", css);
             log(JSON.stringify(classKeys));
             
-            const selectors = [ ...classKeys, ...valueKeys ].join("|");
+            const selectors = [ ...classKeys, ...valueKeys ].map(escape).join("|");
 
             // Look for instances of class={css.foo} to warn about
             const matches = source.match(new RegExp(`class={css\\.(?:${selectors})}`, "g"));
