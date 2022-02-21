@@ -207,7 +207,7 @@ exports[`/svelte.js should extract CSS from a <style> tag 1`] = `
     </div>
 </div>
 
-<style>/* replaced by modular-css */</style>
+
 
 <script>
 export default {
@@ -291,7 +291,7 @@ exports[`/svelte.js should handle errors: empty css file - <style> 3`] = `
 "<div class=\\"{\\"css.nope\\"}\\">NOPE</div>
 <div class=\\"{\\"css.alsonope\\"}\\">STILL NOPE</div>
 
-<style>/* replaced by modular-css */</style>
+
 "
 `;
 
@@ -345,7 +345,7 @@ Array [
 exports[`/svelte.js should handle errors: invalid reference <script> - <style> 3`] = `
 "<h2 class=\\"mc_yup\\">Yup</h2>
 
-<style>/* replaced by modular-css */</style>
+
 
 <script>
     console.log(\\"css.nuhuh\\");
@@ -400,7 +400,7 @@ exports[`/svelte.js should handle errors: invalid reference template - <style> 3
 <h2 class=\\"mc_yup\\">Yup</h2>
 <h3 class=\\"{\\"css.alsonope\\"}\\">Also Nope</h3>
 
-<style>/* replaced by modular-css */</style>
+
 "
 `;
 
@@ -415,6 +415,21 @@ exports[`/svelte.js should ignore <links> that reference a URL 2`] = `
 .mc_fooga {
     color: red;
 }
+"
+`;
+
+exports[`/svelte.js should ignore <style> tags without the text/m-css attribute 1`] = `
+"<style>
+    .no { color: red; }
+</style>
+
+
+"
+`;
+
+exports[`/svelte.js should ignore <style> tags without the text/m-css attribute 2`] = `
+"/* packages/svelte/test/specimens/style-no-attribute.svelte */
+.mc_yes { color: blue; }
 "
 `;
 
@@ -444,7 +459,7 @@ exports[`/svelte.js should invalidate files before reprocessing (<link>) 4`] = `
 `;
 
 exports[`/svelte.js should invalidate files before reprocessing (<style>) 1`] = `
-"<style>/* replaced by modular-css */</style>
+"
 <div class=\\"mc_source\\">Source</div>"
 `;
 
@@ -454,7 +469,7 @@ exports[`/svelte.js should invalidate files before reprocessing (<style>) 2`] = 
 `;
 
 exports[`/svelte.js should invalidate files before reprocessing (<style>) 3`] = `
-"<style>/* replaced by modular-css */</style>
+"
 <div class=\\"mc_source\\">Source</div>"
 `;
 
@@ -720,10 +735,10 @@ exports[`/svelte.js should use modular-css's file resolver 2`] = `
 
 exports[`/svelte.js should wait for files to finish 1`] = `
 Array [
-  "<style>/* replaced by modular-css */</style>
+  "
 entry1
 ",
-  "<style>/* replaced by modular-css */</style>
+  "
 entry2
 ",
 ]

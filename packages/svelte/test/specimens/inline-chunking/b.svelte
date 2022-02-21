@@ -1,6 +1,6 @@
 <div class="{css.b}">B.SVELTE</div>
 
-<style>
+<style type="text/m-css">
 .b {
     composes: shared from "./shared.css";
     composes: bdep from "./b-dep.css";

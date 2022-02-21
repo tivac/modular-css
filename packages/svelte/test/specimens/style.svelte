@@ -5,7 +5,7 @@
     </div>
 </div>
 
-<style>
+<style type="text/m-css">
     .flex {
         display: flex;
     }

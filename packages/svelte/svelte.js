@@ -11,7 +11,7 @@ const Processor = require("@modular-css/processor");
 
 const replacer = require("./replacer.js");
 
-const styleRegex = /<style[\S\s]*?>([\S\s]*?)<\/style>/im;
+const styleRegex = /<style[^>]*?type=['"]text\/m-css['"][^>]*?>([\S\s]+?)<\/style>/im;
 const scriptRegex = /<script[\S\s]*?>([\S\s]*?)<\/script>/im;
 const missedRegex = /css\.\w+/gim;
 const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/gm;
@@ -114,6 +114,8 @@ module.exports = (opts = {}) => {
 
         if(style) {
             log("extract <style>", file);
+
+            source = source.replace(style[0], "");
 
             css = "<style>";
 
@@ -280,11 +282,6 @@ module.exports = (opts = {}) => {
         processor,
         preprocess : {
             markup,
-
-            // Style elements are always stripped out completely
-            style : () => ({
-                code : "/* replaced by modular-css */",
-            }),
         },
     };
 };

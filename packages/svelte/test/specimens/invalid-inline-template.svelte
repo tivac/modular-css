@@ -2,6 +2,6 @@
 <h2 class="{css.yup}">Yup</h2>
 <h3 class="{css.alsonope}">Also Nope</h3>
 
-<style>
+<style type="text/m-css">
     .yup { color: red; }
 </style>
