@@ -1,6 +1,6 @@
 <h2 class="{css.yup}">Yup</h2>
 
-<style>
+<style type="text/m-css">
     .yup { color: red; }
 </style>
 

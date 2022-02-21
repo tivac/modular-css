@@ -7,7 +7,7 @@
 
 <link rel="stylesheet" href="./external.css">
 
-<style>
+<style type="text/m-css">
     .flex {
         display: flex;
     }

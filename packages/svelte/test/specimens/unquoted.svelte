@@ -7,7 +7,7 @@
     But I am!
 </div>
 
-<style>
+<style type="text/m-css">
     .a {
         color: red;
     }

@@ -36,6 +36,27 @@ describe("/svelte.js", () => {
         expect(output.css).toMatchSnapshot();
     });
 
+    it("should ignore <style> tags without the text/m-css attribute", async () => {
+        const filename = require.resolve("./specimens/style-no-attribute.svelte");
+        const { processor, preprocess } = plugin({
+            namer,
+        });
+
+        const processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            {
+                ...preprocess,
+                filename,
+            },
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        const output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
+    });
+
     it.each([
         "style",
         "link",
@@ -365,7 +386,7 @@ describe("/svelte.js", () => {
     it("should invalidate files before reprocessing (<style>)", async () => {
         // V1 of files
         fs.writeFileSync(path.resolve(__dirname, "./output/source.svelte"), dedent(`
-            <style>.source { color: red; }</style>
+            <style type="text/m-css">.source { color: red; }</style>
             <div class="{css.source}">Source</div>
         `));
 
@@ -390,7 +411,7 @@ describe("/svelte.js", () => {
 
         // V2 of CSS
         fs.writeFileSync(path.resolve(__dirname, "./output/source.svelte"), dedent(`
-            <style>.source { color: blue; }</style>
+            <style type="text/m-css">.source { color: blue; }</style>
             <div class="{css.source}">Source</div>
         `));
 
