@@ -2,7 +2,7 @@
 
 const escape = require("escape-string-regexp");
 
-module.exports = (source, { identifier, lookup, keys }) => {
+exports.replacer = (source, { identifier, lookup, keys }) => {
     const ids = keys.map(escape).join("|");
     const ident = escape(identifier);
 
@@ -28,3 +28,5 @@ module.exports = (source, { identifier, lookup, keys }) => {
             }
         );
 };
+
+exports.replaceTrailingNewlines = (source, search) => source.replace(new RegExp(`${escape(search)}(?:\r?\n)*`), "");

@@ -2,19 +2,17 @@
 
 const path = require("path");
 
-const isUrl = require("is-url");
 const escape = require("escape-string-regexp");
 const slash = require("slash");
 const utils = require("@rollup/pluginutils");
 
 const Processor = require("@modular-css/processor");
 
-const replacer = require("./replacer.js");
+const { replacer } = require("./replacer.js");
+const { extractStyle } = require("./style.js");
+const { extractLink } = require("./link.js");
 
-const styleRegex = /<style[^>]*?type=['"]text\/m-css['"][^>]*?>([\S\s]+?)<\/style>/im;
-const scriptRegex = /<script[\S\s]*?>([\S\s]*?)<\/script>/im;
 const missedRegex = /css\.\w+/gim;
-const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/gm;
 
 const prefix = `[${require("./package.json").name}]`;
 
@@ -25,6 +23,8 @@ const CONFIG_DEFAULTS = {
     // Regexp to work around https://github.com/rollup/rollup-pluginutils/issues/39
     include : /\.css$/i,
 };
+
+const PARSING_ORDER = [ extractStyle, extractLink ];
 
 module.exports = (opts = {}) => {
     const options = {
@@ -85,139 +85,45 @@ module.exports = (opts = {}) => {
         const file = filename ? relative(filename) : "Unknown file";
 
         let source = content;
-        let dependencies = [];
-
-        linkRegex.lastIndex = 0;
-        styleRegex.lastIndex = 0;
-
-        const links = source.match(linkRegex);
-        const style = source.match(styleRegex);
-
-        if(links && style) {
-            throw new Error(`${prefix} Use <style> OR <link>, but not both in "${file}"`);
-        }
-
-        // No-op
-        if(!links && !style) {
-            return {
-                code : missing({
-                    source,
-                    file : filename,
-                }),
-            };
-        }
 
         let result;
         let css;
+        let dependencies;
+
+        const searchBucket = {
+            source,
+            file,
+            filename,
+            processor,
+            log,
+            filter,
+            missing,
+            warn,
+        };
 
         log("Processing", file);
 
-        if(style) {
-            log("extract <style>", file);
-
-            source = source.replace(style[0], "");
-
-            css = "<style>";
-
-            if(processor.has(filename)) {
-                processor.invalidate(filename);
+        for(const parser of PARSING_ORDER) {
+            try {
+                // eslint-disable-next-line no-await-in-loop
+                ({ source, result, css, dependencies } = await parser(searchBucket));
+            } catch(e) {
+                throw e;
             }
 
-            try {
-                result = await processor.string(
-                    filename,
-                    style[1]
-                );
-            } catch(e) {
-                e.message = e.toString();
-
-                throw e;
+            if(result) {
+                break;
             }
         }
 
-        if(links) {
-            const valid = links.reduce((out, link) => {
-                linkRegex.lastIndex = 0;
-
-                const parts = linkRegex.exec(link);
-
-                // This looks weird, but it's to support multiple types of quotation marks
-                const href = parts[1] || parts[2] || parts[3];
-
-                // Don't transform URLs
-                if(isUrl(href)) {
-                    return out;
-                }
-
-                if(!filter(href)) {
-                    // eslint-disable-next-line no-console
-                    console.warn(`Possible invalid <link> href: ${href}`);
-                }
-
-                out.push({
-                    link,
-                    href,
-                });
-
-                return out;
-            }, []);
-
-            // No-op
-            if(!valid.length) {
-                return {
-                    code : missing({
-                        source,
-                        file : filename,
-                    }),
-                };
-            }
-
-            if(valid.length > 1) {
-                warn(`Only the first local <link> tag will be used`, file);
-            }
-
-            const [{ link, href }] = valid;
-
-            // Assign to file for later usage in logging
-            css = href;
-
-            const external = processor.resolve(filename, css);
-
-            log("extract <link>", external);
-
-            if(processor.has(external)) {
-                processor.invalidate(external);
-            }
-
-            try {
-                // Process the file
-                result = await processor.file(external);
-            } catch(e) {
-                e.message = e.toString();
-
-                throw e;
-            }
-
-            // Remove the <link> element from the component to avoid double-loading
-            source = source.replace(new RegExp(`${escape(link)}(?:\r?\n)*`), "");
-
-            // Inject the linked CSS into the <script> block for JS referencing
-            // and so rollup will know about the file
-            const script = source.match(scriptRegex);
-            const inject = `import css from ${JSON.stringify(css)};`;
-
-            if(script) {
-                const [ tag, contents ] = script;
-
-                source = source.replace(
-                    tag,
-                    tag.replace(contents, `\n${inject}\n\n${contents}`)
-                );
-            } else {
-                source += `<script>${inject}</script>`;
-            }
-
-            dependencies = [ ...processor.fileDependencies(external), external ];
+        // No-op
+        if(!result) {
+            return {
+                code : missing({
+                    source : content,
+                    file   : filename,
+                }),
+            };
         }
 
         log("processed styles", file);

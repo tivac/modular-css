@@ -237,25 +237,6 @@ describe("/svelte.js", () => {
         expect(processed.toString()).toMatchSnapshot();
     });
 
-    it("should throw on both <style> and <link> in one file", async () => {
-        const { preprocess } = plugin({
-            css : "./packages/svelte/test/output/svelte.css",
-            namer,
-        });
-
-        const filename = require.resolve("./specimens/both.svelte");
-
-        await expect(
-            svelte.preprocess(
-                fs.readFileSync(filename, "utf8"),
-                {
-                    ...preprocess,
-                    filename,
-                },
-            )
-        ).rejects.toThrowErrorMatchingSnapshot();
-    });
-
     it.each([
         [ "<style>", "style.svelte" ],
         [ "<link>", "external.svelte" ],
