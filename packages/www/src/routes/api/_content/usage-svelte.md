@@ -1,8 +1,12 @@
 ### svelte preprocessor
 
-Svelte preprocessor for [`modular-css`](https://github.com/tivac/modular-css). Process inline `<style>` or `<link>` references inside your Svelte components using the full power of `modular-css` while also providing compile-time optimizations for smaller bundles and even faster runtime performance!
+Svelte preprocessor support for [`modular-css`](https://github.com/tivac/modular-css).
+
+Process inline `<style type="text/m-css">` or `<link>` or `import styles from "./foo.css";` references inside your Svelte components using the full power of `modular-css`. Dynamic references will be replaced where possible with static ones, allowing for greater compile-time optimizations, smaller bundles, and even faster runtime performance.
 
 #### Example
+
+##### `<style>` processing
 
 Turns this
 
@@ -11,7 +15,8 @@ Turns this
     <h1 class="{css.title}">Title</h1>
 </div>
 
-<style>
+<!-- type attribute is **required** -->
+<style type="text/m-css">
     .main {
         /* ... */
     }
@@ -30,6 +35,8 @@ into this by running it through `modular-css` and then statically replacing ever
 </div>
 ```
 
+##### `<link>` processing
+
 You can also use `<link href="./file.css" />` tags to reference CSS external to the component, but the component must have only **one** `<link>` (links to URLs are fine and ignored) or `<style>`. Combining them is not supported.
 
 ```html
@@ -38,6 +45,22 @@ You can also use `<link href="./file.css" />` tags to reference CSS external to 
 <div class="{css.main}">
     <h1 class="{css.title}">Title</h1>
 </div>
+```
+
+##### `import` processing
+
+It'll even check your ES Module `import` statements and use those.
+
+```html
+<div class="{styles.main}">
+    <h1 class="{styles.title}">Title</h1>
+</div>
+
+<script>
+// Only default exports are supported, but it will use the name you
+// give it instead of the hardcoded css like the other approaches
+import styles from "./style.css";
+</script>
 ```
 
 #### Install
@@ -135,14 +158,6 @@ If `true` whenever a missing replacement is found like `{css.doesnotexist}` an e
 ##### `procesor`
 
 Pass a previously-created `@modular-css/processor` instance into the preprocessor. Will **not** pass through any other options to the processor if this is set, but `strict` will still be honored by the preprocessor.
-
-##### `warnOnUnused`
-
-If `true` any classes in the source CSS that aren't directly utilized by the template (or indirectly used via `composes`) will be logged out as warnings.
-
-⚠️⚡💀⚠️💀⚡⚠️
-Please note that this functionality is **EXPERIMENTAL** and subject to change. The first iteration of this feature is very basic and may lead to considerable false-positive warnings. Use your best judgement before removing CSS!
-⚠️⚡💀⚠️💀⚡⚠️
 
 ##### Shared Options
 

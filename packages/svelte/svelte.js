@@ -11,6 +11,7 @@ const Processor = require("@modular-css/processor");
 const { replacer } = require("./replacer.js");
 const { extractStyle } = require("./style.js");
 const { extractLink } = require("./link.js");
+const { extractImport } = require("./script.js");
 
 const missedRegex = /css\.\w+/gim;
 
@@ -24,7 +25,7 @@ const CONFIG_DEFAULTS = {
     include : /\.css$/i,
 };
 
-const PARSING_ORDER = [ extractStyle, extractLink ];
+const PARSING_ORDER = [ extractStyle, extractLink, extractImport ];
 
 module.exports = (opts = {}) => {
     const options = {
@@ -89,6 +90,7 @@ module.exports = (opts = {}) => {
         let result;
         let css;
         let dependencies;
+        let ident;
 
         const searchBucket = {
             source,
@@ -106,7 +108,7 @@ module.exports = (opts = {}) => {
         for(const parser of PARSING_ORDER) {
             try {
                 // eslint-disable-next-line no-await-in-loop
-                ({ source, result, css, dependencies } = await parser(searchBucket));
+                ({ source, result, css, dependencies, ident = "css" } = await parser(searchBucket));
             } catch(e) {
                 throw e;
             }
@@ -140,7 +142,7 @@ module.exports = (opts = {}) => {
             const selectors = [ ...classKeys, ...valueKeys ].map(escape).join("|");
 
             // Look for instances of class={css.foo} to warn about
-            const matches = source.match(new RegExp(`class={css\\.(?:${selectors})}`, "g"));
+            const matches = source.match(new RegExp(`class={${escape(ident)}\\.(?:${selectors})}`, "g"));
 
             if(matches) {
                 for(const match of matches) {
@@ -150,7 +152,7 @@ module.exports = (opts = {}) => {
 
             // Replace css.<key> values
             source = replacer(source, {
-                identifier : "css",
+                identifier : ident,
                 keys       : classKeys,
                 lookup     : classKeys.reduce((acc, curr) => {
                     acc[curr] = exported[curr].join(" ");
@@ -159,7 +161,7 @@ module.exports = (opts = {}) => {
                 }, Object.create(null)),
             });
         }
-        
+
         if(options.values && valueKeys.length) {
             log("updating source {cssvalue.<key>} references from", css);
             log(JSON.stringify(valueKeys));
