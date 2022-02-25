@@ -478,7 +478,7 @@ Array [
   Array [
     "[@modular-css/svelte]",
     "Processing",
-    "packages/svelte/test/specimens/external.svelte",
+    "packages/svelte/test/specimens/link.svelte",
   ],
   Array [
     "[@modular-css/svelte]",
@@ -548,7 +548,7 @@ Array [
   Array [
     "[@modular-css/svelte]",
     "processed styles",
-    "packages/svelte/test/specimens/external.svelte",
+    "packages/svelte/test/specimens/link.svelte",
   ],
   Array [
     "[@modular-css/svelte]",

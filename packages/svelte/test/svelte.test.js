@@ -145,11 +145,11 @@ describe("/svelte.js", () => {
     });
 
     it.each([
-        [ "no script", "external.svelte" ],
-        [ "existing script", "external-script.svelte" ],
-        [ "single quotes", "external-single.svelte" ],
-        [ "unquoted", "external-unquoted.svelte" ],
-        [ "values", "external-values.svelte" ],
+        [ "no script", "link.svelte" ],
+        [ "existing script", "link-script.svelte" ],
+        [ "single quotes", "link-single.svelte" ],
+        [ "unquoted", "link-unquoted.svelte" ],
+        [ "values", "link-values.svelte" ],
     ])("should extract CSS from a <link> tag (%s)", async (title, specimen) => {
         const filename = require.resolve(`./specimens/${specimen}`);
         const { processor, preprocess } = plugin({
@@ -191,12 +191,12 @@ describe("/svelte.js", () => {
     });
 
     it.each([
-        [ "invalid reference <script> - <style>", "invalid-inline-script.svelte" ],
-        [ "invalid reference template - <style>", "invalid-inline-template.svelte" ],
-        [ "invalid reference <script> - <link>", "invalid-external-script.svelte" ],
-        [ "invalid reference template - <link>", "invalid-external-template.svelte" ],
-        [ "empty css file - <style>", "invalid-inline-empty.svelte" ],
-        [ "empty css file - <link>", "invalid-external-empty.svelte" ],
+        [ "invalid reference <script> - <style>", "invalid-style-script.svelte" ],
+        [ "invalid reference template - <style>", "invalid-style-template.svelte" ],
+        [ "invalid reference <script> - <link>", "invalid-link-script.svelte" ],
+        [ "invalid reference template - <link>", "invalid-link-template.svelte" ],
+        [ "empty css file - <style>", "invalid-style-empty.svelte" ],
+        [ "empty css file - <link>", "invalid-link-empty.svelte" ],
     ])("should handle errors: %s", async (title, specimen) => {
         const filename = require.resolve(`./specimens/${specimen}`);
 
@@ -239,7 +239,7 @@ describe("/svelte.js", () => {
 
     it.each([
         [ "<style>", "style.svelte" ],
-        [ "<link>", "external.svelte" ],
+        [ "<link>", "link.svelte" ],
     ])("should support verbose output: %s", async (title, specimen) => {
         const spy = logspy();
 
