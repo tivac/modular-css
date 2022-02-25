@@ -1,6 +1,5 @@
 "use strict";
 
-const escape = require("escape-string-regexp");
 const isUrl = require("is-url");
 
 const { replaceTrailingNewlines } = require("./replacer.js");
