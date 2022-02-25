@@ -4,7 +4,7 @@ The heart of `modular-css`, the JS API is a `Processor` that will be fed files, 
 
 Or, you know, their CSS. One of those for sure.
 
-#### Processor Usage
+#### Usage
 
 Instantiate a new `Processor` instance, call `.file(<path>)` or `.string(<name>, <contents>)` methods, and then use the returned Promise to get access to the results/output.
 
@@ -211,7 +211,7 @@ new Processor({
 });
 ```
 
-#### Processor Properties
+#### Properties
 
 ##### `.files`
 

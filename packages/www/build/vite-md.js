@@ -3,12 +3,12 @@ import remarkParse from "remark-parse";
 import { default as remarkRehype, defaultHandlers } from "remark-rehype";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeFormat from "rehype-format";
-import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
 import rehypeTableOfContents from "rehype-toc";
 
 import remarkImport from "./md/remark-import.js";
 import rehypeCode from "./md/rehype-code.js";
+import rehypeHierarchicalSlugs from "./md/rehype-hierarchical-slugs.js";
 
 const ESCAPES = new Map([
     [ "`", "\\`" ],
@@ -33,7 +33,7 @@ export default () => {
                 code : rehypeCode,
             },
         })
-        .use(rehypeSlug)
+        .use(rehypeHierarchicalSlugs)
         .freeze();
     
     const later = [

@@ -2,13 +2,13 @@
 
 `@modular-css/postcss` provides a postcss plugin that can be used like any other. It will output a message with a `type` of `modular-css-exports` containing all the exported class compositions.
 
-#### postcss Install
+#### Install
 
 ```shell
 > npm i @modular-css/postcss
 ```
 
-#### postcss Usage
+#### Usage
 
 ##### API
 
@@ -51,7 +51,7 @@ const result = await processor.process("<css>")
 > postcss --use @modular-css/postcss input.css
 ```
 
-#### postcss Options
+#### Options
 
 ##### `json`
 

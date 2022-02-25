@@ -6,13 +6,13 @@ This plugin can be combined with the `factor-bundle` plugin to output a common C
 
 `@modular-css/browserify` will use the `basedir` passed to browserify as it's `cwd` parameter.
 
-#### browserify Install
+#### Install
 
 ```shell
 $ npm i @modular-css/browserify --save-dev
 ```
 
-#### browserify Usage
+#### Usage
 
 ##### CLI
 

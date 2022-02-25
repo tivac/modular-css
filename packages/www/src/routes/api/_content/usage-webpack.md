@@ -8,7 +8,7 @@ This package contains two entry points, you will need to use **both** in tandem 
 
 2. `@modular-css/webpack/loader` provides the file loader that does the actual transformation on files.
 
-#### webpack Install
+#### Install
 
 ```shell
 > npm i @modular-css/webpack --save-dev
@@ -43,7 +43,7 @@ module.exports = {
 });
 ```
 
-#### webpack Plugin Options
+#### Plugin Options
 
 ##### `css`
 
@@ -61,7 +61,7 @@ Pass an already-instantiated `Processor` instance to the Webpack plugin. It will
 
 All other options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options)..
 
-#### webpack Loader Options
+#### Loader Options
 
 ##### `namedExports`
 

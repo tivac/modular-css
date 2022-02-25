@@ -2,13 +2,13 @@
 
 Rollup support for modular-css is provided by the `@modular-css/rollup package`.
 
-#### rollup Install
+#### Install
 
 ```shell
 > npm i @modular-css/rollup --save-dev
 ```
 
-#### rollup Usage
+#### Usage
 
 ##### API
 
@@ -38,7 +38,7 @@ export default {
 };
 ```
 
-#### rollup Options
+#### Options
 
 ##### `dev`
 
