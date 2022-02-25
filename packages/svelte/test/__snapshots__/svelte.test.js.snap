@@ -207,8 +207,6 @@ exports[`/svelte.js should extract CSS from a <style> tag 1`] = `
     </div>
 </div>
 
-
-
 <script>
 export default {
     data : () => ({
@@ -291,7 +289,6 @@ exports[`/svelte.js should handle errors: empty css file - <style> 3`] = `
 "<div class=\\"{\\"css.nope\\"}\\">NOPE</div>
 <div class=\\"{\\"css.alsonope\\"}\\">STILL NOPE</div>
 
-
 "
 `;
 
@@ -344,8 +341,6 @@ Array [
 
 exports[`/svelte.js should handle errors: invalid reference <script> - <style> 3`] = `
 "<h2 class=\\"mc_yup\\">Yup</h2>
-
-
 
 <script>
     console.log(\\"css.nuhuh\\");
@@ -400,7 +395,6 @@ exports[`/svelte.js should handle errors: invalid reference template - <style> 3
 <h2 class=\\"mc_yup\\">Yup</h2>
 <h3 class=\\"{\\"css.alsonope\\"}\\">Also Nope</h3>
 
-
 "
 `;
 
@@ -422,7 +416,6 @@ exports[`/svelte.js should ignore <style> tags without the text/m-css attribute 
 "<style>
     .no { color: red; }
 </style>
-
 
 "
 `;
@@ -458,20 +451,14 @@ exports[`/svelte.js should invalidate files before reprocessing (<link>) 4`] = `
 }"
 `;
 
-exports[`/svelte.js should invalidate files before reprocessing (<style>) 1`] = `
-"
-<div class=\\"mc_source\\">Source</div>"
-`;
+exports[`/svelte.js should invalidate files before reprocessing (<style>) 1`] = `"<div class=\\"mc_source\\">Source</div>"`;
 
 exports[`/svelte.js should invalidate files before reprocessing (<style>) 2`] = `
 "/* packages/svelte/test/output/source.svelte */
 .mc_source { color: red; }"
 `;
 
-exports[`/svelte.js should invalidate files before reprocessing (<style>) 3`] = `
-"
-<div class=\\"mc_source\\">Source</div>"
-`;
+exports[`/svelte.js should invalidate files before reprocessing (<style>) 3`] = `"<div class=\\"mc_source\\">Source</div>"`;
 
 exports[`/svelte.js should invalidate files before reprocessing (<style>) 4`] = `
 "/* packages/svelte/test/output/source.svelte */
@@ -703,8 +690,6 @@ Array [
 ]
 `;
 
-exports[`/svelte.js should throw on both <style> and <link> in one file 1`] = `"[@modular-css/svelte] Use <style> OR <link>, but not both in \\"packages/svelte/test/specimens/both.svelte\\""`;
-
 exports[`/svelte.js should use an already-created processor 1`] = `
 "<link rel=\\"stylesheet\\" href=\\"http://example.com/styles.css\\" />
 <div class=\\"mc_fooga\\">fooga</div>
@@ -735,11 +720,9 @@ exports[`/svelte.js should use modular-css's file resolver 2`] = `
 
 exports[`/svelte.js should wait for files to finish 1`] = `
 Array [
-  "
-entry1
+  "entry1
 ",
-  "
-entry2
+  "entry2
 ",
 ]
 `;
