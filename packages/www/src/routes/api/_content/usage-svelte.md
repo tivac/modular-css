@@ -2,7 +2,7 @@
 
 Svelte preprocessor for [`modular-css`](https://github.com/tivac/modular-css). Process inline `<style>` or `<link>` references inside your Svelte components using the full power of `modular-css` while also providing compile-time optimizations for smaller bundles and even faster runtime performance!
 
-#### svelte Example
+#### Example
 
 Turns this
 
@@ -40,15 +40,17 @@ You can also use `<link href="./file.css" />` tags to reference CSS external to 
 </div>
 ```
 
-#### svelte Install
+#### Install
 
 ```shell
 > npm i @modular-css/svelte -D
 ```
 
-#### svelte Usage
+#### Usage
 
-##### Usage via `svelte.preprocess()`
+You can use the svelte preprocessor in almost every environment where you're using svelte. Here are a few examples of common usage to help get you started.
+
+##### via `svelte.preprocess()`
 
 ```javascript
 const filename = "./Component.svelte";
@@ -68,7 +70,7 @@ const result = await processor.output();
 fs.writeFileSync("./dist/bundle.css", result.css);
 ```
 
-##### Usage via `rollup`
+##### via `rollup`
 
 ```javascript
 // rollup.config.js
@@ -97,7 +99,7 @@ module.exports = {
 };
 ```
 
-##### Usage via `vite`
+##### via `vite`
 
 ```javascript
 // vite.config.js
@@ -124,7 +126,7 @@ export default defineConfig({
 });
 ```
 
-#### svelte Options
+#### Options
 
 ##### `strict`
 

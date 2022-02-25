@@ -48,6 +48,8 @@ const remarkImport = (options = false) => {
                 parent[i] = root[i];
             }
 
+            parent.type = "parent";
+
             return CONTINUE;
         });
 

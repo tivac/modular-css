@@ -2,13 +2,13 @@
 
 Vite support for modular-css is provided by `@modular-css/vite`.
 
-#### vite Install
+#### Install
 
 ```shell
 > npm i @modular-css/vite --save-dev
 ```
 
-#### vite Usage
+#### Usage
 
 ```javascript
 // vite.config.js
@@ -21,7 +21,7 @@ export default {
 };
 ```
 
-#### vite Options
+#### Options
 
 ##### `include`/`exclude`
 

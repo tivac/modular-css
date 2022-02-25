@@ -1,4 +1,4 @@
-### `processing` hook
+### `processing`
 
 The `processing` hook is run after `modular-css` has parsed the file, but before any response to [`processor.string`](#proccesorstringname-css) or [`processor.file`](#processorfilepath) is returned. Plugins in this hook have a special power: they can change the exports of the file.
 
@@ -22,7 +22,7 @@ new Processor({
 
 The `plugin` field must begin with "modular-css-export", and the `exports` field should be the object to be mixed into the exports of the CSS file. It will be added last, so it can be used to override the default exports if desired.
 
-#### Using the `processing` hook
+#### Usage
 
 Specify an array of PostCSS plugins to be run against each file during processing. Plugin will be passed a `from` option.
 

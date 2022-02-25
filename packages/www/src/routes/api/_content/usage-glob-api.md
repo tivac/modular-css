@@ -2,11 +2,11 @@
 
 A JS API for using glob patterns with [`modular-css`](https://github.com/tivac/modular-css).
 
-#### glob install
+#### Install
 
 `$ npm i @modular-css/glob`
 
-#### glob usage
+#### Usage
 
 ```javascript
 const glob = require("@modular-css/glob");
@@ -19,7 +19,7 @@ const processor = await glob({
 })
 ```
 
-#### glob options
+#### Options
 
 ###### `search`
 
