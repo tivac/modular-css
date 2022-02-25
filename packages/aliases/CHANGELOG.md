@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [28.0.0](https://github.com/tivac/modular-css/compare/v27.2.0...v28.0.0) (2022-02-25)
+
+**Note:** Version bump only for package @modular-css/path-aliases
+
+
+
+
+
 # [27.2.0](https://github.com/tivac/modular-css/compare/v27.1.1...v27.2.0) (2022-02-13)
 
 

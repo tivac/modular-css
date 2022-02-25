@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [28.0.0](https://github.com/tivac/modular-css/compare/v27.2.0...v28.0.0) (2022-02-25)
+
+
+### Features
+
+* **svelte:** parses imports now ([a4023a1](https://github.com/tivac/modular-css/commit/a4023a1a5f671ffff2d3b420e059860012d5b7f9))
+* **www:** Heading ids are hierarchical ([#814](https://github.com/tivac/modular-css/issues/814)) ([41b3199](https://github.com/tivac/modular-css/commit/41b31992ccbbdf49287f591c1e63fbe9307a3095))
+
+
+
+
+
 # [27.2.0](https://github.com/tivac/modular-css/compare/v27.1.1...v27.2.0) (2022-02-13)
 
 

@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [28.0.0](https://github.com/tivac/modular-css/compare/v27.2.0...v28.0.0) (2022-02-25)
+
+
+### Code Refactoring
+
+* **svelte:** <style> tags need type="text/m-css" ([713b107](https://github.com/tivac/modular-css/commit/713b10716d33829cdc1a796e557348dcb2f8450f))
+* **svelte:** break apart a bit ([5f74c1e](https://github.com/tivac/modular-css/commit/5f74c1eefc38af3627ac19847fa288dff2b1155a))
+
+
+### Features
+
+* **svelte:** parses imports now ([a4023a1](https://github.com/tivac/modular-css/commit/a4023a1a5f671ffff2d3b420e059860012d5b7f9))
+* **www:** Heading ids are hierarchical ([#814](https://github.com/tivac/modular-css/issues/814)) ([41b3199](https://github.com/tivac/modular-css/commit/41b31992ccbbdf49287f591c1e63fbe9307a3095))
+
+
+### BREAKING CHANGES
+
+* **svelte:** Having both `<style type="text/m-css">` **and** a `<link>` element in a component will no longer throw. `<style>` takes precedence over `<link>`.
+* **svelte:** Previous all `<style>` tags would be transformed, now only ones that have `type="text/m-css"` on them will be transformed.
+
+
+
+
+
 # [27.2.0](https://github.com/tivac/modular-css/compare/v27.1.1...v27.2.0) (2022-02-13)
 
 
