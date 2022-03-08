@@ -33,4 +33,4 @@ into what is effectively this
 </div>
 ```
 
-See the svelte section on [m-css.com](https://m-css.com/api/#svelte-preprocessor) for more details.
+See the svelte section on [m-css.com](https://m-css.com/api/#other-tools-svelte-preprocessor) for more details.
