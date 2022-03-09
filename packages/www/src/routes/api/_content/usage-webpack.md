@@ -1,6 +1,8 @@
 ### webpack
 
-Webpack 2/3/4 support for modular-css is provided by `@modular-css/webpack`.
+[Webpack](https://webpack.js.org/) 2/3/4 support for modular-css is provided by `@modular-css/webpack`.
+
+**NOTE**: `webpack@5` is untested but may be functional. If you try it out report back in [Discord](https://discord.gg/jQCZqMuMdt)!
 
 This package contains two entry points, you will need to use **both** in tandem for things to work!
 

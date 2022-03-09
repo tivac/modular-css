@@ -1,6 +1,8 @@
 ### vite
 
-Vite support for modular-css is provided by `@modular-css/vite`.
+[Vite](https://vitejs.dev) support for modular-css is provided by `@modular-css/vite`.
+
+**NOTE**: To work around vite's built-in CSS handling you will need to use a file extension other than `.css` for modular-css files. The default for this plugin is `.mcss`, but you can use [`include`](#bundlers-vite-options-includeexclude) to change that.
 
 #### Install
 
@@ -25,7 +27,7 @@ export default {
 
 ##### `include`/`exclude`
 
-A minimatch pattern, or an array of minimatch patterns, relative to `process.cwd()`. `include` defaults to `**/*.css`.
+A minimatch pattern, or an array of minimatch patterns, relative to `process.cwd()`. `include` defaults to `**/*.mcss`.
 
 ##### `processor`
 

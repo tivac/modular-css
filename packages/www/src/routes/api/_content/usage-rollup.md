@@ -1,6 +1,6 @@
 ### rollup
 
-Rollup support for modular-css is provided by the `@modular-css/rollup package`.
+[Rollup](https://rollupjs.org) support for modular-css is provided by the `@modular-css/rollup package`.
 
 #### Install
 
