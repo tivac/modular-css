@@ -27,7 +27,7 @@ export default {
 };
 ```
 
-If you'd like to use the [modular-css svelte preprocessor](#other-tools-svelte-preprocessor) with SvelteKit (and you definitely should because it'll make your site faster) you can use the instructions for [`@modular-css/svelte` with `vite`](#other-tools-svelte-preprocessor-usage-via-vite);
+If you'd like to use the [modular-css svelte preprocessor](#other-tools-svelte-preprocessor) with SvelteKit (and you definitely should because it'll make your site faster) you can use the instructions for [`@modular-css/svelte` with `vite`](#other-tools-svelte-preprocessor-usage-via-vite).
 
 #### Options
 
