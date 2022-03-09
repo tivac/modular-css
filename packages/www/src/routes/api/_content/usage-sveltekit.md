@@ -14,10 +14,15 @@
 
 ```javascript
 // svelte.config.js
+import adapter from '@sveltejs/adapter-auto';
 import mcss from "@modular-css/vite";
 
-export default {
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
     kit : {
+        adapter : adapter(),
+    
+        // Add mcss vite plugin to the underlying vite instance
         vite : {
             plugins : [
                 mcss(),
@@ -25,6 +30,8 @@ export default {
         },
     },
 };
+
+export default config;
 ```
 
 If you'd like to use the [modular-css svelte preprocessor](#other-tools-svelte-preprocessor) with SvelteKit (and you definitely should because it'll make your site faster) you can use the instructions for [`@modular-css/svelte` with `vite`](#other-tools-svelte-preprocessor-usage-via-vite).
