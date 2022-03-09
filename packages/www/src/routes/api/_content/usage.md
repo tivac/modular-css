@@ -6,6 +6,8 @@ You can use `modular-css` a variety of ways. The easiest is with one of the bund
 
 @import "./usage-vite.md"
 
+@import "./usage-sveltekit.md"
+
 @import "./usage-webpack.md"
 
 @import "./usage-browserify.md"

@@ -18,9 +18,9 @@
     "pretest": "npm run parsers",
     "test": "jest",
     "watch": "jest --watch",
+    "start": "npm start --workspace=@modular-css/www",
     "prewww:build": "npm run parsers",
     "www:build": "npm run build --workspace=@modular-css/www",
-    "www:start": "npm start --workspace=@modular-css/www",
     "prewww:deploy": "npm run parsers",
     "www:deploy": "npm run build --workspace=@modular-css/www"
   },

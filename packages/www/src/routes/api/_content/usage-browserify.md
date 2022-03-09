@@ -1,6 +1,6 @@
 ### browserify
 
-Browserify support for `modular-css` via `@modular-css/browserify` package.
+[Browserify](https://browserify.org/) support for modular-css is provided by `@modular-css/browserify`.
 
 This plugin can be combined with the `factor-bundle` plugin to output a common CSS file as well as bundle-specific CSS files.
 
