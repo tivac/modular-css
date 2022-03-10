@@ -512,4 +512,25 @@ describe("/svelte.js", () => {
 
         expect(output.css).toMatchSnapshot();
     });
+
+    it("should find imports in any <script> tag", async () => {
+        const filename = require.resolve("./specimens/script-multiple.svelte");
+        const { processor, preprocess } = plugin({
+            namer,
+        });
+
+        const processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            {
+                ...preprocess,
+                filename,
+            },
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        const output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
+    });
 });
