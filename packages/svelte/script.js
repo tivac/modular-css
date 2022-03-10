@@ -20,10 +20,6 @@ exports.extractImport = async ({
     let ident;
 
     for(const script of scripts) {
-        if(!script) {
-            continue;
-        }
-
         const { contents } = script.groups;
         const [ imports ] = parse(contents);
     
