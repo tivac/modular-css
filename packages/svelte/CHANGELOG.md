@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [28.1.0](https://github.com/tivac/modular-css/compare/v28.0.0...v28.1.0) (2022-03-11)
+
+
+### Features
+
+* **svelte:** check every <script> ([#819](https://github.com/tivac/modular-css/issues/819)) ([e3be450](https://github.com/tivac/modular-css/commit/e3be4503ff737ebf094118d822a4d484006041c0)), closes [#818](https://github.com/tivac/modular-css/issues/818)
+
+
+
+
+
 # [28.0.0](https://github.com/tivac/modular-css/compare/v27.2.0...v28.0.0) (2022-02-25)
 
 
