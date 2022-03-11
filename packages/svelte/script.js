@@ -3,7 +3,7 @@
 const { init, parse } = require("es-module-lexer");
 const parseImports = require("parse-es6-imports");
 
-const scriptRegex = /<script[\S\s]*?>([\S\s]*?)<\/script>/im;
+const scriptRegex = /<script[\S\s]*?>(?<contents>[\S\s]*?)<\/script>/gim;
 
 // eslint-disable-next-line max-statements
 exports.extractImport = async ({
@@ -15,28 +15,30 @@ exports.extractImport = async ({
 }) => {
     await init;
 
-    const script = source.match(scriptRegex);
-    
-    if(!script) {
-        return false;
-    }
-
-    const [ , contents ] = script;
-    const [ imports ] = parse(contents);
+    const scripts = source.matchAll(scriptRegex);
     let href;
     let ident;
 
-    for(const { n : name, ss : start, se : end, d : dynamic } of imports) {
-        if(!filter(name) || dynamic > -1) {
-            continue;
+    for(const script of scripts) {
+        const { contents } = script.groups;
+        const [ imports ] = parse(contents);
+    
+        for(const { n : name, ss : start, se : end, d : dynamic } of imports) {
+            if(!filter(name) || dynamic > -1) {
+                continue;
+            }
+    
+            const [ details ] = parseImports(contents.substring(start, end));
+    
+            href = name;
+            ident = details.defaultImport;
+    
+            break;
         }
 
-        const [ details ] = parseImports(contents.substring(start, end));
-
-        href = name;
-        ident = details.defaultImport;
-
-        break;
+        if(href) {
+            break;
+        }
     }
 
     if(!href) {

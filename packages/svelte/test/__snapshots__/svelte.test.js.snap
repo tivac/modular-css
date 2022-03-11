@@ -277,6 +277,48 @@ exports[`/svelte.js should extract CSS - <style> 2`] = `
 "
 `;
 
+exports[`/svelte.js should find imports in any <script> tag 1`] = `
+"<div class=\\"mc_flex mc_wrapper\\">
+    <h1 class=\\"mc_fooga mc_flex mc_hd\\">Head</h1>
+    <div class=\\"mc_fooga mc_wooga mc_bd\\">
+        <p class=\\"{bool ? \\"mc_text\\" : \\"mc_active\\" }\\">Text</p>
+    </div>
+</div>
+
+<script context=\\"module\\">
+	export const prerender = true;
+</script>
+
+<script>
+    import styles from \\"./external.css\\";
+
+    const bool = false;
+</script>
+"
+`;
+
+exports[`/svelte.js should find imports in any <script> tag 2`] = `
+"/* packages/svelte/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
+}
+/* packages/svelte/test/specimens/dependencies.css */
+.mc_wooga {
+    background: blue;
+}
+/* packages/svelte/test/specimens/external.css */
+.mc_flex {
+    display: flex;
+}
+.mc_text {
+    color: #000;
+}
+.mc_active {
+    color: #F00;
+}
+"
+`;
+
 exports[`/svelte.js should handle errors: empty css file - <link> 1`] = `"[@modular-css/svelte] Unable to find .nope, .nopedynope, .alsonope in \\"./empty.css\\""`;
 
 exports[`/svelte.js should handle errors: empty css file - <link> 2`] = `
