@@ -85,4 +85,6 @@ More detailed descriptions are available on [the website](https://m-css.com/guid
 
 ## Install
 
-https://m-css.com/overview/#how
+Detailed installation instructions are available on m-css.com
+
+https://m-css.com/overview/#introduction-how
