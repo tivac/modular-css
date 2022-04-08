@@ -30,15 +30,16 @@ const {
     isValue,
 } = Processor;
 
-const deconflict = (map, ident) => {
-    let proposal = identifierfy(ident);
+const deconflict = (map, source) => {
+    const safe = identifierfy(source);
     let idx = 0;
+    let proposal = safe;
 
     while(map.has(proposal)) {
-        proposal = `${ident}${++idx}`;
+        proposal = `${safe}${++idx}`;
     }
 
-    map.set(proposal, ident);
+    map.set(proposal, source);
 
     return proposal;
 };
