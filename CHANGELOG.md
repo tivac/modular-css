@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [28.1.1](https://github.com/tivac/modular-css/compare/v28.1.0...v28.1.1) (2022-04-08)
+
+
+### Bug Fixes
+
+* rename & deconflict together ([#820](https://github.com/tivac/modular-css/issues/820)) ([ea6a0e9](https://github.com/tivac/modular-css/commit/ea6a0e9c92cb720fd64f5b3b67042233b0bd85b7))
+
+
+
+
+
 # [28.1.0](https://github.com/tivac/modular-css/compare/v28.0.0...v28.1.0) (2022-03-11)
 
 
