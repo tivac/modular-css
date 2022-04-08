@@ -346,6 +346,22 @@ describe("/rollup.js", () => {
         ).toMatchRollupSnapshot();
     });
 
+    it("should support @value camelCase overlap", async () => {
+        const bundle = await rollup({
+            input   : require.resolve("./specimens/value-camel-overlap.js"),
+            plugins : [
+                createPlugin(),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
     it("should output classes in topological order", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/topological-order/topological-order.js"),

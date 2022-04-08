@@ -426,6 +426,27 @@ console.log(css);
 }
 `;
 
+exports[`/rollup.js should support @value camelCase overlap 1`] = `
+Object {
+  "assets/value-camel-overlap.css": "
+/* packages/rollup/test/specimens/value-camel-overlap.css */
+",
+  "value-camel-overlap.js": "
+const colorBlack = \\"#000\\";
+const colorBlack1 = \\"#000\\";
+const $values = {
+    colorBlack,
+\\"color-black\\" : colorBlack1,
+};
+var css = {
+    $values
+};
+
+console.log(css);
+",
+}
+`;
+
 exports[`/rollup.js should support external @value aliases 1`] = `
 Object {
   "assets/external-value-aliasing.css": "
