@@ -27,7 +27,7 @@
     "postcss"
   ],
   "devDependencies": {
-    "browserify": "^16.2.3",
+    "browserify": "^17.0.0",
     "factor-bundle": "2.5.0",
     "from2-string": "1.1.0",
     "watchify": "^3.11.1"
