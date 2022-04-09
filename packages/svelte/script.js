@@ -3,7 +3,7 @@
 const { init, parse } = require("es-module-lexer");
 const parseImports = require("parse-es6-imports");
 
-const scriptRegex = /<script[\S\s]*?>(?<contents>[\S\s]*?)<\/script>/gim;
+const scriptRegex = /<script[^>]*?>(?<contents>[\S\s]*?)<\/script[^>]*?>/gim;
 
 // eslint-disable-next-line max-statements
 exports.extractImport = async ({
