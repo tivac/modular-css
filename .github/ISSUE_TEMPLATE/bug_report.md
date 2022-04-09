@@ -1,46 +1,50 @@
----
-name: 🐞 Bug Report
-about: Something went awry and you'd like to tell us about it.
-
----
-
-<!--- Provide a general summary of the issue in the Title above -->
-
-## Expected Behavior
-<!--- Tell us what should happen -->
-
-## Current Behavior
-<!--- Tell us what happens instead of the expected behavior -->
-
-## Possible Solution
-<!--- Not obligatory, but suggest a fix/reason for the bug, -->
-
-## Steps to Reproduce (for bugs)
-<!--- Provide a link to a live example, or an unambiguous set of steps to -->
-<!--- reproduce this bug. Include code to reproduce, if relevant -->
-1.
-2.
-3.
-4.
-
-## Context
-<!--- How has this issue affected you? What are you trying to accomplish? -->
-<!--- Providing context helps us come up with a solution that is most useful in the real world -->
-
-## Your Environment
-<!--- Include as many relevant details about the environment you experienced the bug in -->
-
-| Executable | Version |
-| ---: | :--- |
-| `modular-css`  | VERSION |
-| `npm --version`  | VERSION |
-| `node --version` | VERSION |
-
-| OS | Version |
-| --- | --- |
-| NAME | VERSION |
-<!-- For example:
-| macOS Sierra | 10.12.3 |
-| Windows 10 | 1607 |
-| Ubuntu | 16.10 |
--->
+name: "🐞 Bug report"
+description: Something went awry and you'd like to tell us about it.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is. If you intend to submit a PR for this issue, tell us in the description. Thanks!
+      placeholder: Bug description
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Please provide a link to a repo or REPL that can reproduce the problem you ran into. Issues without a repro will not be fixed.
+      placeholder: Reproduction
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Any and all logs you think might be useful or relevant, as text only please. Running with `--verbose` should generate quite a bit of output.
+      render: shell
+  - type: textarea
+    id: system-info
+    attributes:
+      label: System Info
+      description: Output of `npx envinfo --system --npmPackages @modular-css/* --binaries --markdown`
+      render: shell
+      placeholder: System, Binaries, Packages
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: Select the severity of this issue
+      options:
+        - annoyance
+        - blocking an upgrade
+        - blocking all usage of `modular-css`
+    validations:
+      required: true
