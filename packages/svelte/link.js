@@ -5,7 +5,7 @@ const isUrl = require("is-url");
 const { replaceTrailingNewlines } = require("./replacer.js");
 
 const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/gm;
-const scriptRegex = /<script[\S\s]*?>([\S\s]*?)<\/script>/im;
+const scriptRegex = /<script[^>]*?>([\S\s]*?)<\/script[^>]*?>/im;
 
 // eslint-disable-next-line max-statements
 exports.extractLink = async ({
