@@ -45,6 +45,6 @@ body:
       options:
         - annoyance
         - blocking an upgrade
-        - blocking all usage of `modular-css`
+        - blocking all usage of modular-css
     validations:
       required: true
