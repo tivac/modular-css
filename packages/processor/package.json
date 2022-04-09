@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "dependency-graph": "^0.11.0",
-    "escape-string-regexp": "^4.0.0",
+    "escape-string-regexp": "^5.0.0",
     "postcss-selector-parser": "^6.0.2",
     "postcss-url": "^10.0.0",
     "postcss-value-parser": "^4.0.0",

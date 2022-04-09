@@ -37,7 +37,7 @@
     "@modular-css/processor": "file:../processor",
     "@rollup/pluginutils": "^4.1.2",
     "es-module-lexer": "^0.10.0",
-    "escape-string-regexp": "^4.0.0",
+    "escape-string-regexp": "^5.0.0",
     "is-url": "^1.2.4",
     "parse-es6-imports": "^1.0.1",
     "slash": "^3.0.0"
