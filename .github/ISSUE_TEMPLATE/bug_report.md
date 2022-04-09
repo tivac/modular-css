@@ -1,4 +1,4 @@
-name: "🐞 Bug report"
+name: "\U0001F41E Bug report"
 description: Something went awry and you'd like to tell us about it.
 labels: ["bug"]
 body:
