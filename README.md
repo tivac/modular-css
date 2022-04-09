@@ -1,4 +1,4 @@
-# modular-css [![GitHub license](https://img.shields.io:/github/license/tivac/modular-css)](https://github.com/tivac/modular-css/blob/main/LICENSE) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/tivac/modular-css/CI) ![GitHub issues](https://img.shields.io/github/issues/tivac/modular-css) [![GitHub Discussions](https://img.shields.io/github/discussions/tivac/modular-css)](https://github.com/tivac/modular-css/discussions) [![Discord](https://img.shields.io:/discord/939737298256396328)](https://discord.gg/jQCZqMuMdt)
+# modular-css [![GitHub license](https://img.shields.io:/github/license/tivac/modular-css)](https://github.com/tivac/modular-css/blob/main/LICENSE) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/tivac/modular-css/CI) ![GitHub issues](https://img.shields.io/github/issues/tivac/modular-css) [![Discord](https://img.shields.io:/discord/939737298256396328)](https://discord.gg/jQCZqMuMdt)
 
 A streamlined re-interpretation of [CSS Modules](https://github.com/css-modules/css-modules)
 
