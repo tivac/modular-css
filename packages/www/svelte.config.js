@@ -8,10 +8,13 @@ import { NodeGlobalsPolyfillPlugin as globalsPolyfill } from "@esbuild-plugins/n
 import preprocessor from "@modular-css/svelte";
 import mcss from "@modular-css/vite";
 import aliases from "@modular-css/path-aliases";
+import namer from "@modular-css/shortnames";
 import postcssNested from "postcss-nested";
 
 import viteMd from "./build/vite-md.js";
 import viteBuildMcss from "./build/vite-build-mcss.js";
+
+const isProd = process.env.NODE_ENV === "production";
 
 // Set up the svelte preprocessor and get a reference to the
 // mcss processor so we can pass it into the vite plugin
@@ -25,6 +28,9 @@ const { preprocess, processor } = preprocessor({
 
     // Enable for debugging, but disabled because NOISY
     verbose : false,
+
+    // Crank down names in prod to be itty-bitty
+    namer : isProd ? namer() : null,
 
     // Bring sveltekit aliases into m-css
     resolvers : [
