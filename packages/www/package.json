@@ -31,6 +31,7 @@
     "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
     "@modular-css/path-aliases": "file:../aliases",
     "@modular-css/processor": "file:../processor",
+    "@modular-css/shortnames": "file:../namer",
     "@modular-css/svelte": "file:../svelte",
     "@modular-css/vite": "file:../vite",
     "@rollup/plugin-commonjs": "^21.0.1",
