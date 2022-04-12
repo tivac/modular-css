@@ -1,6 +1,32 @@
 /* eslint-disable no-await-in-loop */
 "use strict";
 
+/**
+ * @typedef {import("postcss").SourceMapOptions} SourceMapOptions
+ * @typedef {import("postcss").ProcessOptions} ProcessOptions
+ * @typedef {import("postcss").Root} Root
+ * @typedef {import("postcss").Result} Result
+ * @typedef {import("dependency-graph").DepGraph} DepGraph
+ */
+
+/**
+ * @typedef {(src: string, file: string) => string} Resolver
+ * @typedef {(file: string, selector: string) => string} Namer
+ * @typedef {(id: string) => string} Loader
+ *
+ * @typedef {Object} Options
+ * @property {string} cwd - The current working directory to use
+ * @property {boolean} dupewarn - Warn on files that differ only in their casing
+ * @property {boolean} rewrite - Rewrite asset paths using postcss-url
+ * @property {boolean} verbose - Output verbose logging info
+ * @property {boolean} exportGlobals - Add :global() classes to the output map
+ * @property {ProcessOptions} postcss - options for postcss processing, mostly for parser
+ * @property {Loader} loadFile - Function that returns file contents
+ * @property {Resolver[]} resolvers - Array of file resolvers to use
+ * @property {SourceMapOptions | false} map - Source map options
+ * @property {Namer} namer - Namer function to scope classnames
+ */
+
 const path = require("path");
 
 const Graph = require("dependency-graph").DepGraph;
@@ -67,6 +93,9 @@ const params = (processor, args) => {
     };
 };
 
+/**
+ * @type Options
+ */
 const DEFAULTS = {
     cwd : false,
     map : false,
@@ -82,6 +111,10 @@ const DEFAULTS = {
 };
 
 class Processor {
+    /**
+     * @constructor
+     * @param {Options} opts
+     */
     constructor(opts = {}) {
         /* eslint max-statements: [ "warn", 25 ] */
         const options = {
@@ -151,7 +184,12 @@ class Processor {
         this._done = postcss(options.done || [ noop ]);
     }
 
-    // Add a file on disk to the dependency graph
+    /**
+     * Add a file on disk to the dependency graph
+     *
+     * @param {string} file - file path to be added
+     * @returns
+     */
     async file(file) {
         const id = this._normalize(file);
 
@@ -162,7 +200,13 @@ class Processor {
         return this._add(id, text);
     }
 
-    // Add a file by name + contents to the dependency graph
+    /**
+     * Add a file by name + contents to the dependency graph
+     *
+     * @param {string} file - file path to be added
+     * @param {string} text - contents of file
+     * @returns
+     */
     string(file, text) {
         const id = this._normalize(file);
 
@@ -171,7 +215,13 @@ class Processor {
         return this._add(id, text);
     }
 
-    // Add an existing postcss Root object by name
+    /**
+     * Add an existing postcss Root object by name
+     *
+     * @param {string} file - file path of the root being added
+     * @param {Root} root - postcss Root object to add
+     * @returns
+     */
     root(file, root) {
         const id = this._normalize(file);
 
@@ -180,7 +230,12 @@ class Processor {
         return this._add(id, root);
     }
 
-    // Remove a file from the dependency graph
+    /**
+     * Remove a file from the dependency graph
+     *
+     * @param {string} input - path to remove
+     * @returns
+     */
     remove(input) {
         // Only want files actually in the array
         const files = Array.isArray(input) ? input : [ input ];
@@ -203,24 +258,44 @@ class Processor {
         return files;
     }
 
-    // Return the corrected-path version of the file
+    /**
+     * Return the corrected-path version of the file
+     *
+     * @param {string} file - file path to normalize
+     * @returns string
+     */
     normalize(file) {
         return this._normalize(file);
     }
 
-    // Resolve a file from a src using the configured resolvers
+    /**
+     * Resolve a file from a src using the configured resolvers
+     *
+     * @param {string} src - source file of the resolution
+     * @param {string} file - target file to resolve
+     * @returns string
+     */
     resolve(src, file) {
         return this._resolve(src, file);
     }
 
-    // Check if a file exists in the currently-processed set
+    /**
+     * Check if a file exists in the currently-processed set
+     *
+     * @param {string} input - file path to check for
+     * @returns boolean
+     */
     has(input) {
         const file = this._normalize(input);
 
         return file in this._files;
     }
 
-    // Mark a file and everything that depends on it as invalid
+    /**
+     * Mark a file and everything that depends on it as invalid
+     *
+     * @param {string} input - file path to mark
+     */
     invalidate(input) {
         if(!input) {
             throw new Error("invalidate() requires a file argument");
@@ -243,7 +318,12 @@ class Processor {
         });
     }
 
-    // Get the dependency order for a file or the entire tree
+    /**
+     * Get the dependency order for a file or the entire tree
+     *
+     * @param {string} [file] - file path to look up
+     * @returns Object[]
+     */
     fileDependencies(file) {
         if(!file) {
             return filterByPrefix(FILE_PREFIX, this._graph.overallOrder());
@@ -261,7 +341,12 @@ class Processor {
         return filterByPrefix(FILE_PREFIX, dependencies);
     }
 
-    // Get the ultimate output for specific files or the entire tree
+    /**
+     * Get the ultimate output for specific files or the entire tree
+     *
+     * @param {*} [args] - configuration and files to output
+     * @returns PromiseLike<Result>
+     */
     async output(args = false) {
         const { to } = args;
         let { files } = args;
@@ -369,22 +454,32 @@ class Processor {
         return result;
     }
 
-    // Expose files
+    /**
+     * The currently-tracked list of files
+     */
     get files() {
         return this._files;
     }
 
-    // Expose combined options object
+    /**
+     * Options for this processor instance
+     */
     get options() {
         return this._options;
     }
 
-    // Expose the dependency graph
+    /**
+     * Dependency graph for this instance
+     */
     get graph() {
         return this._graph;
     }
 
-    // Return all the compositions for the files loaded into the processor instance
+    /**
+     * Return all the compositions for the files loaded into the processor instance
+     *
+     * @returns PromiseLike<{}>
+     */
     get compositions() {
         // Ensure all files are fully-processed first
         return Promise.all(
@@ -393,6 +488,9 @@ class Processor {
         .then(() => compositions(this));
     }
 
+    /**
+     * Return any warnings from the files that have been processed
+     */
     get warnings() {
         return this._warnings;
     }
