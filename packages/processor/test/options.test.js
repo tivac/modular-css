@@ -3,6 +3,8 @@
 const path = require("path");
 
 const dedent = require("dedent");
+const importer = require("postcss-import");
+
 const namer = require("@modular-css/test-utils/namer.js");
 const relative = require("@modular-css/test-utils/relative.js");
 const logspy = require("@modular-css/test-utils/logs.js");
@@ -291,6 +293,24 @@ describe("/processor.js", () => {
 
                     expect(css).toMatchSnapshot();
                 });
+
+                it("should handle plugins that return dependencies", async () => {
+                    const processor = new Processor({
+                        namer,
+                        before : [ importer() ],
+                    });
+
+                    await processor.file("packages/processor/test/specimens/at-import.css");
+
+                    const { css } = await processor.output();
+
+                    expect(css).toMatchSnapshot();
+
+                    const { dependencies } = processor.files[require.resolve("./specimens/at-import.css")];
+
+                    expect(dependencies.length).toBe(1);
+                    expect(relative([ dependencies[0].file, dependencies[0].parent ])).toMatchSnapshot();
+                });
             });
 
             describe("processing", () => {
@@ -351,6 +371,24 @@ describe("/processor.js", () => {
 
                     expect(details.exported).toMatchSnapshot();
                 });
+
+                it("should handle plugins that return dependencies", async () => {
+                    const processor = new Processor({
+                        namer,
+                        processing : [ importer() ],
+                    });
+
+                    await processor.file("packages/processor/test/specimens/at-import.css");
+
+                    const { css } = await processor.output();
+
+                    expect(css).toMatchSnapshot();
+
+                    const { dependencies } = processor.files[require.resolve("./specimens/at-import.css")];
+
+                    expect(dependencies.length).toBe(1);
+                    expect(relative([ dependencies[0].file, dependencies[0].parent ])).toMatchSnapshot();
+                });
             });
 
             describe("after", () => {
@@ -398,6 +436,24 @@ describe("/processor.js", () => {
 
                     expect(css).toMatchSnapshot();
                 });
+
+                it("should handle plugins that return dependencies", async () => {
+                    const processor = new Processor({
+                        namer,
+                        after : [ importer() ],
+                    });
+
+                    await processor.file("packages/processor/test/specimens/at-import.css");
+
+                    const { css } = await processor.output();
+
+                    expect(css).toMatchSnapshot();
+
+                    const { dependencies } = processor.files[require.resolve("./specimens/at-import.css")];
+
+                    expect(dependencies.length).toBe(1);
+                    expect(relative([ dependencies[0].file, dependencies[0].parent ])).toMatchSnapshot();
+                });
             });
 
             describe("done", () => {
@@ -435,6 +491,22 @@ describe("/processor.js", () => {
                     });
 
                     expect(css).toMatchSnapshot();
+                });
+
+                it("should handle plugins that return dependencies", async () => {
+                    const processor = new Processor({
+                        namer,
+                        done : [ importer() ],
+                    });
+
+                    await processor.file("packages/processor/test/specimens/at-import.css");
+
+                    const { css, dependencies } = await processor.output();
+
+                    expect(css).toMatchSnapshot();
+
+                    expect(dependencies.length).toBe(1);
+                    expect(relative([ dependencies[0].file, dependencies[0].parent ])).toMatchSnapshot();
                 });
             });
 

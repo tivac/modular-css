@@ -394,6 +394,8 @@ class Processor {
                 })
             );
 
+            this._checkMessages(this._files[dep], result.messages);
+
             results.push(result);
         }
 
@@ -404,8 +406,6 @@ class Processor {
         root.removeAll();
 
         results.forEach((result) => {
-            result.warnings().forEach((warning) => this._warnings.push(warning));
-
             // Add file path comment
             const comment = postcss.comment({
                 text : relative(this._options.cwd, result.opts.from),
@@ -444,7 +444,10 @@ class Processor {
             params(this, args)
         );
 
-        result.warnings().forEach((warning) => this._warnings.push(warning));
+        result.dependencies = [];
+
+        // eslint-disable-next-line consistent-return
+        this._checkMessages(result, result.messages);
 
         // Lazily-compute compositions if they're asked for
         Object.defineProperty(result, "compositions", {
@@ -642,19 +645,15 @@ class Processor {
             file.result = await file.processed;
 
             const { result } = file;
-            const { messages } = result;
 
-            result.warnings().forEach((warning) => this._warnings.push(warning));
-
-            // Save off anything from plugins named "modular-css-export*"
-            // https://github.com/tivac/modular-css/pull/404
-            Object.assign(file.exported, messages.reduce((out, { plugin, exports : exported }) => {
-                if(plugin && plugin.startsWith("modular-css-export") && exported) {
-                    Object.assign(out, exported);
+            // eslint-disable-next-line consistent-return
+            this._checkMessages(file, result.messages, (message) => {
+                // Save off anything from plugins named "modular-css-export*"
+                // https://github.com/tivac/modular-css/pull/404
+                if(message.plugin && message.plugin.startsWith("modular-css-export") && message.exports) {
+                    return Object.assign(file.exported, message.exports);
                 }
-
-                return out;
-            }, Object.create(null)));
+            });
         }
 
         const self = this;
@@ -670,6 +669,28 @@ class Processor {
                 return fileCompositions(this.details, self);
             },
         };
+    }
+
+    _checkMessages(file, messages, extra) {
+        // eslint-disable-next-line consistent-return
+        messages.forEach((message) => {
+            // Save off warnings
+            if(message.type === "warning") {
+                return this._warnings.push(message);
+            }
+            
+            // Save off dependencies
+            if(message.type === "dependency" && message.file) {
+                console.log("dependency", message);
+                
+                return file.dependencies.push(message);
+            }
+
+            // Run any extra checks the caller might want
+            if(extra) {
+                extra(message);
+            }
+        });
     }
 
     // Process files and walk their composition/value dependency tree to find
@@ -700,6 +721,8 @@ class Processor {
             values   : Object.create(null),
             exported : Object.create(null),
 
+            dependencies : [],
+
             walked : new Promise((done) => (walked = done)),
 
             before : null,
@@ -714,8 +737,8 @@ class Processor {
 
         await file.before;
 
-        // Surface any warnings from that run
-        file.before.warnings().forEach((msg) => this._warnings.push(msg));
+        // eslint-disable-next-line consistent-return
+        this._checkMessages(file, file.before.messages);
 
         // Walk this node's dependencies, reading new files from disk as necessary
         await Promise.all(

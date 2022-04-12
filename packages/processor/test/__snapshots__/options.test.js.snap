@@ -16,6 +16,20 @@ Object {
 }
 `;
 
+exports[`/processor.js options lifecycle options after should handle plugins that return dependencies 1`] = `
+"/* packages/processor/test/specimens/at-import.css */
+.wooga { color: red; }
+
+.mc_booga { color: blue; }"
+`;
+
+exports[`/processor.js options lifecycle options after should handle plugins that return dependencies 2`] = `
+Array [
+  "packages/processor/test/specimens/simple.css",
+  "packages/processor/test/specimens/at-import.css",
+]
+`;
+
 exports[`/processor.js options lifecycle options after should run async postcss plugins 1`] = `
 "/* packages/processor/test/specimens/relative.css */
 .mc_wooga {
@@ -45,6 +59,20 @@ exports[`/processor.js options lifecycle options after should use postcss-url by
 "
 `;
 
+exports[`/processor.js options lifecycle options before should handle plugins that return dependencies 1`] = `
+"/* packages/processor/test/specimens/at-import.css */
+.mc_wooga { color: red; }
+
+.mc_booga { color: blue; }"
+`;
+
+exports[`/processor.js options lifecycle options before should handle plugins that return dependencies 2`] = `
+Array [
+  "packages/processor/test/specimens/simple.css",
+  "packages/processor/test/specimens/at-import.css",
+]
+`;
+
 exports[`/processor.js options lifecycle options before should run async postcss plugins before processing 1`] = `
 "/* packages/processor/test/specimens/async-before.css */
 a {}"
@@ -53,6 +81,19 @@ a {}"
 exports[`/processor.js options lifecycle options before should run sync postcss plugins before processing 1`] = `
 "/* packages/processor/test/specimens/sync-before.css */
 a {}"
+`;
+
+exports[`/processor.js options lifecycle options done should handle plugins that return dependencies 1`] = `
+"/* packages/processor/test/specimens/at-import.css */
+.wooga { color: red; }
+.mc_booga { color: blue; }"
+`;
+
+exports[`/processor.js options lifecycle options done should handle plugins that return dependencies 2`] = `
+Array [
+  "packages/processor/test/specimens/simple.css",
+  "packages/processor/test/specimens/at-import.css",
+]
 `;
 
 exports[`/processor.js options lifecycle options done should run async postcss plugins done processing 1`] = `
@@ -72,6 +113,20 @@ Array [
 	packages/processor/test/specimens/start.css
 	packages/processor/test/specimens/START.css",
   ],
+]
+`;
+
+exports[`/processor.js options lifecycle options processing should handle plugins that return dependencies 1`] = `
+"/* packages/processor/test/specimens/at-import.css */
+.mc_wooga { color: red; }
+
+.mc_booga { color: blue; }"
+`;
+
+exports[`/processor.js options lifecycle options processing should handle plugins that return dependencies 2`] = `
+Array [
+  "packages/processor/test/specimens/simple.css",
+  "packages/processor/test/specimens/at-import.css",
 ]
 `;
 
