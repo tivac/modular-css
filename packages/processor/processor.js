@@ -681,8 +681,6 @@ class Processor {
             
             // Save off dependencies
             if(message.type === "dependency" && message.file) {
-                console.log("dependency", message);
-                
                 return file.dependencies.push(message);
             }
 

@@ -134,6 +134,11 @@ Snapshot Diff:
   }
 `;
 
+exports[`/rollup.js watch mode should watch files added via other plugins 1`] = `
+Snapshot Diff:
+Compared values have no visual difference.
+`;
+
 exports[`/rollup.js watch mode should watch when using code splitting 1`] = `
 Snapshot Diff:
 - First value

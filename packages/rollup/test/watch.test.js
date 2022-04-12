@@ -2,6 +2,7 @@
 "use strict";
 
 const shell = require("shelljs");
+const importer = require("postcss-import");
 
 const write = require("@modular-css/test-utils/write.js")(__dirname);
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
@@ -431,6 +432,61 @@ describe("/rollup.js watch mode", () => {
         await wait();
 
         const v2 = dir("./watch/code-splitting/output");
+
+        expect(v1).toMatchDiffSnapshot(v2);
+    });
+
+    it.only("should watch files added via other plugins", async () => {
+        // Create v1 of the files
+        write(`./watch/deps/one.css`, `
+            @import "./imported.css";
+
+            .one { color: red; }
+        `);
+
+        write(`./watch/deps/imported.css`, `
+            .two { color: green; }
+        `);
+
+        write(`./watch/deps/one.js`, `
+            import css from "./one.css";
+
+            console.log(css);
+        `);
+
+        // Start watching
+        watcher = watch({
+            input : [
+                require.resolve(prefix("./output/watch/deps/one.js")),
+            ],
+
+            output : {
+                dir : prefix(`./output/watch/deps/output`),
+                format,
+                assetFileNames,
+            },
+
+            plugins : [
+                createPlugin({
+                    processing : [ importer() ],
+                }),
+            ],
+        });
+
+        const wait = watching.promise(watcher);
+
+        await wait();
+
+
+        const v1 = dir("./watch/deps/output");
+
+        setTimeout(() => write(`./watch/deps/imported.css`, `
+            .two { color: seafoam; }
+        `), 100);
+
+        await wait();
+
+        const v2 = dir("./watch/deps/output");
 
         expect(v1).toMatchDiffSnapshot(v2);
     });

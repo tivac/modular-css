@@ -12,10 +12,6 @@ const { transform } = require("@modular-css/css-to-js");
 
 const DEFAULT_EXT = ".css";
 
-const {
-    isFile,
-} = Processor;
-
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
 const emptyMappings = {
@@ -65,8 +61,6 @@ module.exports = (
         // But default to true otherwise
         options.map = !options.styleExport;
     }
-
-    const { graph } = processor;
 
     return {
         name : "@modular-css/rollup",
@@ -120,18 +114,11 @@ module.exports = (
 
             const { code, namedExports, dependencies, warnings } = transform(id, processor, opts);
 
-            warnings.forEach((warning) => {
-                this.warn(warning);
-            });
+            warnings.forEach((warning) => this.warn(warning));
 
-            dependencies.forEach((depKey) => {
-                if(!isFile(depKey)) {
-                    return;
-                }
-                
-                // Watch all the CSS files this file depends on
-                this.addWatchFile(graph.getNodeData(depKey).file);
-            });
+            // Yes, we need to add m-css managed dependencies *and* any external ones from other plugins
+            processor.fileDependencies(id).forEach((dep) => this.addWatchFile(dep));
+            dependencies.forEach((dep) => this.addWatchFile(dep));
 
             // Return JS representation to rollup
             return {

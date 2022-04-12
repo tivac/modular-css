@@ -290,8 +290,9 @@ exports.transform = (file, processor, opts = {}) => {
 
     // Return JS representation
     return {
-        code : out.join("\n"),
-        dependencies,
+        code         : out.join("\n"),
+        dependencies : details.dependencies.map((msg) => msg.file),
+
         namedExports,
         warnings,
     };

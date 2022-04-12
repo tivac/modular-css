@@ -181,7 +181,7 @@ module.exports = (
                 return this.error(e);
             }
 
-            const { code : css, namedExports, warnings } = transform(file, processor, pluginOptions);
+            const { code : css, namedExports, warnings, dependencies } = transform(file, processor, pluginOptions);
 
             warnings.forEach((warning) => {
                 this.warn(warning);
@@ -189,7 +189,9 @@ module.exports = (
 
             const deps = processor.fileDependencies(file);
 
+            // Yes, we need to add m-css managed dependencies *and* any external ones from other plugins
             deps.forEach((dep) => this.addWatchFile(slash(dep)));
+            dependencies.forEach((dep) => this.addWatchFile(slash(dep)));
 
             // TODO: Gets CSS order right by forcing them to load their dependent CSS first.
             // Feels very brittle and overkill, but this is what we've got for now
