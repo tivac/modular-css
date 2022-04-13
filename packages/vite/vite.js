@@ -45,6 +45,8 @@ module.exports = (
         processor = new Processor(options),
     } = options;
 
+    const externalDependenciesMap = new Map();
+
     const filter = utils.createFilter(options.include, options.exclude);
 
     const { graph } = processor;
@@ -68,13 +70,14 @@ module.exports = (
             viteServer = instance;
 
             viteServer.watcher.on("change", (file) => {
-                log("change", file);
-                
-                if(!processor.has(file)) {
+                if(!processor.has(file) && !externalDependenciesMap.has(file)) {
                     return;
                 }
-
-                processor.invalidate(file);
+    
+                log("file changed", file);
+    
+                // TODO: should the file be removed if it's gone?
+                processor.invalidate(processor.has(file) ? file : externalDependenciesMap.get(file));
             });
         },
 
@@ -191,7 +194,13 @@ module.exports = (
 
             // Yes, we need to add m-css managed dependencies *and* any external ones from other plugins
             deps.forEach((dep) => this.addWatchFile(slash(dep)));
-            dependencies.forEach((dep) => this.addWatchFile(slash(dep)));
+            dependencies.forEach((dep) => {
+                this.addWatchFile(slash(dep));
+
+                // Map the external dependencies to the actual m-css ID they were used in for invalidation
+                // purposes when they change
+                externalDependenciesMap.set(dep, id);
+            });
 
             // TODO: Gets CSS order right by forcing them to load their dependent CSS first.
             // Feels very brittle and overkill, but this is what we've got for now

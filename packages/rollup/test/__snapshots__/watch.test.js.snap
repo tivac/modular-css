@@ -136,7 +136,19 @@ Snapshot Diff:
 
 exports[`/rollup.js watch mode should watch files added via other plugins 1`] = `
 Snapshot Diff:
-Compared values have no visual difference.
+- First value
++ Second value
+
+@@ --- --- @@
+  Object {
+    "assets/one.css": "/* packages/rollup/test/output/watch/deps/one.css */
+- .mc_two { color: green; }
++ .mc_two { color: seafoam; }
+
+  .mc_one { color: red; }",
+    "one.js": "const two = \\"mc_two\\";
+  const one = \\"mc_one\\";
+  var css = {
 `;
 
 exports[`/rollup.js watch mode should watch when using code splitting 1`] = `

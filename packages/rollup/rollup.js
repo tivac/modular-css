@@ -50,6 +50,8 @@ module.exports = (
         processor = new Processor(options),
     } = options;
 
+    const externalDependenciesMap = new Map();
+
     const filter = utils.createFilter(options.include, options.exclude);
 
     // eslint-disable-next-line no-console, no-empty-function
@@ -86,14 +88,14 @@ module.exports = (
         },
 
         watchChange(file) {
-            if(!processor.has(file)) {
+            if(!processor.has(file) && !externalDependenciesMap.has(file)) {
                 return;
             }
 
             log("file changed", file);
 
             // TODO: should the file be removed if it's gone?
-            processor.invalidate(file);
+            processor.invalidate(processor.has(file) ? file : externalDependenciesMap.get(file));
         },
 
         async transform(src, id) {
@@ -118,7 +120,13 @@ module.exports = (
 
             // Yes, we need to add m-css managed dependencies *and* any external ones from other plugins
             processor.fileDependencies(id).forEach((dep) => this.addWatchFile(dep));
-            dependencies.forEach((dep) => this.addWatchFile(dep));
+            dependencies.forEach((dep) => {
+                this.addWatchFile(dep);
+
+                // Map the external dependencies to the actual m-css ID they were used in for invalidation
+                // purposes when they change
+                externalDependenciesMap.set(dep, id);
+            });
 
             // Return JS representation to rollup
             return {

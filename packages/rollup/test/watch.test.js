@@ -436,7 +436,7 @@ describe("/rollup.js watch mode", () => {
         expect(v1).toMatchDiffSnapshot(v2);
     });
 
-    it.only("should watch files added via other plugins", async () => {
+    it("should watch files added via other plugins", async () => {
         // Create v1 of the files
         write(`./watch/deps/one.css`, `
             @import "./imported.css";
