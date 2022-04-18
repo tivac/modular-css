@@ -1,0 +1,36 @@
+{
+	"name": "mcss-vscode-extension",
+	"description": "VSCode Extension for modular-css",
+	"author": "Patrick Cavit <npm@patcavit.com>",
+	"license": "MIT",
+	"version": "0.0.1",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/tivac/modular-css"
+	},
+	"engines": {
+		"vscode": "^1.63.0"
+	},
+	"contributes": {
+		"languages": [
+			{
+			  "id": "mcss",
+			  "aliases": [
+				"Modular-CSS",
+				"m-css"
+			  ],
+			  "extensions": [
+				".mcss"
+			  ],
+			  "configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+            {
+                "language": "mcss",
+                "scopeName": "source.mcss",
+                "path": "./syntaxes/mcss.tmLanguage.json",
+            }
+		]
+	}
+}

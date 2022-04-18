@@ -1,0 +1,31 @@
+// A launch configuration that compiles the extension and then opens it inside a new window
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "extensionHost",
+			"request": "launch",
+			"name": "Launch vscode extension",
+			"runtimeExecutable": "${execPath}",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceRoot}/packages/vscode"
+			],
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "Attach to Language Server",
+			"port": 6009,
+			"restart": true,
+		},
+	],
+	"compounds": [
+		{
+			"name": "Client + Server",
+			"configurations": [
+				"Launch vscode extension",
+				"Attach to Language Server"
+			]
+		}
+	]
+}
