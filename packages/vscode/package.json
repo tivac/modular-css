@@ -29,8 +29,15 @@
             {
                 "language": "mcss",
                 "scopeName": "source.mcss",
-                "path": "./syntaxes/mcss.tmLanguage.json",
-            }
+                "path": "./syntaxes/css.tmLanguage.json"
+            },
+			{
+				"path": "./syntaxes/mcss.tmLanguage.json",
+				"scopeName": "source.mcss-extras",
+				"injectTo": [
+					"source.mcss"
+				]
+			}
 		]
 	}
 }
