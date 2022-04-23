@@ -6,7 +6,7 @@
 	],
 	"version": "https://github.com/atom/language-css/commit/672168274c7b457f3c118788b5171ae888c1bf07",
 	"name": "CSS",
-	"scopeName": "source.mcss",
+	"scopeName": "source.css",
 	"patterns": [
 		{
 			"include": "#comment-block"

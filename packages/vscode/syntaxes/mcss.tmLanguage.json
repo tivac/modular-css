@@ -1,6 +1,6 @@
 {
 	"scopeName": "source.mcss-extras",
-	"injectionSelector": "L:source.mcss",
+	"injectionSelector": "L:source.css",
 	"patterns": [
 		{
 			"include": "#at-value"
@@ -13,6 +13,7 @@
 		"at-value": {
 			"patterns": [
 				{
+					"comment": "@value",
 					"begin": "(?i)((@)value)(?:[^;])",
 					"beginCaptures": {
 						"1": {
@@ -25,19 +26,37 @@
 					"end": "\\s*(;)",
 					"endCaptures": {
 						"1": {
-							"name": "punctuation.terminator.rule.css1"
+							"name": "punctuation.terminator.rule.css"
 						}
 					},
 					"name": "meta.at-rule.value.css",
 					"patterns": [
 						{
-							"match": "(\\w+):([^;]+)",
+							"comment": "@value name: value;",
+							"match": "([^;]+):([^;]+)",
 							"captures": {
 								"1": {
 									"name": "support.type.property-name.css"
 								},
 								"2": {
 									"name": "support.type.property-value.css"
+								}
+							}
+						},
+						{
+							"comment": "@value name from './value';",
+							"match": "(\\w+) (from) ([^;]+)",
+							"captures": {
+								"1": {
+									"name": "support.type.property-name.css"
+								},
+								"2": {
+									"name": "punctuation.terminator.rule.css"
+								},
+								"3": {
+									"patterns" : [
+										{ "include" : "#string" }
+									]
 								}
 							}
 						}
