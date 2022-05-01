@@ -54,7 +54,7 @@
     "rehype-toc": "^3.0.2",
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
-    "rollup-plugin-polyfill-node": "^0.8.0",
+    "rollup-plugin-polyfill-node": "^0.9.0",
     "svelte": "^3.44.0",
     "to-vfile": "^7.2.3",
     "unified": "^10.1.1",
