@@ -34,7 +34,7 @@
     "@modular-css/shortnames": "file:../namer",
     "@modular-css/svelte": "file:../svelte",
     "@modular-css/vite": "file:../vite",
-    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-node-resolve": "^13.1.3",
     "@sveltejs/adapter-static": "^1.0.0-next.26",
     "@sveltejs/kit": "^1.0.0-next.256",
