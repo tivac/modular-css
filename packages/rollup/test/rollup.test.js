@@ -435,7 +435,7 @@ describe("/rollup.js", () => {
         });
     });
 
-    describe("namedExports option", () => {
+    describe(" Exports option", () => {
         it("should provide named exports by default", async () => {
             const bundle = await rollup({
                 input   : require.resolve("./specimens/named.js"),
@@ -506,6 +506,21 @@ describe("/rollup.js", () => {
             });
 
             expect(spy).toMatchLogspySnapshot();
+        });
+
+        it.only("should generated valid JS even when identifiers aren't", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/composes-from-invalid-js/entry.js"),
+                plugins : [
+                    createPlugin(),
+                ],
+            });
+
+            expect(
+                await bundle.generate({
+                    format,
+                })
+            ).toMatchRollupCodeSnapshot();
         });
     });
 
