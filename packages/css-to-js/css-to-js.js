@@ -55,7 +55,9 @@ const deconflict = (file, name) => {
 const prop = ([ key, value ]) => (key === value ? key : `${JSON.stringify(key)} : ${value}`);
 const esm = (key, value) => (key === value ? key : `${key} as ${value}`);
 
-exports.reset = () => deconflicted.clear();
+exports.reset = () => {
+    deconflicted.clear();
+};
 
 exports.transform = (file, processor, opts = {}) => {
     const options = {
@@ -128,15 +130,16 @@ exports.transform = (file, processor, opts = {}) => {
             // Add each selector this file depends on to the imports list
             data.selectors.forEach((key) => {
                 const nodeData = graph.getNodeData(key);
+                
                 const { selector } = nodeData;
                 let { unique : depUnique } = nodeData;
-
-                const localUnique = deconflict(id, selector);
 
                 // Save a reference to the unique key for this file/selector combo
                 if(!depUnique) {
                     depUnique = nodeData.unique = deconflict(depFile, selector);
                 }
+
+                const localUnique = deconflict(id, selector);
 
                 externalsMap.set(selectorKey(depFile, selector), localUnique);
 
@@ -228,36 +231,31 @@ exports.transform = (file, processor, opts = {}) => {
     // Create vars representing exported classes & use them in local var definitions
     exportedKeys.forEach((key) => {
         const elements = [];
-        const sKey = selectorKey(id, key);
+        const sKey = processor._addSelector(id, key);
         let unique;
 
         // Build the list of composed classes for this class
-        if(graph.hasNode(sKey)) {
-            // Grab the previously-determined unique value for this selector
-            const graphData = graph.getNodeData(sKey);
+        const graphData = graph.getNodeData(sKey);
+        
+        // Grab the previously-determined unique value for this selector
+        unique = graphData.unique;
 
-            unique = graphData.unique;
-
-            if(!unique) {
-                unique = graphData.unique = deconflict(id, key);
-            }
-
-            internalsMap.set(key, unique);
-            
-            graph.dependenciesOf(sKey).forEach((dep) => {
-                const { file: src, selector } = graph.getNodeData(dep);
-
-                // Get the value from the right place
-                if(src !== id) {
-                    elements.push(externalsMap.get(dep));
-                } else {
-                    elements.push(internalsMap.get(selector));
-                }
-            });
-        } else {
-            unique = deconflict(id, key);
-            internalsMap.set(key, unique);
+        if(!unique) {
+            unique = graphData.unique = deconflict(id, key);
         }
+
+        internalsMap.set(key, unique);
+        
+        graph.dependenciesOf(sKey).forEach((dep) => {
+            const { file: src, selector } = graph.getNodeData(dep);
+
+            // Get the value from the right place
+            if(src !== id) {
+                elements.push(externalsMap.get(dep));
+            } else {
+                elements.push(internalsMap.get(selector));
+            }
+        });
 
         elements.push(...details.classes[key].map((t) => JSON.stringify(t)));
 
@@ -319,6 +317,8 @@ exports.transform = (file, processor, opts = {}) => {
     }
 
     const code = out.join("\n");
+
+    // console.log(id, "\n\n", code);
 
     // Return JS representation
     return {
