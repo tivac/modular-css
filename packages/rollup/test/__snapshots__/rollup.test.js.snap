@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/rollup.js  Exports option should generated valid JS even when identifiers aren't 1`] = `
+exports[`/rollup.js Exports option should generated valid JS even when identifiers aren't 1`] = `
 Object {
   "entry": "
 const fooBar = \\"mc_foo-bar\\";
@@ -15,7 +15,7 @@ console.log(style);
 }
 `;
 
-exports[`/rollup.js  Exports option should provide named exports by default 1`] = `
+exports[`/rollup.js Exports option should provide named exports by default 1`] = `
 Object {
   "named": "
 const a = \\"mc_a\\";
@@ -25,7 +25,7 @@ console.log(a);
 }
 `;
 
-exports[`/rollup.js  Exports option should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false) 1`] = `
+exports[`/rollup.js Exports option should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false) 1`] = `
 Object {
   "code": "PLUGIN_WARNING",
   "hook": "transform",
@@ -36,7 +36,7 @@ Object {
 }
 `;
 
-exports[`/rollup.js  Exports option should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false) 2`] = `
+exports[`/rollup.js Exports option should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false) 2`] = `
 Object {
   "invalid-name": "
 const fooga = \\"mc_fooga\\";
@@ -51,7 +51,7 @@ console.log(css, fooga);
 }
 `;
 
-exports[`/rollup.js  Exports option should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true) 1`] = `
+exports[`/rollup.js Exports option should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true) 1`] = `
 Object {
   "code": "PLUGIN_WARNING",
   "hook": "transform",
@@ -62,7 +62,7 @@ Object {
 }
 `;
 
-exports[`/rollup.js  Exports option should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true) 2`] = `
+exports[`/rollup.js Exports option should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true) 2`] = `
 Object {
   "invalid-name": "
 const fooga = \\"mc_fooga\\";
@@ -77,7 +77,7 @@ console.log(css, fooga);
 }
 `;
 
-exports[`/rollup.js  Exports option should warn if named exports are falsey 1`] = `
+exports[`/rollup.js Exports option should warn if named exports are falsey 1`] = `
 Array [
   Array [
     "@modular-css/rollup doesn't allow namedExports to be disabled",
