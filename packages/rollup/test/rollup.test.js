@@ -509,6 +509,8 @@ describe("/rollup.js", () => {
         });
 
         it("should generated valid JS even when identifiers aren't", async () => {
+            logspy("warn");
+
             const bundle = await rollup({
                 input   : require.resolve("./specimens/composes-from-invalid-js/entry.js"),
                 plugins : [

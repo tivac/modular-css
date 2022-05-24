@@ -33,16 +33,15 @@ const {
 const deconflicted = new Map();
 
 const deconflict = (file, name) => {
-    const fileId = file.toLowerCase();
     const safe = identifierfy(name);
     let idx = 0;
     let proposal = safe;
 
-    if(!deconflicted.has(fileId)) {
-        deconflicted.set(fileId, new Map());
+    if(!deconflicted.has(file)) {
+        deconflicted.set(file, new Map());
     }
 
-    const map = deconflicted.get(fileId);
+    const map = deconflicted.get(file);
 
     while(map.has(proposal)) {
         proposal = `${safe}${++idx}`;
@@ -129,16 +128,20 @@ exports.transform = (file, processor, opts = {}) => {
             // Add each selector this file depends on to the imports list
             data.selectors.forEach((key) => {
                 const nodeData = graph.getNodeData(key);
+                const { selector } = nodeData;
+                let { unique : depUnique } = nodeData;
+
+                const localUnique = deconflict(id, selector);
 
                 // Save a reference to the unique key for this file/selector combo
-                if(!nodeData.unique) {
-                    nodeData.unique = deconflict(depFile, nodeData.selector);
+                if(!depUnique) {
+                    depUnique = nodeData.unique = deconflict(depFile, selector);
                 }
 
-                externalsMap.set(selectorKey(depFile, nodeData.selector), nodeData.unique);
+                externalsMap.set(selectorKey(depFile, selector), localUnique);
 
                 // Store external references as unique, safe values always
-                imported.set(nodeData.unique, nodeData.unique);
+                imported.set(depUnique, localUnique);
             });
 
             return;
@@ -316,8 +319,6 @@ exports.transform = (file, processor, opts = {}) => {
     }
 
     const code = out.join("\n");
-
-    console.log(id, "\n\n", code);
 
     // Return JS representation
     return {
