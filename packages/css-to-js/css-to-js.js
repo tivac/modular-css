@@ -32,28 +32,31 @@ const {
 
 const deconflicted = new Map();
 
-const deconflict = (file, source) => {
-    const safe = identifierfy(source);
+const deconflict = (file, name) => {
+    const fileId = file.toLowerCase();
+    const safe = identifierfy(name);
     let idx = 0;
     let proposal = safe;
 
-    if(!deconflicted.has(file)) {
-        deconflicted.set(file, new Map());
+    if(!deconflicted.has(fileId)) {
+        deconflicted.set(fileId, new Map());
     }
 
-    const map = deconflicted.get(file)
+    const map = deconflicted.get(fileId);
 
     while(map.has(proposal)) {
         proposal = `${safe}${++idx}`;
     }
 
-    map.set(proposal, source);
+    map.set(proposal, name);
 
     return proposal;
 };
 
 const prop = ([ key, value ]) => (key === value ? key : `${JSON.stringify(key)} : ${value}`);
 const esm = (key, value) => (key === value ? key : `${key} as ${value}`);
+
+exports.reset = () => deconflicted.clear();
 
 exports.transform = (file, processor, opts = {}) => {
     const options = {
@@ -81,7 +84,7 @@ exports.transform = (file, processor, opts = {}) => {
     });
 
     // All used identifiers
-    const identifiers = new Map();
+    // const identifiers = new Map();
 
     // External identifiers mapped to their unique names
     const externalsMap = new Map();
@@ -125,15 +128,17 @@ exports.transform = (file, processor, opts = {}) => {
         if(isFile(depKey)) {
             // Add each selector this file depends on to the imports list
             data.selectors.forEach((key) => {
-                console.log(key, "\n", graph.getNodeData(key));
+                const nodeData = graph.getNodeData(key);
 
-                const { selector: name } = graph.getNodeData(key);
+                // Save a reference to the unique key for this file/selector combo
+                if(!nodeData.unique) {
+                    nodeData.unique = deconflict(depFile, nodeData.selector);
+                }
 
-                const unique = deconflict(depFile, name);
+                externalsMap.set(selectorKey(depFile, nodeData.selector), nodeData.unique);
 
-                externalsMap.set(selectorKey(depFile, name), unique);
-
-                imported.set(name, unique);
+                // Store external references as unique, safe values always
+                imported.set(nodeData.unique, nodeData.unique);
             });
 
             return;
@@ -220,13 +225,22 @@ exports.transform = (file, processor, opts = {}) => {
     // Create vars representing exported classes & use them in local var definitions
     exportedKeys.forEach((key) => {
         const elements = [];
-        const unique = deconflict(id, key);
         const sKey = selectorKey(id, key);
-
-        internalsMap.set(key, unique);
+        let unique;
 
         // Build the list of composed classes for this class
         if(graph.hasNode(sKey)) {
+            // Grab the previously-determined unique value for this selector
+            const graphData = graph.getNodeData(sKey);
+
+            unique = graphData.unique;
+
+            if(!unique) {
+                unique = graphData.unique = deconflict(id, key);
+            }
+
+            internalsMap.set(key, unique);
+            
             graph.dependenciesOf(sKey).forEach((dep) => {
                 const { file: src, selector } = graph.getNodeData(dep);
 
@@ -237,6 +251,9 @@ exports.transform = (file, processor, opts = {}) => {
                     elements.push(internalsMap.get(selector));
                 }
             });
+        } else {
+            unique = deconflict(id, key);
+            internalsMap.set(key, unique);
         }
 
         elements.push(...details.classes[key].map((t) => JSON.stringify(t)));
@@ -246,11 +263,6 @@ exports.transform = (file, processor, opts = {}) => {
         defaultExports.push([ key, unique ]);
 
         const namedExport = identifierfy(key);
-        const graphData = graph.getNodeData(sKey);
-
-        console.log({ sKey, graphData });
-
-        graph.setNodeData(sKey, Object.assign(graphData, { unique }));
 
         if(namedExport === key) {
             namedExports.push(esm(unique, key));
@@ -303,11 +315,13 @@ exports.transform = (file, processor, opts = {}) => {
         out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
     }
 
-    console.log(id, "\n", out.join("\n"));
+    const code = out.join("\n");
+
+    console.log(id, "\n\n", code);
 
     // Return JS representation
     return {
-        code : out.join("\n"),
+        code,
         dependencies,
         namedExports,
         warnings,

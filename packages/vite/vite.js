@@ -6,7 +6,7 @@ const utils = require("@rollup/pluginutils");
 const dedent = require("dedent");
 
 const Processor = require("@modular-css/processor");
-const { transform } = require("@modular-css/css-to-js");
+const { reset, transform } = require("@modular-css/css-to-js");
 
 const { fileKey, filterByPrefix, FILE_PREFIX } = Processor;
 
@@ -80,6 +80,8 @@ module.exports = (
 
         buildStart() {
             log("build start");
+
+            reset();
 
             // Watch any files already in the procesor
             Object.keys(processor.files).forEach((file) => this.addWatchFile(file));
