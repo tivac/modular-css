@@ -8,7 +8,7 @@ const utils = require("@rollup/pluginutils");
 const Processor = require("@modular-css/processor");
 const output = require("@modular-css/processor/lib/output.js");
 const relative = require("@modular-css/processor/lib/relative.js");
-const { reset, transform } = require("@modular-css/css-to-js");
+const { transform } = require("@modular-css/css-to-js");
 
 const DEFAULT_EXT = ".css";
 
@@ -73,8 +73,6 @@ module.exports = (
 
         buildStart() {
             log("build start");
-
-            reset();
 
             if(!options.namedExports) {
                 this.warn("@modular-css/rollup doesn't allow namedExports to be disabled");
