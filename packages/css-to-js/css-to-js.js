@@ -45,7 +45,12 @@ const deconflict = (map, source) => {
 };
 
 const prop = ([ key, value ]) => (key === value ? key : `${JSON.stringify(key)} : ${value}`);
-const esm = (key, value) => (key === value ? key : `${key} as ${value}`);
+const esm = (key, value) => {
+    const safeKey = identifierfy(key);
+    const safeValue = identifierfy(value);
+
+    return safeKey === safeValue ? safeKey : `${safeKey} as ${safeValue}`;
+};
 
 exports.transform = (file, processor, opts = {}) => {
     const options = {
@@ -288,9 +293,11 @@ exports.transform = (file, processor, opts = {}) => {
         out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
     }
 
+    const code = out.join("\n");
+
     // Return JS representation
     return {
-        code : out.join("\n"),
+        code,
         dependencies,
         namedExports,
         warnings,
