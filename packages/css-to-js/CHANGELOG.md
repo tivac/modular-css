@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [28.1.2](https://github.com/tivac/modular-css/compare/v28.1.1...v28.1.2) (2022-05-25)
+
+
+### Bug Fixes
+
+* **rollup:** generated JS always uses clean names ([#847](https://github.com/tivac/modular-css/issues/847)) ([3bf231d](https://github.com/tivac/modular-css/commit/3bf231de19e4b2a332796e6282e586142f717075)), closes [#846](https://github.com/tivac/modular-css/issues/846)
+
+
+
+
+
 ## [28.1.1](https://github.com/tivac/modular-css/compare/v28.1.0...v28.1.1) (2022-04-08)
 
 
