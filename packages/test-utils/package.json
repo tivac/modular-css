@@ -11,10 +11,5 @@
     "url": "https://github.com/tivac/modular-css.git",
     "directory": "packages/test-utils"
   },
-  "license": "MIT",
-  "devDependencies": {
-    "p-defer": "^3.0.0",
-    "read-dir-deep": "^7.0.1",
-    "snapshot-diff": "^0.9.0"
-  }
+  "license": "MIT"
 }

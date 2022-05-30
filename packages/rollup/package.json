@@ -25,10 +25,6 @@
     "modular-css",
     "postcss"
   ],
-  "devDependencies": {
-    "cssnano": "^5.0.16",
-    "rollup-plugin-hypothetical": "^2.1.1"
-  },
   "dependencies": {
     "@modular-css/css-to-js": "file:../css-to-js",
     "@modular-css/processor": "file:../processor",

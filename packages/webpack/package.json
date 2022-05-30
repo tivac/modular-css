@@ -27,7 +27,7 @@
     "modular-css",
     "postcss"
   ],
-  "devDependencies": {
+  "peerDependencies": {
     "webpack": "^4.30.0"
   },
   "dependencies": {

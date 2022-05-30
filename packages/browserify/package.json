@@ -26,12 +26,6 @@
     "modular-css",
     "postcss"
   ],
-  "devDependencies": {
-    "browserify": "^17.0.0",
-    "factor-bundle": "2.5.0",
-    "from2-string": "1.1.0",
-    "watchify": "^3.11.1"
-  },
   "dependencies": {
     "@modular-css/processor": "file:../processor",
     "mkdirp": "^1.0.3",
