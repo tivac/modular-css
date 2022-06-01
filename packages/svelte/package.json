@@ -35,7 +35,7 @@
     "escape-string-regexp": "^4.0.0",
     "is-url": "^1.2.4",
     "parse-es6-imports": "^1.0.1",
-    "slash": "^3.0.0"
+    "slash": "^4.0.0"
   },
   "peerDependencies": {
     "svelte": ">1"
