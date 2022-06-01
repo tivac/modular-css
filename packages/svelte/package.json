@@ -28,11 +28,6 @@
     "modular-css",
     "postcss"
   ],
-  "devDependencies": {
-    "rollup-plugin-hypothetical": "^2.1.1",
-    "rollup-plugin-svelte": "^7.1.0",
-    "svelte": "^3.46.2"
-  },
   "dependencies": {
     "@modular-css/processor": "file:../processor",
     "@rollup/pluginutils": "^4.1.2",

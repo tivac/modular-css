@@ -23,9 +23,6 @@
     "modular-css",
     "postcss"
   ],
-  "devDependencies": {
-    "sugarss": "^4.0.1"
-  },
   "dependencies": {
     "dependency-graph": "^0.11.0",
     "escape-string-regexp": "^4.0.0",
