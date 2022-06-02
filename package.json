@@ -27,7 +27,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.18.2",
     "@codemirror/state": "^0.19.6",
-    "@codemirror/view": "^0.19.40",
+    "@codemirror/view": "^0.20.7",
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
     "@modular-css/path-aliases": "file:../aliases",
