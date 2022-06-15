@@ -74,7 +74,7 @@ describe("/rollup.js", () => {
 
     it("should express local & remote-composed classes correctly", async () => {
         const bundle = await rollup({
-            input   : require.resolve(`./specimens/multiple-composition/multiple-composition.js`),
+            input   : require.resolve(`./specimens/internal-external-composition/internal-external-composition.js`),
             plugins : [
                 createPlugin(),
             ],
