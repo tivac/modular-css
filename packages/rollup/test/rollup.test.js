@@ -72,6 +72,22 @@ describe("/rollup.js", () => {
         ).toMatchRollupSnapshot();
     });
 
+    it("should express layers of locally-composed classes correctly", async () => {
+        const bundle = await rollup({
+            input   : require.resolve(`./specimens/composition-layers/composition-layers.js`),
+            plugins : [
+                createPlugin(),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
     it("should express local & remote-composed classes correctly", async () => {
         const bundle = await rollup({
             input   : require.resolve(`./specimens/internal-external-composition/internal-external-composition.js`),
