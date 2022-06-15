@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [28.1.3](https://github.com/tivac/modular-css/compare/v28.1.2...v28.1.3) (2022-06-15)
+
+
+### Bug Fixes
+
+* don't move composed classes early ([#856](https://github.com/tivac/modular-css/issues/856)) ([00e84c8](https://github.com/tivac/modular-css/commit/00e84c87b63e392a22b4ffe7d98cb38ecd9161a5))
+
+
+
+
+
 ## [28.1.2](https://github.com/tivac/modular-css/compare/v28.1.1...v28.1.2) (2022-05-25)
 
 

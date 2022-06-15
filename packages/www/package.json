@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/www",
-  "version": "28.1.2",
+  "version": "28.1.3",
   "private": true,
   "description": "web site for modular-css",
   "main": "index.js",
