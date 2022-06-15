@@ -288,8 +288,8 @@ const other = \\"mc_other\\";
 const one = \\"mc_one\\";
 const two = other + \\" \\" + one + \\" \\" + \\"mc_two\\";
 var css = {
-    two,
-one
+    one,
+two
 };
 
 console.log(css);
