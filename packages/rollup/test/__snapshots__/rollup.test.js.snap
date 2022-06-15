@@ -268,9 +268,38 @@ Object {
 }
 `;
 
+exports[`/rollup.js should express local & remote-composed classes correctly 1`] = `
+Object {
+  "assets/multiple-composition.css": "
+/* packages/rollup/test/specimens/multiple-composition/other.css */
+.mc_other {
+    color: green;
+}
+/* packages/rollup/test/specimens/multiple-composition/multiple-composition.css */
+.mc_one {
+    color: red;
+}
+.mc_two {
+    background: blue;
+}",
+  "multiple-composition.js": "
+const other = \\"mc_other\\";
+
+const one = \\"mc_one\\";
+const two = other + \\" \\" + one + \\" \\" + \\"mc_two\\";
+var css = {
+    one,
+two
+};
+
+console.log(css);
+",
+}
+`;
+
 exports[`/rollup.js should express locally-composed classes correctly 1`] = `
 Object {
-  "assets/local-composition-1485bb4a.css": "
+  "assets/local-composition.css": "
 /* packages/rollup/test/specimens/local-composition.css */
 .mc_one {
     color: red;

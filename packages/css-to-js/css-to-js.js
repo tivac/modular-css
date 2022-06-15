@@ -26,7 +26,6 @@ const DEFAULTS = {
 const {
     selectorKey,
     isFile,
-    isSelector,
     isValue,
 } = Processor;
 
@@ -108,14 +107,8 @@ exports.transform = (file, processor, opts = {}) => {
 
         const imported = importsMap.get(depFile);
 
-        // File we're transforming
+        // Local deps are ignored at this point
         if(depFile === id) {
-            // Track this selector as part of the keys to be exported, adding
-            // here so it'll be sorted topologically
-            if(isSelector(depKey)) {
-                exportedKeys.add(data.selector);
-            }
-
             return;
         }
 

@@ -51,6 +51,7 @@ describe("/rollup.js", () => {
         expect(
             await bundle.generate({
                 format,
+                assetFileNames,
             })
         ).toMatchRollupCodeSnapshot();
     });
@@ -66,6 +67,23 @@ describe("/rollup.js", () => {
         expect(
             await bundle.generate({
                 format,
+                assetFileNames,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
+    it("should express local & remote-composed classes correctly", async () => {
+        const bundle = await rollup({
+            input   : require.resolve(`./specimens/multiple-composition/multiple-composition.js`),
+            plugins : [
+                createPlugin(),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+                assetFileNames,
             })
         ).toMatchRollupSnapshot();
     });
@@ -81,6 +99,7 @@ describe("/rollup.js", () => {
         expect(
             await bundle.generate({
                 format,
+                assetFileNames,
             })
         ).toMatchRollupCodeSnapshot();
     });
