@@ -270,7 +270,7 @@ Object {
 
 exports[`/rollup.js should express local & remote-composed classes correctly 1`] = `
 Object {
-  "assets/multiple-composition-b50d9a50.css": "
+  "assets/multiple-composition.css": "
 /* packages/rollup/test/specimens/multiple-composition/other.css */
 .mc_other {
     color: green;
@@ -299,7 +299,7 @@ console.log(css);
 
 exports[`/rollup.js should express locally-composed classes correctly 1`] = `
 Object {
-  "assets/local-composition-1485bb4a.css": "
+  "assets/local-composition.css": "
 /* packages/rollup/test/specimens/local-composition.css */
 .mc_one {
     color: red;

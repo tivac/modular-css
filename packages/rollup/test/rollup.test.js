@@ -51,6 +51,7 @@ describe("/rollup.js", () => {
         expect(
             await bundle.generate({
                 format,
+                assetFileNames,
             })
         ).toMatchRollupCodeSnapshot();
     });
@@ -66,6 +67,7 @@ describe("/rollup.js", () => {
         expect(
             await bundle.generate({
                 format,
+                assetFileNames,
             })
         ).toMatchRollupSnapshot();
     });
@@ -81,6 +83,7 @@ describe("/rollup.js", () => {
         expect(
             await bundle.generate({
                 format,
+                assetFileNames,
             })
         ).toMatchRollupSnapshot();
     });
@@ -96,6 +99,7 @@ describe("/rollup.js", () => {
         expect(
             await bundle.generate({
                 format,
+                assetFileNames,
             })
         ).toMatchRollupCodeSnapshot();
     });
