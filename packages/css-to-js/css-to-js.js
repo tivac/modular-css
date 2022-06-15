@@ -68,10 +68,10 @@ exports.transform = (file, processor, opts = {}) => {
 
     // Only want direct dependencies and any first-level dependencies
     // of this file to be processed
-    graph.outgoingEdges[Processor.fileKey(id)].forEach((dep) => {
+    graph.directDependenciesOf(Processor.fileKey(id)).forEach((dep) => {
         dependencies.add(dep);
 
-        graph.outgoingEdges[dep].forEach((d) => {
+        graph.directDependenciesOf(dep).forEach((d) => {
             dependencies.add(d);
         });
     });
@@ -215,15 +215,14 @@ exports.transform = (file, processor, opts = {}) => {
 
         // Build the list of composed classes for this class
         if(graph.hasNode(sKey)) {
-            graph.dependenciesOf(sKey).forEach((dep) => {
+            graph.directDependenciesOf(sKey).forEach((dep) => {
                 const { file: src, selector } = graph.getNodeData(dep);
 
                 // Get the value from the right place
-                if(src !== id) {
-                    elements.push(externalsMap.get(dep));
-                } else {
-                    elements.push(internalsMap.get(selector));
-                }
+                elements.push(src !== id ?
+                    externalsMap.get(dep) :
+                    internalsMap.get(selector)
+                );
             });
         }
 
