@@ -26,7 +26,6 @@ const DEFAULTS = {
 const {
     selectorKey,
     isFile,
-    isSelector,
     isValue,
 } = Processor;
 
