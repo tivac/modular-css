@@ -70,6 +70,21 @@ describe("/rollup.js", () => {
         ).toMatchRollupSnapshot();
     });
 
+    it("should express local & remote-composed classes correctly", async () => {
+        const bundle = await rollup({
+            input   : require.resolve(`./specimens/multiple-composition/multiple-composition.js`),
+            plugins : [
+                createPlugin(),
+            ],
+        });
+
+        expect(
+            await bundle.generate({
+                format,
+            })
+        ).toMatchRollupSnapshot();
+    });
+
     it("should be able to tree-shake results", async () => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/tree-shaking.js"),

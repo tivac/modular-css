@@ -1,0 +1,10 @@
+.one {
+    color: red;
+}
+
+.two {
+    composes: other from "./other.css";
+    composes: one;
+
+    background: blue;
+}
