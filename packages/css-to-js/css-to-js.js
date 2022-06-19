@@ -63,7 +63,6 @@ exports.transform = (file, processor, opts = {}) => {
     const details = processor.files[file];
     const { graph } = processor;
 
-    const relativeId = relative(processor.options.cwd, id);
     const dependencies = new Set();
 
     // Only want direct dependencies and any first-level dependencies
@@ -99,7 +98,7 @@ exports.transform = (file, processor, opts = {}) => {
     // create import statements for all of the values used in compositions
     dependencies.forEach((depKey) => {
         const data = graph.getNodeData(depKey);
-        const { file: depFile } = data;
+        const { file : depFile } = data;
 
         if(!importsMap.has(depFile)) {
             importsMap.set(depFile, new Map());
@@ -165,7 +164,7 @@ exports.transform = (file, processor, opts = {}) => {
         if(!imports.size) {
             return;
         }
-
+        
         const names = [ ...imports ].map(([ key, value ]) => esm(key, value));
 
         out.push(`import { ${names.join(", ")} } from "${slash(from)}";`);
@@ -260,7 +259,7 @@ exports.transform = (file, processor, opts = {}) => {
                     }
 
                     throw new ReferenceError(
-                        key + " is not exported by " + ${JSON.stringify(relativeId)}
+                        key + " is not exported by " + ${JSON.stringify(relative(processor.options.cwd, id))}
                     );
                 }
             })
@@ -282,7 +281,7 @@ exports.transform = (file, processor, opts = {}) => {
     `));
 
     if(options.styleExport) {
-        out.push(`export var styles = ${JSON.stringify(details.result.css)};`);
+        out.push(`export const styles = ${JSON.stringify(details.result.css)};`);
     }
 
     const code = out.join("\n");
