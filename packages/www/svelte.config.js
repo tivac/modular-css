@@ -1,9 +1,7 @@
 import path from "path";
 
 import staticAdapter from "@sveltejs/adapter-static";
-import vitePluginInspector from "vite-plugin-inspect";
 import { NodeModulesPolyfillPlugin as modulesPolyfill } from "@esbuild-plugins/node-modules-polyfill";
-import { NodeGlobalsPolyfillPlugin as globalsPolyfill } from "@esbuild-plugins/node-globals-polyfill";
 
 import preprocessor from "@modular-css/svelte";
 import mcss from "@modular-css/vite";
@@ -55,16 +53,8 @@ const config = {
             pages : "dist",
         }),
 
-        // hydrate the <body> element in src/app.html, the default
-        // is a <div> but I don't understand why that is necessary
-        // and think the resulting HTML looks kinda sloppy
-        target : "body",
-
         vite : {
             plugins : [
-                // Vite plugin inspector
-                vitePluginInspector(),
-
                 // Bundle @modular-css/processor and its dependencies via
                 // embedded rollup within rollup because vite doesn't handle
                 // cjs modules and node globals very well
@@ -91,9 +81,6 @@ const config = {
                 esbuildOptions : {
                     plugins : [
                         modulesPolyfill(),
-                        globalsPolyfill({
-                            process : true,
-                        }),
                     ],
                 },
             },
