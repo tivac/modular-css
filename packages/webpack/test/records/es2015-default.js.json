@@ -1,19 +1,16 @@
 {
-  "modules": {
-    "byIdentifier": {
-      "packages/webpack/test/specimens/es2015-default.js": "./packages/webpack/test/specimens/es2015-default.js",
-      "packages/webpack/loader.js!packages/webpack/test/specimens/es2015.css": "./packages/webpack/test/specimens/es2015.css"
-    },
-    "usedIds": {
-      "./packages/webpack/test/specimens/es2015-default.js": "./packages/webpack/test/specimens/es2015-default.js",
-      "./packages/webpack/test/specimens/es2015.css": "./packages/webpack/test/specimens/es2015.css"
-    }
-  },
   "chunks": {
     "byName": {
       "main": "main"
     },
     "bySource": {},
+    "usedIds": []
+  },
+  "modules": {
+    "byIdentifier": {
+      "packages/webpack/loader.js!packages/webpack/test/specimens/es2015.css": "./packages/webpack/test/specimens/es2015.css",
+      "packages/webpack/test/specimens/es2015-default.js": "./packages/webpack/test/specimens/es2015-default.js"
+    },
     "usedIds": []
   }
 }

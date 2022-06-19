@@ -1,109 +1,84 @@
 "use strict";
 
-const sources = require("webpack-sources");
-const ismap   = require("lodash/isMap");
+const { sources } = require("webpack");
 
 const Processor = require("@modular-css/processor");
 
-// Return a list of changed/removed files based on timestamp objects
-const getChangedFiles = (prev, curr) =>
-    Object.keys(curr)
-        .filter((file) =>
-            !prev[file] || prev[file] < curr[file]
-        )
-        .concat(
-            Object.keys(prev).filter((file) => !curr[file])
-        );
+const PLUGIN_NAME = "@modular-css/webpack";
 
-function ModularCSS(args) {
-    var options = {
-        __proto__ : null,
-        ...args,
-    };
+class ModularCSS {
+    constructor(args) {
+        var options = {
+            __proto__ : null,
+            ...args,
+        };
 
-    this.prev = {};
-    this.processor = options.processor || new Processor(options);
-    this.options = options;
-}
+        this.prev = {};
+        this.processor = options.processor || new Processor(options);
+        this.options = options;
+    }
 
-ModularCSS.prototype.apply = function(compiler) {
-    var watching = false;
-
-    // File invalidated by webpack watcher
-    compiler.plugin("invalid", (file) => {
-        this.processor.remove(file);
-    });
-
-    compiler.plugin("watch-run", (c, done) => {
-        watching = true;
-
-        done();
-    });
-
-    // Runs before compilation begins
-    compiler.plugin("this-compilation", (compilation) => {
-        var files;
-
-        // Make processor instance available to the loader
-        compilation.options.processor = this.processor;
-
-        // This code is only useful when calling .run() multiple times
-        // watching handles its own invalidations
-        if(!watching) {
-            let current;
-
-            if(ismap(compilation.fileTimestamps)) {
-                current = {};
-
-                compilation.fileTimestamps.forEach((value, key) => (current[key] = value));
-            }
-
-            files = getChangedFiles(this.prev, current || compilation.fileTimestamps);
-
-            // Remove changed/removed files from processor instance
-            this.processor.remove(files);
-
-            this.prev = compilation.fileTimestamps;
-        }
-    });
-
-    compiler.plugin("emit", async (compilation, done) => {
-        // Don't even bother if errors happened
-        if(compilation.errors.length) {
-            return done();
-        }
-
-        const data = await this.processor.output({
-            to : this.options.css || false,
+    apply(compiler) {
+        // File invalidated by webpack watcher
+        compiler.hooks.invalid.tap(PLUGIN_NAME, (file) => {
+            this.processor.invalidate(file);
         });
 
-        if(this.options.css) {
-            compilation.assets[this.options.css] = data.map ?
-                new sources.SourceMapSource(
-                    data.css,
-                    this.options.css,
-                    data.map
-                ) :
-                new sources.RawSource(
-                    data.css
-                );
+        // Runs before compilation begins
+        compiler.hooks.thisCompilation.tap(PLUGIN_NAME, (compilation) => {
+            // Make processor instance available to the loader
+            compilation.options.processor = this.processor;
 
-            // Write out external source map if it exists
-            if(data.map) {
-                compilation.assets[`${this.options.css}.map`] = new sources.RawSource(
-                    data.map.toString()
-                );
-            }
-        }
+            // TODO: Figure out how to tell what files might have changed
+            // This code is only useful when calling .run() multiple times
+            // watching handles its own invalidations
+            // if(compiler.modifiedFiles || compiler.removedFiles) {
+            //     compiler.modifiedFiles.forEach((file) => this.processor.invalidate(file));
+            //     compiler.removedFiles.forEach((file) => this.processor.remove(file));
+            // }
+        });
 
-        if(this.options.json) {
-            compilation.assets[this.options.json] = new sources.RawSource(
-                JSON.stringify(data.compositions, null, 4)
-            );
-        }
-
-        return done();
-    });
-};
+        compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation) => {
+            compilation.hooks.processAssets.tapPromise({
+                name  : PLUGIN_NAME,
+                stage : compilation.PROCESS_ASSETS_STAGE_ADDITIONS,
+            }, async (assets) => {
+                // Don't even bother if errors happened
+                if(compilation.errors.length) {
+                    return;
+                }
+    
+                const data = await this.processor.output({
+                    to : this.options.css || false,
+                });
+    
+                if(this.options.css) {
+                    assets[this.options.css] = data.map ?
+                        new sources.SourceMapSource(
+                            data.css,
+                            this.options.css,
+                            data.map
+                        ) :
+                        new sources.RawSource(
+                            data.css
+                        );
+    
+                    // Write out external source map if it exists
+                    if(data.map) {
+                        assets[`${this.options.css}.map`] = new sources.RawSource(
+                            data.map.toString()
+                        );
+                    }
+                }
+    
+                if(this.options.json) {
+                    assets[this.options.json] = new sources.RawSource(
+                        JSON.stringify(data.compositions, null, 4)
+                    );
+                }
+            });
+        });
+    }
+}
 
 module.exports = ModularCSS;

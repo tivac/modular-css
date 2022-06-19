@@ -28,13 +28,11 @@
     "postcss"
   ],
   "peerDependencies": {
-    "webpack": "^4.30.0"
+    "webpack": "^5.0.0"
   },
   "dependencies": {
+    "@modular-css/css-to-js": "file:../css-to-js",
     "@modular-css/processor": "file:../processor",
-    "esutils": "^2.0.2",
-    "loader-utils": "^2.0.0",
-    "lodash": "^4.17.0",
-    "webpack-sources": "^2.0.0"
+    "loader-utils": "^2.0.0"
   }
 }

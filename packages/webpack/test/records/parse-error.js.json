@@ -1,11 +1,11 @@
 {
-  "modules": {
-    "byIdentifier": {},
-    "usedIds": {}
-  },
   "chunks": {
     "byName": {},
     "bySource": {},
+    "usedIds": []
+  },
+  "modules": {
+    "byIdentifier": {},
     "usedIds": []
   }
 }
