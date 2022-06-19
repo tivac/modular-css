@@ -164,10 +164,12 @@ exports.transform = (file, processor, opts = {}) => {
         if(!imports.size) {
             return;
         }
+
+        const source = options.relativeImports ? `./${path.relative(path.dirname(file), from)}` : from;
         
         const names = [ ...imports ].map(([ key, value ]) => esm(key, value));
 
-        out.push(`import { ${names.join(", ")} } from "${slash(from)}";`);
+        out.push(`import { ${names.join(", ")} } from "${slash(source)}";`);
     });
 
     // Add the rest of the exported keys in whatever order because it doesn't matter
