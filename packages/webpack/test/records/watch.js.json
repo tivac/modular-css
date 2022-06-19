@@ -1,19 +1,16 @@
 {
-  "modules": {
-    "byIdentifier": {
-      "packages/webpack/loader.js!packages/webpack/test/output/watched.css": "./packages/webpack/test/output/watched.css",
-      "packages/webpack/test/specimens/watch.js": "./packages/webpack/test/specimens/watch.js"
-    },
-    "usedIds": {
-      "./packages/webpack/test/output/watched.css": "./packages/webpack/test/output/watched.css",
-      "./packages/webpack/test/specimens/watch.js": "./packages/webpack/test/specimens/watch.js"
-    }
-  },
   "chunks": {
     "byName": {
       "main": "main"
     },
     "bySource": {},
+    "usedIds": []
+  },
+  "modules": {
+    "byIdentifier": {
+      "packages/webpack/loader.js!packages/webpack/test/output/watched.css": "./packages/webpack/test/output/watched.css",
+      "packages/webpack/test/specimens/watch.js": "./packages/webpack/test/specimens/watch.js"
+    },
     "usedIds": []
   }
 }

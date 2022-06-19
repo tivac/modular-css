@@ -86,7 +86,7 @@
     "unist-builder": "^3.0.0",
     "unist-util-visit": "^4.1.0",
     "watchify": "^4.0.0",
-    "webpack": "^4.30.0"
+    "webpack": "^5.0.0"
   },
   "workspaces": [
     "./packages/*"
