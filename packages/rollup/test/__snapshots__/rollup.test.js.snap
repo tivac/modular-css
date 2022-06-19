@@ -714,7 +714,7 @@ console.log(css);
 exports[`/rollup.js styleExport option should provide style export 1`] = `
 Object {
   "style-export": "
-var styles = \\".mc_ooh {\\\\n    content: \\\\\\"string\\\\\\";\\\\n}\\\\n\\";
+const styles = \\".mc_ooh {\\\\n    content: \\\\\\"string\\\\\\";\\\\n}\\\\n\\";
 
 console.log(styles);
 ",
