@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [28.2.0](https://github.com/tivac/modular-css/compare/v28.1.4...v28.2.0) (2022-06-20)
+
+
+### Bug Fixes
+
+* **css-to-js:** use const ([18e07f8](https://github.com/tivac/modular-css/commit/18e07f862b1f886e01a948e441f20416442c0e3f))
+
+
+### Features
+
+* **css-to-js:** abs vs rel imports ([162c0be](https://github.com/tivac/modular-css/commit/162c0be5b8537e1be6363522c298c7bdbbab79a8))
+* **webpack:** webpack@5 support ([2de5396](https://github.com/tivac/modular-css/commit/2de5396753db55d82abcbb961b62391742aae55c))
+
+
+
+
+
 ## [28.1.4](https://github.com/tivac/modular-css/compare/v28.1.3...v28.1.4) (2022-06-16)
 
 
