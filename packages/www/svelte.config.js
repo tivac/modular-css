@@ -53,6 +53,12 @@ const config = {
             pages : "dist",
         }),
 
+        // Force pre-rendering for all pages
+        // Why doesn't adapter-static do this automatically any more?
+        prerender : {
+            default : true,
+        },
+
         vite : {
             plugins : [
                 // Bundle @modular-css/processor and its dependencies via
