@@ -28,8 +28,8 @@
     "cli"
   ],
   "dependencies": {
-    "@modular-css/glob": "file:../glob",
-    "@modular-css/processor": "file:../processor",
+    "@modular-css/glob": "^28.0.0",
+    "@modular-css/processor": "^28.0.0",
     "meow": "^9.0.0",
     "mkdirp": "^1.0.3"
   }
