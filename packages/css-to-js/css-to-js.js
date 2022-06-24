@@ -88,7 +88,7 @@ exports.transform = (file, processor, opts = {}) => {
 
     // Bail early if we were given a file that doesn't exist in the processor instance
     if(!details) {
-        console.warn(`${file} (normalized to ${id}) doesn't exist in the processor instance`);
+        warnings.push(`${file} (normalized to ${id}) doesn't exist in the processor instance`);
 
         return {
             code : "export default null;",
