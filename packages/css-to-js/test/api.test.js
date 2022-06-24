@@ -12,16 +12,20 @@ const root = path.resolve(__dirname, "../../../").replace(/\\/g, "/");
 
 console.log(root);
 
+describe("@modular-css/css-to-js API", () => {
+    // TODO: why is this never called?
 expect.addSnapshotSerializer(({
     test(val) {
-        return typeof val === "string" && val.indexOf(root);
+        console.log(val);
+
+        return typeof val === "string";
     },
     print(val) {
-        return val.replace(root, "");
+        return val.replace(root, "").replace(/\\/g, "/");
     },
 }));
 
-describe("@modular-css/css-to-js API", () => {
+
     it("should be a function", () =>
         expect(typeof transform).toBe("function")
     );
