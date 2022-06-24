@@ -26,8 +26,8 @@
     "postcss"
   ],
   "dependencies": {
-    "@modular-css/css-to-js": "file:../css-to-js",
-    "@modular-css/processor": "file:../processor",
+    "@modular-css/css-to-js": "^28.0.0",
+    "@modular-css/processor": "^28.0.0",
     "@rollup/pluginutils": "^4.1.2"
   },
   "peerDependencies": {

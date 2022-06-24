@@ -24,7 +24,7 @@
     "postcss"
   ],
   "dependencies": {
-    "@modular-css/processor": "file:../processor",
+    "@modular-css/processor": "^28.0.0",
     "mkdirp": "^1.0.3"
   },
   "peerDependencies": {
