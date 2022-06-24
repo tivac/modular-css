@@ -58,13 +58,45 @@ exports.transform = (file, processor, opts = {}) => {
             ...opts,
         };
 
-    const id = processor.normalize(file);
-    const warnings = [];
-    const details = processor.files[file];
     const { graph } = processor;
 
+    const id = processor.normalize(file);
+    const details = processor.files[file];
+
+    const warnings = [];
     const dependencies = new Set();
 
+    
+    // All used identifiers
+    const identifiers = new Map();
+    
+    // External identifiers mapped to their unique names
+    const externalsMap = new Map();
+    
+    // Internal identifiers mapped to their unique names
+    const internalsMap = new Map();
+    
+    // Map of files & their imports
+    const importsMap = new Map();
+    
+    const out = [];
+    const defaultExports = [];
+    const namedExports = [];
+    const valueExports = new Map();
+    
+    // All the class keys exported by this module
+    const exportedKeys = new Set();
+
+    // Bail early if we were given a file that doesn't exist in the processor instance
+    if(!details) {
+        return {
+            code : "export default null;",
+            dependencies,
+            namedExports,
+            warnings,
+        };
+    }
+    
     // Only want direct dependencies and any first-level dependencies
     // of this file to be processed
     graph.directDependenciesOf(Processor.fileKey(id)).forEach((dep) => {
@@ -74,26 +106,6 @@ exports.transform = (file, processor, opts = {}) => {
             dependencies.add(d);
         });
     });
-
-    // All used identifiers
-    const identifiers = new Map();
-
-    // External identifiers mapped to their unique names
-    const externalsMap = new Map();
-
-    // Internal identifiers mapped to their unique names
-    const internalsMap = new Map();
-
-    // Map of files & their imports
-    const importsMap = new Map();
-
-    const out = [];
-    const defaultExports = [];
-    const namedExports = [];
-    const valueExports = new Map();
-
-    // All the class keys exported by this module
-    const exportedKeys = new Set();
 
     // create import statements for all of the values used in compositions
     dependencies.forEach((depKey) => {
