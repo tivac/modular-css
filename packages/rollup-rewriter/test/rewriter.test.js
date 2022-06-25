@@ -1,4 +1,3 @@
-/* eslint-disable max-statements, no-await-in-loop */
 "use strict";
 
 const { rollup } = require("rollup");
@@ -230,7 +229,7 @@ describe("rollup-rewriter", () => {
         expect(result).toMatchRollupSnapshot();
     });
 
-    // eslint-disable-next-line jest/expect-expect
+     
     it("should log details in verbose mode", async () => {
         const spy = logspy();
 

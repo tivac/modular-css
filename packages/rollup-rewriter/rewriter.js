@@ -101,7 +101,6 @@ module.exports = (opts = {}) => {
                     // TODO: is assuming .js safe here?
                     const file = path.extname(ident).length ? ident : `${ident}.js`;
 
-                    // eslint-disable-next-line no-loop-func
                     const css = [
                         ...graph.dependenciesOf(file),
                         ...(file in chunks ? chunks[file].imports : []),
