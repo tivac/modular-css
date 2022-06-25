@@ -54,7 +54,10 @@ const esm = (key, value) => {
 };
 
 exports.transform = (file, processor, opts = {}) => {
-    const options = extend(true, Object.create(null), DEFAULTS, opts);
+    // Remove processor from opts so just-extend doesn't recurse forever
+    const { processor : optcessor, ..._opts } = opts;
+    
+    const options = extend(true, Object.create(null), DEFAULTS, _opts);
 
     const { graph } = processor;
 
