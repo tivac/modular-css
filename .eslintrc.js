@@ -20,6 +20,8 @@ module.exports = {
         "jest",
     ],
 
+    reportUnusedDisableDirectives : true,
+
     rules : {
         "max-statements"         : [ "warn", 25 ],
         "newline-after-var"      : "off",
