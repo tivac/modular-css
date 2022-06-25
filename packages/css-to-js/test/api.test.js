@@ -9,23 +9,18 @@ const Processor = require("@modular-css/processor");
 const { transform } = require("../css-to-js.js");
 
 const root = path.resolve(__dirname, "../../../").replace(/\\/g, "/");
+const safe = "<ROOT-DIR>";
 
-console.log(root);
-
-describe("@modular-css/css-to-js API", () => {
-    // TODO: why is this never called?
-expect.addSnapshotSerializer(({
+expect.addSnapshotSerializer({
+    print(val) {
+        return val.replace(root, safe);
+    },
     test(val) {
-        console.log(val);
-
         return typeof val === "string";
     },
-    print(val) {
-        return val.replace(root, "").replace(/\\/g, "/");
-    },
-}));
+});
 
-
+describe("@modular-css/css-to-js API", () => {
     it("should be a function", () =>
         expect(typeof transform).toBe("function")
     );

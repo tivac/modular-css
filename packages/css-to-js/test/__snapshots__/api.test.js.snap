@@ -1,31 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`@modular-css/css-to-js API should generate javascript 1`] = `
-"const foo = \\"mc9d029542_foo\\"
+const foo = "mc9d029542_foo"
 export default {
     foo
 };
 
 export {
     foo
-};"
+};
 `;
 
 exports[`@modular-css/css-to-js API should represent external composition 1`] = `
-"import { fooga } from \\"C:/Users/pcavi/Documents/GitHub/modular-css/packages/css-to-js/test/specimens/simple.css\\";
-const wooga = fooga + \\" \\" + \\"mcef09a83f_wooga\\"
+import { fooga } from "<ROOT-DIR>/packages/css-to-js/test/specimens/simple.css";
+const wooga = fooga + " " + "mcef09a83f_wooga"
 export default {
     wooga
 };
 
 export {
     wooga
-};"
+};
 `;
 
 exports[`@modular-css/css-to-js API should represent local composition 1`] = `
-"const bar = \\"mc9d029542_bar\\"
-const foo = bar + \\" \\" + \\"mc9d029542_foo\\"
+const bar = "mc9d029542_bar"
+const foo = bar + " " + "mc9d029542_foo"
 export default {
     bar,
 foo
@@ -34,5 +34,5 @@ foo
 export {
     bar,
 foo
-};"
+};
 `;
