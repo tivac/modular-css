@@ -1,10 +1,11 @@
-/* eslint-disable max-statements, complexity */
+/* eslint-disable max-statements */
 "use strict";
 
 const path = require("path");
 
 const dedent = require("dedent");
 const identifierfy = require("identifierfy");
+const extend = require("just-extend");
 
 const Processor = require("@modular-css/processor");
 const relative = require("@modular-css/processor/lib/relative.js");
@@ -14,6 +15,7 @@ const slash = (file) => file.replace(/\/|\\/g, "/");
 const DEFAULT_VALUES = "$values";
 
 const DEFAULTS = {
+    __proto__   : null,
     dev         : false,
     styleExport : false,
 
@@ -52,11 +54,7 @@ const esm = (key, value) => {
 };
 
 exports.transform = (file, processor, opts = {}) => {
-    const options = {
-            __proto__ : null,
-            ...DEFAULTS,
-            ...opts,
-        };
+    const options = extend(true, Object.create(null), DEFAULTS, opts);
 
     const { graph } = processor;
 
