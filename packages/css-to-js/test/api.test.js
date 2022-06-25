@@ -39,7 +39,7 @@ describe("@modular-css/css-to-js API", () => {
 
         const { code, namedExports } = transform(processor.normalize("./a.css"), processor);
 
-        expect(code).toMatchSnapshot();
+        expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "a" ]);
     });
 
@@ -50,7 +50,19 @@ describe("@modular-css/css-to-js API", () => {
 
         const { code } = transform(processor.normalize("./a.css"), processor, { dev : true });
 
-        expect(code).toMatchSnapshot();
+        expect(code).toMatchSnapshot("code");
+    });
+
+    it("should generate empty results & a warning on invalid file input", async () => {
+        const processor = new Processor({ resolvers });
+
+        await processor.string("./a.css", `.a { color: red; }`);
+
+        const { code, namedExports, warnings } = transform("./NOPE.css", processor);
+
+        expect(code).toMatchSnapshot("code");
+        expect(namedExports).toEqual([ ]);
+        expect(warnings).toMatchSnapshot("warnings");
     });
 
     it("should represent local composition", async () => {
@@ -60,7 +72,7 @@ describe("@modular-css/css-to-js API", () => {
 
         const { code, namedExports } = transform(processor.normalize("./a.css"), processor);
 
-        expect(code).toMatchSnapshot();
+        expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "a", "b" ]);
     });
 
@@ -73,7 +85,7 @@ describe("@modular-css/css-to-js API", () => {
 
         const { code, namedExports } = transform(processor.normalize("./b.css"), processor);
 
-        expect(code).toMatchSnapshot();
+        expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "b" ]);
     });
 
@@ -86,7 +98,7 @@ describe("@modular-css/css-to-js API", () => {
 
         const { code, namedExports } = transform(processor.normalize("./b.css"), processor, { relativeImports : true });
 
-        expect(code).toMatchSnapshot();
+        expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "b" ]);
     });
 
@@ -97,10 +109,9 @@ describe("@modular-css/css-to-js API", () => {
 
         const { code, namedExports } = transform(processor.normalize("./a.css"), processor, { styleExport : true });
 
-        expect(code).toMatchSnapshot();
+        expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "a" ]);
     });
-
 
     it("should dedupe repeated identifiers", async () => {
         const processor = new Processor({ resolvers });
@@ -110,7 +121,7 @@ describe("@modular-css/css-to-js API", () => {
 
         const { code, namedExports } = transform(processor.normalize("./b.css"), processor);
 
-        expect(code).toMatchSnapshot();
+        expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "a1 as a" ]);
     });
 
@@ -121,7 +132,7 @@ describe("@modular-css/css-to-js API", () => {
 
         const { code, namedExports } = transform(processor.normalize("./a.css"), processor);
 
-        expect(code).toMatchSnapshot();
+        expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "$values", "a" ]);
     });
 
@@ -133,7 +144,28 @@ describe("@modular-css/css-to-js API", () => {
 
         const { code, namedExports } = transform(processor.normalize("./b.css"), processor);
 
-        expect(code).toMatchSnapshot();
+        expect(code).toMatchSnapshot("code");
+        expect(namedExports).toEqual([ "$values", "b" ]);
+    });
+
+    it("should represent external @values namespaces", async () => {
+        const processor = new Processor({ resolvers });
+
+        await processor.string("./a.css", `@value v1: #00F; @value v2: #F00; `);
+        await processor.string("./b.css", dedent(`
+            @value * as values from "./a.css";
+            @value v: #0F0;
+
+            .b {
+                color: values.v1;
+                background-color: values.v2;
+                border-color: v;
+            }
+        `));
+
+        const { code, namedExports } = transform(processor.normalize("./b.css"), processor);
+
+        expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "$values", "b" ]);
     });
 
@@ -149,7 +181,7 @@ describe("@modular-css/css-to-js API", () => {
 
         const { code, namedExports : exported, warnings } = transform(processor.normalize("./a.css"), processor, { namedExports });
 
-        expect(code).toMatchSnapshot();
+        expect(code).toMatchSnapshot("code");
         expect(warnings).toMatchSnapshot("warnings");
         expect(exported).toMatchSnapshot("named exports");
     });

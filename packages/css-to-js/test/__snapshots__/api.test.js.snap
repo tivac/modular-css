@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`@modular-css/css-to-js API should dedupe repeated identifiers 1`] = `
+exports[`@modular-css/css-to-js API should dedupe repeated identifiers: code 1`] = `
 import { a } from "<ROOT-DIR>/a.css";
 const a1 = a + " " + "mc71966a67_a"
 export default {
@@ -12,7 +12,7 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API should generate a javscript proxy in dev 1`] = `
+exports[`@modular-css/css-to-js API should generate a javscript proxy in dev: code 1`] = `
 const a = "mc74f3fa7b_a"
 const data = {
     a
@@ -35,7 +35,15 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API should generate javascript 1`] = `
+exports[`@modular-css/css-to-js API should generate empty results & a warning on invalid file input: code 1`] = `export default null;`;
+
+exports[`@modular-css/css-to-js API should generate empty results & a warning on invalid file input: warnings 1`] = `
+Array [
+  ./NOPE.css doesn't exist in the processor instance,
+]
+`;
+
+exports[`@modular-css/css-to-js API should generate javascript: code 1`] = `
 const a = "mc74f3fa7b_a"
 export default {
     a
@@ -46,7 +54,7 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API should output css when requested 1`] = `
+exports[`@modular-css/css-to-js API should output css when requested: code 1`] = `
 const a = "mc74f3fa7b_a"
 export default {
     a
@@ -58,7 +66,26 @@ export {
 export const styles = ".mc74f3fa7b_a { color: red; }";
 `;
 
-exports[`@modular-css/css-to-js API should represent external @values 1`] = `
+exports[`@modular-css/css-to-js API should represent external @values namespaces: code 1`] = `
+import { $values as $aValues } from "<ROOT-DIR>/a.css";
+const v = "#0F0"
+const $values = {
+    "values" : $aValues,
+v,
+};
+const b = "mc71966a67_b"
+export default {
+    $values,
+b
+};
+
+export {
+    $values,
+b
+};
+`;
+
+exports[`@modular-css/css-to-js API should represent external @values: code 1`] = `
 import { $values as $aValues } from "<ROOT-DIR>/a.css";
 const $values = {
     "v" : $aValues["v"],
@@ -75,7 +102,7 @@ b
 };
 `;
 
-exports[`@modular-css/css-to-js API should represent external composition 1`] = `
+exports[`@modular-css/css-to-js API should represent external composition: code 1`] = `
 import { a } from "<ROOT-DIR>/a.css";
 const b = a + " " + "mc71966a67_b"
 export default {
@@ -87,7 +114,7 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API should represent local @values 1`] = `
+exports[`@modular-css/css-to-js API should represent local @values: code 1`] = `
 const v = "#00F"
 const $values = {
     v,
@@ -104,7 +131,7 @@ a
 };
 `;
 
-exports[`@modular-css/css-to-js API should represent local composition 1`] = `
+exports[`@modular-css/css-to-js API should represent local composition: code 1`] = `
 const a = "mc74f3fa7b_a"
 const b = a + " " + "mc74f3fa7b_b"
 export default {
@@ -118,7 +145,7 @@ b
 };
 `;
 
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false } 1`] = `
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false }: code 1`] = `
 const a1 = "mc74f3fa7b_a-1"
 export default {
     "a-1" : a1
@@ -133,7 +160,7 @@ Array [
 ]
 `;
 
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false, warn: false } 1`] = `
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false, warn: false }: code 1`] = `
 const a1 = "mc74f3fa7b_a-1"
 export default {
     "a-1" : a1
@@ -144,7 +171,7 @@ exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { 
 
 exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false, warn: false }: warnings 1`] = `Array []`;
 
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { warn: false } 1`] = `
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { warn: false }: code 1`] = `
 const a1 = "mc74f3fa7b_a-1"
 export default {
     "a-1" : a1
@@ -163,7 +190,7 @@ Array [
 
 exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { warn: false }: warnings 1`] = `Array []`;
 
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn {} 1`] = `
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn {}: code 1`] = `
 const a1 = "mc74f3fa7b_a-1"
 export default {
     "a-1" : a1
@@ -186,7 +213,7 @@ Array [
 ]
 `;
 
-exports[`@modular-css/css-to-js API should use relative imports when requested 1`] = `
+exports[`@modular-css/css-to-js API should use relative imports when requested: code 1`] = `
 import { a } from "./a.css";
 const b = a + " " + "mc71966a67_b"
 export default {
