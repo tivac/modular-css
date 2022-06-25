@@ -12,6 +12,29 @@ export {
 };
 `;
 
+exports[`@modular-css/css-to-js API should generate a javscript proxy in dev 1`] = `
+const a = "mc74f3fa7b_a"
+const data = {
+    a
+};
+
+export default new Proxy(data, {
+    get(tgt, key) {
+        if(key in tgt) {
+            return tgt[key];
+        }
+
+        throw new ReferenceError(
+            key + " is not exported by " + "a.css"
+        );
+    }
+})
+
+export {
+    a
+};
+`;
+
 exports[`@modular-css/css-to-js API should generate javascript 1`] = `
 const a = "mc74f3fa7b_a"
 export default {
