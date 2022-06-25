@@ -77,6 +77,19 @@ describe("@modular-css/css-to-js API", () => {
         expect(namedExports).toEqual([ "b" ]);
     });
 
+    it("should use relative imports when requested", async () => {
+        const processor = new Processor({ resolvers });
+
+        await processor.string("./a.css", `.a { color: red; }`);
+
+        await processor.string("./b.css", `.b { composes: a from "./a.css"; color: blue; }`);
+
+        const { code, namedExports } = transform(processor.normalize("./b.css"), processor, { relativeImports : true });
+
+        expect(code).toMatchSnapshot();
+        expect(namedExports).toEqual([ "b" ]);
+    });
+
     it("should dedupe repeated identifiers", async () => {
         const processor = new Processor({ resolvers });
 

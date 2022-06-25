@@ -173,3 +173,15 @@ Array [
   "a-1" is not a valid JS identifier, exported as "a1",
 ]
 `;
+
+exports[`@modular-css/css-to-js API should use relative imports when requested 1`] = `
+import { a } from "./a.css";
+const b = a + " " + "mc71966a67_b"
+export default {
+    b
+};
+
+export {
+    b
+};
+`;
