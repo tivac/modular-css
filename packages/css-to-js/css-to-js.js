@@ -56,8 +56,15 @@ const esm = (key, value) => {
 exports.transform = (file, processor, opts = {}) => {
     // Remove processor from opts so just-extend doesn't recurse forever
     const { processor : optcessor, ..._opts } = opts;
-    
+
     const options = extend(true, Object.create(null), DEFAULTS, _opts);
+
+    let { rewriteInvalid, warn : warnOnInvalid } = options.namedExports;
+
+    if(typeof options.namedExports === "boolean") {
+        rewriteInvalid =  options.namedExports;
+        warnOnInvalid = options.namedExports;
+    }
 
     const { graph } = processor;
 
@@ -251,13 +258,13 @@ exports.transform = (file, processor, opts = {}) => {
 
         if(namedExport === key) {
             namedExports.push(esm(unique, key));
-        } else if(options.namedExports.rewriteInvalid) {
-            if(options.namedExports.warn) {
+        } else if(rewriteInvalid) {
+            if(warnOnInvalid) {
                 warnings.push(`"${key}" is not a valid JS identifier, exported as "${namedExport}"`);
             }
 
             namedExports.push(esm(unique, namedExport));
-        } else if(options.namedExports.warn) {
+        } else if(warnOnInvalid) {
             warnings.push(`"${key}" is not a valid JS identifier`);
         }
     });
@@ -303,6 +310,8 @@ exports.transform = (file, processor, opts = {}) => {
     }
 
     const code = out.join("\n");
+
+    console.log({ options, warnings, code });
 
     // Return JS representation
     return {

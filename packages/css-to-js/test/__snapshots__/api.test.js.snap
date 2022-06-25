@@ -54,6 +54,108 @@ export {
 };
 `;
 
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: { rewriteInvalid: false }: code 1`] = `
+const a1 = "mc74f3fa7b_a-1"
+export default {
+    "a-1" : a1
+};
+`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: { rewriteInvalid: false }: named exports 1`] = `Array []`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: { rewriteInvalid: false }: warnings 1`] = `
+Array [
+  "a-1" is not a valid JS identifier,
+]
+`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: { rewriteInvalid: false, warn: false }: code 1`] = `
+const a1 = "mc74f3fa7b_a-1"
+export default {
+    "a-1" : a1
+};
+`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: { rewriteInvalid: false, warn: false }: named exports 1`] = `Array []`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: { rewriteInvalid: false, warn: false }: warnings 1`] = `Array []`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: { warn: false }: code 1`] = `
+const a1 = "mc74f3fa7b_a-1"
+export default {
+    "a-1" : a1
+};
+
+export {
+    a1
+};
+`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: { warn: false }: named exports 1`] = `
+Array [
+  a1,
+]
+`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: { warn: false }: warnings 1`] = `Array []`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: {}: code 1`] = `
+const a1 = "mc74f3fa7b_a-1"
+export default {
+    "a-1" : a1
+};
+
+export {
+    a1
+};
+`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: {}: named exports 1`] = `
+Array [
+  a1,
+]
+`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: {}: warnings 1`] = `
+Array [
+  "a-1" is not a valid JS identifier, exported as "a1",
+]
+`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: false: code 1`] = `
+const a1 = "mc74f3fa7b_a-1"
+export default {
+    "a-1" : a1
+};
+`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: false: named exports 1`] = `Array []`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: false: warnings 1`] = `Array []`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: true: code 1`] = `
+const a1 = "mc74f3fa7b_a-1"
+export default {
+    "a-1" : a1
+};
+
+export {
+    a1
+};
+`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: true: named exports 1`] = `
+Array [
+  a1,
+]
+`;
+
+exports[`@modular-css/css-to-js API should handle options.namedExports set to: true: warnings 1`] = `
+Array [
+  "a-1" is not a valid JS identifier, exported as "a1",
+]
+`;
+
 exports[`@modular-css/css-to-js API should output css when requested: code 1`] = `
 const a = "mc74f3fa7b_a"
 export default {
@@ -143,74 +245,6 @@ export {
     a,
 b
 };
-`;
-
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false }: code 1`] = `
-const a1 = "mc74f3fa7b_a-1"
-export default {
-    "a-1" : a1
-};
-`;
-
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false }: named exports 1`] = `Array []`;
-
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false }: warnings 1`] = `
-Array [
-  "a-1" is not a valid JS identifier,
-]
-`;
-
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false, warn: false }: code 1`] = `
-const a1 = "mc74f3fa7b_a-1"
-export default {
-    "a-1" : a1
-};
-`;
-
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false, warn: false }: named exports 1`] = `Array []`;
-
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false, warn: false }: warnings 1`] = `Array []`;
-
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { warn: false }: code 1`] = `
-const a1 = "mc74f3fa7b_a-1"
-export default {
-    "a-1" : a1
-};
-
-export {
-    a1
-};
-`;
-
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { warn: false }: named exports 1`] = `
-Array [
-  a1,
-]
-`;
-
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { warn: false }: warnings 1`] = `Array []`;
-
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn {}: code 1`] = `
-const a1 = "mc74f3fa7b_a-1"
-export default {
-    "a-1" : a1
-};
-
-export {
-    a1
-};
-`;
-
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn {}: named exports 1`] = `
-Array [
-  a1,
-]
-`;
-
-exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn {}: warnings 1`] = `
-Array [
-  "a-1" is not a valid JS identifier, exported as "a1",
-]
 `;
 
 exports[`@modular-css/css-to-js API should use relative imports when requested: code 1`] = `

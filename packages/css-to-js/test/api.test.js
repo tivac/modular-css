@@ -170,11 +170,13 @@ describe("@modular-css/css-to-js API", () => {
     });
 
     it.each([
+        true,
+        false,
         {},
         { rewriteInvalid : false },
         { warn : false },
         { rewriteInvalid : false, warn : false },
-    ])("should rewrite invalid identifiers & warn %s", async (namedExports) => {
+    ])("should handle options.namedExports set to: %s", async (namedExports) => {
         const processor = new Processor({ resolvers });
 
         await processor.string("./a.css", `.a-1 { color: red; }`);
