@@ -311,8 +311,6 @@ exports.transform = (file, processor, opts = {}) => {
 
     const code = out.join("\n");
 
-    console.log({ options, warnings, code });
-
     // Return JS representation
     return {
         code,
