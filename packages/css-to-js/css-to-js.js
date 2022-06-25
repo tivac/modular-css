@@ -249,12 +249,12 @@ exports.transform = (file, processor, opts = {}) => {
         if(namedExport === key) {
             namedExports.push(esm(unique, key));
         } else if(options.namedExports.rewriteInvalid) {
-            // eslint-disable-next-line no-console
-            warnings.push(`"${key}" is not a valid JS identifier, exported as "${namedExport}"`);
+            if(options.namedExports.warn) {
+                warnings.push(`"${key}" is not a valid JS identifier, exported as "${namedExport}"`);
+            }
 
             namedExports.push(esm(unique, namedExport));
-        } else {
-            // eslint-disable-next-line no-console
+        } else if(options.namedExports.warn) {
             warnings.push(`"${key}" is not a valid JS identifier`);
         }
     });
