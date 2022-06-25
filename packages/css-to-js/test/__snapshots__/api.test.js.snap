@@ -1,38 +1,152 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`@modular-css/css-to-js API should generate javascript 1`] = `
-const foo = "mc9d029542_foo"
+exports[`@modular-css/css-to-js API should dedupe repeated identifiers 1`] = `
+import { a } from "<ROOT-DIR>/a.css";
+const a1 = a + " " + "mc71966a67_a"
 export default {
-    foo
+    "a" : a1
 };
 
 export {
-    foo
+    a1 as a
+};
+`;
+
+exports[`@modular-css/css-to-js API should generate javascript 1`] = `
+const a = "mc74f3fa7b_a"
+export default {
+    a
+};
+
+export {
+    a
+};
+`;
+
+exports[`@modular-css/css-to-js API should represent external @values 1`] = `
+import { $values as $aValues } from "<ROOT-DIR>/a.css";
+const $values = {
+    "v" : $aValues["v"],
+};
+const b = "mc71966a67_b"
+export default {
+    $values,
+b
+};
+
+export {
+    $values,
+b
 };
 `;
 
 exports[`@modular-css/css-to-js API should represent external composition 1`] = `
-import { fooga } from "<ROOT-DIR>/packages/css-to-js/test/specimens/simple.css";
-const wooga = fooga + " " + "mcef09a83f_wooga"
+import { a } from "<ROOT-DIR>/a.css";
+const b = a + " " + "mc71966a67_b"
 export default {
-    wooga
+    b
 };
 
 export {
-    wooga
+    b
+};
+`;
+
+exports[`@modular-css/css-to-js API should represent local @values 1`] = `
+const v = "#00F"
+const $values = {
+    v,
+};
+const a = "mc74f3fa7b_a"
+export default {
+    $values,
+a
+};
+
+export {
+    $values,
+a
 };
 `;
 
 exports[`@modular-css/css-to-js API should represent local composition 1`] = `
-const bar = "mc9d029542_bar"
-const foo = bar + " " + "mc9d029542_foo"
+const a = "mc74f3fa7b_a"
+const b = a + " " + "mc74f3fa7b_b"
 export default {
-    bar,
-foo
+    a,
+b
 };
 
 export {
-    bar,
-foo
+    a,
+b
 };
+`;
+
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false } 1`] = `
+const a1 = "mc74f3fa7b_a-1"
+export default {
+    "a-1" : a1
+};
+`;
+
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false }: named exports 1`] = `Array []`;
+
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false }: warnings 1`] = `
+Array [
+  "a-1" is not a valid JS identifier,
+]
+`;
+
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false, warn: false } 1`] = `
+const a1 = "mc74f3fa7b_a-1"
+export default {
+    "a-1" : a1
+};
+`;
+
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false, warn: false }: named exports 1`] = `Array []`;
+
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { rewriteInvalid: false, warn: false }: warnings 1`] = `Array []`;
+
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { warn: false } 1`] = `
+const a1 = "mc74f3fa7b_a-1"
+export default {
+    "a-1" : a1
+};
+
+export {
+    a1
+};
+`;
+
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { warn: false }: named exports 1`] = `
+Array [
+  a1,
+]
+`;
+
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn { warn: false }: warnings 1`] = `Array []`;
+
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn {} 1`] = `
+const a1 = "mc74f3fa7b_a-1"
+export default {
+    "a-1" : a1
+};
+
+export {
+    a1
+};
+`;
+
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn {}: named exports 1`] = `
+Array [
+  a1,
+]
+`;
+
+exports[`@modular-css/css-to-js API should rewrite invalid identifiers & warn {}: warnings 1`] = `
+Array [
+  "a-1" is not a valid JS identifier, exported as "a1",
+]
 `;
