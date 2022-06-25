@@ -90,6 +90,18 @@ describe("@modular-css/css-to-js API", () => {
         expect(namedExports).toEqual([ "b" ]);
     });
 
+    it("should output css when requested", async () => {
+        const processor = new Processor({ resolvers });
+
+        await processor.string("./a.css", `.a { color: red; }`);
+
+        const { code, namedExports } = transform(processor.normalize("./a.css"), processor, { styleExport : true });
+
+        expect(code).toMatchSnapshot();
+        expect(namedExports).toEqual([ "a" ]);
+    });
+
+
     it("should dedupe repeated identifiers", async () => {
         const processor = new Processor({ resolvers });
 
