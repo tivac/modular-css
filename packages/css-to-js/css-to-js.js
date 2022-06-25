@@ -285,13 +285,15 @@ exports.transform = (file, processor, opts = {}) => {
         `));
     }
 
-    out.push("");
-
-    out.push(dedent(`
+    if(namedExports.length) {
+        out.push("");
+        
+        out.push(dedent(`
         export {
             ${namedExports.join(",\n")}
         };
-    `));
+        `));
+    }
 
     if(options.styleExport) {
         out.push(`export const styles = ${JSON.stringify(details.result.css)};`);
