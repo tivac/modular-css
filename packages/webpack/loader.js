@@ -1,7 +1,5 @@
 "use strict";
 
-const utils = require("loader-utils");
-
 const { transform } = require("@modular-css/css-to-js");
 
 const DEFAULTS = {
