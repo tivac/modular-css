@@ -15,7 +15,7 @@ module.exports = async function(source) {
     const options   = {
         __proto__       : null,
         ...DEFAULTS,
-        ...utils.getOptions(this),
+        ...this.getOptions(),
 
         // Need this so webpack doesn't create terrible import
         // names that break snapshots
