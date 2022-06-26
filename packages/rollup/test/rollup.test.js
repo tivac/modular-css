@@ -579,7 +579,6 @@ describe("/rollup.js", () => {
             expect(result).toMatchRollupCodeSnapshot();
         });
 
-        // eslint-disable-next-line jest/expect-expect
         it("should warn that styleExport and done aren't compatible", async () => {
             const spy = logspy("warn");
 
@@ -731,7 +730,6 @@ describe("/rollup.js", () => {
     });
 
     describe("verbose option", () => {
-        // eslint-disable-next-line jest/expect-expect
         it("should log in verbose mode", async () => {
             const spy = logspy();
 

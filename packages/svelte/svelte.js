@@ -81,7 +81,7 @@ module.exports = (opts = {}) => {
     // This function is hilariously large but it's actually simpler this way
     // Mostly because markup() is async so tracking state is painful w/o inlining
     // the whole damn thing
-    // eslint-disable-next-line max-statements, complexity
+    // eslint-disable-next-line max-statements
     const markup = async ({ content, filename }) => {
         const file = filename ? relative(filename) : "Unknown file";
 

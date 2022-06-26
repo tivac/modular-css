@@ -1,10 +1,11 @@
-/* eslint-disable max-statements, complexity */
+/* eslint-disable max-statements */
 "use strict";
 
 const path = require("path");
 
 const dedent = require("dedent");
 const identifierfy = require("identifierfy");
+const extend = require("just-extend");
 
 const Processor = require("@modular-css/processor");
 const relative = require("@modular-css/processor/lib/relative.js");
@@ -14,6 +15,7 @@ const slash = (file) => file.replace(/\/|\\/g, "/");
 const DEFAULT_VALUES = "$values";
 
 const DEFAULTS = {
+    __proto__   : null,
     dev         : false,
     styleExport : false,
 
@@ -52,19 +54,58 @@ const esm = (key, value) => {
 };
 
 exports.transform = (file, processor, opts = {}) => {
-    const options = {
-            __proto__ : null,
-            ...DEFAULTS,
-            ...opts,
-        };
+    // Remove processor from opts so just-extend doesn't recurse forever
+    const { processor : optcessor, ..._opts } = opts;
 
-    const id = processor.normalize(file);
-    const warnings = [];
-    const details = processor.files[file];
+    const options = extend(true, Object.create(null), DEFAULTS, _opts);
+
+    let { rewriteInvalid, warn : warnOnInvalid } = options.namedExports;
+
+    if(typeof options.namedExports === "boolean") {
+        rewriteInvalid =  options.namedExports;
+        warnOnInvalid = options.namedExports;
+    }
+
     const { graph } = processor;
 
-    const dependencies = new Set();
+    const id = processor.normalize(file);
+    const details = processor.files[file];
 
+    const warnings = [];
+    const dependencies = new Set();
+    
+    // All used identifiers
+    const identifiers = new Map();
+    
+    // External identifiers mapped to their unique names
+    const externalsMap = new Map();
+    
+    // Internal identifiers mapped to their unique names
+    const internalsMap = new Map();
+    
+    // Map of files & their imports
+    const importsMap = new Map();
+    
+    const out = [];
+    const defaultExports = [];
+    const namedExports = [];
+    const valueExports = new Map();
+    
+    // All the class keys exported by this module
+    const exportedKeys = new Set();
+
+    // Bail early if we were given a file that doesn't exist in the processor instance
+    if(!details) {
+        warnings.push(`${file} doesn't exist in the processor instance`);
+
+        return {
+            code : "export default null;",
+            dependencies,
+            namedExports,
+            warnings,
+        };
+    }
+    
     // Only want direct dependencies and any first-level dependencies
     // of this file to be processed
     graph.directDependenciesOf(Processor.fileKey(id)).forEach((dep) => {
@@ -74,26 +115,6 @@ exports.transform = (file, processor, opts = {}) => {
             dependencies.add(d);
         });
     });
-
-    // All used identifiers
-    const identifiers = new Map();
-
-    // External identifiers mapped to their unique names
-    const externalsMap = new Map();
-
-    // Internal identifiers mapped to their unique names
-    const internalsMap = new Map();
-
-    // Map of files & their imports
-    const importsMap = new Map();
-
-    const out = [];
-    const defaultExports = [];
-    const namedExports = [];
-    const valueExports = new Map();
-
-    // All the class keys exported by this module
-    const exportedKeys = new Set();
 
     // create import statements for all of the values used in compositions
     dependencies.forEach((depKey) => {
@@ -237,13 +258,13 @@ exports.transform = (file, processor, opts = {}) => {
 
         if(namedExport === key) {
             namedExports.push(esm(unique, key));
-        } else if(options.namedExports.rewriteInvalid) {
-            // eslint-disable-next-line no-console
-            warnings.push(`"${key}" is not a valid JS identifier, exported as "${namedExport}"`);
+        } else if(rewriteInvalid) {
+            if(warnOnInvalid) {
+                warnings.push(`"${key}" is not a valid JS identifier, exported as "${namedExport}"`);
+            }
 
             namedExports.push(esm(unique, namedExport));
-        } else {
-            // eslint-disable-next-line no-console
+        } else if(warnOnInvalid) {
             warnings.push(`"${key}" is not a valid JS identifier`);
         }
     });
@@ -274,13 +295,15 @@ exports.transform = (file, processor, opts = {}) => {
         `));
     }
 
-    out.push("");
-
-    out.push(dedent(`
+    if(namedExports.length) {
+        out.push("");
+        
+        out.push(dedent(`
         export {
             ${namedExports.join(",\n")}
         };
-    `));
+        `));
+    }
 
     if(options.styleExport) {
         out.push(`export const styles = ${JSON.stringify(details.result.css)};`);

@@ -24,7 +24,6 @@ const MODE_MAP = new Map([
 ]);
 
 // Syntax highlight code blocks w/ codemirror and our custom mcss syntax
-// eslint-disable-next-line max-statements
 export default (h, node) => {
     const value = node.value ? `${node.value}\n` : "";
 
