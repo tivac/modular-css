@@ -1,5 +1,12 @@
 # Change Log
 
+## 28.2.2
+
+### Patch Changes
+
+- Updated dependencies [[`2a20cd5`](https://github.com/tivac/modular-css/commit/2a20cd528d3a1dd34d2f034400ce334aeffa09ec)]:
+  - @modular-css/css-to-js@28.2.2
+
 ## 28.2.1
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # Change Log
 
+## 28.2.2
+
+### Patch Changes
+
+- [#862](https://github.com/tivac/modular-css/pull/862) [`2a20cd5`](https://github.com/tivac/modular-css/commit/2a20cd528d3a1dd34d2f034400ce334aeffa09ec) Thanks [@tivac](https://github.com/tivac)! - Always use absolute paths internally
+
+  Previously `@modular-css/css-to-js` would use the path as passed to it, which could cause issues with bundlers that passed relative paths (usually because of the use of aliases). Since the module already had to normalize paths to be absolute it will now use those absolute paths internally when looking up information from the `Processor` instance.
+
 ## 28.2.1
 
 ### Patch Changes
