@@ -69,7 +69,7 @@ exports.transform = (file, processor, opts = {}) => {
     const { graph } = processor;
 
     const id = processor.normalize(file);
-    const details = processor.files[file];
+    const details = processor.files[id];
 
     const warnings = [];
     const dependencies = new Set();

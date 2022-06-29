@@ -37,7 +37,7 @@ describe("@modular-css/css-to-js API", () => {
 
         await processor.string("./a.css", `.a { color: red; }`);
 
-        const { code, namedExports } = transform(processor.normalize("./a.css"), processor);
+        const { code, namedExports } = transform("./a.css", processor);
 
         expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "a" ]);
@@ -48,7 +48,7 @@ describe("@modular-css/css-to-js API", () => {
 
         await processor.string("./a.css", `.a { color: red; }`);
 
-        const { code } = transform(processor.normalize("./a.css"), processor, { dev : true });
+        const { code } = transform("./a.css", processor, { dev : true });
 
         expect(code).toMatchSnapshot("code");
     });
@@ -70,7 +70,7 @@ describe("@modular-css/css-to-js API", () => {
 
         await processor.string("./a.css", `.a { color: blue; } .b { composes: a; }`);
 
-        const { code, namedExports } = transform(processor.normalize("./a.css"), processor);
+        const { code, namedExports } = transform("./a.css", processor);
 
         expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "a", "b" ]);
@@ -83,7 +83,7 @@ describe("@modular-css/css-to-js API", () => {
 
         await processor.string("./b.css", `.b { composes: a from "./a.css"; color: blue; }`);
 
-        const { code, namedExports } = transform(processor.normalize("./b.css"), processor);
+        const { code, namedExports } = transform("./b.css", processor);
 
         expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "b" ]);
@@ -96,7 +96,7 @@ describe("@modular-css/css-to-js API", () => {
 
         await processor.string("./b.css", `.b { composes: a from "./a.css"; color: blue; }`);
 
-        const { code, namedExports } = transform(processor.normalize("./b.css"), processor, { relativeImports : true });
+        const { code, namedExports } = transform("./b.css", processor, { relativeImports : true });
 
         expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "b" ]);
@@ -107,7 +107,7 @@ describe("@modular-css/css-to-js API", () => {
 
         await processor.string("./a.css", `.a { color: red; }`);
 
-        const { code, namedExports } = transform(processor.normalize("./a.css"), processor, { styleExport : true });
+        const { code, namedExports } = transform("./a.css", processor, { styleExport : true });
 
         expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "a" ]);
@@ -119,7 +119,7 @@ describe("@modular-css/css-to-js API", () => {
         await processor.string("./a.css", `.a { color: red; }`);
         await processor.string("./b.css", `.a { composes: a from "./a.css"; color: blue; }`);
 
-        const { code, namedExports } = transform(processor.normalize("./b.css"), processor);
+        const { code, namedExports } = transform("./b.css", processor);
 
         expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "a1 as a" ]);
@@ -130,7 +130,7 @@ describe("@modular-css/css-to-js API", () => {
 
         await processor.string("./a.css", `@value v: #00F; .a { color: v; }`);
 
-        const { code, namedExports } = transform(processor.normalize("./a.css"), processor);
+        const { code, namedExports } = transform("./a.css", processor);
 
         expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "$values", "a" ]);
@@ -142,7 +142,7 @@ describe("@modular-css/css-to-js API", () => {
         await processor.string("./a.css", `@value v: #00F;`);
         await processor.string("./b.css", `@value v from "./a.css"; .b { color: v; }`);
 
-        const { code, namedExports } = transform(processor.normalize("./b.css"), processor);
+        const { code, namedExports } = transform("./b.css", processor);
 
         expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "$values", "b" ]);
@@ -163,7 +163,7 @@ describe("@modular-css/css-to-js API", () => {
             }
         `));
 
-        const { code, namedExports } = transform(processor.normalize("./b.css"), processor);
+        const { code, namedExports } = transform("./b.css", processor);
 
         expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "$values", "b" ]);
@@ -181,7 +181,7 @@ describe("@modular-css/css-to-js API", () => {
 
         await processor.string("./a.css", `.a-1 { color: red; }`);
 
-        const { code, namedExports : exported, warnings } = transform(processor.normalize("./a.css"), processor, { namedExports });
+        const { code, namedExports : exported, warnings } = transform("./a.css", processor, { namedExports });
 
         expect(code).toMatchSnapshot("code");
         expect(warnings).toMatchSnapshot("warnings");
