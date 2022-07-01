@@ -31,6 +31,6 @@
     "mkdirp": "^1.0.3",
     "p-each-series": "^2.0.0",
     "sink-transform": "^2.0.0",
-    "through2": "^3.0.1"
+    "through2": "^4.0.2"
   }
 }
