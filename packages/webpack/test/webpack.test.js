@@ -238,6 +238,39 @@ describe("/webpack.js", () => {
         });
     }));
 
+    it("should not throw in watch mode when non-css files change", () => new Promise((resolve) => {
+        let changed = 0;
+
+        // Create v1 of the file
+        fs.writeFileSync(
+            path.join(__dirname, "./output/watch.js"),
+            ""
+        );
+
+        const compiler = webpack(config({
+            entry : require.resolve("./output/watch.js"),
+        }));
+
+        expect(() => {
+            const watcher = compiler.watch(null, (err, stats) => {
+                changed++;
+    
+                success(err, stats);
+
+                if(changed < 2) {
+                    return fs.writeFileSync(
+                        path.join(__dirname, "./output/watch.js"),
+                        "console.log('changed')"
+                    );
+                }
+    
+                watcher.close();
+    
+                return resolve();
+            });
+        }).not.toThrow();
+    }));
+
     // TODO: How on earth do I get webpack to tell me what files changed?
     // eslint-disable-next-line jest/no-disabled-tests
     it.skip("should generate correct builds when files change", () => {
