@@ -21,7 +21,9 @@ class ModularCSS {
     apply(compiler) {
         // File invalidated by webpack watcher
         compiler.hooks.invalid.tap(PLUGIN_NAME, (file) => {
-            this.processor.invalidate(file);
+            if(file.endsWith(".css")) {
+                this.processor.invalidate(file);
+            }
         });
 
         // Runs before compilation begins
