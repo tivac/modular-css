@@ -1,5 +1,11 @@
 # Change Log
 
+## 28.2.3
+
+### Patch Changes
+
+- [#872](https://github.com/tivac/modular-css/pull/872) [`c4035e7`](https://github.com/tivac/modular-css/commit/c4035e789f99c0e530a11faad2477640484c971e) Thanks [@plesiecki](https://github.com/plesiecki)! - Do not invalidate files the `processor` doesn't already know about.
+
 ## 28.2.2
 
 ### Patch Changes
