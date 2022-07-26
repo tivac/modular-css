@@ -1,8 +1,3 @@
-<CodeMirror
-    bind:this={codemirror}
-    on:change={({ detail }) => update($file.name, detail.content)}
-/>
-
 <script>
 import { file, update, error } from "../_lib/stores.js";
 
@@ -19,3 +14,8 @@ $: if(codemirror && $error) {
     codemirror.error($error);
 }
 </script>
+
+<CodeMirror
+    bind:this={codemirror}
+    on:change={({ detail }) => update($file.name, detail.content)}
+/>

@@ -47,7 +47,7 @@ const selected = derived([ file, files ], ([ $file, $files ]) => {
         name : $file,
         src  : $files.get($file),
     };
-});
+}, {});
 
 const output = derived([ files, error ], ([ , $error ], set) => {
     if($error) {
@@ -55,7 +55,7 @@ const output = derived([ files, error ], ([ , $error ], set) => {
     }
 
     processor.output().then(set);
-});
+}, false);
 
 const add = async (name, data = "") => {
     let idx = map.size;
