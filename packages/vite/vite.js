@@ -145,7 +145,9 @@ module.exports = (
                 await viteServer.moduleGraph.updateModuleInfo(
                     node,
                     new Set(imported),
+                    null,
                     new Set(hmrDeps),
+                    null,
                     true,
                     Boolean(opts.ssr),
                 );
