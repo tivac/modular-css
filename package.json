@@ -38,7 +38,7 @@
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@tivac/eslint-config": "^2.4.0",
-    "@tivac/eslint-plugin-svelte": "^3.0.1",
+    "@tivac/eslint-plugin-svelte": "^3.1.0",
     "browserify": "^17.0.0",
     "cli-tester": "2.0.0",
     "codemirror": "^5.65.1",
