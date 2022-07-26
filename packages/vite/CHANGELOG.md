@@ -1,5 +1,13 @@
 # Change Log
 
+## 29.0.0
+
+### Major Changes
+
+- [#874](https://github.com/tivac/modular-css/pull/874) [`65cc277`](https://github.com/tivac/modular-css/commit/65cc2775976570ad50c483abef664483f2b7edf9) Thanks [@Morklympious](https://github.com/Morklympious)! - Updated to support `vite@3`, but now no longer supports `vite@2` due to an API incompatibility between the versions.
+
+  If you want to use `@modular-css/vite` with `vite@2` you'll need to stay on `@modular-css/vite@28.2.2`.
+
 ## 28.2.2
 
 ### Patch Changes
