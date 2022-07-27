@@ -1,20 +1,8 @@
-<link href="./codemirror.mcss" />
-
-{#await loading}
-    {#if slow}
-    <div class="{css.loading}">Loading editor...</div>
-    {/if}
-{:then _}
-    <div class="{css.editor}">
-        <textarea bind:this={textarea}></textarea>
-    </div>
-{:catch err}
-    <div class="{css.loaderror}">Unable to load editor</div>
-{/await}
-
 <script>
 import { onMount, onDestroy, createEventDispatcher } from "svelte";
 import debounce from "debounce";
+
+import css from "./codemirror.mcss";
 
 const loading = import("./codemirror.js");
 
@@ -37,9 +25,9 @@ export async function input(src = "") {
     }
     
     editor.setValue(src);
-};
+}
 
-export async function error(error) {
+export async function error(err) {
     await loading;
     
     if(clearError) {
@@ -47,11 +35,11 @@ export async function error(error) {
         clearError = null;
     }
 
-    const { line, column, source } = error;
+    const { line, column, source } = err;
 
     // Only try and highlight lines if the necessary info exists
     if(typeof line === "undefined" || typeof column === "undefined") {
-        throw error;
+        throw err;
     }
     
     // Mark the offending line
@@ -70,7 +58,7 @@ export async function error(error) {
 
         marker.clear();
     };
-};
+}
 
 onMount(async () => {
     // Instantiate codemirror once it's loaded
@@ -81,11 +69,11 @@ onMount(async () => {
     ticking = false;
 
     editor = codemirror.fromTextArea(textarea, {
-        lineNumbers : true,
+        lineNumbers  : true,
         lineWrapping : true,
-        indentUnit : 4,
-        mode : "text/modular-css",
-        theme : "nord",
+        indentUnit   : 4,
+        mode         : "text/modular-css",
+        theme        : "nord",
     });
 
     editor.on("change", debounce(() => {
@@ -109,3 +97,15 @@ onDestroy(() => {
     editor = null;
 });
 </script>
+    
+{#await loading}
+    {#if slow}
+        <div class={css.loading}>Loading editor...</div>
+    {/if}
+{:then _loaded}
+    <div class={css.editor}>
+        <textarea bind:this={textarea}></textarea>
+    </div>
+{:catch _err}
+    <div class={css.loaderror}>Unable to load editor</div>
+{/await}

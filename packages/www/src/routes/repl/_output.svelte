@@ -1,15 +1,11 @@
-<link href="./_output.mcss" />
-
-<div class="{css.output}">
-    <CodeMirror {config} bind:this={codemirror} />
-</div>
-
 <script>
 import { onMount } from "svelte";
 
 import { output } from "./_lib/stores.js";
 
 import CodeMirror from "./_editor/codemirror.svelte";
+
+import css from "./_output.mcss";
 
 const header = "/* == MODULAR-CSS OUTPUT == */";
 
@@ -36,3 +32,7 @@ onMount(() => {
     codemirror.input(header);
 });
 </script>
+
+<div class={css.output}>
+    <CodeMirror {config} bind:this={codemirror} />
+</div>

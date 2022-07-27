@@ -47,7 +47,7 @@ const selected = derived([ file, files ], ([ $file, $files ]) => {
         name : $file,
         src  : $files.get($file),
     };
-});
+}, {});
 
 const output = derived([ files, error ], ([ , $error ], set) => {
     if($error) {
@@ -55,7 +55,7 @@ const output = derived([ files, error ], ([ , $error ], set) => {
     }
 
     processor.output().then(set);
-});
+}, false);
 
 const add = async (name, data = "") => {
     let idx = map.size;
@@ -100,7 +100,7 @@ const update = async (name, data = "") => {
 
         error.set(false);
     } catch(e) {
-        // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console -- error handling
         console.warn(`Error parsing "${e.file}"`, e);
 
         error.set(e);

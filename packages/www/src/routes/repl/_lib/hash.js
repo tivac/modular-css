@@ -49,7 +49,7 @@ const decode = (hash) => {
         }
     } catch(e) {
         if(hash.length) {
-            // eslint-disable-next-line no-console
+            // eslint-disable-next-line no-console -- kaboom
             console.warn("Unable to parse hash:", e);
         }
 

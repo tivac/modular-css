@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console -- CLIs can write to console! */
 "use strict";
 
 const fs   = require("fs");
@@ -71,7 +72,6 @@ glob({
     return process.stdout.write(`${css}\n`);
 })
 .catch((error) => {
-    // eslint-disable-next-line no-console
     console.log(error);
 
     process.stderr.write(error.toString());

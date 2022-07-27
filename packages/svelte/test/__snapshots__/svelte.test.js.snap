@@ -704,6 +704,27 @@ exports[`/svelte.js should no-op if all <link>s reference a URL 1`] = `
 "
 `;
 
+exports[`/svelte.js should replace unquoted class attributes correctly 1`] = `
+"<div class=\\"mc_a mc_b\\">
+    I'm not quoted lol
+    <div class=\\"mc_a\\">Me either!</div>
+</div>
+
+<div class=\\"mc_a mc_b\\">
+    But I am!
+</div>
+
+"
+`;
+
+exports[`/svelte.js should replace unquoted class attributes correctly 2`] = `
+"/* packages/svelte/test/specimens/unquoted.svelte */
+.mc_a {
+        color: red;
+    }
+"
+`;
+
 exports[`/svelte.js should support verbose output: <link> 1`] = `
 Array [
   Array [
@@ -1069,23 +1090,6 @@ Array [
 ",
   "entry2
 ",
-]
-`;
-
-exports[`/svelte.js should warn about unquoted class attributes 1`] = `
-Array [
-  Array [
-    "[@modular-css/svelte]",
-    "WARN",
-    "Unquoted class attribute! class={css.b}",
-    "packages/svelte/test/specimens/unquoted.svelte",
-  ],
-  Array [
-    "[@modular-css/svelte]",
-    "WARN",
-    "Unquoted class attribute! class={css.a}",
-    "packages/svelte/test/specimens/unquoted.svelte",
-  ],
 ]
 `;
 

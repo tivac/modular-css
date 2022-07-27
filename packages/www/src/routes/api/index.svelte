@@ -1,11 +1,3 @@
-<link href="../_layout/layout.mcss" />
-
-<Title title="API" />
-
-<div class="{css.prose}">
-    {@html content}
-</div>
-
 <script context="module">
 import { content, toc } from "./_content/api.md";
 
@@ -21,4 +13,12 @@ export function load() {
 
 <script>
 import Title from "$lib/title.svelte";
+
+import css from "../_layout/layout.mcss";
 </script>
+
+<Title title="API" />
+
+<div class={css.prose}>
+    {@html content}
+</div>

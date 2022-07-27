@@ -2,31 +2,43 @@
 
 const escape = require("escape-string-regexp");
 
-exports.replacer = (source, { identifier, lookup, keys }) => {
+exports.replacer = (source, { identifier, lookup, keys, classAttr } = false) => {
     const ids = keys.map(escape).join("|");
     const ident = escape(identifier);
 
-    return source
+    if(classAttr) {
+        // Replace class={<identifier>.<key>} values
+        source = source.replace(
+            new RegExp(`(class=)("|')?{${ident}\\.(${ids})}("|')?`, "gm"),
+            // eslint-disable-next-line max-params -- necessary due to number of matches
+            (match, before, quote1, key, quote2) => {
+                const replacement = quote1 ? lookup[key] : JSON.stringify(lookup[key]);
+
+                return `${before}${quote1 || ""}${replacement}${quote2 || ""}`;
+            }
+        );
+    } else {
         // Replace {<identifier>.<key>} values
         // Note extra exclusion to avoid accidentally matching ${<identifier>.<key>}
-        .replace(
+        source = source.replace(
             new RegExp(`([^$]){${ident}\\.(${ids})}`, "gm"),
             (match, before, key) => {
                 const replacement = lookup[key];
 
                 return `${before}${replacement}`;
             }
-        )
-
-        // Then any remaining <identifier>.<key> values
-        .replace(
-            new RegExp(`(\\b)${ident}\\.(${ids})(\\b)`, "gm"),
-            (match, before, key, suffix) => {
-                const replacement = lookup[key];
-
-                return `${before}"${replacement}"${suffix}`;
-            }
         );
+    }
+
+    // Then any remaining <identifier>.<key> values
+    return source.replace(
+        new RegExp(`(\\b)${ident}\\.(${ids})(\\b)`, "gm"),
+        (match, before, key, suffix) => {
+            const replacement = lookup[key];
+
+            return `${before}"${replacement}"${suffix}`;
+        }
+    );
 };
 
 exports.replaceTrailingNewlines = (source, search) => source.replace(new RegExp(`${escape(search)}(?:\r?\n)*`), "");

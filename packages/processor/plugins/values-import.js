@@ -14,7 +14,7 @@ module.exports = () => ({
 
         return {
             AtRule : {
-                // eslint-disable-next-line max-statements
+                // eslint-disable-next-line max-statements -- too much state passing to extract
                 value(rule) {
                     const parsed = parser.parse(rule.params);
                     const file = processor.resolve(from, parsed.source);

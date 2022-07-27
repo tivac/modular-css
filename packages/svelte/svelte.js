@@ -39,10 +39,10 @@ module.exports = (opts = {}) => {
 
     const { cwd } = processor.options;
 
-    // eslint-disable-next-line no-console, no-empty-function
+    // eslint-disable-next-line no-console, no-empty-function -- logging
     const log = options.verbose ? console.log.bind(console, prefix) : () => {};
 
-    // eslint-disable-next-line no-console
+    // eslint-disable-next-line no-console -- warning
     const warn = console.warn.bind(console, prefix, "WARN");
 
     const relative = (file) => slash(path.relative(cwd, file));
@@ -81,7 +81,7 @@ module.exports = (opts = {}) => {
     // This function is hilariously large but it's actually simpler this way
     // Mostly because markup() is async so tracking state is painful w/o inlining
     // the whole damn thing
-    // eslint-disable-next-line max-statements
+    // eslint-disable-next-line max-statements -- just deal
     const markup = async ({ content, filename }) => {
         const file = filename ? relative(filename) : "Unknown file";
 
@@ -107,7 +107,7 @@ module.exports = (opts = {}) => {
 
         for(const parser of PARSING_ORDER) {
             try {
-                // eslint-disable-next-line no-await-in-loop
+                // eslint-disable-next-line no-await-in-loop -- fine fine I got this
                 ({ source, result, css, dependencies, ident = "css" } = await parser(searchBucket));
             } catch(e) {
                 throw e;
@@ -139,19 +139,9 @@ module.exports = (opts = {}) => {
             log("updating source {css.<key>} references from", css);
             log(JSON.stringify(classKeys));
             
-            const selectors = [ ...classKeys, ...valueKeys ].map(escape).join("|");
-
-            // Look for instances of class={css.foo} to warn about
-            const matches = source.match(new RegExp(`class={${escape(ident)}\\.(?:${selectors})}`, "g"));
-
-            if(matches) {
-                for(const match of matches) {
-                    warn(`Unquoted class attribute! ${match}`, file);
-                }
-            }
-
-            // Replace css.<key> values
+            // Replace class={css.<key>} values
             source = replacer(source, {
+                classAttr  : true,
                 identifier : ident,
                 keys       : classKeys,
                 lookup     : classKeys.reduce((acc, curr) => {

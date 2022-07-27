@@ -34,7 +34,7 @@ module.exports = (opts = {}) => {
         throw new Error("options.loadfn must be configured");
     }
 
-    // eslint-disable-next-line no-console, no-empty-function
+    // eslint-disable-next-line no-console, no-empty-function -- logging
     const log = options.verbose ? console.log.bind(console, "[rewriter]") : () => {};
 
     return {

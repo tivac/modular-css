@@ -1,4 +1,3 @@
-/* eslint consistent-return: off */
 "use strict";
 
 const shell = require("shelljs");

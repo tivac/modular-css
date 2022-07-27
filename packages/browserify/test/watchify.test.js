@@ -14,7 +14,7 @@ describe("/browserify.js", () => {
         afterAll(() => shell.rm("-rf", "./packages/browserify/test/output/watchify"));
         
         // NOTE: Other watchify tests are in issue files
-        // eslint-disable-next-line jest/no-done-callback
+        // eslint-disable-next-line jest/no-done-callback -- browserify lol
         it("shouldn't cache file contents between watchify runs", (done) => {
             const build = browserify();
             
@@ -54,7 +54,7 @@ describe("/browserify.js", () => {
                 });
         });
 
-        // eslint-disable-next-line jest/no-done-callback
+        // eslint-disable-next-line jest/no-done-callback -- browserify lol
         it("shouldn't explode on invalid CSS", (done) => {
             const build = browserify();
             let wait;

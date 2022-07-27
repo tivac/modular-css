@@ -44,7 +44,7 @@ module.exports = () => ({
             }
 
             if(rule.type !== "decl") {
-                // eslint-disable-next-line consistent-return
+                // eslint-disable-next-line consistent-return -- this seems fine
                 return processor._addDependency({
                     dependency,
                     refs,
