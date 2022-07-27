@@ -139,19 +139,9 @@ module.exports = (opts = {}) => {
             log("updating source {css.<key>} references from", css);
             log(JSON.stringify(classKeys));
             
-            const selectors = [ ...classKeys, ...valueKeys ].map(escape).join("|");
-
-            // Look for instances of class={css.foo} to warn about
-            const matches = source.match(new RegExp(`class={${escape(ident)}\\.(?:${selectors})}`, "g"));
-
-            if(matches) {
-                for(const match of matches) {
-                    warn(`Unquoted class attribute! ${match}`, file);
-                }
-            }
-
-            // Replace css.<key> values
+            // Replace class={css.<key>} values
             source = replacer(source, {
+                classAttr  : true,
                 identifier : ident,
                 keys       : classKeys,
                 lookup     : classKeys.reduce((acc, curr) => {
