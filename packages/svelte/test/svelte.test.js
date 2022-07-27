@@ -45,6 +45,28 @@ describe("/svelte.js", () => {
         expect(output.css).toMatchSnapshot();
     });
 
+    it("should replace unquoted class attributes correctly", async () => {
+        const filename = require.resolve(`./specimens/unquoted.svelte`);
+        const { processor, preprocess } = plugin({
+            namer,
+            values : true,
+        });
+
+        const processed = await svelte.preprocess(
+            fs.readFileSync(filename, "utf8"),
+            {
+                ...preprocess,
+                filename,
+            },
+        );
+
+        expect(processed.toString()).toMatchSnapshot();
+
+        const output = await processor.output();
+
+        expect(output.css).toMatchSnapshot();
+    });
+
     it("should ignore <style> tags without the text/m-css attribute", async () => {
         const filename = require.resolve("./specimens/style-no-attribute.svelte");
         const { processor, preprocess } = plugin({
@@ -451,26 +473,6 @@ describe("/svelte.js", () => {
         const output = await processor.output();
 
         expect(output.css).toMatchSnapshot();
-    });
-
-    it("should warn about unquoted class attributes", async () => {
-        const spy = logspy("warn");
-
-        const filename = require.resolve("./specimens/unquoted.svelte");
-        const { preprocess } = plugin({
-            namer,
-        });
-
-        await svelte.preprocess(
-            fs.readFileSync(filename, "utf8"),
-            {
-                ...preprocess,
-                filename,
-            },
-        );
-
-        expect(spy).toHaveBeenCalled();
-        expect(spy).toMatchLogspySnapshot();
     });
 
     it("should ignore <Link />", async () => {
