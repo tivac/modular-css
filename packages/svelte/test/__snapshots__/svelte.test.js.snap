@@ -1093,23 +1093,6 @@ Array [
 ]
 `;
 
-exports[`/svelte.js should warn about unquoted class attributes 1`] = `
-Array [
-  Array [
-    "[@modular-css/svelte]",
-    "WARN",
-    "Unquoted class attribute! class={css.b}",
-    "packages/svelte/test/specimens/unquoted.svelte",
-  ],
-  Array [
-    "[@modular-css/svelte]",
-    "WARN",
-    "Unquoted class attribute! class={css.a}",
-    "packages/svelte/test/specimens/unquoted.svelte",
-  ],
-]
-`;
-
 exports[`/svelte.js should warn when multiple <link> elements are in the html 1`] = `
 "<link rel=\\"stylesheet\\" href=\\"./simple2.css\\" />
 
