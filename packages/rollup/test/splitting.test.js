@@ -1,4 +1,3 @@
-/* eslint max-statements: "off" */
 "use strict";
 
 const { rollup } = require("rollup");

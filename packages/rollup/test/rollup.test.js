@@ -1,4 +1,3 @@
-/* eslint max-statements: "off" */
 "use strict";
 
 const { rollup } = require("rollup");
@@ -27,6 +26,7 @@ const assetFileNames = "assets/[name][extname]";
 const format = "es";
 const map = false;
 
+// eslint-disable-next-line max-statements -- I got a lotta tests c'mon
 describe("/rollup.js", () => {
     const createPlugin = (opts = {}) => plugin({
         namer,
@@ -838,10 +838,10 @@ describe("/rollup.js", () => {
                 file : prefix(`./output/casing/main.js`),
             });
 
-            // eslint-disable-next-line jest/no-standalone-expect
+            // eslint-disable-next-line jest/no-standalone-expect -- we're getting fancy
             expect(spy).toHaveBeenCalled();
 
-            // eslint-disable-next-line jest/no-standalone-expect
+            // eslint-disable-next-line jest/no-standalone-expect -- we be fancy
             expect(spy.mock.calls.length).toBeGreaterThan(0);
         });
     });
@@ -881,7 +881,7 @@ describe("/rollup.js", () => {
             .finally(() => expect(e.toString()).toMatch(".wooga"));
         });
 
-        // eslint-disable-next-line jest/expect-expect
+        // eslint-disable-next-line jest/expect-expect -- just looking for the throw
         it("should throw errors in in before plugins", () =>
             rollup({
                 input   : require.resolve("./specimens/simple.js"),
@@ -895,7 +895,7 @@ describe("/rollup.js", () => {
             .catch(checkError)
         );
 
-        // eslint-disable-next-line jest/expect-expect
+        // eslint-disable-next-line jest/expect-expect -- just looking for the throw
         it("should throw errors in after plugins", () =>
             rollup({
                 input   : require.resolve("./specimens/simple.js"),
@@ -910,7 +910,7 @@ describe("/rollup.js", () => {
         );
 
         // Skipped because I can't figure out how to catch the error being thrown?
-        // eslint-disable-next-line jest/no-disabled-tests, jest/expect-expect
+        // eslint-disable-next-line jest/no-disabled-tests, jest/expect-expect -- shit happens
         it.skip("should throw errors in done plugins", () =>
             rollup({
                 input   : require.resolve("./specimens/simple.js"),

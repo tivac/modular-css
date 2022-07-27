@@ -29,7 +29,7 @@ module.exports.promise = (watcher) => {
         }
         
         if(e.code !== "END") {
-            // eslint-disable-next-line consistent-return
+            // eslint-disable-next-line consistent-return -- shit happens
             return;
         }
 

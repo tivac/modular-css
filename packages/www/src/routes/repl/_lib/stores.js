@@ -100,7 +100,7 @@ const update = async (name, data = "") => {
 
         error.set(false);
     } catch(e) {
-        // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console -- error handling
         console.warn(`Error parsing "${e.file}"`, e);
 
         error.set(e);

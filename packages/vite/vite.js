@@ -49,7 +49,7 @@ module.exports = (
 
     const { graph } = processor;
 
-    // eslint-disable-next-line no-console, no-empty-function
+    // eslint-disable-next-line no-console, no-empty-function -- logging is fine chill out
     const log = options.verbose ? console.log.bind(console, "[@mcss/vite]") : () => { };
 
     // istanbul ignore if: too hard to test this w/ defaults

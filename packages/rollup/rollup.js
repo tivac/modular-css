@@ -1,4 +1,3 @@
-/* eslint-disable max-statements, complexity */
 "use strict";
 
 const path = require("path");
@@ -56,7 +55,7 @@ module.exports = (
 
     const filter = utils.createFilter(options.include, options.exclude);
 
-    // eslint-disable-next-line no-console, no-empty-function
+    // eslint-disable-next-line no-console, no-empty-function -- logging
     const log = options.verbose ? console.log.bind(console, "[rollup]") : () => { };
 
     // istanbul ignore if: too hard to test this w/ defaults
@@ -144,6 +143,7 @@ module.exports = (
             };
         },
 
+        // eslint-disable-next-line max-statements, complexity -- too much state to extract
         async generateBundle(outputOptions, bundle) {
             // styleExport disables all output file generation
             if(options.styleExport) {
@@ -227,7 +227,7 @@ module.exports = (
             const duds = new Set();
 
             for(const [ entry, { deps, name }] of chunks) {
-                /* eslint-disable-next-line no-await-in-loop */
+                // eslint-disable-next-line no-await-in-loop -- has to happen in order
                 const result = await processor.output({
                     // Can't use this.getAssetFileName() here, because the source hasn't been set yet
                     //  Have to do our best to come up with a valid final location though...

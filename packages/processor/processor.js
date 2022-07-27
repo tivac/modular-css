@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 "use strict";
 
 const path = require("path");
@@ -83,7 +82,6 @@ const DEFAULTS = {
 
 class Processor {
     constructor(opts = {}) {
-        /* eslint max-statements: [ "warn", 25 ] */
         const options = {
             __proto__ : null,
             ...DEFAULTS,
@@ -107,11 +105,8 @@ class Processor {
                 `mc${slug(relative(options.cwd, file))}_${selector}`;
         }
 
-        this._log = options.verbose ?
-            // eslint-disable-next-line no-console
-            console.log.bind(console, "[processor]") :
-            // eslint-disable-next-line no-empty-function
-            () => {};
+        // eslint-disable-next-line no-console, no-empty-function -- logging!
+        this._log = options.verbose ? console.log.bind(console, "[processor]") : () => {};
 
         this._loadFile = options.loadFile;
 
@@ -295,8 +290,10 @@ class Processor {
         for(const dep of files) {
             this._log("_after()", dep);
 
+            // eslint-disable-next-line no-await-in-loop -- we're ok
             await this._files[dep].walked;
 
+            // eslint-disable-next-line no-await-in-loop -- we got this
             const result = await this._after.process(
                 // NOTE: the call to .clone() is really important here, otherwise this call
                 // modifies the .result root itself and you process URLs multiple times
@@ -513,7 +510,7 @@ class Processor {
             const other = this._ids.get(check);
 
             if(other && other !== id) {
-                // eslint-disable-next-line no-console
+                // eslint-disable-next-line no-console -- warning
                 console.warn(`POTENTIAL DUPLICATE FILES:\n\t${relative(this._options.cwd, other)}\n\t${relative(this._options.cwd, id)}`);
             }
         }
@@ -541,6 +538,7 @@ class Processor {
                 );
             }
 
+            // eslint-disable-next-line no-await-in-loop -- it's cool
             file.result = await file.processed;
 
             const { result } = file;

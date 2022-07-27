@@ -272,11 +272,11 @@ describe("/webpack.js", () => {
     }));
 
     // TODO: How on earth do I get webpack to tell me what files changed?
-    // eslint-disable-next-line jest/no-disabled-tests
+    // eslint-disable-next-line jest/no-disabled-tests -- I dunno
     it.skip("should generate correct builds when files change", () => {
         const changed = "./packages/webpack/test/output/changed.css";
 
-        // eslint-disable-next-line prefer-const
+        // eslint-disable-next-line prefer-const -- need to be able to write to it
         let compiler;
 
         // wrap compiler.run in a promise for easier chaining
@@ -317,7 +317,7 @@ describe("/webpack.js", () => {
             })
             // This build fails because the file is missing
             .catch((stats) => {
-                // eslint-disable-next-line jest/no-conditional-expect
+                // eslint-disable-next-line jest/no-conditional-expect -- just deal jest
                 expect(stats.toJson().errors[0].message).toMatch("Error: Can't resolve '../output/changed.css'");
 
                 fs.writeFileSync(changed, ".three { color: green; }");

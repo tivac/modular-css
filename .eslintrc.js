@@ -2,6 +2,7 @@ module.exports = {
     extends : [
         "@tivac",
         "plugin:jest/recommended",
+        "plugin:eslint-comments/recommended",
     ],
 
     parser : "@babel/eslint-parser",
@@ -44,6 +45,10 @@ module.exports = {
             varsIgnorePattern : "^_",
             argsIgnorePattern : "^_",
         }],
+
+        // Plugins
+        "eslint-comments/require-description" : "warn",
+        "eslint-comments/disable-enable-pair" : [ "warn", { allowWholeFile : true }],
     },
 
     overrides : [{

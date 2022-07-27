@@ -5,7 +5,7 @@ const parseImports = require("parse-es6-imports");
 
 const scriptRegex = /<script[^>]*?>(?<contents>[\S\s]*?)<\/script[^>]*?>/gim;
 
-// eslint-disable-next-line max-statements
+// eslint-disable-next-line max-statements -- it's complicated, just deal
 exports.extractImport = async ({
     source,
     filename,

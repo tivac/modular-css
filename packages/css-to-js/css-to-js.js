@@ -1,4 +1,3 @@
-/* eslint-disable max-statements */
 "use strict";
 
 const path = require("path");
@@ -53,6 +52,7 @@ const esm = (key, value) => {
     return safeKey === safeValue ? safeKey : `${safeKey} as ${safeValue}`;
 };
 
+// eslint-disable-next-line max-statements -- too hard to split out
 exports.transform = (file, processor, opts = {}) => {
     // Remove processor from opts so just-extend doesn't recurse forever
     const { processor : _optcessor, ..._opts } = opts;
