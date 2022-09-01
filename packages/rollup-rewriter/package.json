@@ -29,7 +29,7 @@
     "dedent": "^0.7.0",
     "dependency-graph": "^0.11.0",
     "escape-string-regexp": "^4.0.0",
-    "magic-string": "^0.25.1"
+    "magic-string": "^0.26.3"
   },
   "peerDependencies": {
     "rollup": "^2.0.0"
