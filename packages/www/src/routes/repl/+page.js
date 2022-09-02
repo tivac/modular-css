@@ -1,8 +1,8 @@
 export function load() {
-throw new Error("@migration task: Migrate this return statement (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292693)");
-return {
-    stuff : {
+    return {
         fullscreen : true,
-    },
-};
+    };
 }
+
+// REPL doesn't SSR, there isn't any point
+export const ssr = false;
