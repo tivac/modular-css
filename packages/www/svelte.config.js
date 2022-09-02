@@ -10,12 +10,6 @@ const config = {
             pages : "dist",
         }),
 
-        // Force pre-rendering for all pages
-        // Why doesn't adapter-static do this automatically any more?
-        prerender : {
-            default : true,
-        },
-
         // C'mon, this is clearly a better choice
         trailingSlash : "always",
     },

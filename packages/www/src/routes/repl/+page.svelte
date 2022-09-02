@@ -1,13 +1,3 @@
-<script context="module">
-export function load() {
-    return {
-        stuff : {
-            fullscreen : true,
-        },
-    };
-}
-</script>
-
 <script>
 import { onMount } from "svelte";
 

@@ -66,8 +66,12 @@ export default (h, node) => {
         ]);
     } else {
         for(let i = 0; i < parts.length; i += 2) {
-            const file = parts[i];
+            let file = parts[i];
             const code = parts[i + 1];
+
+            if(file[0] !== "/") {
+                file = `/${file}`;
+            }
 
             files.push([
                 file,
