@@ -1,6 +1,8 @@
 <script context="module">
-import { page } from "$app/stores";
-</script>
+throw new Error("@migration task: Check code was safely removed (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292722)");
+// 
+// import { page } from "$app/stores";
+// </script>
 
 <script>
 import Header from "./_layout/header.svelte";
