@@ -493,11 +493,14 @@ class Processor {
 
         this._addSelector(name, selector);
 
-        refs.forEach(({ name : depSelector }) => {
+        // Loops backwards to keep order of classes consistent with a composition splitted into multiple `composes` declarations.
+        refs.reduceRight((_, { name : depSelector }) => {
             const depSelectorId = this._addSelector(dep, depSelector);
 
             graph.addDependency(selectorId, depSelectorId);
-        });
+
+            return null;
+        }, null);
     }
 
     // Take a file id and some text, walk it for dependencies, then

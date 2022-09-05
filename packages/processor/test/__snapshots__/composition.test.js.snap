@@ -71,10 +71,11 @@ Object {
 }
 `;
 
-exports[`/processor.js composition should compose from other files 1`] = `
+exports[`/processor.js composition should compose from other files in multiple declarations 1`] = `
 Object {
-  "packages/processor/test/specimens/composes.css": Object {
+  "packages/processor/test/specimens/composes2.css": Object {
     "composes": Array [
+      "mc_foo",
       "mc_folder2",
       "mc_composes",
     ],
@@ -82,6 +83,29 @@ Object {
   "packages/processor/test/specimens/folder/folder2.css": Object {
     "folder2": Array [
       "mc_folder2",
+    ],
+    "foo": Array [
+      "mc_foo",
+    ],
+  },
+}
+`;
+
+exports[`/processor.js composition should compose from other files in single declaration 1`] = `
+Object {
+  "packages/processor/test/specimens/composes.css": Object {
+    "composes": Array [
+      "mc_foo",
+      "mc_folder2",
+      "mc_composes",
+    ],
+  },
+  "packages/processor/test/specimens/folder/folder2.css": Object {
+    "folder2": Array [
+      "mc_folder2",
+    ],
+    "foo": Array [
+      "mc_foo",
     ],
   },
 }

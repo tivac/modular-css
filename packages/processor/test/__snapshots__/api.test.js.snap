@@ -231,6 +231,7 @@ exports[`/processor.js API .output() should order output by dependencies, then a
 .mc_folder { margin: 2px; }
 /* packages/processor/test/specimens/folder/folder2.css */
 .mc_folder2 { color: green; }
+.mc_foo { display: block; }
 /* packages/processor/test/specimens/folder/subfolder/subfolder.css */
 .mc_subfolder { color: yellow; }
 /* packages/processor/test/specimens/composes.css */
