@@ -75,8 +75,8 @@ exports[`/processor.js composition should compose from other files in multiple d
 Object {
   "packages/processor/test/specimens/composes2.css": Object {
     "composes": Array [
-      "mc_foo",
       "mc_folder2",
+      "mc_foo",
       "mc_composes",
     ],
   },
@@ -95,8 +95,8 @@ exports[`/processor.js composition should compose from other files in single dec
 Object {
   "packages/processor/test/specimens/composes.css": Object {
     "composes": Array [
-      "mc_foo",
       "mc_folder2",
+      "mc_foo",
       "mc_composes",
     ],
   },
