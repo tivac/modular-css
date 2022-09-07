@@ -33,6 +33,7 @@ const {
     filterByPrefix,
 
     FILE_PREFIX,
+    SELECTOR_PREFIX,
 } = keys;
 
 let fs;
@@ -229,12 +230,22 @@ class Processor {
             throw new Error(`Unknown file: ${normalized}`);
         }
 
+        // Mark the file & all files that depend on it invalid
         [ ...filterByPrefix(FILE_PREFIX, this._graph.dependantsOf(key)), normalized ].forEach((file) => {
-            this._log("invalidate()", file);
-
             this._files[file].valid = false;
 
             this._ids.delete(file.toLowerCase());
+        });
+
+        // Mark all selectors in the file invalid
+        filterByPrefix(SELECTOR_PREFIX, this._graph.dependenciesOf(key), { clean : false }).forEach((sKey) => {
+            const data = this._graph.getNodeData(sKey);
+
+            if(data.file !== normalized) {
+                return;
+            }
+
+            data.valid = false;
         });
     }
 
@@ -418,10 +429,13 @@ class Processor {
             this._graph.addNode(sKey, {
                 file,
                 selector,
+                valid : true,
             });
 
             this._graph.getNodeData(fKey).selectors.push(sKey);
             this._graph.addDependency(fKey, sKey);
+        } else {
+            this._graph.getNodeData(sKey).valid = true;
         }
 
         return sKey;
@@ -484,8 +498,8 @@ class Processor {
         // Add selector and its dependencies to the graph
         const selectorId = selectorKey(name, selector);
 
-        // Remove any existing dependencies for the selector
-        if(graph.hasNode(selectorId)) {
+        // Remove any existing dependencies for the selector if it is invalid
+        if(graph.hasNode(selectorId) && !graph.getNodeData(selectorId).valid) {
             graph.dependenciesOf(selectorId).forEach((other) => {
                 graph.removeDependency(selectorId, other);
             });

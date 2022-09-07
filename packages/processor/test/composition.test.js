@@ -182,8 +182,16 @@ describe("/processor.js", () => {
             expect(compositions).toMatchSnapshot();
         });
 
-        it("should compose from other files", async () => {
+        it("should compose from other files in single declaration", async () => {
             await processor.file(require.resolve("./specimens/composes.css"));
+
+            const { compositions } = await processor.output();
+
+            expect(compositions).toMatchSnapshot();
+        });
+
+        it("should compose from other files in multiple declarations", async () => {
+            await processor.file(require.resolve("./specimens/composes2.css"));
 
             const { compositions } = await processor.output();
 
