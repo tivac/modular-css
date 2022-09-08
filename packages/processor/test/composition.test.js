@@ -198,6 +198,14 @@ describe("/processor.js", () => {
             expect(compositions).toMatchSnapshot();
         });
 
+        it("should compose from other files in multiple declarations via local compose", async () => {
+            await processor.file(require.resolve("./specimens/composes3.css"));
+
+            const { compositions } = await processor.output();
+
+            expect(compositions).toMatchSnapshot();
+        });
+
         it("should compose with escaped classes", async () => {
             await processor.string(
                 "./escaped-classes.css",
