@@ -65,7 +65,7 @@
     "read-dir-deep": "^7.0.1",
     "rollup": "^2.75.3",
     "rollup-plugin-hypothetical": "^2.1.1",
-    "rollup-plugin-polyfill-node": "^0.9.0",
+    "rollup-plugin-polyfill-node": "^0.10.2",
     "rollup-plugin-svelte": "^7.1.0",
     "shelljs": "^0.8.5",
     "snapshot-diff": "^0.9.0",
