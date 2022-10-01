@@ -29,7 +29,7 @@
     "@changesets/changelog-github": "^0.4.5",
     "@changesets/cli": "^2.23.0",
     "@codemirror/state": "^0.19.6",
-    "@codemirror/view": "^0.20.7",
+    "@codemirror/view": "^6.3.0",
     "@modular-css/path-aliases": "^28.0.0",
     "@modular-css/processor": "^28.0.0",
     "@modular-css/shortnames": "^28.0.0",
