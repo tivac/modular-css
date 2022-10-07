@@ -1,0 +1,3 @@
+.ruleWithComposes {
+    composes: red, blue from "../deps/classes.css";
+}

@@ -52,8 +52,8 @@ describe("/processor.js", () => {
                 ],
             });
 
-            await expect(processor.file(require.resolve("./specimens/composes.css"))).rejects.toThrow(
-                `no such file or directory, open '${require.resolve("./specimens/folder/folder2.css")}a'`
+            await expect(processor.file(require.resolve("./specimens/composes/one-compose-two-external-deps.css"))).rejects.toThrow(
+                `no such file or directory, open '${require.resolve("./specimens/deps/classes.css")}a'`
             );
         });
 
@@ -183,7 +183,7 @@ describe("/processor.js", () => {
         });
 
         it("should compose from other files in single declaration", async () => {
-            await processor.file(require.resolve("./specimens/composes.css"));
+            await processor.file(require.resolve("./specimens/composes/one-compose-two-external-deps.css"));
 
             const { compositions } = await processor.output();
 
@@ -191,7 +191,7 @@ describe("/processor.js", () => {
         });
 
         it("should compose from other files in multiple declarations", async () => {
-            await processor.file(require.resolve("./specimens/composes2.css"));
+            await processor.file(require.resolve("./specimens/composes/two-composes-two-external-deps.css"));
 
             const { compositions } = await processor.output();
 
@@ -199,7 +199,7 @@ describe("/processor.js", () => {
         });
 
         it("should compose from other files in multiple declarations via local compose", async () => {
-            await processor.file(require.resolve("./specimens/composes3.css"));
+            await processor.file(require.resolve("./specimens/composes/two-rules-one-local-compose.css"));
 
             const { compositions } = await processor.output();
 

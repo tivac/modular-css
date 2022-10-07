@@ -1,3 +1,0 @@
-.composes {
-    composes: folder2, foo from "./folder/folder2.css";
-}

@@ -71,46 +71,70 @@ Object {
 }
 `;
 
-exports[`/processor.js composition should compose from other files in multiple declarations via local compose 1`] = `
+exports[`/processor.js composition should compose from other files in multiple declarations 1`] = `
 Object {
-  "packages/processor/test/specimens/composes3.css": Object {
-    "localA": Array [
-      "mc_folder2",
-      "mc_localA",
-    ],
-    "localB": Array [
-      "mc_foo",
-      "mc_folder2",
-      "mc_localA",
-      "mc_localB",
+  "packages/processor/test/specimens/composes/two-composes-two-external-deps.css": Object {
+    "ruleWithComposes": Array [
+      "mc_red",
+      "mc_blue",
+      "mc_ruleWithComposes",
     ],
   },
-  "packages/processor/test/specimens/folder/folder2.css": Object {
-    "folder2": Array [
-      "mc_folder2",
+  "packages/processor/test/specimens/deps/classes.css": Object {
+    "block": Array [
+      "mc_block",
     ],
-    "foo": Array [
-      "mc_foo",
+    "blue": Array [
+      "mc_blue",
+    ],
+    "flex": Array [
+      "mc_flex",
+    ],
+    "green": Array [
+      "mc_green",
+    ],
+    "red": Array [
+      "mc_red",
+    ],
+    "yellow": Array [
+      "mc_yellow",
     ],
   },
 }
 `;
 
-exports[`/processor.js composition should compose from other files in multiple declarations 1`] = `
+exports[`/processor.js composition should compose from other files in multiple declarations via local compose 1`] = `
 Object {
-  "packages/processor/test/specimens/composes2.css": Object {
-    "composes": Array [
-      "mc_folder2",
-      "mc_foo",
-      "mc_composes",
+  "packages/processor/test/specimens/composes/two-rules-one-local-compose.css": Object {
+    "ruleWithLocalComposes": Array [
+      "mc_blue",
+      "mc_red",
+      "mc_ruleWithSingleCompose",
+      "mc_ruleWithLocalComposes",
+    ],
+    "ruleWithSingleCompose": Array [
+      "mc_red",
+      "mc_ruleWithSingleCompose",
     ],
   },
-  "packages/processor/test/specimens/folder/folder2.css": Object {
-    "folder2": Array [
-      "mc_folder2",
+  "packages/processor/test/specimens/deps/classes.css": Object {
+    "block": Array [
+      "mc_block",
     ],
-    "foo": Array [
-      "mc_foo",
+    "blue": Array [
+      "mc_blue",
+    ],
+    "flex": Array [
+      "mc_flex",
+    ],
+    "green": Array [
+      "mc_green",
+    ],
+    "red": Array [
+      "mc_red",
+    ],
+    "yellow": Array [
+      "mc_yellow",
     ],
   },
 }
@@ -118,19 +142,31 @@ Object {
 
 exports[`/processor.js composition should compose from other files in single declaration 1`] = `
 Object {
-  "packages/processor/test/specimens/composes.css": Object {
-    "composes": Array [
-      "mc_folder2",
-      "mc_foo",
-      "mc_composes",
+  "packages/processor/test/specimens/composes/one-compose-two-external-deps.css": Object {
+    "ruleWithComposes": Array [
+      "mc_red",
+      "mc_blue",
+      "mc_ruleWithComposes",
     ],
   },
-  "packages/processor/test/specimens/folder/folder2.css": Object {
-    "folder2": Array [
-      "mc_folder2",
+  "packages/processor/test/specimens/deps/classes.css": Object {
+    "block": Array [
+      "mc_block",
     ],
-    "foo": Array [
-      "mc_foo",
+    "blue": Array [
+      "mc_blue",
+    ],
+    "flex": Array [
+      "mc_flex",
+    ],
+    "green": Array [
+      "mc_green",
+    ],
+    "red": Array [
+      "mc_red",
+    ],
+    "yellow": Array [
+      "mc_yellow",
     ],
   },
 }

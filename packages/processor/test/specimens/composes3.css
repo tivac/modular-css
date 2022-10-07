@@ -1,8 +1,0 @@
-.localA {
-    composes: folder2 from "./folder/folder2.css";
-}
-
-.localB {
-    composes: localA;
-    composes: foo from "./folder/folder2.css";
-}
