@@ -168,6 +168,27 @@ describe("@modular-css/css-to-js API", () => {
         expect(namedExports).toEqual([ "$values", "b" ]);
     });
 
+
+    it("should generate javascript from composes", async () => {
+        const processor = new Processor({ resolvers });
+
+        await processor.file(require.resolve("./specimens/composes/custom-first-rule.css"));
+
+        const { code } = transform(require.resolve("./specimens/composes/custom-first-rule.css"), processor);
+
+        expect(code).toMatchSnapshot("code");
+    });
+
+    it("should generate javascript from multiple composes", async () => {
+        const processor = new Processor({ resolvers });
+
+        await processor.file(require.resolve("./specimens/composes/custom-between-rules.css"));
+
+        const { code } = transform(require.resolve("./specimens/composes/custom-between-rules.css"), processor);
+
+        expect(code).toMatchSnapshot("code");
+    });
+
     it.each([
         true,
         false,
