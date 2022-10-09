@@ -3,6 +3,9 @@
 }
 
 .ruleWithLocalComposes {
-    composes: ruleWithSingleCompose;
     composes: blue from "../deps/classes.css";
+}
+
+.ruleWithLocalComposes {
+    composes: ruleWithSingleCompose;
 }

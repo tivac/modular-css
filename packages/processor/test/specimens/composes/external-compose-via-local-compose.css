@@ -1,0 +1,16 @@
+.ruleWithSingleCompose {
+    composes: red from "../deps/classes.css";
+}
+
+.ruleWithLocalComposes {
+    composes: ruleWithSingleCompose;
+    composes: blue from "../deps/classes.css";
+}
+
+.nextRuleWithLocalComposes {
+    composes: ruleWithSingleCompose;
+}
+
+.nextRuleWithLocalComposes {
+    composes: blue from "../deps/classes.css";
+}
