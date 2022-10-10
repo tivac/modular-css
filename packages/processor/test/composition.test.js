@@ -1,4 +1,4 @@
-/* eslint-disable max-statements */
+/* eslint-disable max-statements -- let it go */
 "use strict";
 
 const path = require("path");
