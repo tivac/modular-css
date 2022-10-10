@@ -6,7 +6,7 @@ require('./packages/browserify/test/output/issues/58/issue.css');
 },{\\"./packages/browserify/test/output/issues/58/issue.css\\":2}],2:[function(require,module,exports){
 module.exports = {
     \\"issue1\\": \\"mce821a830_other1 mc2a3f7922_issue1\\",
-    \\"issue2\\": \\"mce821a830_other3 mce821a830_other1 mc2a3f7922_issue1 mc2a3f7922_issue2\\",
+    \\"issue2\\": \\"mce821a830_other1 mc2a3f7922_issue1 mce821a830_other3 mc2a3f7922_issue2\\",
     \\"$values\\": {}
 };
 },{\\"./packages/browserify/test/output/issues/58/other.css\\":3}],3:[function(require,module,exports){
@@ -26,7 +26,7 @@ require('./packages/browserify/test/output/issues/58/issue.css');
 },{\\"./packages/browserify/test/output/issues/58/issue.css\\":2}],2:[function(require,module,exports){
 module.exports = {
     \\"issue1\\": \\"mce821a830_other1 mc2a3f7922_issue1\\",
-    \\"issue2\\": \\"mce821a830_other2 mce821a830_other3 mce821a830_other1 mc2a3f7922_issue1 mc2a3f7922_issue2\\",
+    \\"issue2\\": \\"mce821a830_other1 mc2a3f7922_issue1 mce821a830_other2 mce821a830_other3 mc2a3f7922_issue2\\",
     \\"$values\\": {}
 };
 },{}]},{},[1]);

@@ -227,14 +227,36 @@ exports[`/processor.js API .output() should generate css representing the output
 `;
 
 exports[`/processor.js API .output() should order output by dependencies, then alphabetically 1`] = `
-"/* packages/processor/test/specimens/folder/folder.css */
+"/* packages/processor/test/specimens/deps/classes.css */
+.mc_red {
+    color: red;
+}
+
+.mc_blue {
+    color: blue;
+}
+
+.mc_green {
+    color: green;
+}
+
+.mc_yellow {
+    color: yellow;
+}
+
+.mc_block {
+    display: block;
+}
+
+.mc_flex {
+    display: flex;
+}
+
+/* packages/processor/test/specimens/folder/folder.css */
 .mc_folder { margin: 2px; }
-/* packages/processor/test/specimens/folder/folder2.css */
-.mc_folder2 { color: green; }
-.mc_foo { display: block; }
 /* packages/processor/test/specimens/folder/subfolder/subfolder.css */
 .mc_subfolder { color: yellow; }
-/* packages/processor/test/specimens/composes.css */
+/* packages/processor/test/specimens/composes/external-composes-multiple-declarations.css */
 /* packages/processor/test/specimens/deep.css */
 .mc_deep {
     color: black;
