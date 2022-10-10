@@ -20,10 +20,7 @@ expect.addSnapshotSerializer({
 });
 
 const resolvers = [
-    (src, file) =>
-        // console.log({ src, file, result : path.join(path.dirname(src), file) });
-        
-         path.join(path.dirname(src), file),
+    (src, file) => path.join(path.dirname(src), file),
 ];
 
 describe("@modular-css/css-to-js API", () => {
