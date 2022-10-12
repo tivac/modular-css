@@ -43,6 +43,34 @@ Array [
 ]
 `;
 
+exports[`@modular-css/css-to-js API should generate javascript from composes: code 1`] = `
+const custom = "mca72bf2bd_custom"
+const rule = custom + " " + "mca72bf2bd_rule"
+export default {
+    custom,
+rule
+};
+
+export {
+    custom,
+rule
+};
+`;
+
+exports[`@modular-css/css-to-js API should generate javascript from multiple composes: code 1`] = `
+const rule = custom + " " + "mc9c938a76_rule"
+const custom = "mc9c938a76_custom"
+export default {
+    rule,
+custom
+};
+
+export {
+    rule,
+custom
+};
+`;
+
 exports[`@modular-css/css-to-js API should generate javascript: code 1`] = `
 const a = "mc74f3fa7b_a"
 export default {

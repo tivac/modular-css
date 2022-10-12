@@ -1,0 +1,9 @@
+.rule { 
+  display: flex;
+}
+.custom {
+  color: pink;
+}
+.rule {
+  composes: custom;
+}

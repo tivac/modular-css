@@ -227,13 +227,18 @@ exports.transform = (file, processor, opts = {}) => {
         namedExports.push(esm(unique, DEFAULT_VALUES));
     }
 
+    // Collect local exports first
+    exportedKeys.forEach((key) => {
+        const unique = deconflict(identifiers, key);
+
+        internalsMap.set(key, unique);
+    });
+
     // Create vars representing exported classes & use them in local var definitions
     exportedKeys.forEach((key) => {
         const elements = [];
-        const unique = deconflict(identifiers, key);
         const sKey = selectorKey(id, key);
-
-        internalsMap.set(key, unique);
+        const unique = internalsMap.get(key);
 
         // Build the list of composed classes for this class
         if(graph.hasNode(sKey)) {
