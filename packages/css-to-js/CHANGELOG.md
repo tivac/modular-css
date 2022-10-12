@@ -1,5 +1,11 @@
 # Change Log
 
+## 28.2.4
+
+### Patch Changes
+
+- [#898](https://github.com/tivac/modular-css/pull/898) [`b1af909`](https://github.com/tivac/modular-css/commit/b1af909ceaa2dbc4b54c376b9ed5a14a824c6e89) Thanks [@plesiecki](https://github.com/plesiecki)! - Class ordering in `.css` files could lead to invalid identifiers being created, so always make sure every class defined in the `.css` file has a local JS identifier before building the string concatenation to represent composition.
+
 ## 28.2.3
 
 ### Patch Changes
