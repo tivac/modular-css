@@ -72,7 +72,7 @@ All other options are passed to the underlying `Processor` instance, see [Option
 
 #### `styleExport`
 
-You can enable returning the style string, eg `import { styles } from "./style.css";`. by setting `styleExport` to `true`.
+You can enable returning the style string, eg `import { styles } from "./style.css";`, by setting `styleExport` to `true`.
 
 ```js
 ...
@@ -82,7 +82,27 @@ You can enable returning the style string, eg `import { styles } from "./style.c
             use  : {
                 loader  : "@modular-css/webpack/loader",
                 options : {
-                    styleExport : true
+                    styleExport : true,
+                }
+            }
+        }]
+    },
+...
+```
+
+#### `variableDeclaration`
+
+You can set variable declaration kind, eg `var mc_rule = ...;`, by setting `variableDeclaration` to `var`. Defaults to `const`.
+
+```js
+...
+    module : {
+        rules : [{
+            test : /\.css$/,
+            use  : {
+                loader  : "@modular-css/webpack/loader",
+                options : {
+                    variableDeclaration : "var",
                 }
             }
         }]

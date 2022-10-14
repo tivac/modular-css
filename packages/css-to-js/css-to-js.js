@@ -14,11 +14,11 @@ const slash = (file) => file.replace(/\/|\\/g, "/");
 const DEFAULT_VALUES = "$values";
 
 const DEFAULTS = {
-    __proto__   : null,
-    dev         : false,
-    styleExport : false,
-
-    namedExports : {
+    __proto__           : null,
+    dev                 : false,
+    styleExport         : false,
+    variableDeclaration : "const",
+    namedExports        : {
         rewriteInvalid : true,
         warn           : true,
     },
@@ -65,6 +65,8 @@ exports.transform = (file, processor, opts = {}) => {
         rewriteInvalid =  options.namedExports;
         warnOnInvalid = options.namedExports;
     }
+
+    const { variableDeclaration } = options;
 
     const { graph } = processor;
 
@@ -209,7 +211,7 @@ exports.transform = (file, processor, opts = {}) => {
 
         internalsMap.set(value, unique);
 
-        out.push(`const ${unique} = ${JSON.stringify(value)}`);
+        out.push(`${variableDeclaration} ${unique} = ${JSON.stringify(value)}`);
 
         valueExports.set(key, unique);
     });
@@ -217,7 +219,7 @@ exports.transform = (file, processor, opts = {}) => {
     if(valueExports.size) {
         const unique = deconflict(identifiers, DEFAULT_VALUES);
 
-        out.push(dedent(`const ${unique} = {
+        out.push(dedent(`${variableDeclaration} ${unique} = {
             ${[ ...valueExports ].map(prop).join(",\n")},
         };`));
 
@@ -255,7 +257,7 @@ exports.transform = (file, processor, opts = {}) => {
 
         elements.push(...details.classes[key].map((t) => JSON.stringify(t)));
 
-        out.push(`const ${unique} = ${elements.join(` + " " + `)}`);
+        out.push(`${variableDeclaration} ${unique} = ${elements.join(` + " " + `)}`);
 
         defaultExports.push([ key, unique ]);
 

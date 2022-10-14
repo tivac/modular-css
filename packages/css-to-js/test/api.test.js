@@ -186,6 +186,16 @@ describe("@modular-css/css-to-js API", () => {
         expect(code).toMatchSnapshot("code");
     });
 
+    it("should generate javascript with var variable statements", async () => {
+        const processor = new Processor({ resolvers });
+
+        await processor.file(require.resolve("./specimens/simple.css"));
+
+        const { code } = transform(require.resolve("./specimens/simple.css"), processor, { variableDeclaration : "var" });
+
+        expect(code).toMatchSnapshot("code");
+    });
+
     it.each([
         true,
         false,
