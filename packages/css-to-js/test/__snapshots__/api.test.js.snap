@@ -71,6 +71,23 @@ custom
 };
 `;
 
+exports[`@modular-css/css-to-js API should generate javascript with var variable statements: code 1`] = `
+var str = "\\"string\\""
+var $values = {
+    str,
+};
+var fooga = "mce1ef44f3_fooga"
+export default {
+    $values,
+fooga
+};
+
+export {
+    $values,
+fooga
+};
+`;
+
 exports[`@modular-css/css-to-js API should generate javascript: code 1`] = `
 const a = "mc74f3fa7b_a"
 export default {
