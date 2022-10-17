@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/webpack",
-  "version": "28.2.5",
+  "version": "28.3.0",
   "description": "Webpack support for modular-css",
   "main": "./plugin.js",
   "loader": "./loader.js",
@@ -31,7 +31,7 @@
     "webpack": "^5.0.0"
   },
   "dependencies": {
-    "@modular-css/css-to-js": "^28.2.4",
+    "@modular-css/css-to-js": "^28.3.0",
     "@modular-css/processor": "^28.1.4"
   }
 }
