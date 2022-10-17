@@ -1,5 +1,16 @@
 # Change Log
 
+## 28.3.0
+
+### Minor Changes
+
+- [#901](https://github.com/tivac/modular-css/pull/901) [`02bc885`](https://github.com/tivac/modular-css/commit/02bc88570045be3e6e23adff5411b6ad1883d104) Thanks [@plesiecki](https://github.com/plesiecki)! - New option to change type of variable declaration — `variableDeclaration` which defaults to `const`. Can be set to `var` if necessary, e.g. ES5 support.
+
+### Patch Changes
+
+- Updated dependencies [[`02bc885`](https://github.com/tivac/modular-css/commit/02bc88570045be3e6e23adff5411b6ad1883d104)]:
+  - @modular-css/css-to-js@28.3.0
+
 ## 28.2.4
 
 ### Patch Changes
