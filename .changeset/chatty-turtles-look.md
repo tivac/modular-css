@@ -1,5 +1,7 @@
 ---
 "@modular-css/css-to-js": minor
+"@modular-css/rollup": minor
+"@modular-css/vite": minor
 "@modular-css/webpack": minor
 ---
 
