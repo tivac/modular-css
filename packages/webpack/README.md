@@ -90,6 +90,26 @@ You can enable returning the style string, eg `import { styles } from "./style.c
 ...
 ```
 
+#### `defaultExport`
+
+You can enable exporting classes as default export, eg `import styles from "./style.css";`, by setting `defaultExport` to `true`. Defaults to `true`.
+
+```js
+...
+    module : {
+        rules : [{
+            test : /\.css$/,
+            use  : {
+                loader  : "@modular-css/webpack/loader",
+                options : {
+                    defaultExport : true,
+                }
+            }
+        }]
+    },
+...
+```
+
 #### `variableDeclaration`
 
 You can set variable declaration kind, eg `var mc_rule = ...;`, by setting `variableDeclaration` to `var`. Defaults to `const`.
