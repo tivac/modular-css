@@ -12,12 +12,13 @@ Hi! Thanks for stopping by. Hopefully this document helps you get your bearings 
 4. `npm test` to verify that things are working for you locally
 5. Make your changes
 6. `npm test <package>` will run just the tests for the package you're changing. This can help with iteration speed!
+7. `npx changeset` will create a changeset entry for the change if it's user-facing.
 
 [CI](https://github.com/tivac/modular-css/actions/workflows/ci.yml) will run against any PRs you post, so it's a good idea to get your local tests passing first.
 
 ## Project structure
 
-`modular-css` is a [lernajs](https://lernajs.io/) monorepo, so there's a bit of configuration in the root but the meat of the project lives within the `packages/` folders. Here's a quick-n-dirty breakdown of some of them:
+`modular-css` is a monorepo, so there's a bit of configuration in the root but the meat of the project lives within the `packages/` folders. Here's a quick-n-dirty breakdown of some of them:
 
 - [`packages/processor`](https://github.com/tivac/modular-css/tree/main/packages/processor) - The `Processor` is the main piece of infrastructure for the entire project. It's a wrapper around a series of [postcss](http://postcss.org/) pipelines and plugins that handles all of the functionality like `composes`, `@value`, and the rest.
 - [`packages/rollup`](https://github.com/tivac/modular-css/tree/main/packages/rollup) - [rollup](https://rollupjs.org/) plugin that acts as an interface between the rollup process and a `Processor` instance.
