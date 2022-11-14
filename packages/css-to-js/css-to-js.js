@@ -16,8 +16,9 @@ const DEFAULT_VALUES = "$values";
 const DEFAULTS = {
     __proto__           : null,
     dev                 : false,
-    styleExport         : false,
     variableDeclaration : "const",
+    defaultExport       : true,
+    styleExport         : false,
     namedExports        : {
         rewriteInvalid : true,
         warn           : true,
@@ -294,7 +295,7 @@ exports.transform = (file, processor, opts = {}) => {
                 }
             })
         `));
-    } else {
+    } else if(options.defaultExport) {
         out.push(dedent(`
             export default {
                 ${defaultExports.map(prop).join(",\n")}

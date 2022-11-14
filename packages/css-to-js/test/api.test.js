@@ -98,6 +98,17 @@ describe("@modular-css/css-to-js API", () => {
         expect(namedExports).toEqual([ "b" ]);
     });
 
+    it("should output without default export", async () => {
+        const processor = new Processor({ resolvers });
+
+        await processor.string("./a.css", `.a { color: red; }`);
+
+        const { code, namedExports } = transform("./a.css", processor, { defaultExport : false });
+
+        expect(code).toMatchSnapshot("code");
+        expect(namedExports).toEqual([ "a" ]);
+    });
+
     it("should output css when requested", async () => {
         const processor = new Processor({ resolvers });
 

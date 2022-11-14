@@ -213,6 +213,14 @@ export {
 export const styles = ".mc74f3fa7b_a { color: red; }";
 `;
 
+exports[`@modular-css/css-to-js API should output without default export: code 1`] = `
+const a = "mc74f3fa7b_a"
+
+export {
+    a
+};
+`;
+
 exports[`@modular-css/css-to-js API should represent external @values namespaces: code 1`] = `
 import { $values as $aValues } from "<ROOT-DIR>/a.css";
 const v = "#0F0"

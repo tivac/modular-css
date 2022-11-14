@@ -132,6 +132,14 @@ import { styles } from "./styles.css";
 
 Enable `styleExport` will also disable the plugin from emitting any assets as well as sourcemaps (unless you explicitly opt-in to sourcemaps via the `map` option)
 
+### `defaultExport`
+
+You can disable exporting classes as default export, eg `import styles from "./style.css";`, by setting `defaultExport` to `false`. Defaults to `true`.
+
+#### `variableDeclaration`
+
+You can set variable declaration kind, eg `var mc_rule = ...;`, by setting `variableDeclaration` to `var`. Defaults to `const`.
+
 ### `empties`
 
 Set to `true` to enable writing out CSS files that don't contain any content (like if you have a CSS file that contains only `@value` rules).

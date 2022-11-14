@@ -72,7 +72,7 @@ All other options are passed to the underlying `Processor` instance, see [Option
 
 #### `styleExport`
 
-You can enable returning the style string, eg `import { styles } from "./style.css";`, by setting `styleExport` to `true`.
+You can disable exporting the style string, eg `import { styles } from "./style.css";`, by setting `styleExport` to `false`. Defaults to `true`.
 
 ```js
 ...
@@ -83,6 +83,26 @@ You can enable returning the style string, eg `import { styles } from "./style.c
                 loader  : "@modular-css/webpack/loader",
                 options : {
                     styleExport : true,
+                }
+            }
+        }]
+    },
+...
+```
+
+#### `defaultExport`
+
+You can disable exporting classes as default export, eg `import styles from "./style.css";`, by setting `defaultExport` to `false`. Defaults to `true`.
+
+```js
+...
+    module : {
+        rules : [{
+            test : /\.css$/,
+            use  : {
+                loader  : "@modular-css/webpack/loader",
+                options : {
+                    defaultExport : false,
                 }
             }
         }]
