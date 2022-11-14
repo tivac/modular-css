@@ -35,6 +35,18 @@ A minimatch pattern, or an array of minimatch patterns, relative to `process.cwd
 
 Pass an already-instantiated `Processor` instance to the rollup plugin. It will then add any files found when traversing the modules to it and both the rollup-discovered and any already-existing files will be output in the final CSS.
 
+#### `styleExport`
+
+You can disable returning the style string, eg `import { styles } from "./style.css";`, by setting `styleExport` to `false`. Defaults to `true`.
+
+#### `defaultExport`
+
+You can disable exporting classes as default export, eg `import styles from "./style.css";`, by setting `defaultExport` to `false`. Defaults to `true`.
+
+#### `variableDeclaration`
+
+You can set variable declaration kind, eg `var mc_rule = ...;`, by setting `variableDeclaration` to `var`. Defaults to `const`.
+
 ### Shared Options
 
 All other options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).
