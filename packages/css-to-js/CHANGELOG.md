@@ -4,9 +4,9 @@
 
 ### Minor Changes
 
-- [`6211b85`](https://github.com/tivac/modular-css/commit/6211b859abf83f95ffcce0d741d9e82628f97eb5) Thanks [@tivac](https://github.com/tivac)! - **css-to-js**: Restore defaultExport support ([6070a76](https://github.com/tivac/modular-css/commit/6070a7649a0a15cd47adafc087ddf900230171ca))
+- [#901](https://github.com/tivac/modular-css/pull/901) [`6070a76`](https://github.com/tivac/modular-css/commit/6070a7649a0a15cd47adafc087ddf900230171ca) Thanks [@plesiecki](https://github.com/plesiecki)! - Restore defaultExport support 
 
-  `defaultExport` got lost as an available option with the introduction of `@modular-css/css-to-js`, so @plesiecki was kind enough to bring it back in #909.
+  `defaultExport` got lost as an available option with the introduction of `@modular-css/css-to-js`, so @plesiecki was kind enough to bring it back.
 
 ## 28.3.0
 
