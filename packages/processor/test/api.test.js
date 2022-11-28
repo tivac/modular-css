@@ -287,7 +287,7 @@ describe("/processor.js", () => {
             it("should order output by dependencies, then alphabetically", async () => {
                 await processor.file("./packages/processor/test/specimens/start.css");
                 await processor.file("./packages/processor/test/specimens/local.css");
-                await processor.file("./packages/processor/test/specimens/composes.css");
+                await processor.file("./packages/processor/test/specimens/composes/external-composes-multiple-declarations.css");
                 await processor.file("./packages/processor/test/specimens/deep.css");
 
                 const result = await processor.output();

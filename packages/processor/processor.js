@@ -508,9 +508,7 @@ class Processor {
         this._addSelector(name, selector);
 
         refs.forEach(({ name : depSelector }) => {
-            const depSelectorId = this._addSelector(dep, depSelector);
-
-            graph.addDependency(selectorId, depSelectorId);
+            this._addSelector(dep, depSelector);
         });
     }
 

@@ -1,3 +1,4 @@
+/* eslint-disable max-statements -- let it go */
 "use strict";
 
 const path = require("path");
@@ -52,8 +53,8 @@ describe("/processor.js", () => {
                 ],
             });
 
-            await expect(processor.file(require.resolve("./specimens/composes.css"))).rejects.toThrow(
-                `no such file or directory, open '${require.resolve("./specimens/folder/folder2.css")}a'`
+            await expect(processor.file(require.resolve("./specimens/composes/external-composes-single-declaration.css"))).rejects.toThrow(
+                `no such file or directory, open '${require.resolve("./specimens/deps/classes.css")}a'`
             );
         });
 
@@ -73,6 +74,21 @@ describe("/processor.js", () => {
                 dedent(`
                     .a { color: red; }
                     .b { composes: a; }
+                `)
+            );
+
+            const { compositions } = await processor.output();
+
+            expect(compositions).toMatchSnapshot();
+        });
+
+        it("should compose a single class (multi-rule dependent class)", async () => {
+            await processor.string(
+                "./single-composes.css",
+                dedent(`
+                    .a { color: red; }
+                    .b { color: red; }
+                    .a { composes: b; }
                 `)
             );
 
@@ -182,8 +198,24 @@ describe("/processor.js", () => {
             expect(compositions).toMatchSnapshot();
         });
 
+        it("should compose multiple classes (multi-rule dependent class)", async () => {
+            await processor.string(
+                "./multiple-composes.css",
+                dedent(`
+                    .a { color: red; }
+                    .b { composes: a; }
+                    .c { color: blue; }
+                    .b { composes: c; }
+                `)
+            );
+
+            const { compositions } = await processor.output();
+
+            expect(compositions).toMatchSnapshot();
+        });
+
         it("should compose from other files in single declaration", async () => {
-            await processor.file(require.resolve("./specimens/composes.css"));
+            await processor.file(require.resolve("./specimens/composes/external-composes-single-declaration.css"));
 
             const { compositions } = await processor.output();
 
@@ -191,7 +223,55 @@ describe("/processor.js", () => {
         });
 
         it("should compose from other files in multiple declarations", async () => {
-            await processor.file(require.resolve("./specimens/composes2.css"));
+            await processor.file(require.resolve("./specimens/composes/external-composes-multiple-declarations.css"));
+
+            const { compositions } = await processor.output();
+
+            expect(compositions).toMatchSnapshot();
+        });
+
+        it("should compose locally and from other files", async () => {
+            await processor.file(require.resolve("./specimens/composes/external-first-and-local-second-composes.css"));
+
+            const { compositions } = await processor.output();
+
+            expect(compositions).toMatchSnapshot();
+        });
+
+        it("should compose from other files and locally", async () => {
+            await processor.file(require.resolve("./specimens/composes/external-second-and-local-first-composes.css"));
+
+            const { compositions } = await processor.output();
+
+            expect(compositions).toMatchSnapshot();
+        });
+
+        it("should compose from other files in multiple declarations via local compose", async () => {
+            await processor.file(require.resolve("./specimens/composes/external-compose-via-local-compose.css"));
+
+            const { compositions } = await processor.output();
+
+            expect(compositions).toMatchSnapshot();
+        });
+
+        it("should compose from other files in multiple declarations via local compose 2", async () => {
+            await processor.file(require.resolve("./specimens/composes/external-compose-via-local-compose2.css"));
+
+            const { compositions } = await processor.output();
+
+            expect(compositions).toMatchSnapshot();
+        });
+
+        it("should compose from other files in multiple declarations via local compose 3", async () => {
+            await processor.file(require.resolve("./specimens/composes/external-compose-via-local-compose3.css"));
+
+            const { compositions } = await processor.output();
+
+            expect(compositions).toMatchSnapshot();
+        });
+
+        it("should compose from other files in multiple declarations via local compose 4", async () => {
+            await processor.file(require.resolve("./specimens/composes/external-compose-via-local-compose4.css"));
 
             const { compositions } = await processor.output();
 

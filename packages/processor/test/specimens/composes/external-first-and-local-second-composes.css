@@ -1,0 +1,11 @@
+.custom {
+    color: red;
+}
+
+.externalComposeRule {
+    composes: red from "../deps/classes.css";
+}
+
+.externalComposeRule {
+    composes: custom;
+}
