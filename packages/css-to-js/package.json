@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/css-to-js",
-  "version": "28.4.0",
+  "version": "28.4.1",
   "description": "modular-css powered conversion of CSS to JavaScript",
   "main": "./css-to-js.js",
   "repository": {
@@ -24,7 +24,7 @@
     "postcss"
   ],
   "dependencies": {
-    "@modular-css/processor": "^28.1.4",
+    "@modular-css/processor": "^28.1.5",
     "dedent": "^0.7.0",
     "identifierfy": "^2.0.0",
     "just-extend": "^6.0.1"

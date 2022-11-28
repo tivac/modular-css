@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/browserify",
-  "version": "28.1.4",
+  "version": "28.1.5",
   "description": "Browserify transform for modular-css",
   "main": "./browserify.js",
   "repository": {
@@ -27,7 +27,7 @@
     "postcss"
   ],
   "dependencies": {
-    "@modular-css/processor": "^28.1.4",
+    "@modular-css/processor": "^28.1.5",
     "mkdirp": "^1.0.3",
     "p-each-series": "^2.0.0",
     "sink-transform": "^2.0.0",
