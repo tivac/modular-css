@@ -1,5 +1,14 @@
 # Change Log
 
+## 28.2.2
+
+### Patch Changes
+
+- [#892](https://github.com/tivac/modular-css/pull/892) [`8983ec7`](https://github.com/tivac/modular-css/commit/8983ec74fe945f2859c4078e66ef15095a75f9be) Thanks [@plesiecki](https://github.com/plesiecki)! - Fix an issue where composition information could be returned out of order
+
+- Updated dependencies [[`8983ec7`](https://github.com/tivac/modular-css/commit/8983ec74fe945f2859c4078e66ef15095a75f9be)]:
+  - @modular-css/processor@28.1.5
+
 ## 28.2.1
 
 ### Patch Changes
