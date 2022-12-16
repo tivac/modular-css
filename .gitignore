@@ -96,3 +96,8 @@ test/output
 
 # Local Netlify folder
 .netlify
+
+# playwright test cruft
+/test-results/
+/playwright-report/
+/playwright/.cache/

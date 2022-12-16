@@ -10,6 +10,12 @@ module.exports = {
         "/node_modules/",
         "/parsers/",
         "/packages/test-utils/",
+        "/packages/vite/",
+    ],
+
+    testPathIgnorePatterns : [
+        "/node_modules/",
+        "/packages/vite/",
     ],
 
     watchPathIgnorePatterns : [
