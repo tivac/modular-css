@@ -31,6 +31,6 @@
     "@rollup/pluginutils": "^5.0.2"
   },
   "peerDependencies": {
-    "vite": "^3.0.3"
+    "vite": "^3 || ^4"
   }
 }
