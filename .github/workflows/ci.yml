@@ -56,8 +56,8 @@ jobs:
     - name: npm ci
       run: npm ci
     
-    - name: npm build
-      run: npm run build --if-present
+    - name: npm run parsers
+      run: npm run parsers
     
     - name: npm test
       run: npm test -- --ci --no-cache
@@ -95,8 +95,8 @@ jobs:
     - name: npm ci
       run: npm ci
     
-    - name: npm build
-      run: npm run build --if-present
+    - name: npm run parsers
+      run: npm run parsers
     
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium

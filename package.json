@@ -15,7 +15,6 @@
     "parsers": "node parsers/build.js",
     "prerelease": "npm run parsers",
     "release": "changeset publish",
-    "pretest": "npm run parsers",
     "test": "jest",
     "test:playwright": "playwright test",
     "start:vite": "vite",
