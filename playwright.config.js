@@ -1,36 +1,36 @@
-//** @type {import("@playwright/test").PlaywrightTestConfig} */
+/** @type {import("@playwright/test").PlaywrightTestConfig} */
 const config = {
-	testDir: "./packages/vite/tests",
+	testDir : "./packages/vite/tests",
     // baseURL : "http://127.0.0.1:5173",
     
-	timeout: 30 * 1000,
+	timeout : 30 * 1000,
 	
-	expect: {
-		timeout: 5 * 1000,
+	expect : {
+		timeout : 5 * 1000,
 	},
 	
 	// Run tests in files in parallel
-	fullyParallel: true,
+	fullyParallel : true,
 
 	// Fail the build on CI if you accidentally left test.only in the source code.
-	forbidOnly: !!process.env.CI,
+	forbidOnly : Boolean(process.env.CI),
 
 	// Retry on CI only
-	retries: process.env.CI ? 2 : 0,
+	retries : process.env.CI ? 2 : 0,
 	
     // Opt out of parallel tests on CI.
-	workers: process.env.CI ? 1 : undefined,
+	workers : process.env.CI ? 1 : undefined,
 	
-    use: {
+    use : {
 		screenshot : "only-on-failure",
-        trace : "on-first-retry",
-        video : "on-first-retry",
+        trace      : "on-first-retry",
+        video      : "on-first-retry",
 	},
 
     webServer : {
-		command : "npm run test:vite",
-        port: 5173,
-		timeout : 30 * 1000,
+		command             : "npm run test:vite",
+        port                : 5173,
+		timeout             : 30 * 1000,
 		reuseExistingServer : true,
 	},
 };
