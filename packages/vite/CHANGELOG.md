@@ -1,5 +1,11 @@
 # Change Log
 
+## 29.1.3
+
+### Patch Changes
+
+- [#919](https://github.com/tivac/modular-css/pull/919) [`989d1f0`](https://github.com/tivac/modular-css/commit/989d1f06caf0505d7cc7bfee52f29afd5a0a7760) Thanks [@tivac](https://github.com/tivac)! - Vite 4 support
+
 ## 29.1.2
 
 ### Patch Changes
