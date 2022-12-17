@@ -85,6 +85,13 @@ Array [
 ]
 `;
 
+exports[`/rollup.js case sensitivity tests should warn about repeated references that point at the same files 1`] = `
+Object {
+  "assets/empty.css": "
+",
+}
+`;
+
 exports[`/rollup.js dev mode option should output a proxy 1`] = `
 Object {
   "simple": "

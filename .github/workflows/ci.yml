@@ -102,7 +102,7 @@ jobs:
       run: npx playwright install --with-deps chromium
 
     - name: test
-      run: npx playwright test
+      run: npm run test:playwright
     
     - uses: actions/upload-artifact@v3
       if: failure()

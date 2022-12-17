@@ -28,7 +28,7 @@ const config = {
 	},
 
     webServer : {
-		command             : "npm run test:vite",
+		command             : "npm run start:vite",
         port                : 5173,
 		timeout             : 30 * 1000,
 		reuseExistingServer : true,
