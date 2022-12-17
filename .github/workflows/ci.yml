@@ -53,13 +53,13 @@ jobs:
     - name: npm update
       run: npm i npm@latest -g
 
-    - name: npm install
+    - name: npm ci
       run: npm ci
     
     - name: npm build
       run: npm run build --if-present
     
-    - name: test
+    - name: npm test
       run: npm test -- --ci --no-cache
       env:
         CI: true
@@ -89,13 +89,19 @@ jobs:
         node-version: 18
         cache: 'npm'
     
-    - name: Install dependencies
+    - name: npm update
+      run: npm i npm@latest -g
+    
+    - name: npm ci
       run: npm ci
+    
+    - name: npm build
+      run: npm run build --if-present
     
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
-    
-    - name: Run Playwright tests
+
+    - name: test
       run: npx playwright test
     
     - uses: actions/upload-artifact@v3
