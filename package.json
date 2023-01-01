@@ -53,7 +53,7 @@
     "factor-bundle": "2.5.0",
     "from2-string": "1.1.0",
     "github-slugger": "^1.4.0",
-    "jest": "^28.1.1",
+    "jest": "^29.3.1",
     "jest-cli": "^29.1.2",
     "jest-snapshot": "^28.1.1",
     "lint-staged": "^13.1.0",
