@@ -27,4 +27,4 @@ Array of glob patterns to pass to [`globule`](https://www.npmjs.com/package/glob
 
 ##### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).
+All other options are passed to the underlying `Processor` instance, see the [Processor Options](#direct-usage-js-api-processor-options).

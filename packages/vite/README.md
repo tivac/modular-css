@@ -49,4 +49,4 @@ You can set variable declaration kind, eg `var mc_rule = ...;`, by setting `vari
 
 ### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).
+All other options are passed to the underlying `Processor` instance, see the [Processor Options](https://m-css.com/api/#direct-usage-js-api-processor-options).

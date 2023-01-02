@@ -10,8 +10,15 @@ const config = {
             pages : "dist",
         }),
 
-        // C'mon, this is clearly a better choice
-        trailingSlash : "always",
+        prerender : {
+            handleMissingId({ path, message }) {
+                if(path === "/repl/") {
+                    return;
+                }
+
+                throw new Error(message);
+            },
+        },
     },
 
     // Pass the svelte preprocessor from @modular-css/svelte into sveltekit

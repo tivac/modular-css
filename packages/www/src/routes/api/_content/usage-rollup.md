@@ -88,4 +88,4 @@ Set to a falsey value to disable outputting of empty CSS files. This is most com
 
 ##### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).
+All other options are passed to the underlying `Processor` instance, see the [Processor Options](#direct-usage-js-api-processor-options).

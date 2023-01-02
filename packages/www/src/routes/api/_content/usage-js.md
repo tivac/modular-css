@@ -235,7 +235,7 @@ Returns a promise. Add `file` to the `Processor` instance, reads contents from d
 
 Returns a promise. Finalize processing of all added CSS and create combined CSS output file. Optionally allows for combining a subset of the loaded files by passing a single file or array of files.
 
-**WARNING**: Calling `.output()` before any preceeding `.file(...)`/`.string(...)` calls have resolved their returned promises will return a rejected promise. See [usage](#usage) for an example of correct usage.
+**WARNING**: Calling `.output()` before any preceeding `.file(...)`/`.string(...)` calls have resolved their returned promises will return a rejected promise. See [JS Api - usage](#direct-usage-js-api-usage) for an example of correct usage.
 
 ##### `.remove([files])`
 
@@ -259,4 +259,4 @@ Uses the built-in path normalization settings to normalize the case of a file pa
 
 ##### `.resolve(src, file)`
 
-Resolves `file` from `src`, using any of the specified [`resolvers`](#resolvers).
+Resolves `file` from `src`, using any of the specified [`resolvers`](#direct-usage-js-api-processor-options-resolvers).

@@ -35,4 +35,4 @@ Pass an already-instantiated `Processor` instance to the rollup plugin. It will 
 
 ##### Shared Options
 
-All other options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).
+All other options are passed to the underlying `Processor` instance, see the [Processor Options](#direct-usage-js-api-processor-options).
