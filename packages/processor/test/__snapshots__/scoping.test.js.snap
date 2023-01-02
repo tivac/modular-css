@@ -13,23 +13,23 @@ exports[`/processor.js scoping should allow :global classes to overlap with loca
 `;
 
 exports[`/processor.js scoping should handle pseudo classes correctly 1`] = `
-Object {
-  "b": Array [
+{
+  "b": [
     "mc_b",
   ],
-  "c": Array [
+  "c": [
     "c",
   ],
-  "d": Array [
+  "d": [
     "mc_d",
   ],
-  "e": Array [
+  "e": [
     "mc_e",
   ],
-  "g1": Array [
+  "g1": [
     "g1",
   ],
-  "g2": Array [
+  "g2": [
     "g2",
   ],
 }
@@ -62,20 +62,20 @@ exports[`/processor.js scoping should not scope rules within @keyframes 1`] = `
 `;
 
 exports[`/processor.js scoping should scope classes, ids, and keyframes 1`] = `
-Object {
-  "fooga": Array [
+{
+  "fooga": [
     "mc_fooga",
   ],
-  "one": Array [
+  "one": [
     "mc_one",
   ],
-  "three": Array [
+  "three": [
     "mc_three",
   ],
-  "two": Array [
+  "two": [
     "mc_two",
   ],
-  "wooga": Array [
+  "wooga": [
     "mc_wooga",
   ],
 }

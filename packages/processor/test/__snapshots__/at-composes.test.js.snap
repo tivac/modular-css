@@ -1,57 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/processor.js @composes should allow composing classes from the composed file 1`] = `
-Object {
-  "a": Array [
+{
+  "a": [
     "mc_wooga",
     "mc_a",
   ],
-  "b": Array [
+  "b": [
     "mc_b",
   ],
-  "wooga": Array [
+  "wooga": [
     "mc_wooga",
   ],
 }
 `;
 
 exports[`/processor.js @composes should allow for chains of @composes-included files 1`] = `
-Object {
-  "a": Array [
+{
+  "a": [
     "mc_wooga",
     "mc_notblue",
     "mc_a",
   ],
-  "b": Array [
+  "b": [
     "mc_wooga",
     "mc_b",
   ],
-  "notblue": Array [
+  "notblue": [
     "mc_wooga",
     "mc_notblue",
   ],
-  "wooga": Array [
+  "wooga": [
     "mc_wooga",
   ],
 }
 `;
 
 exports[`/processor.js @composes should include compositions from the composed file 1`] = `
-Object {
-  "packages/processor/test/specimens/at-composes.css": Object {
-    "a": Array [
+{
+  "packages/processor/test/specimens/at-composes.css": {
+    "a": [
       "mc_a",
     ],
-    "b": Array [
+    "b": [
       "mc_wooga",
       "mc_b",
     ],
-    "wooga": Array [
+    "wooga": [
       "mc_wooga",
     ],
   },
-  "packages/processor/test/specimens/simple.css": Object {
-    "wooga": Array [
+  "packages/processor/test/specimens/simple.css": {
+    "wooga": [
       "mc_wooga",
     ],
   },
@@ -59,17 +59,17 @@ Object {
 `;
 
 exports[`/processor.js @composes should include exported classes from the composed file 1`] = `
-Object {
-  "a": Array [
+{
+  "a": [
     "mc_a",
   ],
-  "b": Array [
+  "b": [
     "mc_b",
   ],
-  "booga": Array [
+  "booga": [
     "mc_booga",
   ],
-  "looga": Array [
+  "looga": [
     "mc_booga",
     "mc_looga",
   ],
@@ -92,49 +92,49 @@ exports[`/processor.js @composes should include exported classes from the compos
 `;
 
 exports[`/processor.js @composes should include external compositions from the composed file 1`] = `
-Object {
-  "packages/processor/test/specimens/at-composes.css": Object {
-    "a": Array [
+{
+  "packages/processor/test/specimens/at-composes.css": {
+    "a": [
       "mc_a",
     ],
-    "b": Array [
+    "b": [
       "mc_booga",
       "mc_wooga",
       "mc_b",
     ],
-    "booga": Array [
+    "booga": [
       "mc_booga",
     ],
-    "tooga": Array [
+    "tooga": [
       "mc_tooga",
     ],
-    "wooga": Array [
+    "wooga": [
       "mc_booga",
       "mc_wooga",
     ],
   },
-  "packages/processor/test/specimens/folder/folder.css": Object {
-    "folder": Array [
+  "packages/processor/test/specimens/folder/folder.css": {
+    "folder": [
       "mc_folder",
     ],
   },
-  "packages/processor/test/specimens/local.css": Object {
-    "booga": Array [
+  "packages/processor/test/specimens/local.css": {
+    "booga": [
       "mc_booga",
     ],
-    "looga": Array [
+    "looga": [
       "mc_booga",
       "mc_looga",
     ],
   },
-  "packages/processor/test/specimens/start.css": Object {
-    "booga": Array [
+  "packages/processor/test/specimens/start.css": {
+    "booga": [
       "mc_booga",
     ],
-    "tooga": Array [
+    "tooga": [
       "mc_tooga",
     ],
-    "wooga": Array [
+    "wooga": [
       "mc_booga",
       "mc_wooga",
     ],
@@ -142,7 +142,7 @@ Object {
 }
 `;
 
-exports[`/processor.js @composes should not include exported values from the composed file 1`] = `Object {}`;
+exports[`/processor.js @composes should not include exported values from the composed file 1`] = `{}`;
 
 exports[`/processor.js @composes should output css from the composed file 1`] = `
 "/* packages/processor/test/specimens/simple.css */

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/rollup.js code splitting should correctly chunk up CSS files 1`] = `
-Object {
+{
   "assets/a.css": "
 /* packages/rollup/test/specimens/css-dependencies/a.css */
 .mc_a {
@@ -24,7 +24,7 @@ Object {
 `;
 
 exports[`/rollup.js code splitting should output metadata successfully when unreferenced CSS is output to common 1`] = `
-Object {
+{
   "assets/a.css": "
 /* packages/rollup/test/specimens/metadata/a.css */
 .mc541d3f5c_a { color: aqua; }
@@ -42,19 +42,19 @@ Object {
 .mc2c838439_fake { color: red; }",
   "assets/metadata.json": "
 {
-    \\"a.js\\": {
-        \\"assets\\": [
-            \\"assets/a.css\\"
+    "a.js": {
+        "assets": [
+            "assets/a.css"
         ]
     },
-    \\"b.js\\": {
-        \\"assets\\": [
-            \\"assets/b.css\\"
+    "b.js": {
+        "assets": [
+            "assets/b.css"
         ]
     },
-    \\"d.js\\": {
-        \\"assets\\": [
-            \\"assets/d.css\\"
+    "d.js": {
+        "assets": [
+            "assets/d.css"
         ]
     }
 }",
@@ -62,7 +62,7 @@ Object {
 `;
 
 exports[`/rollup.js code splitting should output only 1 JSON file 1`] = `
-Object {
+{
   "assets/dependencies.css": "
 /* packages/rollup/test/specimens/dependencies.css */
 .mc_wooga {
@@ -71,12 +71,12 @@ Object {
 ",
   "assets/exports.json": "
 {
-    \\"packages/rollup/test/specimens/dependencies.css\\": {
-        \\"wooga\\": \\"mc_fooga mc_wooga\\"
+    "packages/rollup/test/specimens/dependencies.css": {
+        "wooga": "mc_fooga mc_wooga"
     },
-    \\"packages/rollup/test/specimens/simple.css\\": {
-        \\"str\\": \\"\\\\\\"string\\\\\\"\\",
-        \\"fooga\\": \\"mc_fooga\\"
+    "packages/rollup/test/specimens/simple.css": {
+        "str": "\\"string\\"",
+        "fooga": "mc_fooga"
     }
 }",
   "assets/simple.css": "
@@ -89,28 +89,28 @@ Object {
 `;
 
 exports[`/rollup.js code splitting should support circular JS dependencies 1`] = `
-Object {
+{
   "a.js": "
 export { a as default } from './a2.js';
 ",
   "a2.js": "
-const b$1 = \\"mc_b\\";
+const b$1 = "mc_b";
 var css$1 = {
     b: b$1
 };
 
 console.log(css$1, a);
 
-var b = \\"b\\";
+var b = "b";
 
-const a$1 = \\"mc_a\\";
+const a$1 = "mc_a";
 var css = {
     a: a$1
 };
 
 console.log(css, b);
 
-var a = \\"a\\";
+var a = "a";
 
 export { a, b };
 ",
@@ -127,7 +127,7 @@ export { b as default } from './a2.js';
 `;
 
 exports[`/rollup.js code splitting should support deduping names via rollup (hashed) 1`] = `
-Object {
+{
   "assets/a-2fa3ffad.css": "
 /* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */
 .mc_a { color: azure; }",
@@ -147,7 +147,7 @@ Object {
 `;
 
 exports[`/rollup.js code splitting should support deduping names via rollup (not hashed) 1`] = `
-Object {
+{
   "assets/a.css": "
 /* packages/rollup/test/specimens/multiple-chunks/a.css */
 .mc_a {
@@ -167,7 +167,7 @@ Object {
 `;
 
 exports[`/rollup.js code splitting should support dynamic imports 1`] = `
-Object {
+{
   "assets/a.css": "
 /* packages/rollup/test/specimens/dynamic-imports/a.css */
 .mc_a {
@@ -204,7 +204,7 @@ Object {
 `;
 
 exports[`/rollup.js code splitting should support manual chunks 1`] = `
-Object {
+{
   "assets/a.css": "
 /* packages/rollup/test/specimens/manual-chunks/a.css */
 .mc_a {
@@ -229,7 +229,7 @@ Object {
 `;
 
 exports[`/rollup.js code splitting should support outputting metadata about CSS dependencies 1`] = `
-Object {
+{
   "assets/a.css": "
 /* packages/rollup/test/specimens/metadata/a.css */
 .mc_a { color: aqua; }
@@ -244,19 +244,19 @@ Object {
 ",
   "assets/metadata.json": "
 {
-    \\"a.js\\": {
-        \\"assets\\": [
-            \\"assets/a.css\\"
+    "a.js": {
+        "assets": [
+            "assets/a.css"
         ]
     },
-    \\"b.js\\": {
-        \\"assets\\": [
-            \\"assets/b.css\\"
+    "b.js": {
+        "assets": [
+            "assets/b.css"
         ]
     },
-    \\"d.js\\": {
-        \\"assets\\": [
-            \\"assets/d.css\\"
+    "d.js": {
+        "assets": [
+            "assets/d.css"
         ]
     }
 }",
@@ -264,7 +264,7 @@ Object {
 `;
 
 exports[`/rollup.js code splitting should support outputting metadata about CSS dependencies to a named file 1`] = `
-Object {
+{
   "assets/a.css": "
 /* packages/rollup/test/specimens/metadata/a.css */
 .mc_a { color: aqua; }
@@ -275,19 +275,19 @@ Object {
 ",
   "assets/chunks.json": "
 {
-    \\"a.js\\": {
-        \\"assets\\": [
-            \\"assets/a.css\\"
+    "a.js": {
+        "assets": [
+            "assets/a.css"
         ]
     },
-    \\"b.js\\": {
-        \\"assets\\": [
-            \\"assets/b.css\\"
+    "b.js": {
+        "assets": [
+            "assets/b.css"
         ]
     },
-    \\"d.js\\": {
-        \\"assets\\": [
-            \\"assets/d.css\\"
+    "d.js": {
+        "assets": [
+            "assets/d.css"
         ]
     }
 }",
@@ -299,7 +299,7 @@ Object {
 `;
 
 exports[`/rollup.js code splitting should support splitting up CSS files 1`] = `
-Object {
+{
   "assets/dependencies.css": "
 /* packages/rollup/test/specimens/dependencies.css */
 .mc_wooga {
@@ -316,7 +316,7 @@ Object {
 `;
 
 exports[`/rollup.js code splitting should support splitting up CSS files w/ shared assets 1`] = `
-Object {
+{
   "assets/a.css": "
 /* packages/rollup/test/specimens/css-chunks/a.css */
 .mc_a {
@@ -342,10 +342,10 @@ Object {
 }
 `;
 
-exports[`/rollup.js code splitting shouldn't break when dynamic imports are tree-shaken away (rollup/rollup#2659) 1`] = `Object {}`;
+exports[`/rollup.js code splitting shouldn't break when dynamic imports are tree-shaken away (rollup/rollup#2659) 1`] = `{}`;
 
 exports[`/rollup.js code splitting shouldn't put bundle-specific CSS in common.css 1`] = `
-Object {
+{
   "assets/a.css": "
 /* packages/rollup/test/specimens/common-splitting/shared.css */
 .mc_shared {
@@ -389,7 +389,7 @@ Object {
 `;
 
 exports[`/rollup.js code splitting shouldn't use entry hashes as part of the CSS file names 1`] = `
-Object {
+{
   "assets/simple-0a80c138.css": "
 /* packages/rollup/test/specimens/simple.css */
 .mc_fooga {
@@ -397,11 +397,11 @@ Object {
 }
 ",
   "simple.a2f4d1df.js": "
-const str = \\"\\\\\\"string\\\\\\"\\";
+const str = "\\"string\\"";
 const $values = {
     str,
 };
-const fooga = \\"mc_fooga\\";
+const fooga = "mc_fooga";
 var css = {
     $values,
 fooga

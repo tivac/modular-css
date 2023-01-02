@@ -3,16 +3,16 @@
 exports[`/processor.js API .compositions should return compositions for loaded files 1`] = `Promise {}`;
 
 exports[`/processor.js API .file() should process a relative file 1`] = `
-Object {
-  "wooga": Array [
+{
+  "wooga": [
     "mc_wooga",
   ],
 }
 `;
 
 exports[`/processor.js API .file() should process a relative file 2`] = `
-Object {
-  "wooga": Array [
+{
+  "wooga": [
     "mc_wooga",
   ],
 }
@@ -24,16 +24,16 @@ exports[`/processor.js API .file() should process a relative file 3`] = `
 `;
 
 exports[`/processor.js API .file() should process an absolute file 1`] = `
-Object {
-  "wooga": Array [
+{
+  "wooga": [
     "mc_wooga",
   ],
 }
 `;
 
 exports[`/processor.js API .file() should process an absolute file 2`] = `
-Object {
-  "wooga": Array [
+{
+  "wooga": [
     "mc_wooga",
   ],
 }
@@ -45,17 +45,17 @@ exports[`/processor.js API .file() should process an absolute file 3`] = `
 `;
 
 exports[`/processor.js API .file() should wait for dependencies to be processed before composing 1`] = `
-Array [
-  Object {
-    "one": Array [
+[
+  {
+    "one": [
       "mc_three",
       "mc_two",
       "mc_one",
       "mc_one",
     ],
   },
-  Object {
-    "two": Array [
+  {
+    "two": [
       "mc_three",
       "mc_two",
       "mc_one",
@@ -66,14 +66,14 @@ Array [
 `;
 
 exports[`/processor.js API .fileDependencies() should return the dependencies of the specified file 1`] = `
-Array [
+[
   "packages/processor/test/specimens/folder/folder.css",
   "packages/processor/test/specimens/local.css",
 ]
 `;
 
 exports[`/processor.js API .fileDependencies() should return the overall order of dependencies if no file is specified 1`] = `
-Array [
+[
   "packages/processor/test/specimens/folder/folder.css",
   "packages/processor/test/specimens/local.css",
   "packages/processor/test/specimens/start.css",
@@ -81,8 +81,8 @@ Array [
 `;
 
 exports[`/processor.js API .invalidate() should invalidate a relative file 1`] = `
-Array [
-  Array [
+[
+  [
     "simple.css",
     false,
   ],
@@ -90,16 +90,16 @@ Array [
 `;
 
 exports[`/processor.js API .invalidate() should invalidate all dependents as well 1`] = `
-Array [
-  Array [
+[
+  [
     "packages/processor/test/specimens/start.css",
     false,
   ],
-  Array [
+  [
     "packages/processor/test/specimens/local.css",
     false,
   ],
-  Array [
+  [
     "packages/processor/test/specimens/folder/folder.css",
     false,
   ],
@@ -107,8 +107,8 @@ Array [
 `;
 
 exports[`/processor.js API .invalidate() should invalidate an absolute file 1`] = `
-Array [
-  Array [
+[
+  [
     "packages/processor/test/specimens/simple.css",
     false,
   ],
@@ -116,16 +116,16 @@ Array [
 `;
 
 exports[`/processor.js API .invalidate() should reprocess invalidated files 1`] = `
-Array [
-  Array [
+[
+  [
     "packages/processor/test/specimens/start.css",
     true,
   ],
-  Array [
+  [
     "packages/processor/test/specimens/local.css",
     true,
   ],
-  Array [
+  [
     "packages/processor/test/specimens/folder/folder.css",
     true,
   ],
@@ -135,34 +135,34 @@ Array [
 exports[`/processor.js API .invalidate() should throw if no file is passed 1`] = `"invalidate() requires a file argument"`;
 
 exports[`/processor.js API .normalize() should normalize inputs 1`] = `
-Array [
+[
   "simple.css",
 ]
 `;
 
 exports[`/processor.js API .output() should allow for seperate source map output 1`] = `
-Object {
+{
   "file": "to.css",
   "mappings": "AAAA,wDAAA;AACA,aAAU,WAAW,EAAE;ACDvB,gDAAA;AAIA,YAAS,iBAAiB,EAAE;ACJ5B,gDAAA;AAEA,YDFA,UAAe,EACf,gBAAgB,ECCsB;AACtC,YFHA,uBAAoB,EEGe",
-  "names": Array [],
-  "sources": Array [
+  "names": [],
+  "sources": [
     "packages/processor/test/specimens/folder/folder.css",
     "packages/processor/test/specimens/local.css",
     "packages/processor/test/specimens/start.css",
   ],
-  "sourcesContent": Array [
+  "sourcesContent": [
     "@value folder: white;
 .folder { margin: 2px; }
 ",
     "@value one: red;
 @value two: blue;
-@value folder from \\"./folder/folder.css\\";
+@value folder from "./folder/folder.css";
 
 .booga { background: green; }
 .looga { composes: booga; }
 ",
-    "@value one, two, folder from \\"./local.css\\";
-.wooga { composes: booga from \\"./local.css\\"; }
+    "@value one, two, folder from "./local.css";
+.wooga { composes: booga from "./local.css"; }
 .booga { color: one; background: two; }
 .tooga { border: 1px solid folder; }
 ",
@@ -183,29 +183,29 @@ exports[`/processor.js API .output() should avoid duplicating files in the outpu
 `;
 
 exports[`/processor.js API .output() should generate a JSON structure of all the compositions 1`] = `
-Object {
-  "packages/processor/test/specimens/folder/folder.css": Object {
-    "folder": Array [
+{
+  "packages/processor/test/specimens/folder/folder.css": {
+    "folder": [
       "mc_folder",
     ],
   },
-  "packages/processor/test/specimens/local.css": Object {
-    "booga": Array [
+  "packages/processor/test/specimens/local.css": {
+    "booga": [
       "mc_booga",
     ],
-    "looga": Array [
+    "looga": [
       "mc_booga",
       "mc_looga",
     ],
   },
-  "packages/processor/test/specimens/start.css": Object {
-    "booga": Array [
+  "packages/processor/test/specimens/start.css": {
+    "booga": [
       "mc_booga",
     ],
-    "tooga": Array [
+    "tooga": [
       "mc_tooga",
     ],
-    "wooga": Array [
+    "wooga": [
       "mc_booga",
       "mc_wooga",
     ],
@@ -294,46 +294,46 @@ exports[`/processor.js API .output() should support returning output for specifi
 "
 `;
 
-exports[`/processor.js API .remove() should remove a relative file 1`] = `Array []`;
+exports[`/processor.js API .remove() should remove a relative file 1`] = `[]`;
 
-exports[`/processor.js API .remove() should remove an absolute file 1`] = `Array []`;
+exports[`/processor.js API .remove() should remove an absolute file 1`] = `[]`;
 
 exports[`/processor.js API .remove() should remove multiple files 1`] = `
-Array [
+[
   "c.css",
 ]
 `;
 
 exports[`/processor.js API .remove() should return an array of removed files 1`] = `
-Array [
+[
   "a.css",
   "b.css",
 ]
 `;
 
 exports[`/processor.js API .resolve() should fall back to a default resolver 1`] = `
-Array [
+[
   "packages/processor/test/specimens/local.css",
 ]
 `;
 
 exports[`/processor.js API .resolve() should run resolvers until a match is found 1`] = `
-Array [
+[
   "packages/processor/test/specimens/local.css",
 ]
 `;
 
 exports[`/processor.js API .root() should process a postcss Root 1`] = `
-Object {
-  "wooga": Array [
+{
+  "wooga": [
     "mc_wooga",
   ],
 }
 `;
 
 exports[`/processor.js API .root() should process a postcss Root 2`] = `
-Object {
-  "wooga": Array [
+{
+  "wooga": [
     "mc_wooga",
   ],
 }
@@ -342,16 +342,16 @@ Object {
 exports[`/processor.js API .root() should process a postcss Root 3`] = `".mc_wooga { }"`;
 
 exports[`/processor.js API .string() should process a string 1`] = `
-Object {
-  "wooga": Array [
+{
+  "wooga": [
     "mc_wooga",
   ],
 }
 `;
 
 exports[`/processor.js API .string() should process a string 2`] = `
-Object {
-  "wooga": Array [
+{
+  "wooga": [
     "mc_wooga",
   ],
 }
@@ -360,7 +360,7 @@ Object {
 exports[`/processor.js API .string() should process a string 3`] = `".mc_wooga { }"`;
 
 exports[`/processor.js API .warnings should expose warnings from after hook 1`] = `
-Object {
+{
   "column": 1,
   "endColumn": 23,
   "endLine": 1,
@@ -373,7 +373,7 @@ Object {
 `;
 
 exports[`/processor.js API .warnings should expose warnings from before hook 1`] = `
-Object {
+{
   "column": 1,
   "endColumn": 23,
   "endLine": 1,
@@ -386,7 +386,7 @@ Object {
 `;
 
 exports[`/processor.js API .warnings should expose warnings from done hook 1`] = `
-Object {
+{
   "column": 1,
   "endColumn": 23,
   "endLine": 1,
@@ -399,7 +399,7 @@ Object {
 `;
 
 exports[`/processor.js API .warnings should expose warnings from processing hook 1`] = `
-Object {
+{
   "column": 1,
   "endColumn": 23,
   "endLine": 1,
@@ -412,7 +412,7 @@ Object {
 `;
 
 exports[`/processor.js API .warnings should have warnings from files that have been added 1`] = `
-Array [
+[
   "Imported value one overlaps with a local value and will be ignored",
 ]
 `;
