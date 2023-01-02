@@ -1,4 +1,4 @@
-import lz from "lznext";
+import lz from "lz-string";
 
 import { files, initialize } from "./stores.js";
 
