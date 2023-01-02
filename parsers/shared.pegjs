@@ -6,7 +6,6 @@ s "string"
     = "\"" chars:[^\"\r\n]* "\"" { return chars.join(""); }
     / "\'" chars:[^\'\r\n]* "\'" { return chars.join(""); }
 
-
 hex_digit
   = [0-9a-f]i
 
