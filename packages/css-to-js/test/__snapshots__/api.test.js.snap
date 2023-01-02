@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`@modular-css/css-to-js API should dedupe repeated identifiers: code 1`] = `
-"import { a } from "C:/Users/pcavi/Documents/GitHub/modular-css/a.css";
+"import { a } from "<ROOT-DIR>/a.css";
 const a1 = a + " " + "mc71966a67_a"
 export default {
     "a" : a1
@@ -222,7 +222,7 @@ export {
 `;
 
 exports[`@modular-css/css-to-js API should represent external @values namespaces: code 1`] = `
-"import { $values as $aValues } from "C:/Users/pcavi/Documents/GitHub/modular-css/a.css";
+"import { $values as $aValues } from "<ROOT-DIR>/a.css";
 const v = "#0F0"
 const $values = {
     "values" : $aValues,
@@ -241,7 +241,7 @@ b
 `;
 
 exports[`@modular-css/css-to-js API should represent external @values: code 1`] = `
-"import { $values as $aValues } from "C:/Users/pcavi/Documents/GitHub/modular-css/a.css";
+"import { $values as $aValues } from "<ROOT-DIR>/a.css";
 const $values = {
     "v" : $aValues["v"],
 };
@@ -258,7 +258,7 @@ b
 `;
 
 exports[`@modular-css/css-to-js API should represent external composition: code 1`] = `
-"import { a } from "C:/Users/pcavi/Documents/GitHub/modular-css/a.css";
+"import { a } from "<ROOT-DIR>/a.css";
 const b = a + " " + "mc71966a67_b"
 export default {
     b
