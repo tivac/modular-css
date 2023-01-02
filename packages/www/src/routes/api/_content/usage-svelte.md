@@ -161,4 +161,4 @@ Pass a previously-created `@modular-css/processor` instance into the preprocesso
 
 ##### Shared Options
 
-All options are passed to the underlying `Processor` instance, see the [Processor Options](#processor-options).
+All options are passed to the underlying `Processor` instance, see the [Processor Options](#direct-usage-js-api-processor-options).

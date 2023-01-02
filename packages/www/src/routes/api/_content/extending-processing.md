@@ -1,6 +1,6 @@
 ### `processing`
 
-The `processing` hook is run after `modular-css` has parsed the file, but before any response to [`processor.string`](#proccesorstringname-css) or [`processor.file`](#processorfilepath) is returned. Plugins in this hook have a special power: they can change the exports of the file.
+The `processing` hook is run after `modular-css` has parsed the file, but before any response to [`processor.string`](#direct-usage-js-api-usage-processorstringname-css) or [`processor.file`](#direct-usage-js-api-usage-processorfilepath) is returned. Plugins in this hook have a special power: they can change the exports of the file.
 
 This works by having the plugin push an object onto the `result.messages` array. Here's a very simple example:
 

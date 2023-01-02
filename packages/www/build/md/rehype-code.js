@@ -1,6 +1,6 @@
 import { u } from "unist-builder";
 import { h as h2 } from "hastscript";
-import lz from "lznext";
+import lz from "lz-string";
 
 import codemirror from "codemirror/addon/runmode/runmode.node.js";
 
