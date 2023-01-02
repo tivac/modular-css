@@ -13,16 +13,13 @@
     "cover": "jest --coverage",
     "lint": "eslint . --max-warnings=0",
     "parsers": "node parsers/build.js",
-    "prerelease": "npm run parsers",
     "release": "changeset publish",
     "test": "jest",
     "test:playwright": "playwright test",
     "start:vite": "vite",
     "watch": "jest --watch",
     "start": "npm start --workspace=@modular-css/www",
-    "prewww:build": "npm run parsers",
     "www:build": "npm run build --workspace=@modular-css/www",
-    "prewww:deploy": "npm run parsers",
     "www:deploy": "npm run build --workspace=@modular-css/www"
   },
   "devDependencies": {
