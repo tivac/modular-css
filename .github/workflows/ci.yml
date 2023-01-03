@@ -11,7 +11,6 @@ on:
 jobs:
   
   lint:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -30,12 +29,15 @@ jobs:
         run: npm run lint --quiet --max-warnings=0
 
   jest-tests:
+    # This shouldn't take long, and if it does something bad has happened and it should be killed
+    timeout-minutes: 20
+    
     env:
       COVERAGE_NODE_VERSION: 16
       COVERAGE_OS: 'ubuntu-latest'
 
     runs-on: ${{ matrix.os }}
-
+    
     strategy:
       matrix:
         node-version: [ 14, 16, 18 ]
@@ -76,7 +78,7 @@ jobs:
         files: ./coverage/coverage-final.json
 
   playwright-tests:
-    timeout-minutes: 60
+    timeout-minutes: 30
     
     runs-on: ubuntu-latest
     
