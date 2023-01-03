@@ -68,10 +68,12 @@
 @value ctaBg: #A3BE8C;
 @value ctaText: #ECEFF4;
 
+.cta {
+    composes: center from "$lib/site.mcss";
+}
+
 .cta,
 .cta:visited {
-    composes: center from "$lib/site.mcss";
-
     margin-top: 2rem;
 
     padding: 2rem 4rem;

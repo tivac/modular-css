@@ -2,7 +2,7 @@
 
 const createParser = require("postcss-selector-parser");
 
-const parser = createParser((selectors) => {
+const classExtractionParser = createParser((selectors) => {
     const values = [];
 
     selectors.walkClasses(({ value }) => values.push(value));
@@ -15,4 +15,4 @@ exports.animations = /animation$|animation-name$/i;
 exports.externals = /:external\(/i;
 
 // Find all classes that comprise a selector and return 'em
-exports.parse = (selector) => parser.transformSync(selector);
+exports.parse = (selector) => classExtractionParser.transformSync(selector);
