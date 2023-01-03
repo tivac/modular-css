@@ -52,9 +52,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     
-    - name: npm update
-      run: npm i npm@latest -g
-
     - name: npm ci
       run: npm ci
     
