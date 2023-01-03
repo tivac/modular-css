@@ -4,26 +4,26 @@ exports[`/webpack.js should accept an existing processor instance 1`] = `
 "/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ \\"./packages/webpack/test/specimens/simple.css\\":
-/*!****************************************************!*\\\\
+/***/ "./packages/webpack/test/specimens/simple.css":
+/*!****************************************************!*\\
   !*** ./packages/webpack/test/specimens/simple.css ***!
-  \\\\****************************************************/
+  \\****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-\\"use strict\\";
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   \\"default\\": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   \\"styles\\": () => (/* binding */ styles),
-/* harmony export */   \\"wooga\\": () => (/* binding */ wooga)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "styles": () => (/* binding */ styles),
+/* harmony export */   "wooga": () => (/* binding */ wooga)
 /* harmony export */ });
-const wooga = \\"mc8d99986b_wooga\\"
+const wooga = "mc8d99986b_wooga"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     wooga
 });
 
 
-const styles = \\".mc8d99986b_wooga { color: red; }\\\\n\\";
+const styles = ".mc8d99986b_wooga { color: red; }\\n";
 
 /***/ })
 
@@ -86,10 +86,10 @@ const styles = \\".mc8d99986b_wooga { color: red; }\\\\n\\";
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!***************************************************!*\\\\
+/*!***************************************************!*\\
   !*** ./packages/webpack/test/specimens/simple.js ***!
-  \\\\***************************************************/
-__webpack_require__(/*! ./simple.css */ \\"./packages/webpack/test/specimens/simple.css\\");
+  \\***************************************************/
+__webpack_require__(/*! ./simple.css */ "./packages/webpack/test/specimens/simple.css");
 
 })();
 
@@ -108,28 +108,28 @@ exports[`/webpack.js should accept an existing processor instance 2`] = `
 
 exports[`/webpack.js should generate correct builds in watch mode when files change 1`] = `
 "/******/ (() => { // webpackBootstrap
-/******/ 	\\"use strict\\";
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ \\"./packages/webpack/test/output/watched.css\\":
-/*!**************************************************!*\\\\
+/***/ "./packages/webpack/test/output/watched.css":
+/*!**************************************************!*\\
   !*** ./packages/webpack/test/output/watched.css ***!
-  \\\\**************************************************/
+  \\**************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   \\"default\\": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   \\"one\\": () => (/* binding */ one),
-/* harmony export */   \\"styles\\": () => (/* binding */ styles)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "one": () => (/* binding */ one),
+/* harmony export */   "styles": () => (/* binding */ styles)
 /* harmony export */ });
-const one = \\"mc_one\\"
+const one = "mc_one"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     one
 });
 
 
-const styles = \\".mc_one { color: red; }\\";
+const styles = ".mc_one { color: red; }";
 
 /***/ })
 
@@ -192,14 +192,14 @@ const styles = \\".mc_one { color: red; }\\";
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!**************************************************!*\\\\
+/*!**************************************************!*\\
   !*** ./packages/webpack/test/specimens/watch.js ***!
-  \\\\**************************************************/
+  \\**************************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _output_watched_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../output/watched.css */ \\"./packages/webpack/test/output/watched.css\\");
+/* harmony import */ var _output_watched_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../output/watched.css */ "./packages/webpack/test/output/watched.css");
 
 
-console.log(_output_watched_css__WEBPACK_IMPORTED_MODULE_0__[\\"default\\"]);
+console.log(_output_watched_css__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 })();
 
@@ -214,28 +214,28 @@ exports[`/webpack.js should generate correct builds in watch mode when files cha
 
 exports[`/webpack.js should generate correct builds in watch mode when files change 3`] = `
 "/******/ (() => { // webpackBootstrap
-/******/ 	\\"use strict\\";
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ \\"./packages/webpack/test/output/watched.css\\":
-/*!**************************************************!*\\\\
+/***/ "./packages/webpack/test/output/watched.css":
+/*!**************************************************!*\\
   !*** ./packages/webpack/test/output/watched.css ***!
-  \\\\**************************************************/
+  \\**************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   \\"default\\": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   \\"styles\\": () => (/* binding */ styles),
-/* harmony export */   \\"two\\": () => (/* binding */ two)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "styles": () => (/* binding */ styles),
+/* harmony export */   "two": () => (/* binding */ two)
 /* harmony export */ });
-const two = \\"mc_two\\"
+const two = "mc_two"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     two
 });
 
 
-const styles = \\".mc_two { color: blue; }\\";
+const styles = ".mc_two { color: blue; }";
 
 /***/ })
 
@@ -298,14 +298,14 @@ const styles = \\".mc_two { color: blue; }\\";
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!**************************************************!*\\\\
+/*!**************************************************!*\\
   !*** ./packages/webpack/test/specimens/watch.js ***!
-  \\\\**************************************************/
+  \\**************************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _output_watched_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../output/watched.css */ \\"./packages/webpack/test/output/watched.css\\");
+/* harmony import */ var _output_watched_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../output/watched.css */ "./packages/webpack/test/output/watched.css");
 
 
-console.log(_output_watched_css__WEBPACK_IMPORTED_MODULE_0__[\\"default\\"]);
+console.log(_output_watched_css__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 })();
 
@@ -640,61 +640,61 @@ exports[`/webpack.js should handle dependencies 1`] = `
 "/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ \\"./packages/webpack/test/specimens/folder/folder.css\\":
-/*!***********************************************************!*\\\\
+/***/ "./packages/webpack/test/specimens/folder/folder.css":
+/*!***********************************************************!*\\
   !*** ./packages/webpack/test/specimens/folder/folder.css ***!
-  \\\\***********************************************************/
+  \\***********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-\\"use strict\\";
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   \\"$values\\": () => (/* binding */ $values),
-/* harmony export */   \\"default\\": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   \\"folder\\": () => (/* binding */ folder1),
-/* harmony export */   \\"styles\\": () => (/* binding */ styles)
+/* harmony export */   "$values": () => (/* binding */ $values),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "folder": () => (/* binding */ folder1),
+/* harmony export */   "styles": () => (/* binding */ styles)
 /* harmony export */ });
-const folder = \\"white\\"
+const folder = "white"
 const $values = {
     folder,
 };
-const folder1 = \\"mc_folder\\"
+const folder1 = "mc_folder"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     $values,
-\\"folder\\" : folder1
+"folder" : folder1
 });
 
 
-const styles = \\".mc_folder { margin: 2px; }\\\\n\\";
+const styles = ".mc_folder { margin: 2px; }\\n";
 
 /***/ }),
 
-/***/ \\"./packages/webpack/test/specimens/local.css\\":
-/*!***************************************************!*\\\\
+/***/ "./packages/webpack/test/specimens/local.css":
+/*!***************************************************!*\\
   !*** ./packages/webpack/test/specimens/local.css ***!
-  \\\\***************************************************/
+  \\***************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-\\"use strict\\";
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   \\"$values\\": () => (/* binding */ $values),
-/* harmony export */   \\"booga\\": () => (/* binding */ booga),
-/* harmony export */   \\"default\\": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   \\"looga\\": () => (/* binding */ looga),
-/* harmony export */   \\"styles\\": () => (/* binding */ styles)
+/* harmony export */   "$values": () => (/* binding */ $values),
+/* harmony export */   "booga": () => (/* binding */ booga),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "looga": () => (/* binding */ looga),
+/* harmony export */   "styles": () => (/* binding */ styles)
 /* harmony export */ });
-/* harmony import */ var _folder_folder_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./folder/folder.css */ \\"./packages/webpack/test/specimens/folder/folder.css\\");
+/* harmony import */ var _folder_folder_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./folder/folder.css */ "./packages/webpack/test/specimens/folder/folder.css");
 
-const one = \\"red\\"
-const two = \\"blue\\"
+const one = "red"
+const two = "blue"
 const $values = {
-    \\"folder\\" : _folder_folder_css__WEBPACK_IMPORTED_MODULE_0__.$values.folder,
+    "folder" : _folder_folder_css__WEBPACK_IMPORTED_MODULE_0__.$values.folder,
 one,
 two,
 };
-const booga = \\"mc_booga\\"
-const looga = booga + \\" \\" + \\"mc_looga\\"
+const booga = "mc_booga"
+const looga = booga + " " + "mc_looga"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     $values,
 booga,
@@ -702,45 +702,45 @@ looga
 });
 
 
-const styles = \\".mc_booga { background: green; }\\\\n\\";
+const styles = ".mc_booga { background: green; }\\n";
 
 /***/ }),
 
-/***/ \\"./packages/webpack/test/specimens/start.css\\":
-/*!***************************************************!*\\\\
+/***/ "./packages/webpack/test/specimens/start.css":
+/*!***************************************************!*\\
   !*** ./packages/webpack/test/specimens/start.css ***!
-  \\\\***************************************************/
+  \\***************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-\\"use strict\\";
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   \\"$values\\": () => (/* binding */ $values),
-/* harmony export */   \\"booga\\": () => (/* binding */ booga1),
-/* harmony export */   \\"default\\": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   \\"styles\\": () => (/* binding */ styles),
-/* harmony export */   \\"tooga\\": () => (/* binding */ tooga),
-/* harmony export */   \\"wooga\\": () => (/* binding */ wooga)
+/* harmony export */   "$values": () => (/* binding */ $values),
+/* harmony export */   "booga": () => (/* binding */ booga1),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "styles": () => (/* binding */ styles),
+/* harmony export */   "tooga": () => (/* binding */ tooga),
+/* harmony export */   "wooga": () => (/* binding */ wooga)
 /* harmony export */ });
-/* harmony import */ var _local_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./local.css */ \\"./packages/webpack/test/specimens/local.css\\");
+/* harmony import */ var _local_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./local.css */ "./packages/webpack/test/specimens/local.css");
 
 const $values = {
-    \\"one\\" : _local_css__WEBPACK_IMPORTED_MODULE_0__.$values.one,
-\\"two\\" : _local_css__WEBPACK_IMPORTED_MODULE_0__.$values.two,
-\\"folder\\" : _local_css__WEBPACK_IMPORTED_MODULE_0__.$values.folder,
+    "one" : _local_css__WEBPACK_IMPORTED_MODULE_0__.$values.one,
+"two" : _local_css__WEBPACK_IMPORTED_MODULE_0__.$values.two,
+"folder" : _local_css__WEBPACK_IMPORTED_MODULE_0__.$values.folder,
 };
-const wooga = _local_css__WEBPACK_IMPORTED_MODULE_0__.booga + \\" \\" + \\"mc_wooga\\"
-const booga1 = \\"mc_booga\\"
-const tooga = \\"mc_tooga\\"
+const wooga = _local_css__WEBPACK_IMPORTED_MODULE_0__.booga + " " + "mc_wooga"
+const booga1 = "mc_booga"
+const tooga = "mc_tooga"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     $values,
 wooga,
-\\"booga\\" : booga1,
+"booga" : booga1,
 tooga
 });
 
 
-const styles = \\".mc_booga { color: red; background: blue; }\\\\n.mc_tooga { border: 1px solid white; }\\\\n\\";
+const styles = ".mc_booga { color: red; background: blue; }\\n.mc_tooga { border: 1px solid white; }\\n";
 
 /***/ })
 
@@ -803,10 +803,10 @@ const styles = \\".mc_booga { color: red; background: blue; }\\\\n.mc_tooga { bo
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!**************************************************!*\\\\
+/*!**************************************************!*\\
   !*** ./packages/webpack/test/specimens/start.js ***!
-  \\\\**************************************************/
-__webpack_require__(/*! ./start.css */ \\"./packages/webpack/test/specimens/start.css\\");
+  \\**************************************************/
+__webpack_require__(/*! ./start.css */ "./packages/webpack/test/specimens/start.css");
 
 })();
 
@@ -827,30 +827,30 @@ exports[`/webpack.js should handle dependencies 2`] = `
 
 exports[`/webpack.js should handle dependencies 3`] = `
 "{
-    \\"packages/webpack/test/specimens/folder/folder.css\\": {
-        \\"folder\\": [
-            \\"mc_folder\\"
+    "packages/webpack/test/specimens/folder/folder.css": {
+        "folder": [
+            "mc_folder"
         ]
     },
-    \\"packages/webpack/test/specimens/local.css\\": {
-        \\"booga\\": [
-            \\"mc_booga\\"
+    "packages/webpack/test/specimens/local.css": {
+        "booga": [
+            "mc_booga"
         ],
-        \\"looga\\": [
-            \\"mc_booga\\",
-            \\"mc_looga\\"
+        "looga": [
+            "mc_booga",
+            "mc_looga"
         ]
     },
-    \\"packages/webpack/test/specimens/start.css\\": {
-        \\"wooga\\": [
-            \\"mc_booga\\",
-            \\"mc_wooga\\"
+    "packages/webpack/test/specimens/start.css": {
+        "wooga": [
+            "mc_booga",
+            "mc_wooga"
         ],
-        \\"booga\\": [
-            \\"mc_booga\\"
+        "booga": [
+            "mc_booga"
         ],
-        \\"tooga\\": [
-            \\"mc_tooga\\"
+        "tooga": [
+            "mc_tooga"
         ]
     }
 }"
@@ -860,26 +860,26 @@ exports[`/webpack.js should output css to disk 1`] = `
 "/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ \\"./packages/webpack/test/specimens/simple.css\\":
-/*!****************************************************!*\\\\
+/***/ "./packages/webpack/test/specimens/simple.css":
+/*!****************************************************!*\\
   !*** ./packages/webpack/test/specimens/simple.css ***!
-  \\\\****************************************************/
+  \\****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-\\"use strict\\";
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   \\"default\\": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   \\"styles\\": () => (/* binding */ styles),
-/* harmony export */   \\"wooga\\": () => (/* binding */ wooga)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "styles": () => (/* binding */ styles),
+/* harmony export */   "wooga": () => (/* binding */ wooga)
 /* harmony export */ });
-const wooga = \\"mc_wooga\\"
+const wooga = "mc_wooga"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     wooga
 });
 
 
-const styles = \\".mc_wooga { color: red; }\\\\n\\";
+const styles = ".mc_wooga { color: red; }\\n";
 
 /***/ })
 
@@ -942,10 +942,10 @@ const styles = \\".mc_wooga { color: red; }\\\\n\\";
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!***************************************************!*\\\\
+/*!***************************************************!*\\
   !*** ./packages/webpack/test/specimens/simple.js ***!
-  \\\\***************************************************/
-__webpack_require__(/*! ./simple.css */ \\"./packages/webpack/test/specimens/simple.css\\");
+  \\***************************************************/
+__webpack_require__(/*! ./simple.css */ "./packages/webpack/test/specimens/simple.css");
 
 })();
 
@@ -959,7 +959,7 @@ exports[`/webpack.js should output css to disk 2`] = `
 "
 `;
 
-exports[`/webpack.js should output external source maps to disk 1`] = `"{\\"version\\":3,\\"sources\\":[\\"packages/webpack/test/specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,+CAAA;AAAA,YAAS,UAAU,EAAE\\",\\"file\\":\\"output.css\\",\\"sourcesContent\\":[\\".wooga { color: red; }\\\\n\\"]}"`;
+exports[`/webpack.js should output external source maps to disk 1`] = `"{"version":3,"sources":["packages/webpack/test/specimens/simple.css"],"names":[],"mappings":"AAAA,+CAAA;AAAA,YAAS,UAAU,EAAE","file":"output.css","sourcesContent":[".wooga { color: red; }\\n"]}"`;
 
 exports[`/webpack.js should output inline source maps 1`] = `
 "/* packages/webpack/test/specimens/simple.css */
@@ -972,26 +972,26 @@ exports[`/webpack.js should output json to disk 1`] = `
 "/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ \\"./packages/webpack/test/specimens/simple.css\\":
-/*!****************************************************!*\\\\
+/***/ "./packages/webpack/test/specimens/simple.css":
+/*!****************************************************!*\\
   !*** ./packages/webpack/test/specimens/simple.css ***!
-  \\\\****************************************************/
+  \\****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-\\"use strict\\";
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   \\"default\\": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   \\"styles\\": () => (/* binding */ styles),
-/* harmony export */   \\"wooga\\": () => (/* binding */ wooga)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "styles": () => (/* binding */ styles),
+/* harmony export */   "wooga": () => (/* binding */ wooga)
 /* harmony export */ });
-const wooga = \\"mc_wooga\\"
+const wooga = "mc_wooga"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     wooga
 });
 
 
-const styles = \\".mc_wooga { color: red; }\\\\n\\";
+const styles = ".mc_wooga { color: red; }\\n";
 
 /***/ })
 
@@ -1054,10 +1054,10 @@ const styles = \\".mc_wooga { color: red; }\\\\n\\";
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!***************************************************!*\\\\
+/*!***************************************************!*\\
   !*** ./packages/webpack/test/specimens/simple.js ***!
-  \\\\***************************************************/
-__webpack_require__(/*! ./simple.css */ \\"./packages/webpack/test/specimens/simple.css\\");
+  \\***************************************************/
+__webpack_require__(/*! ./simple.css */ "./packages/webpack/test/specimens/simple.css");
 
 })();
 
@@ -1067,9 +1067,9 @@ __webpack_require__(/*! ./simple.css */ \\"./packages/webpack/test/specimens/sim
 
 exports[`/webpack.js should output json to disk 2`] = `
 "{
-    \\"packages/webpack/test/specimens/simple.css\\": {
-        \\"wooga\\": [
-            \\"mc_wooga\\"
+    "packages/webpack/test/specimens/simple.css": {
+        "wooga": [
+            "mc_wooga"
         ]
     }
 }"
@@ -1077,29 +1077,29 @@ exports[`/webpack.js should output json to disk 2`] = `
 
 exports[`/webpack.js should support ES2015 default exports 1`] = `
 "/******/ (() => { // webpackBootstrap
-/******/ 	\\"use strict\\";
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ \\"./packages/webpack/test/specimens/es2015.css\\":
-/*!****************************************************!*\\\\
+/***/ "./packages/webpack/test/specimens/es2015.css":
+/*!****************************************************!*\\
   !*** ./packages/webpack/test/specimens/es2015.css ***!
-  \\\\****************************************************/
+  \\****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   \\"$values\\": () => (/* binding */ $values),
-/* harmony export */   \\"a\\": () => (/* binding */ a),
-/* harmony export */   \\"b\\": () => (/* binding */ b),
-/* harmony export */   \\"default\\": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   \\"styles\\": () => (/* binding */ styles)
+/* harmony export */   "$values": () => (/* binding */ $values),
+/* harmony export */   "a": () => (/* binding */ a),
+/* harmony export */   "b": () => (/* binding */ b),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "styles": () => (/* binding */ styles)
 /* harmony export */ });
-const val = \\"\\\\\\"value\\\\\\"\\"
+const val = "\\"value\\""
 const $values = {
     val,
 };
-const a = \\"mc_a\\"
-const b = \\"mc_b\\"
+const a = "mc_a"
+const b = "mc_b"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     $values,
 a,
@@ -1107,7 +1107,7 @@ b
 });
 
 
-const styles = \\".mc_a { color: red; }\\\\n.mc_b { color: blue; }\\\\n\\";
+const styles = ".mc_a { color: red; }\\n.mc_b { color: blue; }\\n";
 
 /***/ })
 
@@ -1170,14 +1170,14 @@ const styles = \\".mc_a { color: red; }\\\\n.mc_b { color: blue; }\\\\n\\";
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!***********************************************************!*\\\\
+/*!***********************************************************!*\\
   !*** ./packages/webpack/test/specimens/es2015-default.js ***!
-  \\\\***********************************************************/
+  \\***********************************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _es2015_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./es2015.css */ \\"./packages/webpack/test/specimens/es2015.css\\");
+/* harmony import */ var _es2015_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./es2015.css */ "./packages/webpack/test/specimens/es2015.css");
 
 
-console.log(_es2015_css__WEBPACK_IMPORTED_MODULE_0__[\\"default\\"]);
+console.log(_es2015_css__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 })();
 
@@ -1194,29 +1194,29 @@ exports[`/webpack.js should support ES2015 default exports 2`] = `
 
 exports[`/webpack.js should support ES2015 named exports 1`] = `
 "/******/ (() => { // webpackBootstrap
-/******/ 	\\"use strict\\";
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ \\"./packages/webpack/test/specimens/es2015.css\\":
-/*!****************************************************!*\\\\
+/***/ "./packages/webpack/test/specimens/es2015.css":
+/*!****************************************************!*\\
   !*** ./packages/webpack/test/specimens/es2015.css ***!
-  \\\\****************************************************/
+  \\****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   \\"$values\\": () => (/* binding */ $values),
-/* harmony export */   \\"a\\": () => (/* binding */ a),
-/* harmony export */   \\"b\\": () => (/* binding */ b),
-/* harmony export */   \\"default\\": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   \\"styles\\": () => (/* binding */ styles)
+/* harmony export */   "$values": () => (/* binding */ $values),
+/* harmony export */   "a": () => (/* binding */ a),
+/* harmony export */   "b": () => (/* binding */ b),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "styles": () => (/* binding */ styles)
 /* harmony export */ });
-const val = \\"\\\\\\"value\\\\\\"\\"
+const val = "\\"value\\""
 const $values = {
     val,
 };
-const a = \\"mc_a\\"
-const b = \\"mc_b\\"
+const a = "mc_a"
+const b = "mc_b"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     $values,
 a,
@@ -1224,7 +1224,7 @@ b
 });
 
 
-const styles = \\".mc_a { color: red; }\\\\n.mc_b { color: blue; }\\\\n\\";
+const styles = ".mc_a { color: red; }\\n.mc_b { color: blue; }\\n";
 
 /***/ })
 
@@ -1287,11 +1287,11 @@ const styles = \\".mc_a { color: red; }\\\\n.mc_b { color: blue; }\\\\n\\";
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*********************************************************!*\\\\
+/*!*********************************************************!*\\
   !*** ./packages/webpack/test/specimens/es2015-named.js ***!
-  \\\\*********************************************************/
+  \\*********************************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _es2015_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./es2015.css */ \\"./packages/webpack/test/specimens/es2015.css\\");
+/* harmony import */ var _es2015_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./es2015.css */ "./packages/webpack/test/specimens/es2015.css");
 
 
 console.log(_es2015_css__WEBPACK_IMPORTED_MODULE_0__.a, _es2015_css__WEBPACK_IMPORTED_MODULE_0__.val);

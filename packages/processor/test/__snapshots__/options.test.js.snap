@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/processor.js options exportGlobals should export :global values by default 1`] = `
-Object {
-  "b": Array [
+{
+  "b": [
     "mc8df92ddf_b",
   ],
 }
 `;
 
 exports[`/processor.js options exportGlobals should not export :global values when exportGlobals is false 1`] = `
-Object {
-  "b": Array [
+{
+  "b": [
     "mc8df92ddf_b",
   ],
 }
@@ -20,7 +20,7 @@ exports[`/processor.js options lifecycle options after should run async postcss 
 "/* packages/processor/test/specimens/relative.css */
 .mc_wooga {
     color: red;
-    background: url(\\"../specimens/folder/to.png\\");
+    background: url("../specimens/folder/to.png");
 }
 a {}
 "
@@ -30,7 +30,7 @@ exports[`/processor.js options lifecycle options after should run sync postcss p
 "/* packages/processor/test/specimens/relative.css */
 .mc_wooga {
     color: red;
-    background: url(\\"../specimens/folder/to.png\\");
+    background: url("../specimens/folder/to.png");
 }
 a {}
 "
@@ -40,7 +40,7 @@ exports[`/processor.js options lifecycle options after should use postcss-url by
 "/* packages/processor/test/specimens/relative.css */
 .mc8e3ffde3_wooga {
     color: red;
-    background: url(\\"../specimens/folder/to.png\\");
+    background: url("../specimens/folder/to.png");
 }
 "
 `;
@@ -66,8 +66,8 @@ a {}"
 `;
 
 exports[`/processor.js options lifecycle options dupewarn should warn on potentially duplicate file paths 1`] = `
-Array [
-  Array [
+[
+  [
     "POTENTIAL DUPLICATE FILES:
 	packages/processor/test/specimens/start.css
 	packages/processor/test/specimens/START.css",
@@ -76,7 +76,7 @@ Array [
 `;
 
 exports[`/processor.js options lifecycle options processing should include exports from 'modular-css-export' modules 1`] = `
-Object {
+{
   "a": true,
   "b": false,
 }
@@ -93,103 +93,103 @@ a {}"
 `;
 
 exports[`/processor.js options lifecycle options verbose should output debugging messages when verbose mode is enabled 1`] = `
-Array [
-  Array [
+[
+  [
     "[processor]",
     "file()",
     "packages/processor/test/specimens/start.css",
   ],
-  Array [
+  [
     "[processor]",
     "_add()",
     "packages/processor/test/specimens/start.css",
   ],
-  Array [
+  [
     "[processor]",
     "_before()",
     "packages/processor/test/specimens/start.css",
   ],
-  Array [
+  [
     "[processor]",
     "file()",
     "packages/processor/test/specimens/local.css",
   ],
-  Array [
+  [
     "[processor]",
     "_add()",
     "packages/processor/test/specimens/local.css",
   ],
-  Array [
+  [
     "[processor]",
     "_before()",
     "packages/processor/test/specimens/local.css",
   ],
-  Array [
+  [
     "[processor]",
     "file()",
     "packages/processor/test/specimens/folder/folder.css",
   ],
-  Array [
+  [
     "[processor]",
     "_add()",
     "packages/processor/test/specimens/folder/folder.css",
   ],
-  Array [
+  [
     "[processor]",
     "_before()",
     "packages/processor/test/specimens/folder/folder.css",
   ],
-  Array [
+  [
     "[processor]",
     "_process()",
     "packages/processor/test/specimens/folder/folder.css",
   ],
-  Array [
+  [
     "[processor]",
     "_process()",
     "packages/processor/test/specimens/local.css",
   ],
-  Array [
+  [
     "[processor]",
     "_process()",
     "packages/processor/test/specimens/start.css",
   ],
-  Array [
+  [
     "[processor]",
     "string()",
     "packages/processor/test/specimens/string.css",
   ],
-  Array [
+  [
     "[processor]",
     "_add()",
     "packages/processor/test/specimens/string.css",
   ],
-  Array [
+  [
     "[processor]",
     "_before()",
     "packages/processor/test/specimens/string.css",
   ],
-  Array [
+  [
     "[processor]",
     "_process()",
     "packages/processor/test/specimens/string.css",
   ],
-  Array [
+  [
     "[processor]",
     "_after()",
     "packages/processor/test/specimens/string.css",
   ],
-  Array [
+  [
     "[processor]",
     "_after()",
     "packages/processor/test/specimens/folder/folder.css",
   ],
-  Array [
+  [
     "[processor]",
     "_after()",
     "packages/processor/test/specimens/local.css",
   ],
-  Array [
+  [
     "[processor]",
     "_after()",
     "packages/processor/test/specimens/start.css",
@@ -222,24 +222,24 @@ exports[`/processor.js options map should generate source maps 1`] = `
 `;
 
 exports[`/processor.js options namer should require a namer if a string is passed 1`] = `
-Object {
-  "wooga": Array [
+{
+  "wooga": [
     "AA",
   ],
 }
 `;
 
 exports[`/processor.js options namer should use a custom naming function 1`] = `
-Object {
-  "wooga": Array [
+{
+  "wooga": [
     "packages_processor_test_specimens_simple_css_wooga",
   ],
 }
 `;
 
 exports[`/processor.js options namer should use a custom naming function 2`] = `
-Object {
-  "wooga": Array [
+{
+  "wooga": [
     "packages_processor_test_specimens_simple_css_wooga",
   ],
 }
@@ -248,8 +248,8 @@ Object {
 exports[`/processor.js options namer should use a custom naming function 3`] = `".packages_processor_test_specimens_simple_css_wooga { }"`;
 
 exports[`/processor.js options namer should use the default naming function if a non-function is passed 1`] = `
-Object {
-  "wooga": Array [
+{
+  "wooga": [
     "mc4a20438a_wooga",
   ],
 }
@@ -265,20 +265,20 @@ exports[`/processor.js options postcss options should support custom parsers 1`]
 exports[`/processor.js options rewrite should not rewrite url() references when falsey 1`] = `
 "/* packages/processor/test/specimens/rewrite.css */
 .mc20ca2799_a {
-    background: url(\\"img.png\\");
+    background: url("img.png");
 }"
 `;
 
 exports[`/processor.js options rewrite should pass through to postcss-url as config 1`] = `
 "/* packages/processor/test/specimens/rewrite.css */
 .mc20ca2799_a {
-    background: url(\\"data:image/png;base64,iVBORwoaCgAAAA1JSERSAAAACgAAAAoIAgAAAAJQWOoAAAABc1JHQgCuzhzpAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4xOdTWsmQAAAAOSURBVChTYxgFJAMGBgABNgABY8OiGAAAAABJRU5ErkJggg==\\");
+    background: url("data:image/png;base64,iVBORwoaCgAAAA1JSERSAAAACgAAAAoIAgAAAAJQWOoAAAABc1JHQgCuzhzpAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4xOdTWsmQAAAAOSURBVChTYxgFJAMGBgABNgABY8OiGAAAAABJRU5ErkJggg==");
 }"
 `;
 
 exports[`/processor.js options rewrite should rewrite url() references by default 1`] = `
 "/* packages/processor/test/specimens/rewrite.css */
 .mc20ca2799_a {
-    background: url(\\"../specimens/img.png\\");
+    background: url("../specimens/img.png");
 }"
 `;

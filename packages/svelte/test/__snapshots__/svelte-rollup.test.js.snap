@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/svelte.js rollup chunking should correctly chunk svelte files using inline <style> 1`] = `
-Object {
+{
   "a-dep.css": "
 /* packages/svelte/test/specimens/inline-chunking/a-dep.css */
 .mc6ca450b0_adep {
@@ -36,8 +36,8 @@ Object {
 `;
 
 exports[`/svelte.js rollup errors should show useful errors from rollup (non-css file) 1`] = `
-Array [
-  Array [
+[
+  [
     "Possible invalid <link> href: ./error-link.svelte",
   ],
 ]

@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/processor.js composition should allow comments before composes 1`] = `
-Object {
-  "multiple-composes.css": Object {
-    "a": Array [
+{
+  "multiple-composes.css": {
+    "a": [
       "mc_a",
     ],
-    "b": Array [
+    "b": [
       "mc_a",
       "mc_b",
     ],
@@ -15,16 +15,16 @@ Object {
 `;
 
 exports[`/processor.js composition should allow composes anywhere 1`] = `
-Object {
-  "multiple-composes.css": Object {
-    "a": Array [
+{
+  "multiple-composes.css": {
+    "a": [
       "mc_a",
     ],
-    "b": Array [
+    "b": [
       "mc_a",
       "mc_b",
     ],
-    "c": Array [
+    "c": [
       "mc_a",
       "mc_b",
       "mc_c",
@@ -34,13 +34,13 @@ Object {
 `;
 
 exports[`/processor.js composition should compose a single class (multi-rule dependent class) 1`] = `
-Object {
-  "single-composes.css": Object {
-    "a": Array [
+{
+  "single-composes.css": {
+    "a": [
       "mc_b",
       "mc_a",
     ],
-    "b": Array [
+    "b": [
       "mc_b",
     ],
   },
@@ -48,12 +48,12 @@ Object {
 `;
 
 exports[`/processor.js composition should compose a single class 1`] = `
-Object {
-  "single-composes.css": Object {
-    "a": Array [
+{
+  "single-composes.css": {
+    "a": [
       "mc_a",
     ],
-    "b": Array [
+    "b": [
       "mc_a",
       "mc_b",
     ],
@@ -62,9 +62,9 @@ Object {
 `;
 
 exports[`/processor.js composition should compose from global keyword 1`] = `
-Object {
-  "global-compose.css": Object {
-    "a": Array [
+{
+  "global-compose.css": {
+    "a": [
       "b",
       "c",
       "d",
@@ -75,9 +75,9 @@ Object {
 `;
 
 exports[`/processor.js composition should compose from globals 1`] = `
-Object {
-  "global-compose.css": Object {
-    "a": Array [
+{
+  "global-compose.css": {
+    "a": [
       "b",
       "mc_a",
     ],
@@ -86,34 +86,34 @@ Object {
 `;
 
 exports[`/processor.js composition should compose from other files and locally 1`] = `
-Object {
-  "packages/processor/test/specimens/composes/external-second-and-local-first-composes.css": Object {
-    "custom": Array [
+{
+  "packages/processor/test/specimens/composes/external-second-and-local-first-composes.css": {
+    "custom": [
       "mc_custom",
     ],
-    "externalComposeRule": Array [
+    "externalComposeRule": [
       "mc_custom",
       "mc_red",
       "mc_externalComposeRule",
     ],
   },
-  "packages/processor/test/specimens/deps/classes.css": Object {
-    "block": Array [
+  "packages/processor/test/specimens/deps/classes.css": {
+    "block": [
       "mc_block",
     ],
-    "blue": Array [
+    "blue": [
       "mc_blue",
     ],
-    "flex": Array [
+    "flex": [
       "mc_flex",
     ],
-    "green": Array [
+    "green": [
       "mc_green",
     ],
-    "red": Array [
+    "red": [
       "mc_red",
     ],
-    "yellow": Array [
+    "yellow": [
       "mc_yellow",
     ],
   },
@@ -121,31 +121,31 @@ Object {
 `;
 
 exports[`/processor.js composition should compose from other files in multiple declarations 1`] = `
-Object {
-  "packages/processor/test/specimens/composes/external-composes-multiple-declarations.css": Object {
-    "ruleWithComposes": Array [
+{
+  "packages/processor/test/specimens/composes/external-composes-multiple-declarations.css": {
+    "ruleWithComposes": [
       "mc_red",
       "mc_blue",
       "mc_ruleWithComposes",
     ],
   },
-  "packages/processor/test/specimens/deps/classes.css": Object {
-    "block": Array [
+  "packages/processor/test/specimens/deps/classes.css": {
+    "block": [
       "mc_block",
     ],
-    "blue": Array [
+    "blue": [
       "mc_blue",
     ],
-    "flex": Array [
+    "flex": [
       "mc_flex",
     ],
-    "green": Array [
+    "green": [
       "mc_green",
     ],
-    "red": Array [
+    "red": [
       "mc_red",
     ],
-    "yellow": Array [
+    "yellow": [
       "mc_yellow",
     ],
   },
@@ -153,42 +153,42 @@ Object {
 `;
 
 exports[`/processor.js composition should compose from other files in multiple declarations via local compose 1`] = `
-Object {
-  "packages/processor/test/specimens/composes/external-compose-via-local-compose.css": Object {
-    "nextRuleWithLocalComposes": Array [
+{
+  "packages/processor/test/specimens/composes/external-compose-via-local-compose.css": {
+    "nextRuleWithLocalComposes": [
       "mc_red",
       "mc_ruleWithSingleCompose",
       "mc_blue",
       "mc_nextRuleWithLocalComposes",
     ],
-    "ruleWithLocalComposes": Array [
+    "ruleWithLocalComposes": [
       "mc_red",
       "mc_ruleWithSingleCompose",
       "mc_blue",
       "mc_ruleWithLocalComposes",
     ],
-    "ruleWithSingleCompose": Array [
+    "ruleWithSingleCompose": [
       "mc_red",
       "mc_ruleWithSingleCompose",
     ],
   },
-  "packages/processor/test/specimens/deps/classes.css": Object {
-    "block": Array [
+  "packages/processor/test/specimens/deps/classes.css": {
+    "block": [
       "mc_block",
     ],
-    "blue": Array [
+    "blue": [
       "mc_blue",
     ],
-    "flex": Array [
+    "flex": [
       "mc_flex",
     ],
-    "green": Array [
+    "green": [
       "mc_green",
     ],
-    "red": Array [
+    "red": [
       "mc_red",
     ],
-    "yellow": Array [
+    "yellow": [
       "mc_yellow",
     ],
   },
@@ -196,36 +196,36 @@ Object {
 `;
 
 exports[`/processor.js composition should compose from other files in multiple declarations via local compose 2 1`] = `
-Object {
-  "packages/processor/test/specimens/composes/external-compose-via-local-compose2.css": Object {
-    "ruleWithLocalComposes": Array [
+{
+  "packages/processor/test/specimens/composes/external-compose-via-local-compose2.css": {
+    "ruleWithLocalComposes": [
       "mc_blue",
       "mc_red",
       "mc_ruleWithSingleCompose",
       "mc_ruleWithLocalComposes",
     ],
-    "ruleWithSingleCompose": Array [
+    "ruleWithSingleCompose": [
       "mc_red",
       "mc_ruleWithSingleCompose",
     ],
   },
-  "packages/processor/test/specimens/deps/classes.css": Object {
-    "block": Array [
+  "packages/processor/test/specimens/deps/classes.css": {
+    "block": [
       "mc_block",
     ],
-    "blue": Array [
+    "blue": [
       "mc_blue",
     ],
-    "flex": Array [
+    "flex": [
       "mc_flex",
     ],
-    "green": Array [
+    "green": [
       "mc_green",
     ],
-    "red": Array [
+    "red": [
       "mc_red",
     ],
-    "yellow": Array [
+    "yellow": [
       "mc_yellow",
     ],
   },
@@ -233,36 +233,36 @@ Object {
 `;
 
 exports[`/processor.js composition should compose from other files in multiple declarations via local compose 3 1`] = `
-Object {
-  "packages/processor/test/specimens/composes/external-compose-via-local-compose3.css": Object {
-    "ruleWithLocalComposes": Array [
+{
+  "packages/processor/test/specimens/composes/external-compose-via-local-compose3.css": {
+    "ruleWithLocalComposes": [
       "mc_red",
       "mc_ruleWithSingleCompose",
       "mc_blue",
       "mc_ruleWithLocalComposes",
     ],
-    "ruleWithSingleCompose": Array [
+    "ruleWithSingleCompose": [
       "mc_red",
       "mc_ruleWithSingleCompose",
     ],
   },
-  "packages/processor/test/specimens/deps/classes.css": Object {
-    "block": Array [
+  "packages/processor/test/specimens/deps/classes.css": {
+    "block": [
       "mc_block",
     ],
-    "blue": Array [
+    "blue": [
       "mc_blue",
     ],
-    "flex": Array [
+    "flex": [
       "mc_flex",
     ],
-    "green": Array [
+    "green": [
       "mc_green",
     ],
-    "red": Array [
+    "red": [
       "mc_red",
     ],
-    "yellow": Array [
+    "yellow": [
       "mc_yellow",
     ],
   },
@@ -270,36 +270,36 @@ Object {
 `;
 
 exports[`/processor.js composition should compose from other files in multiple declarations via local compose 4 1`] = `
-Object {
-  "packages/processor/test/specimens/composes/external-compose-via-local-compose4.css": Object {
-    "ruleWithLocalComposes": Array [
+{
+  "packages/processor/test/specimens/composes/external-compose-via-local-compose4.css": {
+    "ruleWithLocalComposes": [
       "mc_blue",
       "mc_red",
       "mc_ruleWithSingleCompose",
       "mc_ruleWithLocalComposes",
     ],
-    "ruleWithSingleCompose": Array [
+    "ruleWithSingleCompose": [
       "mc_red",
       "mc_ruleWithSingleCompose",
     ],
   },
-  "packages/processor/test/specimens/deps/classes.css": Object {
-    "block": Array [
+  "packages/processor/test/specimens/deps/classes.css": {
+    "block": [
       "mc_block",
     ],
-    "blue": Array [
+    "blue": [
       "mc_blue",
     ],
-    "flex": Array [
+    "flex": [
       "mc_flex",
     ],
-    "green": Array [
+    "green": [
       "mc_green",
     ],
-    "red": Array [
+    "red": [
       "mc_red",
     ],
-    "yellow": Array [
+    "yellow": [
       "mc_yellow",
     ],
   },
@@ -307,31 +307,31 @@ Object {
 `;
 
 exports[`/processor.js composition should compose from other files in single declaration 1`] = `
-Object {
-  "packages/processor/test/specimens/composes/external-composes-single-declaration.css": Object {
-    "ruleWithComposes": Array [
+{
+  "packages/processor/test/specimens/composes/external-composes-single-declaration.css": {
+    "ruleWithComposes": [
       "mc_red",
       "mc_blue",
       "mc_ruleWithComposes",
     ],
   },
-  "packages/processor/test/specimens/deps/classes.css": Object {
-    "block": Array [
+  "packages/processor/test/specimens/deps/classes.css": {
+    "block": [
       "mc_block",
     ],
-    "blue": Array [
+    "blue": [
       "mc_blue",
     ],
-    "flex": Array [
+    "flex": [
       "mc_flex",
     ],
-    "green": Array [
+    "green": [
       "mc_green",
     ],
-    "red": Array [
+    "red": [
       "mc_red",
     ],
-    "yellow": Array [
+    "yellow": [
       "mc_yellow",
     ],
   },
@@ -339,34 +339,34 @@ Object {
 `;
 
 exports[`/processor.js composition should compose locally and from other files 1`] = `
-Object {
-  "packages/processor/test/specimens/composes/external-first-and-local-second-composes.css": Object {
-    "custom": Array [
+{
+  "packages/processor/test/specimens/composes/external-first-and-local-second-composes.css": {
+    "custom": [
       "mc_custom",
     ],
-    "externalComposeRule": Array [
+    "externalComposeRule": [
       "mc_red",
       "mc_custom",
       "mc_externalComposeRule",
     ],
   },
-  "packages/processor/test/specimens/deps/classes.css": Object {
-    "block": Array [
+  "packages/processor/test/specimens/deps/classes.css": {
+    "block": [
       "mc_block",
     ],
-    "blue": Array [
+    "blue": [
       "mc_blue",
     ],
-    "flex": Array [
+    "flex": [
       "mc_flex",
     ],
-    "green": Array [
+    "green": [
       "mc_green",
     ],
-    "red": Array [
+    "red": [
       "mc_red",
     ],
-    "yellow": Array [
+    "yellow": [
       "mc_yellow",
     ],
   },
@@ -374,17 +374,17 @@ Object {
 `;
 
 exports[`/processor.js composition should compose multiple classes (multi-rule dependent class) 1`] = `
-Object {
-  "multiple-composes.css": Object {
-    "a": Array [
+{
+  "multiple-composes.css": {
+    "a": [
       "mc_a",
     ],
-    "b": Array [
+    "b": [
       "mc_a",
       "mc_c",
       "mc_b",
     ],
-    "c": Array [
+    "c": [
       "mc_c",
     ],
   },
@@ -392,15 +392,15 @@ Object {
 `;
 
 exports[`/processor.js composition should compose multiple classes (multiple declarations) 1`] = `
-Object {
-  "multiple-composes.css": Object {
-    "a": Array [
+{
+  "multiple-composes.css": {
+    "a": [
       "mc_a",
     ],
-    "b": Array [
+    "b": [
       "mc_b",
     ],
-    "c": Array [
+    "c": [
       "mc_a",
       "mc_b",
       "mc_c",
@@ -410,15 +410,15 @@ Object {
 `;
 
 exports[`/processor.js composition should compose multiple classes (single declaration) 1`] = `
-Object {
-  "multiple-composes.css": Object {
-    "a": Array [
+{
+  "multiple-composes.css": {
+    "a": [
       "mc_a",
     ],
-    "b": Array [
+    "b": [
       "mc_b",
     ],
-    "c": Array [
+    "c": [
       "mc_a",
       "mc_b",
       "mc_c",
@@ -428,13 +428,13 @@ Object {
 `;
 
 exports[`/processor.js composition should compose with escaped classes 1`] = `
-Object {
-  "escaped-classes.css": Object {
-    "c": Array [
+{
+  "escaped-classes.css": {
+    "c": [
       "mc_sm:foo",
       "mc_c",
     ],
-    "sm:foo": Array [
+    "sm:foo": [
       "mc_sm:foo",
     ],
   },

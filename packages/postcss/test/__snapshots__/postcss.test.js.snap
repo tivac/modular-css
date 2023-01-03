@@ -2,25 +2,25 @@
 
 exports[`/postcss.js should accept a \`json\` property and write exports to that file 1`] = `
 "{
-    \\"packages/postcss/test/specimens/folder/folder.css\\": {
-        \\"folder\\": \\"mc_folder\\"
+    "packages/postcss/test/specimens/folder/folder.css": {
+        "folder": "mc_folder"
     },
-    \\"packages/postcss/test/specimens/local.css\\": {
-        \\"booga\\": \\"mc_booga\\",
-        \\"looga\\": \\"mc_booga mc_looga\\"
+    "packages/postcss/test/specimens/local.css": {
+        "booga": "mc_booga",
+        "looga": "mc_booga mc_looga"
     },
-    \\"packages/postcss/test/specimens/start.css\\": {
-        \\"wooga\\": \\"mc_booga mc_wooga\\",
-        \\"booga\\": \\"mc_booga\\",
-        \\"tooga\\": \\"mc_tooga\\"
+    "packages/postcss/test/specimens/start.css": {
+        "wooga": "mc_booga mc_wooga",
+        "booga": "mc_booga",
+        "tooga": "mc_tooga"
     }
 }"
 `;
 
 exports[`/postcss.js should accept json args in either position with postcss 1`] = `
 "{
-    \\"packages/postcss/test/specimens/simple.css\\": {
-        \\"wooga\\": \\"mc_wooga\\"
+    "packages/postcss/test/specimens/simple.css": {
+        "wooga": "mc_wooga"
     }
 }"
 `;
@@ -37,17 +37,17 @@ exports[`/postcss.js should be usable like a normal postcss plugin 1`] = `
 
 exports[`/postcss.js should output json when used within postcss 1`] = `
 "{
-    \\"packages/postcss/test/specimens/simple.css\\": {
-        \\"wooga\\": \\"mc_wooga\\"
+    "packages/postcss/test/specimens/simple.css": {
+        "wooga": "mc_wooga"
     }
 }"
 `;
 
 exports[`/postcss.js should process CSS and output exports as a message 1`] = `
-Array [
-  Object {
-    "exports": Object {
-      "wooga": Array [
+[
+  {
+    "exports": {
+      "wooga": [
         "mc_wooga",
       ],
     },
@@ -69,17 +69,17 @@ exports[`/postcss.js should process CSS with dependencies and output the result 
 
 exports[`/postcss.js should use output filepath for json if a custom path isn't provided 1`] = `
 "{
-    \\"packages/postcss/test/specimens/folder/folder.css\\": {
-        \\"folder\\": \\"mc_folder\\"
+    "packages/postcss/test/specimens/folder/folder.css": {
+        "folder": "mc_folder"
     },
-    \\"packages/postcss/test/specimens/local.css\\": {
-        \\"booga\\": \\"mc_booga\\",
-        \\"looga\\": \\"mc_booga mc_looga\\"
+    "packages/postcss/test/specimens/local.css": {
+        "booga": "mc_booga",
+        "looga": "mc_booga mc_looga"
     },
-    \\"packages/postcss/test/specimens/start.css\\": {
-        \\"wooga\\": \\"mc_booga mc_wooga\\",
-        \\"booga\\": \\"mc_booga\\",
-        \\"tooga\\": \\"mc_tooga\\"
+    "packages/postcss/test/specimens/start.css": {
+        "wooga": "mc_booga mc_wooga",
+        "booga": "mc_booga",
+        "tooga": "mc_tooga"
     }
 }"
 `;

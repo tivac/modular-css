@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/processor.js getters .file should return all the files that have been added 1`] = `
-Array [
+[
   "packages/processor/test/specimens/start.css",
   "packages/processor/test/specimens/local.css",
   "packages/processor/test/specimens/folder/folder.css",

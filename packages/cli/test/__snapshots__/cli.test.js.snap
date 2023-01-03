@@ -23,15 +23,15 @@ exports[`/cli.js should show help with no args 1`] = `
 exports[`/cli.js should support disabling url() rewriting (--no-rewrite) 1`] = `
 "/* packages/cli/test/specimens/no-rewrite.css */
 .mc0d1faef2_a {
-    background: url(\\"image.png\\");
+    background: url("image.png");
 }
 "
 `;
 
 exports[`/cli.js should support outputting compositions to a file (--json) 1`] = `
 "{
-    \\"packages/cli/test/specimens/simple.css\\": {
-        \\"wooga\\": \\"mc73666a66_wooga\\"
+    "packages/cli/test/specimens/simple.css": {
+        "wooga": "mc73666a66_wooga"
     }
 }"
 `;
