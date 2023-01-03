@@ -15,7 +15,7 @@ const validationParser = createParser((selectors) => {
         return false;
     }
 
-    return selector.nodes.at(0).type === "class";
+    return selector.nodes[0].type === "class";
 });
 
 
