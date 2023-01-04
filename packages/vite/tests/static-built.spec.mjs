@@ -1,8 +1,9 @@
 import { test, expect } from "@playwright/test";
 
+
 test.beforeEach(async ({ page }) => {
-    await page.goto("/");
-})
+    await page.goto("http://127.0.0.1:5174/static/");
+});
 
 test("a is right", async ({ page }) => {
     const el = await page.getByText("A");

@@ -1,0 +1,7 @@
+.c {
+    background-color: blue;
+    color: green;
+
+    width: 100px;
+    height: 100px;
+}

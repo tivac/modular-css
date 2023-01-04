@@ -16,7 +16,6 @@
     "release": "changeset publish",
     "test": "jest",
     "test:playwright": "playwright test",
-    "start:vite": "vite",
     "watch": "jest --watch",
     "start": "npm start --workspace=@modular-css/www",
     "www:build": "npm run build --workspace=@modular-css/www",
