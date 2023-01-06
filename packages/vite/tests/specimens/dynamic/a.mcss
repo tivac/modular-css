@@ -1,5 +1,5 @@
 .a {
-    composes: c from "./c.mcss";
+    composes: c from "../shared/dynamic-c.mcss";
 
     color: red;
 }
