@@ -7,8 +7,8 @@ const sink    = require("sink-transform");
 const mkdirp  = require("mkdirp");
 const each    = require("p-each-series");
 const Processor = require("@modular-css/processor");
-const relative  = require("@modular-css/processor/lib/relative.js");
-const output    = require("@modular-css/processor/lib/output.js");
+const relative  = require("@modular-css/utils/relative.js");
+const output    = require("@modular-css/utils/output.js");
 const prefixRegex = /^\.\.?\//;
 
 const prefixed = (cwd, file) => {

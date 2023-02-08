@@ -5,7 +5,7 @@ const path = require("path");
 const mkdirp  = require("mkdirp");
 
 const Processor = require("@modular-css/processor");
-const { json : createJson } = require("@modular-css/processor/lib/output.js");
+const { json : createJson } = require("@modular-css/utils/output.js");
 
 module.exports = (opts = {}) => ({
     postcssPlugin : "modular-css-postcss",

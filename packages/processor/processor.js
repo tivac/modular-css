@@ -6,10 +6,11 @@ const Graph = require("dependency-graph").DepGraph;
 const postcss = require("postcss");
 const slug = require("unique-slug");
 const postcssUrl = require("postcss-url");
+const relative = require("@modular-css/utils/relative.js");
 
-const { compositions, fileCompositions } = require("./lib/output.js");
+const { compositions, fileCompositions } = require("@modular-css/utils/output.js");
+const keys = require("@modular-css/utils/keys.js");
 
-const relative = require("./lib/relative.js");
 const tiered = require("./lib/graph-tiers.js");
 const normalize = require("./lib/normalize.js");
 const { resolvers } = require("./lib/resolve.js");
@@ -22,8 +23,6 @@ const pluginScoping = require("./plugins/scoping.js");
 const pluginValuesImport = require("./plugins/values-import.js");
 const pluginValuesLocal = require("./plugins/before/values-local.js");
 const pluginValuesReplace = require("./plugins/values-replace.js");
-
-const keys = require("./lib/keys.js");
 
 const {
     selectorKey,

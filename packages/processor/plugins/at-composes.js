@@ -1,8 +1,8 @@
 "use strict";
 
-const parser = require("../parsers/at-composes.js");
+const { selectorKey } = require("@modular-css/utils/keys.js");
 
-const { selectorKey } = require("../lib/keys.js");
+const parser = require("../parsers/at-composes.js");
 
 const plugin = "modular-css-at-composes";
 

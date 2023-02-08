@@ -1,9 +1,9 @@
 "use strict";
 
-const identifiers = require("../lib/identifiers.js");
-const { selectorKey } = require("../lib/keys.js");
-const relative = require("../lib/relative.js");
+const relative = require("@modular-css/utils/relative.js");
+const { selectorKey } = require("@modular-css/utils/keys.js");
 
+const identifiers = require("../lib/identifiers.js");
 const parser = require("../parsers/composes.js");
 
 const plugin = "modular-css-composition";

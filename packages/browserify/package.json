@@ -28,6 +28,7 @@
   ],
   "dependencies": {
     "@modular-css/processor": "^28.1.5",
+    "@modular-css/utils": "^28.0.0",
     "mkdirp": "^1.0.3",
     "p-each-series": "^2.0.0",
     "sink-transform": "^2.0.0",

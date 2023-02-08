@@ -1,5 +1,5 @@
 {
-  "name": "@modular-css/shortnames",
+  "name": "@modular-css/namers",
   "version": "28.0.0",
   "description": "Helper function to make tiny classnames for modular-css",
   "main": "namer.js",
@@ -24,6 +24,8 @@
     "build"
   ],
   "dependencies": {
-    "alphabet": "^1.0.0"
+    "@modular-css/utils": "^28.0.0",
+    "alphabet": "^1.0.0",
+    "unique-slug": "^2.0.0"
   }
 }

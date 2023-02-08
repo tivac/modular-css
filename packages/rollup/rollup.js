@@ -5,8 +5,8 @@ const path = require("path");
 const utils = require("@rollup/pluginutils");
 
 const Processor = require("@modular-css/processor");
-const output = require("@modular-css/processor/lib/output.js");
-const relative = require("@modular-css/processor/lib/relative.js");
+const output = require("@modular-css/utils/output.js");
+const relative = require("@modular-css/utils/relative.js");
 const { transform } = require("@modular-css/css-to-js");
 
 const DEFAULT_EXT = ".css";

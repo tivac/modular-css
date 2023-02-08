@@ -7,7 +7,7 @@ const identifierfy = require("identifierfy");
 const extend = require("just-extend");
 
 const Processor = require("@modular-css/processor");
-const relative = require("@modular-css/processor/lib/relative.js");
+const relative = require("@modular-css/utils/relative.js");
 
 const slash = (file) => file.replace(/\/|\\/g, "/");
 

@@ -1,11 +1,11 @@
 ### Namer
 
-Tiny classnames for [`modular-css`](https://github.com/tivac/modular-css) production builds!
+Tiny classnames for production builds via the `short()` export, and longer names for dev via `long()`!
 
 #### Install
 
 ```bash
-> npm install @modular-css/shortnames
+> npm install @modular-css/namers
 ```
 
 #### Usage
@@ -14,33 +14,30 @@ Tiny classnames for [`modular-css`](https://github.com/tivac/modular-css) produc
 
 ```js
 const Processor = require("@modular-css/processor");
+const { short } = require("@modular-css/namers");
+
+const namer = short();
+
 const processor = new Processor({
-    namer : require("@modular-css/shortnames")()
+    namer,
 });
     
-// ...
-```
-
-##### Browserify
-
-```js
-build.plugin("@modular-css/browserify", {
-    css   : "./style.css",
-    namer : require("@modular-css/shortnames")()
-});
-
 // ...
 ```
 
 ##### Rollup
 
 ```js
+const { short } = require("@modular-css/namers");
+
+const namer = short();
+
 rollup({
     entry   : "./index.js",
     plugins : [
         require("@modular-css/rollup")({
-            css   : "./gen/index.css",
-            namer : require("@modular-css/shortnames")()
+            css : "./gen/index.css",
+            namer,
         })
     ]
 });

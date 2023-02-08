@@ -7,7 +7,7 @@ const path = require("path");
 
 const mkdirp = require("mkdirp");
 const glob = require("@modular-css/glob");
-const output = require("@modular-css/processor/lib/output.js");
+const output = require("@modular-css/utils/output.js");
 
 const cli = require("meow")(`
     Usage

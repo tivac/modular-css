@@ -1,7 +1,7 @@
 "use strict";
 
-const relative = require("./relative.js");
 const { selectorKey } = require("./keys.js");
+const relative = require("./relative.js");
 
 exports.join = (value) => value.join(" ");
 

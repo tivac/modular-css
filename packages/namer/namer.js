@@ -1,6 +1,9 @@
 "use strict";
 
+const slug = require("unique-slug");
 const letters = require("alphabet");
+const relative = require("@modular-css/utils/relative.js");
+
 const everything = [ ...letters, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
 
 function value(source, count) {
@@ -16,7 +19,7 @@ function value(source, count) {
     return out;
 }
 
-module.exports = () => {
+exports.short = () => {
     const meta  = new Map();
     const cache = new Map();
     
@@ -46,3 +49,6 @@ module.exports = () => {
         return output;
     };
 };
+
+exports.long = (cwd) => (file, selector) =>
+    `mc${slug(relative(cwd, file))}_${selector}`;

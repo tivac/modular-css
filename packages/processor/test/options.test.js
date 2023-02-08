@@ -64,9 +64,11 @@ describe("/processor.js", () => {
                 expect(details.processed.root.toResult().css).toMatchSnapshot();
             });
 
-            it("should require a namer if a string is passed", async () => {
+            it("should support @modular-css/namers", async () => {
+                const { short } = require("@modular-css/namers");
+
                 const processor = new Processor({
-                    namer : "@modular-css/shortnames",
+                    namer : short,
                 });
 
                 const result = await processor.string(

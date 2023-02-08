@@ -1,4 +1,4 @@
-@modular-css/shortnames [![NPM Version](https://img.shields.io/npm/v/@modular-css/shortnames.svg)](https://www.npmjs.com/package/@modular-css/shortnames) [![NPM License](https://img.shields.io/npm/l/@modular-css/shortnames.svg)](https://www.npmjs.com/package/@modular-css/shortnames) [![NPM Downloads](https://img.shields.io/npm/dm/@modular-css/shortnames.svg)](https://www.npmjs.com/package/@modular-css/shortnames)
+@modular-css/namers [![NPM Version](https://img.shields.io/npm/v/@modular-css/namers.svg)](https://www.npmjs.com/package/@modular-css/namers) [![NPM License](https://img.shields.io/npm/l/@modular-css/namers.svg)](https://www.npmjs.com/package/@modular-css/namers) [![NPM Downloads](https://img.shields.io/npm/dm/@modular-css/namers.svg)](https://www.npmjs.com/package/@modular-css/namers)
 =================
 
 Tiny classnames for [`modular-css`](https://github.com/tivac/modular-css) production builds!
@@ -9,48 +9,45 @@ Tiny classnames for [`modular-css`](https://github.com/tivac/modular-css) produc
 ## Install
 
 ```bash
-> npm install @modular-css/shortnames
+> npm install @modular-css/namers
 ```
 
-## Usage
+#### Usage
 
-### JS API
+##### JS API
 
 ```js
 const Processor = require("@modular-css/processor");
+const { short } = require("@modular-css/namers");
+
+const namer = short();
+
 const processor = new Processor({
-    namer : require("@modular-css/shortnames")()
+    namer,
 });
     
 // ...
 ```
 
-### Browserify
+##### Rollup
 
 ```js
-build.plugin("@modular-css/browserify", {
-    css   : "./style.css",
-    namer : require("@modular-css/shortnames")()
-});
+const { short } = require("@modular-css/namers");
 
-// ...
-```
+const namer = short();
 
-### Rollup
-
-```js
 rollup({
     entry   : "./index.js",
     plugins : [
         require("@modular-css/rollup")({
-            css   : "./gen/index.css",
-            namer : require("@modular-css/shortnames")()
+            css : "./gen/index.css",
+            namer,
         })
     ]
 });
 ```
 
-## Example output
+#### Example output
 
 ```css
 /* one.css */

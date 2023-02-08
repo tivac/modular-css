@@ -30,7 +30,7 @@
     "@codemirror/view": "^6.4.0",
     "@modular-css/path-aliases": "^28.0.0",
     "@modular-css/processor": "^28.0.0",
-    "@modular-css/shortnames": "^28.0.0",
+    "@modular-css/namers": "^28.0.0",
     "@modular-css/svelte": "^28.0.0",
     "@modular-css/vite": "^28.0.0",
     "@playwright/test": "^1.28.1",

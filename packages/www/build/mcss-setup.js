@@ -1,6 +1,6 @@
 import preprocessor from "@modular-css/svelte";
 import aliases from "@modular-css/path-aliases";
-import namer from "@modular-css/shortnames";
+import { short, long } from "@modular-css/namers";
 import postcssNested from "postcss-nested";
 
 const isProd = process.env.NODE_ENV === "production";
@@ -19,7 +19,7 @@ const { preprocess, processor } = preprocessor({
     verbose : false,
 
     // Crank down names in prod to be itty-bitty
-    namer : isProd ? namer() : null,
+    namer : isProd ? short() : long(),
 
     // Bring sveltekit aliases into m-css
     resolvers : [
