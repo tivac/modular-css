@@ -3,7 +3,8 @@
 const selectorParser = require("postcss-selector-parser");
 const valueParser = require("postcss-value-parser");
 
-const identifiers = require("../lib/identifiers.js");
+const identifiers = require("@modular-css/utils/identifiers.js");
+
 const { isStamped, stamp } = require("../lib/stamp.js");
 
 const reuse  = "Unable to re-use the same selector for global & local";

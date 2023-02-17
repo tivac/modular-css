@@ -22,5 +22,8 @@
     "css-modules",
     "modular-css",
     "utils"
-  ]
+  ],
+  "dependencies": {
+    "postcss-selector-parser": "^6.0.2"
+  }
 }

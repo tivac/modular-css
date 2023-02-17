@@ -4,10 +4,11 @@ const path = require("path");
 
 const Graph = require("dependency-graph").DepGraph;
 const postcss = require("postcss");
-const slug = require("unique-slug");
 const postcssUrl = require("postcss-url");
-const relative = require("@modular-css/utils/relative.js");
 
+const { long } = require("@modular-css/namers");
+
+const relative = require("@modular-css/utils/relative.js");
 const { compositions, fileCompositions } = require("@modular-css/utils/output.js");
 const keys = require("@modular-css/utils/keys.js");
 
@@ -96,13 +97,8 @@ class Processor {
             options.cwd = path.resolve(options.cwd);
         }
 
-        if(typeof options.namer === "string") {
-            options.namer = require(options.namer)();
-        }
-
         if(typeof options.namer !== "function") {
-            options.namer = (file, selector) =>
-                `mc${slug(relative(options.cwd, file))}_${selector}`;
+            options.namer = long;
         }
 
         // eslint-disable-next-line no-console, no-empty-function -- logging!

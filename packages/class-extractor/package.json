@@ -25,5 +25,11 @@
     "test",
     "extractor"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "@moular-css/namers": "^28.0.0",
+    "@modular-css/utils": "^28.0.0"
+  },
+  "peerDependencies": {
+    "postcss": "^8.0.0"
+  }
 }

@@ -2,12 +2,12 @@
 
 const selectorParser = require("postcss-selector-parser");
 
+const identifiers = require("@modular-css/utils/identifiers.js");
+
 const atcomposesParser = require("../../parsers/at-composes.js");
 const composes = require("../../parsers/composes.js");
 const external = require("../../parsers/external.js");
 const values = require("../../parsers/values.js");
-
-const identifiers = require("../../lib/identifiers.js");
 
 const plugin = "modular-css-graph-nodes";
 

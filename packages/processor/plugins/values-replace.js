@@ -3,7 +3,7 @@
 const selector = require("postcss-selector-parser");
 const value = require("postcss-value-parser");
 
-const identifiers = require("../lib/identifiers.js");
+const identifiers = require("@modular-css/utils/identifiers.js");
 
 module.exports = () => ({
     postcssPlugin : "modular-css-values-replace",
