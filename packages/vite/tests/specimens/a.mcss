@@ -1,5 +1,0 @@
-.a {
-    composes: c from "./c.mcss";
-
-    color: red;
-}

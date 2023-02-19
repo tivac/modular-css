@@ -1,3 +1,5 @@
+import { resolve } from "path";
+
 import mcss from "./packages/vite/vite.js";
 
 /** @type {import('vite').UserConfig} */
@@ -11,4 +13,15 @@ export default {
             namer : (file, selector) => `mc_${selector}`,
         }),
     ],
+
+    build : {
+        minify : false,
+
+        rollupOptions : {
+            input : {
+                static  : resolve(__dirname, "./packages/vite/tests/specimens/static/index.html"),
+                dynamic : resolve(__dirname, "./packages/vite/tests/specimens/dynamic/index.html"),
+            },
+        },
+    },
 };

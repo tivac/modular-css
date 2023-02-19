@@ -1,0 +1,5 @@
+.a {
+    composes: c from "../shared/static-c.mcss";
+
+    color: red;
+}

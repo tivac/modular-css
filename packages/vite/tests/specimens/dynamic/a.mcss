@@ -1,0 +1,5 @@
+.a {
+    composes: c from "../shared/dynamic-c.mcss";
+
+    color: red;
+}

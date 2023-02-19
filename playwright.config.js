@@ -1,7 +1,6 @@
-/** @type {import("@playwright/test").PlaywrightTestConfig} */
+/** @type {import("@playwright/test").PlaywrightTestConfig}<{ dir : string }> */
 const config = {
 	testDir : "./packages/vite/tests",
-    // baseURL : "http://127.0.0.1:5173",
     
 	timeout : 30 * 1000,
 	
@@ -22,17 +21,55 @@ const config = {
 	workers : process.env.CI ? 1 : undefined,
 	
     use : {
+		channel : "chromium",
+
 		screenshot : "only-on-failure",
         trace      : "on-first-retry",
         video      : "on-first-retry",
 	},
 
-    webServer : {
-		command             : "npm run start:vite",
+    webServer : [{
+		command             : "npx vite",
         port                : 5173,
 		timeout             : 30 * 1000,
-		reuseExistingServer : true,
-	},
+		reuseExistingServer : !process.env.CI,
+	}, {
+		command             : "npx vite build && npx vite preview --port=5174",
+        port                : 5174,
+		timeout             : 30 * 1000,
+		reuseExistingServer : !process.env.CI,
+	}],
+
+	projects : [
+		{
+			name : "serve - static",
+			use  : {
+				baseURL : "http://localhost:5173",
+				dir     : "static",
+			},
+		},
+		{
+			name : "serve - dynamic",
+			use  : {
+				baseURL : "http://localhost:5173",
+				dir     : "dynamic",
+			},
+		},
+		{
+			name : "built - static",
+			use  : {
+				baseURL : "http://localhost:5174",
+				dir     : "static",
+			},
+		},
+		{
+			name : "built - dynamic",
+			use  : {
+				baseURL : "http://localhost:5174",
+				dir     : "dynamic",
+			},
+		},
+	],
 };
 
 module.exports = config;
