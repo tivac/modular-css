@@ -7,19 +7,19 @@ const test = testBase.extend({
 test("style ordering", async ({ page, dir }) => {
     await page.goto(`/${dir}/`);
     
-    const elA = await page.getByText("A");
+    const a = await page.getByText("A");
 
-    await expect(elA).toBeVisible();
+    await expect(a).toBeVisible();
 
-    await expect(elA).toHaveCSS("background-color", "rgb(0, 0, 255)");
-    await expect(elA).toHaveCSS("color", "rgb(255, 0, 0)");
-    await expect(elA).toHaveClass("mc_c mc_a");
+    await expect(a).toHaveCSS("background-color", "rgb(0, 0, 255)");
+    await expect(a).toHaveCSS("color", "rgb(255, 0, 0)");
+    await expect(a).toHaveClass("mc_c mc_a");
     
-    const elB = await page.getByText("B");
+    const b = await page.getByText("B");
     
-    await expect(elB).toBeVisible();
+    await expect(b).toBeVisible();
     
-    await expect(elB).toHaveCSS("background-color", "rgb(0, 0, 255)");
-    await expect(elB).toHaveCSS("color", "rgb(255, 255, 255)");
-    await expect(elB).toHaveClass("mc_c mc_b");
+    await expect(b).toHaveCSS("background-color", "rgb(0, 0, 255)");
+    await expect(b).toHaveCSS("color", "rgb(255, 255, 255)");
+    await expect(b).toHaveClass("mc_c mc_b");
 });
