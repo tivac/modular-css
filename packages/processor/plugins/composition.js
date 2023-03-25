@@ -37,7 +37,10 @@ module.exports = () => ({
 
                     // https://github.com/tivac/modular-css/issues/238
                     // https://github.com/tivac/modular-css/issues/918
-                    if(!parent.selectors.every((selector) => validationParser.transformSync(selector))) {
+                    if(
+                        parent.parent.type === "atrule" ||
+                        parent.selectors.some((selector) => !validationParser.transformSync(selector))
+                    ) {
                         throw parent.error(
                             "Only simple singular class selectors may use composition", {
                                 word : parent.selector,
@@ -53,7 +56,6 @@ module.exports = () => ({
                             selectorMap.set(scoped, src)
                         )
                     );
-                    
                     
                     const details = parser.parse(value);
                     

@@ -98,6 +98,19 @@ describe("/processor.js", () => {
             )).rejects.toThrow(`Only simple singular class selectors may use composition`);
         });
 
+        it("should fail on nested selectors using composition", async () => {
+            await expect(processor.string(
+                "./invalid/composes-first.css",
+                dedent(`
+                    .a { color: red; }
+                    
+                    @media (min-width: 10px) {
+                        .b { composes: a; }
+                    }
+                `)
+            )).rejects.toThrow(`Only simple singular class selectors may use composition`);
+        });
+
         it("should compose a single class", async () => {
             await processor.string(
                 "./single-composes.css",
