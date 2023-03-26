@@ -1,10 +1,23 @@
 "use strict";
 
+const createParser = require("postcss-selector-parser");
+
 const identifiers = require("../lib/identifiers.js");
 const { selectorKey } = require("../lib/keys.js");
 const relative = require("../lib/relative.js");
 
 const parser = require("../parsers/composes.js");
+
+const validationParser = createParser((selectors) => {
+    const selector = selectors.at(0);
+
+    if(selector.nodes.length !== 1) {
+        return false;
+    }
+
+    return selector.nodes[0].type === "class";
+});
+
 
 const plugin = "modular-css-composition";
 
@@ -21,6 +34,19 @@ module.exports = () => ({
                 // Go look up "composes" declarations and update dependency graph
                 composes(decl) {
                     const { parent, value } = decl;
+
+                    // https://github.com/tivac/modular-css/issues/238
+                    // https://github.com/tivac/modular-css/issues/918
+                    if(
+                        parent.parent.type === "atrule" ||
+                        parent.selectors.some((selector) => !validationParser.transformSync(selector))
+                    ) {
+                        throw parent.error(
+                            "Only simple singular class selectors may use composition", {
+                                word : parent.selector,
+                            }
+                        );
+                    }
         
                     // Map of scoped classnames to the originals
                     const selectorMap = new Map();
@@ -30,27 +56,16 @@ module.exports = () => ({
                             selectorMap.set(scoped, src)
                         )
                     );
-        
-                    const selectors = parent.selectors.map(identifiers.parse);
-        
-                    // https://github.com/tivac/modular-css/issues/238
-                    if(selectors.some(({ length }) => length > 1)) {
-                        throw decl.error(
-                            "Only simple singular selectors may use composition", {
-                                word : parent.selector,
-                            }
-                        );
-                    }
-        
+                    
                     const details = parser.parse(value);
-        
+                    
                     if(details.source) {
                         details.source = processor.resolve(from, details.source);
                     }
-        
+                    
                     details.refs.forEach(({ global, name }) => {
                         let ref;
-        
+                        
                         if(details.source) {
                             // External refs should already exist, so they don't get added
                             ref = selectorKey(details.source, name);
@@ -59,10 +74,10 @@ module.exports = () => ({
                         } else {
                             // Internal refs are created if necessary here
                             ref = processor._addSelector(from, name);
-        
+                        
                             if(!available[name]) {
                                 const rel = relative(processor.options.cwd, from);
-        
+                            
                                 throw decl.error(
                                     `Invalid composes reference, .${name} does not exist in ${rel}`, {
                                         word : name,
@@ -70,9 +85,12 @@ module.exports = () => ({
                                 );
                             }
                         }
-        
+                        
+                        // Go get all the classes from the parent selector
+                        const classSelectors = parent.selectors.map(identifiers.parse);
+
                         // Update graph with all the dependency information
-                        selectors.forEach((parts) =>
+                        classSelectors.forEach((parts) =>
                             parts.forEach((part) => {
                                 const src = processor._addSelector(from, selectorMap.get(part));
         

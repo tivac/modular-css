@@ -58,14 +58,57 @@ describe("/processor.js", () => {
             );
         });
 
-        it("should fail on rules that use multiple selectors", async () => {
+        it("should fail on multiple selectors using composition", async () => {
             await expect(processor.string(
                 "./invalid/composes-first.css",
                 dedent(`
                     .a { color: red; }
                     .b .c { composes: a; }
                 `)
-            )).rejects.toThrow(`Only simple singular selectors may use composition`);
+            )).rejects.toThrow(`Only simple singular class selectors may use composition`);
+        });
+
+        it("should fail on element selectors using composition", async () => {
+            await expect(processor.string(
+                "./invalid/composes-first.css",
+                dedent(`
+                    .a { color: red; }
+                    html { composes: a; }
+                `)
+            )).rejects.toThrow(`Only simple singular class selectors may use composition`);
+        });
+
+        it("should fail on pseudo selectors (single-colon) using composition", async () => {
+            await expect(processor.string(
+                "./invalid/composes-first.css",
+                dedent(`
+                    .a { color: red; }
+                    .b:active { composes: a; }
+                `)
+            )).rejects.toThrow(`Only simple singular class selectors may use composition`);
+        });
+
+        it("should fail on pseudo selectors (double-colon) using composition", async () => {
+            await expect(processor.string(
+                "./invalid/composes-first.css",
+                dedent(`
+                    .a { color: red; }
+                    .b::after { composes: a; }
+                `)
+            )).rejects.toThrow(`Only simple singular class selectors may use composition`);
+        });
+
+        it("should fail on nested selectors using composition", async () => {
+            await expect(processor.string(
+                "./invalid/composes-first.css",
+                dedent(`
+                    .a { color: red; }
+                    
+                    @media (min-width: 10px) {
+                        .b { composes: a; }
+                    }
+                `)
+            )).rejects.toThrow(`Only simple singular class selectors may use composition`);
         });
 
         it("should compose a single class", async () => {
