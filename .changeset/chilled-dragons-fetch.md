@@ -1,14 +1,5 @@
 ---
 "@modular-css/processor": major
-"@modular-css/browserify": major
-"@modular-css/cli": major
-"@modular-css/css-to-js": major
-"@modular-css/glob": major
-"@modular-css/postcss": major
-"@modular-css/rollup": major
-"@modular-css/svelte": major
-"@modular-css/vite": major
-"@modular-css/webpack": major
 ---
 
 Errors will be reported for more invalid uses of `composes:`
