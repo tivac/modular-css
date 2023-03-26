@@ -1,5 +1,17 @@
 # Change Log
 
+## 29.0.0
+
+### Major Changes
+
+- [`7488bb1`](https://github.com/tivac/modular-css/commit/7488bb12add1175e8c5a1be59ca97ea8207a9d98) Thanks [@tivac](https://github.com/tivac)! - All the various interfaces to `@modular-css/processor` need to be updated because of the breaking changes to composition rules in #926
+
+### Patch Changes
+
+- Updated dependencies [[`7488bb1`](https://github.com/tivac/modular-css/commit/7488bb12add1175e8c5a1be59ca97ea8207a9d98), [`a61fa35`](https://github.com/tivac/modular-css/commit/a61fa35f81e0c5c181c425e596c27f017acd5096)]:
+  - @modular-css/css-to-js@29.0.0
+  - @modular-css/processor@29.0.0
+
 ## 28.3.2
 
 ### Patch Changes
