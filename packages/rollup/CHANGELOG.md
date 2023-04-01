@@ -1,5 +1,11 @@
 # Change Log
 
+## 29.0.1
+
+### Patch Changes
+
+- [`6287269`](https://github.com/tivac/modular-css/commit/628726920af5c2c0ac1db8c886c41050f4f65b32) Thanks [@tivac](https://github.com/tivac)! - Add rollup@3 to peerDependencies range. Fixes #940
+
 ## 29.0.0
 
 ### Major Changes
