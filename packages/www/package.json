@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
-    "@sveltejs/adapter-static": "^1.0.0-next.41",
+    "@sveltejs/adapter-static": "^2.0.1",
     "@sveltejs/kit": "^1.0.0-next.588",
     "hast-util-has-property": "^2.0.0",
     "hast-util-heading": "^2.0.0",
