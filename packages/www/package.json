@@ -32,7 +32,7 @@
     "hast-util-heading": "^2.0.0",
     "hast-util-heading-rank": "^2.1.0",
     "hast-util-to-string": "^2.0.0",
-    "hastscript": "^7.0.2",
+    "hastscript": "^8.0.0",
     "lz-string": "^1.4.4",
     "rehype-autolink-headings": "^6.1.1",
     "rehype-format": "^4.0.1",
