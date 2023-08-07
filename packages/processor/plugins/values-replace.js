@@ -34,6 +34,7 @@ module.exports = () => ({
         const replacer = (prop) =>
             (thing) => {
                 const parsed = value(thing[prop]);
+                let modified = false;
 
                 parsed.walk((node) => {
                     if(node.type !== "word" || !values[node.value]) {
@@ -47,9 +48,13 @@ module.exports = () => ({
 
                     // Replace any value instances
                     node.value = current.value;
+
+                    modified = true;
                 });
 
-                thing[prop] = parsed.toString();
+                if(modified) {
+                    thing[prop] = parsed.toString();
+                }
             };
 
         return {
