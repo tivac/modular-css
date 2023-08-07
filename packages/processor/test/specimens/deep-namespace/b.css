@@ -1,0 +1,3 @@
+@value * as values from "./c.css";
+
+@value b: values.c;

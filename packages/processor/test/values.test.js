@@ -195,5 +195,13 @@ describe("/processor.js", () => {
 
             expect(css).toMatchSnapshot();
         });
+
+        it.only("should support layers of namespaced value references", async () => {
+            await processor.file(require.resolve("./specimens/deep-namespace/a.css"));
+
+            const { css } = await processor.output();
+
+            expect(css).toMatchSnapshot();
+        });
     });
 });
