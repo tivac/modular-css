@@ -116,6 +116,17 @@ module.exports = () => ({
                     throw rule.error(`Unknown @value type, unable to process`);
                 },
             },
+
+            RootExit() {
+                // Update any references that might've been affected by imports
+                for(const name of Object.keys(values)) {
+                    const { value } = values[name];
+
+                    if(value in values) {
+                        values[name] = values[value];
+                    }
+                }
+            },
         };
     },
 });
