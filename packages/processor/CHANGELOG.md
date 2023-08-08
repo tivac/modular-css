@@ -1,5 +1,15 @@
 # Change Log
 
+## 29.0.1
+
+### Patch Changes
+
+- [#965](https://github.com/tivac/modular-css/pull/965) [`edbbe96`](https://github.com/tivac/modular-css/commit/edbbe9667fa4333913bb95cd8c7e67f386f57054) Thanks [@tivac](https://github.com/tivac)! - Fix namespace import referencing via value aliases #964
+
+  Updating internal `values` map after importing new values, which was missing previously.
+
+- [#966](https://github.com/tivac/modular-css/pull/966) [`ffab76d`](https://github.com/tivac/modular-css/commit/ffab76d4428211ba33e6f7a6d518618b5cfdef00) Thanks [@tivac](https://github.com/tivac)! - only .toString() if dirty when replacing `@value` references
+
 ## 29.0.0
 
 ### Major Changes
