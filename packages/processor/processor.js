@@ -611,7 +611,6 @@ class Processor {
                 }
                 
                 graph.directDependenciesOf(dep).forEach((dep2) => graph.removeDependency(dep, dep2));
-                // data.valid = false;
             });
         }
 
