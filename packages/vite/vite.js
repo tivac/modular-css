@@ -8,7 +8,7 @@ const dedent = require("dedent");
 const Processor = require("@modular-css/processor");
 const { transform } = require("@modular-css/css-to-js");
 
-const { fileKey, filterByPrefix, FILE_PREFIX } = Processor;
+const { fileKey, filterByPrefix, cleanPrefix, FILE_PREFIX } = Processor;
 
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
@@ -91,8 +91,8 @@ module.exports = (
 
                 processor.invalidate(file);
 
-                // Make sure vite knows that our dependencies might've changed too
-                processor.fileDependencies(file).forEach((dep) => {
+                // Make sure vite knows that files that depend on us might've changed too
+                processor.fileDependents(file).forEach((dep) => {
                     viteServer.watcher.emit("change", dep);
                 });
             });
@@ -103,7 +103,7 @@ module.exports = (
                 }
 
                 // Have to grab deps _before_ removal
-                const deps = processor.fileDependencies(file);
+                const deps = processor.fileDependents(file);
                 
                 processor.remove(file);
                 

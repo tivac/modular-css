@@ -263,9 +263,23 @@ class Processor {
             throw new Error(`Unknown file: ${normalized}`);
         }
 
-        const dependencies = this._graph.dependenciesOf(key);
+        return filterByPrefix(FILE_PREFIX, this._graph.dependenciesOf(key));
+    }
 
-        return filterByPrefix(FILE_PREFIX, dependencies);
+    // Get the file dependents for a specific file
+    fileDependents(file) {
+        if(!file) {
+            throw new Error("fileDepenendents() must be called with a file");
+        }
+
+        const normalized = this._normalize(file);
+        const key = fileKey(normalized);
+
+        if(!this._graph.hasNode(key)) {
+            throw new Error(`Unknown file: ${normalized}`);
+        }
+
+        return filterByPrefix(FILE_PREFIX, this._graph.dependantsOf(key));
     }
 
     // Get the ultimate output for specific files or the entire tree

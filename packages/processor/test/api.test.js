@@ -241,6 +241,33 @@ describe("/processor.js", () => {
             });
         });
 
+        describe(".fileDependents()", () => {
+            it("should return the dependencies of the specified file", async () => {
+                await processor.file("./packages/processor/test/specimens/start.css");
+
+                expect(
+                    relative(processor.fileDependents(require.resolve("./specimens/local.css")))
+                )
+                .toMatchSnapshot();
+            });
+
+            it("should throw if no file is specified", async () => {
+                await processor.file("./packages/processor/test/specimens/start.css");
+
+                expect(() => processor.fileDependents()).toThrow("must be called with a file");
+            });
+
+            it("should throw on requesting an invalid file", async () => {
+                await processor.string("./does/not/exist.css", dedent(`
+                    .foo {
+                        color: red;
+                    }
+                `));
+
+                expect(() => processor.fileDependents("./also/does/not/exist.css")).toThrow("Unknown file: ");
+            });
+        });
+
         describe(".output()", () => {
             it("should reject unknown files", async () => {
                 await expect(processor.output({
