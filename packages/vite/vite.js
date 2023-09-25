@@ -59,10 +59,25 @@ module.exports = (
     }
 
     let viteServer;
+    let viteConfig;
+
+    const watchFile = (file) => {
+        const slashed = slash(file);
+
+        if(viteServer) {
+            viteServer.watcher.add(slashed);
+        } else if(viteConfig.build.watch) {
+            this.addWatchFile(slashed);
+        }
+    };
 
     return {
         name    : "@modular-css/vite",
         enforce : "pre",
+
+        configResolved(config) {
+            viteConfig = config;
+        },
 
         configureServer(instance) {
             viteServer = instance;
@@ -75,6 +90,27 @@ module.exports = (
                 }
 
                 processor.invalidate(file);
+
+                // Make sure vite knows that our dependencies might've changed too
+                processor.fileDependencies(file).forEach((dep) => {
+                    viteServer.watcher.emit("change", dep);
+                });
+            });
+
+            viteServer.watcher.on("unlink", (file) => {
+                if(!processor.has(file)) {
+                    return;
+                }
+
+                // Have to grab deps _before_ removal
+                const deps = processor.fileDependencies(file);
+                
+                processor.remove(file);
+                
+                // Invalidate dependencies of the file that was removed
+                deps.forEach((dep) => {
+                    viteServer.watcher.emit("change", dep);
+                });
             });
         },
 
@@ -82,7 +118,7 @@ module.exports = (
             log("build start");
 
             // Watch any files already in the procesor
-            Object.keys(processor.files).forEach((file) => this.addWatchFile(file));
+            Object.keys(processor.files).forEach((file) => watchFile(file));
         },
 
         async resolveId(source) {
@@ -191,7 +227,7 @@ module.exports = (
 
             const deps = processor.fileDependencies(file);
 
-            deps.forEach((dep) => this.addWatchFile(slash(dep)));
+            deps.forEach((dep) => watchFile(dep));
 
             // TODO: Gets CSS order right by forcing them to load their dependent CSS first.
             // Feels very brittle and overkill, but this is what we've got for now
