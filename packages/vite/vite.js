@@ -8,7 +8,7 @@ const dedent = require("dedent");
 const Processor = require("@modular-css/processor");
 const { transform } = require("@modular-css/css-to-js");
 
-const { fileKey, filterByPrefix, cleanPrefix, FILE_PREFIX } = Processor;
+const { fileKey, filterByPrefix, FILE_PREFIX } = Processor;
 
 // sourcemaps for css-to-js don't make much sense, so always return nothing
 // https://github.com/rollup/rollup/wiki/Plugins#conventions
