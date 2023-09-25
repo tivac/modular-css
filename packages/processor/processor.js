@@ -511,15 +511,6 @@ class Processor {
         }
 
         // Add selector and its dependencies to the graph
-        const selectorId = selectorKey(name, selector);
-
-        // Remove any existing dependencies for the selector if it is invalid
-        if(graph.hasNode(selectorId) && !graph.getNodeData(selectorId).valid) {
-            graph.dependenciesOf(selectorId).forEach((other) => {
-                graph.removeDependency(selectorId, other);
-            });
-        }
-
         this._addSelector(name, selector);
 
         refs.forEach(({ name : depSelector }) => {
