@@ -238,8 +238,8 @@ class Processor {
         });
 
         // Mark all selectors in the file invalid
-        filterByPrefix(SELECTOR_PREFIX, this._graph.dependenciesOf(key), { clean : false }).forEach((sKey) => {
-            const data = this._graph.getNodeData(sKey);
+        this._graph.dependenciesOf(key).forEach((dep) => {
+            const data = this._graph.getNodeData(dep);
 
             if(data.file !== normalized) {
                 return;
@@ -247,6 +247,8 @@ class Processor {
 
             data.valid = false;
         });
+
+        this._log("invalidate()", normalized);
     }
 
     // Get the dependency order for a file or the entire tree
@@ -597,7 +599,24 @@ class Processor {
             return;
         }
 
-        const fKey = this._addFile(name);
+        const fKey = fileKey(name);
+
+        // Clean up old graph dependencies for this node since it's about to be parsed
+        // and they'll all be recreated anyways
+        if(graph.hasNode(fKey)) {
+            graph.directDependenciesOf(fKey).forEach((dep) => {
+                const data = this._graph.getNodeData(dep);
+
+                if(data.file !== name) {
+                    return;
+                }
+                
+                graph.directDependenciesOf(dep).forEach((dep2) => graph.removeDependency(dep, dep2));
+                // data.valid = false;
+            });
+        }
+
+        this._addFile(name);
 
         this._log("_before()", name);
 
