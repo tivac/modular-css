@@ -33,7 +33,6 @@ const {
     filterByPrefix,
 
     FILE_PREFIX,
-    SELECTOR_PREFIX,
 } = keys;
 
 let fs;
