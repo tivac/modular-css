@@ -1,5 +1,15 @@
 # Change Log
 
+## 30.0.2
+
+### Patch Changes
+
+- [#972](https://github.com/tivac/modular-css/pull/972) [`673df5d3`](https://github.com/tivac/modular-css/commit/673df5d345dead81f68eb6199757cfaf400f09a6) Thanks [@tivac](https://github.com/tivac)! - Improved vite integration, now correctly invalidating files when a file is changed or deleted.
+  Improved invalidation in the processor, preventing stale `@value` or `composes` references from being output.
+- Updated dependencies [[`673df5d3`](https://github.com/tivac/modular-css/commit/673df5d345dead81f68eb6199757cfaf400f09a6)]:
+  - @modular-css/processor@29.0.2
+  - @modular-css/css-to-js@29.0.2
+
 ## 30.0.1
 
 ### Patch Changes
