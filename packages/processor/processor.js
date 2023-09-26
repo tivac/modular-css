@@ -33,7 +33,6 @@ const {
     filterByPrefix,
 
     FILE_PREFIX,
-    SELECTOR_PREFIX,
 } = keys;
 
 let fs;
@@ -238,8 +237,8 @@ class Processor {
         });
 
         // Mark all selectors in the file invalid
-        filterByPrefix(SELECTOR_PREFIX, this._graph.dependenciesOf(key), { clean : false }).forEach((sKey) => {
-            const data = this._graph.getNodeData(sKey);
+        this._graph.dependenciesOf(key).forEach((dep) => {
+            const data = this._graph.getNodeData(dep);
 
             if(data.file !== normalized) {
                 return;
@@ -247,6 +246,8 @@ class Processor {
 
             data.valid = false;
         });
+
+        this._log("invalidate()", normalized);
     }
 
     // Get the dependency order for a file or the entire tree
@@ -262,9 +263,23 @@ class Processor {
             throw new Error(`Unknown file: ${normalized}`);
         }
 
-        const dependencies = this._graph.dependenciesOf(key);
+        return filterByPrefix(FILE_PREFIX, this._graph.dependenciesOf(key));
+    }
 
-        return filterByPrefix(FILE_PREFIX, dependencies);
+    // Get the file dependents for a specific file
+    fileDependents(file) {
+        if(!file) {
+            throw new Error("fileDepenendents() must be called with a file");
+        }
+
+        const normalized = this._normalize(file);
+        const key = fileKey(normalized);
+
+        if(!this._graph.hasNode(key)) {
+            throw new Error(`Unknown file: ${normalized}`);
+        }
+
+        return filterByPrefix(FILE_PREFIX, this._graph.dependantsOf(key));
     }
 
     // Get the ultimate output for specific files or the entire tree
@@ -496,15 +511,6 @@ class Processor {
         }
 
         // Add selector and its dependencies to the graph
-        const selectorId = selectorKey(name, selector);
-
-        // Remove any existing dependencies for the selector if it is invalid
-        if(graph.hasNode(selectorId) && !graph.getNodeData(selectorId).valid) {
-            graph.dependenciesOf(selectorId).forEach((other) => {
-                graph.removeDependency(selectorId, other);
-            });
-        }
-
         this._addSelector(name, selector);
 
         refs.forEach(({ name : depSelector }) => {
@@ -597,7 +603,23 @@ class Processor {
             return;
         }
 
-        const fKey = this._addFile(name);
+        const fKey = fileKey(name);
+
+        // Clean up old graph dependencies for this node since it's about to be parsed
+        // and they'll all be recreated anyways
+        if(graph.hasNode(fKey)) {
+            graph.directDependenciesOf(fKey).forEach((dep) => {
+                const data = this._graph.getNodeData(dep);
+
+                if(data.file !== name) {
+                    return;
+                }
+                
+                graph.directDependenciesOf(dep).forEach((dep2) => graph.removeDependency(dep, dep2));
+            });
+        }
+
+        this._addFile(name);
 
         this._log("_before()", name);
 
