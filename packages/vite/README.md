@@ -33,7 +33,7 @@ A minimatch pattern, or an array of minimatch patterns, relative to `process.cwd
 
 ### `processor`
 
-Pass an already-instantiated `Processor` instance to the rollup plugin. It will then add any files found when traversing the modules to it and both the rollup-discovered and any already-existing files will be output in the final CSS.
+Pass an already-instantiated `Processor` instance to the vite plugin. It will then add any files found when traversing the modules to it and both the vite-discovered and any already-existing files will be output in the final CSS.
 
 #### `styleExport`
 
