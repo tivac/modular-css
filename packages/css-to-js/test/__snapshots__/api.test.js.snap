@@ -221,6 +221,25 @@ export {
 };
 `;
 
+exports[`@modular-css/css-to-js API should represent external @values aliased to local @values: code 1`] = `
+import { $values as $aValues } from "<ROOT-DIR>/a.css";
+const v = "#00F";
+const $values = {
+    "values" : $aValues,
+v,
+};
+const b = "mc71966a67_b";
+export default {
+    $values,
+b
+};
+
+export {
+    $values,
+b
+};
+`;
+
 exports[`@modular-css/css-to-js API should represent external @values namespaces: code 1`] = `
 import { $values as $aValues } from "<ROOT-DIR>/a.css";
 const v = "#0F0";

@@ -30,10 +30,15 @@ module.exports = () => ({
                         return;
                     }
 
-                    // Simple references to existing values are handled as object references,
-                    // so they're always kept up-to-date
+                    // Simple reference to an existing value
                     if(values[details.value]) {
-                        values[details.name] = values[details.value];
+                        values[details.name] = {
+                            ...values[details.value],
+                            source   : rule.source,
+                            external : false,
+                        };
+
+                        // console.log("values-local after", values[details.name]);
                     } else {
                         // Otherwise need to walk @value body and check for any replacments to make
                         const parsed = value(details.value);
@@ -47,8 +52,9 @@ module.exports = () => ({
                         });
 
                         values[details.name] = {
-                            value  : parsed.toString(),
-                            source : rule.source,
+                            value    : parsed.toString(),
+                            source   : rule.source,
+                            external : false,
                         };
                     }
                     
