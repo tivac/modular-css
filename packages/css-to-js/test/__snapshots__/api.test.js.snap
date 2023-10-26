@@ -2,7 +2,7 @@
 
 exports[`@modular-css/css-to-js API should dedupe repeated identifiers: code 1`] = `
 import { a } from "<ROOT-DIR>/a.css";
-const a1 = a + " " + "mc71966a67_a"
+const a1 = a + " " + "mc71966a67_a";
 export default {
     "a" : a1
 };
@@ -13,7 +13,7 @@ export {
 `;
 
 exports[`@modular-css/css-to-js API should generate a javscript proxy in dev: code 1`] = `
-const a = "mc74f3fa7b_a"
+const a = "mc74f3fa7b_a";
 const data = {
     a
 };
@@ -44,8 +44,8 @@ exports[`@modular-css/css-to-js API should generate empty results & a warning on
 `;
 
 exports[`@modular-css/css-to-js API should generate javascript from composes: code 1`] = `
-const custom = "mca72bf2bd_custom"
-const rule = custom + " " + "mca72bf2bd_rule"
+const custom = "mca72bf2bd_custom";
+const rule = custom + " " + "mca72bf2bd_rule";
 export default {
     custom,
 rule
@@ -58,8 +58,8 @@ rule
 `;
 
 exports[`@modular-css/css-to-js API should generate javascript from multiple composes: code 1`] = `
-const rule = custom + " " + "mc9c938a76_rule"
-const custom = "mc9c938a76_custom"
+const rule = custom + " " + "mc9c938a76_rule";
+const custom = "mc9c938a76_custom";
 export default {
     rule,
 custom
@@ -72,11 +72,11 @@ custom
 `;
 
 exports[`@modular-css/css-to-js API should generate javascript with var variable statements: code 1`] = `
-var str = "\\"string\\""
+var str = "\\"string\\"";
 var $values = {
     str,
 };
-var fooga = "mce1ef44f3_fooga"
+var fooga = "mce1ef44f3_fooga";
 export default {
     $values,
 fooga
@@ -89,7 +89,7 @@ fooga
 `;
 
 exports[`@modular-css/css-to-js API should generate javascript: code 1`] = `
-const a = "mc74f3fa7b_a"
+const a = "mc74f3fa7b_a";
 export default {
     a
 };
@@ -100,7 +100,7 @@ export {
 `;
 
 exports[`@modular-css/css-to-js API should handle options.namedExports set to: { rewriteInvalid: false }: code 1`] = `
-const a1 = "mc74f3fa7b_a-1"
+const a1 = "mc74f3fa7b_a-1";
 export default {
     "a-1" : a1
 };
@@ -115,7 +115,7 @@ exports[`@modular-css/css-to-js API should handle options.namedExports set to: {
 `;
 
 exports[`@modular-css/css-to-js API should handle options.namedExports set to: { rewriteInvalid: false, warn: false }: code 1`] = `
-const a1 = "mc74f3fa7b_a-1"
+const a1 = "mc74f3fa7b_a-1";
 export default {
     "a-1" : a1
 };
@@ -126,7 +126,7 @@ exports[`@modular-css/css-to-js API should handle options.namedExports set to: {
 exports[`@modular-css/css-to-js API should handle options.namedExports set to: { rewriteInvalid: false, warn: false }: warnings 1`] = `[]`;
 
 exports[`@modular-css/css-to-js API should handle options.namedExports set to: { warn: false }: code 1`] = `
-const a1 = "mc74f3fa7b_a-1"
+const a1 = "mc74f3fa7b_a-1";
 export default {
     "a-1" : a1
 };
@@ -145,7 +145,7 @@ exports[`@modular-css/css-to-js API should handle options.namedExports set to: {
 exports[`@modular-css/css-to-js API should handle options.namedExports set to: { warn: false }: warnings 1`] = `[]`;
 
 exports[`@modular-css/css-to-js API should handle options.namedExports set to: {}: code 1`] = `
-const a1 = "mc74f3fa7b_a-1"
+const a1 = "mc74f3fa7b_a-1";
 export default {
     "a-1" : a1
 };
@@ -168,7 +168,7 @@ exports[`@modular-css/css-to-js API should handle options.namedExports set to: {
 `;
 
 exports[`@modular-css/css-to-js API should handle options.namedExports set to: false: code 1`] = `
-const a1 = "mc74f3fa7b_a-1"
+const a1 = "mc74f3fa7b_a-1";
 export default {
     "a-1" : a1
 };
@@ -179,7 +179,7 @@ exports[`@modular-css/css-to-js API should handle options.namedExports set to: f
 exports[`@modular-css/css-to-js API should handle options.namedExports set to: false: warnings 1`] = `[]`;
 
 exports[`@modular-css/css-to-js API should handle options.namedExports set to: true: code 1`] = `
-const a1 = "mc74f3fa7b_a-1"
+const a1 = "mc74f3fa7b_a-1";
 export default {
     "a-1" : a1
 };
@@ -202,7 +202,7 @@ exports[`@modular-css/css-to-js API should handle options.namedExports set to: t
 `;
 
 exports[`@modular-css/css-to-js API should output css when requested: code 1`] = `
-const a = "mc74f3fa7b_a"
+const a = "mc74f3fa7b_a";
 export default {
     a
 };
@@ -214,7 +214,7 @@ export const styles = ".mc74f3fa7b_a { color: red; }";
 `;
 
 exports[`@modular-css/css-to-js API should output without default export: code 1`] = `
-const a = "mc74f3fa7b_a"
+const a = "mc74f3fa7b_a";
 
 export {
     a
@@ -223,12 +223,12 @@ export {
 
 exports[`@modular-css/css-to-js API should represent external @values namespaces: code 1`] = `
 import { $values as $aValues } from "<ROOT-DIR>/a.css";
-const v = "#0F0"
+const v = "#0F0";
 const $values = {
     "values" : $aValues,
 v,
 };
-const b = "mc71966a67_b"
+const b = "mc71966a67_b";
 export default {
     $values,
 b
@@ -245,7 +245,7 @@ import { $values as $aValues } from "<ROOT-DIR>/a.css";
 const $values = {
     "v" : $aValues["v"],
 };
-const b = "mc71966a67_b"
+const b = "mc71966a67_b";
 export default {
     $values,
 b
@@ -259,7 +259,7 @@ b
 
 exports[`@modular-css/css-to-js API should represent external composition: code 1`] = `
 import { a } from "<ROOT-DIR>/a.css";
-const b = a + " " + "mc71966a67_b"
+const b = a + " " + "mc71966a67_b";
 export default {
     b
 };
@@ -270,11 +270,11 @@ export {
 `;
 
 exports[`@modular-css/css-to-js API should represent local @values: code 1`] = `
-const v = "#00F"
+const v = "#00F";
 const $values = {
     v,
 };
-const a = "mc74f3fa7b_a"
+const a = "mc74f3fa7b_a";
 export default {
     $values,
 a
@@ -287,8 +287,8 @@ a
 `;
 
 exports[`@modular-css/css-to-js API should represent local composition: code 1`] = `
-const a = "mc74f3fa7b_a"
-const b = a + " " + "mc74f3fa7b_b"
+const a = "mc74f3fa7b_a";
+const b = a + " " + "mc74f3fa7b_b";
 export default {
     a,
 b
@@ -302,7 +302,7 @@ b
 
 exports[`@modular-css/css-to-js API should use relative imports when requested: code 1`] = `
 import { a } from "./a.css";
-const b = a + " " + "mc71966a67_b"
+const b = a + " " + "mc71966a67_b";
 export default {
     b
 };

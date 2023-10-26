@@ -212,7 +212,7 @@ exports.transform = (file, processor, opts = {}) => {
 
         internalsMap.set(value, unique);
 
-        out.push(`${variableDeclaration} ${unique} = ${JSON.stringify(value)}`);
+        out.push(`${variableDeclaration} ${unique} = ${JSON.stringify(value)};`);
 
         valueExports.set(key, unique);
     });
@@ -258,7 +258,7 @@ exports.transform = (file, processor, opts = {}) => {
 
         elements.push(...details.classes[key].map((t) => JSON.stringify(t)));
 
-        out.push(`${variableDeclaration} ${unique} = ${elements.join(` + " " + `)}`);
+        out.push(`${variableDeclaration} ${unique} = ${elements.join(` + " " + `)};`);
 
         defaultExports.push([ key, unique ]);
 
