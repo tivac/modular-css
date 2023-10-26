@@ -17,7 +17,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "styles": () => (/* binding */ styles),
 /* harmony export */   "wooga": () => (/* binding */ wooga)
 /* harmony export */ });
-const wooga = "mc8d99986b_wooga"
+const wooga = "mc8d99986b_wooga";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     wooga
 });
@@ -123,7 +123,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "one": () => (/* binding */ one),
 /* harmony export */   "styles": () => (/* binding */ styles)
 /* harmony export */ });
-const one = "mc_one"
+const one = "mc_one";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     one
 });
@@ -229,7 +229,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "styles": () => (/* binding */ styles),
 /* harmony export */   "two": () => (/* binding */ two)
 /* harmony export */ });
-const two = "mc_two"
+const two = "mc_two";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     two
 });
@@ -654,11 +654,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "folder": () => (/* binding */ folder1),
 /* harmony export */   "styles": () => (/* binding */ styles)
 /* harmony export */ });
-const folder = "white"
+const folder = "white";
 const $values = {
     folder,
 };
-const folder1 = "mc_folder"
+const folder1 = "mc_folder";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     $values,
 "folder" : folder1
@@ -686,15 +686,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _folder_folder_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./folder/folder.css */ "./packages/webpack/test/specimens/folder/folder.css");
 
-const one = "red"
-const two = "blue"
+const one = "red";
+const two = "blue";
 const $values = {
     "folder" : _folder_folder_css__WEBPACK_IMPORTED_MODULE_0__.$values.folder,
 one,
 two,
 };
-const booga = "mc_booga"
-const looga = booga + " " + "mc_looga"
+const booga = "mc_booga";
+const looga = booga + " " + "mc_looga";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     $values,
 booga,
@@ -729,9 +729,9 @@ const $values = {
 "two" : _local_css__WEBPACK_IMPORTED_MODULE_0__.$values.two,
 "folder" : _local_css__WEBPACK_IMPORTED_MODULE_0__.$values.folder,
 };
-const wooga = _local_css__WEBPACK_IMPORTED_MODULE_0__.booga + " " + "mc_wooga"
-const booga1 = "mc_booga"
-const tooga = "mc_tooga"
+const wooga = _local_css__WEBPACK_IMPORTED_MODULE_0__.booga + " " + "mc_wooga";
+const booga1 = "mc_booga";
+const tooga = "mc_tooga";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     $values,
 wooga,
@@ -873,7 +873,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "styles": () => (/* binding */ styles),
 /* harmony export */   "wooga": () => (/* binding */ wooga)
 /* harmony export */ });
-const wooga = "mc_wooga"
+const wooga = "mc_wooga";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     wooga
 });
@@ -985,7 +985,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "styles": () => (/* binding */ styles),
 /* harmony export */   "wooga": () => (/* binding */ wooga)
 /* harmony export */ });
-const wooga = "mc_wooga"
+const wooga = "mc_wooga";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     wooga
 });
@@ -1094,12 +1094,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "styles": () => (/* binding */ styles)
 /* harmony export */ });
-const val = "\\"value\\""
+const val = "\\"value\\"";
 const $values = {
     val,
 };
-const a = "mc_a"
-const b = "mc_b"
+const a = "mc_a";
+const b = "mc_b";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     $values,
 a,
@@ -1211,12 +1211,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "styles": () => (/* binding */ styles)
 /* harmony export */ });
-const val = "\\"value\\""
+const val = "\\"value\\"";
 const $values = {
     val,
 };
-const a = "mc_a"
-const b = "mc_b"
+const a = "mc_a";
+const b = "mc_b";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     $values,
 a,

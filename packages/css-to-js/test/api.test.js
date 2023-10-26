@@ -175,6 +175,24 @@ describe("@modular-css/css-to-js API", () => {
         expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "$values", "b" ]);
     });
+    
+    it("should represent external @values aliased to local @values", async () => {
+        const processor = new Processor({ resolvers });
+
+        await processor.string("./a.css", `@value v1: #00F; @value v2: #F00; `);
+        await processor.string("./b.css", dedent(`
+            @value * as values from "./a.css";
+            @value v: values.v1;
+
+            .b {
+                border-color: v;
+            }
+        `));
+
+        const { code } = transform("./b.css", processor);
+
+        expect(code).toMatchSnapshot("code");
+    });
 
 
     it("should generate javascript from composes", async () => {
