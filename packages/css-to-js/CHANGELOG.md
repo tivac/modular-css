@@ -1,5 +1,23 @@
 # Change Log
 
+## 29.0.3
+
+### Patch Changes
+
+- [#983](https://github.com/tivac/modular-css/pull/983) [`63af4ac3`](https://github.com/tivac/modular-css/commit/63af4ac3ee6380ede5396463fb0305bc14274d84) Thanks [@tivac](https://github.com/tivac)! - Ensure that aliased values get exported, fixing #982
+
+  ```
+  @value * as values from "./other-file.css";
+  @value local: values.somevalue;
+  ```
+
+  Previously that `local` value wouldn't exist in the JS exports, it was mistakenly treated like the `values` external value.
+
+  Also adds semi-colons to variable declarations in the generated JS for vite/rollup/webpack.
+
+- Updated dependencies [[`63af4ac3`](https://github.com/tivac/modular-css/commit/63af4ac3ee6380ede5396463fb0305bc14274d84)]:
+  - @modular-css/processor@29.0.3
+
 ## 29.0.2
 
 ### Patch Changes

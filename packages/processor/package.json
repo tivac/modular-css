@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/processor",
-  "version": "29.0.2",
+  "version": "29.0.3",
   "description": "A streamlined reinterpretation of CSS Modules",
   "main": "./processor.js",
   "repository": {
