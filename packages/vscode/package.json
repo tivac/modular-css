@@ -1,0 +1,40 @@
+{
+  "name": "modular-css-vscode",
+  "displayName": "modular-css",
+  "publisher": "modular-css",
+  "version": "29.0.3",
+  "description": "VSCode extension for modular-css support",
+  "main": "./vscode.js",
+  "author": "Pat Cavit <npm@patcavit.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tivac/modular-css/issues"
+  },
+  "homepage": "https://m-css.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tivac/modular-css.git"
+  },
+  "keywords": [
+    "css",
+    "css-modules",
+    "modular-css",
+    "postcss",
+    "vscode"
+  ],
+  "dependencies": {
+    "@modular-css/language-service": "^29.0.0",
+    "vscode-languageclient": "^9.0.1"
+  },
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.helloWorld",
+        "title": "Hello World"
+      }
+    ]
+  }
+}
