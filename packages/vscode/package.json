@@ -23,7 +23,7 @@
     "vscode"
   ],
   "dependencies": {
-    "@modular-css/language-service": "^29.0.0",
+    "@modular-css/language-server": "^29.0.0",
     "vscode-languageclient": "^9.0.1"
   },
   "engines": {
