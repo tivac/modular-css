@@ -3,6 +3,8 @@
 const { sources } = require("webpack");
 
 const Processor = require("@modular-css/processor");
+const output = require("@modular-css/processor/lib/output.js");
+const relative = require("@modular-css/processor/lib/relative.js");
 
 const PLUGIN_NAME = "@modular-css/webpack";
 
@@ -74,8 +76,30 @@ class ModularCSS {
                 }
     
                 if(this.options.json) {
+                    const files = Object.keys(this.processor.files);
+
+                    // Ensure file order is consistent
+                    files.sort();
+
+                    // Wait to ensure that all files have completed processing
+                    await Promise.all(
+                        files.map((id) => this.processor.files[id].result)
+                    );
+
+                    const json = Object.create(null);
+
+                    files.forEach((id) => {
+                        json[relative(this.processor.options.cwd, id)] = {
+                            // @values
+                            ...output.values(this.processor.files[id].values),
+    
+                            // classes
+                            ...output.fileCompositions(this.processor.files[id], this.processor, { joined : true }),
+                        };
+                    });
+    
                     assets[this.options.json] = new sources.RawSource(
-                        JSON.stringify(data.compositions, null, 4)
+                        JSON.stringify(json, null, 4)
                     );
                 }
             });
