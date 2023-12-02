@@ -828,30 +828,22 @@ exports[`/webpack.js should handle dependencies 2`] = `
 exports[`/webpack.js should handle dependencies 3`] = `
 "{
     "packages/webpack/test/specimens/folder/folder.css": {
-        "folder": [
-            "mc_folder"
-        ]
+        "folder": "mc_folder"
     },
     "packages/webpack/test/specimens/local.css": {
-        "booga": [
-            "mc_booga"
-        ],
-        "looga": [
-            "mc_booga",
-            "mc_looga"
-        ]
+        "one": "red",
+        "two": "blue",
+        "folder": "white",
+        "booga": "mc_booga",
+        "looga": "mc_booga mc_looga"
     },
     "packages/webpack/test/specimens/start.css": {
-        "wooga": [
-            "mc_booga",
-            "mc_wooga"
-        ],
-        "booga": [
-            "mc_booga"
-        ],
-        "tooga": [
-            "mc_tooga"
-        ]
+        "one": "red",
+        "two": "blue",
+        "folder": "white",
+        "wooga": "mc_booga mc_wooga",
+        "booga": "mc_booga",
+        "tooga": "mc_tooga"
     }
 }"
 `;
@@ -1068,9 +1060,7 @@ __webpack_require__(/*! ./simple.css */ "./packages/webpack/test/specimens/simpl
 exports[`/webpack.js should output json to disk 2`] = `
 "{
     "packages/webpack/test/specimens/simple.css": {
-        "wooga": [
-            "mc_wooga"
-        ]
+        "wooga": "mc_wooga"
     }
 }"
 `;
