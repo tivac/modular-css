@@ -1,5 +1,11 @@
 # Change Log
 
+## 29.0.4
+
+### Patch Changes
+
+- [#996](https://github.com/tivac/modular-css/pull/996) [`2933218`](https://github.com/tivac/modular-css/commit/293321840cf11b56bc19d5bd070387a762007233) Thanks [@hjhopp](https://github.com/hjhopp)! - Join class compositions for JSON output
+
 ## 29.0.3
 
 ### Patch Changes
