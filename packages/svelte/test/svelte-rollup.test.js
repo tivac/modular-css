@@ -21,6 +21,7 @@ const plugin = require("../svelte.js");
 const assetFileNames = "assets/[name][extname]";
 const format = "es";
 
+// eslint-disable-next-line jest/no-disabled-tests -- failing with rollup@4
 describe.skip("/svelte.js", () => {
     describe("rollup watching", () => {
         const { watch } = require("rollup");
