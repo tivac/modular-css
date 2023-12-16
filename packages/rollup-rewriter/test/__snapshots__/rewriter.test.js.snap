@@ -7,17 +7,13 @@ exports[`rollup-rewriter should ignore unknown imports (amd) 1`] = `
   "a.js": "
 define(['require', 'external'], (function (require, external) { 'use strict';
 
-    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-    var external__default = /*#__PURE__*/_interopDefaultLegacy(external);
-
     const a$1 = "mc_a";
     var css = {
         a: a$1
     };
 
     function a() {
-        console.log(css, external__default["default"]);
+        console.log(css, external);
 
         new Promise(function (resolve, reject) { Promise.all([
     lazyload("./assets/c.css"),
@@ -51,7 +47,7 @@ define(['exports'], (function (exports) { 'use strict';
 
     console.log(css);
 
-    exports["default"] = css;
+    exports.default = css;
 
 }));
 ",
@@ -156,7 +152,7 @@ System.register(['external'], (function (exports, module) {
     var external;
     return {
         setters: [function (module) {
-            external = module["default"];
+            external = module.default;
         }],
         execute: (function () {
 
@@ -249,7 +245,7 @@ define(['exports', './static1'], (function (exports, static1) { 'use strict';
 
     var dynamic1 = "dynamic1.js";
 
-    exports["default"] = dynamic1;
+    exports.default = dynamic1;
 
 }));
 ",
@@ -662,7 +658,7 @@ define(['exports'], (function (exports) { 'use strict';
 
 	var c = "c";
 
-	exports["default"] = c;
+	exports.default = c;
 
 }));
 ",
@@ -671,7 +667,7 @@ define(['exports'], (function (exports) { 'use strict';
 
 	var d = "d";
 
-	exports["default"] = d;
+	exports.default = d;
 
 }));
 ",
@@ -968,7 +964,7 @@ define(['exports'], (function (exports) { 'use strict';
 
     console.log(css);
 
-    exports["default"] = css;
+    exports.default = css;
 
 }));
 ",
@@ -982,7 +978,7 @@ define(['exports'], (function (exports) { 'use strict';
 
     console.log(css);
 
-    exports["default"] = css;
+    exports.default = css;
 
 }));
 ",
@@ -1342,7 +1338,7 @@ define(['exports'], (function (exports) { 'use strict';
 
     console.log(css);
 
-    exports["default"] = css;
+    exports.default = css;
 
 }));
 ",
@@ -1356,7 +1352,7 @@ define(['exports'], (function (exports) { 'use strict';
 
     console.log(css);
 
-    exports["default"] = css;
+    exports.default = css;
 
 }));
 ",
@@ -1666,7 +1662,7 @@ define(['exports'], (function (exports) { 'use strict';
 
     console.log(css);
 
-    exports["default"] = css;
+    exports.default = css;
 
 }));
 ",
@@ -1680,7 +1676,7 @@ define(['exports'], (function (exports) { 'use strict';
 
     console.log(css);
 
-    exports["default"] = css;
+    exports.default = css;
 
 }));
 ",

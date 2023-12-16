@@ -32,6 +32,6 @@
     "magic-string": "^0.30.0"
   },
   "peerDependencies": {
-    "rollup": "^2.0.0"
+    "rollup": "^2 || ^3 || ^4"
   }
 }

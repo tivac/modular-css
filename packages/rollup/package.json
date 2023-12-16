@@ -28,10 +28,10 @@
   "dependencies": {
     "@modular-css/css-to-js": "^29.0.3",
     "@modular-css/processor": "^29.0.3",
-    "@rollup/pluginutils": "^5.0.2",
+    "@rollup/pluginutils": "^5.1.0",
     "slash": "^3.0.0"
   },
   "peerDependencies": {
-    "rollup": "^2.21.0 || ^3"
+    "rollup": "^2.21.0 || ^3 || ^4"
   }
 }
