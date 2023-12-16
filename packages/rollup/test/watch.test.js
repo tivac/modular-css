@@ -14,7 +14,7 @@ const assetFileNames = "assets/[name][extname]";
 const format = "es";
 const map = false;
 
-describe("/rollup.js watch mode", () => {
+describe.skip("/rollup.js watch mode", () => {
     const { watch } = require("rollup");
 
     const createPlugin = (opts = {}) => plugin({

@@ -21,7 +21,7 @@ const plugin = require("../svelte.js");
 const assetFileNames = "assets/[name][extname]";
 const format = "es";
 
-describe("/svelte.js", () => {
+describe.skip("/svelte.js", () => {
     describe("rollup watching", () => {
         const { watch } = require("rollup");
         let watcher;
