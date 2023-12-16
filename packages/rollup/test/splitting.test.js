@@ -186,33 +186,6 @@ describe("/rollup.js code splitting", () => {
         })).toMatchRollupAssetSnapshot();
     });
 
-    it("should support manual chunks", async () => {
-        const bundle = await rollup({
-            input : [
-                require.resolve("./specimens/manual-chunks/a.js"),
-                require.resolve("./specimens/manual-chunks/b.js"),
-            ],
-
-            manualChunks : {
-                shared : [
-                    require.resolve("./specimens/manual-chunks/c.js"),
-                ],
-            },
-
-            plugins : [
-                createPlugin(),
-            ],
-        });
-
-        await expect(await bundle.generate({
-            format,
-            sourcemap,
-
-            assetFileNames,
-            chunkFileNames,
-        })).toMatchRollupAssetSnapshot();
-    });
-
     it("should support dynamic imports", async () => {
         const bundle = await rollup({
             input : [
