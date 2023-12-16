@@ -1,5 +1,11 @@
 # Change Log
 
+## 30.0.4
+
+### Patch Changes
+
+- [#998](https://github.com/tivac/modular-css/pull/998) [`5fa92ea`](https://github.com/tivac/modular-css/commit/5fa92ea620a698fa7238b67f7f604da00be8b776) Thanks [@tivac](https://github.com/tivac)! - Update `peerDependencies` to support `vite@5`
+
 ## 30.0.3
 
 ### Patch Changes
