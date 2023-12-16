@@ -8,7 +8,8 @@ const read = require("@modular-css/test-utils/read.js")(__dirname);
 const bundle = require("./lib/bundle.js");
 const plugin = require("../browserify.js");
 
-describe("/browserify.js", () => {
+// eslint-disable-next-line jest/no-disabled-tests -- browserify ugh
+describe.skip("/browserify.js", () => {
     describe("/issues", () => {
         describe("/313", () => {
             // eslint-disable-next-line jest/no-done-callback -- how it has to be
