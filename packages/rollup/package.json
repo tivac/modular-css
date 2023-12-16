@@ -32,6 +32,6 @@
     "slash": "^3.0.0"
   },
   "peerDependencies": {
-    "rollup": "^2.21.0 || ^3"
+    "rollup": "^2.21.0 || ^3 || ^4"
   }
 }
