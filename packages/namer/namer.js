@@ -16,18 +16,24 @@ function value(source, count) {
     return out;
 }
 
-module.exports = () => {
+module.exports = ({ verbose = false } = false) => {
     const meta  = new Map();
     const cache = new Map();
     
     return function namer(file, selector) {
         const key = `${file}${selector}`;
         
+        
         if(cache.has(key)) {
             return cache.get(key);
         }
         
         if(!meta.has(file)) {
+            if(verbose) {
+                // eslint-disable-next-line no-console -- debug logging
+                console.log(`NAMER: Seen ${file} for the first time`);
+            }
+
             meta.set(file, {
                 id        : meta.size,
                 selectors : new Map(),
@@ -42,6 +48,11 @@ module.exports = () => {
         const output = value(letters, id) + value(everything, selectors.get(selector));
 
         cache.set(key, output);
+
+        if(verbose) {
+            // eslint-disable-next-line no-console -- debug logging
+            console.log(`NAMER: ${key} => ${output}`);
+        }
 
         return output;
     };
