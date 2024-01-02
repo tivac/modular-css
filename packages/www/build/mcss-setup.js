@@ -20,7 +20,7 @@ const { preprocess, processor } = preprocessor({
 
     // TODO: disabled because weird stuff is happening on Netlify, maybe around file paths?
     // Crank down names in prod to be itty-bitty
-    namer : isProd ? namer({ verbose : true }) : null,
+    // namer : isProd ? namer() : null,
 
     // Bring sveltekit aliases into m-css
     resolvers : [
