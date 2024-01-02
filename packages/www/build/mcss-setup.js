@@ -18,9 +18,8 @@ const { preprocess, processor } = preprocessor({
     // Enable for debugging, but disabled because NOISY
     verbose : false,
 
-    // TODO: disabled because weird stuff is happening on Netlify, maybe around file paths?
     // Crank down names in prod to be itty-bitty
-    // namer : isProd ? namer() : null,
+    namer : isProd ? namer() : null,
 
     // Bring sveltekit aliases into m-css
     resolvers : [
