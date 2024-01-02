@@ -30,7 +30,7 @@
     "@sveltejs/kit": "^2.0.0",
     "hast-util-has-property": "^2.0.0",
     "hast-util-heading": "^2.0.0",
-    "hast-util-heading-rank": "^2.1.0",
+    "hast-util-heading-rank": "^3.0.0",
     "hast-util-to-string": "^2.0.0",
     "hastscript": "^8.0.0",
     "lz-string": "^1.4.4",
