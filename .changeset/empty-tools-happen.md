@@ -2,4 +2,4 @@
 "@modular-css/css-to-js": patch
 ---
 
-Join class compositions for JSON output
+Support `global()` classes in `composes` when converting CSS to JS for bundlers
