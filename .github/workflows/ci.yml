@@ -103,7 +103,7 @@ jobs:
     - name: test
       run: npm run test:playwright
     
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: playwright-report

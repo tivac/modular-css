@@ -1,5 +1,11 @@
 # Change Log
 
+## 29.0.5
+
+### Patch Changes
+
+- [#998](https://github.com/tivac/modular-css/pull/998) [`5fa92ea`](https://github.com/tivac/modular-css/commit/5fa92ea620a698fa7238b67f7f604da00be8b776) Thanks [@tivac](https://github.com/tivac)! - Update `peerDependencies` to add `rollup@4` support
+
 ## 29.0.4
 
 ### Patch Changes

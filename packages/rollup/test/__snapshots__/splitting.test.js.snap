@@ -128,16 +128,16 @@ export { b as default } from './a2.js';
 
 exports[`/rollup.js code splitting should support deduping names via rollup (hashed) 1`] = `
 {
-  "assets/a-2fa3ffad.css": "
-/* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */
-.mc_a { color: azure; }",
-  "assets/a-6ea612fe.css": "
+  "assets/a-3MINo8MF.css": "
 /* packages/rollup/test/specimens/multiple-chunks/a.css */
 .mc_a {
     color: aqua;
 }
 ",
-  "assets/b-78869a3c.css": "
+  "assets/a-7IPy_xYG.css": "
+/* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */
+.mc_a { color: azure; }",
+  "assets/b-PH6fPDlx.css": "
 /* packages/rollup/test/specimens/multiple-chunks/b.css */
 .mc_b {
     color: blue;
@@ -198,31 +198,6 @@ exports[`/rollup.js code splitting should support dynamic imports 1`] = `
 /* packages/rollup/test/specimens/dynamic-imports/d.css */
 .mc_d {
     color: darkred;
-}
-",
-}
-`;
-
-exports[`/rollup.js code splitting should support manual chunks 1`] = `
-{
-  "assets/a.css": "
-/* packages/rollup/test/specimens/manual-chunks/a.css */
-.mc_a {
-    color: red;
-}
-",
-  "assets/b.css": "
-/* packages/rollup/test/specimens/manual-chunks/b.css */
-.mc_b {
-    color: blue;
-}
-",
-  "assets/shared.css": "
-/* packages/rollup/test/specimens/manual-chunks/d.css */
-/* packages/rollup/test/specimens/manual-chunks/c.css */
-.mc_c {
-    color: green;
-    background: darkred;
 }
 ",
 }
@@ -390,13 +365,13 @@ exports[`/rollup.js code splitting shouldn't put bundle-specific CSS in common.c
 
 exports[`/rollup.js code splitting shouldn't use entry hashes as part of the CSS file names 1`] = `
 {
-  "assets/simple-0a80c138.css": "
+  "assets/simple-70VV22SP.css": "
 /* packages/rollup/test/specimens/simple.css */
 .mc_fooga {
     color: red;
 }
 ",
-  "simple.a2f4d1df.js": "
+  "simple.SXlqpKT2.js": "
 const str = "\\"string\\"";
 const $values = {
     str,
