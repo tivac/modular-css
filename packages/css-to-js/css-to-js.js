@@ -183,14 +183,9 @@ exports.transform = (file, processor, opts = {}) => {
             return;
         }
 
-        if(depFile === "global") {
-            const unique = deconflict(identifiers, data.selector);
-
-            // wrap un-rewritten selector in quotes so it isn't exported as a variable
-            externalsMap.set(selectorKey(depFile, data.selector), rewriteInvalid ?
-                unique :
-                `"${data.selector}"`
-            );
+        if(data.global) {
+            // wrap selector in quotes so it isn't exported as a variable
+            externalsMap.set(selectorKey(depFile, data.selector), `"${data.selector}"`);
 
             return;
         }
