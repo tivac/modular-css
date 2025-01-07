@@ -76,24 +76,24 @@ exports.transform = (file, processor, opts = {}) => {
 
     const warnings = [];
     const dependencies = new Set();
-    
+
     // All used identifiers
     const identifiers = new Map();
-    
+
     // External identifiers mapped to their unique names
     const externalsMap = new Map();
-    
+
     // Internal identifiers mapped to their unique names
     const internalsMap = new Map();
-    
+
     // Map of files & their imports
     const importsMap = new Map();
-    
+
     const out = [];
     const defaultExports = [];
     const namedExports = [];
     const valueExports = new Map();
-    
+
     // All the class keys exported by this module
     const exportedKeys = new Set();
 
@@ -108,7 +108,7 @@ exports.transform = (file, processor, opts = {}) => {
             warnings,
         };
     }
-    
+
     // Only want direct dependencies and any first-level dependencies
     // of this file to be processed
     graph.directDependenciesOf(Processor.fileKey(id)).forEach((dep) => {
@@ -120,6 +120,7 @@ exports.transform = (file, processor, opts = {}) => {
     });
 
     // create import statements for all of the values used in compositions
+    /* eslint-disable-next-line max-statements */
     dependencies.forEach((depKey) => {
         const data = graph.getNodeData(depKey);
         const { file : depFile } = data;
@@ -181,6 +182,18 @@ exports.transform = (file, processor, opts = {}) => {
 
             return;
         }
+
+        if(depFile === "global") {
+            const unique = deconflict(identifiers, data.selector);
+
+            // wrap un-rewritten selector in quotes so it isn't exported as a variable
+            externalsMap.set(selectorKey(depFile, data.selector), rewriteInvalid ?
+                unique :
+                `"${data.selector}"`
+            );
+
+            return;
+        }
     });
 
     // Write out all the imports
@@ -190,7 +203,7 @@ exports.transform = (file, processor, opts = {}) => {
         }
 
         const source = options.relativeImports ? `./${path.relative(path.dirname(file), from)}` : from;
-        
+
         const names = [ ...imports ].map(([ key, value ]) => esm(key, value));
 
         out.push(`import { ${names.join(", ")} } from "${slash(source)}";`);
@@ -305,7 +318,7 @@ exports.transform = (file, processor, opts = {}) => {
 
     if(namedExports.length) {
         out.push("");
-        
+
         out.push(dedent(`
         export {
             ${namedExports.join(",\n")}

@@ -288,6 +288,17 @@ export {
 };
 `;
 
+exports[`@modular-css/css-to-js API should represent global composition from external resources: code 1`] = `
+const a = "foo" + " " + "mc74f3fa7b_a";
+export default {
+    a
+};
+
+export {
+    a
+};
+`;
+
 exports[`@modular-css/css-to-js API should represent local @values: code 1`] = `
 const v = "#00F";
 const $values = {

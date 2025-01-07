@@ -85,6 +85,17 @@ describe("@modular-css/css-to-js API", () => {
         expect(namedExports).toEqual([ "b" ]);
     });
 
+    it("should represent global composition from external resources", async () => {
+        const processor = new Processor({ resolvers });
+
+        await processor.string("./a.css", `.a { composes: global(foo); color: red }`);
+
+        const { code, namedExports } = transform("./a.css", processor, { namedExports : false });
+
+        expect(code).toMatchSnapshot("code");
+        expect(namedExports).toEqual([ "a" ]);
+    });
+
     it("should use relative imports when requested", async () => {
         const processor = new Processor({ resolvers });
 
@@ -175,7 +186,7 @@ describe("@modular-css/css-to-js API", () => {
         expect(code).toMatchSnapshot("code");
         expect(namedExports).toEqual([ "$values", "b" ]);
     });
-    
+
     it("should represent external @values aliased to local @values", async () => {
         const processor = new Processor({ resolvers });
 
