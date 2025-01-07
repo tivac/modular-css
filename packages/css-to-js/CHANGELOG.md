@@ -1,5 +1,11 @@
 # Change Log
 
+## 29.0.5
+
+### Patch Changes
+
+- [#1018](https://github.com/tivac/modular-css/pull/1018) [`e7e8249`](https://github.com/tivac/modular-css/commit/e7e8249b780320ace068b854fbd9dd8e2591de2c) Thanks [@hjhopp](https://github.com/hjhopp)! - Support `global()` classes in `composes` when converting CSS to JS for bundlers
+
 ## 29.0.3
 
 ### Patch Changes
