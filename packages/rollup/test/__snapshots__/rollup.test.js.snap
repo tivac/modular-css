@@ -1,5 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/rollup.js Exports option should generate valid composition output when global() is used 1`] = `
+{
+  "entry": "
+const out = "foo" + " " + "mc_out";
+var style = {
+    out
+};
+
+console.log(style);
+",
+}
+`;
+
 exports[`/rollup.js Exports option should generated valid JS even when identifiers aren't 1`] = `
 {
   "entry": "

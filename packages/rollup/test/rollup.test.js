@@ -559,6 +559,21 @@ describe("/rollup.js", () => {
                 })
             ).toMatchRollupCodeSnapshot();
         });
+        
+        it("should generate valid composition output when global() is used", async () => {
+            const bundle = await rollup({
+                input   : require.resolve("./specimens/composes-from-global/entry.js"),
+                plugins : [
+                    createPlugin(),
+                ],
+            });
+
+            expect(
+                await bundle.generate({
+                    format,
+                })
+            ).toMatchRollupCodeSnapshot();
+        });
     });
 
     describe("styleExport option", () => {
