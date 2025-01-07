@@ -120,7 +120,7 @@ exports.transform = (file, processor, opts = {}) => {
     });
 
     // create import statements for all of the values used in compositions
-    /* eslint-disable-next-line max-statements */
+    /* eslint-disable-next-line max-statements -- this function is long */
     dependencies.forEach((depKey) => {
         const data = graph.getNodeData(depKey);
         const { file : depFile } = data;
