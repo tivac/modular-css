@@ -76,7 +76,7 @@ const DEFAULTS = {
     resolvers : [],
     rewrite   : true,
     verbose   : false,
-    
+
     exportGlobals : true,
 };
 
@@ -420,7 +420,25 @@ class Processor {
         return this._warnings;
     }
 
+    _dupeCheck(file) {
+        const check = file.toLowerCase();
+
+        // Warn about potential dupes if an ID goes past we've seen before
+        if(this._options.dupewarn) {
+            const other = this._ids.get(check);
+
+            if(other && other !== file) {
+                // eslint-disable-next-line no-console -- warning
+                console.warn(`POTENTIAL DUPLICATE FILES:\n\t${other}\n\t${file}`);
+            }
+        }
+
+        this._ids.set(check, file);
+    }
+
     _addFile(file) {
+        this._dupeCheck(file);
+
         const key = fileKey(file);
 
         if(!this._graph.hasNode(key)) {
@@ -494,7 +512,7 @@ class Processor {
 
     _addDependency({ selector, refs = [], dependency, name }) {
         const { _graph : graph } = this;
-        
+
         const dep = this._normalize(dependency);
         const fKey = this._addFile(name);
         const dKey = this._addFile(dep);
@@ -521,19 +539,7 @@ class Processor {
     // Take a file id and some text, walk it for dependencies, then
     // process and return details
     async _add(id, src) {
-        const check = id.toLowerCase();
-
-        // Warn about potential dupes if an ID goes past we've seen before
-        if(this._options.dupewarn) {
-            const other = this._ids.get(check);
-
-            if(other && other !== id) {
-                // eslint-disable-next-line no-console -- warning
-                console.warn(`POTENTIAL DUPLICATE FILES:\n\t${relative(this._options.cwd, other)}\n\t${relative(this._options.cwd, id)}`);
-            }
-        }
-
-        this._ids.set(check, id);
+        this._dupeCheck(id);
 
         this._log("_add()", id);
 
