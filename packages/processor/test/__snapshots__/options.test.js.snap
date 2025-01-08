@@ -69,8 +69,8 @@ exports[`/processor.js options lifecycle options dupewarn should warn on potenti
 [
   [
     "POTENTIAL DUPLICATE FILES:
-	packages/processor/test/specimens/start.css
-	packages/processor/test/specimens/START.css",
+packages/processor/test/specimens/start.css
+packages/processor/test/specimens/START.css",
   ],
 ]
 `;
