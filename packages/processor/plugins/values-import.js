@@ -2,6 +2,8 @@
 
 const parser = require("../parsers/values.js");
 
+const valueReplacer = require("../lib/value-replacer.js");
+
 const plugin = "modular-css-values-import";
 
 // Find @value entries & catalog/remove them
@@ -120,14 +122,7 @@ module.exports = () => ({
             RootExit() {
                 // Update any references that might've been affected by imports
                 for(const name of Object.keys(values)) {
-                    const { value } = values[name];
-                    
-                    if(value in values) {
-                        values[name] = {
-                            ...values[value],
-                            external : values[name].external,
-                        };
-                    }
+                    valueReplacer(values[name], "value", values);
                 }
             },
         };
