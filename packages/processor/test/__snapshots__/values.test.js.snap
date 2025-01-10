@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/processor.js values should expand namespaced value references (#1020) 1`] = `
+"/* packages/processor/test/specimens/namespace-expansion/c.css */
+/* packages/processor/test/specimens/namespace-expansion/b.css */
+/* packages/processor/test/specimens/namespace-expansion/a.css */
+.mc_someClass {
+	color: cyan;
+	background-color: cyan + var(--other);
+}"
+`;
+
 exports[`/processor.js values should support exporting imported variables 1`] = `
 "/* packages/processor/test/specimens/values.css */
 

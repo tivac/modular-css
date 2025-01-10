@@ -203,5 +203,13 @@ describe("/processor.js", () => {
 
             expect(css).toMatchSnapshot();
         });
+        
+        it("should expand namespaced value references (#1020)", async () => {
+            await processor.file(require.resolve("./specimens/namespace-expansion/a.css"));
+
+            const { css } = await processor.output();
+
+            expect(css).toMatchSnapshot();
+        });
     });
 });

@@ -1,0 +1,4 @@
+@value * as c from "./c.css";
+
+@value b1: c.1;
+@value b2: c.1 + var(--other);
