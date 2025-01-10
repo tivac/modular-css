@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/svelte",
-  "version": "29.0.3",
+  "version": "29.0.4",
   "description": "Add modular-css support to svelte",
   "main": "./svelte.js",
   "repository": {
@@ -29,7 +29,7 @@
     "postcss"
   ],
   "dependencies": {
-    "@modular-css/processor": "^29.0.3",
+    "@modular-css/processor": "^29.0.4",
     "@rollup/pluginutils": "^5.0.2",
     "es-module-lexer": "^1.0.1",
     "escape-string-regexp": "^4.0.0",

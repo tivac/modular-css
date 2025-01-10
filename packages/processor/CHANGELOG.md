@@ -1,5 +1,11 @@
 # Change Log
 
+## 29.0.4
+
+### Patch Changes
+
+- [#1022](https://github.com/tivac/modular-css/pull/1022) [`d9db40b`](https://github.com/tivac/modular-css/commit/d9db40b08355ec13b7929edcb27dd1bc58454513) Thanks [@tivac](https://github.com/tivac)! - fix: Properly replace `@values` inside of other `@values` when they're imported from another file (https://github.com/tivac/modular-css/issues/1020)
+
 ## 29.0.3
 
 ### Patch Changes
