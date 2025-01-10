@@ -1,0 +1,6 @@
+@value b1, b2 from "./b.css";
+
+.someClass {
+	color: b1;
+	background-color: b2;
+}
