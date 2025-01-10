@@ -1,5 +1,13 @@
 # Change Log
 
+## 29.0.4
+
+### Patch Changes
+
+- Updated dependencies [[`d9db40b`](https://github.com/tivac/modular-css/commit/d9db40b08355ec13b7929edcb27dd1bc58454513)]:
+  - @modular-css/processor@29.0.4
+  - @modular-css/glob@29.0.4
+
 ## 29.0.3
 
 ### Patch Changes
