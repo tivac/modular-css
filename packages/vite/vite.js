@@ -151,7 +151,7 @@ module.exports = (
         },
 
         // Load the virtual CSS files
-        async load(id, opts = false) {
+        async load(id) {
             log("load", id);
 
             // Only want this to run for the virtual CSS modules
@@ -168,24 +168,25 @@ module.exports = (
             }
 
             if(viteServer) {
-                const node = await viteServer.moduleGraph.ensureEntryFromUrl(id);
+                const { moduleGraph } = this.environment || viteServer;
+                const thisModule = moduleGraph.getModuleById(id);
+
                 const deps = graph.directDependenciesOf(fileKey(normalize(file)));
                 const imported = filterByPrefix(FILE_PREFIX, deps).map((dep) => virtualize(slash(dep)));
 
-                await Promise.all(imported.map((dep) => viteServer.moduleGraph.ensureEntryFromUrl(dep)));
+                await Promise.all(imported.map((dep) => moduleGraph.ensureEntryFromUrl(dep)));
 
                 log("load deps", id, "=>", imported);
 
                 const hmrDeps = imported;
 
-                await viteServer.moduleGraph.updateModuleInfo(
-                    node,
+                await moduleGraph.updateModuleInfo(
+                    thisModule,
                     new Set(imported),
                     null,
                     new Set(hmrDeps),
                     null,
-                    true,
-                    Boolean(opts.ssr),
+                    false,
                 );
             }
 

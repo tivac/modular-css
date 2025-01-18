@@ -128,16 +128,16 @@ export { b as default } from './a2.js';
 
 exports[`/rollup.js code splitting should support deduping names via rollup (hashed) 1`] = `
 {
-  "assets/a-3MINo8MF.css": "
+  "assets/a-Dcwg2jww.css": "
 /* packages/rollup/test/specimens/multiple-chunks/a.css */
 .mc_a {
     color: aqua;
 }
 ",
-  "assets/a-7IPy_xYG.css": "
+  "assets/a-Dsg_L_Fg.css": "
 /* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */
 .mc_a { color: azure; }",
-  "assets/b-PH6fPDlx.css": "
+  "assets/b-8fp88OXG.css": "
 /* packages/rollup/test/specimens/multiple-chunks/b.css */
 .mc_b {
     color: blue;
@@ -365,13 +365,13 @@ exports[`/rollup.js code splitting shouldn't put bundle-specific CSS in common.c
 
 exports[`/rollup.js code splitting shouldn't use entry hashes as part of the CSS file names 1`] = `
 {
-  "assets/simple-70VV22SP.css": "
+  "assets/simple-DvRVXbZI.css": "
 /* packages/rollup/test/specimens/simple.css */
 .mc_fooga {
     color: red;
 }
 ",
-  "simple.SXlqpKT2.js": "
+  "simple.BtzGFnGS.js": "
 const str = "\\"string\\"";
 const $values = {
     str,

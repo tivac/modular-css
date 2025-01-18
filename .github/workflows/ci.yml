@@ -77,7 +77,7 @@ jobs:
   playwright-tests:
     timeout-minutes: 30
     
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     
     steps:
     

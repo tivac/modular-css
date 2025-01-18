@@ -43,8 +43,9 @@ exports[`/rollup.js Exports option should warn & ignore invalid identifiers (nam
   "code": "PLUGIN_WARNING",
   "hook": "transform",
   "id": Any<String>,
-  "message": ""fooga-wooga" is not a valid JS identifier",
+  "message": "[plugin @modular-css/rollup] packages/rollup/test/specimens/invalid-name.css: "fooga-wooga" is not a valid JS identifier",
   "plugin": "@modular-css/rollup",
+  Symbol(augmented): true,
 }
 `;
 
@@ -68,8 +69,9 @@ exports[`/rollup.js Exports option should warn & rewrite invalid identifiers (na
   "code": "PLUGIN_WARNING",
   "hook": "transform",
   "id": Any<String>,
-  "message": ""fooga-wooga" is not a valid JS identifier, exported as "foogaWooga"",
+  "message": "[plugin @modular-css/rollup] packages/rollup/test/specimens/invalid-name.css: "fooga-wooga" is not a valid JS identifier, exported as "foogaWooga"",
   "plugin": "@modular-css/rollup",
+  Symbol(augmented): true,
 }
 `;
 
@@ -91,7 +93,7 @@ console.log(css, fooga);
 exports[`/rollup.js Exports option should warn if named exports are falsey 1`] = `
 [
   [
-    "(@modular-css/rollup plugin) @modular-css/rollup doesn't allow namedExports to be disabled",
+    "[plugin @modular-css/rollup] @modular-css/rollup doesn't allow namedExports to be disabled",
   ],
 ]
 `;
@@ -211,7 +213,7 @@ console.log(fooga);
 
 exports[`/rollup.js should correctly handle hashed output 1`] = `
 {
-  "assets/simple-70VV22SP.css": "
+  "assets/simple-DvRVXbZI.css": "
 /* packages/rollup/test/specimens/simple.css */
 .mc_fooga {
     color: red;
@@ -235,21 +237,21 @@ console.log(css);
 
 exports[`/rollup.js should correctly handle hashed output with external source maps & json files 1`] = `
 {
-  "assets/exports-P40iZL_X.json": "
+  "assets/exports-_jSJkv9e.json": "
 {
     "packages/rollup/test/specimens/simple.css": {
         "str": "\\"string\\"",
         "fooga": "mc_fooga"
     }
 }",
-  "assets/simple-70VV22SP.css": "
+  "assets/simple-DvRVXbZI.css": "
 /* packages/rollup/test/specimens/simple.css */
 .mc_fooga {
     color: red;
 }
 
-/*# sourceMappingURL=simple-70VV22SP.css.map */",
-  "assets/simple-70VV22SP.css.map": "
+/*# sourceMappingURL=simple-DvRVXbZI.css.map */",
+  "assets/simple-DvRVXbZI.css.map": "
 {"version":3,"sources":["../packages/rollup/test/specimens/simple.css"],"names":[],"mappings":"AAAA,8CAAA;AAEA;IACI,UAAU;AACd","file":"simple-[hash].css","sourcesContent":["@value str: \\"string\\";\\n\\n.fooga {\\n    color: red;\\n}\\n"]}",
   "simple.js": "
 const str = "\\"string\\"";
@@ -394,7 +396,7 @@ console.log(css);
 
 exports[`/rollup.js should handle assetFileNames being undefined 1`] = `
 {
-  "assets/simple-70VV22SP.css": "
+  "assets/simple-DvRVXbZI.css": "
 /* packages/rollup/test/specimens/simple.css */
 .mc_fooga {
     color: red;
@@ -735,7 +737,7 @@ console.log(styles);
 exports[`/rollup.js styleExport option should warn that styleExport and done aren't compatible 1`] = `
 [
   [
-    "(@modular-css/rollup plugin) Any plugins defined during the "done" lifecycle won't run when "styleExport" is set!",
+    "[plugin @modular-css/rollup] Any plugins defined during the "done" lifecycle won't run when "styleExport" is set!",
   ],
 ]
 `;
