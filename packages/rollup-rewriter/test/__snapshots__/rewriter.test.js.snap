@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`rollup-rewriter should error on unsupported formats (cjs) 1`] = `"Unsupported format: cjs. Supported formats are ["amd","es","esm","system"]"`;
+exports[`rollup-rewriter should error on unsupported formats (cjs) 1`] = `"[plugin @modular-css/rollup-rewriter] Unsupported format: cjs. Supported formats are ["amd","es","esm","system"]"`;
 
 exports[`rollup-rewriter should ignore unknown imports (amd) 1`] = `
 {
@@ -156,7 +156,7 @@ System.register(['external'], (function (exports, module) {
         }],
         execute: (function () {
 
-            exports('default', a);
+            exports("default", a);
 
             const a$1 = "mc_a";
             var css = {
@@ -194,7 +194,7 @@ System.register([], (function (exports) {
         execute: (function () {
 
             const c = "mc_c";
-            var css = exports('default', {
+            var css = exports("default", {
                 c
             });
 
@@ -509,7 +509,7 @@ System.register(['./static1.js'], (function (exports) {
 
             console.log(static1, css);
 
-            var dynamic1 = exports('default', "dynamic1.js");
+            var dynamic1 = exports("default", "dynamic1.js");
 
         })
     };
@@ -575,7 +575,7 @@ System.register([], (function (exports) {
 
             console.log(css);
 
-            var static1 = exports('s', "static1.js");
+            var static1 = exports("s", "static1.js");
 
         })
     };
@@ -859,7 +859,7 @@ System.register([], (function (exports) {
 
 			console.log(css);
 
-			var c = exports('default', "c");
+			var c = exports("default", "c");
 
 		})
 	};
@@ -871,7 +871,7 @@ System.register([], (function (exports) {
 	return {
 		execute: (function () {
 
-			var d = exports('default', "d");
+			var d = exports("default", "d");
 
 		})
 	};
@@ -1168,7 +1168,7 @@ import lazyload from "./css.js";
     return {
         execute: (function () {
 
-            exports('default', a);
+            exports("default", a);
 
             const a$1 = "mc_a";
             var css = {
@@ -1220,7 +1220,7 @@ import lazyload from "./css.js";
     return {
         execute: (function () {
 
-            exports('default', b);
+            exports("default", b);
 
             const b$1 = "mc_b";
             var css = {
@@ -1248,7 +1248,7 @@ System.register([], (function (exports) {
         execute: (function () {
 
             const c = "mc_c";
-            var css = exports('default', {
+            var css = exports("default", {
                 c
             });
 
@@ -1265,7 +1265,7 @@ System.register([], (function (exports) {
         execute: (function () {
 
             const d = "mc_d";
-            var css = exports('default', {
+            var css = exports("default", {
                 d
             });
 
@@ -1494,7 +1494,7 @@ import chunkCountIs8 from "./css.js";
     return {
         execute: (function () {
 
-            exports('default', a);
+            exports("default", a);
 
             const a$1 = "mc_a";
             var css = {
@@ -1522,7 +1522,7 @@ import chunkCountIs8 from "./css.js";
     return {
         execute: (function () {
 
-            exports('default', b);
+            exports("default", b);
 
             const b$1 = "mc_b";
             var css = {
@@ -1550,7 +1550,7 @@ System.register([], (function (exports) {
         execute: (function () {
 
             const c = "mc_c";
-            var css = exports('default', {
+            var css = exports("default", {
                 c
             });
 
@@ -1567,7 +1567,7 @@ System.register([], (function (exports) {
         execute: (function () {
 
             const d = "mc_d";
-            var css = exports('default', {
+            var css = exports("default", {
                 d
             });
 
@@ -1861,7 +1861,7 @@ System.register([], (function (exports, module) {
     return {
         execute: (function () {
 
-            exports('default', a);
+            exports("default", a);
 
             const a$1 = "mc_a";
             var css = {
@@ -1912,7 +1912,7 @@ System.register([], (function (exports, module) {
     return {
         execute: (function () {
 
-            exports('default', b);
+            exports("default", b);
 
             const b$1 = "mc_b";
             var css = {
@@ -1940,7 +1940,7 @@ System.register([], (function (exports) {
         execute: (function () {
 
             const c = "mc_c";
-            var css = exports('default', {
+            var css = exports("default", {
                 c
             });
 
@@ -1957,7 +1957,7 @@ System.register([], (function (exports) {
         execute: (function () {
 
             const d = "mc_d";
-            var css = exports('default', {
+            var css = exports("default", {
                 d
             });
 
