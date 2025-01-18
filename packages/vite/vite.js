@@ -151,7 +151,7 @@ module.exports = (
         },
 
         // Load the virtual CSS files
-        async load(id, opts = false) {
+        async load(id) {
             log("load", id);
 
             // Only want this to run for the virtual CSS modules
