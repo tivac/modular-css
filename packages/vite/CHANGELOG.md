@@ -1,5 +1,11 @@
 # Change Log
 
+## 30.1.0
+
+### Minor Changes
+
+- [#1024](https://github.com/tivac/modular-css/pull/1024) [`1c9322f`](https://github.com/tivac/modular-css/commit/1c9322fd9a39d05da01df8a8c6bd43e9218f9df1) Thanks [@tivac](https://github.com/tivac)! - Vite 6 support
+
 ## 30.0.6
 
 ### Patch Changes
