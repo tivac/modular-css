@@ -1,5 +1,11 @@
 # Change Log
 
+## 30.1.1
+
+### Patch Changes
+
+- [#1026](https://github.com/tivac/modular-css/pull/1026) [`b57b255`](https://github.com/tivac/modular-css/commit/b57b2556fc2389082950b5175d1d85a189891a4e) Thanks [@tivac](https://github.com/tivac)! - Remove tests from published package
+
 ## 30.1.0
 
 ### Minor Changes
