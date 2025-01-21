@@ -52,16 +52,9 @@ module.exports = {
     },
 
     overrides : [{
-        files   : [ "packages/www/**/*" ],
-
-        extends : [
-            "plugin:@tivac/svelte/recommended",
-        ],
-    }, {
         files   : [ "packages/www/**/*.svelte" ],
 
         extends : [
-            "plugin:@tivac/svelte/recommended",
             "plugin:svelte/recommended",
         ],
 
