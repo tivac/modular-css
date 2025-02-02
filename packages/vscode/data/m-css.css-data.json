@@ -1,0 +1,40 @@
+{
+    "version": 1.1,
+    "properties": [
+        {
+            "name": "composes",
+            "description": "Compose from another class",
+            "values": [
+                {
+                    "name": "Foo",
+                    "description": "FOOOOOOOOO"
+                }
+            ]
+        },
+        {
+            "name": "Foo",
+            "description": "FOO FOO",
+            "atRule": "@value",
+            "values": [
+                {
+                    "name": "aooga"
+                },
+                {
+                    "name": "booga"
+                }
+            ]
+        }
+    ],
+    "atDirectives": [
+        {
+            "name": "@value",
+            "description": "Define a build-time value",
+            "values": [
+                {
+                    "name": "Foo",
+                    "description": "FOOOOOOOOO"
+                }
+            ]
+        }
+    ]
+}
