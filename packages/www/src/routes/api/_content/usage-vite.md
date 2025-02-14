@@ -25,6 +25,18 @@ export default {
 
 #### Options
 
+##### `dev`
+
+Enable dev mode. In dev mode the default export of a CSS file will be a `Proxy` instead of a bare object. Attempts to access non-existant properties on the proxy will throw a `ReferenceError` to assist in catching incorrect usage.
+
+##### `dev.warn`
+
+Enable dev mode warnings. Will use a `Proxy` like normal dev mode, but will log warnings via `console.warn()` instead of throwing errors
+
+##### `dev.coverage`
+
+Enable dev mode coverage. Will use a `Proxy` like normal dev mode, and will track all reads of exported class names onto a global `mcssCoverage` object that can be inspected to look for unused styles.
+
 ##### `include`/`exclude`
 
 A minimatch pattern, or an array of minimatch patterns, relative to `process.cwd()`. `include` defaults to `**/*.mcss`.
