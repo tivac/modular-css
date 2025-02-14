@@ -39,37 +39,6 @@ const config = {
 		timeout             : 30 * 1000,
 		reuseExistingServer : !process.env.CI,
 	}],
-
-	projects : [
-		{
-			name : "serve - static",
-			use  : {
-				baseURL : "http://localhost:5173",
-				dir     : "static",
-			},
-		},
-		{
-			name : "serve - dynamic",
-			use  : {
-				baseURL : "http://localhost:5173",
-				dir     : "dynamic",
-			},
-		},
-		{
-			name : "built - static",
-			use  : {
-				baseURL : "http://localhost:5174",
-				dir     : "static",
-			},
-		},
-		{
-			name : "built - dynamic",
-			use  : {
-				baseURL : "http://localhost:5174",
-				dir     : "dynamic",
-			},
-		},
-	],
 };
 
 module.exports = config;

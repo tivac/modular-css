@@ -11,6 +11,9 @@ export default {
     plugins : [
         mcss({
             namer : (file, selector) => `mc_${selector}`,
+            dev   : {
+                coverage : true,
+            },
         }),
     ],
 
