@@ -46,6 +46,7 @@ const deconflict = (map, source) => {
 };
 
 const prop = ([ key, value ]) => (key === value ? key : `${JSON.stringify(key)} : ${value}`);
+
 const esm = (key, value) => {
     const safeKey = identifierfy(key);
     const safeValue = identifierfy(value);
@@ -285,28 +286,49 @@ exports.transform = (file, processor, opts = {}) => {
         }
     });
 
+    const classes = defaultExports.map(prop).join(",\n");
+
     if(options.dev) {
+        const source = relative(processor.options.cwd, id);
+        const issue = options.dev.warn ?
+            `console.warn(key, "is not exported by ${source}")` :
+            `throw new ReferenceError(key + " is not exported by ${source}");`;
+
+        if(options.dev.coverage) {
+            out.push(dedent(`
+                if(!globalThis.mcssCoverage) {
+                    globalThis.mcssCoverage = Object.create(null);
+                }
+                
+                globalThis.mcssCoverage["${source}"] = {
+                    __proto__ : null,
+                    "${defaultExports.map(prop).join("\" : 0,\n")}" : 0,
+                };
+            `));
+
+            out.push("");
+        }
+
         out.push(dedent(`
             const data = {
-                ${defaultExports.map(prop).join(",\n")}
+                ${classes}
             };
 
             export default new Proxy(data, {
                 get(tgt, key) {
                     if(key in tgt) {
+                        ${options.dev.coverage ? `globalThis.mcssCoverage["${source}"][key]++;\n` : ""}
                         return tgt[key];
                     }
 
-                    throw new ReferenceError(
-                        key + " is not exported by " + ${JSON.stringify(relative(processor.options.cwd, id))}
-                    );
+                    ${issue}
                 }
             })
         `));
     } else if(options.defaultExport) {
         out.push(dedent(`
             export default {
-                ${defaultExports.map(prop).join(",\n")}
+                ${classes}
             };
         `));
     }
