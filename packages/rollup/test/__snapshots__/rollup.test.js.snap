@@ -114,12 +114,11 @@ fooga
 var css = new Proxy(data, {
     get(tgt, key) {
         if(key in tgt) {
+            
             return tgt[key];
         }
 
-        throw new ReferenceError(
-            key + " is not exported by " + "packages/rollup/test/specimens/simple.css"
-        );
+        throw new ReferenceError(key + " is not exported by packages/rollup/test/specimens/simple.css");
     }
 });
 
