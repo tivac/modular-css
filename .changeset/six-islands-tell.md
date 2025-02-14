@@ -2,11 +2,12 @@
 "@modular-css/css-to-js": minor
 "@modular-css/vite": minor
 "@modular-css/rollup": minor
+"@modular-css/webpack": minor
 ---
 
 ## CSS coverage & warnings on unused classes
 
-Added `dev.warn` and `dev.coverage` as supported options for `@modular-css/css-to-js` package, and by extension `@modular-css/rollup` and `@modular-css/vite`.
+Added `dev.warn` and `dev.coverage` as supported options for `@modular-css/css-to-js` package, and by extension `@modular-css/rollup`, `@modular-css/vite`, and `@modular-css/webpack`.
 
 `dev.warn` will cause unknown classes requested from JS to log a warning to the console, instead of the current errors that are thrown.
 
