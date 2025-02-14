@@ -1,5 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`@modular-css/css-to-js API should create coverage infrastructure when options.dev.coverage is truthy: code 1`] = `
+const a = "mc74f3fa7b_a";
+if(!globalThis.mcssCoverage) {
+    globalThis.mcssCoverage = Object.create(null);
+}
+
+globalThis.mcssCoverage["a.css"] = {
+    __proto__ : null,
+    "a" : 0,
+};
+
+const data = {
+    a
+};
+
+export default new Proxy(data, {
+    get(tgt, key) {
+        if(key in tgt) {
+            globalThis.mcssCoverage["a.css"][key]++;
+
+            return tgt[key];
+        }
+
+        throw new ReferenceError(key + " is not exported by a.css");
+    }
+})
+
+export {
+    a
+};
+`;
+
 exports[`@modular-css/css-to-js API should dedupe repeated identifiers: code 1`] = `
 import { a } from "<ROOT-DIR>/a.css";
 const a1 = a + " " + "mc71966a67_a";
@@ -21,12 +53,11 @@ const data = {
 export default new Proxy(data, {
     get(tgt, key) {
         if(key in tgt) {
+            
             return tgt[key];
         }
 
-        throw new ReferenceError(
-            key + " is not exported by " + "a.css"
-        );
+        throw new ReferenceError(key + " is not exported by a.css");
     }
 })
 
@@ -211,6 +242,26 @@ export {
     a
 };
 export const styles = ".mc74f3fa7b_a { color: red; }";
+`;
+
+exports[`@modular-css/css-to-js API should output warnings when options.dev.warn is truthy 1`] = `
+Snapshot Diff:
+- First value
++ Second value
+
+@@ --- --- @@
+          if(key in tgt) {
+              
+              return tgt[key];
+          }
+
+-         throw new ReferenceError(key + " is not exported by a.css");
++         console.warn(key, "is not exported by a.css")
+      }
+  })
+
+  export {
+      a
 `;
 
 exports[`@modular-css/css-to-js API should output without default export: code 1`] = `

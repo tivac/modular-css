@@ -236,6 +236,27 @@ describe("@modular-css/css-to-js API", () => {
         expect(code).toMatchSnapshot("code");
     });
 
+    it("should output warnings when options.dev.warn is truthy", async () => {
+        const processor = new Processor({ resolvers });
+
+        await processor.string("./a.css", `.a { color: red; }`);
+
+        const { code : noWarn } = transform("./a.css", processor, { dev : { warn : false } });
+        const { code : warn } = transform("./a.css", processor, { dev : { warn : true } });
+
+        expect(noWarn).toMatchDiffSnapshot(warn);
+    });
+    
+    it("should create coverage infrastructure when options.dev.coverage is truthy", async () => {
+        const processor = new Processor({ resolvers });
+
+        await processor.string("./a.css", `.a { color: red; }`);
+
+        const { code } = transform("./a.css", processor, { dev : { coverage : true } });
+
+        expect(code).toMatchSnapshot("code");
+    });
+
     it.each([
         true,
         false,
