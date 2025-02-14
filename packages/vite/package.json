@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/vite",
-  "version": "30.1.1",
+  "version": "30.2.0",
   "description": "vite support for modular-css",
   "main": "./vite.js",
   "repository": {
@@ -26,7 +26,7 @@
     "postcss"
   ],
   "dependencies": {
-    "@modular-css/css-to-js": "^29.0.6",
+    "@modular-css/css-to-js": "^29.1.0",
     "@modular-css/processor": "^29.0.4",
     "@rollup/pluginutils": "^5.0.2"
   },
