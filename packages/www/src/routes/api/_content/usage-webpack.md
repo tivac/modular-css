@@ -2,8 +2,6 @@
 
 [Webpack](https://webpack.js.org/) 2/3/4 support for modular-css is provided by `@modular-css/webpack`.
 
-**NOTE**: `webpack@5` is untested but may be functional. If you try it out report back in [Discord](https://discord.gg/jQCZqMuMdt)!
-
 This package contains two entry points, you will need to use **both** in tandem for things to work!
 
 1. `@modular-css/webpack/plugin` provides a webpack plugin you can use to transform imported `.css` files into lookup objects while outputting CSS to disk.
