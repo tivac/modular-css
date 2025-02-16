@@ -460,8 +460,6 @@ describe("/processor.js", () => {
             });
 
             describe("dupewarn", () => {
-                // const fn = cased ? it.skip : it;
-
                 it("should warn on potentially duplicate file paths", async () => {
                     const spy = logspy("warn");
 
@@ -487,6 +485,35 @@ describe("/processor.js", () => {
                     await processor.string("packages/processor/test/specimens/START.css", ".start { color: red; }");
 
                     expect(spy).not.toHaveBeenCalled();
+                });
+            });
+
+            describe("unusedValues", () => {
+                it.only("should warn about unused @values", async () => {
+                    const processor = new Processor({
+                        namer,
+                    });
+                    
+                    await processor.string(
+                        "./simple.css",
+                        dedent(`
+                            @value unused: unused-value;
+                            @value used: used-value;
+                            @value nested: used;
+
+                            .foo {
+                                color: used;
+                                background-color: nested;
+                            }
+                        `),
+                    );
+    
+                    const result = await processor.output();
+
+                    console.log(result);
+                    
+                    await expect(result.css).toMatch("color: used-value;");
+                    await expect(result.css).toMatch("background-color: used-value;");
                 });
             });
         });

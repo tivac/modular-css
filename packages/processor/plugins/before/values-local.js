@@ -2,6 +2,7 @@
 
 const value = require("postcss-value-parser");
 const parser = require("../../parsers/values.js");
+const { valueKey } = require("../../lib/keys.js");
 
 const plugin = "modular-css-values-local";
 
@@ -30,15 +31,21 @@ module.exports = () => ({
                         return;
                     }
 
+                    const currKey = processor._addValue(from, details.name);
+
                     // Simple reference to an existing value
                     if(values[details.value]) {
+                        const prevKey = valueKey(from, details.value);
+
+                        processor._graph.addDependency(currKey, prevKey);
+
                         values[details.name] = {
                             ...values[details.value],
                             source   : rule.source,
+                            from,
                             external : false,
+                            graphKey : currKey,
                         };
-
-                        // console.log("values-local after", values[details.name]);
                     } else {
                         // Otherwise need to walk @value body and check for any replacments to make
                         const parsed = value(details.value);
@@ -48,13 +55,19 @@ module.exports = () => ({
                                 return;
                             }
 
+                            const prevKey = valueKey(from, node.value);
+
                             node.value = values[node.value].value;
+
+                            processor._graph.addDependency(currKey, prevKey);
                         });
 
                         values[details.name] = {
                             value    : parsed.toString(),
                             source   : rule.source,
+                            from,
                             external : false,
+                            graphKey : currKey,
                         };
                     }
                     

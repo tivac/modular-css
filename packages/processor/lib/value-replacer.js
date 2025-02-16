@@ -1,6 +1,9 @@
 const valueParser = require("postcss-value-parser");
 
-const replacer = (thing, prop, values) => {
+// eslint-disable-next-line no-empty-function -- chill
+const noop = () => {};
+
+const replacer = (thing, prop, values, matched = noop) => {
     const parseResult = valueParser(thing[prop]);
     
     let modified = false;
@@ -19,6 +22,8 @@ const replacer = (thing, prop, values) => {
         node.value = current.value;
 
         modified = true;
+
+        matched(node.value, current);
     });
 
     if(modified) {

@@ -129,7 +129,7 @@ class Processor {
         this._process = postcss([
             pluginAtComposes,
             pluginValuesImport,
-            pluginValuesReplace,
+            // pluginValuesReplace,
             pluginScoping,
             pluginExternals,
             pluginComposition,
@@ -381,6 +381,8 @@ class Processor {
             root,
             params(this, args)
         );
+
+        console.log(this._graph);
 
         result.warnings().forEach((warning) => this._warnings.push(warning));
 
