@@ -1,5 +1,11 @@
 # Change Log
 
+## 29.1.1
+
+### Patch Changes
+
+- [#1054](https://github.com/tivac/modular-css/pull/1054) [`21ac173`](https://github.com/tivac/modular-css/commit/21ac173110efaaac2aad503a1d5b6079b820000e) Thanks [@tivac](https://github.com/tivac)! - Corrected output when coverage is enabled so that it is valid JS
+
 ## 29.1.0
 
 ### Minor Changes
