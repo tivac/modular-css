@@ -29,6 +29,7 @@ const {
     selectorKey,
     isFile,
     isValue,
+    isSelector,
 } = Processor;
 
 const deconflict = (map, source) => {
@@ -299,12 +300,19 @@ exports.transform = (file, processor, opts = {}) => {
                 if(!globalThis.mcssCoverage) {
                     globalThis.mcssCoverage = Object.create(null);
                 }
-                
-                globalThis.mcssCoverage["${source}"] = {
-                    __proto__ : null,
-                    "${defaultExports.map(prop).join("\" : 0,\n")}" : 0,
-                };
+
+                globalThis.mcssCoverage["${source}"] = Object.create(null);
             `));
+
+            for(const key of exportedKeys) {
+                const graphKey = selectorKey(file, key);
+                const graphDeps = graph.hasNode(graphKey) ? graph.directDependentsOf(graphKey) : [];
+                const selectorDeps = graphDeps.filter(isSelector);
+
+                out.push(dedent(`
+                    globalThis.mcssCoverage["${source}"]["${key}"] = ${selectorDeps.length};
+                `));
+            }
 
             out.push("");
         }
