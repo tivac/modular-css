@@ -6,10 +6,8 @@ if(!globalThis.mcssCoverage) {
     globalThis.mcssCoverage = Object.create(null);
 }
 
-globalThis.mcssCoverage["a.css"] = {
-    __proto__ : null,
-    "a" : 0,
-};
+globalThis.mcssCoverage["a.css"] = Object.create(null);
+globalThis.mcssCoverage["a.css"]["a"] = 0;
 
 const data = {
     a
