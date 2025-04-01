@@ -46,7 +46,7 @@ test("coverage", async ({ page }) => {
     const coverage = await page.evaluate(() => globalThis.mcssCoverage);
 
     expect(coverage).toStrictEqual({
-        "packages/vite/tests/specimens/shared/static-c.mcss" : { c : 0 },
+        "packages/vite/tests/specimens/shared/static-c.mcss" : { c : 2 },
         "packages/vite/tests/specimens/static/a.mcss"        : { a : 1 },
         "packages/vite/tests/specimens/static/b.mcss"        : { b : 1 },
     });
