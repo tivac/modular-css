@@ -91,9 +91,15 @@ exports[`/rollup.js code splitting should output only 1 JSON file 1`] = `
 exports[`/rollup.js code splitting should support circular JS dependencies 1`] = `
 {
   "a.js": "
-export { a as default } from './a2.js';
+export { a as default } from './b.js';
 ",
-  "a2.js": "
+  "assets/b.css": "
+/* packages/rollup/test/specimens/circular-dependencies/b.css */
+.mc_b { color: blue; }
+/* packages/rollup/test/specimens/circular-dependencies/a.css */
+.mc_a { color: aqua; }
+",
+  "b.js": "
 const b$1 = "mc_b";
 var css$1 = {
     b: b$1
@@ -112,16 +118,7 @@ console.log(css, b);
 
 var a = "a";
 
-export { a, b };
-",
-  "assets/a.css": "
-/* packages/rollup/test/specimens/circular-dependencies/b.css */
-.mc_b { color: blue; }
-/* packages/rollup/test/specimens/circular-dependencies/a.css */
-.mc_a { color: aqua; }
-",
-  "b.js": "
-export { b as default } from './a2.js';
+export { a, b as default };
 ",
 }
 `;
