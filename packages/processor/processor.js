@@ -1,5 +1,6 @@
 "use strict";
 
+const mod = require("node:module");
 const path = require("path");
 
 const Graph = require("dependency-graph").DepGraph;
@@ -24,6 +25,9 @@ const pluginValuesLocal = require("./plugins/before/values-local.js");
 const pluginValuesReplace = require("./plugins/values-replace.js");
 
 const keys = require("./lib/keys.js");
+
+// Try to enable V8 compile cache for faster loading
+mod.enableCompileCache?.();
 
 const {
     selectorKey,
