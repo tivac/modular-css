@@ -40,7 +40,7 @@
     "rehype-toc": "^3.0.2",
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
-    "svelte": "^4.2.8",
+    "svelte": "^5.28.2",
     "to-vfile": "^8.0.0",
     "unified": "^11.0.3",
     "unist-builder": "^3.0.0",
