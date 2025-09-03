@@ -1,5 +1,5 @@
 ---
-"@modular-css/processor": feat
+"@modular-css/processor": minor
 "@modular-css/rollup": patch
 ---
 
