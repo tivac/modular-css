@@ -1,5 +1,13 @@
 # Change Log
 
+## 29.1.0
+
+### Minor Changes
+
+- [#1059](https://github.com/tivac/modular-css/pull/1059) [`46b1362`](https://github.com/tivac/modular-css/commit/46b136291191166de309193b08ce66ded2d74431) Thanks [@tivac](https://github.com/tivac)! - feat: Enable v8 compiler caching on node v22.8.0+
+
+  ESLint saw a big uplift in startup perf: https://bsky.app/profile/humanwhocodes.com/post/3lnvcvv5p6a25
+
 ## 29.0.4
 
 ### Patch Changes
