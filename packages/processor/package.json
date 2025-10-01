@@ -24,7 +24,7 @@
     "postcss"
   ],
   "dependencies": {
-    "dependency-graph": "^0.11.0",
+    "dependency-graph": "^1.0.0",
     "escape-string-regexp": "^4.0.0",
     "postcss-selector-parser": "^7.1.0",
     "postcss-url": "^10.0.0",
