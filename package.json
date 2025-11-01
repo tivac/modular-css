@@ -40,7 +40,7 @@
     "browserify": "^17.0.0",
     "cli-tester": "2.0.0",
     "codemirror": "^5.65.1",
-    "cssnano": "^5.0.16",
+    "cssnano": "^7.1.2",
     "debounce": "^2.0.0",
     "dedent": "^0.7.0",
     "dentist": "1.0.3",
