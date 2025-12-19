@@ -5,7 +5,10 @@
   "author": "Pat Cavit <npm@patcavit.com>",
   "homepage": "https://m-css.com",
   "license": "MIT",
-  "repository": "tivac/modular-css",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tivac/modular-css.git"
+  },
   "bugs": {
     "url": "https://github.com/tivac/modular-css/issues"
   },
