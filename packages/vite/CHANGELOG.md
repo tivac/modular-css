@@ -1,5 +1,11 @@
 # Change Log
 
+## 30.2.3
+
+### Patch Changes
+
+- [`a39ea8d`](https://github.com/tivac/modular-css/commit/a39ea8d89d3a1e633562822db2278a9aa19d5f7a) Thanks [@tivac](https://github.com/tivac)! - Bump peerDep to support vite@7
+
 ## 30.2.2
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/vite",
-  "version": "30.2.2",
+  "version": "30.2.3",
   "description": "vite support for modular-css",
   "main": "./vite.js",
   "repository": {
