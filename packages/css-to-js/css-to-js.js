@@ -317,12 +317,14 @@ exports.transform = (file, processor, opts = {}) => {
             out.push("");
         }
 
+        const cssData = deconflict(identifiers, "cssData");
+
         out.push(dedent(`
-            const data = {
+            const ${cssData} = {
                 ${classes}
             };
 
-            export default new Proxy(data, {
+            export default new Proxy(${cssData}, {
                 get(tgt, key) {
                     if(key in tgt) {
                         ${options.dev.coverage ? `globalThis.mcssCoverage["${source}"][key]++;\n` : ""}

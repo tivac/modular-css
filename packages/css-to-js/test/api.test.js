@@ -49,6 +49,17 @@ describe("@modular-css/css-to-js API", () => {
         expect(code).toMatchSnapshot("code");
     });
 
+    it("should deconflict the variable name in dev", async () => {
+        const processor = new Processor({ resolvers });
+
+        await processor.string("./a.css", `.data { color: red; }`);
+
+        const { code } = transform("./a.css", processor, { dev : true });
+
+        expect(code).toMatchSnapshot("code");
+    });
+
+
     it("should generate empty results & a warning on invalid file input", async () => {
         const processor = new Processor({ resolvers });
 
