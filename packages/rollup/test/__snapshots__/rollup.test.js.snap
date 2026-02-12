@@ -106,12 +106,12 @@ const $values = {
     str,
 };
 const fooga = "mc_fooga";
-const data = {
+const cssData = {
     $values,
 fooga
 };
 
-var css = new Proxy(data, {
+var css = new Proxy(cssData, {
     get(tgt, key) {
         if(key in tgt) {
             

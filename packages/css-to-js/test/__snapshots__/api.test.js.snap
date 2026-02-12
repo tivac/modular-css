@@ -9,11 +9,11 @@ if(!globalThis.mcssCoverage) {
 globalThis.mcssCoverage["a.css"] = Object.create(null);
 globalThis.mcssCoverage["a.css"]["a"] = 0;
 
-const data = {
+const cssData = {
     a
 };
 
-export default new Proxy(data, {
+export default new Proxy(cssData, {
     get(tgt, key) {
         if(key in tgt) {
             globalThis.mcssCoverage["a.css"][key]++;
@@ -27,6 +27,28 @@ export default new Proxy(data, {
 
 export {
     a
+};
+`;
+
+exports[`@modular-css/css-to-js API should deconflict the variable name in dev: code 1`] = `
+const data = "mc74f3fa7b_data";
+const cssData = {
+    data
+};
+
+export default new Proxy(cssData, {
+    get(tgt, key) {
+        if(key in tgt) {
+            
+            return tgt[key];
+        }
+
+        throw new ReferenceError(key + " is not exported by a.css");
+    }
+})
+
+export {
+    data
 };
 `;
 
@@ -44,11 +66,11 @@ export {
 
 exports[`@modular-css/css-to-js API should generate a javscript proxy in dev: code 1`] = `
 const a = "mc74f3fa7b_a";
-const data = {
+const cssData = {
     a
 };
 
-export default new Proxy(data, {
+export default new Proxy(cssData, {
     get(tgt, key) {
         if(key in tgt) {
             
