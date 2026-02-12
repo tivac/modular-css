@@ -31,6 +31,6 @@
     "@modular-css/glob": "^29.0.5",
     "@modular-css/processor": "^29.1.0",
     "meow": "^9.0.0",
-    "mkdirp": "^2.1.3"
+    "mkdirp": "^3.0.1"
   }
 }
