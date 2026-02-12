@@ -1,5 +1,13 @@
 # Change Log
 
+## 29.1.3
+
+### Patch Changes
+
+- [#1109](https://github.com/tivac/modular-css/pull/1109) [`c84470f`](https://github.com/tivac/modular-css/commit/c84470fc390ce20b45bd17a7d778a3dd2fea4f5c) Thanks [@tivac](https://github.com/tivac)! - fix: deconflict variable name for the root classes object in dev mode
+
+  Otherwise if you have a class named `.data {}` in your CSS we output invalid JS
+
 ## 29.1.2
 
 ### Patch Changes
