@@ -28,7 +28,7 @@ jobs:
       - name: lint
         run: npm run lint --quiet --max-warnings=0
 
-  jest-tests:
+  tests:
     # This shouldn't take long, and if it does something bad has happened and it should be killed
     timeout-minutes: 20
     
