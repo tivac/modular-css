@@ -16,8 +16,9 @@ module.exports = {
     testPathIgnorePatterns : [
         "/node_modules/",
         "/packages/vite/",
-        "/packages/paths/",
+        "/packages/aliases/",
         "/packages/namer/",
+        "/packages/paths/",
     ],
 
     watchPathIgnorePatterns : [

@@ -1,4 +1,4 @@
-"use strict";
+const { describe, it } = require("node:test");
 
 const { dedent } = require("dentist");
     
@@ -8,37 +8,43 @@ const namer     = require("@modular-css/test-utils/namer.js");
 const aliases = require("../aliases.js");
 
 describe("@modular-css/path-aliases", () => {
-    it("should return a falsey value if a file isn't found", () => {
+    it("should return a falsey value if a file isn't found", (t) => {
         const fn = aliases({
             aliases : {
                 specimens : "./packages/aliases/test/specimens",
             },
         });
 
-        expect(fn(".", "specimens/fooga.css")).toBeFalsy();
+        t.assert.ok(!fn(".", "specimens/fooga.css"));
     });
 
-    it("should return the absolute path if a file is found", () => {
+    it("should return the absolute path if a file is found", (t) => {
         const fn = aliases({
             aliases : {
                 one : "./packages/aliases/test/specimens/one",
             },
         });
 
-        expect(fn(".", "one/one.css")).toBe(require.resolve("./specimens/one/one.css"));
+        t.assert.strictEqual(
+            fn(".", "one/one.css"),
+            require.resolve("./specimens/one/one.css"),
+        );
     });
 
-    it("should allow regex characters in keys", () => {
+    it("should allow regex characters in keys", (t) => {
         const fn = aliases({
             aliases : {
                 $one : "./packages/aliases/test/specimens/one",
             },
         });
 
-        expect(fn(".", "$one/one.css")).toBe(require.resolve("./specimens/one/one.css"));
+        t.assert.strictEqual(
+            fn(".", "$one/one.css"),
+            require.resolve("./specimens/one/one.css"),
+        );
     });
 
-    it("should check multiple aliases for files & return the first match", () => {
+    it("should check multiple aliases for files & return the first match", (t) => {
         const fn = aliases({
             aliases : {
                 one : "./packages/aliases/test/specimens/one",
@@ -47,11 +53,18 @@ describe("@modular-css/path-aliases", () => {
             },
         });
 
-        expect(fn(".", "one/one.css")).toBe(require.resolve("./specimens/one/one.css"));
-        expect(fn(".", "sub/sub.css")).toBe(require.resolve("./specimens/one/sub/sub.css"));
+        t.assert.strictEqual(
+            fn(".", "one/one.css"),
+            require.resolve("./specimens/one/one.css"),
+        );
+
+        t.assert.strictEqual(
+            fn(".", "sub/sub.css"),
+            require.resolve("./specimens/one/sub/sub.css"),
+        );
     });
 
-    it("should be usable as a modular-css resolver", async () => {
+    it("should be usable as a modular-css resolver", async (t) => {
         const processor = new Processor({
             namer,
             resolvers : [
@@ -77,10 +90,10 @@ describe("@modular-css/path-aliases", () => {
 
         const { compositions } = await processor.output();
 
-        expect(compositions).toMatchSnapshot();
+        t.assert.snapshot(compositions);
     });
 
-    it("should fall through to the default resolver", async () => {
+    it("should fall through to the default resolver", async (t) => {
         const processor = new Processor({
             namer,
             resolvers : [
@@ -105,6 +118,6 @@ describe("@modular-css/path-aliases", () => {
 
         const { compositions } = await processor.output();
         
-        expect(compositions).toMatchSnapshot();
+        t.assert.snapshot(compositions);
     });
 });
