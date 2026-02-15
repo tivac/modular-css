@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           cache: 'npm'
       
       - name: npm install
@@ -33,14 +33,14 @@ jobs:
     timeout-minutes: 20
     
     env:
-      COVERAGE_NODE_VERSION: 20
+      COVERAGE_NODE_VERSION: 24
       COVERAGE_OS: 'ubuntu-latest'
 
     runs-on: ${{ matrix.os }}
     
     strategy:
       matrix:
-        node-version: [ 18, 20, 22 ]
+        node-version: [ 20, 22, 24 ]
         os: [ ubuntu-latest ]
 
     steps:
@@ -85,7 +85,7 @@ jobs:
     
     - uses: actions/setup-node@v6
       with:
-        node-version: 20
+        node-version: 24
         cache: 'npm'
     
     - name: npm ci
