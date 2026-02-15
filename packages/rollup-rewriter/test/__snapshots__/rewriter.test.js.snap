@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`rollup-rewriter should error on unsupported formats (cjs) 1`] = `"[plugin @modular-css/rollup-rewriter] Unsupported format: cjs. Supported formats are ["amd","es","esm","system"]"`;
 

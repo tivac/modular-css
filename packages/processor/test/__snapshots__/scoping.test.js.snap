@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`/processor.js scoping should allow :global classes to overlap with local ones (global before local) with exportGlobals : false 1`] = `
 "/* valid/global.css */

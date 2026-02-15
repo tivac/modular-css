@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`/processor.js values should expand namespaced value references (#1020) 1`] = `
 "/* packages/processor/test/specimens/namespace-expansion/c.css */

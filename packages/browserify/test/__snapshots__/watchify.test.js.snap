@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`/browserify.js watchify shouldn't cache file contents between watchify runs 1`] = `
 "/* packages/browserify/test/output/watchify/watched.css */

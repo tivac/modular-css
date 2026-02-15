@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`/browserify.js factor-bundle should avoid outputting empty css files by default 1`] = `
 "/* packages/browserify/test/specimens/folder/folder.css */

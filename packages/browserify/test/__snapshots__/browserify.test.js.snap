@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`/browserify.js basic functionality should correctly rewrite urls based on the destination file 1`] = `
 "/* packages/browserify/test/specimens/relative.css */

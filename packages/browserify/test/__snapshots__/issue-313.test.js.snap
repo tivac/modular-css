@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`/browserify.js /issues /313 should include all dependencies after watchify update 1`] = `
 "/* packages/browserify/test/specimens/issues/313/1.css */

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`/cli.js should default to outputting to stdout 1`] = `
 "/* packages/cli/test/specimens/simple.css */

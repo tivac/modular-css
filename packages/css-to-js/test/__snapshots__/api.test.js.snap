@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`@modular-css/css-to-js API should create coverage infrastructure when options.dev.coverage is truthy: code 1`] = `
 const a = "mc74f3fa7b_a";
