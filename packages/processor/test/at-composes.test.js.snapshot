@@ -1,0 +1,138 @@
+exports[`/processor.js > @composes > should allow composing classes from the composed file 1`] = `
+{
+  "wooga": [
+    "mc_wooga"
+  ],
+  "a": [
+    "mc_wooga",
+    "mc_a"
+  ],
+  "b": [
+    "mc_b"
+  ]
+}
+`;
+
+exports[`/processor.js > @composes > should allow for chains of @composes-included files 1`] = `
+{
+  "wooga": [
+    "mc_wooga"
+  ],
+  "notblue": [
+    "mc_wooga",
+    "mc_notblue"
+  ],
+  "a": [
+    "mc_wooga",
+    "mc_notblue",
+    "mc_a"
+  ],
+  "b": [
+    "mc_wooga",
+    "mc_b"
+  ]
+}
+`;
+
+exports[`/processor.js > @composes > should include compositions from the composed file 1`] = `
+{
+  "packages/processor/test/specimens/at-composes.css": {
+    "wooga": [
+      "mc_wooga"
+    ],
+    "a": [
+      "mc_a"
+    ],
+    "b": [
+      "mc_wooga",
+      "mc_b"
+    ]
+  },
+  "packages/processor/test/specimens/simple.css": {
+    "wooga": [
+      "mc_wooga"
+    ]
+  }
+}
+`;
+
+exports[`/processor.js > @composes > should include exported classes from the composed file 1`] = `
+{
+  "booga": [
+    "mc_booga"
+  ],
+  "looga": [
+    "mc_booga",
+    "mc_looga"
+  ],
+  "a": [
+    "mc_a"
+  ],
+  "b": [
+    "mc_b"
+  ]
+}
+`;
+
+exports[`/processor.js > @composes > should include exported classes from the composed file 2`] = `
+"/* packages/processor/test/specimens/folder/folder.css */\\n.mc_folder { margin: 2px; }\\n/* packages/processor/test/specimens/local.css */\\n.mc_booga { background: green; }\\n/* packages/processor/test/specimens/at-composes.css */\\n.mc_a {\\n    color: aqua;\\n}\\n.mc_b {\\n    color: blue;\\n}\\n"
+`;
+
+exports[`/processor.js > @composes > should include external compositions from the composed file 1`] = `
+{
+  "packages/processor/test/specimens/at-composes.css": {
+    "wooga": [
+      "mc_booga",
+      "mc_wooga"
+    ],
+    "booga": [
+      "mc_booga"
+    ],
+    "tooga": [
+      "mc_tooga"
+    ],
+    "a": [
+      "mc_a"
+    ],
+    "b": [
+      "mc_booga",
+      "mc_wooga",
+      "mc_b"
+    ]
+  },
+  "packages/processor/test/specimens/folder/folder.css": {
+    "folder": [
+      "mc_folder"
+    ]
+  },
+  "packages/processor/test/specimens/local.css": {
+    "booga": [
+      "mc_booga"
+    ],
+    "looga": [
+      "mc_booga",
+      "mc_looga"
+    ]
+  },
+  "packages/processor/test/specimens/start.css": {
+    "wooga": [
+      "mc_booga",
+      "mc_wooga"
+    ],
+    "booga": [
+      "mc_booga"
+    ],
+    "tooga": [
+      "mc_tooga"
+    ]
+  }
+}
+`;
+
+exports[`/processor.js > @composes > should not include exported values from the composed file 1`] = `
+{}
+`;
+
+exports[`/processor.js > @composes > should output css from the composed file 1`] = `
+"/* packages/processor/test/specimens/simple.css */\\n.mc_wooga { color: red; }\\n/* packages/processor/test/specimens/at-composes.css */\\n.mc_a {\\n    color: aqua;\\n}\\n.mc_b {\\n    color: blue;\\n}\\n"
+`;

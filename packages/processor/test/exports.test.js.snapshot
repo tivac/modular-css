@@ -1,0 +1,51 @@
+exports[`/processor.js > exports > should export an object of arrays containing strings 1`] = `
+{
+  "red": [
+    "mc_red"
+  ],
+  "black": [
+    "mc_black"
+  ],
+  "one": [
+    "mc_red",
+    "mc_black",
+    "mc_one"
+  ],
+  "two": [
+    "mc_red",
+    "mc_black",
+    "mc_two"
+  ]
+}
+`;
+
+exports[`/processor.js > exports > should export identifiers and their classes 1`] = `
+{
+  "packages/processor/test/specimens/folder/folder.css": {
+    "folder": [
+      "mc_folder"
+    ]
+  },
+  "packages/processor/test/specimens/local.css": {
+    "booga": [
+      "mc_booga"
+    ],
+    "looga": [
+      "mc_booga",
+      "mc_looga"
+    ]
+  },
+  "packages/processor/test/specimens/start.css": {
+    "wooga": [
+      "mc_booga",
+      "mc_wooga"
+    ],
+    "booga": [
+      "mc_booga"
+    ],
+    "tooga": [
+      "mc_tooga"
+    ]
+  }
+}
+`;

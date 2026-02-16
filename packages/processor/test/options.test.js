@@ -1,11 +1,10 @@
-"use strict";
-
+const { describe, it } = require("node:test");
 const path = require("path");
 
 const dedent = require("dedent");
 const namer = require("@modular-css/test-utils/namer.js");
 const relative = require("@modular-css/test-utils/relative.js");
-const { logSpy } = require("@modular-css/test-utils/logs.js");
+const { logSpy, logSpyCalls } = require("@modular-css/test-utils/logs.js");
 
 const Processor = require("../processor.js");
 
@@ -24,31 +23,31 @@ const async = (css) => (
 describe("/processor.js", () => {
     describe("options", () => {
         describe("cwd", () => {
-            it("should use an absolute path", async () => {
+            it("should use an absolute path", async (t) => {
                 const cwd = path.resolve("./packages/processor/test/specimens/folder");
 
                 const processor = new Processor({ cwd });
 
                 const { id } = await processor.file("./folder.css");
 
-                expect(processor.options.cwd).toBe(cwd);
-                expect(id).toBe(require.resolve("./specimens/folder/folder.css"));
+                t.assert.strictEqual(processor.options.cwd, cwd);
+                t.assert.strictEqual(id, require.resolve("./specimens/folder/folder.css"));
             });
 
-            it("should accept a relative path but make it absolute", async () => {
+            it("should accept a relative path but make it absolute", async (t) => {
                 const cwd = "./packages/processor/test/specimens/folder";
 
                 const processor = new Processor({ cwd });
 
                 const { id } = await processor.file("./folder.css");
 
-                expect(processor.options.cwd).toBe(path.resolve(cwd));
-                expect(id).toBe(require.resolve("./specimens/folder/folder.css"));
+                t.assert.strictEqual(processor.options.cwd, path.resolve(cwd));
+                t.assert.strictEqual(id, require.resolve("./specimens/folder/folder.css"));
             });
         });
 
         describe("namer", () => {
-            it("should use a custom naming function", async () => {
+            it("should use a custom naming function", async (t) => {
                 const processor = new Processor({
                     namer : (filename, selector) =>
                         `${relative([ filename ])[0].replace(/[\/\.]/g, "_")}_${selector}`,
@@ -59,12 +58,12 @@ describe("/processor.js", () => {
                     ".wooga { }"
                 );
 
-                expect(compositions).toMatchSnapshot();
-                expect(details.classes).toMatchSnapshot();
-                expect(details.processed.root.toResult().css).toMatchSnapshot();
+                t.assert.snapshot(compositions);
+                t.assert.snapshot(details.classes);
+                t.assert.snapshot(details.processed.root.toResult().css);
             });
 
-            it("should require a namer if a string is passed", async () => {
+            it("should require a namer if a string is passed", async (t) => {
                 const processor = new Processor({
                     namer : "@modular-css/shortnames",
                 });
@@ -74,10 +73,10 @@ describe("/processor.js", () => {
                     ".wooga { }"
                 );
 
-                expect(result.exports).toMatchSnapshot();
+                t.assert.snapshot(result.exports);
             });
 
-            it("should use the default naming function if a non-function is passed", async () => {
+            it("should use the default naming function if a non-function is passed", async (t) => {
                 const processor = new Processor({
                     namer : false,
                 });
@@ -87,12 +86,12 @@ describe("/processor.js", () => {
                     ".wooga { }"
                 );
 
-                expect(result.exports).toMatchSnapshot();
+                t.assert.snapshot(result.exports);
             });
         });
 
         describe("map", () => {
-            it("should generate source maps", async () => {
+            it("should generate source maps", async (t) => {
                 const processor = new Processor({
                     namer,
                     map : true,
@@ -105,10 +104,10 @@ describe("/processor.js", () => {
                     to   : "out.css",
                 });
 
-                expect(css).toMatchSnapshot();
+                t.assert.snapshot(css);
             });
 
-            it("should generate external source maps", async () => {
+            it("should generate external source maps", async (t) => {
                 const processor = new Processor({
                     namer,
                     map : {
@@ -123,12 +122,12 @@ describe("/processor.js", () => {
                     to   : "out.css",
                 });
 
-                expect(css).toMatchSnapshot();
+                t.assert.snapshot(css);
             });
         });
 
         describe("exportGlobals", () => {
-            it("should export :global values by default", async () => {
+            it("should export :global values by default", async (t) => {
                 const processor = new Processor({
                     exportGlobals : false,
                 });
@@ -141,10 +140,10 @@ describe("/processor.js", () => {
                     `)
                 );
 
-                expect(exports).toMatchSnapshot();
+                t.assert.snapshot(exports);
             });
             
-            it("should not export :global values when exportGlobals is false", async () => {
+            it("should not export :global values when exportGlobals is false", async (t) => {
                 const processor = new Processor({
                     exportGlobals : false,
                 });
@@ -157,12 +156,12 @@ describe("/processor.js", () => {
                     `)
                 );
 
-                expect(exports).toMatchSnapshot();
+                t.assert.snapshot(exports);
             });
         });
 
         describe("rewrite", () => {
-            it("should rewrite url() references by default", async () => {
+            it("should rewrite url() references by default", async (t) => {
                 const processor = new Processor();
 
                 await processor.string(
@@ -179,10 +178,10 @@ describe("/processor.js", () => {
                     to   : "./packages/processor/test/output/rewrite.css",
                 });
 
-                expect(css).toMatchSnapshot();
+                t.assert.snapshot(css);
             });
 
-            it("should not rewrite url() references when falsey", async () => {
+            it("should not rewrite url() references when falsey", async (t) => {
                 const processor = new Processor({ rewrite : false });
 
                 await processor.string(
@@ -199,10 +198,10 @@ describe("/processor.js", () => {
                     to   : "./packages/processor/test/output/rewrite.css",
                 });
 
-                expect(css).toMatchSnapshot();
+                t.assert.snapshot(css);
             });
 
-            it("should pass through to postcss-url as config", async () => {
+            it("should pass through to postcss-url as config", async (t) => {
                 const processor = new Processor({
                     rewrite : {
                         url : "inline",
@@ -223,12 +222,12 @@ describe("/processor.js", () => {
                     to   : "./packages/processor/test/output/rewrite.css",
                 });
 
-                expect(css).toMatchSnapshot();
+                t.assert.snapshot(css);
             });
         });
 
         describe("postcss options", () => {
-            it("should support custom parsers", async () => {
+            it("should support custom parsers", async (t) => {
                 const parser = require("sugarss");
 
                 const processor = new Processor({
@@ -250,13 +249,13 @@ describe("/processor.js", () => {
                     to   : "./packages/processor/test/output/parser.css",
                 });
 
-                expect(css).toMatchSnapshot();
+                t.assert.snapshot(css);
             });
         });
 
         describe("lifecycle options", () => {
             describe("before", () => {
-                it("should run sync postcss plugins before processing", async () => {
+                it("should run sync postcss plugins before processing", async (t) => {
                     const processor = new Processor({
                         namer,
                         before : [ sync ],
@@ -271,10 +270,10 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/sync-before.css",
                     });
 
-                    expect(css).toMatchSnapshot();
+                    t.assert.snapshot(css);
                 });
 
-                it("should run async postcss plugins before processing", async () => {
+                it("should run async postcss plugins before processing", async (t) => {
                     const processor = new Processor({
                         namer,
                         before : [ async ],
@@ -289,12 +288,12 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/sync-before.css",
                     });
 
-                    expect(css).toMatchSnapshot();
+                    t.assert.snapshot(css);
                 });
             });
 
             describe("processing", () => {
-                it("should run sync postcss plugins processing processing", async () => {
+                it("should run sync postcss plugins processing processing", async (t) => {
                     const processor = new Processor({
                         namer,
                         processing : [ sync ],
@@ -309,10 +308,10 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/sync-processing.css",
                     });
 
-                    expect(css).toMatchSnapshot();
+                    t.assert.snapshot(css);
                 });
 
-                it("should run async postcss plugins processing processing", async () => {
+                it("should run async postcss plugins processing processing", async (t) => {
                     const processor = new Processor({
                         namer,
                         processing : [ async ],
@@ -327,10 +326,10 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/sync-processing.css",
                     });
 
-                    expect(css).toMatchSnapshot();
+                    t.assert.snapshot(css);
                 });
 
-                it("should include exports from 'modular-css-export' modules", async () => {
+                it("should include exports from 'modular-css-export' modules", async (t) => {
                     const processor = new Processor({
                         namer,
                         processing : [ (css, { messages }) => {
@@ -349,12 +348,12 @@ describe("/processor.js", () => {
                         ""
                     );
 
-                    expect(details.exported).toMatchSnapshot();
+                    t.assert.snapshot(details.exported);
                 });
             });
 
             describe("after", () => {
-                it("should use postcss-url by default", async () => {
+                it("should use postcss-url by default", async (t) => {
                     const processor = new Processor();
 
                     await processor.file("./packages/processor/test/specimens/relative.css");
@@ -364,10 +363,10 @@ describe("/processor.js", () => {
                         to   : "./packages/processor/test/output/relative.css",
                     });
 
-                    expect(css).toMatchSnapshot();
+                    t.assert.snapshot(css);
                 });
 
-                it("should run sync postcss plugins", async () => {
+                it("should run sync postcss plugins", async (t) => {
                     const processor = new Processor({
                         namer,
                         after : [ sync ],
@@ -380,10 +379,10 @@ describe("/processor.js", () => {
                         to   : "./packages/processor/test/output/relative.css",
                     });
 
-                    expect(css).toMatchSnapshot();
+                    t.assert.snapshot(css);
                 });
 
-                it("should run async postcss plugins", async () => {
+                it("should run async postcss plugins", async (t) => {
                     const processor = new Processor({
                         namer,
                         after : [ async ],
@@ -396,12 +395,12 @@ describe("/processor.js", () => {
                         to   : "./packages/processor/test/output/relative.css",
                     });
 
-                    expect(css).toMatchSnapshot();
+                    t.assert.snapshot(css);
                 });
             });
 
             describe("done", () => {
-                it("should run sync postcss plugins done processing", async () => {
+                it("should run sync postcss plugins done processing", async (t) => {
                     const processor = new Processor({
                         namer,
                         done : [ sync ],
@@ -416,10 +415,10 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/sync-done.css",
                     });
 
-                    expect(css).toMatchSnapshot();
+                    t.assert.snapshot(css);
                 });
 
-                it("should run async postcss plugins done processing", async () => {
+                it("should run async postcss plugins done processing", async (t) => {
                     const processor = new Processor({
                         namer,
                         done : [ async ],
@@ -434,12 +433,12 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/async-done.css",
                     });
 
-                    expect(css).toMatchSnapshot();
+                    t.assert.snapshot(css);
                 });
             });
 
             describe("verbose", () => {
-                it("should output debugging messages when verbose mode is enabled", async () => {
+                it("should output debugging messages when verbose mode is enabled", async (t) => {
                     const spy = logSpy();
 
                     const processor = new Processor({
@@ -455,14 +454,14 @@ describe("/processor.js", () => {
 
                     await processor.output();
 
-                    expect(spy).toMatchLogspySnapshot();
+                    t.assert.snapshot(logSpyCalls(spy));
                 });
             });
 
             describe("dupewarn", () => {
                 // const fn = cased ? it.skip : it;
 
-                it("should warn on potentially duplicate file paths", async () => {
+                it("should warn on potentially duplicate file paths", async (t) => {
                     const spy = logSpy("warn");
 
                     const processor = new Processor({
@@ -472,10 +471,10 @@ describe("/processor.js", () => {
                     await processor.string("packages/processor/test/specimens/start.css", ".start { color: red; }");
                     await processor.string("packages/processor/test/specimens/START.css", ".start { color: red; }");
 
-                    expect(spy).toMatchLogspySnapshot();
+                    t.assert.snapshot(logSpyCalls(spy));
                 });
 
-                it("shouldn't warn if dupewarn is false", async () => {
+                it("shouldn't warn if dupewarn is false", async (t) => {
                     const spy = logSpy("warn");
 
                     const processor = new Processor({
@@ -486,7 +485,7 @@ describe("/processor.js", () => {
                     await processor.string("packages/processor/test/specimens/start.css", ".start { color: red; }");
                     await processor.string("packages/processor/test/specimens/START.css", ".start { color: red; }");
 
-                    expect(spy).not.toHaveBeenCalled();
+                    t.assert.strictEqual(spy.calls.length, 0);
                 });
             });
         });
