@@ -19,7 +19,7 @@
     "release": "changeset publish",
     "test": "npm run test:node && npm run test:jest",
     "test:jest": "jest",
-    "test:node": "node --test \"packages/{aliases,glob,namer,paths,svelte}/**/*.test.js\"",
+    "test:node": "node --test \"packages/{aliases,glob,namer,paths,svelte}/**/*.test.js\" \"packages/rollup/test/rollup.test.js\"",
     "test:playwright": "playwright test",
     "watch": "jest --watch",
     "start": "npm start --workspace=@modular-css/www",

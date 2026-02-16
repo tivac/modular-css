@@ -20,6 +20,7 @@ module.exports = {
         "/packages/glob/",
         "/packages/namer/",
         "/packages/paths/",
+        "/packages/rollup/test/rollup.test.js",
         "/packages/svelte",
     ],
 
