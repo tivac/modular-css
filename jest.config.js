@@ -15,13 +15,13 @@ module.exports = {
 
     testPathIgnorePatterns : [
         "/node_modules/",
-        "/packages/vite/",
         "/packages/aliases/",
         "/packages/glob/",
         "/packages/namer/",
         "/packages/paths/",
-        "/packages/rollup/test/rollup.test.js",
+        "/packages/rollup/",
         "/packages/svelte",
+        "/packages/vite/",
     ],
 
     watchPathIgnorePatterns : [

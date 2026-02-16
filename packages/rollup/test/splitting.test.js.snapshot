@@ -1,0 +1,110 @@
+exports[`/rollup.js code splitting > should correctly chunk up CSS files 1`] = `
+{
+  "assets/a.css": "\\n/* packages/rollup/test/specimens/css-dependencies/a.css */\\n.mc_a {\\n    color: aqua;\\n}\\n",
+  "assets/b.css": "\\n/* packages/rollup/test/specimens/css-dependencies/b.css */\\n.mc_b {\\n    color: blue;\\n}\\n",
+  "assets/c.css": "\\n/* packages/rollup/test/specimens/css-dependencies/c.css */\\n.mc_c {\\n    color: cyan;\\n}\\n"
+}
+`;
+
+exports[`/rollup.js code splitting > should output metadata successfully when unreferenced CSS is output to common 1`] = `
+{
+  "assets/a.css": "\\n/* packages/rollup/test/specimens/metadata/a.css */\\n.mc541d3f5c_a { color: aqua; }\\n",
+  "assets/b.css": "\\n/* packages/rollup/test/specimens/metadata/b.css */\\n.mc04101138_b { color: blue; }\\n",
+  "assets/d.css": "\\n/* packages/rollup/test/specimens/metadata/d.css */\\n.mc7de0d66b_d { color: darkkhaki; }\\n",
+  "assets/fake.css": "\\n/* fake.css */\\n.mc2c838439_fake { color: red; }",
+  "assets/metadata.json": "\\n{\\n    \\"a.js\\": {\\n        \\"assets\\": [\\n            \\"assets/a.css\\"\\n        ]\\n    },\\n    \\"b.js\\": {\\n        \\"assets\\": [\\n            \\"assets/b.css\\"\\n        ]\\n    },\\n    \\"d.js\\": {\\n        \\"assets\\": [\\n            \\"assets/d.css\\"\\n        ]\\n    }\\n}"
+}
+`;
+
+exports[`/rollup.js code splitting > should output only 1 JSON file 1`] = `
+{
+  "assets/dependencies.css": "\\n/* packages/rollup/test/specimens/dependencies.css */\\n.mc_wooga {\\n    background: blue;\\n}\\n",
+  "assets/exports.json": "\\n{\\n    \\"packages/rollup/test/specimens/dependencies.css\\": {\\n        \\"wooga\\": \\"mc_fooga mc_wooga\\"\\n    },\\n    \\"packages/rollup/test/specimens/simple.css\\": {\\n        \\"str\\": \\"\\\\\\"string\\\\\\"\\",\\n        \\"fooga\\": \\"mc_fooga\\"\\n    }\\n}",
+  "assets/simple.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n"
+}
+`;
+
+exports[`/rollup.js code splitting > should support circular JS dependencies 1`] = `
+{
+  "a.js": "\\nexport { a as default } from './b.js';\\n",
+  "assets/b.css": "\\n/* packages/rollup/test/specimens/circular-dependencies/b.css */\\n.mc_b { color: blue; }\\n/* packages/rollup/test/specimens/circular-dependencies/a.css */\\n.mc_a { color: aqua; }\\n",
+  "b.js": "\\nconst b$1 = \\"mc_b\\";\\nvar css$1 = {\\n    b: b$1\\n};\\n\\nconsole.log(css$1, a);\\n\\nvar b = \\"b\\";\\n\\nconst a$1 = \\"mc_a\\";\\nvar css = {\\n    a: a$1\\n};\\n\\nconsole.log(css, b);\\n\\nvar a = \\"a\\";\\n\\nexport { a, b as default };\\n"
+}
+`;
+
+exports[`/rollup.js code splitting > should support deduping names via rollup (hashed) 1`] = `
+{
+  "assets/a-Dcwg2jww.css": "\\n/* packages/rollup/test/specimens/multiple-chunks/a.css */\\n.mc_a {\\n    color: aqua;\\n}\\n",
+  "assets/a-Dsg_L_Fg.css": "\\n/* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */\\n.mc_a { color: azure; }",
+  "assets/b-8fp88OXG.css": "\\n/* packages/rollup/test/specimens/multiple-chunks/b.css */\\n.mc_b {\\n    color: blue;\\n}\\n"
+}
+`;
+
+exports[`/rollup.js code splitting > should support deduping names via rollup (not hashed) 1`] = `
+{
+  "assets/a.css": "\\n/* packages/rollup/test/specimens/multiple-chunks/a.css */\\n.mc_a {\\n    color: aqua;\\n}\\n",
+  "assets/a2.css": "\\n/* packages/rollup/test/specimens/multiple-chunks/subfolder/a.css */\\n.mc_a { color: azure; }",
+  "assets/b.css": "\\n/* packages/rollup/test/specimens/multiple-chunks/b.css */\\n.mc_b {\\n    color: blue;\\n}\\n"
+}
+`;
+
+exports[`/rollup.js code splitting > should support dynamic imports 1`] = `
+{
+  "assets/a.css": "\\n/* packages/rollup/test/specimens/dynamic-imports/a.css */\\n.mc_a {\\n    color: aqua;\\n}\\n",
+  "assets/b.css": "\\n/* packages/rollup/test/specimens/dynamic-imports/e.css */\\n.mc_e {\\n    color: #EEE;\\n}\\n/* packages/rollup/test/specimens/dynamic-imports/b.css */\\n.mc_b {\\n    color: blue;\\n}\\n",
+  "assets/c.css": "\\n/* packages/rollup/test/specimens/dynamic-imports/c.css */\\n.mc_c {\\n    color: cyan;\\n}\\n",
+  "assets/d.css": "\\n/* packages/rollup/test/specimens/dynamic-imports/f.css */\\n.mc_f {\\n    color: floralwhite;\\n}\\n/* packages/rollup/test/specimens/dynamic-imports/d.css */\\n.mc_d {\\n    color: darkred;\\n}\\n"
+}
+`;
+
+exports[`/rollup.js code splitting > should support outputting metadata about CSS dependencies 1`] = `
+{
+  "assets/a.css": "\\n/* packages/rollup/test/specimens/metadata/a.css */\\n.mc_a { color: aqua; }\\n",
+  "assets/b.css": "\\n/* packages/rollup/test/specimens/metadata/b.css */\\n.mc_b { color: blue; }\\n",
+  "assets/d.css": "\\n/* packages/rollup/test/specimens/metadata/d.css */\\n.mc_d { color: darkkhaki; }\\n",
+  "assets/metadata.json": "\\n{\\n    \\"a.js\\": {\\n        \\"assets\\": [\\n            \\"assets/a.css\\"\\n        ]\\n    },\\n    \\"b.js\\": {\\n        \\"assets\\": [\\n            \\"assets/b.css\\"\\n        ]\\n    },\\n    \\"d.js\\": {\\n        \\"assets\\": [\\n            \\"assets/d.css\\"\\n        ]\\n    }\\n}"
+}
+`;
+
+exports[`/rollup.js code splitting > should support outputting metadata about CSS dependencies to a named file 1`] = `
+{
+  "assets/a.css": "\\n/* packages/rollup/test/specimens/metadata/a.css */\\n.mc_a { color: aqua; }\\n",
+  "assets/b.css": "\\n/* packages/rollup/test/specimens/metadata/b.css */\\n.mc_b { color: blue; }\\n",
+  "assets/chunks.json": "\\n{\\n    \\"a.js\\": {\\n        \\"assets\\": [\\n            \\"assets/a.css\\"\\n        ]\\n    },\\n    \\"b.js\\": {\\n        \\"assets\\": [\\n            \\"assets/b.css\\"\\n        ]\\n    },\\n    \\"d.js\\": {\\n        \\"assets\\": [\\n            \\"assets/d.css\\"\\n        ]\\n    }\\n}",
+  "assets/d.css": "\\n/* packages/rollup/test/specimens/metadata/d.css */\\n.mc_d { color: darkkhaki; }\\n"
+}
+`;
+
+exports[`/rollup.js code splitting > should support splitting up CSS files 1`] = `
+{
+  "assets/dependencies.css": "\\n/* packages/rollup/test/specimens/dependencies.css */\\n.mc_wooga {\\n    background: blue;\\n}\\n",
+  "assets/simple.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n"
+}
+`;
+
+exports[`/rollup.js code splitting > should support splitting up CSS files w/ shared assets 1`] = `
+{
+  "assets/a.css": "\\n/* packages/rollup/test/specimens/css-chunks/a.css */\\n.mc_a {\\n    color: aqua;\\n}\\n",
+  "assets/b.css": "\\n/* packages/rollup/test/specimens/css-chunks/b.css */\\n.mc_b {\\n    color: blue;\\n}\\n",
+  "assets/c.css": "\\n/* packages/rollup/test/specimens/css-chunks/shared.css */\\n.mc_shared {\\n    color: snow;\\n}\\n/* packages/rollup/test/specimens/css-chunks/c.css */\\n.mc_c {\\n    color: cyan;\\n}\\n"
+}
+`;
+
+exports[`/rollup.js code splitting > shouldn't break when dynamic imports are tree-shaken away (rollup/rollup#2659) 1`] = `
+{}
+`;
+
+exports[`/rollup.js code splitting > shouldn't put bundle-specific CSS in common.css 1`] = `
+{
+  "assets/a.css": "\\n/* packages/rollup/test/specimens/common-splitting/shared.css */\\n.mc_shared {\\n    color: snow;\\n}\\n/* packages/rollup/test/specimens/common-splitting/a.css */\\n.mc_a {\\n    color: aqua;\\n}\\n.mc_a2 {\\n    color: azure;\\n}\\n/* packages/rollup/test/specimens/common-splitting/shared3.css */\\n.mc_shared3 {\\n    color: saddlebrown;\\n}\\n/* packages/rollup/test/specimens/common-splitting/b.css */\\n.mc_b {\\n    color: blue;\\n}\\n.mc_b2 {\\n    color: blanchedalmond;\\n}\\n",
+  "assets/c.css": "\\n/* packages/rollup/test/specimens/common-splitting/c.css */\\n.mc_c {\\n    color: cyan;\\n}\\n\\n.mc_c2 {\\n    color: crimson;\\n}",
+  "assets/shared2.css": "\\n/* packages/rollup/test/specimens/common-splitting/shared2.css */\\n.mc_shared2 {\\n    color: sandybrown;\\n}\\n"
+}
+`;
+
+exports[`/rollup.js code splitting > shouldn't use entry hashes as part of the CSS file names 1`] = `
+{
+  "assets/simple-DvRVXbZI.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n",
+  "simple.BtzGFnGS.js": "\\nconst str = \\"\\\\\\"string\\\\\\"\\";\\nconst $values = {\\n    str,\\n};\\nconst fooga = \\"mc_fooga\\";\\nvar css = {\\n    $values,\\nfooga\\n};\\n\\nconsole.log(css);\\n"
+}
+`;
