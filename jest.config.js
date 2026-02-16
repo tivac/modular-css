@@ -16,10 +16,12 @@ module.exports = {
     testPathIgnorePatterns : [
         "/node_modules/",
         "/packages/aliases/",
+        "/packages/css-to-js/",
         "/packages/glob/",
         "/packages/namer/",
         "/packages/paths/",
         "/packages/rollup/",
+        "/packages/rollup-rewriter/",
         "/packages/svelte",
         "/packages/vite/",
     ],
