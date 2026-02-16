@@ -1,0 +1,11 @@
+exports[`/glob.js > should find files on disk & output css 1`] = `
+"/* 1.css */\\n.mc_one {\\n    color: red;\\n}\\n/* exclude/4.css */\\n.mc_four {\\n    color: red;\\n}\\n/* dir/3.css */\\n.mc_three {\\n    color: white;\\n}\\n/* dir/2.css */\\n.mc_two {\\n    background: blue;\\n}\\n"
+`;
+
+exports[`/glob.js > should support exclusion patterns 1`] = `
+"/* 1.css */\\n.mc_one {\\n    color: red;\\n}\\n/* dir/3.css */\\n.mc_three {\\n    color: white;\\n}\\n/* dir/2.css */\\n.mc_two {\\n    background: blue;\\n}\\n"
+`;
+
+exports[`/glob.js > should use a default search 1`] = `
+"/* 1.css */\\n.mc_one {\\n    color: red;\\n}\\n/* exclude/4.css */\\n.mc_four {\\n    color: red;\\n}\\n/* dir/3.css */\\n.mc_three {\\n    color: white;\\n}\\n/* dir/2.css */\\n.mc_two {\\n    background: blue;\\n}\\n"
+`;

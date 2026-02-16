@@ -17,6 +17,7 @@ module.exports = {
         "/node_modules/",
         "/packages/vite/",
         "/packages/aliases/",
+        "/packages/glob/",
         "/packages/namer/",
         "/packages/paths/",
     ],
