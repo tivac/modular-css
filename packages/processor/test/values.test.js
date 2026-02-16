@@ -1,4 +1,4 @@
-"use strict";
+const { describe, it, beforeEach } = require("node:test");
 
 const path = require("path");
 const dedent = require("dedent");
@@ -15,41 +15,47 @@ describe("/processor.js", () => {
             });
         });
 
-        it("should fail on invalid value syntax", async () => {
-            await expect(processor.string(
-                "./invalid/value.css",
-                "@value foo, bar from nowhere.css"
-            )).rejects.toThrow(`SyntaxError: Expected source or whitespace but "n" found.`);
+        it("should fail on invalid value syntax", async (t) => {
+            await t.assert.rejects(
+                async () => processor.string(
+                    "./invalid/value.css",
+                    "@value foo, bar from nowhere.css"
+                ),
+                `SyntaxError: Expected source or whitespace but "n" found.`
+            );
         });
 
-        it("should fail if a value imports a non-existant reference", async () => {
-            await expect(processor.string(
-                "./invalid/value.css",
-                "@value not-real from \"../local.css\";"
-            )).rejects.toThrow(
+        it("should fail if a value imports a non-existant reference", async (t) => {
+            await t.assert.rejects(
+                async () => processor.string(
+                    "./invalid/value.css",
+                    "@value not-real from \"../local.css\";"
+                ),
                 `Unable to locate "../local.css" from "${path.resolve("invalid/value.css")}"`
             );
         });
 
-        it("should fail if a value imports a non-existant value", async () => {
-            await expect(processor.string(
-                "./packages/processor/test/specimens/simple.css",
-                "@value not-real from \"./local.css\";"
-            )).rejects.toThrow(
+        it("should fail if a value imports a non-existant value", async (t) => {
+            await t.assert.rejects(
+                async () => processor.string(
+                    "./packages/processor/test/specimens/simple.css",
+                    "@value not-real from \"./local.css\";"
+                ),
                 `Could not find @value not-real in "./local.css"`
             );
         });
         
-        it("should fail if a value aliases a non-existant value", async () => {
-            await expect(processor.string(
-                "./packages/processor/test/specimens/simple.css",
-                "@value not-real as stil-no from \"./local.css\";"
-            )).rejects.toThrow(
+        it("should fail if a value aliases a non-existant value", async (t) => {
+            await t.assert.rejects(
+                async () => processor.string(
+                    "./packages/processor/test/specimens/simple.css",
+                    "@value not-real as stil-no from \"./local.css\";"
+                ),
                 `Could not find @value not-real in "./local.css"`
             );
         });
 
-        it("shouldn't replace values unless they're safe", async () => {
+        it("shouldn't replace values unless they're safe", async (t) => {
             await processor.string(
                 "./values.css",
                 dedent(`
@@ -85,10 +91,10 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
 
-        it("should support simple values", async () => {
+        it("should support simple values", async (t) => {
             await processor.string(
                 "./values.css",
                 dedent(`
@@ -106,10 +112,10 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
 
-        it("should support local values in value composition", async () => {
+        it("should support local values in value composition", async (t) => {
             await processor.string(
                 "./packages/processor/test/specimens/simple.css",
                 dedent(`
@@ -122,42 +128,42 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
 
-        it("should support importing variables from a file", async () => {
+        it("should support importing variables from a file", async (t) => {
             await processor.file(require.resolve("./specimens/value-import.css"));
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
 
-        it("should support exporting imported variables", async () => {
+        it("should support exporting imported variables", async (t) => {
             await processor.file(require.resolve("./specimens/value-export.css"));
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
 
-        it("should support value composition", async () => {
+        it("should support value composition", async (t) => {
             await processor.file(require.resolve("./specimens/value-composition.css"));
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
 
-        it("should support value namespaces", async () => {
+        it("should support value namespaces", async (t) => {
             await processor.file(require.resolve("./specimens/value-namespace.css"));
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
 
-        it("should support value replacement in @value", async () => {
+        it("should support value replacement in @value", async (t) => {
             await processor.string(
                 "./packages/processor/test/specimens/simple.css",
                 dedent(`
@@ -169,47 +175,47 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
 
-        it("should support value replacement in :external(...)", async () => {
+        it("should support value replacement in :external(...)", async (t) => {
             await processor.file(require.resolve("./specimens/externals.css"));
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
 
-        it("should support value aliasing", async () => {
+        it("should support value aliasing", async (t) => {
             await processor.file(require.resolve("./specimens/value-alias.css"));
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
 
-        it("should support several layers of value references", async () => {
+        it("should support several layers of value references", async (t) => {
             await processor.file(require.resolve("./specimens/value-references.css"));
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
 
-        it("should support layers of namespaced value references", async () => {
+        it("should support layers of namespaced value references", async (t) => {
             await processor.file(require.resolve("./specimens/deep-namespace/a.css"));
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
         
-        it("should expand namespaced value references (#1020)", async () => {
+        it("should expand namespaced value references (#1020)", async (t) => {
             await processor.file(require.resolve("./specimens/namespace-expansion/a.css"));
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
     });
 });

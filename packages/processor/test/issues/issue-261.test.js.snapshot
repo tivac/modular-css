@@ -1,0 +1,3 @@
+exports[`/issues > /261 > should allow colons in rules that also use :external() 1`] = `
+"/* packages/processor/test/issues/specimens/261/1.css */\\n.mc55e10978_a {\\n    color: red;\\n}\\n/* packages/processor/test/issues/specimens/261/2.css */\\n.mc29999e60_b:hover .mc55e10978_a {\\n    color: blue;\\n}\\n"
+`;
