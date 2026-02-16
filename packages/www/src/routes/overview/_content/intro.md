@@ -27,7 +27,6 @@ There are a lot of different ways to use `modular-css`, pick your favorite!
 - [Svelte](/api/#other-tools-svelte-preprocessor) - Take your svelte components and power them up using `modular-css`! ⚡
 - [JS API](/api/#direct-usage-js-api) - The core of `modular-css`, reasonably usable and powers literally everything else.
 - [CLI](/api/#direct-usage-cli) - `modular-css` via CLI, for those times where you need to try something really quickly.
-- [PostCSS Plugin](/api/#other-tools-postcss) - Postcss-within-postcss, because sometimes you just need to do a thing. 😵
 - [Globbing API](/api/#direct-usage-globbing-api)- Grab `**/*.css` and get a move on. The globbing API is here for you!
 
 @import "./features.md"

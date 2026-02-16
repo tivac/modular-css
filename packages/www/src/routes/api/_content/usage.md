@@ -19,5 +19,3 @@ You can use `modular-css` a variety of ways. The easiest is with one of the bund
 ## Other Tools
 
 @import "./usage-svelte.md"
-
-@import "./usage-postcss.md"
