@@ -1,6 +1,7 @@
 const { describe, it } = require("node:test");
 
-const { dedent } = require("dentist");
+const dedent = require("dedent");
+
 const Processor = require("@modular-css/processor");
 const namer = require("@modular-css/test-utils/namer.js");
 const paths = require("../paths.js");
