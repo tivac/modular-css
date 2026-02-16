@@ -22,7 +22,7 @@ exports[`/rollup.js > Exports option > should provide named exports by default 1
 exports[`/rollup.js > Exports option > should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false) 1`] = `
 {
   "message": "[plugin @modular-css/rollup] packages/rollup/test/specimens/invalid-name.css: \\"fooga-wooga\\" is not a valid JS identifier",
-  "id": "C:\\\\Users\\\\pcavi\\\\Documents\\\\GitHub\\\\modular-css\\\\packages\\\\rollup\\\\test\\\\specimens\\\\invalid-name.css",
+  "id": "packages/rollup/test/specimens/invalid-name.css",
   "hook": "transform",
   "code": "PLUGIN_WARNING",
   "plugin": "@modular-css/rollup"
@@ -39,7 +39,7 @@ exports[`/rollup.js > Exports option > should warn & ignore invalid identifiers 
 exports[`/rollup.js > Exports option > should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true) 1`] = `
 {
   "message": "[plugin @modular-css/rollup] packages/rollup/test/specimens/invalid-name.css: \\"fooga-wooga\\" is not a valid JS identifier, exported as \\"foogaWooga\\"",
-  "id": "C:\\\\Users\\\\pcavi\\\\Documents\\\\GitHub\\\\modular-css\\\\packages\\\\rollup\\\\test\\\\specimens\\\\invalid-name.css",
+  "id": "packages/rollup/test/specimens/invalid-name.css",
   "hook": "transform",
   "code": "PLUGIN_WARNING",
   "plugin": "@modular-css/rollup"

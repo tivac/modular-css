@@ -16,6 +16,7 @@ const { rollupBundle } = require("@modular-css/test-utils/rollup.js");
 const Processor = require("@modular-css/processor");
 
 const plugin = require("../rollup.js");
+const relative = require("@modular-css/test-utils/relative.js");
 
 function error(root) {
     throw root.error("boom");
@@ -533,6 +534,14 @@ describe("/rollup.js", () => {
     });
 
     describe("Exports option", () => {
+        // Standard serializer for snapshots that makes the message id a relative filepath, so it doesn't
+        // blow up on the build server
+        const serializers = [ (value) => {
+            value.id = relative(value.id)[0];
+
+            return JSON.stringify(value, null, 2);
+        } ];
+
         it("should provide named exports by default", async (t) => {
             const bundle = await rollup({
                 input   : require.resolve("./specimens/named.js"),
@@ -554,7 +563,7 @@ describe("/rollup.js", () => {
         it("should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true)", async (t) => {
             const bundle = await rollup({
                 input   : require.resolve("./specimens/invalid-name.js"),
-                onwarn  : (msg) => t.assert.snapshot(msg),
+                onwarn  : (msg) => t.assert.snapshot(msg, { serializers }),
                 plugins : [
                     createPlugin({
                         namedExports : {
@@ -578,7 +587,7 @@ describe("/rollup.js", () => {
         it("should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false)", async (t) => {
             const bundle = await rollup({
                 input   : require.resolve("./specimens/invalid-name.js"),
-                onwarn  : (msg) => t.assert.snapshot(msg),
+                onwarn  : (msg) => t.assert.snapshot(msg, { serializers }),
                 plugins : [
                     createPlugin({
                         namedExports : {
