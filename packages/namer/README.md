@@ -25,17 +25,6 @@ const processor = new Processor({
 // ...
 ```
 
-### Browserify
-
-```js
-build.plugin("@modular-css/browserify", {
-    css   : "./style.css",
-    namer : require("@modular-css/shortnames")()
-});
-
-// ...
-```
-
 ### Rollup
 
 ```js

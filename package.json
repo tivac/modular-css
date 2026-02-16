@@ -40,7 +40,6 @@
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/pluginutils": "^5.1.0",
     "@tivac/eslint-config": "^2.4.0",
-    "browserify": "^17.0.0",
     "cli-tester": "2.0.0",
     "codemirror": "^5.65.1",
     "cssnano": "^7.1.2",
@@ -68,7 +67,6 @@
     "sugarss": "^5.0.1",
     "svelte": "^5.33.11",
     "vite": "^7.3.1",
-    "watchify": "^4.0.0",
     "webpack": "^5.0.0"
   },
   "workspaces": [

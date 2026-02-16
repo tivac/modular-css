@@ -10,8 +10,6 @@ You can use `modular-css` a variety of ways. The easiest is with one of the bund
 
 @import "./usage-webpack.md"
 
-@import "./usage-browserify.md"
-
 ## Direct Usage
 
 @import "./usage-js.md"

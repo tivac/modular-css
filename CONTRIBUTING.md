@@ -23,8 +23,6 @@ Hi! Thanks for stopping by. Hopefully this document helps you get your bearings 
 - [`packages/processor`](https://github.com/tivac/modular-css/tree/main/packages/processor) - The `Processor` is the main piece of infrastructure for the entire project. It's a wrapper around a series of [postcss](http://postcss.org/) pipelines and plugins that handles all of the functionality like `composes`, `@value`, and the rest.
 - [`packages/rollup`](https://github.com/tivac/modular-css/tree/main/packages/rollup) - [rollup](https://rollupjs.org/) plugin that acts as an interface between the rollup process and a `Processor` instance.
 - [`packages/vite`](https://github.com/tivac/modular-css/tree/main/packages/vite) - [vite](https://vutejs.org/) plugin that acts as an interface between the vite process and a `Processor` instance.
-- [`packages/webpack`](https://github.com/tivac/modular-css/tree/main/packages/webpack) - [webpack](https://webpack.js.org/) loader & plugin which acts as an interface between the webpack process and a `Processor` instance.
-- [`packages/browserify`](https://github.com/tivac/modular-css/tree/main/packages/browserify) - [browserify](http://browserify.org/) loader & plugin which acts as an interface between the webpack process and a `Processor` instance.
 
 There's several other ways to use `modular-css` tucked away in the `packages/` folders, feel free to peruse the `README.md` files to get more details about each package.
 
