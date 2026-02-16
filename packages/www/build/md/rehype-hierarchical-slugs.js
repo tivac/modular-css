@@ -1,11 +1,11 @@
-import ghSlugger from "github-slugger";
+import GithubSlugger from "github-slugger";
 import { hasProperty } from "hast-util-has-property";
 import { heading } from "hast-util-heading";
 import { headingRank } from "hast-util-heading-rank";
 import { toString } from "hast-util-to-string";
 import { visit } from "unist-util-visit";
 
-const { slug : slugger } = ghSlugger;
+const slugger = new GithubSlugger();
 
 export default function rehypeHierarchicalSlug() {
     return (tree) => {
@@ -17,7 +17,7 @@ export default function rehypeHierarchicalSlug() {
             }
 
             const rank = headingRank(node);
-            const slug = slugger(toString(node));
+            const slug = slugger.slug(toString(node));
             
             let last = slugs[slugs.length - 1];
 

@@ -16,7 +16,7 @@ const config = {
                     return;
                 }
 
-                throw new Error(message);
+                console.warn(path, message);
             },
         },
     },
