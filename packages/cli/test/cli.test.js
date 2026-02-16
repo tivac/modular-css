@@ -1,4 +1,4 @@
-"use strict";
+const { describe, it } = require("node:test");
 
 const tester = require("cli-tester");
 
@@ -7,60 +7,60 @@ const read = require("@modular-css/test-utils/read.js")(__dirname);
 const cli = require.resolve("../cli.js");
 
 describe("/cli.js", () => {
-    afterAll(() => require("shelljs").rm("-rf", "./packages/cli/test/output"));
+    require("shelljs").rm("-rf", "./packages/cli/test/output");
 
-    it("should show help with no args", async () => {
+    it("should show help with no args", async (t) => {
         const out = await tester(
             cli
         );
 
-        expect(out.code).toBe(2);
-        expect(out.stdout).toMatchSnapshot();
+        t.assert.strictEqual(out.code, 2);
+        t.assert.snapshot(out.stdout);
     });
 
-    it("should default to outputting to stdout", async () => {
+    it("should default to outputting to stdout", async (t) => {
         const out = await tester(
             cli,
             "./packages/cli/test/specimens/simple.css"
         );
 
-        expect(out.code).toBe(0);
-        expect(out.stdout).toMatchSnapshot();
+        t.assert.strictEqual(out.code, 0);
+        t.assert.snapshot(out.stdout);
     });
 
-    it("should support outputting to a file (--out)", async () => {
+    it("should support outputting to a file (--out)", async (t) => {
         const out = await tester(
             cli,
             "--out=./packages/cli/test/output/simple.css",
             "./packages/cli/test/specimens/simple.css"
         );
 
-        expect(out.code).toBe(0);
-        expect(read("simple.css")).toMatchSnapshot();
+        t.assert.strictEqual(out.code, 0);
+        t.assert.snapshot(read("simple.css"));
     });
 
-    it("should support outputting compositions to a file (--json)", async () => {
+    it("should support outputting compositions to a file (--json)", async (t) => {
         const out = await tester(
             cli,
             "--json=./packages/cli/test/output/classes.json",
             "./packages/cli/test/specimens/simple.css"
         );
 
-        expect(out.code).toBe(0);
-        expect(read("classes.json")).toMatchSnapshot();
+        t.assert.strictEqual(out.code, 0);
+        t.assert.snapshot(read("classes.json"));
     });
 
-    it("should return the correct error code on invalid CSS", async () => {
+    it("should return the correct error code on invalid CSS", async (t) => {
         const out = await tester(
             cli,
             "./packages/cli/test/specimens/invalid.css"
         );
 
-        expect(out.code).toBe(1);
-        expect(out.stderr).toMatch("Invalid composes reference");
+        t.assert.strictEqual(out.code, 1);
+        t.assert.match(out.stderr, /Invalid composes reference/);
     });
 
-    it("should support disabling url() rewriting (--no-rewrite)", async () => {
+    it("should support disabling url() rewriting (--no-rewrite)", async (t) => {
         const out = await tester(
             cli,
             "--no-rewrite",
@@ -68,7 +68,7 @@ describe("/cli.js", () => {
             "./packages/cli/test/specimens/no-rewrite.css"
         );
 
-        expect(out.code).toBe(0);
-        expect(read("no-rewrite.css")).toMatchSnapshot();
+        t.assert.strictEqual(out.code, 0);
+        t.assert.snapshot(read("no-rewrite.css"));
     });
 });
