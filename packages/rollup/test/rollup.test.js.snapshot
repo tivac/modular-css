@@ -253,6 +253,10 @@ exports[`/rollup.js > should support namespaced @value imports 1`] = `
 `;
 
 exports[`/rollup.js > source maps > should generate external source maps 1`] = `
+"{\\"version\\":3,\\"sources\\":[\\"../../../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,8CAAA;AAEA;IACI,UAAU;AACd\\",\\"file\\":\\"simple.css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}"
+`;
+
+exports[`/rollup.js > source maps > should generate external source maps 2`] = `
 "/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n\\n/*# sourceMappingURL=simple.css.map */"
 `;
 

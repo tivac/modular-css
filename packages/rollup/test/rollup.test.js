@@ -721,13 +721,7 @@ describe("/rollup.js", () => {
                 file : prefix(`./output/external-source-maps/simple.js`),
             });
 
-            // Have to parse it into JSON so the propertyMatcher can exclude the file property
-            // since it is a hash value and changes constantly
-            // TODO: ???
-            // expect(JSON.parse(read("./external-source-maps/assets/simple.css.map"))).toMatchSnapshot({
-            //     file : expect.any(String),
-            // });
-
+            t.assert.snapshot(read("./external-source-maps/assets/simple.css.map"));
             t.assert.snapshot(read("./external-source-maps/assets/simple.css"));
         });
 
