@@ -30,7 +30,7 @@ jobs:
 
   tests:
     # This shouldn't take long, and if it does something bad has happened and it should be killed
-    timeout-minutes: 20
+    timeout-minutes: 5
     
     env:
       COVERAGE_NODE_VERSION: 24
@@ -59,20 +59,7 @@ jobs:
       run: npm run parsers
     
     - name: npm test
-      run: npm test -- --ci --no-cache
-      env:
-        CI: true
-        
-    # Run codecov after all builds, and only on a single environment
-    - name: Gather Coverage
-      if: matrix.os == env.COVERAGE_OS && matrix.node-version == env.COVERAGE_NODE_VERSION
-      run: npm test -- --ci --coverage
-
-    - name: Upload Coverage
-      uses: codecov/codecov-action@v5
-      if: matrix.os == env.COVERAGE_OS && matrix.node-version == env.COVERAGE_NODE_VERSION
-      with:
-        files: ./coverage/coverage-final.json
+      run: npm test
 
   playwright-tests:
     timeout-minutes: 30
