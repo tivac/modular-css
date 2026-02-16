@@ -50,7 +50,7 @@
     "eslint-plugin-svelte": "^2.46.1",
     "github-slugger": "^2.0.0",
     "nanospy": "^1.0.0",
-    "peggy": "^2.0.0",
+    "peggy": "^5.0.6",
     "postcss": "^8.5.6",
     "postcss-nested": "^7.0.2",
     "rollup": "^4.57.1",
