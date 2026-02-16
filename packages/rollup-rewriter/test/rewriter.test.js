@@ -6,7 +6,7 @@ const shell = require("shelljs");
 
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
 const namer  = require("@modular-css/test-utils/namer.js");
-const logspy   = require("@modular-css/test-utils/logs.js");
+const { logSpy }   = require("@modular-css/test-utils/logs.js");
 
 const css = require("@modular-css/rollup");
 
@@ -231,7 +231,7 @@ describe("rollup-rewriter", () => {
 
      
     it("should log details in verbose mode", async () => {
-        const spy = logspy();
+        const spy = logSpy();
 
         const bundle = await rollup({
             input : [

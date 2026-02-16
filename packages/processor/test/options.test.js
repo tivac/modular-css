@@ -5,7 +5,7 @@ const path = require("path");
 const dedent = require("dedent");
 const namer = require("@modular-css/test-utils/namer.js");
 const relative = require("@modular-css/test-utils/relative.js");
-const logspy = require("@modular-css/test-utils/logs.js");
+const { logSpy } = require("@modular-css/test-utils/logs.js");
 
 const Processor = require("../processor.js");
 
@@ -440,7 +440,7 @@ describe("/processor.js", () => {
 
             describe("verbose", () => {
                 it("should output debugging messages when verbose mode is enabled", async () => {
-                    const spy = logspy();
+                    const spy = logSpy();
 
                     const processor = new Processor({
                         namer,
@@ -463,7 +463,7 @@ describe("/processor.js", () => {
                 // const fn = cased ? it.skip : it;
 
                 it("should warn on potentially duplicate file paths", async () => {
-                    const spy = logspy("warn");
+                    const spy = logSpy("warn");
 
                     const processor = new Processor({
                         namer,
@@ -476,7 +476,7 @@ describe("/processor.js", () => {
                 });
 
                 it("shouldn't warn if dupewarn is false", async () => {
-                    const spy = logspy("warn");
+                    const spy = logSpy("warn");
 
                     const processor = new Processor({
                         namer,

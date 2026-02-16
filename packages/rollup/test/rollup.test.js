@@ -10,7 +10,7 @@ const files = require("rollup-plugin-hypothetical");
 const read = require("@modular-css/test-utils/read.js")(__dirname);
 const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
 const namer = require("@modular-css/test-utils/namer.js");
-const logspy = require("@modular-css/test-utils/logs.js");
+const { logSpy } = require("@modular-css/test-utils/logs.js");
 
 const Processor = require("@modular-css/processor");
 
@@ -529,7 +529,7 @@ describe("/rollup.js", () => {
         });
 
         it("should warn if named exports are falsey", async () => {
-            const spy = logspy("warn");
+            const spy = logSpy("warn");
 
             await rollup({
                 input   : require.resolve("./specimens/simple.js"),
@@ -544,7 +544,7 @@ describe("/rollup.js", () => {
         });
 
         it("should generated valid JS even when identifiers aren't", async () => {
-            logspy("warn");
+            logSpy("warn");
 
             const bundle = await rollup({
                 input   : require.resolve("./specimens/composes-from-invalid-js/entry.js"),
@@ -595,7 +595,7 @@ describe("/rollup.js", () => {
         });
 
         it("should warn that styleExport and done aren't compatible", async () => {
-            const spy = logspy("warn");
+            const spy = logSpy("warn");
 
             await rollup({
                 input   : require.resolve("./specimens/style-export.js"),
@@ -746,7 +746,7 @@ describe("/rollup.js", () => {
 
     describe("verbose option", () => {
         it("should log in verbose mode", async () => {
-            const spy = logspy();
+            const spy = logSpy();
 
             const bundle = await rollup({
                 input   : require.resolve("./specimens/simple.js"),
@@ -837,7 +837,7 @@ describe("/rollup.js", () => {
         }
 
         fn("should warn about repeated references that point at the same files", async () => {
-            const spy = logspy("warn");
+            const spy = logSpy("warn");
 
             const bundle = await rollup({
                 input   : require.resolve("./specimens/casing/main.js"),
