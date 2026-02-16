@@ -26,7 +26,7 @@ const DEFAULTS = {
 const CSS_QUERY = "mcss&type=style&lang.css";
 
 const normalize = (file) => file.replace(/\/|\\/g, path.sep);
-const slash = (file) => file.replace(/\\/g, "/");
+const slash = (file) => file.replace(/\/|\\/g, "/");
 const virtualize = (file) => `${file}?${CSS_QUERY}`;
 const devirtualize = (file) => `${file.split("?")[0]}`;
 const isVirtual = (file) => file.endsWith(`?${CSS_QUERY}`);

@@ -3,7 +3,6 @@
 const path = require("path");
 
 const escape = require("escape-string-regexp");
-const slash = require("slash");
 const utils = require("@rollup/pluginutils");
 
 const Processor = require("@modular-css/processor");
@@ -14,6 +13,7 @@ const { extractLink } = require("./link.js");
 const { extractImport } = require("./script.js");
 
 const missedRegex = /css\.\w+/gim;
+const slash = (file) => file.replace(/\/|\\/g, "/");
 
 const prefix = `[${require("./package.json").name}]`;
 
