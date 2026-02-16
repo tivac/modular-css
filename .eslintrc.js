@@ -1,7 +1,6 @@
 module.exports = {
     extends : [
         "@tivac",
-        "plugin:jest/recommended",
         "plugin:eslint-comments/recommended",
     ],
 
@@ -13,13 +12,8 @@ module.exports = {
 
     env : {
         node : true,
-        jest : true,
         es6  : true,
     },
-
-    plugins : [
-        "jest",
-    ],
 
     reportUnusedDisableDirectives : true,
 
