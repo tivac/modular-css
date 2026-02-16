@@ -52,14 +52,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     
-    - name: npm ci
-      run: npm ci
+    - run: npm ci
     
-    - name: npm run parsers
-      run: npm run parsers
+    - run: npm run parsers
     
-    - name: npm test
-      run: npm test
+    - run: npm test
 
   playwright-tests:
     timeout-minutes: 30
@@ -75,17 +72,14 @@ jobs:
         node-version: 24
         cache: 'npm'
     
-    - name: npm ci
-      run: npm ci
+    - run: npm ci
     
-    - name: npm run parsers
-      run: npm run parsers
+    - run: npm run parsers
     
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
 
-    - name: test
-      run: npm run test:playwright
+    - run: npm run test:playwright
     
     - uses: actions/upload-artifact@v6
       if: failure()
