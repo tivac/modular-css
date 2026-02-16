@@ -1,4 +1,4 @@
-"use strict";
+const { describe, it, afterEach } = require("node:test");
 
 const fs = require("fs");
 const path = require("path");
@@ -8,14 +8,14 @@ const dedent = require("dedent");
 
 const Processor = require("@modular-css/processor");
 const namer = require("@modular-css/test-utils/namer.js");
-const logspy  = require("@modular-css/test-utils/logs.js");
+const { logSpy, logSpyCalls }  = require("@modular-css/test-utils/logs.js");
 
 const plugin = require("../svelte.js");
 
 describe("/svelte.js", () => {
     afterEach(() => require("shelljs").rm("-rf", "./packages/svelte/test/output/*"));
 
-    it.each([
+    [
         [ "<style>", "style.svelte" ],
         [ "<script>", "script.svelte" ],
         [ "<link> no script", "link.svelte" ],
@@ -23,29 +23,32 @@ describe("/svelte.js", () => {
         [ "<link> single quotes", "link-single.svelte" ],
         [ "<link> unquoted", "link-unquoted.svelte" ],
         [ "<link> values", "link-values.svelte" ],
-    ])("should extract CSS - %s", async (type, file) => {
-        const filename = require.resolve(`./specimens/${file}`);
-        const { processor, preprocess } = plugin({
-            namer,
-            values : true,
+    ].forEach(async ([ type, file ]) => {
+        it(`should extract CSS - ${type}`, async (t) => {
+            const filename = require.resolve(`./specimens/${file}`);
+            const { processor, preprocess } = plugin({
+                namer,
+                values : true,
+            });
+    
+            const processed = await svelte.preprocess(
+                fs.readFileSync(filename, "utf8"),
+                {
+                    ...preprocess,
+                    filename,
+                },
+            );
+    
+            t.assert.snapshot(processed.toString());
+    
+            const output = await processor.output();
+    
+            t.assert.snapshot(output.css);
         });
-
-        const processed = await svelte.preprocess(
-            fs.readFileSync(filename, "utf8"),
-            {
-                ...preprocess,
-                filename,
-            },
-        );
-
-        expect(processed.toString()).toMatchSnapshot();
-
-        const output = await processor.output();
-
-        expect(output.css).toMatchSnapshot();
     });
 
-    it("should replace unquoted class attributes correctly", async () => {
+
+    it("should replace unquoted class attributes correctly", async (t) => {
         const filename = require.resolve(`./specimens/unquoted.svelte`);
         const { processor, preprocess } = plugin({
             namer,
@@ -60,14 +63,14 @@ describe("/svelte.js", () => {
             },
         );
 
-        expect(processed.toString()).toMatchSnapshot();
+        t.assert.snapshot(processed.toString());
 
         const output = await processor.output();
 
-        expect(output.css).toMatchSnapshot();
+        t.assert.snapshot(output.css);
     });
 
-    it("should ignore <style> tags without the text/m-css attribute", async () => {
+    it("should ignore <style> tags without the text/m-css attribute", async (t) => {
         const filename = require.resolve("./specimens/style-no-attribute.svelte");
         const { processor, preprocess } = plugin({
             namer,
@@ -81,53 +84,61 @@ describe("/svelte.js", () => {
             },
         );
 
-        expect(processed.toString()).toMatchSnapshot();
+        t.assert.snapshot(processed.toString());
 
         const output = await processor.output();
 
-        expect(output.css).toMatchSnapshot();
+        t.assert.snapshot(output.css);
     });
 
-    it.each([
+    [
         "style",
         "link",
         "script",
-    ])("should expose CSS errors in a useful way (<%s>)", async (type) => {
-        const filename = require.resolve(`./specimens/error-${type}.svelte`);
-        const { preprocess } = plugin({
-            namer,
+    ].forEach((type) => {
+        it(`should expose CSS errors in a useful way (<${type}>)`, async (t) => {
+            const filename = require.resolve(`./specimens/error-${type}.svelte`);
+            const { preprocess } = plugin({
+                namer,
+            });
+    
+            await t.assert.rejects(async () =>
+                svelte.preprocess(
+                    fs.readFileSync(filename, "utf8"),
+                    {
+                        ...preprocess,
+                        filename,
+                    },
+                ),
+                /\.wooga/,
+            );
         });
-
-        await expect(svelte.preprocess(
-            fs.readFileSync(filename, "utf8"),
-            {
-                ...preprocess,
-                filename,
-            },
-        )).rejects.toThrow(/\.wooga/);
     });
 
-    it("should expose CSS errors in a useful way (non-css file)", async () => {
-        const spy = logspy("warn");
+    it("should expose CSS errors in a useful way (non-css file)", async (t) => {
+        const spy = logSpy("warn");
 
         const filename = require.resolve(`./specimens/error-link-non-css.svelte`);
         const { preprocess } = plugin({
             namer,
         });
 
-        await expect(svelte.preprocess(
-            fs.readFileSync(filename, "utf8"),
-            {
-                ...preprocess,
-                filename,
-            },
-        )).rejects.toThrow("error-link.svelte:1:1: Unknown word");
+        await t.assert.rejects(() =>
+            svelte.preprocess(
+                fs.readFileSync(filename, "utf8"),
+                {
+                    ...preprocess,
+                    filename,
+                },
+            ),
+            "error-link.svelte:1:1: Unknown word"
+        );
 
-        expect(spy).toHaveBeenCalled();
-        expect(spy).toMatchLogspySnapshot();
+        t.assert.ok(spy.calls.length > 0);
+        t.assert.snapshot(logSpyCalls(spy));
     });
 
-    it("should ignore <links> that reference a URL", async () => {
+    it("should ignore <links> that reference a URL", async (t) => {
         const filename = require.resolve("./specimens/url.svelte");
         const { preprocess, processor } = plugin({
             namer,
@@ -141,14 +152,14 @@ describe("/svelte.js", () => {
             },
         );
 
-        expect(processed.toString()).toMatchSnapshot();
+        t.assert.snapshot(processed.toString());
 
         const output = await processor.output();
 
-        expect(output.css).toMatchSnapshot();
+        t.assert.snapshot(output.css);
     });
 
-    it("should use an already-created processor", async () => {
+    it("should use an already-created processor", async (t) => {
         const processor = new Processor({ namer });
 
         await processor.string(
@@ -169,14 +180,14 @@ describe("/svelte.js", () => {
             },
         );
 
-        expect(processed.toString()).toMatchSnapshot();
+        t.assert.snapshot(processed.toString());
 
         const output = await processor.output();
 
-        expect(output.css).toMatchSnapshot();
+        t.assert.snapshot(output.css);
     });
 
-    it("should ignore files without <style> blocks", async () => {
+    it("should ignore files without <style> blocks", async (t) => {
         const { processor, preprocess } = plugin();
 
         const processed = await svelte.preprocess(
@@ -187,14 +198,14 @@ describe("/svelte.js", () => {
             preprocess
         );
 
-        expect(processed.toString()).toMatchSnapshot();
+        t.assert.snapshot(processed.toString());
 
         const output = await processor.output();
 
-        expect(output.css).toMatchSnapshot();
+        t.assert.snapshot(output.css);
     });
 
-    it.each([
+    [
         [ "invalid reference <script> - <style>", "invalid-style-script.svelte" ],
         [ "invalid reference template - <style>", "invalid-style-template.svelte" ],
         [ "invalid reference <script> - <link>", "invalid-link-script.svelte" ],
@@ -204,78 +215,85 @@ describe("/svelte.js", () => {
         [ "empty css file - <style>", "invalid-style-empty.svelte" ],
         [ "empty css file - <link>", "invalid-link-empty.svelte" ],
         [ "empty css file - <script>", "invalid-script-empty.svelte" ],
-    ])("should handle errors: %s", async (title, specimen) => {
-        const filename = require.resolve(`./specimens/${specimen}`);
-
-        const spy = logspy("warn");
-
-        // Set up strict plugin
-        const { preprocess : strict } = plugin({
-            namer,
-            strict : true,
-        });
-
-        await expect(
-            svelte.preprocess(
+    ].forEach(([ title, specimen ]) => {
+        it(`should handle errors: ${title}`, async (t) => {
+            const filename = require.resolve(`./specimens/${specimen}`);
+    
+            const spy = logSpy("warn");
+    
+            // Set up strict plugin
+            const { preprocess : strict } = plugin({
+                namer,
+                strict : true,
+            });
+    
+            try {
+                await svelte.preprocess(
+                    fs.readFileSync(filename, "utf8"),
+                    {
+                        ...strict,
+                        filename,
+                    }
+                );
+            } catch(e) {
+                t.assert.snapshot(e.toString());
+            }
+    
+            // Now the loose plugin
+            const { preprocess : loose } = plugin({
+                namer,
+            });
+    
+            const processed = await svelte.preprocess(
                 fs.readFileSync(filename, "utf8"),
                 {
-                    ...strict,
+                    ...loose,
                     filename,
                 }
-            )
-        ).rejects.toThrowErrorMatchingSnapshot();
-
-        // Now the loose plugin
-        const { preprocess : loose } = plugin({
-            namer,
+            );
+    
+            t.assert.ok(spy.calls.length > 0);
+            t.assert.snapshot(logSpyCalls(spy));
+    
+            t.assert.snapshot(processed.toString());
         });
-
-        const processed = await svelte.preprocess(
-            fs.readFileSync(filename, "utf8"),
-            {
-                ...loose,
-                filename,
-            }
-        );
-
-        expect(spy).toHaveBeenCalled();
-        expect(spy).toMatchLogspySnapshot();
-
-        expect(processed.toString()).toMatchSnapshot();
     });
 
-    it.each([
+
+    [
         [ "<style>", "style.svelte" ],
         [ "<link>", "link.svelte" ],
         [ "<script>", "script.svelte" ],
-    ])("should support verbose output: %s", async (title, specimen) => {
-        const spy = logspy();
+    ].forEach(([ title, specimen ]) => {
+        it(`should support verbose output: ${title}`, async (t) => {
+            const spy = logSpy();
 
-        const filename = require.resolve(`./specimens/${specimen}`);
+            const filename = require.resolve(`./specimens/${specimen}`);
 
-        const { processor, preprocess } = plugin({
-            namer,
-            verbose : true,
-            values  : true,
+            const { processor, preprocess } = plugin({
+                namer,
+                verbose : true,
+                values  : true,
+            });
+
+            await svelte.preprocess(
+                fs.readFileSync(filename, "utf8"),
+                {
+                    ...preprocess,
+                    filename,
+                },
+            );
+
+            await processor.output();
+
+            t.assert.snapshot(logSpyCalls(spy));
         });
-
-        await svelte.preprocess(
-            fs.readFileSync(filename, "utf8"),
-            {
-                ...preprocess,
-                filename,
-            },
-        );
-
-        await processor.output();
-
-        expect(spy).toMatchLogspySnapshot();
     });
 
-    it("should warn when multiple <link> elements are in the html", async () => {
+    it("should warn when multiple <link> elements are in the html", async (t) => {
         const filename = require.resolve(`./specimens/multiple-link.svelte`);
 
-        const spy = logspy("warn");
+        const spy = logSpy("warn");
 
         const { processor, preprocess } = plugin({
             namer,
@@ -289,17 +307,17 @@ describe("/svelte.js", () => {
             },
         );
 
-        expect(processed.toString()).toMatchSnapshot();
+        t.assert.snapshot(processed.toString());
 
         const output = await processor.output();
 
-        expect(output.css).toMatchSnapshot();
+        t.assert.snapshot(output.css);
 
-        expect(spy).toHaveBeenCalled();
-        expect(spy).toMatchLogspySnapshot();
+         t.assert.ok(spy.calls.length > 0);
+            t.assert.snapshot(logSpyCalls(spy));
     });
 
-    it("should no-op if all <link>s reference a URL", async () => {
+    it("should no-op if all <link>s reference a URL", async (t) => {
         const filename = require.resolve("./specimens/multiple-url.svelte");
 
         const { preprocess } = plugin({
@@ -314,10 +332,10 @@ describe("/svelte.js", () => {
             },
         );
 
-        expect(processed.toString()).toMatchSnapshot();
+        t.assert.snapshot(processed.toString());
     });
 
-    it.each([
+    [
         [ "<link>",
             `<link rel="stylesheet" href="./source.css" />
             <div class="{css.source}">Source</div>`,
@@ -326,58 +344,60 @@ describe("/svelte.js", () => {
             `<div class="{css.source}">Source</div>
             <script>import css from "./source.css";</script>`,
         ],
-    ])("should invalidate files before reprocessing (%s)", async (type, source) => {
-        // V1 of files
-        fs.writeFileSync(path.resolve(__dirname, "./output/source.svelte"), dedent(source));
+    ].forEach(([ type, source ]) => {
+        it(`should invalidate files before reprocessing (${type})`, async (t) => {
+            // V1 of files
+            fs.writeFileSync(path.resolve(__dirname, "./output/source.svelte"), dedent(source));
 
-        fs.writeFileSync(path.resolve(__dirname, "./output/source.css"), dedent(`
-            .source {
-                color: red;
-            }
-        `));
+            fs.writeFileSync(path.resolve(__dirname, "./output/source.css"), dedent(`
+                .source {
+                    color: red;
+                }
+            `));
 
-        const filename = require.resolve(`./output/source.svelte`);
-        const { processor, preprocess } = plugin({
-            namer,
+            const filename = require.resolve(`./output/source.svelte`);
+            const { processor, preprocess } = plugin({
+                namer,
+            });
+
+            let processed = await svelte.preprocess(
+                fs.readFileSync(filename, "utf8"),
+                {
+                    ...preprocess,
+                    filename,
+                },
+            );
+
+            t.assert.snapshot(processed.toString());
+
+            let output = await processor.output();
+
+            t.assert.snapshot(output.css);
+
+            // V2 of CSS
+            fs.writeFileSync(path.resolve(__dirname, "./output/source.css"), dedent(`
+                .source {
+                    color: blue;
+                }
+            `));
+
+            processed = await svelte.preprocess(
+                fs.readFileSync(filename, "utf8"),
+                {
+                    ...preprocess,
+                    filename,
+                },
+            );
+
+            t.assert.snapshot(processed.toString());
+
+            output = await processor.output();
+
+            t.assert.snapshot(output.css);
         });
-
-        let processed = await svelte.preprocess(
-            fs.readFileSync(filename, "utf8"),
-            {
-                ...preprocess,
-                filename,
-            },
-        );
-
-        expect(processed.toString()).toMatchSnapshot();
-
-        let output = await processor.output();
-
-        expect(output.css).toMatchSnapshot();
-
-        // V2 of CSS
-        fs.writeFileSync(path.resolve(__dirname, "./output/source.css"), dedent(`
-            .source {
-                color: blue;
-            }
-        `));
-
-        processed = await svelte.preprocess(
-            fs.readFileSync(filename, "utf8"),
-            {
-                ...preprocess,
-                filename,
-            },
-        );
-
-        expect(processed.toString()).toMatchSnapshot();
-
-        output = await processor.output();
-
-        expect(output.css).toMatchSnapshot();
     });
 
-    it("should invalidate files before reprocessing (<style>)", async () => {
+    it("should invalidate files before reprocessing (<style>)", async (t) => {
         // V1 of files
         fs.writeFileSync(path.resolve(__dirname, "./output/source.svelte"), dedent(`
             <style type="text/m-css">.source { color: red; }</style>
@@ -397,11 +417,11 @@ describe("/svelte.js", () => {
             },
         );
 
-        expect(processed.toString()).toMatchSnapshot();
+        t.assert.snapshot(processed.toString());
 
         let output = await processor.output();
 
-        expect(output.css).toMatchSnapshot();
+        t.assert.snapshot(output.css);
 
         // V2 of CSS
         fs.writeFileSync(path.resolve(__dirname, "./output/source.svelte"), dedent(`
@@ -417,14 +437,14 @@ describe("/svelte.js", () => {
             },
         );
 
-        expect(processed.toString()).toMatchSnapshot();
+        t.assert.snapshot(processed.toString());
 
         output = await processor.output();
 
-        expect(output.css).toMatchSnapshot();
+        t.assert.snapshot(output.css);
     });
 
-    it("should wait for files to finish", async () => {
+    it("should wait for files to finish", async (t) => {
         const { preprocess } = plugin({
             namer,
         });
@@ -443,10 +463,10 @@ describe("/svelte.js", () => {
             ))
         );
 
-        expect(results.map((result) => result.toString())).toMatchSnapshot();
+        t.assert.snapshot(results.map((result) => result.toString()));
     });
 
-    it("should use modular-css's file resolver", async () => {
+    it("should use modular-css's file resolver", async (t) => {
         const processor = new Processor({
             namer,
             resolvers : [
@@ -468,15 +488,15 @@ describe("/svelte.js", () => {
             },
         );
 
-        expect(processed.toString()).toMatchSnapshot();
+        t.assert.snapshot(processed.toString());
 
         const output = await processor.output();
 
-        expect(output.css).toMatchSnapshot();
+        t.assert.snapshot(output.css);
     });
 
-    it("should ignore <Link />", async () => {
-        const spy = logspy("warn");
+    it("should ignore <Link />", async (t) => {
+        const spy = logSpy("warn");
 
         const filename = require.resolve("./specimens/link-component.svelte");
         const { preprocess } = plugin({
@@ -491,10 +511,10 @@ describe("/svelte.js", () => {
             },
         );
 
-        expect(spy).not.toHaveBeenCalled();
+        t.assert.ok(spy.calls.length === 0);
     });
 
-    it("should ignore imports that don't match the filter", async () => {
+    it("should ignore imports that don't match the filter", async (t) => {
         const filename = require.resolve("./specimens/script-unmatched.svelte");
         const { processor, preprocess } = plugin({
             namer,
@@ -508,14 +528,14 @@ describe("/svelte.js", () => {
             },
         );
 
-        expect(processed.toString()).toMatchSnapshot();
+        t.assert.snapshot(processed.toString());
 
         const output = await processor.output();
 
-        expect(output.css).toMatchSnapshot();
+        t.assert.snapshot(output.css);
     });
 
-    it("should find imports in any <script> tag", async () => {
+    it("should find imports in any <script> tag", async (t) => {
         const filename = require.resolve("./specimens/script-multiple.svelte");
         const { processor, preprocess } = plugin({
             namer,
@@ -529,10 +549,10 @@ describe("/svelte.js", () => {
             },
         );
 
-        expect(processed.toString()).toMatchSnapshot();
+        t.assert.snapshot(processed.toString());
 
         const output = await processor.output();
 
-        expect(output.css).toMatchSnapshot();
+        t.assert.snapshot(output.css);
     });
 });
