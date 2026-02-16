@@ -6,7 +6,6 @@ const dedent = require("dedent");
 const Processor = require("@modular-css/processor");
 
 const { transform } = require("../css-to-js.js");
-const { diff } = require("@modular-css/test-utils/diff.js");
 
 const root = process.cwd().replace(/\\/g, "/");
 const safe = "<ROOT-DIR>";
@@ -254,7 +253,8 @@ describe("@modular-css/css-to-js API", () => {
         const { code : noWarn } = transform("./a.css", processor, { dev : { warn : false } });
         const { code : warn } = transform("./a.css", processor, { dev : { warn : true } });
 
-        t.assert.snapshot(diff(noWarn, warn), { serializers });
+        t.assert.snapshot(noWarn, { serializers });
+        t.assert.snapshot(warn, { serializers });
     });
     
     it("should create coverage infrastructure when options.dev.coverage is truthy", async (t) => {

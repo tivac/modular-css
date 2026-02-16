@@ -129,7 +129,11 @@ exports[`@modular-css/css-to-js API > should output css when requested 1`] = `
 `;
 
 exports[`@modular-css/css-to-js API > should output warnings when options.dev.warn is truthy 1`] = `
-"Snapshot Diff:\\n- First value\\n+ Second value\\n\\n@@ --- --- @@\\n          if(key in tgt) {\\n              \\n              return tgt[key];\\n          }\\n\\n-         throw new ReferenceError(key + \\" is not exported by a.css\\");\\n+         console.warn(key, \\"is not exported by a.css\\")\\n      }\\n  })\\n\\n  export {\\n      a"
+"const a = \\"mc74f3fa7b_a\\";\\nconst cssData = {\\n    a\\n};\\n\\nexport default new Proxy(cssData, {\\n    get(tgt, key) {\\n        if(key in tgt) {\\n            \\n            return tgt[key];\\n        }\\n\\n        throw new ReferenceError(key + \\" is not exported by a.css\\");\\n    }\\n})\\n\\nexport {\\n    a\\n};"
+`;
+
+exports[`@modular-css/css-to-js API > should output warnings when options.dev.warn is truthy 2`] = `
+"const a = \\"mc74f3fa7b_a\\";\\nconst cssData = {\\n    a\\n};\\n\\nexport default new Proxy(cssData, {\\n    get(tgt, key) {\\n        if(key in tgt) {\\n            \\n            return tgt[key];\\n        }\\n\\n        console.warn(key, \\"is not exported by a.css\\")\\n    }\\n})\\n\\nexport {\\n    a\\n};"
 `;
 
 exports[`@modular-css/css-to-js API > should output without default export 1`] = `
