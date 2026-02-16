@@ -21,7 +21,7 @@ module.exports = () => ({
                     
                     try {
                         details = parser.parse(rule.params);
-                    } catch(e) {
+                    } catch(_e) {
                         // Errors aren't world-ending, necessarily
                         return;
                     }

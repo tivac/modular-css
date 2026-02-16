@@ -10,7 +10,6 @@ exports.replacer = (source, { identifier, lookup, keys, classAttr } = false) => 
         // Replace class={<identifier>.<key>} values
         source = source.replace(
             new RegExp(`(class=)("|')?{${ident}\\.(${ids})}("|')?`, "gm"),
-            // eslint-disable-next-line max-params -- necessary due to number of matches
             (match, before, quote1, key, quote2) => {
                 const replacement = quote1 ? lookup[key] : JSON.stringify(lookup[key]);
 

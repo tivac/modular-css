@@ -106,12 +106,8 @@ module.exports = (opts = {}) => {
         log("Processing", file);
 
         for(const parser of PARSING_ORDER) {
-            try {
-                // eslint-disable-next-line no-await-in-loop -- fine fine I got this
-                ({ source, result, css, dependencies, ident = "css" } = await parser(searchBucket));
-            } catch(e) {
-                throw e;
-            }
+            // eslint-disable-next-line no-await-in-loop -- fine fine I got this
+            ({ source, result, css, dependencies, ident = "css" } = await parser(searchBucket));
 
             if(result) {
                 break;

@@ -42,7 +42,6 @@ for(const { name, url } of testCases) {
 test("coverage", async ({ page }) => {
     await page.goto(testCases[0].url);
 
-    // eslint-disable-next-line no-undef -- it's running in the browser chill out
     const coverage = await page.evaluate(() => globalThis.mcssCoverage);
 
     expect(coverage).toStrictEqual({

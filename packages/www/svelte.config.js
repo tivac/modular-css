@@ -16,6 +16,7 @@ const config = {
                     return;
                 }
 
+                // eslint-disable-next-line no-console
                 console.warn(path, message);
             },
         },
