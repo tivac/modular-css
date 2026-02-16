@@ -1,0 +1,19 @@
+exports[`/cli.js > should default to outputting to stdout 1`] = `
+"/* packages/cli/test/specimens/simple.css */\\n.mc73666a66_wooga { color: red; }"
+`;
+
+exports[`/cli.js > should show help with no args 1`] = `
+"CLI for modular-css\\n\\n  Usage\\n  $ modular-css [options] <glob>...\\n\\n  Options\\n  --dir,     -d <dir>    Directory to search from [process cwd]\\n  --out,     -o <file>   File to write output CSS to [stdout]\\n  --json,    -j <file>   File to write output compositions JSON to\\n  --map,     -m          Include inline source map in output\\n  --rewrite, -r          Control rewriting of url() references in CSS\\n  --help                 Show this help"
+`;
+
+exports[`/cli.js > should support disabling url() rewriting (--no-rewrite) 1`] = `
+"/* packages/cli/test/specimens/no-rewrite.css */\\n.mc0d1faef2_a {\\n    background: url(\\"image.png\\");\\n}\\n"
+`;
+
+exports[`/cli.js > should support outputting compositions to a file (--json) 1`] = `
+"{\\n    \\"packages/cli/test/specimens/simple.css\\": {\\n        \\"wooga\\": \\"mc73666a66_wooga\\"\\n    }\\n}"
+`;
+
+exports[`/cli.js > should support outputting to a file (--out) 1`] = `
+"/* packages/cli/test/specimens/simple.css */\\n.mc73666a66_wooga { color: red; }\\n"
+`;

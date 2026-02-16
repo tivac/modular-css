@@ -1,12 +1,13 @@
-"use strict";
+const { describe, it } = require("node:test");
 
 const dedent = require("dedent");
+
 const namer  = require("@modular-css/test-utils/namer.js");
 const Processor = require("../../processor.js");
 
 describe("/issues", () => {
     describe("/98", () => {
-        it("should prune rules that only compose, but leave them in the exports", async () => {
+        it("should prune rules that only compose, but leave them in the exports", async (t) => {
             const processor = new Processor({
                     namer,
                 });
@@ -20,11 +21,11 @@ describe("/issues", () => {
                 `)
             );
 
-            expect(exports).toMatchSnapshot();
+            t.assert.snapshot(exports);
 
             const { css } = await processor.output();
             
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
     });
 });

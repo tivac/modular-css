@@ -1,0 +1,41 @@
+exports[`@modular-css/path-aliases > should be usable as a modular-css resolver 1`] = `
+{
+  "packages/aliases/test/specimens/one/sub/sub.css": {
+    "sub": [
+      "mc_sub"
+    ]
+  },
+  "packages/aliases/test/specimens/two/two.css": {
+    "two": [
+      "mc_two"
+    ]
+  },
+  "packages/paths/test/specimens/one/start.css": {
+    "rule": [
+      "mc_two",
+      "mc_rule"
+    ]
+  }
+}
+`;
+
+exports[`@modular-css/path-aliases > should fall through to the default resolver 1`] = `
+{
+  "packages/aliases/test/specimens/two/two.css": {
+    "two": [
+      "mc_two"
+    ]
+  },
+  "packages/paths/test/specimens/one/start.css": {
+    "rule": [
+      "mc_two",
+      "mc_rule"
+    ]
+  },
+  "packages/paths/test/specimens/one/sub/sub.css": {
+    "sub": [
+      "mc_sub"
+    ]
+  }
+}
+`;

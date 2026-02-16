@@ -1,4 +1,4 @@
-"use strict";
+const { describe, it, beforeEach } = require("node:test");
 
 const { DepGraph } = require("dependency-graph");
 
@@ -17,29 +17,28 @@ describe("/processor.js", () => {
         });
         
         describe(".file", () => {
-            it("should return all the files that have been added", async () => {
+            it("should return all the files that have been added", async (t) => {
                 await processor.file("./packages/processor/test/specimens/start.css");
                 await processor.file("./packages/processor/test/specimens/local.css");
 
-                expect(
+                t.assert.snapshot(
                     relative(Object.keys(processor.files))
-                )
-                .toMatchSnapshot();
+                );
             });
         });
 
         describe(".options", () => {
-            it("should return the merged options object", () =>
-                expect(typeof processor.options).toBe("object")
+            it("should return the merged options object", (t) =>
+                t.assert.strictEqual(typeof processor.options, "object")
             );
         });
 
         describe(".graph", () => {
-            it("should return the dependency graph for added CSS files", async () => {
+            it("should return the dependency graph for added CSS files", async (t) => {
                 await processor.file("./packages/processor/test/specimens/start.css");
                 await processor.file("./packages/processor/test/specimens/local.css");
 
-                expect(processor.graph).toBeInstanceOf(DepGraph);
+                t.assert.ok(processor.graph instanceof DepGraph);
             });
         });
     });

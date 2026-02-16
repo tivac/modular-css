@@ -15,22 +15,22 @@ which is annoying to write, annoying to read, and also super-brittle.
 
 ## Usage
 
-Pass as part of the `resolvers` array in the `modular-css` options (via JS API/Rollup/Browserify/WebPack/etc). When `modular-css` is trying to resolve `@value` or `composes` file references it'll replace the alias keys with their path value for file lookups.
+Pass as part of the `resolvers` array in the `modular-css` options (via JS API/Vite/Rollup/etc). When `modular-css` is trying to resolve `@value` or `composes` file references it'll replace the alias keys with their path value for file lookups.
 
 ```js
-var Processor = require("@modular-css/processor"),
-    aliases   = require("@modular-css/path-aliases")
+const Processor = require("@modular-css/processor");
+const aliases = require("@modular-css/path-aliases");
 
-    processor = new Processor({
-        resolvers : [
-            aliases({
-                aliases : {
-                    one  : "./path/one",
-                    path : "../../some/other/path"
-                }
-            })
-        ]
-    });
+const processor = new Processor({
+    resolvers : [
+        aliases({
+            aliases : {
+                one  : "./path/one",
+                path : "../../some/other/path"
+            }
+        })
+    ]
+});
 ```
 
 which allows you to write CSS like this.

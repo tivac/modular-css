@@ -28,9 +28,9 @@ jobs:
       - name: lint
         run: npm run lint --quiet --max-warnings=0
 
-  jest-tests:
+  tests:
     # This shouldn't take long, and if it does something bad has happened and it should be killed
-    timeout-minutes: 20
+    timeout-minutes: 5
     
     env:
       COVERAGE_NODE_VERSION: 24
@@ -40,7 +40,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [ 20, 22, 24 ]
+        node-version: [ 24 ]
         os: [ ubuntu-latest ]
 
     steps:
@@ -52,27 +52,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     
-    - name: npm ci
-      run: npm ci
+    - run: npm ci
     
-    - name: npm run parsers
-      run: npm run parsers
+    - run: npm run parsers
     
-    - name: npm test
-      run: npm test -- --ci --no-cache
-      env:
-        CI: true
-        
-    # Run codecov after all builds, and only on a single environment
-    - name: Gather Coverage
-      if: matrix.os == env.COVERAGE_OS && matrix.node-version == env.COVERAGE_NODE_VERSION
-      run: npm test -- --ci --coverage
-
-    - name: Upload Coverage
-      uses: codecov/codecov-action@v5
-      if: matrix.os == env.COVERAGE_OS && matrix.node-version == env.COVERAGE_NODE_VERSION
-      with:
-        files: ./coverage/coverage-final.json
+    - run: npm test
 
   playwright-tests:
     timeout-minutes: 30
@@ -88,17 +72,14 @@ jobs:
         node-version: 24
         cache: 'npm'
     
-    - name: npm ci
-      run: npm ci
+    - run: npm ci
     
-    - name: npm run parsers
-      run: npm run parsers
+    - run: npm run parsers
     
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
 
-    - name: test
-      run: npm run test:playwright
+    - run: npm run test:playwright
     
     - uses: actions/upload-artifact@v6
       if: failure()

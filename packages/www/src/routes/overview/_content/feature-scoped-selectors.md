@@ -18,10 +18,10 @@ will be output as
 
 By default the selector scoping is based off hashing the contents of the file but you can also provide your own custom function.
 
-Using these now-mangled selectors would be problematic, if `modular-css` didn't give you the tools required to use them easily. When using the browserify transform any `require()` calls for CSS files will instead return an object where the keys match the classes/ids defined in the requested CSS file.
+Using these now-mangled selectors would be problematic, if `modular-css` didn't give you the tools required to use them easily. When using the vite transform any `import` calls for CSS files will instead return an object where the keys match the classes/ids defined in the requested CSS file.
 
 ```javascript
-var css = require("./styles.css");
+import css from "./styles.css";
 
 // css is:
 /*
@@ -55,7 +55,7 @@ You can opt out of selector scoping by wrapping your classes/ids in the `:global
 when transformed to JS looks like this
 
 ```javascript
-var css = require("./styles.css");
+import css from "./styles.css";
 
 // css is:
 /*

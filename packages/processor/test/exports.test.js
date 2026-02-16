@@ -1,8 +1,8 @@
-"use strict";
+const { describe, it, beforeEach } = require("node:test");
 
 const dedent = require("dedent");
-const namer  = require("@modular-css/test-utils/namer.js");
 
+const namer  = require("@modular-css/test-utils/namer.js");
 const Processor = require("../processor.js");
 
 describe("/processor.js", () => {
@@ -15,7 +15,7 @@ describe("/processor.js", () => {
             });
         });
         
-        it("should export an object of arrays containing strings", async () => {
+        it("should export an object of arrays containing strings", async (t) => {
             const { exports } = await processor.string(
                 "./simple.css",
                 dedent(`
@@ -25,17 +25,17 @@ describe("/processor.js", () => {
                 `)
             );
 
-            expect(exports).toMatchSnapshot();
+            t.assert.snapshot(exports);
         });
 
-        it("should export identifiers and their classes", async () => {
+        it("should export identifiers and their classes", async (t) => {
             await processor.file(
                 "./packages/processor/test/specimens/start.css"
             );
 
             const { compositions } = await processor.output();
             
-            expect(compositions).toMatchSnapshot();
+            t.assert.snapshot(compositions);
         });
     });
 });

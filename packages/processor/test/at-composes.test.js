@@ -1,4 +1,4 @@
-"use strict";
+const { describe, it, beforeEach } = require("node:test");
 
 const dedent = require("dedent");
 
@@ -17,7 +17,7 @@ describe("/processor.js", () => {
             });
         });
 
-        it("should include exported classes from the composed file", async () => {
+        it("should include exported classes from the composed file", async (t) => {
             const { exports } = await processor.string(id, dedent(`
                 @composes "./local.css";
 
@@ -30,22 +30,22 @@ describe("/processor.js", () => {
                 }
             `));
 
-            expect(exports).toMatchSnapshot();
+            t.assert.snapshot(exports);
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
 
-        it("should not include exported values from the composed file", async () => {
+        it("should not include exported values from the composed file", async (t) => {
             const { exports } = await processor.string(id, dedent(`
                 @composes "./values.css";
             `));
 
-            expect(exports).toMatchSnapshot();
+            t.assert.snapshot(exports);
         });
 
-        it("should allow composing classes from the composed file", async () => {
+        it("should allow composing classes from the composed file", async (t) => {
             const { exports } = await processor.string("./packages/processor/test/specimens/a-t-c-o-m-p-o-s-e-s.css", dedent(`
                 @composes "./simple.css";
 
@@ -60,10 +60,10 @@ describe("/processor.js", () => {
                 }
             `));
 
-            expect(exports).toMatchSnapshot();
+            t.assert.snapshot(exports);
         });
 
-        it("should include compositions from the composed file", async () => {
+        it("should include compositions from the composed file", async (t) => {
             await processor.string(id, dedent(`
                 @composes "./simple.css";
 
@@ -80,10 +80,10 @@ describe("/processor.js", () => {
 
             const { compositions } = await processor.output();
 
-            expect(compositions).toMatchSnapshot();
+            t.assert.snapshot(compositions);
         });
 
-        it("should include external compositions from the composed file", async () => {
+        it("should include external compositions from the composed file", async (t) => {
             await processor.string(id, dedent(`
                 @composes "./start.css";
 
@@ -100,10 +100,10 @@ describe("/processor.js", () => {
 
             const { compositions } = await processor.output();
 
-            expect(compositions).toMatchSnapshot();
+            t.assert.snapshot(compositions);
         });
 
-        it("should output css from the composed file", async () => {
+        it("should output css from the composed file", async (t) => {
             await processor.string(id, dedent(`
                 @composes "./simple.css";
 
@@ -120,10 +120,10 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            expect(css).toMatchSnapshot();
+            t.assert.snapshot(css);
         });
 
-        it("should allow for chains of @composes-included files", async () => {
+        it("should allow for chains of @composes-included files", async (t) => {
             const { exports } = await processor.string("./packages/processor/test/specimens/at-composes-child.css", dedent(`
                 @composes "./at-composes.css";
 
@@ -140,15 +140,18 @@ describe("/processor.js", () => {
                 }
             `));
 
-            expect(exports).toMatchSnapshot();
+            t.assert.snapshot(exports);
         });
 
-        it("should only allow a single @composes per file", async () => {
-            await expect(processor.string(id, dedent(`
-                @composes "./simple.css";
-                @composes "./blue.css";
+        it("should only allow a single @composes per file", async (t) => {
+            await t.assert.rejects(
+                async () => processor.string(id, dedent(`
+                    @composes "./simple.css";
+                    @composes "./blue.css";
 
-            `))).rejects.toThrow(`Only one @composes rule per file`);
+                `)),
+                `Only one @composes rule per file`
+            );
         });
     });
 });

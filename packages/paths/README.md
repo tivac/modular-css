@@ -19,11 +19,11 @@ which is annoying to write, annoying to read, and also super-brittle.
 
 ## Usage
 
-Pass as part of the `resolvers` array in the `modular-css` options (via JS API/Rollup/Browserify/WebPack/etc). When `modular-css` is trying to resolve `@value` or `composes` file references it'll use the default node resolution algorithm against whichever paths you specified.
+Pass as part of the `resolvers` array in the `modular-css` options (via JS API/Vite/Rollup/etc). When `modular-css` is trying to resolve `@value` or `composes` file references it'll use the default node resolution algorithm against whichever paths you specified.
 
 ```js
 const Processor = require("@modular-css/processor");
-const paths     = require("@modular-css/path-resolver");
+const paths = require("@modular-css/path-resolver");
 
 const processor = new Processor({
     resolvers : [

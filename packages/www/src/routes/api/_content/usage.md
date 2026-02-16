@@ -2,15 +2,11 @@ You can use `modular-css` a variety of ways. The easiest is with one of the bund
 
 ## Bundlers
 
-@import "./usage-rollup.md"
-
 @import "./usage-vite.md"
 
+@import "./usage-rollup.md"
+
 @import "./usage-sveltekit.md"
-
-@import "./usage-webpack.md"
-
-@import "./usage-browserify.md"
 
 ## Direct Usage
 
@@ -23,5 +19,3 @@ You can use `modular-css` a variety of ways. The easiest is with one of the bund
 ## Other Tools
 
 @import "./usage-svelte.md"
-
-@import "./usage-postcss.md"

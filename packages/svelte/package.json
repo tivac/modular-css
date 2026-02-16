@@ -34,8 +34,7 @@
     "es-module-lexer": "^1.0.1",
     "escape-string-regexp": "^4.0.0",
     "is-url": "^1.2.4",
-    "parse-es6-imports": "^1.0.1",
-    "slash": "^3.0.0"
+    "parse-es6-imports": "^1.0.1"
   },
   "peerDependencies": {
     "svelte": ">1"

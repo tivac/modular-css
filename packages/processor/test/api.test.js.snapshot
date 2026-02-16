@@ -1,0 +1,352 @@
+exports[`/processor.js > API > .compositions > should return compositions for loaded files 1`] = `
+{}
+`;
+
+exports[`/processor.js > API > .file() > should process a relative file 1`] = `
+{
+  "wooga": [
+    "mc_wooga"
+  ]
+}
+`;
+
+exports[`/processor.js > API > .file() > should process a relative file 2`] = `
+{
+  "wooga": [
+    "mc_wooga"
+  ]
+}
+`;
+
+exports[`/processor.js > API > .file() > should process a relative file 3`] = `
+".mc_wooga { color: red; }\\n"
+`;
+
+exports[`/processor.js > API > .file() > should process an absolute file 1`] = `
+{
+  "wooga": [
+    "mc_wooga"
+  ]
+}
+`;
+
+exports[`/processor.js > API > .file() > should process an absolute file 2`] = `
+{
+  "wooga": [
+    "mc_wooga"
+  ]
+}
+`;
+
+exports[`/processor.js > API > .file() > should process an absolute file 3`] = `
+".mc_wooga { color: red; }\\n"
+`;
+
+exports[`/processor.js > API > .file() > should wait for dependencies to be processed before composing 1`] = `
+[
+  {
+    "one": [
+      "mc_three",
+      "mc_two",
+      "mc_one",
+      "mc_one"
+    ]
+  },
+  {
+    "two": [
+      "mc_three",
+      "mc_two",
+      "mc_one",
+      "mc_two"
+    ]
+  }
+]
+`;
+
+exports[`/processor.js > API > .fileDependencies() > should return the dependencies of the specified file 1`] = `
+[
+  "packages/processor/test/specimens/folder/folder.css",
+  "packages/processor/test/specimens/local.css"
+]
+`;
+
+exports[`/processor.js > API > .fileDependencies() > should return the overall order of dependencies if no file is specified 1`] = `
+[
+  "packages/processor/test/specimens/folder/folder.css",
+  "packages/processor/test/specimens/local.css",
+  "packages/processor/test/specimens/start.css"
+]
+`;
+
+exports[`/processor.js > API > .fileDependents() > should return the dependencies of the specified file 1`] = `
+[
+  "packages/processor/test/specimens/start.css"
+]
+`;
+
+exports[`/processor.js > API > .invalidate() > should invalidate a relative file 1`] = `
+[
+  [
+    "simple.css",
+    false
+  ]
+]
+`;
+
+exports[`/processor.js > API > .invalidate() > should invalidate all dependents as well 1`] = `
+[
+  [
+    "packages/processor/test/specimens/start.css",
+    false
+  ],
+  [
+    "packages/processor/test/specimens/local.css",
+    false
+  ],
+  [
+    "packages/processor/test/specimens/folder/folder.css",
+    false
+  ]
+]
+`;
+
+exports[`/processor.js > API > .invalidate() > should invalidate an absolute file 1`] = `
+[
+  [
+    "packages/processor/test/specimens/simple.css",
+    false
+  ]
+]
+`;
+
+exports[`/processor.js > API > .invalidate() > should reprocess invalidated files 1`] = `
+[
+  [
+    "packages/processor/test/specimens/start.css",
+    true
+  ],
+  [
+    "packages/processor/test/specimens/local.css",
+    true
+  ],
+  [
+    "packages/processor/test/specimens/folder/folder.css",
+    true
+  ]
+]
+`;
+
+exports[`/processor.js > API > .invalidate() > should throw if no file is passed 1`] = `
+"Error: invalidate() requires a file argument"
+`;
+
+exports[`/processor.js > API > .normalize() > should normalize inputs 1`] = `
+[
+  "simple.css"
+]
+`;
+
+exports[`/processor.js > API > .output() > should allow for seperate source map output 1`] = `
+{
+  "version": 3,
+  "sources": [
+    "packages/processor/test/specimens/folder/folder.css",
+    "packages/processor/test/specimens/local.css",
+    "packages/processor/test/specimens/start.css"
+  ],
+  "names": [],
+  "mappings": "AAAA,wDAAA;AACA,aAAU,WAAW,EAAE;ACDvB,gDAAA;AAIA,YAAS,iBAAiB,EAAE;ACJ5B,gDAAA;AAEA,YDFA,UAAe,EACf,gBAAgB,ECCsB;AACtC,YFHA,uBAAoB,EEGe",
+  "file": "to.css",
+  "sourcesContent": [
+    "@value folder: white;\\n.folder { margin: 2px; }\\n",
+    "@value one: red;\\n@value two: blue;\\n@value folder from \\"./folder/folder.css\\";\\n\\n.booga { background: green; }\\n.looga { composes: booga; }\\n",
+    "@value one, two, folder from \\"./local.css\\";\\n.wooga { composes: booga from \\"./local.css\\"; }\\n.booga { color: one; background: two; }\\n.tooga { border: 1px solid folder; }\\n"
+  ]
+}
+`;
+
+exports[`/processor.js > API > .output() > should avoid duplicating files in the output 1`] = `
+"/* packages/processor/test/specimens/folder/folder.css */\\n.mc_folder { margin: 2px; }\\n/* packages/processor/test/specimens/local.css */\\n.mc_booga { background: green; }\\n/* packages/processor/test/specimens/start.css */\\n.mc_booga { color: red; background: blue; }\\n.mc_tooga { border: 1px solid white; }\\n"
+`;
+
+exports[`/processor.js > API > .output() > should generate a JSON structure of all the compositions 1`] = `
+{
+  "packages/processor/test/specimens/folder/folder.css": {
+    "folder": [
+      "mc_folder"
+    ]
+  },
+  "packages/processor/test/specimens/local.css": {
+    "booga": [
+      "mc_booga"
+    ],
+    "looga": [
+      "mc_booga",
+      "mc_looga"
+    ]
+  },
+  "packages/processor/test/specimens/start.css": {
+    "wooga": [
+      "mc_booga",
+      "mc_wooga"
+    ],
+    "booga": [
+      "mc_booga"
+    ],
+    "tooga": [
+      "mc_tooga"
+    ]
+  }
+}
+`;
+
+exports[`/processor.js > API > .output() > should generate css representing the output from all added files 1`] = `
+"/* packages/processor/test/specimens/simple.css */\\n.mc_wooga { color: red; }\\n/* packages/processor/test/specimens/folder/folder.css */\\n.mc_folder { margin: 2px; }\\n/* packages/processor/test/specimens/local.css */\\n.mc_booga { background: green; }\\n/* packages/processor/test/specimens/start.css */\\n.mc_booga { color: red; background: blue; }\\n.mc_tooga { border: 1px solid white; }\\n"
+`;
+
+exports[`/processor.js > API > .output() > should order output by dependencies, then alphabetically 1`] = `
+"/* packages/processor/test/specimens/deps/classes.css */\\n.mc_red {\\n    color: red;\\n}\\n\\n.mc_blue {\\n    color: blue;\\n}\\n\\n.mc_green {\\n    color: green;\\n}\\n\\n.mc_yellow {\\n    color: yellow;\\n}\\n\\n.mc_block {\\n    display: block;\\n}\\n\\n.mc_flex {\\n    display: flex;\\n}\\n\\n/* packages/processor/test/specimens/folder/folder.css */\\n.mc_folder { margin: 2px; }\\n/* packages/processor/test/specimens/folder/subfolder/subfolder.css */\\n.mc_subfolder { color: yellow; }\\n/* packages/processor/test/specimens/composes/external-composes-multiple-declarations.css */\\n/* packages/processor/test/specimens/deep.css */\\n.mc_deep {\\n    color: black;\\n}\\n/* packages/processor/test/specimens/local.css */\\n.mc_booga { background: green; }\\n/* packages/processor/test/specimens/start.css */\\n.mc_booga { color: red; background: blue; }\\n.mc_tooga { border: 1px solid white; }\\n"
+`;
+
+exports[`/processor.js > API > .output() > should return a postcss result 1`] = `
+"/* packages/processor/test/specimens/folder/folder.css */\\n.mc_folder { margin: 2px; }\\n/* packages/processor/test/specimens/local.css */\\n.mc_booga { background: green; }\\n/* packages/processor/test/specimens/start.css */\\n.mc_booga { color: red; background: blue; }\\n.mc_tooga { border: 1px solid white; }\\n"
+`;
+
+exports[`/processor.js > API > .output() > should support returning output for specified absolute files 1`] = `
+"/* packages/processor/test/specimens/start.css */\\n.mc_booga { color: red; background: blue; }\\n.mc_tooga { border: 1px solid white; }\\n"
+`;
+
+exports[`/processor.js > API > .output() > should support returning output for specified relative files 1`] = `
+"/* packages/processor/test/specimens/start.css */\\n.mc_booga { color: red; background: blue; }\\n.mc_tooga { border: 1px solid white; }\\n"
+`;
+
+exports[`/processor.js > API > .remove() > should remove a relative file 1`] = `
+[]
+`;
+
+exports[`/processor.js > API > .remove() > should remove an absolute file 1`] = `
+[]
+`;
+
+exports[`/processor.js > API > .remove() > should remove multiple files 1`] = `
+[
+  "c.css"
+]
+`;
+
+exports[`/processor.js > API > .remove() > should return an array of removed files 1`] = `
+[
+  "a.css",
+  "b.css"
+]
+`;
+
+exports[`/processor.js > API > .resolve() > should fall back to a default resolver 1`] = `
+[
+  "packages/processor/test/specimens/local.css"
+]
+`;
+
+exports[`/processor.js > API > .resolve() > should run resolvers until a match is found 1`] = `
+[
+  "packages/processor/test/specimens/local.css"
+]
+`;
+
+exports[`/processor.js > API > .root() > should process a postcss Root 1`] = `
+{
+  "wooga": [
+    "mc_wooga"
+  ]
+}
+`;
+
+exports[`/processor.js > API > .root() > should process a postcss Root 2`] = `
+{
+  "wooga": [
+    "mc_wooga"
+  ]
+}
+`;
+
+exports[`/processor.js > API > .root() > should process a postcss Root 3`] = `
+".mc_wooga { }"
+`;
+
+exports[`/processor.js > API > .string() > should process a string 1`] = `
+{
+  "wooga": [
+    "mc_wooga"
+  ]
+}
+`;
+
+exports[`/processor.js > API > .string() > should process a string 2`] = `
+{
+  "wooga": [
+    "mc_wooga"
+  ]
+}
+`;
+
+exports[`/processor.js > API > .string() > should process a string 3`] = `
+".mc_wooga { }"
+`;
+
+exports[`/processor.js > API > .warnings > should expose warnings from after hook 1`] = `
+{
+  "type": "warning",
+  "text": "This is a warning from after plugin",
+  "line": 1,
+  "column": 1,
+  "endLine": 1,
+  "endColumn": 23,
+  "node": false,
+  "plugin": "after-warnings"
+}
+`;
+
+exports[`/processor.js > API > .warnings > should expose warnings from before hook 1`] = `
+{
+  "type": "warning",
+  "text": "This is a warning from before plugin",
+  "line": 1,
+  "column": 1,
+  "endLine": 1,
+  "endColumn": 23,
+  "node": false,
+  "plugin": "before-warnings"
+}
+`;
+
+exports[`/processor.js > API > .warnings > should expose warnings from done hook 1`] = `
+{
+  "type": "warning",
+  "text": "This is a warning from done plugin",
+  "line": 1,
+  "column": 1,
+  "endLine": 1,
+  "endColumn": 23,
+  "node": false,
+  "plugin": "done-warnings"
+}
+`;
+
+exports[`/processor.js > API > .warnings > should expose warnings from processing hook 1`] = `
+{
+  "type": "warning",
+  "text": "This is a warning from processing plugin",
+  "line": 1,
+  "column": 1,
+  "endLine": 1,
+  "endColumn": 23,
+  "node": false,
+  "plugin": "processing-warnings"
+}
+`;
+
+exports[`/processor.js > API > .warnings > should have warnings from files that have been added 1`] = `
+[
+  "Imported value one overlaps with a local value and will be ignored"
+]
+`;

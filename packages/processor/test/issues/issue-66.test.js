@@ -1,10 +1,10 @@
-"use strict";
+const { describe, it } = require("node:test");
 
 const Processor = require("../../processor.js");
 
 describe("/issues", () => {
     describe("/66", () => {
-        it("should ignore remove calls for unknown files", async () => {
+        it("should ignore remove calls for unknown files", async (t) => {
             const processor = new Processor();
 
             await processor.string(
@@ -12,7 +12,7 @@ describe("/issues", () => {
                 ".aooga { }"
             );
 
-            expect(() => processor.remove("./fooga.js")).not.toThrow();
+            t.assert.doesNotThrow(() => processor.remove("./fooga.js"));
         });
     });
 });

@@ -1,4 +1,4 @@
-"use strict";
+const { describe, it } = require("node:test");
 
 const { rollup } = require("rollup");
 
@@ -7,6 +7,7 @@ const Processor = require("@modular-css/processor");
 const namer = require("@modular-css/test-utils/namer.js");
 
 const plugin = require("../rollup.js");
+const { rollupBundle } = require("@modular-css/test-utils/rollup.js");
 
 function error(root) {
     throw root.error("boom");
@@ -28,7 +29,7 @@ describe("/rollup.js code splitting", () => {
         ...opts,
     });
 
-    it("should support splitting up CSS files", async () => {
+    it("should support splitting up CSS files", async (t) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/simple.js"),
@@ -40,16 +41,21 @@ describe("/rollup.js code splitting", () => {
             ],
         });
 
-        await expect(await bundle.generate({
-            format,
-            sourcemap,
+        t.assert.snapshot(
+            rollupBundle(
+                await bundle.generate({
+                    format,
+                    sourcemap,
 
-            assetFileNames,
-            chunkFileNames,
-        })).toMatchRollupAssetSnapshot();
+                    assetFileNames,
+                    chunkFileNames,
+                }),
+                { assets : true, code : false },
+            )
+        );
     });
 
-    it("should correctly chunk up CSS files", async () => {
+    it("should correctly chunk up CSS files", async (t) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/css-dependencies/a.js"),
@@ -61,16 +67,21 @@ describe("/rollup.js code splitting", () => {
             ],
         });
 
-        await expect(await bundle.generate({
-            format,
-            sourcemap,
+        t.assert.snapshot(
+            rollupBundle(
+                await bundle.generate({
+                    format,
+                    sourcemap,
 
-            assetFileNames,
-            chunkFileNames,
-        })).toMatchRollupAssetSnapshot();
+                    assetFileNames,
+                    chunkFileNames,
+                }),
+                { assets : true, code : false },
+            )
+        );
     });
 
-    it("should support outputting metadata about CSS dependencies", async () => {
+    it("should support outputting metadata about CSS dependencies", async (t) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/metadata/a.js"),
@@ -84,16 +95,21 @@ describe("/rollup.js code splitting", () => {
             ],
         });
 
-        await expect(await bundle.generate({
-            format,
-            sourcemap,
+        t.assert.snapshot(
+            rollupBundle(
+                await bundle.generate({
+                    format,
+                    sourcemap,
 
-            assetFileNames,
-            chunkFileNames,
-        })).toMatchRollupAssetSnapshot();
+                    assetFileNames,
+                    chunkFileNames,
+                }),
+                { assets : true, code : false },
+            )
+        );
     });
 
-    it("should output metadata successfully when unreferenced CSS is output to common", async () => {
+    it("should output metadata successfully when unreferenced CSS is output to common", async (t) => {
         const processor = new Processor();
 
         await processor.string("./fake.css", ".fake { color: red; }");
@@ -112,16 +128,21 @@ describe("/rollup.js code splitting", () => {
             ],
         });
 
-        await expect(await bundle.generate({
-            format,
-            sourcemap,
+        t.assert.snapshot(
+            rollupBundle(
+                await bundle.generate({
+                    format,
+                    sourcemap,
 
-            assetFileNames,
-            chunkFileNames,
-        })).toMatchRollupAssetSnapshot();
+                    assetFileNames,
+                    chunkFileNames,
+                }),
+                { assets : true, code : false },
+            )
+        );
     });
 
-    it("should support outputting metadata about CSS dependencies to a named file", async () => {
+    it("should support outputting metadata about CSS dependencies to a named file", async (t) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/metadata/a.js"),
@@ -135,16 +156,21 @@ describe("/rollup.js code splitting", () => {
             ],
         });
 
-        await expect(await bundle.generate({
-            format,
-            sourcemap,
+        t.assert.snapshot(
+            rollupBundle(
+                await bundle.generate({
+                    format,
+                    sourcemap,
 
-            assetFileNames,
-            chunkFileNames,
-        })).toMatchRollupAssetSnapshot();
+                    assetFileNames,
+                    chunkFileNames,
+                }),
+                { assets : true, code : false },
+            )
+        );
     });
 
-    it("should support splitting up CSS files w/ shared assets", async () => {
+    it("should support splitting up CSS files w/ shared assets", async (t) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/css-chunks/a.js"),
@@ -156,16 +182,21 @@ describe("/rollup.js code splitting", () => {
             ],
         });
 
-        await expect(await bundle.generate({
-            format,
-            sourcemap,
+        t.assert.snapshot(
+            rollupBundle(
+                await bundle.generate({
+                    format,
+                    sourcemap,
 
-            assetFileNames,
-            chunkFileNames,
-        })).toMatchRollupAssetSnapshot();
+                    assetFileNames,
+                    chunkFileNames,
+                }),
+                { assets : true, code : false },
+            )
+        );
     });
 
-    it("shouldn't put bundle-specific CSS in common.css", async () => {
+    it("shouldn't put bundle-specific CSS in common.css", async (t) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/common-splitting/a.js"),
@@ -177,16 +208,21 @@ describe("/rollup.js code splitting", () => {
             ],
         });
 
-        await expect(await bundle.generate({
-            format,
-            sourcemap,
+        t.assert.snapshot(
+            rollupBundle(
+                await bundle.generate({
+                    format,
+                    sourcemap,
 
-            assetFileNames,
-            chunkFileNames,
-        })).toMatchRollupAssetSnapshot();
+                    assetFileNames,
+                    chunkFileNames,
+                }),
+                { assets : true, code : false },
+            )
+        );
     });
 
-    it("should support dynamic imports", async () => {
+    it("should support dynamic imports", async (t) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/dynamic-imports/a.js"),
@@ -198,16 +234,21 @@ describe("/rollup.js code splitting", () => {
             ],
         });
 
-        await expect(await bundle.generate({
-            format,
-            sourcemap,
+        t.assert.snapshot(
+            rollupBundle(
+                await bundle.generate({
+                    format,
+                    sourcemap,
 
-            assetFileNames,
-            chunkFileNames,
-        })).toMatchRollupAssetSnapshot();
+                    assetFileNames,
+                    chunkFileNames,
+                }),
+                { assets : true, code : false },
+            )
+        );
     });
 
-    it("shouldn't break when dynamic imports are tree-shaken away (rollup/rollup#2659)", async () => {
+    it("shouldn't break when dynamic imports are tree-shaken away (rollup/rollup#2659)", async (t) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/stripped-dynamic-imports/a.js"),
@@ -218,16 +259,21 @@ describe("/rollup.js code splitting", () => {
             ],
         });
 
-        await expect(await bundle.generate({
-            format,
-            sourcemap,
+        t.assert.snapshot(
+            rollupBundle(
+                await bundle.generate({
+                    format,
+                    sourcemap,
 
-            assetFileNames,
-            chunkFileNames,
-        })).toMatchRollupAssetSnapshot();
+                    assetFileNames,
+                    chunkFileNames,
+                }),
+                { assets : true, code : false },
+            )
+        );
     });
 
-    it("should output only 1 JSON file", async () => {
+    it("should output only 1 JSON file", async (t) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/simple.js"),
@@ -241,16 +287,21 @@ describe("/rollup.js code splitting", () => {
             ],
         });
 
-        await expect(await bundle.generate({
-            format,
-            sourcemap,
+        t.assert.snapshot(
+            rollupBundle(
+                await bundle.generate({
+                    format,
+                    sourcemap,
 
-            assetFileNames,
-            chunkFileNames,
-        })).toMatchRollupAssetSnapshot();
+                    assetFileNames,
+                    chunkFileNames,
+                }),
+                { assets : true, code : false },
+            )
+        );
     });
 
-    it("shouldn't use entry hashes as part of the CSS file names", async () => {
+    it("shouldn't use entry hashes as part of the CSS file names", async (t) => {
         const bundle = await rollup({
             input : [
                 require.resolve("./specimens/simple.js"),
@@ -262,41 +313,53 @@ describe("/rollup.js code splitting", () => {
 
         });
 
-        await expect(await bundle.generate({
-            format,
-            sourcemap,
+        t.assert.snapshot(
+            rollupBundle(
+                await bundle.generate({
+                    format,
+                    sourcemap,
 
-            entryFileNames : "[name].[hash].js",
-        })).toMatchRollupSnapshot();
+                    entryFileNames : "[name].[hash].js",
+                })
+            )
+        );
     });
 
-    it.each([
+    [
         [ "not hashed", { assetFileNames, chunkFileNames }],
         [ "hashed", {}],
-    ])("should support deduping names via rollup (%s)", async (name, args) => {
-        const bundle = await rollup({
-            input : [
-                require.resolve("./specimens/multiple-chunks/a.js"),
-                require.resolve("./specimens/multiple-chunks/b.js"),
-            ],
+    ].forEach(([ name, args ]) => {
+        it(`should support deduping names via rollup (${name})`, async (t) => {
+            const bundle = await rollup({
+                input : [
+                    require.resolve("./specimens/multiple-chunks/a.js"),
+                    require.resolve("./specimens/multiple-chunks/b.js"),
+                ],
 
-            plugins : [
-                createPlugin({
-                    map : false,
-                }),
-            ],
+                plugins : [
+                    createPlugin({
+                        map : false,
+                    }),
+                ],
 
+            });
+
+            t.assert.snapshot(
+                rollupBundle(
+                
+                    await bundle.generate({
+                        format,
+                        sourcemap,
+
+                    ...args,
+                    }),
+                    { assets : true, code : false },
+                )
+            );
         });
-
-        await expect(await bundle.generate({
-            format,
-            sourcemap,
-
-            ...args,
-        })).toMatchRollupAssetSnapshot();
     });
 
-    it("should support circular JS dependencies", async () => {
+    it("should support circular JS dependencies", async (t) => {
         const bundle = await rollup({
             onwarn(warning, handler) {
                 if(warning.code === "CIRCULAR_DEPENDENCY") {
@@ -316,12 +379,16 @@ describe("/rollup.js code splitting", () => {
             ],
         });
 
-        await expect(await bundle.generate({
-            format,
-            sourcemap,
+        t.assert.snapshot(
+            rollupBundle(
+                await bundle.generate({
+                    format,
+                    sourcemap,
 
-            assetFileNames,
-            chunkFileNames,
-        })).toMatchRollupSnapshot();
+                    assetFileNames,
+                    chunkFileNames,
+                })
+            )
+        );
     });
 });
