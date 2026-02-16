@@ -20,7 +20,7 @@ module.exports = {
         "/packages/glob/",
         "/packages/namer/",
         "/packages/paths/",
-        "/packages/svelte/test/svelte.test.js",
+        "/packages/svelte",
     ],
 
     watchPathIgnorePatterns : [
