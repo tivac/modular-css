@@ -1,5 +1,11 @@
 # Change Log
 
+## 29.2.0
+
+### Minor Changes
+
+- [`4bfb323`](https://github.com/tivac/modular-css/commit/4bfb323396a44a5b85a4af21ffd68edfe448c0a6) Thanks [@tivac](https://github.com/tivac)! - Upgraded parser library to peggy@5
+
 ## 29.1.0
 
 ### Minor Changes

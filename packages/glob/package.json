@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/glob",
-  "version": "29.0.5",
+  "version": "29.0.6",
   "description": "Glob support for modular-css",
   "main": "./glob.js",
   "repository": {
@@ -24,7 +24,7 @@
     "modular-css"
   ],
   "dependencies": {
-    "@modular-css/processor": "^29.1.0",
+    "@modular-css/processor": "^29.2.0",
     "globule": "^1.1.0"
   }
 }
