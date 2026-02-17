@@ -50,7 +50,7 @@ describe("/processor.js", () => {
             it("should use a custom naming function", async (t) => {
                 const processor = new Processor({
                     namer : (filename, selector) =>
-                        `${relative([ filename ])[0].replace(/[\/\.]/g, "_")}_${selector}`,
+                        `${relative([ filename ])[0].replace(/[/.]/g, "_")}_${selector}`,
                 });
 
                 const { exports : compositions, details } = await processor.string(

@@ -16,7 +16,8 @@ const config = {
                     return;
                 }
 
-                throw new Error(message);
+                // eslint-disable-next-line no-console
+                console.warn(path, message);
             },
         },
     },

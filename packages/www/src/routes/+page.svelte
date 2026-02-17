@@ -1,4 +1,6 @@
 <script>
+import { resolve } from "$app/paths";
+
 import Title from "$lib/title.svelte";
 
 import { content as intro } from "./_home/intro.md";
@@ -21,7 +23,7 @@ import css from "./_home/home.mcss";
         </div>
 
         <div class={css.learn}>
-            <a href="/overview/" class={css.cta}>
+            <a href={resolve("/overview/")} class={css.cta}>
                 Learn More Now!
             </a>
         </div>

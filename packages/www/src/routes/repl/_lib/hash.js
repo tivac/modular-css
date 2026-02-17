@@ -61,7 +61,7 @@ const decode = (hash) => {
 
 // Grab initial state from location.hash, or create it from nothing
 const setup = async () => {
-    const data = decode(location.hash);
+    const data = decode(globalThis.location.hash);
 
     await initialize(data);
     
@@ -80,18 +80,18 @@ const setup = async () => {
             return;
         }
 
-        window.location = next;
+        globalThis.location = next;
         current = next;
     });
 
     // Listen for hash change events, compare against our current hash
     // and re-initialize everything if different
-    window.addEventListener("hashchange", () => {
-        if(location.hash === current) {
+    globalThis.addEventListener("hashchange", () => {
+        if(globalThis.location.hash === current) {
             return;
         }
 
-        const decoded = decode(location.hash);
+        const decoded = decode(globalThis.location.hash);
 
         initialize(decoded);
     });

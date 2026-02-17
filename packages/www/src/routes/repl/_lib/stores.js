@@ -137,8 +137,8 @@ const select = (name) => file.set(name);
 const filesReadable = { subscribe : files.subscribe };
 const errorReadable = { subscribe : error.subscribe };
 
-window.files = filesReadable;
-window.file = selected;
+globalThis.files = filesReadable;
+globalThis.file = selected;
 
 export {
     // Stores

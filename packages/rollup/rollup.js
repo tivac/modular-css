@@ -143,7 +143,7 @@ module.exports = (
             };
         },
 
-        // eslint-disable-next-line max-statements, complexity -- too much state to extract
+        // eslint-disable-next-line max-statements
         async generateBundle(outputOptions, bundle) {
             // styleExport disables all output file generation
             if(options.styleExport) {

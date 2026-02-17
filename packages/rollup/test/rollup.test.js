@@ -930,7 +930,7 @@ describe("/rollup.js", () => {
 
         try {
             fs.statSync("./packages/rollup/test/output/SENSITIVE.txt");
-        } catch(e) {
+        } catch(_e) {
             skip = true;
         }
 

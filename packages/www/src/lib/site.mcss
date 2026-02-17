@@ -1,3 +1,6 @@
+@import "codemirror/lib/codemirror.css";
+@import "codemirror/theme/nord.css";
+
 @value bgColor: #ECEFF4;
 @value headerColor: hsl(219, 28%, 88%);
 @value headerBg: hsl(220, 16%, 22%);
@@ -10,9 +13,6 @@
 @value hoverOutTime: 250ms;
 
 @value bigSize: screen and (min-width: 768px);
-
-@import "codemirror/lib/codemirror.css";
-@import "codemirror/theme/nord.css";
 
 html {
     box-sizing: border-box;
