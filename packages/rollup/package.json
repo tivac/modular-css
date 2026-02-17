@@ -1,6 +1,6 @@
 {
   "name": "@modular-css/rollup",
-  "version": "29.1.3",
+  "version": "29.1.4",
   "description": "Add modular-css support to rollup",
   "main": "./rollup.js",
   "repository": {
@@ -26,8 +26,8 @@
     "postcss"
   ],
   "dependencies": {
-    "@modular-css/css-to-js": "^29.1.3",
-    "@modular-css/processor": "^29.1.0",
+    "@modular-css/css-to-js": "^29.1.4",
+    "@modular-css/processor": "^29.2.0",
     "@rollup/pluginutils": "^5.1.0"
   },
   "peerDependencies": {
