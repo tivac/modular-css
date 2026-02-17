@@ -1,11 +1,7 @@
-const {
-    defineConfig,
-    globalIgnores,
-} = require("eslint/config");
+const { defineConfig, globalIgnores } = require("eslint/config");
 
 const svelteConfig = require("./packages/www/svelte.config.js");
 
-const babelParser = require("@babel/eslint-parser");
 const globals = require("globals");
 const js = require("@eslint/js");
 const svelte = require("eslint-plugin-svelte");
@@ -15,16 +11,14 @@ module.exports = defineConfig([
     ...svelte.configs.recommended,
     {
         languageOptions: {
-            parser: babelParser,
-
-            parserOptions: {
-                requireConfigFile: false,
-            },
-
             globals: {
                 ...globals.node,
             },
         },
+
+        ignores : [
+            "packages/www/**/*.svelte",
+        ],
 
         linterOptions: {
             reportUnusedDisableDirectives: true,
@@ -61,6 +55,9 @@ module.exports = defineConfig([
             "no-unused-vars": ["warn", {
                 varsIgnorePattern: "^_",
                 argsIgnorePattern: "^_",
+                caughtErrorsIgnorePattern : "^_",
+                destructuredArrayIgnorePattern : "^_",
+                ignoreRestSiblings : true,
             }],
 
             "no-console" : "warn",
@@ -70,8 +67,6 @@ module.exports = defineConfig([
         },
     },
     {
-        
-
         files: [
             "packages/www/**/*.svelte"
         ],
@@ -81,17 +76,12 @@ module.exports = defineConfig([
                 ...globals.browser,
             },
 
-            parser: babelParser,
-
-            parserOptions: {
-                requireConfigFile : false,
+            parserOptions : {
                 svelteConfig,
             },
         },
 
         rules: {
-            indent: "off",
-
             "svelte/no-at-html-tags": "off",
             "svelte/no-useless-mustaches": "warn",
             "svelte/require-optimized-style-attribute": "error",
