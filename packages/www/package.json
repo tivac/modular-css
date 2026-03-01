@@ -36,7 +36,7 @@
     "lz-string": "^1.4.4",
     "rehype-autolink-headings": "^6.1.1",
     "rehype-format": "^5.0.0",
-    "rehype-stringify": "^9.0.2",
+    "rehype-stringify": "^10.0.1",
     "rehype-toc": "^3.0.2",
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
