@@ -221,7 +221,7 @@ module.exports = (
             }
 
             const { code : css, warnings } = transform(file, processor, pluginOptions);
-
+            
             warnings.forEach((warning) => {
                 this.warn(warning);
             });
