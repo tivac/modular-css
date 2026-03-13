@@ -220,6 +220,25 @@ module.exports = (
                 return this.error(e);
             }
 
+            // Invalidate dependent modules so Vite knows their exports may have changed.
+            if(viteServer) {
+                processor.fileDependents(file).forEach((dep) => {
+                    // Invalidate the JS module
+                    const jsMod = viteServer.moduleGraph.getModuleByUrl(dep);
+
+                    if(jsMod) {
+                        viteServer.moduleGraph.invalidateModule(jsMod);
+                    }
+
+                    // Invalidate the virtual CSS module too
+                    const cssMod = viteServer.moduleGraph.getModuleByUrl(virtualize(slash(dep)));
+                    
+                    if(cssMod) {
+                        viteServer.moduleGraph.invalidateModule(cssMod);
+                    }
+                });
+            }
+
             const { code : css, namedExports, warnings } = transform(file, processor, pluginOptions);
 
             warnings.forEach((warning) => {
