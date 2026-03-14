@@ -84,7 +84,7 @@ module.exports = (
 
             viteServer.watcher.on("change", (file) => {
                 log("change", file);
-                
+
                 if(!processor.has(file)) {
                     return;
                 }
@@ -104,9 +104,9 @@ module.exports = (
 
                 // Have to grab deps _before_ removal
                 const deps = processor.fileDependents(file);
-                
+
                 processor.remove(file);
-                
+
                 // Invalidate dependencies of the file that was removed
                 deps.forEach((dep) => {
                     viteServer.watcher.emit("change", dep);
@@ -130,7 +130,7 @@ module.exports = (
             log("resolving", source);
 
             let resolved = source;
-            
+
             // Check file as passed (minus the query params)
             if(processor.has(devirtualize(resolved))) {
                 return resolved;
@@ -222,21 +222,19 @@ module.exports = (
 
             // Invalidate dependent modules so Vite knows their exports may have changed.
             if(viteServer) {
-                processor.fileDependents(file).forEach((dep) => {
-                    // Invalidate the JS module
-                    const jsMod = viteServer.moduleGraph.getModuleByUrl(dep);
+                await Promise.all(processor.fileDependents(file).map(async (dep) => {
+                    const jsMod = await viteServer.moduleGraph.getModuleByUrl(dep);
 
                     if(jsMod) {
                         viteServer.moduleGraph.invalidateModule(jsMod);
                     }
 
-                    // Invalidate the virtual CSS module too
-                    const cssMod = viteServer.moduleGraph.getModuleByUrl(virtualize(slash(dep)));
-                    
+                    const cssMod = await viteServer.moduleGraph.getModuleByUrl(virtualize(slash(dep)));
+
                     if(cssMod) {
                         viteServer.moduleGraph.invalidateModule(cssMod);
                     }
-                });
+                }));
             }
 
             const { code : css, namedExports, warnings } = transform(file, processor, pluginOptions);
