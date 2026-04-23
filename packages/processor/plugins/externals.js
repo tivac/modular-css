@@ -4,23 +4,29 @@ const selector = require("postcss-selector-parser");
 
 const parser = require("../parsers/external.js");
 
+const _cache = new Map();
+
 // Find :external(<rule> from <file>) references and update them to be
 // the namespaced selector instead
 module.exports = () => ({
-    postcssPlugin : "modular-css-externals",
+    postcssPlugin: "modular-css-externals",
 
     prepare(result) {
         const { processor, from } = result.opts;
 
         const process = (rule, pseudo) => {
             const params = pseudo.nodes.toString();
-            
-            const { source, ref } = parser.parse(params);
+
+            const parsed = _cache.get(params) ?? parser.parse(params);
+
+            _cache.set(params, parsed);
+
+            const { source, ref } = parsed;
             const { name } = ref;
             const file = processor.files[processor.resolve(from, source)];
 
             if(!file.classes[name]) {
-                throw rule.error(`Invalid external reference: ${name}`, { word : name });
+                throw rule.error(`Invalid external reference: ${name}`, { word: name });
             }
 
             // This was a... poor naming choice
@@ -45,7 +51,7 @@ module.exports = () => ({
                         if(pseudo.value !== ":external") {
                             return;
                         }
-    
+
                         process(rule, pseudo);
                     });
                 });
