@@ -1,5 +1,11 @@
 # Change Log
 
+## 29.3.0
+
+### Minor Changes
+
+- [#1130](https://github.com/tivac/modular-css/pull/1130) [`d530d02`](https://github.com/tivac/modular-css/commit/d530d02535ba146cfc92727524e1f6c10eceb090) Thanks [@tivac](https://github.com/tivac)! - Add caching of the internal parsing done for `composes` & `@value` to provide a small speed-up to repeated values in large codebases.
+
 ## 29.2.0
 
 ### Minor Changes
