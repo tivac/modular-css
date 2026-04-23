@@ -54,7 +54,7 @@
     "peggy": "^5.0.6",
     "postcss": "^8.5.6",
     "postcss-nested": "^7.0.2",
-    "rollup": "^4.57.1",
+    "rollup": "^4.59.0",
     "rollup-plugin-hypothetical": "^2.1.1",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "rollup-plugin-svelte": "^7.2.3",
