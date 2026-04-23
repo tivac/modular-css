@@ -11,8 +11,10 @@ const identifiers = require("../../lib/identifiers.js");
 
 const plugin = "modular-css-graph-nodes";
 
+const _cache = new Map();
+
 module.exports = () => ({
-    postcssPlugin : plugin,
+    postcssPlugin: plugin,
 
     prepare({ opts }) {
         const { processor, from } = opts;
@@ -21,10 +23,12 @@ module.exports = () => ({
             let parsed;
 
             try {
-                parsed = parser.parse(value);
+                parsed = _cache.get(value) ?? parser.parse(value);
+
+                _cache.set(value, parsed);
             } catch(e) {
                 throw rule.error(e.toString(), {
-                    word : value.substring(e.location.start.offset, e.location.end.offset),
+                    word: value.substring(e.location.start.offset, e.location.end.offset),
                 });
             }
 
@@ -39,7 +43,7 @@ module.exports = () => ({
             if(!dependency) {
                 throw rule.error(
                     `Unable to locate "${source}" from "${from}"`,
-                    { word : source }
+                    { word: source }
                 );
             }
 
@@ -47,17 +51,17 @@ module.exports = () => ({
                 return processor._addDependency({
                     dependency,
                     refs,
-                    name : from,
+                    name: from,
                 });
             }
-            
+
             const classes = new Set(identifiers.parse(rule.parent.selector));
 
             classes.forEach((sel) => processor._addDependency({
-                selector : sel,
+                selector: sel,
                 dependency,
                 refs,
-                name     : from,
+                name: from,
             }));
         };
 
@@ -77,7 +81,7 @@ module.exports = () => ({
         });
 
         return {
-            AtRule : {
+            AtRule: {
                 value(rule) {
                     parse(values, rule, rule.params);
                 },
@@ -97,7 +101,7 @@ module.exports = () => ({
                 );
             },
 
-            Declaration : {
+            Declaration: {
                 composes(rule) {
                     parse(composes, rule, rule.value);
                 },

@@ -6,27 +6,31 @@ const { selectorKey } = require("../lib/keys.js");
 
 const plugin = "modular-css-at-composes";
 
+const _cache = new Map();
+
 module.exports = () => ({
-    postcssPlugin : plugin,
+    postcssPlugin: plugin,
 
     prepare(result) {
         const { from, processor } = result.opts;
         const { files, graph } = processor;
 
-        const { classes : target } = files[from];
+        const { classes: target } = files[from];
 
         let source = false;
 
         return {
-            AtRule : {
+            AtRule: {
                 composes(rule) {
                     if(source) {
-                        throw rule.error(`Only one @composes rule per file`, { word : "composes" });
+                        throw rule.error(`Only one @composes rule per file`, { word: "composes" });
                     }
 
                     // We know it's safe, otherwise it would have failed in graph-nodes pass
-                    const parsed = parser.parse(rule.params);
-            
+                    const parsed = _cache.get(rule.params) ?? parser.parse(rule.params);
+
+                    _cache.set(rule.params, parsed);
+
                     source = files[processor.resolve(from, parsed.source)];
 
                     // Remove the @composes from the output
@@ -34,7 +38,7 @@ module.exports = () => ({
 
                     // Create a copy of each defined class and also the dependency graph (if it has dependencies)
                     Object.keys(source.classes).forEach((key) => {
-                        target[key] = [ ...source.classes[key] ];
+                        target[key] = [...source.classes[key]];
 
                         const skey = selectorKey(source.name, key);
 
