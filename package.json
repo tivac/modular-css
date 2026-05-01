@@ -52,7 +52,7 @@
     "globals": "^17.3.0",
     "nanospy": "^1.0.0",
     "peggy": "^5.0.6",
-    "postcss": "^8.5.6",
+    "postcss": "^8.5.13",
     "postcss-nested": "^7.0.2",
     "rollup": "^4.59.0",
     "rollup-plugin-hypothetical": "^2.1.1",
