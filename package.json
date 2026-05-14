@@ -60,7 +60,7 @@
     "rollup-plugin-svelte": "^7.2.3",
     "shelljs": "^0.10.0",
     "sugarss": "^5.0.1",
-    "svelte": "^5.53.6",
+    "svelte": "^5.55.7",
     "vite": "^7.3.2"
   },
   "workspaces": [
