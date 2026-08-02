@@ -1,5 +1,11 @@
 # Change Log
 
+## 30.2.7
+
+### Patch Changes
+
+- [#1152](https://github.com/tivac/modular-css/pull/1152) [`ee72e2d`](https://github.com/tivac/modular-css/commit/ee72e2d940eced9c8e78d372102f01f67487d193) Thanks [@tanishalfelven](https://github.com/tanishalfelven)! - Fix type mismatch with vite 8
+
 ## 30.2.6
 
 ### Patch Changes
