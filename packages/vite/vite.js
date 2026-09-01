@@ -253,9 +253,8 @@ module.exports = (
                 code : result,
                 map  : emptyMappings,
 
-                // Disable tree-shaking for CSS modules w/o any classes/values to export
-                // to make sure they're included in the bundle
-                moduleSideEffects : Boolean(namedExports.length) || "no-treeshake",
+                // Disable tree-shaking for CSS modules to make sure they're included in the bundle
+                moduleSideEffects : true,
             };
         },
     };
