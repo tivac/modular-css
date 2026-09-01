@@ -220,7 +220,7 @@ module.exports = (
                 return this.error(e);
             }
 
-            const { code : css, namedExports, warnings } = transform(file, processor, pluginOptions);
+            const { code : css, warnings } = transform(file, processor, pluginOptions);
 
             warnings.forEach((warning) => {
                 this.warn(warning);
