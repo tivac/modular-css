@@ -220,24 +220,7 @@ module.exports = (
                 return this.error(e);
             }
 
-            // Invalidate dependent modules so Vite knows their exports may have changed.
-            if(viteServer) {
-                await Promise.all(processor.fileDependents(file).map(async (dep) => {
-                    const jsMod = await viteServer.moduleGraph.getModuleByUrl(dep);
-
-                    if(jsMod) {
-                        viteServer.moduleGraph.invalidateModule(jsMod);
-                    }
-
-                    const cssMod = await viteServer.moduleGraph.getModuleByUrl(virtualize(slash(dep)));
-
-                    if(cssMod) {
-                        viteServer.moduleGraph.invalidateModule(cssMod);
-                    }
-                }));
-            }
-
-            const { code : css, namedExports, warnings } = transform(file, processor, pluginOptions);
+            const { code : css, warnings } = transform(file, processor, pluginOptions);
 
             warnings.forEach((warning) => {
                 this.warn(warning);
@@ -270,9 +253,8 @@ module.exports = (
                 code : result,
                 map  : emptyMappings,
 
-                // Disable tree-shaking for CSS modules w/o any classes/values to export
-                // to make sure they're included in the bundle
-                moduleSideEffects : Boolean(namedExports.length) || "no-treeshake",
+                // Disable tree-shaking for CSS modules to make sure they're included in the bundle
+                moduleSideEffects : true,
             };
         },
     };
