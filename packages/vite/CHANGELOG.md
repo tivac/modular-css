@@ -1,5 +1,13 @@
 # Change Log
 
+## 30.2.8
+
+### Patch Changes
+
+- [#1159](https://github.com/tivac/modular-css/pull/1159) [`4c9401c`](https://github.com/tivac/modular-css/commit/4c9401c0b888c2ebdcc9fb1e1c9ab37efc259098) Thanks [@tivac](https://github.com/tivac)! - fix: vite@8 build compatibility
+
+  Vite plugins can return `moduleSideEffects` from their `transform` hook, but with the switch to Rolldown for built output the valid arguments changed.
+
 ## 30.2.7
 
 ### Patch Changes
