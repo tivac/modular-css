@@ -75,6 +75,16 @@ module.exports = () => ({
                         if(source) {
                             // External refs should already exist, so they don't get added
                             ref = selectorKey(source, name);
+
+                            if(!files[source].classes[name]) {
+                                const rel = relative(processor.options.cwd, source);
+
+                                throw decl.error(
+                                    `Invalid composes reference, .${name} does not exist in ${rel}`, {
+                                    word: name,
+                                }
+                                );
+                            }
                         } else if(global) {
                             ref = processor._addGlobal(name);
                         } else {
