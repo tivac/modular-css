@@ -37,6 +37,16 @@ describe("/processor.js", () => {
             );
         });
 
+        it("should fail if a composition references a non-existant class in another file", async (t) => {
+            await t.assert.rejects(
+                async () => processor.string(
+                    path.join(__dirname, "specimens/invalid-external-composition.css"),
+                    `.a { composes: nope from "./simple.css"; }`
+                ),
+                /Invalid composes reference, \.nope does not exist in packages\/processor\/test\/specimens\/simple\.css/
+            );
+        });
+
         it("should fail if a composition references a non-existant file", async (t) => {
             await t.assert.rejects(
                 async () => processor.string(
