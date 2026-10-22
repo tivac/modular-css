@@ -1,5 +1,11 @@
 # Change Log
 
+## 29.3.1
+
+### Patch Changes
+
+- [#1168](https://github.com/tivac/modular-css/pull/1168) [`277e660`](https://github.com/tivac/modular-css/commit/277e660850a862dc3bb04cf433d75f11b299e269) Thanks [@NiedziolkaMichal](https://github.com/NiedziolkaMichal)! - Fail with `Invalid composes reference` when `composes: x from "file.css"` references a class that doesn't exist in that file, instead of crashing later with `composition is not iterable`.
+
 ## 29.3.0
 
 ### Minor Changes
