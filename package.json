@@ -42,7 +42,7 @@
     "@tivac/eslint-config": "^2.4.0",
     "baseline-browser-mapping": "^2.9.19",
     "cli-tester": "2.0.0",
-    "codemirror": "^5.65.1",
+    "codemirror": "^5.65.21",
     "cssnano": "^7.1.2",
     "debounce": "^3.0.0",
     "dedent": "^1.7.1",
