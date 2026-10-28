@@ -192,6 +192,9 @@ class Processor {
                 return;
             }
 
+            // Make sure all dependents of this file are considered invalid as well
+            this.invalidate(file);
+
             this._graph.removeNode(key);
 
             delete this._files[file];
