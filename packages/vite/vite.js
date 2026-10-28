@@ -233,7 +233,7 @@ module.exports = (
 
             // Invalidate dependent modules so Vite knows their exports may have changed.
             if(viteServer) {
-                await invalidateDependents(process.fileDependents(file));
+                await invalidateDependents(processor.fileDependents(file));
             }
 
             const { code : css, warnings } = transform(file, processor, pluginOptions);
