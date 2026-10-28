@@ -107,7 +107,7 @@ module.exports = (
                 processor.invalidate(file);
 
                 // Make sure vite knows that files that depend on us are invalid now
-                await invalidateDependents(process.fileDependents(file));
+                await invalidateDependents(processor.fileDependents(file));
             });
 
             viteServer.watcher.on("unlink", async (file) => {
