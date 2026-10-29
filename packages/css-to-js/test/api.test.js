@@ -11,9 +11,13 @@ const root = process.cwd().replace(/\\/g, "/");
 const safe = "<ROOT-DIR>";
 
 const serializers = [ (value) => {
-    value = value.replace(root, safe);
+    if(typeof value !== "string") {
+       value = JSON.stringify(value, null, 2); 
+    }
+    
+    value = value.replaceAll(root, safe);
 
-    return JSON.stringify(value, null, 2);
+    return value;
 } ];
 
 
