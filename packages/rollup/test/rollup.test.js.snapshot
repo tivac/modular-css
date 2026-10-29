@@ -1,22 +1,52 @@
-exports[`/rollup.js > Exports option > should generate valid composition output when global() is used 1`] = `
-{
-  "assets/entry-D_lIC64l.css": "\\n/* packages/rollup/test/specimens/composes-from-global/one.css */\\n",
-  "entry.js": "\\nconst out = \\"foo\\" + \\" \\" + \\"mc_out\\";\\nvar style = {\\n    out\\n};\\n\\nconsole.log(style);\\n"
+exports[`/rollup.js > Exports option > should generate valid JS even when identifiers aren't 1`] = `
+File: assets/entry-BJWIyi1Q.css
+Value:
+/* packages/rollup/test/specimens/composes-from-invalid-js/two.css */
+.mc_foo-bar {
+    color: salmon;
 }
+/* packages/rollup/test/specimens/composes-from-invalid-js/one.css */
+File: entry.js
+Value:
+const fooBar = "mc_foo-bar";
+
+const out = fooBar + " " + "mc_out";
+var style = {
+    out
+};
+
+console.log(style);
+
 `;
 
-exports[`/rollup.js > Exports option > should generated valid JS even when identifiers aren't 1`] = `
-{
-  "assets/entry-BJWIyi1Q.css": "\\n/* packages/rollup/test/specimens/composes-from-invalid-js/two.css */\\n.mc_foo-bar {\\n    color: salmon;\\n}\\n/* packages/rollup/test/specimens/composes-from-invalid-js/one.css */\\n",
-  "entry.js": "\\nconst fooBar = \\"mc_foo-bar\\";\\n\\nconst out = fooBar + \\" \\" + \\"mc_out\\";\\nvar style = {\\n    out\\n};\\n\\nconsole.log(style);\\n"
-}
+exports[`/rollup.js > Exports option > should generate valid composition output when global() is used 1`] = `
+File: assets/entry-D_lIC64l.css
+Value:
+/* packages/rollup/test/specimens/composes-from-global/one.css */
+File: entry.js
+Value:
+const out =  0 + "mc_out";
+var style = {
+    out
+};
+
+console.log(style);
+
 `;
 
 exports[`/rollup.js > Exports option > should provide named exports by default 1`] = `
-{
-  "assets/named-BW07Y_ac.css": "\\n/* packages/rollup/test/specimens/named.css */\\n.mc_a {\\n    color: red;\\n}\\n",
-  "named.js": "\\nconst a = \\"mc_a\\";\\n\\nconsole.log(a);\\n"
+File: assets/named-BW07Y_ac.css
+Value:
+/* packages/rollup/test/specimens/named.css */
+.mc_a {
+    color: red;
 }
+File: named.js
+Value:
+const a = "mc_a";
+
+console.log(a);
+
 `;
 
 exports[`/rollup.js > Exports option > should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false) 1`] = `
@@ -30,10 +60,22 @@ exports[`/rollup.js > Exports option > should warn & ignore invalid identifiers 
 `;
 
 exports[`/rollup.js > Exports option > should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false) 2`] = `
-{
-  "assets/invalid-name.css": "\\n/* packages/rollup/test/specimens/invalid-name.css */\\n.mc_fooga { color: red; }\\n.mc_fooga-wooga { color: red; }\\n",
-  "invalid-name.js": "\\nconst fooga = \\"mc_fooga\\";\\nconst foogaWooga = \\"mc_fooga-wooga\\";\\nvar css = {\\n    fooga,\\n\\"fooga-wooga\\" : foogaWooga\\n};\\n\\nconsole.log(css, fooga);\\n"
-}
+File: assets/invalid-name.css
+Value:
+/* packages/rollup/test/specimens/invalid-name.css */
+.mc_fooga { color: red; }
+.mc_fooga-wooga { color: red; }
+File: invalid-name.js
+Value:
+const fooga = "mc_fooga";
+const foogaWooga = "mc_fooga-wooga";
+var css = {
+    fooga,
+"fooga-wooga" : foogaWooga
+};
+
+console.log(css, fooga);
+
 `;
 
 exports[`/rollup.js > Exports option > should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true) 1`] = `
@@ -47,10 +89,22 @@ exports[`/rollup.js > Exports option > should warn & rewrite invalid identifiers
 `;
 
 exports[`/rollup.js > Exports option > should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true) 2`] = `
-{
-  "assets/invalid-name.css": "\\n/* packages/rollup/test/specimens/invalid-name.css */\\n.mc_fooga { color: red; }\\n.mc_fooga-wooga { color: red; }\\n",
-  "invalid-name.js": "\\nconst fooga = \\"mc_fooga\\";\\nconst foogaWooga = \\"mc_fooga-wooga\\";\\nvar css = {\\n    fooga,\\n\\"fooga-wooga\\" : foogaWooga\\n};\\n\\nconsole.log(css, fooga);\\n"
-}
+File: assets/invalid-name.css
+Value:
+/* packages/rollup/test/specimens/invalid-name.css */
+.mc_fooga { color: red; }
+.mc_fooga-wooga { color: red; }
+File: invalid-name.js
+Value:
+const fooga = "mc_fooga";
+const foogaWooga = "mc_fooga-wooga";
+var css = {
+    fooga,
+"fooga-wooga" : foogaWooga
+};
+
+console.log(css, fooga);
+
 `;
 
 exports[`/rollup.js > Exports option > should warn if named exports are falsey 1`] = `
@@ -62,194 +116,531 @@ exports[`/rollup.js > Exports option > should warn if named exports are falsey 1
 `;
 
 exports[`/rollup.js > dev mode option > should output a proxy 1`] = `
-{
-  "assets/simple-DvRVXbZI.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n",
-  "simple.js": "\\nconst str = \\"\\\\\\"string\\\\\\"\\";\\nconst $values = {\\n    str,\\n};\\nconst fooga = \\"mc_fooga\\";\\nconst cssData = {\\n    $values,\\nfooga\\n};\\n\\nvar css = new Proxy(cssData, {\\n    get(tgt, key) {\\n        if(key in tgt) {\\n            \\n            return tgt[key];\\n        }\\n\\n        throw new ReferenceError(key + \\" is not exported by packages/rollup/test/specimens/simple.css\\");\\n    }\\n});\\n\\nconsole.log(css);\\n"
+File: assets/simple-DvRVXbZI.css
+Value:
+/* packages/rollup/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
 }
+File: simple.js
+Value:
+const str = "\\"string\\"";
+const $values = {
+    str,
+};
+const fooga = "mc_fooga";
+const cssData = {
+    $values,
+fooga
+};
+
+var css = new Proxy(cssData, {
+    get(tgt, key) {
+        if(key in tgt) {
+            
+            return tgt[key];
+        }
+
+        throw new ReferenceError(key + " is not exported by packages/rollup/test/specimens/simple.css");
+    }
+});
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > empties option > should not write out empty CSS files by default 1`] = `
-{}
+
 `;
 
 exports[`/rollup.js > empties option > should write out empty CSS files when empties is enabled 1`] = `
-{
-  "assets/empty.css": "\\n"
-}
+File: assets/empty.css
+Value:
+
 `;
 
 exports[`/rollup.js > json option > should generate JSON 1`] = `
+File: assets/exports.json
+Value:
 {
-  "assets/exports.json": "\\n{\\n    \\"packages/rollup/test/specimens/simple.css\\": {\\n        \\"str\\": \\"\\\\\\"string\\\\\\"\\",\\n        \\"fooga\\": \\"mc_fooga\\"\\n    }\\n}",
-  "assets/simple.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n"
+    "packages/rollup/test/specimens/simple.css": {
+        "str": "\\"string\\"",
+        "fooga": "mc_fooga"
+    }
+}File: assets/simple.css
+Value:
+/* packages/rollup/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
 }
+
 `;
 
 exports[`/rollup.js > json option > should generate JSON with a custom name 1`] = `
+File: assets/simple.css
+Value:
+/* packages/rollup/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
+}
+File: custom.json
+Value:
 {
-  "assets/simple.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n",
-  "custom.json": "\\n{\\n    \\"packages/rollup/test/specimens/simple.css\\": {\\n        \\"str\\": \\"\\\\\\"string\\\\\\"\\",\\n        \\"fooga\\": \\"mc_fooga\\"\\n    }\\n}"
+    "packages/rollup/test/specimens/simple.css": {
+        "str": "\\"string\\"",
+        "fooga": "mc_fooga"
+    }
 }
 `;
 
 exports[`/rollup.js > processor option > should accept an existing processor instance (no css in bundle) 1`] = `
-{
-  "assets/fake.css": "\\n/* packages/rollup/test/specimens/fake.css */\\n.mc_fake {\\n    color: yellow;\\n}"
+File: assets/fake.css
+Value:
+/* packages/rollup/test/specimens/fake.css */
+.mc_fake {
+    color: yellow;
 }
 `;
 
 exports[`/rollup.js > processor option > should accept an existing processor instance 1`] = `
-{
-  "assets/fake.css": "\\n/* packages/rollup/test/specimens/fake.css */\\n.mc_fake {\\n    color: yellow;\\n}",
-  "assets/simple.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n"
+File: assets/fake.css
+Value:
+/* packages/rollup/test/specimens/fake.css */
+.mc_fake {
+    color: yellow;
+}File: assets/simple.css
+Value:
+/* packages/rollup/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
 }
+
 `;
 
 exports[`/rollup.js > should avoid generating empty CSS 1`] = `
-{}
+
 `;
 
 exports[`/rollup.js > should be able to tree-shake results 1`] = `
-{
-  "assets/tree-shaking.css": "\\n/* packages/rollup/test/specimens/tree-shaking.css */\\n.mc_fooga { color: red; }\\n.mc_wooga { color: blue; }\\n",
-  "tree-shaking.js": "\\nconst fooga = \\"mc_fooga\\";\\n\\nconsole.log(fooga);\\n"
-}
+File: assets/tree-shaking.css
+Value:
+/* packages/rollup/test/specimens/tree-shaking.css */
+.mc_fooga { color: red; }
+.mc_wooga { color: blue; }
+File: tree-shaking.js
+Value:
+const fooga = "mc_fooga";
+
+console.log(fooga);
+
 `;
 
 exports[`/rollup.js > should correctly handle hashed output 1`] = `
-{
-  "assets/simple-DvRVXbZI.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n",
-  "simple.js": "\\nconst str = \\"\\\\\\"string\\\\\\"\\";\\nconst $values = {\\n    str,\\n};\\nconst fooga = \\"mc_fooga\\";\\nvar css = {\\n    $values,\\nfooga\\n};\\n\\nconsole.log(css);\\n"
+File: assets/simple-DvRVXbZI.css
+Value:
+/* packages/rollup/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
 }
+File: simple.js
+Value:
+const str = "\\"string\\"";
+const $values = {
+    str,
+};
+const fooga = "mc_fooga";
+var css = {
+    $values,
+fooga
+};
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > should correctly handle hashed output with external source maps & json files 1`] = `
+File: assets/exports-_jSJkv9e.json
+Value:
 {
-  "assets/exports-_jSJkv9e.json": "\\n{\\n    \\"packages/rollup/test/specimens/simple.css\\": {\\n        \\"str\\": \\"\\\\\\"string\\\\\\"\\",\\n        \\"fooga\\": \\"mc_fooga\\"\\n    }\\n}",
-  "assets/simple-DvRVXbZI.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n\\n/*# sourceMappingURL=simple-DvRVXbZI.css.map */",
-  "assets/simple-DvRVXbZI.css.map": "\\n{\\"version\\":3,\\"sources\\":[\\"../packages/rollup/test/specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,8CAAA;AAEA;IACI,UAAU;AACd\\",\\"file\\":\\"simple-[hash].css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}",
-  "simple.js": "\\nconst str = \\"\\\\\\"string\\\\\\"\\";\\nconst $values = {\\n    str,\\n};\\nconst fooga = \\"mc_fooga\\";\\nvar css = {\\n    $values,\\nfooga\\n};\\n\\nconsole.log(css);\\n"
+    "packages/rollup/test/specimens/simple.css": {
+        "str": "\\"string\\"",
+        "fooga": "mc_fooga"
+    }
+}File: assets/simple-DvRVXbZI.css
+Value:
+/* packages/rollup/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
 }
+
+/*# sourceMappingURL=simple-DvRVXbZI.css.map */File: assets/simple-DvRVXbZI.css.map
+Value:
+{"version":3,"sources":["../packages/rollup/test/specimens/simple.css"],"names":[],"mappings":"AAAA,8CAAA;AAEA;IACI,UAAU;AACd","file":"simple-[hash].css","sourcesContent":["@value str: \\"string\\";\\n\\n.fooga {\\n    color: red;\\n}\\n"]}File: simple.js
+Value:
+const str = "\\"string\\"";
+const $values = {
+    str,
+};
+const fooga = "mc_fooga";
+var css = {
+    $values,
+fooga
+};
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > should correctly pass to/from params for relative paths 1`] = `
-{
-  "assets/relative-paths.css": "\\n/* packages/rollup/test/specimens/relative-paths.css */\\n.mc_wooga {\\n    color: red;\\n    background: url(\\"../../../specimens/folder/to.png\\");\\n}\\n"
+File: assets/relative-paths.css
+Value:
+/* packages/rollup/test/specimens/relative-paths.css */
+.mc_wooga {
+    color: red;
+    background: url("../../../specimens/folder/to.png");
 }
+
 `;
 
 exports[`/rollup.js > should express layers of locally-composed classes correctly 1`] = `
-{
-  "assets/composition-layers.css": "\\n/* packages/rollup/test/specimens/composition-layers/composition-layers.css */\\n.mc_a {\\n    color: red;\\n}\\n\\n.mc_b {\\n    color: blue;\\n}\\n\\n.mc_c {\\n    color: green;\\n}",
-  "composition-layers.js": "\\nconst a = \\"mc_a\\";\\nconst b = a + \\" \\" + \\"mc_b\\";\\nconst c = b + \\" \\" + \\"mc_c\\";\\nvar css = {\\n    a,\\nb,\\nc\\n};\\n\\nconsole.log(css);\\n"
+File: assets/composition-layers.css
+Value:
+/* packages/rollup/test/specimens/composition-layers/composition-layers.css */
+.mc_a {
+    color: red;
 }
+
+.mc_b {
+    color: blue;
+}
+
+.mc_c {
+    color: green;
+}File: composition-layers.js
+Value:
+const a = "mc_a";
+const b = a + " " + "mc_b";
+const c = b + " " + "mc_c";
+var css = {
+    a,
+b,
+c
+};
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > should express local & remote-composed classes correctly 1`] = `
-{
-  "assets/internal-external-composition.css": "\\n/* packages/rollup/test/specimens/internal-external-composition/other.css */\\n.mc_other {\\n    color: green;\\n}\\n/* packages/rollup/test/specimens/internal-external-composition/internal-external-composition.css */\\n.mc_one {\\n    color: red;\\n}\\n.mc_two {\\n    background: blue;\\n}",
-  "internal-external-composition.js": "\\nconst other = \\"mc_other\\";\\n\\nconst one = \\"mc_one\\";\\nconst two = other + \\" \\" + one + \\" \\" + \\"mc_two\\";\\nvar css = {\\n    one,\\ntwo\\n};\\n\\nconsole.log(css);\\n"
+File: assets/internal-external-composition.css
+Value:
+/* packages/rollup/test/specimens/internal-external-composition/other.css */
+.mc_other {
+    color: green;
 }
+/* packages/rollup/test/specimens/internal-external-composition/internal-external-composition.css */
+.mc_one {
+    color: red;
+}
+.mc_two {
+    background: blue;
+}File: internal-external-composition.js
+Value:
+const other = "mc_other";
+
+const one = "mc_one";
+const two = other + " " + one + " " + "mc_two";
+var css = {
+    one,
+two
+};
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > should express locally-composed classes correctly 1`] = `
-{
-  "assets/local-composition.css": "\\n/* packages/rollup/test/specimens/local-composition.css */\\n.mc_one {\\n    color: red;\\n}\\n\\n.mc_two {\\n    background: blue;\\n}\\n",
-  "local-composition.js": "\\nconst one = \\"mc_one\\";\\nconst two = one + \\" \\" + \\"mc_two\\";\\nvar css = {\\n    one,\\ntwo\\n};\\n\\nconsole.log(css);\\n"
+File: assets/local-composition.css
+Value:
+/* packages/rollup/test/specimens/local-composition.css */
+.mc_one {
+    color: red;
 }
+
+.mc_two {
+    background: blue;
+}
+File: local-composition.js
+Value:
+const one = "mc_one";
+const two = one + " " + "mc_two";
+var css = {
+    one,
+two
+};
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > should generate CSS 1`] = `
-{
-  "assets/simple.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n"
+File: assets/simple.css
+Value:
+/* packages/rollup/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
 }
+
 `;
 
 exports[`/rollup.js > should generate exports 1`] = `
-{
-  "assets/simple.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n",
-  "simple.js": "\\nconst str = \\"\\\\\\"string\\\\\\"\\";\\nconst $values = {\\n    str,\\n};\\nconst fooga = \\"mc_fooga\\";\\nvar css = {\\n    $values,\\nfooga\\n};\\n\\nconsole.log(css);\\n"
+File: assets/simple.css
+Value:
+/* packages/rollup/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
 }
+File: simple.js
+Value:
+const str = "\\"string\\"";
+const $values = {
+    str,
+};
+const fooga = "mc_fooga";
+var css = {
+    $values,
+fooga
+};
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > should handle assetFileNames being undefined 1`] = `
-{
-  "assets/simple-DvRVXbZI.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n"
+File: assets/simple-DvRVXbZI.css
+Value:
+/* packages/rollup/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
 }
+
 `;
 
 exports[`/rollup.js > should ignore external modules 1`] = `
-{}
+
 `;
 
 exports[`/rollup.js > should output assets with a .css file extension 1`] = `
-{
-  "assets/entry.css": "\\n/* packages/rollup/test/specimens/file-extension/style.cssx */\\n.mc_style {\\n    color: salmon;\\n}\\n",
-  "entry.js": "\\nconst style = \\"mc_style\\";\\nvar style$1 = {\\n    style\\n};\\n\\nconsole.log(style$1);\\n"
+File: assets/entry.css
+Value:
+/* packages/rollup/test/specimens/file-extension/style.cssx */
+.mc_style {
+    color: salmon;
 }
+File: entry.js
+Value:
+const style = "mc_style";
+var style$1 = {
+    style
+};
+
+console.log(style$1);
+
 `;
 
 exports[`/rollup.js > should output classes in topological order 1`] = `
-{
-  "assets/topological-order.css": "\\n/* packages/rollup/test/specimens/topological-order/topological-order.css */\\n.mc_b {\\n    border: 1px solid red;\\n}\\n\\n.mc_a {\\n    background: blue;\\n}\\n",
-  "topological-order.js": "\\nconst b = \\"mc_b\\";\\nconst a = b + \\" \\" + \\"mc_a\\";\\nvar css = {\\n    b,\\na\\n};\\n\\nconsole.log(css);\\n"
+File: assets/topological-order.css
+Value:
+/* packages/rollup/test/specimens/topological-order/topological-order.css */
+.mc_b {
+    border: 1px solid red;
 }
+
+.mc_a {
+    background: blue;
+}
+File: topological-order.js
+Value:
+const b = "mc_b";
+const a = b + " " + "mc_a";
+var css = {
+    b,
+a
+};
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > should output unreferenced CSS 1`] = `
-{
-  "assets/fake.css": "\\n/* packages/rollup/test/specimens/fake.css */\\n.mc_fake {\\n    color: yellow;\\n}",
-  "assets/simple.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n"
+File: assets/fake.css
+Value:
+/* packages/rollup/test/specimens/fake.css */
+.mc_fake {
+    color: yellow;
+}File: assets/simple.css
+Value:
+/* packages/rollup/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
 }
+
 `;
 
 exports[`/rollup.js > should respect the CSS dependency tree 1`] = `
-{
-  "assets/dependencies.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n/* packages/rollup/test/specimens/dependencies.css */\\n.mc_wooga {\\n    background: blue;\\n}\\n",
-  "dependencies.js": "\\nconst fooga = \\"mc_fooga\\";\\n\\nconst wooga = fooga + \\" \\" + \\"mc_wooga\\";\\nvar css = {\\n    wooga\\n};\\n\\nconsole.log(css);\\n"
+File: assets/dependencies.css
+Value:
+/* packages/rollup/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
 }
+/* packages/rollup/test/specimens/dependencies.css */
+.mc_wooga {
+    background: blue;
+}
+File: dependencies.js
+Value:
+const fooga = "mc_fooga";
+
+const wooga = fooga + " " + "mc_wooga";
+var css = {
+    wooga
+};
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > should support @value and class overlap 1`] = `
-{
-  "assets/class-value-overlap.css": "\\n/* packages/rollup/test/specimens/class-value-overlap/class-value-overlap.css */\\n.mc_foo { color: blue; }",
-  "class-value-overlap.js": "\\nconst foo = \\"blue\\";\\nconst $values = {\\n    foo,\\n};\\nconst foo1 = \\"mc_foo\\";\\nvar css = {\\n    $values,\\n\\"foo\\" : foo1\\n};\\n\\nconsole.log(css);\\n"
-}
+File: assets/class-value-overlap.css
+Value:
+/* packages/rollup/test/specimens/class-value-overlap/class-value-overlap.css */
+.mc_foo { color: blue; }File: class-value-overlap.js
+Value:
+const foo = "blue";
+const $values = {
+    foo,
+};
+const foo1 = "mc_foo";
+var css = {
+    $values,
+"foo" : foo1
+};
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > should support @value camelCase overlap 1`] = `
-{
-  "assets/value-camel-overlap.css": "\\n/* packages/rollup/test/specimens/value-camel-overlap.css */\\n",
-  "value-camel-overlap.js": "\\nconst colorBlack = \\"#000\\";\\nconst colorBlack1 = \\"#000\\";\\nconst $values = {\\n    colorBlack,\\n\\"color-black\\" : colorBlack1,\\n};\\nvar css = {\\n    $values\\n};\\n\\nconsole.log(css);\\n"
-}
+File: assets/value-camel-overlap.css
+Value:
+/* packages/rollup/test/specimens/value-camel-overlap.css */
+File: value-camel-overlap.js
+Value:
+const colorBlack = "#000";
+const colorBlack1 = "#000";
+const $values = {
+    colorBlack,
+"color-black" : colorBlack1,
+};
+var css = {
+    $values
+};
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > should support external @value aliases 1`] = `
-{
-  "assets/external-value-aliasing.css": "\\n/* packages/rollup/test/specimens/external-value-aliasing/source.css */\\n/* packages/rollup/test/specimens/external-value-aliasing/intermediate.css */\\n/* packages/rollup/test/specimens/external-value-aliasing/external-value-aliasing.css */\\n.mc_aliased {\\n    color: red;\\n    background: blue;\\n}\\n",
-  "external-value-aliasing.js": "\\nconst a = \\"red\\";\\nconst b = \\"blue\\";\\nconst $values$2 = {\\n    a,\\nb,\\n};\\n\\nconst $values$1 = {\\n    \\"a\\" : $values$2[\\"a\\"],\\n\\"b\\" : $values$2[\\"b\\"],\\n};\\n\\nconst $values = {\\n    \\"a\\" : $values$1[\\"a\\"],\\n\\"b\\" : $values$1[\\"b\\"],\\n};\\nconst aliased = \\"mc_aliased\\";\\nvar css = {\\n    $values,\\naliased\\n};\\n\\nconsole.log(css);\\n"
-}
+File: assets/external-value-aliasing.css
+Value:
+/* packages/rollup/test/specimens/external-value-aliasing/external-value-aliasing.css */
+.mc_aliased {
+    color: red;
+    background: blue;
+}File: assets/intermediate.css
+Value:
+/* packages/rollup/test/specimens/external-value-aliasing/intermediate.css */
+File: assets/source.css
+Value:
+/* packages/rollup/test/specimens/external-value-aliasing/source.css */
+File: external-value-aliasing.js
+Value:
+const aliased = "mc_aliased";
+var css = {
+    aliased
+};
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > should support mixing all @value types 1`] = `
-{
-  "all-value-types.js": "\\nconst color = \\"red\\";\\nconst other = \\"blue\\";\\nconst $values$2 = {\\n    color,\\nother,\\n};\\n\\nconst background = \\"green\\";\\nconst $values$1 = {\\n    background,\\n};\\n\\nconst border = \\"1px solid black\\";\\nconst $values = {\\n    \\"ns\\" : $values$2,\\n\\"background\\" : $values$1[\\"background\\"],\\nborder,\\n};\\nconst namespaced = \\"mc_namespaced\\";\\nvar css = {\\n    $values,\\nnamespaced\\n};\\n\\nconsole.log(css);\\n",
-  "assets/all-value-types.css": "\\n/* packages/rollup/test/specimens/all-value-types/values1.css */\\n/* packages/rollup/test/specimens/all-value-types/values2.css */\\n/* packages/rollup/test/specimens/all-value-types/all-value-types.css */\\n.mc_namespaced {\\n    color: red;\\n    background: green;\\n    border: 1px solid black;\\n}"
-}
+File: all-value-types.js
+Value:
+const border = "1px solid black";
+const $values = {
+    border,
+};
+const namespaced = "mc_namespaced";
+var css = {
+    $values,
+namespaced
+};
+
+console.log(css);
+File: assets/all-value-types.css
+Value:
+/* packages/rollup/test/specimens/all-value-types/all-value-types.css */
+.mc_namespaced {
+    color: red;
+    background: green;
+    border: 1px solid black;
+}File: assets/values1.css
+Value:
+/* packages/rollup/test/specimens/all-value-types/values1.css */File: assets/values2.css
+Value:
+/* packages/rollup/test/specimens/all-value-types/values2.css */
 `;
 
 exports[`/rollup.js > should support multiple selectors 1`] = `
-{
-  "assets/multi-selector.css": "\\n/* packages/rollup/test/specimens/multi-selector/other.css */\\n.mc_other,\\n.mc_other:visited {\\n    color: red;\\n}\\n/* packages/rollup/test/specimens/multi-selector/multi-selector.css */",
-  "multi-selector.js": "\\nconst other = \\"mc_other\\";\\n\\nconst ms = other + \\" \\" + \\"mc_ms\\";\\nvar css = {\\n    ms\\n};\\n\\nconsole.log(css);\\n"
+File: assets/multi-selector.css
+Value:
+/* packages/rollup/test/specimens/multi-selector/other.css */
+.mc_other,
+.mc_other:visited {
+    color: red;
 }
+/* packages/rollup/test/specimens/multi-selector/multi-selector.css */File: multi-selector.js
+Value:
+const other = "mc_other";
+
+const ms = other + " " + "mc_ms";
+var css = {
+    ms
+};
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > should support namespaced @value imports 1`] = `
-{
-  "assets/namespaced.css": "\\n/* packages/rollup/test/specimens/namespaced/values.css */\\n/* packages/rollup/test/specimens/namespaced/namespaced.css */\\n.mc_namespaced {\\n    color: red;\\n}",
-  "namespaced.js": "\\nconst color = \\"red\\";\\nconst other = \\"blue\\";\\nconst $values$1 = {\\n    color,\\nother,\\n};\\n\\nconst $values = {\\n    \\"ns\\" : $values$1,\\n};\\nconst namespaced = \\"mc_namespaced\\";\\nvar css = {\\n    $values,\\nnamespaced\\n};\\n\\nconsole.log(css);\\n"
-}
+File: assets/namespaced.css
+Value:
+/* packages/rollup/test/specimens/namespaced/namespaced.css */
+.mc_namespaced {
+    color: red;
+}File: assets/values.css
+Value:
+/* packages/rollup/test/specimens/namespaced/values.css */File: namespaced.js
+Value:
+const namespaced = "mc_namespaced";
+var css = {
+    namespaced
+};
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > source maps > should generate external source maps 1`] = `
@@ -261,10 +652,26 @@ exports[`/rollup.js > source maps > should generate external source maps 2`] = `
 `;
 
 exports[`/rollup.js > source maps > should not output sourcemaps when they are disabled 1`] = `
-{
-  "assets/simple.css": "\\n/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n",
-  "simple.js": "\\nconst str = \\"\\\\\\"string\\\\\\"\\";\\nconst $values = {\\n    str,\\n};\\nconst fooga = \\"mc_fooga\\";\\nvar css = {\\n    $values,\\nfooga\\n};\\n\\nconsole.log(css);\\n"
+File: assets/simple.css
+Value:
+/* packages/rollup/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
 }
+File: simple.js
+Value:
+const str = "\\"string\\"";
+const $values = {
+    str,
+};
+const fooga = "mc_fooga";
+var css = {
+    $values,
+fooga
+};
+
+console.log(css);
+
 `;
 
 exports[`/rollup.js > source maps > shouldn't disable sourcemap generation 1`] = `
@@ -283,9 +690,12 @@ exports[`/rollup.js > source maps > shouldn't disable sourcemap generation 1`] =
 `;
 
 exports[`/rollup.js > styleExport option > should provide style export 1`] = `
-{
-  "style-export.js": "\\nconst styles = \\".mc_ooh {\\\\n    content: \\\\\\"string\\\\\\";\\\\n}\\\\n\\";\\n\\nconsole.log(styles);\\n"
-}
+File: style-export.js
+Value:
+const styles = ".mc_ooh {\\n    content: \\"string\\";\\n}\\n";
+
+console.log(styles);
+
 `;
 
 exports[`/rollup.js > styleExport option > should warn that styleExport and done aren't compatible 1`] = `
