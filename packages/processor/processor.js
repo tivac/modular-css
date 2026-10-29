@@ -535,11 +535,15 @@ class Processor {
             return;
         }
 
-        // Add selector and its dependencies to the graph
+        // Add selector to the graph
         this._addSelector(name, selector);
 
+        // and its dependencies
         refs.forEach(({ name : depSelector }) => {
-            this._addSelector(dep, depSelector);
+            const depKey = this._addSelector(dep, depSelector);
+
+            // Mark file as dependening on the selector in the graph (because it does)
+            graph.addDependency(fKey, depKey);
         });
     }
 
@@ -627,7 +631,7 @@ class Processor {
                 if(data.file !== name) {
                     return;
                 }
-                
+
                 graph.directDependenciesOf(dep).forEach((dep2) => graph.removeDependency(dep, dep2));
             });
         }

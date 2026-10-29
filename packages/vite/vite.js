@@ -242,9 +242,10 @@ module.exports = (
                 this.warn(warning);
             });
 
-            // Watch all dependencies of this file for changes
+            // Get all direct file dependencies of this module
             const deps = processor.fileDependencies(file);
 
+            // Watch all dependencies of this file for changes
             deps.forEach((dep) => watchFile(dep));
 
             // TODO: Gets CSS order right by forcing them to load their dependent CSS first.

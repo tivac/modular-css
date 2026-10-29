@@ -80,9 +80,8 @@ module.exports = () => ({
                                 const rel = relative(processor.options.cwd, source);
 
                                 throw decl.error(
-                                    `Invalid composes reference, .${name} does not exist in ${rel}`, {
-                                    word: name,
-                                }
+                                    `Invalid composes reference, .${name} does not exist in ${rel}`,
+                                    { word: name, }
                                 );
                             }
                         } else if(global) {
@@ -95,9 +94,8 @@ module.exports = () => ({
                                 const rel = relative(processor.options.cwd, from);
 
                                 throw decl.error(
-                                    `Invalid composes reference, .${name} does not exist in ${rel}`, {
-                                    word: name,
-                                }
+                                    `Invalid composes reference, .${name} does not exist in ${rel}`,
+                                    { word: name, }
                                 );
                             }
                         }

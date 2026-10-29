@@ -111,21 +111,23 @@ exports.transform = (file, processor, opts = {}) => {
         };
     }
 
-    // Only want direct dependencies and any first-level dependencies
-    // of this file to be processed
-    graph.directDependenciesOf(Processor.fileKey(id)).forEach((dep) => {
-        dependencies.add(dep);
-
-        graph.directDependenciesOf(dep).forEach((d) => {
-            dependencies.add(d);
-        });
-    });
-
-    // create import statements for all of the values used in compositions
+    // create import statements for all of the selectors & values used in compositions
     /* eslint-disable-next-line max-statements -- this function is long */
-    dependencies.forEach((depKey) => {
+    graph.directDependenciesOf(Processor.fileKey(id)).forEach((depKey) => {
+        dependencies.add(depKey);
+
         const data = graph.getNodeData(depKey);
         const { file : depFile } = data;
+
+        // Local deps are ignored at this point
+        if(depFile === id) {
+            return;
+        }
+
+        // File dependencies are ignored for calculating imports
+        if(isFile(depKey)) {
+            return;
+        }
 
         if(!importsMap.has(depFile)) {
             importsMap.set(depFile, new Map());
@@ -133,22 +135,14 @@ exports.transform = (file, processor, opts = {}) => {
 
         const imported = importsMap.get(depFile);
 
-        // Local deps are ignored at this point
-        if(depFile === id) {
-            return;
-        }
+        if(isSelector(depKey)) {
+            const { selector } = data;
 
-        if(isFile(depKey)) {
-            // Add each selector this file depends on to the imports list
-            data.selectors.forEach((key) => {
-                const { selector: name } = graph.getNodeData(key);
+            const unique = deconflict(identifiers, selector);
 
-                const unique = deconflict(identifiers, name);
+            externalsMap.set(depKey, unique);
 
-                externalsMap.set(selectorKey(depFile, name), unique);
-
-                imported.set(name, unique);
-            });
+            imported.set(selector, unique);
 
             return;
         }
