@@ -3,6 +3,7 @@
 const parser = require("../parsers/values.js");
 
 const valueReplacer = require("../lib/value-replacer.js");
+const { fileKey } = require("../lib/keys.js");
 
 const plugin = "modular-css-values-import";
 
@@ -43,6 +44,8 @@ module.exports = () => ({
                                 throw rule.error(`Could not find @value ${name} in "${parsed.source}"`);
                             }
 
+                            console.log("Adding imported value", { from, file, name });
+
                             processor._addDependency({ name: from, dependency: file, refs: [{ name }] });
 
                             values[name] = {
@@ -61,7 +64,17 @@ module.exports = () => ({
                             throw rule.error(`Cannot import values as ${parsed.name}, it already exists`, { word: parsed.name });
                         }
 
-                        processor._addValue(file, parsed.name, { namespace: true });
+                        console.log({ from, file, name : parsed.name, values : source.values });
+
+                        // Add the namespaced values from the import to the dependency graph for the importing file
+                        const namespaceKey = processor._addValue(from, parsed.name, { namespace: true, source : file });
+
+                        processor.graph.addDependency(namespaceKey, fileKey(file));
+
+                        // processor._addDependency({ name : from, dependency : file })
+
+                        // And make the current file that imported it depend on it
+                        // processor._addDependency({ name : from, dependency : file, refs : [{ name : parsed.name }]});
 
                         for(const key in source.values) {
                             const name = `${parsed.name}.${key}`;

@@ -111,6 +111,10 @@ exports.transform = (file, processor, opts = {}) => {
         };
     }
 
+    console.log(id);
+    console.log(graph);
+    // console.log("direct dependencies", graph.directDependenciesOf(Processor.fileKey(id)));
+
     // create import statements for all of the selectors & values used in compositions
     /* eslint-disable-next-line max-statements -- this function is long */
     graph.directDependenciesOf(Processor.fileKey(id)).forEach((depKey) => {
@@ -118,6 +122,8 @@ exports.transform = (file, processor, opts = {}) => {
 
         const data = graph.getNodeData(depKey);
         const { file : depFile } = data;
+
+        // console.log(depKey, data);
 
         // Local deps are ignored at this point
         if(depFile === id) {
@@ -149,8 +155,10 @@ exports.transform = (file, processor, opts = {}) => {
 
         // @value references need to be specially imported & handled
         if(isValue(depKey)) {
-            const { value, namespace, alias } = data;
-            const { name : filename } = path.parse(depFile);
+            // console.log({ depKey, data });
+
+            const { value, namespace, alias, source } = data;
+            const { name : filename } = path.parse(source || depFile);
             const importName = `$${filename}Values`;
 
             let unique;
@@ -168,10 +176,7 @@ exports.transform = (file, processor, opts = {}) => {
 
             // Add @values namespace to the exported values block
             if(namespace) {
-                // Don't want to import namespaces multiple times
-                // if(!imported.has(DEFAULT_VALUES)) {
-                    valueExports.set(value, unique);
-                // }
+                valueExports.set(value, unique);
             } else {
                 valueExports.set(value, `${unique}[${JSON.stringify(alias || value)}]`);
             }
@@ -247,16 +252,25 @@ exports.transform = (file, processor, opts = {}) => {
         const sKey = selectorKey(id, key);
         const unique = internalsMap.get(key);
 
+        // console.log({ key, deps : graph.directDependenciesOf(sKey) });
+
         // Build the list of composed classes for this class
         if(graph.hasNode(sKey)) {
             graph.directDependenciesOf(sKey).forEach((dep) => {
-                const { file: src, selector } = graph.getNodeData(dep);
+                const { file: src, selector, global } = graph.getNodeData(dep);
 
-                // Get the value from the right place
-                elements.push(src !== id ?
-                    externalsMap.get(dep) :
-                    internalsMap.get(selector)
-                );
+                // console.log("selector dep", { dep }, graph.getNodeData(dep));
+
+
+                if(global) {
+                    elements.push(JSON.stringify(selector));
+                } else {
+                    // Get the value from the right place
+                    elements.push(src !== id ?
+                        externalsMap.get(dep) :
+                        internalsMap.get(selector)
+                    );
+                }
             });
         }
 

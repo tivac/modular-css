@@ -529,7 +529,10 @@ class Processor {
         // @values don't have a selector field
         if(!selector) {
             refs.forEach(({ name : depValue }) => {
-                this._addValue(dep, depValue);
+                const depKey = this._addValue(dep, depValue);
+
+                // Mark file as dependening on the @value in the graph (because it does)
+                graph.addDependency(fKey, depKey);
             });
 
             return;

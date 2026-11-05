@@ -179,7 +179,8 @@ describe("@modular-css/css-to-js API", () => {
         t.assert.deepStrictEqual(namedExports, [ "$values", "b" ]);
     });
 
-    it("should represent external @values namespaces", async (t) => {
+    // it("should represent external @values namespaces", async (t) => {
+    it("should represent external @values namespaces", { only : true }, async (t) => {
         const processor = new Processor({ resolvers });
 
         await processor.string("./a.css", `@value v1: #00F; @value v2: #F00; `);
