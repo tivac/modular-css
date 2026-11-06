@@ -12,25 +12,16 @@ const prefix = require("@modular-css/test-utils/prefix.js")(__dirname);
 const namer = require("@modular-css/test-utils/namer.js");
 const { logSpy, logSpyCalls } = require("@modular-css/test-utils/logs.js");
 const { rollupBundle } = require("@modular-css/test-utils/rollup.js");
+const relative = require("@modular-css/test-utils/relative.js");
+const { stringSerializer, rollupSerializer } = require("@modular-css/test-utils/snapshot-serializers.js");
 
 const Processor = require("@modular-css/processor");
 
 const plugin = require("../rollup.js");
-const relative = require("@modular-css/test-utils/relative.js");
 
 function error(root) {
     throw root.error("boom");
 }
-
-const bundleSerializer = [ (value) => {
-    let out = [];
-
-    for(const key in value) {
-        out.push(`File: ${key}`, `Value:${value[key]}`);
-    }
-
-    return out.join("\n");
-} ];
 
 error.postcssPlugin = "error-plugin";
 
@@ -39,7 +30,7 @@ const format = "es";
 const map = false;
 
 // eslint-disable-next-line max-statements -- I got a lotta tests c'mon
-describe("/rollup.js", () => {
+describe("@modular-css/rollup", () => {
     const createPlugin = (opts = {}) => plugin({
         namer,
         map,
@@ -68,7 +59,7 @@ describe("/rollup.js", () => {
                 }),
                 { assets : false, code : true },
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -87,7 +78,7 @@ describe("/rollup.js", () => {
                     assetFileNames,
                 })
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -106,7 +97,7 @@ describe("/rollup.js", () => {
                     assetFileNames,
                 })
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -125,7 +116,7 @@ describe("/rollup.js", () => {
                     assetFileNames,
                 })
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -145,7 +136,7 @@ describe("/rollup.js", () => {
                 }),
                 { assets : false, code : true },
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -165,7 +156,7 @@ describe("/rollup.js", () => {
                 }),
                 { assets : true, code : false },
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -184,7 +175,7 @@ describe("/rollup.js", () => {
                 }),
                 { assets : true, code : false },
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -205,7 +196,7 @@ describe("/rollup.js", () => {
                 }),
                 { assets : true, code : false },
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -224,7 +215,7 @@ describe("/rollup.js", () => {
                     assetFileNames : "assets/[name]-[hash][extname]",
                 })
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -246,7 +237,7 @@ describe("/rollup.js", () => {
                     assetFileNames : "assets/[name]-[hash][extname]",
                 })
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -266,7 +257,7 @@ describe("/rollup.js", () => {
                 }),
                 { assets : true, code : false },
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -289,7 +280,7 @@ describe("/rollup.js", () => {
                 }),
                 { assets : true, code : false },
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -322,7 +313,7 @@ describe("/rollup.js", () => {
                 }),
                 { assets : true, code : false },
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -343,7 +334,7 @@ describe("/rollup.js", () => {
                     assetFileNames,
                 })
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -362,7 +353,7 @@ describe("/rollup.js", () => {
                     assetFileNames,
                 })
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -381,7 +372,7 @@ describe("/rollup.js", () => {
                     assetFileNames,
                 })
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -400,7 +391,7 @@ describe("/rollup.js", () => {
                     assetFileNames,
                 })
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -419,7 +410,7 @@ describe("/rollup.js", () => {
                     assetFileNames,
                 })
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -438,7 +429,7 @@ describe("/rollup.js", () => {
                     assetFileNames,
                 })
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -457,7 +448,7 @@ describe("/rollup.js", () => {
                     assetFileNames,
                 })
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -476,7 +467,7 @@ describe("/rollup.js", () => {
                     assetFileNames,
                 })
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -495,7 +486,7 @@ describe("/rollup.js", () => {
                     assetFileNames,
                 })
             ),
-            { serializers : bundleSerializer }
+            { serializers : rollupSerializer }
         );
     });
 
@@ -517,7 +508,7 @@ describe("/rollup.js", () => {
                     }),
                     { assets : false, code : true },
                 ),
-                { serializers : bundleSerializer }
+                { serializers : rollupSerializer }
             );
         });
     });
@@ -541,7 +532,7 @@ describe("/rollup.js", () => {
                     }),
                     { assets : true, code : false },
                 ),
-                { serializers : bundleSerializer }
+                { serializers : rollupSerializer }
             );
         });
 
@@ -563,7 +554,7 @@ describe("/rollup.js", () => {
                     }),
                     { assets : true, code : false },
                 ),
-                { serializers : bundleSerializer }
+                { serializers : rollupSerializer }
             );
         });
     });
@@ -592,7 +583,7 @@ describe("/rollup.js", () => {
                     }),
                     { assets : false, code : true },
                 ),
-                { serializers : bundleSerializer }
+                { serializers : rollupSerializer }
             );
         });
 
@@ -617,7 +608,7 @@ describe("/rollup.js", () => {
                     }),
                     { assets : false, code : true },
                 ),
-                { serializers : bundleSerializer }
+                { serializers : rollupSerializer }
             );
         });
 
@@ -642,7 +633,7 @@ describe("/rollup.js", () => {
                     }),
                     { assets : false, code : true },
                 ),
-                { serializers : bundleSerializer }
+                { serializers : rollupSerializer }
             );
         });
 
@@ -678,7 +669,7 @@ describe("/rollup.js", () => {
                     }),
                     { assets : false, code : true },
                 ),
-                { serializers : bundleSerializer }
+                { serializers : rollupSerializer }
             );
         });
         
@@ -697,7 +688,7 @@ describe("/rollup.js", () => {
                     }),
                     { assets : false, code : true },
                 ),
-                { serializers : bundleSerializer }
+                { serializers : rollupSerializer }
             );
         });
     });
@@ -720,7 +711,7 @@ describe("/rollup.js", () => {
                     }),
                     { assets : false, code : true },
                 ),
-                { serializers : bundleSerializer }
+                { serializers : rollupSerializer }
             );
         });
 
@@ -762,8 +753,8 @@ describe("/rollup.js", () => {
                 file : prefix(`./output/external-source-maps/simple.js`),
             });
 
-            t.assert.snapshot(read("./external-source-maps/assets/simple.css.map"));
-            t.assert.snapshot(read("./external-source-maps/assets/simple.css"));
+            t.assert.snapshot(read("./external-source-maps/assets/simple.css.map"), { serializers : stringSerializer });
+            t.assert.snapshot(read("./external-source-maps/assets/simple.css"), { serializers : stringSerializer });
         });
 
 
@@ -803,7 +794,7 @@ describe("/rollup.js", () => {
                         format,
                     })
                 ),
-                { serializers : bundleSerializer }
+                { serializers : rollupSerializer }
             );
         });
     });
@@ -840,7 +831,7 @@ describe("/rollup.js", () => {
                     }),
                     { assets : true, code : false },
                 ),
-                { serializers : bundleSerializer }
+                { serializers : rollupSerializer }
             );
         });
 
@@ -875,7 +866,7 @@ describe("/rollup.js", () => {
                     }),
                     { assets : true, code : false },
                 ),
-                { serializers : bundleSerializer }
+                { serializers : rollupSerializer }
             );
         });
     });
@@ -938,7 +929,7 @@ describe("/rollup.js", () => {
                     }),
                     { assets : true, code : false },
                 ),
-                { serializers : bundleSerializer }
+                { serializers : rollupSerializer }
             );
         });
 
@@ -962,7 +953,7 @@ describe("/rollup.js", () => {
                     }),
                     { assets : true, code : false },
                 ),
-                { serializers : bundleSerializer }
+                { serializers : rollupSerializer }
             );
         });
     });

@@ -1,4 +1,4 @@
-exports[`/rollup.js > Exports option > should generate valid JS even when identifiers aren't 1`] = `
+exports[`@modular-css/rollup > Exports option > should generate valid JS even when identifiers aren't 1`] = `
 File: assets/entry-BJWIyi1Q.css
 Value:
 /* packages/rollup/test/specimens/composes-from-invalid-js/two.css */
@@ -20,7 +20,7 @@ console.log(style);
 
 `;
 
-exports[`/rollup.js > Exports option > should generate valid composition output when global() is used 1`] = `
+exports[`@modular-css/rollup > Exports option > should generate valid composition output when global() is used 1`] = `
 File: assets/entry-D_lIC64l.css
 Value:
 /* packages/rollup/test/specimens/composes-from-global/one.css */
@@ -36,7 +36,7 @@ console.log(style);
 
 `;
 
-exports[`/rollup.js > Exports option > should provide named exports by default 1`] = `
+exports[`@modular-css/rollup > Exports option > should provide named exports by default 1`] = `
 File: assets/named-BW07Y_ac.css
 Value:
 /* packages/rollup/test/specimens/named.css */
@@ -52,7 +52,7 @@ console.log(a);
 
 `;
 
-exports[`/rollup.js > Exports option > should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false) 1`] = `
+exports[`@modular-css/rollup > Exports option > should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false) 1`] = `
 {
   "message": "[plugin @modular-css/rollup] packages/rollup/test/specimens/invalid-name.css: \\"fooga-wooga\\" is not a valid JS identifier",
   "id": "packages/rollup/test/specimens/invalid-name.css",
@@ -62,7 +62,7 @@ exports[`/rollup.js > Exports option > should warn & ignore invalid identifiers 
 }
 `;
 
-exports[`/rollup.js > Exports option > should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false) 2`] = `
+exports[`@modular-css/rollup > Exports option > should warn & ignore invalid identifiers (namedExports.rewriteInvalid = false) 2`] = `
 File: assets/invalid-name.css
 Value:
 /* packages/rollup/test/specimens/invalid-name.css */
@@ -82,7 +82,7 @@ console.log(css, fooga);
 
 `;
 
-exports[`/rollup.js > Exports option > should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true) 1`] = `
+exports[`@modular-css/rollup > Exports option > should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true) 1`] = `
 {
   "message": "[plugin @modular-css/rollup] packages/rollup/test/specimens/invalid-name.css: \\"fooga-wooga\\" is not a valid JS identifier, exported as \\"foogaWooga\\"",
   "id": "packages/rollup/test/specimens/invalid-name.css",
@@ -92,7 +92,7 @@ exports[`/rollup.js > Exports option > should warn & rewrite invalid identifiers
 }
 `;
 
-exports[`/rollup.js > Exports option > should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true) 2`] = `
+exports[`@modular-css/rollup > Exports option > should warn & rewrite invalid identifiers (namedExports.rewriteInvalid = true) 2`] = `
 File: assets/invalid-name.css
 Value:
 /* packages/rollup/test/specimens/invalid-name.css */
@@ -112,7 +112,7 @@ console.log(css, fooga);
 
 `;
 
-exports[`/rollup.js > Exports option > should warn if named exports are falsey 1`] = `
+exports[`@modular-css/rollup > Exports option > should warn if named exports are falsey 1`] = `
 [
   [
     "[plugin @modular-css/rollup] @modular-css/rollup doesn't allow namedExports to be disabled"
@@ -120,7 +120,7 @@ exports[`/rollup.js > Exports option > should warn if named exports are falsey 1
 ]
 `;
 
-exports[`/rollup.js > dev mode option > should output a proxy 1`] = `
+exports[`@modular-css/rollup > dev mode option > should output a proxy 1`] = `
 File: assets/simple-DvRVXbZI.css
 Value:
 /* packages/rollup/test/specimens/simple.css */
@@ -155,17 +155,17 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > empties option > should not write out empty CSS files by default 1`] = `
+exports[`@modular-css/rollup > empties option > should not write out empty CSS files by default 1`] = `
 
 `;
 
-exports[`/rollup.js > empties option > should write out empty CSS files when empties is enabled 1`] = `
+exports[`@modular-css/rollup > empties option > should write out empty CSS files when empties is enabled 1`] = `
 File: assets/empty.css
 Value:
 
 `;
 
-exports[`/rollup.js > json option > should generate JSON 1`] = `
+exports[`@modular-css/rollup > json option > should generate JSON 1`] = `
 File: assets/exports.json
 Value:
 {
@@ -183,7 +183,7 @@ Value:
 
 `;
 
-exports[`/rollup.js > json option > should generate JSON with a custom name 1`] = `
+exports[`@modular-css/rollup > json option > should generate JSON with a custom name 1`] = `
 File: assets/simple.css
 Value:
 /* packages/rollup/test/specimens/simple.css */
@@ -201,7 +201,7 @@ Value:
 }
 `;
 
-exports[`/rollup.js > processor option > should accept an existing processor instance (no css in bundle) 1`] = `
+exports[`@modular-css/rollup > processor option > should accept an existing processor instance (no css in bundle) 1`] = `
 File: assets/fake.css
 Value:
 /* packages/rollup/test/specimens/fake.css */
@@ -210,7 +210,7 @@ Value:
 }
 `;
 
-exports[`/rollup.js > processor option > should accept an existing processor instance 1`] = `
+exports[`@modular-css/rollup > processor option > should accept an existing processor instance 1`] = `
 File: assets/fake.css
 Value:
 /* packages/rollup/test/specimens/fake.css */
@@ -226,11 +226,11 @@ Value:
 
 `;
 
-exports[`/rollup.js > should avoid generating empty CSS 1`] = `
+exports[`@modular-css/rollup > should avoid generating empty CSS 1`] = `
 
 `;
 
-exports[`/rollup.js > should be able to tree-shake results 1`] = `
+exports[`@modular-css/rollup > should be able to tree-shake results 1`] = `
 File: assets/tree-shaking.css
 Value:
 /* packages/rollup/test/specimens/tree-shaking.css */
@@ -245,7 +245,7 @@ console.log(fooga);
 
 `;
 
-exports[`/rollup.js > should correctly handle hashed output 1`] = `
+exports[`@modular-css/rollup > should correctly handle hashed output 1`] = `
 File: assets/simple-DvRVXbZI.css
 Value:
 /* packages/rollup/test/specimens/simple.css */
@@ -269,7 +269,7 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > should correctly handle hashed output with external source maps & json files 1`] = `
+exports[`@modular-css/rollup > should correctly handle hashed output with external source maps & json files 1`] = `
 File: assets/exports-_jSJkv9e.json
 Value:
 {
@@ -305,7 +305,7 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > should correctly pass to/from params for relative paths 1`] = `
+exports[`@modular-css/rollup > should correctly pass to/from params for relative paths 1`] = `
 File: assets/relative-paths.css
 Value:
 /* packages/rollup/test/specimens/relative-paths.css */
@@ -316,7 +316,7 @@ Value:
 
 `;
 
-exports[`/rollup.js > should express layers of locally-composed classes correctly 1`] = `
+exports[`@modular-css/rollup > should express layers of locally-composed classes correctly 1`] = `
 File: assets/composition-layers.css
 Value:
 /* packages/rollup/test/specimens/composition-layers/composition-layers.css */
@@ -346,7 +346,7 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > should express local & remote-composed classes correctly 1`] = `
+exports[`@modular-css/rollup > should express local & remote-composed classes correctly 1`] = `
 File: assets/internal-external-composition.css
 Value:
 /* packages/rollup/test/specimens/internal-external-composition/other.css */
@@ -375,7 +375,7 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > should express locally-composed classes correctly 1`] = `
+exports[`@modular-css/rollup > should express locally-composed classes correctly 1`] = `
 File: assets/local-composition.css
 Value:
 /* packages/rollup/test/specimens/local-composition.css */
@@ -400,7 +400,7 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > should generate CSS 1`] = `
+exports[`@modular-css/rollup > should generate CSS 1`] = `
 File: assets/simple.css
 Value:
 /* packages/rollup/test/specimens/simple.css */
@@ -410,7 +410,7 @@ Value:
 
 `;
 
-exports[`/rollup.js > should generate exports 1`] = `
+exports[`@modular-css/rollup > should generate exports 1`] = `
 File: assets/simple.css
 Value:
 /* packages/rollup/test/specimens/simple.css */
@@ -434,7 +434,7 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > should handle assetFileNames being undefined 1`] = `
+exports[`@modular-css/rollup > should handle assetFileNames being undefined 1`] = `
 File: assets/simple-DvRVXbZI.css
 Value:
 /* packages/rollup/test/specimens/simple.css */
@@ -444,11 +444,11 @@ Value:
 
 `;
 
-exports[`/rollup.js > should ignore external modules 1`] = `
+exports[`@modular-css/rollup > should ignore external modules 1`] = `
 
 `;
 
-exports[`/rollup.js > should output assets with a .css file extension 1`] = `
+exports[`@modular-css/rollup > should output assets with a .css file extension 1`] = `
 File: assets/entry.css
 Value:
 /* packages/rollup/test/specimens/file-extension/style.cssx */
@@ -467,7 +467,7 @@ console.log(style$1);
 
 `;
 
-exports[`/rollup.js > should output classes in topological order 1`] = `
+exports[`@modular-css/rollup > should output classes in topological order 1`] = `
 File: assets/topological-order.css
 Value:
 /* packages/rollup/test/specimens/topological-order/topological-order.css */
@@ -492,7 +492,7 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > should output unreferenced CSS 1`] = `
+exports[`@modular-css/rollup > should output unreferenced CSS 1`] = `
 File: assets/fake.css
 Value:
 /* packages/rollup/test/specimens/fake.css */
@@ -508,7 +508,7 @@ Value:
 
 `;
 
-exports[`/rollup.js > should respect the CSS dependency tree 1`] = `
+exports[`@modular-css/rollup > should respect the CSS dependency tree 1`] = `
 File: assets/dependencies.css
 Value:
 /* packages/rollup/test/specimens/simple.css */
@@ -533,7 +533,7 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > should support @value and class overlap 1`] = `
+exports[`@modular-css/rollup > should support @value and class overlap 1`] = `
 File: assets/class-value-overlap.css
 Value:
 /* packages/rollup/test/specimens/class-value-overlap/class-value-overlap.css */
@@ -554,7 +554,7 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > should support @value camelCase overlap 1`] = `
+exports[`@modular-css/rollup > should support @value camelCase overlap 1`] = `
 File: assets/value-camel-overlap.css
 Value:
 /* packages/rollup/test/specimens/value-camel-overlap.css */
@@ -575,7 +575,7 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > should support external @value aliases 1`] = `
+exports[`@modular-css/rollup > should support external @value aliases 1`] = `
 File: assets/external-value-aliasing.css
 Value:
 /* packages/rollup/test/specimens/external-value-aliasing/source.css */
@@ -616,7 +616,7 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > should support mixing all @value types 1`] = `
+exports[`@modular-css/rollup > should support mixing all @value types 1`] = `
 File: all-value-types.js
 Value:
 const background = "green";
@@ -657,7 +657,7 @@ Value:
 }
 `;
 
-exports[`/rollup.js > should support multiple selectors 1`] = `
+exports[`@modular-css/rollup > should support multiple selectors 1`] = `
 File: assets/multi-selector.css
 Value:
 /* packages/rollup/test/specimens/multi-selector/other.css */
@@ -679,7 +679,7 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > should support namespaced @value imports 1`] = `
+exports[`@modular-css/rollup > should support namespaced @value imports 1`] = `
 File: assets/namespaced.css
 Value:
 /* packages/rollup/test/specimens/namespaced/values.css */
@@ -709,15 +709,20 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > source maps > should generate external source maps 1`] = `
-"{\\"version\\":3,\\"sources\\":[\\"../../../specimens/simple.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,8CAAA;AAEA;IACI,UAAU;AACd\\",\\"file\\":\\"simple.css\\",\\"sourcesContent\\":[\\"@value str: \\\\\\"string\\\\\\";\\\\n\\\\n.fooga {\\\\n    color: red;\\\\n}\\\\n\\"]}"
+exports[`@modular-css/rollup > source maps > should generate external source maps 1`] = `
+{"version":3,"sources":["../../../specimens/simple.css"],"names":[],"mappings":"AAAA,8CAAA;AAEA;IACI,UAAU;AACd","file":"simple.css","sourcesContent":["@value str: \\"string\\";\\n\\n.fooga {\\n    color: red;\\n}\\n"]}
 `;
 
-exports[`/rollup.js > source maps > should generate external source maps 2`] = `
-"/* packages/rollup/test/specimens/simple.css */\\n.mc_fooga {\\n    color: red;\\n}\\n\\n/*# sourceMappingURL=simple.css.map */"
+exports[`@modular-css/rollup > source maps > should generate external source maps 2`] = `
+/* packages/rollup/test/specimens/simple.css */
+.mc_fooga {
+    color: red;
+}
+
+/*# sourceMappingURL=simple.css.map */
 `;
 
-exports[`/rollup.js > source maps > should not output sourcemaps when they are disabled 1`] = `
+exports[`@modular-css/rollup > source maps > should not output sourcemaps when they are disabled 1`] = `
 File: assets/simple.css
 Value:
 /* packages/rollup/test/specimens/simple.css */
@@ -741,7 +746,7 @@ console.log(css);
 
 `;
 
-exports[`/rollup.js > source maps > shouldn't disable sourcemap generation 1`] = `
+exports[`@modular-css/rollup > source maps > shouldn't disable sourcemap generation 1`] = `
 {
   "version": 3,
   "file": "simple.js",
@@ -756,7 +761,7 @@ exports[`/rollup.js > source maps > shouldn't disable sourcemap generation 1`] =
 }
 `;
 
-exports[`/rollup.js > styleExport option > should provide style export 1`] = `
+exports[`@modular-css/rollup > styleExport option > should provide style export 1`] = `
 File: style-export.js
 Value:
 const styles = ".mc_ooh {\\n    content: \\"string\\";\\n}\\n";
@@ -765,7 +770,7 @@ console.log(styles);
 
 `;
 
-exports[`/rollup.js > styleExport option > should warn that styleExport and done aren't compatible 1`] = `
+exports[`@modular-css/rollup > styleExport option > should warn that styleExport and done aren't compatible 1`] = `
 [
   [
     "[plugin @modular-css/rollup] Any plugins defined during the \\"done\\" lifecycle won't run when \\"styleExport\\" is set!"
@@ -773,7 +778,7 @@ exports[`/rollup.js > styleExport option > should warn that styleExport and done
 ]
 `;
 
-exports[`/rollup.js > verbose option > should log in verbose mode 1`] = `
+exports[`@modular-css/rollup > verbose option > should log in verbose mode 1`] = `
 [
   [
     "[rollup]",

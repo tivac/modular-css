@@ -1,5 +1,7 @@
 const { describe, it } = require("node:test");
 
+const { stringSerializer } = require("@modular-css/test-utils/snapshot-serializers.js");
+
 const Processor = require("../../processor.js");
 
 describe("/issues", () => {
@@ -11,7 +13,7 @@ describe("/issues", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
     });
 });
