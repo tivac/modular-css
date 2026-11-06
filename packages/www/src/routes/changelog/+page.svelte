@@ -1,5 +1,5 @@
 <script>
-import Title from "$lib/title.svelte";
+import Title from "#lib/title.svelte";
 
 import content from "../../../../../CHANGELOG.md";
 
