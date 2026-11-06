@@ -18,15 +18,8 @@ import css from "./_home/home.mcss";
     </div>
 
     <div class={css.intro}>
-        <div class={css.introtext}>
-            {@html intro}
-        </div>
-
-        <div class={css.learn}>
-            <a href={resolve("/overview/")} class={css.cta}>
-                Learn More Now!
-            </a>
-        </div>
+        <div class={css.introtext}>{@html intro}</div>
+        <div class={css.learn}><a href={resolve('overview/')} class={css.cta}>Learn More Now!</a></div>
     </div>
 
     <div class={css.example}>
