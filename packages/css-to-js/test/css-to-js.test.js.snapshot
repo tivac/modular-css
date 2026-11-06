@@ -1,4 +1,4 @@
-exports[`@modular-css/css-to-js API > should create coverage infrastructure when options.dev.coverage is truthy 1`] = `
+exports[`@modular-css/css-to-js > should create coverage infrastructure when options.dev.coverage is truthy 1`] = `
 const a = "mc74f3fa7b_a";
 if(!globalThis.mcssCoverage) {
     globalThis.mcssCoverage = Object.create(null);
@@ -28,7 +28,7 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API > should deconflict the variable name in dev 1`] = `
+exports[`@modular-css/css-to-js > should deconflict the variable name in dev 1`] = `
 const data = "mc74f3fa7b_data";
 const cssData = {
     data
@@ -50,7 +50,7 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API > should dedupe repeated identifiers 1`] = `
+exports[`@modular-css/css-to-js > should dedupe repeated identifiers 1`] = `
 import { a } from "<ROOT-DIR>/a.css";
 const a1 = a + " " + "mc71966a67_a";
 export default {
@@ -62,7 +62,7 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API > should generate a javscript proxy in dev 1`] = `
+exports[`@modular-css/css-to-js > should generate a javscript proxy in dev 1`] = `
 const a = "mc74f3fa7b_a";
 const cssData = {
     a
@@ -84,17 +84,17 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API > should generate empty results & a warning on invalid file input 1`] = `
+exports[`@modular-css/css-to-js > should generate empty results & a warning on invalid file input 1`] = `
 export default null;
 `;
 
-exports[`@modular-css/css-to-js API > should generate empty results & a warning on invalid file input 2`] = `
+exports[`@modular-css/css-to-js > should generate empty results & a warning on invalid file input 2`] = `
 [
   "./NOPE.css doesn't exist in the processor instance"
 ]
 `;
 
-exports[`@modular-css/css-to-js API > should generate javascript 1`] = `
+exports[`@modular-css/css-to-js > should generate javascript 1`] = `
 const a = "mc74f3fa7b_a";
 export default {
     a
@@ -105,7 +105,7 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API > should generate javascript from composes 1`] = `
+exports[`@modular-css/css-to-js > should generate javascript from composes 1`] = `
 const custom = "mca72bf2bd_custom";
 const rule = custom + " " + "mca72bf2bd_rule";
 export default {
@@ -119,7 +119,7 @@ rule
 };
 `;
 
-exports[`@modular-css/css-to-js API > should generate javascript from multiple composes 1`] = `
+exports[`@modular-css/css-to-js > should generate javascript from multiple composes 1`] = `
 const rule = custom + " " + "mc9c938a76_rule";
 const custom = "mc9c938a76_custom";
 export default {
@@ -133,7 +133,7 @@ custom
 };
 `;
 
-exports[`@modular-css/css-to-js API > should generate javascript with var variable statements 1`] = `
+exports[`@modular-css/css-to-js > should generate javascript with var variable statements 1`] = `
 var str = "\\"string\\"";
 var $values = {
     str,
@@ -150,22 +150,22 @@ fooga
 };
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: false 1`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: false 1`] = `
 const a1 = "mc74f3fa7b_a-1";
 export default {
     "a-1" : a1
 };
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: false 2`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: false 2`] = `
 []
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: false 3`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: false 3`] = `
 []
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: true 1`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: true 1`] = `
 const a1 = "mc74f3fa7b_a-1";
 export default {
     "a-1" : a1
@@ -176,51 +176,51 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: true 2`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: true 2`] = `
 [
   "\\"a-1\\" is not a valid JS identifier, exported as \\"a1\\""
 ]
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: true 3`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: true 3`] = `
 [
   "a1"
 ]
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: {\"rewriteInvalid\":false,\"warn\":false} 1`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: {\"rewriteInvalid\":false,\"warn\":false} 1`] = `
 const a1 = "mc74f3fa7b_a-1";
 export default {
     "a-1" : a1
 };
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: {\"rewriteInvalid\":false,\"warn\":false} 2`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: {\"rewriteInvalid\":false,\"warn\":false} 2`] = `
 []
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: {\"rewriteInvalid\":false,\"warn\":false} 3`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: {\"rewriteInvalid\":false,\"warn\":false} 3`] = `
 []
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: {\"rewriteInvalid\":false} 1`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: {\"rewriteInvalid\":false} 1`] = `
 const a1 = "mc74f3fa7b_a-1";
 export default {
     "a-1" : a1
 };
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: {\"rewriteInvalid\":false} 2`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: {\"rewriteInvalid\":false} 2`] = `
 [
   "\\"a-1\\" is not a valid JS identifier"
 ]
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: {\"rewriteInvalid\":false} 3`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: {\"rewriteInvalid\":false} 3`] = `
 []
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: {\"warn\":false} 1`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: {\"warn\":false} 1`] = `
 const a1 = "mc74f3fa7b_a-1";
 export default {
     "a-1" : a1
@@ -231,17 +231,17 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: {\"warn\":false} 2`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: {\"warn\":false} 2`] = `
 []
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: {\"warn\":false} 3`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: {\"warn\":false} 3`] = `
 [
   "a1"
 ]
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: {} 1`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: {} 1`] = `
 const a1 = "mc74f3fa7b_a-1";
 export default {
     "a-1" : a1
@@ -252,19 +252,19 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: {} 2`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: {} 2`] = `
 [
   "\\"a-1\\" is not a valid JS identifier, exported as \\"a1\\""
 ]
 `;
 
-exports[`@modular-css/css-to-js API > should handle options.namedExports set to: {} 3`] = `
+exports[`@modular-css/css-to-js > should handle options.namedExports set to: {} 3`] = `
 [
   "a1"
 ]
 `;
 
-exports[`@modular-css/css-to-js API > should output css when requested 1`] = `
+exports[`@modular-css/css-to-js > should output css when requested 1`] = `
 const a = "mc74f3fa7b_a";
 export default {
     a
@@ -276,7 +276,7 @@ export {
 export const styles = ".mc74f3fa7b_a { color: red; }";
 `;
 
-exports[`@modular-css/css-to-js API > should output warnings when options.dev.warn is truthy 1`] = `
+exports[`@modular-css/css-to-js > should output warnings when options.dev.warn is truthy 1`] = `
 const a = "mc74f3fa7b_a";
 const cssData = {
     a
@@ -298,7 +298,7 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API > should output warnings when options.dev.warn is truthy 2`] = `
+exports[`@modular-css/css-to-js > should output warnings when options.dev.warn is truthy 2`] = `
 const a = "mc74f3fa7b_a";
 const cssData = {
     a
@@ -320,7 +320,7 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API > should output without default export 1`] = `
+exports[`@modular-css/css-to-js > should output without default export 1`] = `
 const a = "mc74f3fa7b_a";
 
 export {
@@ -328,7 +328,7 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API > should represent external @values 1`] = `
+exports[`@modular-css/css-to-js > should represent external @values 1`] = `
 import { $values as $aValues } from "<ROOT-DIR>/a.css";
 const $values = {
     "v" : $aValues["v"],
@@ -345,7 +345,7 @@ b
 };
 `;
 
-exports[`@modular-css/css-to-js API > should represent external @values aliased to local @values 1`] = `
+exports[`@modular-css/css-to-js > should represent external @values aliased to local @values 1`] = `
 import { $values as $aValues } from "<ROOT-DIR>/a.css";
 const v = "#00F";
 const $values = {
@@ -364,7 +364,7 @@ b
 };
 `;
 
-exports[`@modular-css/css-to-js API > should represent external @values namespaces 1`] = `
+exports[`@modular-css/css-to-js > should represent external @values namespaces 1`] = `
 import { $values as $aValues } from "<ROOT-DIR>/a.css";
 const v = "#0F0";
 const $values = {
@@ -383,7 +383,7 @@ b
 };
 `;
 
-exports[`@modular-css/css-to-js API > should represent external composition 1`] = `
+exports[`@modular-css/css-to-js > should represent external composition 1`] = `
 import { a } from "<ROOT-DIR>/a.css";
 const b = a + " " + "mc71966a67_b";
 export default {
@@ -395,7 +395,7 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API > should represent global composition from external resources 1`] = `
+exports[`@modular-css/css-to-js > should represent global composition from external resources 1`] = `
 const a = "foo" + " " + "mc74f3fa7b_a";
 export default {
     a
@@ -406,7 +406,7 @@ export {
 };
 `;
 
-exports[`@modular-css/css-to-js API > should represent local @values 1`] = `
+exports[`@modular-css/css-to-js > should represent local @values 1`] = `
 const v = "#00F";
 const $values = {
     v,
@@ -423,7 +423,7 @@ a
 };
 `;
 
-exports[`@modular-css/css-to-js API > should represent local composition 1`] = `
+exports[`@modular-css/css-to-js > should represent local composition 1`] = `
 const a = "mc74f3fa7b_a";
 const b = a + " " + "mc74f3fa7b_b";
 export default {
@@ -437,7 +437,7 @@ b
 };
 `;
 
-exports[`@modular-css/css-to-js API > should use relative imports when requested 1`] = `
+exports[`@modular-css/css-to-js > should use relative imports when requested 1`] = `
 import { a } from "./a.css";
 const b = a + " " + "mc71966a67_b";
 export default {

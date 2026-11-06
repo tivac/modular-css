@@ -1,4 +1,4 @@
-exports[`/processor.js > exports > should export an object of arrays containing strings 1`] = `
+exports[`@modular-css/processor > exports > should export an object of arrays containing strings 1`] = `
 {
   "red": [
     "mc_red"
@@ -19,7 +19,7 @@ exports[`/processor.js > exports > should export an object of arrays containing 
 }
 `;
 
-exports[`/processor.js > exports > should export identifiers and their classes 1`] = `
+exports[`@modular-css/processor > exports > should export identifiers and their classes 1`] = `
 {
   "packages/processor/test/specimens/folder/folder.css": {
     "folder": [

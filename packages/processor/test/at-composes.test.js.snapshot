@@ -1,4 +1,4 @@
-exports[`/processor.js > @composes > should allow composing classes from the composed file 1`] = `
+exports[`@modular-css/processor > @composes > should allow composing classes from the composed file 1`] = `
 {
   "wooga": [
     "mc_wooga"
@@ -13,7 +13,7 @@ exports[`/processor.js > @composes > should allow composing classes from the com
 }
 `;
 
-exports[`/processor.js > @composes > should allow for chains of @composes-included files 1`] = `
+exports[`@modular-css/processor > @composes > should allow for chains of @composes-included files 1`] = `
 {
   "wooga": [
     "mc_wooga"
@@ -34,7 +34,7 @@ exports[`/processor.js > @composes > should allow for chains of @composes-includ
 }
 `;
 
-exports[`/processor.js > @composes > should include compositions from the composed file 1`] = `
+exports[`@modular-css/processor > @composes > should include compositions from the composed file 1`] = `
 {
   "packages/processor/test/specimens/at-composes.css": {
     "wooga": [
@@ -56,7 +56,7 @@ exports[`/processor.js > @composes > should include compositions from the compos
 }
 `;
 
-exports[`/processor.js > @composes > should include exported classes from the composed file 1`] = `
+exports[`@modular-css/processor > @composes > should include exported classes from the composed file 1`] = `
 {
   "booga": [
     "mc_booga"
@@ -74,11 +74,22 @@ exports[`/processor.js > @composes > should include exported classes from the co
 }
 `;
 
-exports[`/processor.js > @composes > should include exported classes from the composed file 2`] = `
-"/* packages/processor/test/specimens/folder/folder.css */\\n.mc_folder { margin: 2px; }\\n/* packages/processor/test/specimens/local.css */\\n.mc_booga { background: green; }\\n/* packages/processor/test/specimens/at-composes.css */\\n.mc_a {\\n    color: aqua;\\n}\\n.mc_b {\\n    color: blue;\\n}\\n"
+exports[`@modular-css/processor > @composes > should include exported classes from the composed file 2`] = `
+/* packages/processor/test/specimens/folder/folder.css */
+.mc_folder { margin: 2px; }
+/* packages/processor/test/specimens/local.css */
+.mc_booga { background: green; }
+/* packages/processor/test/specimens/at-composes.css */
+.mc_a {
+    color: aqua;
+}
+.mc_b {
+    color: blue;
+}
+
 `;
 
-exports[`/processor.js > @composes > should include external compositions from the composed file 1`] = `
+exports[`@modular-css/processor > @composes > should include external compositions from the composed file 1`] = `
 {
   "packages/processor/test/specimens/at-composes.css": {
     "wooga": [
@@ -129,10 +140,19 @@ exports[`/processor.js > @composes > should include external compositions from t
 }
 `;
 
-exports[`/processor.js > @composes > should not include exported values from the composed file 1`] = `
+exports[`@modular-css/processor > @composes > should not include exported values from the composed file 1`] = `
 {}
 `;
 
-exports[`/processor.js > @composes > should output css from the composed file 1`] = `
-"/* packages/processor/test/specimens/simple.css */\\n.mc_wooga { color: red; }\\n/* packages/processor/test/specimens/at-composes.css */\\n.mc_a {\\n    color: aqua;\\n}\\n.mc_b {\\n    color: blue;\\n}\\n"
+exports[`@modular-css/processor > @composes > should output css from the composed file 1`] = `
+/* packages/processor/test/specimens/simple.css */
+.mc_wooga { color: red; }
+/* packages/processor/test/specimens/at-composes.css */
+.mc_a {
+    color: aqua;
+}
+.mc_b {
+    color: blue;
+}
+
 `;

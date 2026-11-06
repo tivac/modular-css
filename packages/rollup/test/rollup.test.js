@@ -366,8 +366,7 @@ describe("/rollup.js", () => {
         );
     });
 
-    // it("should support namespaced @value imports", async (t) => {
-    it("should support namespaced @value imports", { only : true }, async (t) => {
+    it("should support namespaced @value imports", async (t) => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/namespaced/namespaced.js"),
             plugins : [

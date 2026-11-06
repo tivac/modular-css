@@ -25,7 +25,7 @@ const resolvers = [
     (src, file) => path.join(path.dirname(src), file),
 ];
 
-describe("@modular-css/css-to-js API", () => {
+describe("@modular-css/css-to-js", () => {
     it("should be a function", (t) =>
         t.assert.strictEqual(typeof transform, "function")
     );

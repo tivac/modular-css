@@ -1,12 +1,16 @@
-exports[`/processor.js > scoping > should allow :global classes to overlap with local ones (global before local) with exportGlobals : false 1`] = `
-"/* valid/global.css */\\n.a {}\\n.mc_a {}"
+exports[`@modular-css/processor > scoping > should allow :global classes to overlap with local ones (global before local) with exportGlobals : false 1`] = `
+/* valid/global.css */
+.a {}
+.mc_a {}
 `;
 
-exports[`/processor.js > scoping > should allow :global classes to overlap with local ones (local before global) with exportGlobals : false 1`] = `
-"/* valid/global.css */\\n.mc_a {}\\n.a {}"
+exports[`@modular-css/processor > scoping > should allow :global classes to overlap with local ones (local before global) with exportGlobals : false 1`] = `
+/* valid/global.css */
+.mc_a {}
+.a {}
 `;
 
-exports[`/processor.js > scoping > should handle pseudo classes correctly 1`] = `
+exports[`@modular-css/processor > scoping > should handle pseudo classes correctly 1`] = `
 {
   "g1": [
     "g1"
@@ -29,19 +33,33 @@ exports[`/processor.js > scoping > should handle pseudo classes correctly 1`] = 
 }
 `;
 
-exports[`/processor.js > scoping > should handle pseudo classes correctly 2`] = `
-"/* simple.css */\\n.g1 {}\\n.mc_b .g2 {}\\n#c {}\\n.mc_d:hover {}\\n.mc_e:not(.mc_e) {}"
+exports[`@modular-css/processor > scoping > should handle pseudo classes correctly 2`] = `
+/* simple.css */
+.g1 {}
+.mc_b .g2 {}
+#c {}
+.mc_d:hover {}
+.mc_e:not(.mc_e) {}
 `;
 
-exports[`/processor.js > scoping > should leave unknown animation names alone 1`] = `
-"/* unknown-name.css */\\n.mc_a { animation: a; }\\n.mc_b { animation-name: b; }"
+exports[`@modular-css/processor > scoping > should leave unknown animation names alone 1`] = `
+/* unknown-name.css */
+.mc_a { animation: a; }
+.mc_b { animation-name: b; }
 `;
 
-exports[`/processor.js > scoping > should not scope rules within @keyframes 1`] = `
-"/* unknown-name.css */\\n@keyframes mc_a {\\n    from { color: white; }\\n    50.25% { color: red; }\\n    to { color: black; }\\n}\\n\\n.mc_a { animation: mc_a; }"
+exports[`@modular-css/processor > scoping > should not scope rules within @keyframes 1`] = `
+/* unknown-name.css */
+@keyframes mc_a {
+    from { color: white; }
+    50.25% { color: red; }
+    to { color: black; }
+}
+
+.mc_a { animation: mc_a; }
 `;
 
-exports[`/processor.js > scoping > should scope classes, ids, and keyframes 1`] = `
+exports[`@modular-css/processor > scoping > should scope classes, ids, and keyframes 1`] = `
 {
   "fooga": [
     "mc_fooga"
@@ -61,26 +79,46 @@ exports[`/processor.js > scoping > should scope classes, ids, and keyframes 1`] 
 }
 `;
 
-exports[`/processor.js > scoping > should scope classes, ids, and keyframes 2`] = `
-"/* simple.css */\\n@keyframes mc_kooga {}\\n#mc_fooga { }\\n.mc_wooga { }\\n.mc_one,\\n.mc_two { }\\n.mc_one { }\\n@media print {\\n    .mc_three {}\\n}"
+exports[`@modular-css/processor > scoping > should scope classes, ids, and keyframes 2`] = `
+/* simple.css */
+@keyframes mc_kooga {}
+#mc_fooga { }
+.mc_wooga { }
+.mc_one,
+.mc_two { }
+.mc_one { }
+@media print {
+    .mc_three {}
+}
 `;
 
-exports[`/processor.js > scoping > should update animation declarations 1`] = `
-"/* animation.css */\\n@keyframes mc_a {}\\n.mc_b { animation: mc_a; }"
+exports[`@modular-css/processor > scoping > should update animation declarations 1`] = `
+/* animation.css */
+@keyframes mc_a {}
+.mc_b { animation: mc_a; }
 `;
 
-exports[`/processor.js > scoping > should update animation-name declarations 1`] = `
-"/* animation-name.css */\\n@keyframes mc_a {}\\n.mc_b { animation-name: mc_a; }"
+exports[`@modular-css/processor > scoping > should update animation-name declarations 1`] = `
+/* animation-name.css */
+@keyframes mc_a {}
+.mc_b { animation-name: mc_a; }
 `;
 
-exports[`/processor.js > scoping > should update animation-name declarations when @keyframes come after 1`] = `
-"/* animation-name.css */\\n.mc_b { animation-name: mc_a; }\\n@keyframes mc_a {}"
+exports[`@modular-css/processor > scoping > should update animation-name declarations when @keyframes come after 1`] = `
+/* animation-name.css */
+.mc_b { animation-name: mc_a; }
+@keyframes mc_a {}
 `;
 
-exports[`/processor.js > scoping > should update multiple animations properly 1`] = `
-"/* multiple-animations.css */\\n@keyframes mc_a {}\\n@keyframes mc_b {}\\n.mc_c { animation: mc_a 10s linear, mc_b 0.2s infinite; }"
+exports[`@modular-css/processor > scoping > should update multiple animations properly 1`] = `
+/* multiple-animations.css */
+@keyframes mc_a {}
+@keyframes mc_b {}
+.mc_c { animation: mc_a 10s linear, mc_b 0.2s infinite; }
 `;
 
-exports[`/processor.js > scoping > should update prefixed @keyframes 1`] = `
-"/* prefixed-animations.css */\\n@-webkit-keyframes mc_a {}\\n.mc_b { animation: mc_a; }"
+exports[`@modular-css/processor > scoping > should update prefixed @keyframes 1`] = `
+/* prefixed-animations.css */
+@-webkit-keyframes mc_a {}
+.mc_b { animation: mc_a; }
 `;
