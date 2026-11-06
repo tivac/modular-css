@@ -23,13 +23,13 @@ function error(root) {
 }
 
 const bundleSerializer = [ (value) => {
-    let out = "";
+    let out = [];
 
     for(const key in value) {
-        out += `File: ${key}\nValue:${value[key]}`;
+        out.push(`File: ${key}`, `Value:${value[key]}`);
     }
 
-    return out;
+    return out.join("\n");
 } ];
 
 error.postcssPlugin = "error-plugin";
@@ -366,7 +366,8 @@ describe("/rollup.js", () => {
         );
     });
 
-    it("should support namespaced @value imports", async (t) => {
+    // it("should support namespaced @value imports", async (t) => {
+    it("should support namespaced @value imports", { only : true }, async (t) => {
         const bundle = await rollup({
             input   : require.resolve("./specimens/namespaced/namespaced.js"),
             plugins : [

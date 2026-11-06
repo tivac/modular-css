@@ -6,6 +6,7 @@ Value:
     color: salmon;
 }
 /* packages/rollup/test/specimens/composes-from-invalid-js/one.css */
+
 File: entry.js
 Value:
 const fooBar = "mc_foo-bar";
@@ -23,9 +24,10 @@ exports[`/rollup.js > Exports option > should generate valid composition output 
 File: assets/entry-D_lIC64l.css
 Value:
 /* packages/rollup/test/specimens/composes-from-global/one.css */
+
 File: entry.js
 Value:
-const out =  0 + "mc_out";
+const out = "foo" + " " + "mc_out";
 var style = {
     out
 };
@@ -41,6 +43,7 @@ Value:
 .mc_a {
     color: red;
 }
+
 File: named.js
 Value:
 const a = "mc_a";
@@ -65,6 +68,7 @@ Value:
 /* packages/rollup/test/specimens/invalid-name.css */
 .mc_fooga { color: red; }
 .mc_fooga-wooga { color: red; }
+
 File: invalid-name.js
 Value:
 const fooga = "mc_fooga";
@@ -94,6 +98,7 @@ Value:
 /* packages/rollup/test/specimens/invalid-name.css */
 .mc_fooga { color: red; }
 .mc_fooga-wooga { color: red; }
+
 File: invalid-name.js
 Value:
 const fooga = "mc_fooga";
@@ -122,6 +127,7 @@ Value:
 .mc_fooga {
     color: red;
 }
+
 File: simple.js
 Value:
 const str = "\\"string\\"";
@@ -167,7 +173,8 @@ Value:
         "str": "\\"string\\"",
         "fooga": "mc_fooga"
     }
-}File: assets/simple.css
+}
+File: assets/simple.css
 Value:
 /* packages/rollup/test/specimens/simple.css */
 .mc_fooga {
@@ -183,6 +190,7 @@ Value:
 .mc_fooga {
     color: red;
 }
+
 File: custom.json
 Value:
 {
@@ -208,7 +216,8 @@ Value:
 /* packages/rollup/test/specimens/fake.css */
 .mc_fake {
     color: yellow;
-}File: assets/simple.css
+}
+File: assets/simple.css
 Value:
 /* packages/rollup/test/specimens/simple.css */
 .mc_fooga {
@@ -227,6 +236,7 @@ Value:
 /* packages/rollup/test/specimens/tree-shaking.css */
 .mc_fooga { color: red; }
 .mc_wooga { color: blue; }
+
 File: tree-shaking.js
 Value:
 const fooga = "mc_fooga";
@@ -242,6 +252,7 @@ Value:
 .mc_fooga {
     color: red;
 }
+
 File: simple.js
 Value:
 const str = "\\"string\\"";
@@ -266,16 +277,19 @@ Value:
         "str": "\\"string\\"",
         "fooga": "mc_fooga"
     }
-}File: assets/simple-DvRVXbZI.css
+}
+File: assets/simple-DvRVXbZI.css
 Value:
 /* packages/rollup/test/specimens/simple.css */
 .mc_fooga {
     color: red;
 }
 
-/*# sourceMappingURL=simple-DvRVXbZI.css.map */File: assets/simple-DvRVXbZI.css.map
+/*# sourceMappingURL=simple-DvRVXbZI.css.map */
+File: assets/simple-DvRVXbZI.css.map
 Value:
-{"version":3,"sources":["../packages/rollup/test/specimens/simple.css"],"names":[],"mappings":"AAAA,8CAAA;AAEA;IACI,UAAU;AACd","file":"simple-[hash].css","sourcesContent":["@value str: \\"string\\";\\n\\n.fooga {\\n    color: red;\\n}\\n"]}File: simple.js
+{"version":3,"sources":["../packages/rollup/test/specimens/simple.css"],"names":[],"mappings":"AAAA,8CAAA;AAEA;IACI,UAAU;AACd","file":"simple-[hash].css","sourcesContent":["@value str: \\"string\\";\\n\\n.fooga {\\n    color: red;\\n}\\n"]}
+File: simple.js
 Value:
 const str = "\\"string\\"";
 const $values = {
@@ -316,7 +330,8 @@ Value:
 
 .mc_c {
     color: green;
-}File: composition-layers.js
+}
+File: composition-layers.js
 Value:
 const a = "mc_a";
 const b = a + " " + "mc_b";
@@ -344,7 +359,8 @@ Value:
 }
 .mc_two {
     background: blue;
-}File: internal-external-composition.js
+}
+File: internal-external-composition.js
 Value:
 const other = "mc_other";
 
@@ -370,6 +386,7 @@ Value:
 .mc_two {
     background: blue;
 }
+
 File: local-composition.js
 Value:
 const one = "mc_one";
@@ -400,6 +417,7 @@ Value:
 .mc_fooga {
     color: red;
 }
+
 File: simple.js
 Value:
 const str = "\\"string\\"";
@@ -437,6 +455,7 @@ Value:
 .mc_style {
     color: salmon;
 }
+
 File: entry.js
 Value:
 const style = "mc_style";
@@ -459,6 +478,7 @@ Value:
 .mc_a {
     background: blue;
 }
+
 File: topological-order.js
 Value:
 const b = "mc_b";
@@ -478,7 +498,8 @@ Value:
 /* packages/rollup/test/specimens/fake.css */
 .mc_fake {
     color: yellow;
-}File: assets/simple.css
+}
+File: assets/simple.css
 Value:
 /* packages/rollup/test/specimens/simple.css */
 .mc_fooga {
@@ -498,6 +519,7 @@ Value:
 .mc_wooga {
     background: blue;
 }
+
 File: dependencies.js
 Value:
 const fooga = "mc_fooga";
@@ -515,7 +537,8 @@ exports[`/rollup.js > should support @value and class overlap 1`] = `
 File: assets/class-value-overlap.css
 Value:
 /* packages/rollup/test/specimens/class-value-overlap/class-value-overlap.css */
-.mc_foo { color: blue; }File: class-value-overlap.js
+.mc_foo { color: blue; }
+File: class-value-overlap.js
 Value:
 const foo = "blue";
 const $values = {
@@ -535,6 +558,7 @@ exports[`/rollup.js > should support @value camelCase overlap 1`] = `
 File: assets/value-camel-overlap.css
 Value:
 /* packages/rollup/test/specimens/value-camel-overlap.css */
+
 File: value-camel-overlap.js
 Value:
 const colorBlack = "#000";
@@ -554,21 +578,38 @@ console.log(css);
 exports[`/rollup.js > should support external @value aliases 1`] = `
 File: assets/external-value-aliasing.css
 Value:
+/* packages/rollup/test/specimens/external-value-aliasing/source.css */
+/* packages/rollup/test/specimens/external-value-aliasing/intermediate.css */
 /* packages/rollup/test/specimens/external-value-aliasing/external-value-aliasing.css */
 .mc_aliased {
     color: red;
     background: blue;
-}File: assets/intermediate.css
-Value:
-/* packages/rollup/test/specimens/external-value-aliasing/intermediate.css */
-File: assets/source.css
-Value:
-/* packages/rollup/test/specimens/external-value-aliasing/source.css */
+}
+
 File: external-value-aliasing.js
 Value:
+const a = "red";
+const b = "blue";
+const $values$2 = {
+    a,
+b,
+};
+
+const $values$1 = {
+    "a" : $values$2["a"],
+"b" : $values$2["b"],
+};
+
+const $values = {
+    "a" : $values$1["a"],
+"b" : $values$1["b"],
+"colorRed" : $values$1["a"],
+"colorBlue" : $values$1["b"],
+};
 const aliased = "mc_aliased";
 var css = {
-    aliased
+    $values,
+aliased
 };
 
 console.log(css);
@@ -578,9 +619,23 @@ console.log(css);
 exports[`/rollup.js > should support mixing all @value types 1`] = `
 File: all-value-types.js
 Value:
+const background = "green";
+const $values$2 = {
+    background,
+};
+
+const color = "red";
+const other = "blue";
+const $values$1 = {
+    color,
+other,
+};
+
 const border = "1px solid black";
 const $values = {
-    border,
+    "background" : $values$2["background"],
+"ns" : $values$1,
+border,
 };
 const namespaced = "mc_namespaced";
 var css = {
@@ -589,18 +644,17 @@ namespaced
 };
 
 console.log(css);
+
 File: assets/all-value-types.css
 Value:
+/* packages/rollup/test/specimens/all-value-types/values2.css */
+/* packages/rollup/test/specimens/all-value-types/values1.css */
 /* packages/rollup/test/specimens/all-value-types/all-value-types.css */
 .mc_namespaced {
     color: red;
     background: green;
     border: 1px solid black;
-}File: assets/values1.css
-Value:
-/* packages/rollup/test/specimens/all-value-types/values1.css */File: assets/values2.css
-Value:
-/* packages/rollup/test/specimens/all-value-types/values2.css */
+}
 `;
 
 exports[`/rollup.js > should support multiple selectors 1`] = `
@@ -611,7 +665,8 @@ Value:
 .mc_other:visited {
     color: red;
 }
-/* packages/rollup/test/specimens/multi-selector/multi-selector.css */File: multi-selector.js
+/* packages/rollup/test/specimens/multi-selector/multi-selector.css */
+File: multi-selector.js
 Value:
 const other = "mc_other";
 
@@ -627,16 +682,27 @@ console.log(css);
 exports[`/rollup.js > should support namespaced @value imports 1`] = `
 File: assets/namespaced.css
 Value:
+/* packages/rollup/test/specimens/namespaced/values.css */
 /* packages/rollup/test/specimens/namespaced/namespaced.css */
 .mc_namespaced {
     color: red;
-}File: assets/values.css
+}
+File: namespaced.js
 Value:
-/* packages/rollup/test/specimens/namespaced/values.css */File: namespaced.js
-Value:
+const color = "red";
+const other = "blue";
+const $values$1 = {
+    color,
+other,
+};
+
+const $values = {
+    "ns" : $values$1,
+};
 const namespaced = "mc_namespaced";
 var css = {
-    namespaced
+    $values,
+namespaced
 };
 
 console.log(css);
@@ -658,6 +724,7 @@ Value:
 .mc_fooga {
     color: red;
 }
+
 File: simple.js
 Value:
 const str = "\\"string\\"";

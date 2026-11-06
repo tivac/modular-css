@@ -3,7 +3,6 @@
 const parser = require("../parsers/values.js");
 
 const valueReplacer = require("../lib/value-replacer.js");
-const { fileKey } = require("../lib/keys.js");
 
 const plugin = "modular-css-values-import";
 
