@@ -1,7 +1,7 @@
 <script>
 import { resolve } from "$app/paths";
 
-import Title from "$lib/title.svelte";
+import Title from "#lib/title.svelte";
 
 import { content as intro } from "./_home/intro.md";
 import { content as example } from "./_home/example.md";

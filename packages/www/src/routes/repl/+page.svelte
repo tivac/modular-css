@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
 
-import Title from "$lib/title.svelte";
+import Title from "#lib/title.svelte";
 
 import Editor from "./_editor/editor.svelte";
 
