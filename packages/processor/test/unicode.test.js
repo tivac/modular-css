@@ -1,9 +1,11 @@
 const { describe, it, beforeEach } = require("node:test");
 
 const namer  = require("@modular-css/test-utils/namer.js");
+const { stringSerializer } = require("@modular-css/test-utils/snapshot-serializers.js");
+
 const Processor = require("../processor.js");
 
-describe("/processor.js", () => {
+describe("@modular-css/processor", () => {
     describe("unicode", () => {
         let processor;
         
@@ -20,7 +22,7 @@ describe("/processor.js", () => {
                 to : "./packages/processor/test/output/unicode.css",
             });
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
     });
 });

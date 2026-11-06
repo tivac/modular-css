@@ -43,7 +43,7 @@ module.exports = () => ({
                                 throw rule.error(`Could not find @value ${name} in "${parsed.source}"`);
                             }
 
-                            processor._addDependency({ name: from, dependency: file, refs: [{ name }] });
+                            processor._addDependency(from, file, false, [{ name }]);
 
                             values[name] = {
                                 ...value,
@@ -61,7 +61,7 @@ module.exports = () => ({
                             throw rule.error(`Cannot import values as ${parsed.name}, it already exists`, { word: parsed.name });
                         }
 
-                        processor._addValue(file, parsed.name, { namespace: true });
+                        processor._addDependency(from, file, false, [{ name : parsed.name, namespace: true, source : file }]);
 
                         for(const key in source.values) {
                             const name = `${parsed.name}.${key}`;
@@ -90,10 +90,7 @@ module.exports = () => ({
                             throw rule.error(`Could not find @value ${name} in "${parsed.source}"`);
                         }
 
-                        const sourceKey = processor._addValue(file, name);
-                        const aliasKey = processor._addValue(from, parsed.alias, { alias: name });
-
-                        processor.graph.addDependency(aliasKey, sourceKey);
+                        processor._addDependency(from, file, false, [{ name : parsed.alias, alias : name, }]);
 
                         values[parsed.alias] = {
                             ...value,

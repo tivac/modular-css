@@ -5,10 +5,11 @@ const dedent = require("dedent");
 
 const namer = require("@modular-css/test-utils/namer.js");
 const relative = require("@modular-css/test-utils/relative.js");
+const { stringSerializer } = require("@modular-css/test-utils/snapshot-serializers.js");
 
 const Processor = require("../processor.js");
 
-describe("/processor.js", () => {
+describe("@modular-css/processor", () => {
     describe("API", () => {
         let processor;
 
@@ -30,7 +31,7 @@ describe("/processor.js", () => {
 
                 t.assert.snapshot(compositions);
                 t.assert.snapshot(details.classes);
-                t.assert.snapshot(details.processed.root.toResult().css);
+                t.assert.snapshot(details.processed.root.toResult().css, { serializers : stringSerializer });
             });
         });
 
@@ -40,7 +41,7 @@ describe("/processor.js", () => {
 
                 t.assert.snapshot(compositions);
                 t.assert.snapshot(details.classes);
-                t.assert.snapshot(details.processed.root.toResult().css);
+                t.assert.snapshot(details.processed.root.toResult().css, { serializers : stringSerializer });
             });
         });
 
@@ -52,7 +53,7 @@ describe("/processor.js", () => {
 
                 t.assert.snapshot(compositions);
                 t.assert.snapshot(details.classes);
-                t.assert.snapshot(details.processed.root.toResult().css);
+                t.assert.snapshot(details.processed.root.toResult().css, { serializers : stringSerializer });
             });
 
             it("should process an absolute file", async (t) => {
@@ -62,7 +63,7 @@ describe("/processor.js", () => {
 
                 t.assert.snapshot(compositions);
                 t.assert.snapshot(details.classes);
-                t.assert.snapshot(details.processed.root.toResult().css);
+                t.assert.snapshot(details.processed.root.toResult().css, { serializers : stringSerializer });
             });
 
             it("should wait for dependencies to be processed before composing", async (t) => {
@@ -298,7 +299,7 @@ describe("/processor.js", () => {
 
                 const result = await processor.output();
 
-                t.assert.snapshot(result.css);
+                t.assert.snapshot(result.css, { serializers : stringSerializer });
             });
 
             it("should generate css representing the output from all added files", async (t) => {
@@ -307,7 +308,7 @@ describe("/processor.js", () => {
 
                 const result = await processor.output();
 
-                t.assert.snapshot(result.css);
+                t.assert.snapshot(result.css, { serializers : stringSerializer });
             });
 
             it("should avoid duplicating files in the output", async (t) => {
@@ -316,7 +317,7 @@ describe("/processor.js", () => {
 
                 const result = await processor.output();
 
-                t.assert.snapshot(result.css);
+                t.assert.snapshot(result.css, { serializers : stringSerializer });
             });
 
             it("should generate a JSON structure of all the compositions", async (t) => {
@@ -335,7 +336,7 @@ describe("/processor.js", () => {
 
                 const result = await processor.output();
 
-                t.assert.snapshot(result.css);
+                t.assert.snapshot(result.css, { serializers : stringSerializer });
             });
 
             it("should support returning output for specified relative files", async (t) => {
@@ -348,7 +349,7 @@ describe("/processor.js", () => {
                     ],
                 });
 
-                t.assert.snapshot(result.css);
+                t.assert.snapshot(result.css, { serializers : stringSerializer });
             });
 
             it("should support returning output for specified absolute files", async (t) => {
@@ -361,7 +362,7 @@ describe("/processor.js", () => {
                     ],
                 });
 
-                t.assert.snapshot(result.css);
+                t.assert.snapshot(result.css, { serializers : stringSerializer });
             });
 
             it("should allow for seperate source map output", async (t) => {

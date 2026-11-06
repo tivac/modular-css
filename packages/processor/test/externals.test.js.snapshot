@@ -1,3 +1,19 @@
-exports[`/processor.js > externals > should support overriding external values 1`] = `
-"/* packages/processor/test/specimens/simple.css */\\n.mc_wooga { color: red; }\\n/* packages/processor/test/specimens/folder/folder.css */\\n.mc_folder { margin: 2px; }\\n/* packages/processor/test/specimens/local.css */\\n.mc_booga { background: green; }\\n/* packages/processor/test/specimens/externals.css */\\n.mc_a .mc_wooga {\\n    color: green;\\n}\\n.mc_b:hover .mc_booga {\\n    background: blue;\\n}\\n.mc_wooga .mc_booga {\\n    color: red;\\n}\\n"
+exports[`@modular-css/processor > externals > should support overriding external values 1`] = `
+/* packages/processor/test/specimens/simple.css */
+.mc_wooga { color: red; }
+/* packages/processor/test/specimens/folder/folder.css */
+.mc_folder { margin: 2px; }
+/* packages/processor/test/specimens/local.css */
+.mc_booga { background: green; }
+/* packages/processor/test/specimens/externals.css */
+.mc_a .mc_wooga {
+    color: green;
+}
+.mc_b:hover .mc_booga {
+    background: blue;
+}
+.mc_wooga .mc_booga {
+    color: red;
+}
+
 `;

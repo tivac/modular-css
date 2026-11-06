@@ -3,10 +3,11 @@ const { describe, it } = require("node:test");
 const tester = require("cli-tester");
 
 const read = require("@modular-css/test-utils/read.js")(__dirname);
+const { stringSerializer } = require("@modular-css/test-utils/snapshot-serializers.js");
 
 const cli = require.resolve("../cli.js");
 
-describe("/cli.js", () => {
+describe("@modular-css/cli", () => {
     require("shelljs").rm("-rf", "./packages/cli/test/output");
 
     it("should show help with no args", async (t) => {
@@ -15,7 +16,7 @@ describe("/cli.js", () => {
         );
 
         t.assert.strictEqual(out.code, 2);
-        t.assert.snapshot(out.stdout);
+        t.assert.snapshot(out.stdout, { serializers : stringSerializer });
     });
 
     it("should default to outputting to stdout", async (t) => {
@@ -25,7 +26,7 @@ describe("/cli.js", () => {
         );
 
         t.assert.strictEqual(out.code, 0);
-        t.assert.snapshot(out.stdout);
+        t.assert.snapshot(out.stdout, { serializers : stringSerializer });
     });
 
     it("should support outputting to a file (--out)", async (t) => {
@@ -36,7 +37,7 @@ describe("/cli.js", () => {
         );
 
         t.assert.strictEqual(out.code, 0);
-        t.assert.snapshot(read("simple.css"));
+        t.assert.snapshot(read("simple.css"), { serializers : stringSerializer });
     });
 
     it("should support outputting compositions to a file (--json)", async (t) => {
@@ -47,7 +48,7 @@ describe("/cli.js", () => {
         );
 
         t.assert.strictEqual(out.code, 0);
-        t.assert.snapshot(read("classes.json"));
+        t.assert.snapshot(read("classes.json"), { serializers : stringSerializer });
     });
 
     it("should return the correct error code on invalid CSS", async (t) => {
@@ -69,6 +70,6 @@ describe("/cli.js", () => {
         );
 
         t.assert.strictEqual(out.code, 0);
-        t.assert.snapshot(read("no-rewrite.css"));
+        t.assert.snapshot(read("no-rewrite.css"), { serializers : stringSerializer });
     });
 });

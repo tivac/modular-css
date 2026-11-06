@@ -12,13 +12,14 @@ const css = require("@modular-css/rollup");
 
 const rewriter = require("../rewriter.js");
 const { rollupBundle } = require("@modular-css/test-utils/rollup.js");
+const { rollupSerializer } = require("@modular-css/test-utils/snapshot-serializers.js");
 
 const assetFileNames = "assets/[name][extname]";
 const chunkFileNames = "[name].js";
 const map = false;
 const sourcemap = false;
 
-describe("rollup-rewriter", () => {
+describe("@modular-css/rollup-rewriter", () => {
     shell.rm("-rf", prefix("./output/*"));
 
     it("should require a loadfn", async (t) => {
@@ -84,7 +85,8 @@ describe("rollup-rewriter", () => {
                         chunkFileNames,
                         exports : "auto",
                     })
-                )
+                ),
+                { serializers : rollupSerializer },
             );
         });
 
@@ -116,7 +118,8 @@ describe("rollup-rewriter", () => {
                         chunkFileNames,
                         exports : "auto",
                     })
-                )
+                ),
+                { serializers : rollupSerializer },
             );
         });
 
@@ -148,7 +151,8 @@ describe("rollup-rewriter", () => {
                         chunkFileNames,
                         exports : "auto",
                     })
-                )
+                ),
+                { serializers : rollupSerializer },
             );
         });
 
@@ -179,7 +183,8 @@ describe("rollup-rewriter", () => {
                         chunkFileNames,
                         exports : "auto",
                     })
-                )
+                ),
+                { serializers : rollupSerializer },
             );
         });
 
@@ -208,7 +213,8 @@ describe("rollup-rewriter", () => {
                         chunkFileNames,
                         exports : "auto",
                     })
-                )
+                ),
+                { serializers : rollupSerializer },
             );
         });
 
@@ -239,7 +245,8 @@ describe("rollup-rewriter", () => {
                         chunkFileNames,
                         exports : "auto",
                     })
-                )
+                ),
+                { serializers : rollupSerializer },
             );
         });
     });

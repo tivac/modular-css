@@ -9,10 +9,11 @@ const dedent = require("dedent");
 const Processor = require("@modular-css/processor");
 const namer = require("@modular-css/test-utils/namer.js");
 const { logSpy, logSpyCalls }  = require("@modular-css/test-utils/logs.js");
+const { stringSerializer } = require("@modular-css/test-utils/snapshot-serializers.js");
 
 const plugin = require("../svelte.js");
 
-describe("/svelte.js", () => {
+describe("@modular-css/svelte", () => {
     afterEach(() => require("shelljs").rm("-rf", "./packages/svelte/test/output/*"));
 
     [
@@ -39,11 +40,11 @@ describe("/svelte.js", () => {
                 },
             );
     
-            t.assert.snapshot(processed.toString());
+            t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
     
             const output = await processor.output();
     
-            t.assert.snapshot(output.css);
+            t.assert.snapshot(output.css, { serializers : stringSerializer });
         });
     });
 
@@ -63,11 +64,11 @@ describe("/svelte.js", () => {
             },
         );
 
-        t.assert.snapshot(processed.toString());
+        t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
 
         const output = await processor.output();
 
-        t.assert.snapshot(output.css);
+        t.assert.snapshot(output.css, { serializers : stringSerializer });
     });
 
     it("should ignore <style> tags without the text/m-css attribute", async (t) => {
@@ -84,11 +85,11 @@ describe("/svelte.js", () => {
             },
         );
 
-        t.assert.snapshot(processed.toString());
+        t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
 
         const output = await processor.output();
 
-        t.assert.snapshot(output.css);
+        t.assert.snapshot(output.css, { serializers : stringSerializer });
     });
 
     [
@@ -152,11 +153,11 @@ describe("/svelte.js", () => {
             },
         );
 
-        t.assert.snapshot(processed.toString());
+        t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
 
         const output = await processor.output();
 
-        t.assert.snapshot(output.css);
+        t.assert.snapshot(output.css, { serializers : stringSerializer });
     });
 
     it("should use an already-created processor", async (t) => {
@@ -180,11 +181,11 @@ describe("/svelte.js", () => {
             },
         );
 
-        t.assert.snapshot(processed.toString());
+        t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
 
         const output = await processor.output();
 
-        t.assert.snapshot(output.css);
+        t.assert.snapshot(output.css, { serializers : stringSerializer });
     });
 
     it("should ignore files without <style> blocks", async (t) => {
@@ -198,11 +199,11 @@ describe("/svelte.js", () => {
             preprocess
         );
 
-        t.assert.snapshot(processed.toString());
+        t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
 
         const output = await processor.output();
 
-        t.assert.snapshot(output.css);
+        t.assert.snapshot(output.css, { serializers : stringSerializer });
     });
 
     [
@@ -255,7 +256,7 @@ describe("/svelte.js", () => {
             t.assert.ok(spy.calls.length > 0);
             t.assert.snapshot(logSpyCalls(spy));
     
-            t.assert.snapshot(processed.toString());
+            t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
         });
     });
 
@@ -307,11 +308,11 @@ describe("/svelte.js", () => {
             },
         );
 
-        t.assert.snapshot(processed.toString());
+        t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
 
         const output = await processor.output();
 
-        t.assert.snapshot(output.css);
+        t.assert.snapshot(output.css, { serializers : stringSerializer });
 
          t.assert.ok(spy.calls.length > 0);
             t.assert.snapshot(logSpyCalls(spy));
@@ -332,7 +333,7 @@ describe("/svelte.js", () => {
             },
         );
 
-        t.assert.snapshot(processed.toString());
+        t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
     });
 
     [
@@ -368,11 +369,11 @@ describe("/svelte.js", () => {
                 },
             );
 
-            t.assert.snapshot(processed.toString());
+            t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
 
             let output = await processor.output();
 
-            t.assert.snapshot(output.css);
+            t.assert.snapshot(output.css, { serializers : stringSerializer });
 
             // V2 of CSS
             fs.writeFileSync(path.resolve(__dirname, "./output/source.css"), dedent(`
@@ -389,11 +390,11 @@ describe("/svelte.js", () => {
                 },
             );
 
-            t.assert.snapshot(processed.toString());
+            t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
 
             output = await processor.output();
 
-            t.assert.snapshot(output.css);
+            t.assert.snapshot(output.css, { serializers : stringSerializer });
         });
     });
 
@@ -417,11 +418,11 @@ describe("/svelte.js", () => {
             },
         );
 
-        t.assert.snapshot(processed.toString());
+        t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
 
         let output = await processor.output();
 
-        t.assert.snapshot(output.css);
+        t.assert.snapshot(output.css, { serializers : stringSerializer });
 
         // V2 of CSS
         fs.writeFileSync(path.resolve(__dirname, "./output/source.svelte"), dedent(`
@@ -437,11 +438,11 @@ describe("/svelte.js", () => {
             },
         );
 
-        t.assert.snapshot(processed.toString());
+        t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
 
         output = await processor.output();
 
-        t.assert.snapshot(output.css);
+        t.assert.snapshot(output.css, { serializers : stringSerializer });
     });
 
     it("should wait for files to finish", async (t) => {
@@ -488,11 +489,11 @@ describe("/svelte.js", () => {
             },
         );
 
-        t.assert.snapshot(processed.toString());
+        t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
 
         const output = await processor.output();
 
-        t.assert.snapshot(output.css);
+        t.assert.snapshot(output.css, { serializers : stringSerializer });
     });
 
     it("should ignore <Link />", async (t) => {
@@ -528,11 +529,11 @@ describe("/svelte.js", () => {
             },
         );
 
-        t.assert.snapshot(processed.toString());
+        t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
 
         const output = await processor.output();
 
-        t.assert.snapshot(output.css);
+        t.assert.snapshot(output.css, { serializers : stringSerializer });
     });
 
     it("should find imports in any <script> tag", async (t) => {
@@ -549,10 +550,10 @@ describe("/svelte.js", () => {
             },
         );
 
-        t.assert.snapshot(processed.toString());
+        t.assert.snapshot(processed.toString(), { serializers : stringSerializer });
 
         const output = await processor.output();
 
-        t.assert.snapshot(output.css);
+        t.assert.snapshot(output.css, { serializers : stringSerializer });
     });
 });

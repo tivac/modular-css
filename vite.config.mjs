@@ -1,6 +1,6 @@
 import { resolve } from "path";
 
-import mcss from "./packages/vite/vite.js";
+import mcss from "@modular-css/vite";
 
 /** @type {import('vite').UserConfig} */
 export default {
@@ -22,8 +22,8 @@ export default {
 
         rollupOptions : {
             input : {
-                static  : resolve(__dirname, "./packages/vite/tests/specimens/static/index.html"),
-                dynamic : resolve(__dirname, "./packages/vite/tests/specimens/dynamic/index.html"),
+                static  : resolve(import.meta.dirname, "./packages/vite/tests/specimens/static/index.html"),
+                dynamic : resolve(import.meta.dirname, "./packages/vite/tests/specimens/dynamic/index.html"),
             },
         },
     },

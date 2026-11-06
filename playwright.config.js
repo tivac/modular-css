@@ -29,12 +29,12 @@ const config = {
 	},
 
     webServer : [{
-		command             : "npx vite",
+		command             : "npx vite --configLoader native",
         port                : 5173,
 		timeout             : 30 * 1000,
 		reuseExistingServer : !process.env.CI,
 	}, {
-		command             : "npx vite build && npx vite preview --port=5174",
+		command             : "npx vite --configLoader native build && npx vite --configLoader native preview --port=5174",
         port                : 5174,
 		timeout             : 30 * 1000,
 		reuseExistingServer : !process.env.CI,

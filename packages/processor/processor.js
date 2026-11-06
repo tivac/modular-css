@@ -192,6 +192,9 @@ class Processor {
                 return;
             }
 
+            // Make sure all dependents of this file are considered invalid as well
+            this.invalidate(file);
+
             this._graph.removeNode(key);
 
             delete this._files[file];
@@ -514,30 +517,54 @@ class Processor {
         return vKey;
     }
 
-    _addDependency({ selector, refs = [], dependency, name }) {
+    /**
+     * Add correct dependency info to the graph for a selector, file, and external selectors or @values
+     * 
+     * @param {object} options
+     * @param {string} options.from The source file the selector is from
+     * @param {string} options.to The file the selector should depend on
+     * @param {string} options.selector The selector to add to the graph
+     * @param {{ name : string }[]} options.refs Selectors or values the selector should depend on
+     * @returns 
+     */
+    _addDependency(from, to, selector, refs = []) {
         const { _graph : graph } = this;
 
-        const dep = this._normalize(dependency);
-        const fKey = this._addFile(name);
+        // console.log("_addDependency", { from, to, selector, refs });
+
+        const dep = this._normalize(to);
+
+        const fKey = this._addFile(from);
         const dKey = this._addFile(dep);
 
         graph.addDependency(fKey, dKey);
 
         // @values don't have a selector field
         if(!selector) {
-            refs.forEach(({ name : depValue }) => {
-                this._addValue(dep, depValue);
-            });
+            for(const ref of refs) {
+                const { name, ...other } = ref;
+                
+                const depValueKey = this._addValue(dep, name, other);
+
+                // Mark file as dependening on the @value in the graph (because it does)
+                graph.addDependency(fKey, depValueKey);
+            }
 
             return;
         }
 
-        // Add selector and its dependencies to the graph
-        this._addSelector(name, selector);
+        // Add selector to the graph
+        this._addSelector(from, selector);
 
-        refs.forEach(({ name : depSelector }) => {
-            this._addSelector(dep, depSelector);
-        });
+        // and its dependencies
+        for(const ref of refs) {
+            const { name, ...other } = ref;
+
+            const depSelectorKey = this._addSelector(dep, name, other);
+
+            // Mark file as dependening on the selector in the graph (because it does)
+            graph.addDependency(fKey, depSelectorKey);
+        }
     }
 
     // Take a file id and some text, walk it for dependencies, then
@@ -624,7 +651,7 @@ class Processor {
                 if(data.file !== name) {
                     return;
                 }
-                
+
                 graph.directDependenciesOf(dep).forEach((dep2) => graph.removeDependency(dep, dep2));
             });
         }

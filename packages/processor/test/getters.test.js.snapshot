@@ -1,4 +1,4 @@
-exports[`/processor.js > getters > .file > should return all the files that have been added 1`] = `
+exports[`@modular-css/processor > getters > .file > should return all the files that have been added 1`] = `
 [
   "packages/processor/test/specimens/start.css",
   "packages/processor/test/specimens/local.css",

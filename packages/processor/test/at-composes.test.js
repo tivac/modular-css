@@ -3,11 +3,13 @@ const { describe, it, beforeEach } = require("node:test");
 const dedent = require("dedent");
 
 const namer  = require("@modular-css/test-utils/namer.js");
+const { stringSerializer } = require("@modular-css/test-utils/snapshot-serializers.js");
+
 const Processor = require("../processor.js");
 
 const id = "./packages/processor/test/specimens/at-composes.css";
 
-describe("/processor.js", () => {
+describe("@modular-css/processor", () => {
     describe("@composes", () => {
         let processor;
 
@@ -34,7 +36,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should not include exported values from the composed file", async (t) => {
@@ -120,7 +122,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should allow for chains of @composes-included files", async (t) => {

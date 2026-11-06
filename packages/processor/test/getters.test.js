@@ -6,7 +6,7 @@ const namer    = require("@modular-css/test-utils/namer.js");
 const relative = require("@modular-css/test-utils/relative.js");
 const Processor = require("../processor.js");
 
-describe("/processor.js", () => {
+describe("@modular-css/processor", () => {
     describe("getters", () => {
         let processor;
         

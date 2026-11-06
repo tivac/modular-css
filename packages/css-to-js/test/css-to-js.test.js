@@ -11,9 +11,13 @@ const root = process.cwd().replace(/\\/g, "/");
 const safe = "<ROOT-DIR>";
 
 const serializers = [ (value) => {
-    value = value.replace(root, safe);
+    if(typeof value !== "string") {
+       value = JSON.stringify(value, null, 2); 
+    }
+    
+    value = value.replaceAll(root, safe);
 
-    return JSON.stringify(value, null, 2);
+    return value;
 } ];
 
 
@@ -21,7 +25,7 @@ const resolvers = [
     (src, file) => path.join(path.dirname(src), file),
 ];
 
-describe("@modular-css/css-to-js API", () => {
+describe("@modular-css/css-to-js", () => {
     it("should be a function", (t) =>
         t.assert.strictEqual(typeof transform, "function")
     );

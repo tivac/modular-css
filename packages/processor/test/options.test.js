@@ -7,6 +7,7 @@ const relative = require("@modular-css/test-utils/relative.js");
 const { logSpy, logSpyCalls } = require("@modular-css/test-utils/logs.js");
 
 const Processor = require("../processor.js");
+const { stringSerializer } = require("@modular-css/test-utils/snapshot-serializers.js");
 
 const sync = (css) => css.append({ selector : "a" });
 
@@ -20,7 +21,7 @@ const async = (css) => (
     )
 );
 
-describe("/processor.js", () => {
+describe("@modular-css/processor", () => {
     describe("options", () => {
         describe("cwd", () => {
             it("should use an absolute path", async (t) => {
@@ -104,7 +105,7 @@ describe("/processor.js", () => {
                     to   : "out.css",
                 });
 
-                t.assert.snapshot(css);
+                t.assert.snapshot(css, { serializers : stringSerializer });
             });
 
             it("should generate external source maps", async (t) => {
@@ -122,7 +123,7 @@ describe("/processor.js", () => {
                     to   : "out.css",
                 });
 
-                t.assert.snapshot(css);
+                t.assert.snapshot(css, { serializers : stringSerializer });
             });
         });
 
@@ -178,7 +179,7 @@ describe("/processor.js", () => {
                     to   : "./packages/processor/test/output/rewrite.css",
                 });
 
-                t.assert.snapshot(css);
+                t.assert.snapshot(css, { serializers : stringSerializer });
             });
 
             it("should not rewrite url() references when falsey", async (t) => {
@@ -198,7 +199,7 @@ describe("/processor.js", () => {
                     to   : "./packages/processor/test/output/rewrite.css",
                 });
 
-                t.assert.snapshot(css);
+                t.assert.snapshot(css, { serializers : stringSerializer });
             });
 
             it("should pass through to postcss-url as config", async (t) => {
@@ -222,7 +223,7 @@ describe("/processor.js", () => {
                     to   : "./packages/processor/test/output/rewrite.css",
                 });
 
-                t.assert.snapshot(css);
+                t.assert.snapshot(css, { serializers : stringSerializer });
             });
         });
 
@@ -249,7 +250,7 @@ describe("/processor.js", () => {
                     to   : "./packages/processor/test/output/parser.css",
                 });
 
-                t.assert.snapshot(css);
+                t.assert.snapshot(css, { serializers : stringSerializer });
             });
         });
 
@@ -270,7 +271,7 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/sync-before.css",
                     });
 
-                    t.assert.snapshot(css);
+                    t.assert.snapshot(css, { serializers : stringSerializer });
                 });
 
                 it("should run async postcss plugins before processing", async (t) => {
@@ -288,7 +289,7 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/sync-before.css",
                     });
 
-                    t.assert.snapshot(css);
+                    t.assert.snapshot(css, { serializers : stringSerializer });
                 });
             });
 
@@ -308,7 +309,7 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/sync-processing.css",
                     });
 
-                    t.assert.snapshot(css);
+                    t.assert.snapshot(css, { serializers : stringSerializer });
                 });
 
                 it("should run async postcss plugins processing processing", async (t) => {
@@ -326,7 +327,7 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/sync-processing.css",
                     });
 
-                    t.assert.snapshot(css);
+                    t.assert.snapshot(css, { serializers : stringSerializer });
                 });
 
                 it("should include exports from 'modular-css-export' modules", async (t) => {
@@ -363,7 +364,7 @@ describe("/processor.js", () => {
                         to   : "./packages/processor/test/output/relative.css",
                     });
 
-                    t.assert.snapshot(css);
+                    t.assert.snapshot(css, { serializers : stringSerializer });
                 });
 
                 it("should run sync postcss plugins", async (t) => {
@@ -379,7 +380,7 @@ describe("/processor.js", () => {
                         to   : "./packages/processor/test/output/relative.css",
                     });
 
-                    t.assert.snapshot(css);
+                    t.assert.snapshot(css, { serializers : stringSerializer });
                 });
 
                 it("should run async postcss plugins", async (t) => {
@@ -395,7 +396,7 @@ describe("/processor.js", () => {
                         to   : "./packages/processor/test/output/relative.css",
                     });
 
-                    t.assert.snapshot(css);
+                    t.assert.snapshot(css, { serializers : stringSerializer });
                 });
             });
 
@@ -415,7 +416,7 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/sync-done.css",
                     });
 
-                    t.assert.snapshot(css);
+                    t.assert.snapshot(css, { serializers : stringSerializer });
                 });
 
                 it("should run async postcss plugins done processing", async (t) => {
@@ -433,7 +434,7 @@ describe("/processor.js", () => {
                         from : "packages/processor/test/specimens/async-done.css",
                     });
 
-                    t.assert.snapshot(css);
+                    t.assert.snapshot(css, { serializers : stringSerializer });
                 });
             });
 

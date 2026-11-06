@@ -3,9 +3,11 @@ const { describe, it, beforeEach } = require("node:test");
 const dedent = require("dedent");
 
 const namer = require("@modular-css/test-utils/namer.js");
+const { stringSerializer } = require("@modular-css/test-utils/snapshot-serializers.js");
+
 const Processor = require("../processor.js");
 
-describe("/processor.js", () => {
+describe("@modular-css/processor", () => {
     describe("scoping", () => {
         let processor;
         
@@ -36,7 +38,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
             
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should handle pseudo classes correctly", async (t) => {
@@ -55,7 +57,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
             
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should not allow :global classes to overlap with local ones (local before global)", async (t) => {
@@ -87,7 +89,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
             
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should not allow :global classes to overlap with local ones (global before local)", async (t) => {
@@ -119,7 +121,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
             
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should not allow empty :global() selectors", async (t) => {
@@ -140,7 +142,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should not scope rules within @keyframes", async (t) => {
@@ -156,7 +158,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
         
         it("should update animation declarations", async (t) => {
@@ -167,7 +169,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should update animation-name declarations", async (t) => {
@@ -178,7 +180,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         // Issue 208
@@ -191,7 +193,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should update prefixed @keyframes", async (t) => {
@@ -202,7 +204,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should update animation-name declarations when @keyframes come after", async (t) => {
@@ -213,7 +215,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
     });
 });

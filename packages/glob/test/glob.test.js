@@ -1,9 +1,11 @@
 const { describe, it } = require("node:test");
 
 const namer = require("@modular-css/test-utils/namer.js");
+const { stringSerializer } = require("@modular-css/test-utils/snapshot-serializers.js");
+
 const glob = require("../glob.js");
 
-describe("/glob.js", () => {
+describe("@modular-css/glob", () => {
     it("should be a function", (t) => {
         t.assert.strictEqual(typeof glob, "function");
     });
@@ -16,7 +18,7 @@ describe("/glob.js", () => {
         
         const { css } = await processor.output();
 
-        t.assert.snapshot(css);
+        t.assert.snapshot(css, { serializers : stringSerializer });
     });
 
     it("should find files on disk & output css", async (t) => {
@@ -30,7 +32,7 @@ describe("/glob.js", () => {
         
         const { css } = await processor.output();
 
-        t.assert.snapshot(css);
+        t.assert.snapshot(css, { serializers : stringSerializer });
     });
 
     it("should support exclusion patterns", async (t) => {
@@ -45,6 +47,6 @@ describe("/glob.js", () => {
         
         const { css } = await processor.output();
 
-        t.assert.snapshot(css);
+        t.assert.snapshot(css, { serializers : stringSerializer });
     });
 });

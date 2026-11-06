@@ -71,6 +71,21 @@ module.exports = (
         }
     };
 
+    const invalidateDependents = (deps) => Promise.all(deps.map(async (dep) => {
+        const [ jsMod, cssMod ] = await Promise.all([
+            viteServer.moduleGraph.getModuleByUrl(dep),
+            viteServer.moduleGraph.getModuleByUrl(virtualize(slash(dep))),
+        ]);
+
+        if(jsMod) {
+            viteServer.moduleGraph.invalidateModule(jsMod);
+        }
+
+        if(cssMod) {
+            viteServer.moduleGraph.invalidateModule(cssMod);
+        }
+    }));
+
     return {
         name    : "@modular-css/vite",
         enforce : "pre",
@@ -82,35 +97,31 @@ module.exports = (
         configureServer(instance) {
             viteServer = instance;
 
-            viteServer.watcher.on("change", (file) => {
+            viteServer.watcher.on("change", async (file) => {
                 log("change", file);
-                
+
                 if(!processor.has(file)) {
                     return;
                 }
 
                 processor.invalidate(file);
 
-                // Make sure vite knows that files that depend on us might've changed too
-                processor.fileDependents(file).forEach((dep) => {
-                    viteServer.watcher.emit("change", dep);
-                });
+                // Make sure vite knows that files that depend on us are invalid now
+                await invalidateDependents(processor.fileDependents(file));
             });
 
-            viteServer.watcher.on("unlink", (file) => {
+            viteServer.watcher.on("unlink", async (file) => {
                 if(!processor.has(file)) {
                     return;
                 }
 
                 // Have to grab deps _before_ removal
                 const deps = processor.fileDependents(file);
-                
+
                 processor.remove(file);
-                
-                // Invalidate dependencies of the file that was removed
-                deps.forEach((dep) => {
-                    viteServer.watcher.emit("change", dep);
-                });
+
+                // Invalidate vite dependencies of the file that was removed
+                await invalidateDependents(deps);
             });
         },
 
@@ -130,7 +141,7 @@ module.exports = (
             log("resolving", source);
 
             let resolved = source;
-            
+
             // Check file as passed (minus the query params)
             if(processor.has(devirtualize(resolved))) {
                 return resolved;
@@ -220,14 +231,21 @@ module.exports = (
                 return this.error(e);
             }
 
+            // Invalidate dependent modules so Vite knows their exports may have changed.
+            if(viteServer) {
+                await invalidateDependents(processor.fileDependents(file));
+            }
+
             const { code : css, warnings } = transform(file, processor, pluginOptions);
 
             warnings.forEach((warning) => {
                 this.warn(warning);
             });
 
+            // Get all direct file dependencies of this module
             const deps = processor.fileDependencies(file);
 
+            // Watch all dependencies of this file for changes
             deps.forEach((dep) => watchFile(dep));
 
             // TODO: Gets CSS order right by forcing them to load their dependent CSS first.

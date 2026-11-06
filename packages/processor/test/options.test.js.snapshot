@@ -1,4 +1,4 @@
-exports[`/processor.js > options > exportGlobals > should export :global values by default 1`] = `
+exports[`@modular-css/processor > options > exportGlobals > should export :global values by default 1`] = `
 {
   "b": [
     "mc8df92ddf_b"
@@ -6,7 +6,7 @@ exports[`/processor.js > options > exportGlobals > should export :global values 
 }
 `;
 
-exports[`/processor.js > options > exportGlobals > should not export :global values when exportGlobals is false 1`] = `
+exports[`@modular-css/processor > options > exportGlobals > should not export :global values when exportGlobals is false 1`] = `
 {
   "b": [
     "mc8df92ddf_b"
@@ -14,35 +14,56 @@ exports[`/processor.js > options > exportGlobals > should not export :global val
 }
 `;
 
-exports[`/processor.js > options > lifecycle options > after > should run async postcss plugins 1`] = `
-"/* packages/processor/test/specimens/relative.css */\\n.mc_wooga {\\n    color: red;\\n    background: url(\\"../specimens/folder/to.png\\");\\n}\\na {}\\n"
+exports[`@modular-css/processor > options > lifecycle options > after > should run async postcss plugins 1`] = `
+/* packages/processor/test/specimens/relative.css */
+.mc_wooga {
+    color: red;
+    background: url("../specimens/folder/to.png");
+}
+a {}
+
 `;
 
-exports[`/processor.js > options > lifecycle options > after > should run sync postcss plugins 1`] = `
-"/* packages/processor/test/specimens/relative.css */\\n.mc_wooga {\\n    color: red;\\n    background: url(\\"../specimens/folder/to.png\\");\\n}\\na {}\\n"
+exports[`@modular-css/processor > options > lifecycle options > after > should run sync postcss plugins 1`] = `
+/* packages/processor/test/specimens/relative.css */
+.mc_wooga {
+    color: red;
+    background: url("../specimens/folder/to.png");
+}
+a {}
+
 `;
 
-exports[`/processor.js > options > lifecycle options > after > should use postcss-url by default 1`] = `
-"/* packages/processor/test/specimens/relative.css */\\n.mc8e3ffde3_wooga {\\n    color: red;\\n    background: url(\\"../specimens/folder/to.png\\");\\n}\\n"
+exports[`@modular-css/processor > options > lifecycle options > after > should use postcss-url by default 1`] = `
+/* packages/processor/test/specimens/relative.css */
+.mc8e3ffde3_wooga {
+    color: red;
+    background: url("../specimens/folder/to.png");
+}
+
 `;
 
-exports[`/processor.js > options > lifecycle options > before > should run async postcss plugins before processing 1`] = `
-"/* packages/processor/test/specimens/async-before.css */\\na {}"
+exports[`@modular-css/processor > options > lifecycle options > before > should run async postcss plugins before processing 1`] = `
+/* packages/processor/test/specimens/async-before.css */
+a {}
 `;
 
-exports[`/processor.js > options > lifecycle options > before > should run sync postcss plugins before processing 1`] = `
-"/* packages/processor/test/specimens/sync-before.css */\\na {}"
+exports[`@modular-css/processor > options > lifecycle options > before > should run sync postcss plugins before processing 1`] = `
+/* packages/processor/test/specimens/sync-before.css */
+a {}
 `;
 
-exports[`/processor.js > options > lifecycle options > done > should run async postcss plugins done processing 1`] = `
-"/* packages/processor/test/specimens/async-done.css */\\na {}"
+exports[`@modular-css/processor > options > lifecycle options > done > should run async postcss plugins done processing 1`] = `
+/* packages/processor/test/specimens/async-done.css */
+a {}
 `;
 
-exports[`/processor.js > options > lifecycle options > done > should run sync postcss plugins done processing 1`] = `
-"/* packages/processor/test/specimens/sync-done.css */\\na {}"
+exports[`@modular-css/processor > options > lifecycle options > done > should run sync postcss plugins done processing 1`] = `
+/* packages/processor/test/specimens/sync-done.css */
+a {}
 `;
 
-exports[`/processor.js > options > lifecycle options > dupewarn > should warn on potentially duplicate file paths 1`] = `
+exports[`@modular-css/processor > options > lifecycle options > dupewarn > should warn on potentially duplicate file paths 1`] = `
 [
   [
     "POTENTIAL DUPLICATE FILES:\\npackages/processor/test/specimens/start.css\\npackages/processor/test/specimens/START.css"
@@ -50,22 +71,24 @@ exports[`/processor.js > options > lifecycle options > dupewarn > should warn on
 ]
 `;
 
-exports[`/processor.js > options > lifecycle options > processing > should include exports from 'modular-css-export' modules 1`] = `
+exports[`@modular-css/processor > options > lifecycle options > processing > should include exports from 'modular-css-export' modules 1`] = `
 {
   "a": true,
   "b": false
 }
 `;
 
-exports[`/processor.js > options > lifecycle options > processing > should run async postcss plugins processing processing 1`] = `
-"/* packages/processor/test/specimens/async-processing.css */\\na {}"
+exports[`@modular-css/processor > options > lifecycle options > processing > should run async postcss plugins processing processing 1`] = `
+/* packages/processor/test/specimens/async-processing.css */
+a {}
 `;
 
-exports[`/processor.js > options > lifecycle options > processing > should run sync postcss plugins processing processing 1`] = `
-"/* packages/processor/test/specimens/sync-processing.css */\\na {}"
+exports[`@modular-css/processor > options > lifecycle options > processing > should run sync postcss plugins processing processing 1`] = `
+/* packages/processor/test/specimens/sync-processing.css */
+a {}
 `;
 
-exports[`/processor.js > options > lifecycle options > verbose > should output debugging messages when verbose mode is enabled 1`] = `
+exports[`@modular-css/processor > options > lifecycle options > verbose > should output debugging messages when verbose mode is enabled 1`] = `
 [
   [
     "[processor]",
@@ -170,15 +193,31 @@ exports[`/processor.js > options > lifecycle options > verbose > should output d
 ]
 `;
 
-exports[`/processor.js > options > map > should generate external source maps 1`] = `
-"/* packages/processor/test/specimens/folder/folder.css */\\n.mc_folder { margin: 2px; }\\n/* packages/processor/test/specimens/local.css */\\n.mc_booga { background: green; }\\n/* packages/processor/test/specimens/start.css */\\n.mc_booga { color: red; background: blue; }\\n.mc_tooga { border: 1px solid white; }\\n\\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3Byb2Nlc3Nvci90ZXN0L3NwZWNpbWVucy9mb2xkZXIvZm9sZGVyLmNzcyIsInBhY2thZ2VzL3Byb2Nlc3Nvci90ZXN0L3NwZWNpbWVucy9sb2NhbC5jc3MiLCJwYWNrYWdlcy9wcm9jZXNzb3IvdGVzdC9zcGVjaW1lbnMvc3RhcnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLHdEQUFBO0FBQ0EsYUFBVSxXQUFXLEVBQUU7QUNEdkIsZ0RBQUE7QUFJQSxZQUFTLGlCQUFpQixFQUFFO0FDSjVCLGdEQUFBO0FBRUEsWURGQSxVQUFlLEVBQ2YsZ0JBQWdCLEVDQ3NCO0FBQ3RDLFlGSEEsdUJBQW9CLEVFR2UiLCJmaWxlIjoib3V0LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIkB2YWx1ZSBmb2xkZXI6IHdoaXRlO1xuLmZvbGRlciB7IG1hcmdpbjogMnB4OyB9XG4iLCJAdmFsdWUgb25lOiByZWQ7XG5AdmFsdWUgdHdvOiBibHVlO1xuQHZhbHVlIGZvbGRlciBmcm9tIFwiLi9mb2xkZXIvZm9sZGVyLmNzc1wiO1xuXG4uYm9vZ2EgeyBiYWNrZ3JvdW5kOiBncmVlbjsgfVxuLmxvb2dhIHsgY29tcG9zZXM6IGJvb2dhOyB9XG4iLCJAdmFsdWUgb25lLCB0d28sIGZvbGRlciBmcm9tIFwiLi9sb2NhbC5jc3NcIjtcbi53b29nYSB7IGNvbXBvc2VzOiBib29nYSBmcm9tIFwiLi9sb2NhbC5jc3NcIjsgfVxuLmJvb2dhIHsgY29sb3I6IG9uZTsgYmFja2dyb3VuZDogdHdvOyB9XG4udG9vZ2EgeyBib3JkZXI6IDFweCBzb2xpZCBmb2xkZXI7IH1cbiJdfQ== */"
+exports[`@modular-css/processor > options > map > should generate external source maps 1`] = `
+/* packages/processor/test/specimens/folder/folder.css */
+.mc_folder { margin: 2px; }
+/* packages/processor/test/specimens/local.css */
+.mc_booga { background: green; }
+/* packages/processor/test/specimens/start.css */
+.mc_booga { color: red; background: blue; }
+.mc_tooga { border: 1px solid white; }
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3Byb2Nlc3Nvci90ZXN0L3NwZWNpbWVucy9mb2xkZXIvZm9sZGVyLmNzcyIsInBhY2thZ2VzL3Byb2Nlc3Nvci90ZXN0L3NwZWNpbWVucy9sb2NhbC5jc3MiLCJwYWNrYWdlcy9wcm9jZXNzb3IvdGVzdC9zcGVjaW1lbnMvc3RhcnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLHdEQUFBO0FBQ0EsYUFBVSxXQUFXLEVBQUU7QUNEdkIsZ0RBQUE7QUFJQSxZQUFTLGlCQUFpQixFQUFFO0FDSjVCLGdEQUFBO0FBRUEsWURGQSxVQUFlLEVBQ2YsZ0JBQWdCLEVDQ3NCO0FBQ3RDLFlGSEEsdUJBQW9CLEVFR2UiLCJmaWxlIjoib3V0LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIkB2YWx1ZSBmb2xkZXI6IHdoaXRlO1xuLmZvbGRlciB7IG1hcmdpbjogMnB4OyB9XG4iLCJAdmFsdWUgb25lOiByZWQ7XG5AdmFsdWUgdHdvOiBibHVlO1xuQHZhbHVlIGZvbGRlciBmcm9tIFwiLi9mb2xkZXIvZm9sZGVyLmNzc1wiO1xuXG4uYm9vZ2EgeyBiYWNrZ3JvdW5kOiBncmVlbjsgfVxuLmxvb2dhIHsgY29tcG9zZXM6IGJvb2dhOyB9XG4iLCJAdmFsdWUgb25lLCB0d28sIGZvbGRlciBmcm9tIFwiLi9sb2NhbC5jc3NcIjtcbi53b29nYSB7IGNvbXBvc2VzOiBib29nYSBmcm9tIFwiLi9sb2NhbC5jc3NcIjsgfVxuLmJvb2dhIHsgY29sb3I6IG9uZTsgYmFja2dyb3VuZDogdHdvOyB9XG4udG9vZ2EgeyBib3JkZXI6IDFweCBzb2xpZCBmb2xkZXI7IH1cbiJdfQ== */
 `;
 
-exports[`/processor.js > options > map > should generate source maps 1`] = `
-"/* packages/processor/test/specimens/folder/folder.css */\\n.mc_folder { margin: 2px; }\\n/* packages/processor/test/specimens/local.css */\\n.mc_booga { background: green; }\\n/* packages/processor/test/specimens/start.css */\\n.mc_booga { color: red; background: blue; }\\n.mc_tooga { border: 1px solid white; }\\n\\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3Byb2Nlc3Nvci90ZXN0L3NwZWNpbWVucy9mb2xkZXIvZm9sZGVyLmNzcyIsInBhY2thZ2VzL3Byb2Nlc3Nvci90ZXN0L3NwZWNpbWVucy9sb2NhbC5jc3MiLCJwYWNrYWdlcy9wcm9jZXNzb3IvdGVzdC9zcGVjaW1lbnMvc3RhcnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLHdEQUFBO0FBQ0EsYUFBVSxXQUFXLEVBQUU7QUNEdkIsZ0RBQUE7QUFJQSxZQUFTLGlCQUFpQixFQUFFO0FDSjVCLGdEQUFBO0FBRUEsWURGQSxVQUFlLEVBQ2YsZ0JBQWdCLEVDQ3NCO0FBQ3RDLFlGSEEsdUJBQW9CLEVFR2UiLCJmaWxlIjoib3V0LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIkB2YWx1ZSBmb2xkZXI6IHdoaXRlO1xuLmZvbGRlciB7IG1hcmdpbjogMnB4OyB9XG4iLCJAdmFsdWUgb25lOiByZWQ7XG5AdmFsdWUgdHdvOiBibHVlO1xuQHZhbHVlIGZvbGRlciBmcm9tIFwiLi9mb2xkZXIvZm9sZGVyLmNzc1wiO1xuXG4uYm9vZ2EgeyBiYWNrZ3JvdW5kOiBncmVlbjsgfVxuLmxvb2dhIHsgY29tcG9zZXM6IGJvb2dhOyB9XG4iLCJAdmFsdWUgb25lLCB0d28sIGZvbGRlciBmcm9tIFwiLi9sb2NhbC5jc3NcIjtcbi53b29nYSB7IGNvbXBvc2VzOiBib29nYSBmcm9tIFwiLi9sb2NhbC5jc3NcIjsgfVxuLmJvb2dhIHsgY29sb3I6IG9uZTsgYmFja2dyb3VuZDogdHdvOyB9XG4udG9vZ2EgeyBib3JkZXI6IDFweCBzb2xpZCBmb2xkZXI7IH1cbiJdfQ== */"
+exports[`@modular-css/processor > options > map > should generate source maps 1`] = `
+/* packages/processor/test/specimens/folder/folder.css */
+.mc_folder { margin: 2px; }
+/* packages/processor/test/specimens/local.css */
+.mc_booga { background: green; }
+/* packages/processor/test/specimens/start.css */
+.mc_booga { color: red; background: blue; }
+.mc_tooga { border: 1px solid white; }
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3Byb2Nlc3Nvci90ZXN0L3NwZWNpbWVucy9mb2xkZXIvZm9sZGVyLmNzcyIsInBhY2thZ2VzL3Byb2Nlc3Nvci90ZXN0L3NwZWNpbWVucy9sb2NhbC5jc3MiLCJwYWNrYWdlcy9wcm9jZXNzb3IvdGVzdC9zcGVjaW1lbnMvc3RhcnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLHdEQUFBO0FBQ0EsYUFBVSxXQUFXLEVBQUU7QUNEdkIsZ0RBQUE7QUFJQSxZQUFTLGlCQUFpQixFQUFFO0FDSjVCLGdEQUFBO0FBRUEsWURGQSxVQUFlLEVBQ2YsZ0JBQWdCLEVDQ3NCO0FBQ3RDLFlGSEEsdUJBQW9CLEVFR2UiLCJmaWxlIjoib3V0LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIkB2YWx1ZSBmb2xkZXI6IHdoaXRlO1xuLmZvbGRlciB7IG1hcmdpbjogMnB4OyB9XG4iLCJAdmFsdWUgb25lOiByZWQ7XG5AdmFsdWUgdHdvOiBibHVlO1xuQHZhbHVlIGZvbGRlciBmcm9tIFwiLi9mb2xkZXIvZm9sZGVyLmNzc1wiO1xuXG4uYm9vZ2EgeyBiYWNrZ3JvdW5kOiBncmVlbjsgfVxuLmxvb2dhIHsgY29tcG9zZXM6IGJvb2dhOyB9XG4iLCJAdmFsdWUgb25lLCB0d28sIGZvbGRlciBmcm9tIFwiLi9sb2NhbC5jc3NcIjtcbi53b29nYSB7IGNvbXBvc2VzOiBib29nYSBmcm9tIFwiLi9sb2NhbC5jc3NcIjsgfVxuLmJvb2dhIHsgY29sb3I6IG9uZTsgYmFja2dyb3VuZDogdHdvOyB9XG4udG9vZ2EgeyBib3JkZXI6IDFweCBzb2xpZCBmb2xkZXI7IH1cbiJdfQ== */
 `;
 
-exports[`/processor.js > options > namer > should require a namer if a string is passed 1`] = `
+exports[`@modular-css/processor > options > namer > should require a namer if a string is passed 1`] = `
 {
   "wooga": [
     "AA"
@@ -186,7 +225,7 @@ exports[`/processor.js > options > namer > should require a namer if a string is
 }
 `;
 
-exports[`/processor.js > options > namer > should use a custom naming function 1`] = `
+exports[`@modular-css/processor > options > namer > should use a custom naming function 1`] = `
 {
   "wooga": [
     "packages_processor_test_specimens_simple_css_wooga"
@@ -194,7 +233,7 @@ exports[`/processor.js > options > namer > should use a custom naming function 1
 }
 `;
 
-exports[`/processor.js > options > namer > should use a custom naming function 2`] = `
+exports[`@modular-css/processor > options > namer > should use a custom naming function 2`] = `
 {
   "wooga": [
     "packages_processor_test_specimens_simple_css_wooga"
@@ -202,11 +241,11 @@ exports[`/processor.js > options > namer > should use a custom naming function 2
 }
 `;
 
-exports[`/processor.js > options > namer > should use a custom naming function 3`] = `
+exports[`@modular-css/processor > options > namer > should use a custom naming function 3`] = `
 ".packages_processor_test_specimens_simple_css_wooga { }"
 `;
 
-exports[`/processor.js > options > namer > should use the default naming function if a non-function is passed 1`] = `
+exports[`@modular-css/processor > options > namer > should use the default naming function if a non-function is passed 1`] = `
 {
   "wooga": [
     "mc4a20438a_wooga"
@@ -214,18 +253,30 @@ exports[`/processor.js > options > namer > should use the default naming functio
 }
 `;
 
-exports[`/processor.js > options > postcss options > should support custom parsers 1`] = `
-"/* packages/processor/test/specimens/parser.css */\\n.mce1d18d5d_a {\\n    color: blue\\n}"
+exports[`@modular-css/processor > options > postcss options > should support custom parsers 1`] = `
+/* packages/processor/test/specimens/parser.css */
+.mce1d18d5d_a {
+    color: blue
+}
 `;
 
-exports[`/processor.js > options > rewrite > should not rewrite url() references when falsey 1`] = `
-"/* packages/processor/test/specimens/rewrite.css */\\n.mc20ca2799_a {\\n    background: url(\\"img.png\\");\\n}"
+exports[`@modular-css/processor > options > rewrite > should not rewrite url() references when falsey 1`] = `
+/* packages/processor/test/specimens/rewrite.css */
+.mc20ca2799_a {
+    background: url("img.png");
+}
 `;
 
-exports[`/processor.js > options > rewrite > should pass through to postcss-url as config 1`] = `
-"/* packages/processor/test/specimens/rewrite.css */\\n.mc20ca2799_a {\\n    background: url(\\"data:image/png;base64,iVBORwoaCgAAAA1JSERSAAAACgAAAAoIAgAAAAJQWOoAAAABc1JHQgCuzhzpAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4xOdTWsmQAAAAOSURBVChTYxgFJAMGBgABNgABY8OiGAAAAABJRU5ErkJggg==\\");\\n}"
+exports[`@modular-css/processor > options > rewrite > should pass through to postcss-url as config 1`] = `
+/* packages/processor/test/specimens/rewrite.css */
+.mc20ca2799_a {
+    background: url("data:image/png;base64,iVBORwoaCgAAAA1JSERSAAAACgAAAAoIAgAAAAJQWOoAAAABc1JHQgCuzhzpAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4xOdTWsmQAAAAOSURBVChTYxgFJAMGBgABNgABY8OiGAAAAABJRU5ErkJggg==");
+}
 `;
 
-exports[`/processor.js > options > rewrite > should rewrite url() references by default 1`] = `
-"/* packages/processor/test/specimens/rewrite.css */\\n.mc20ca2799_a {\\n    background: url(\\"../specimens/img.png\\");\\n}"
+exports[`@modular-css/processor > options > rewrite > should rewrite url() references by default 1`] = `
+/* packages/processor/test/specimens/rewrite.css */
+.mc20ca2799_a {
+    background: url("../specimens/img.png");
+}
 `;

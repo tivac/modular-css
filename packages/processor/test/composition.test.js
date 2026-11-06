@@ -4,9 +4,11 @@ const path = require("path");
 const dedent = require("dedent");
 
 const namer  = require("@modular-css/test-utils/namer.js");
+const { stringSerializer } = require("@modular-css/test-utils/snapshot-serializers.js");
+
 const Processor = require("../processor.js");
 
-describe("/processor.js", () => {
+describe("@modular-css/processor", () => {
     // eslint-disable-next-line max-statements -- there's a lotta tests dude
     describe("composition", () => {
         let processor;
@@ -391,7 +393,7 @@ describe("/processor.js", () => {
 
                 const { css } = await processor.output();
 
-                t.assert.snapshot(css);
+                t.assert.snapshot(css, { serializers : stringSerializer });
             });
         });
     });

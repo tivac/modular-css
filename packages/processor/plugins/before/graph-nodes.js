@@ -48,21 +48,14 @@ module.exports = () => ({
             }
 
             if(rule.type !== "decl") {
-                return processor._addDependency({
-                    dependency,
-                    refs,
-                    name: from,
-                });
+                return processor._addDependency(from, dependency, false, refs);
             }
 
             const classes = new Set(identifiers.parse(rule.parent.selector));
 
-            classes.forEach((sel) => processor._addDependency({
-                selector: sel,
-                dependency,
-                refs,
-                name: from,
-            }));
+            for(const selector of classes) {
+                processor._addDependency(from, dependency, selector, refs);
+            }
         };
 
         const externals = selectorParser((selectors) => {

@@ -4,8 +4,9 @@ const path = require("path");
 const dedent = require("dedent");
 const namer = require("@modular-css/test-utils/namer.js");
 const Processor = require("../processor.js");
+const { stringSerializer } = require("@modular-css/test-utils/snapshot-serializers.js");
 
-describe("/processor.js", () => {
+describe("@modular-css/processor", () => {
     describe("values", () => {
         let processor;
 
@@ -91,7 +92,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should support simple values", async (t) => {
@@ -112,7 +113,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should support local values in value composition", async (t) => {
@@ -128,7 +129,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should support importing variables from a file", async (t) => {
@@ -136,7 +137,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should support exporting imported variables", async (t) => {
@@ -144,7 +145,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should support value composition", async (t) => {
@@ -152,7 +153,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should support value namespaces", async (t) => {
@@ -160,7 +161,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should support value replacement in @value", async (t) => {
@@ -175,7 +176,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should support value replacement in :external(...)", async (t) => {
@@ -183,7 +184,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should support value aliasing", async (t) => {
@@ -191,7 +192,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should support several layers of value references", async (t) => {
@@ -199,7 +200,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
 
         it("should support layers of namespaced value references", async (t) => {
@@ -207,7 +208,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
         
         it("should expand namespaced value references (#1020)", async (t) => {
@@ -215,7 +216,7 @@ describe("/processor.js", () => {
 
             const { css } = await processor.output();
 
-            t.assert.snapshot(css);
+            t.assert.snapshot(css, { serializers : stringSerializer });
         });
     });
 });
