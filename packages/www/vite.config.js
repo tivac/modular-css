@@ -1,13 +1,12 @@
-import staticAdapter from "@sveltejs/adapter-static";
-import { preprocess } from "./build/mcss-setup.js";
 import path from "path";
 
-import mcss from "@modular-css/vite";
+import staticAdapter from "@sveltejs/adapter-static";
 import { sveltekit } from "@sveltejs/kit/vite";
+import mcss from "@modular-css/vite";
 
 import viteMd from "./build/vite-md.js";
 import viteBuildMcss from "./build/vite-build-mcss.js";
-import { processor } from "./build/mcss-setup.js";
+import { preprocess, processor } from "./build/mcss-setup.js";
 
 /** @type {import('vite').UserConfig} */ const config = {
   plugins: [
