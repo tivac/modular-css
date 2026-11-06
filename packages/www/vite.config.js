@@ -1,3 +1,5 @@
+import staticAdapter from "@sveltejs/adapter-static";
+import { preprocess } from "./build/mcss-setup.js";
 import path from "path";
 
 import { NodeModulesPolyfillPlugin as modulesPolyfill } from "@esbuild-plugins/node-modules-polyfill";
@@ -8,56 +10,70 @@ import viteMd from "./build/vite-md.js";
 import viteBuildMcss from "./build/vite-build-mcss.js";
 import { processor } from "./build/mcss-setup.js";
 
-/** @type {import('vite').UserConfig} */
-const config = {
-	plugins : [
-		sveltekit(),
+/** @type {import('vite').UserConfig} */ const config = {
+  plugins: [
+    sveltekit({
+      // Pass the svelte preprocessor from @modular-css/svelte into sveltekit
+      // so that it can make most CSS classes static and shrink the compiled
+      // component code way down
+      preprocess,
 
-		// Bundle @modular-css/processor and its dependencies via
-		// embedded rollup within rollup because vite doesn't handle
-		// cjs modules and node globals very well
-		viteBuildMcss(),
+      // Default is "build" but I'm particular and prefer "dist"
+      adapter: staticAdapter({ pages: "dist" }),
 
-		// Bundle markdown documents
-		viteMd(),
+      prerender: {
+        handleMissingId({ path, message }) {
+          if (path === "/repl/") {
+            return;
+          }
 
-		// Bundle .mcss files
-		mcss({
-			processor,
-		}),
-	],
+          // eslint-disable-next-line no-console
+          console.warn(path, message);
+        },
+      },
+    }),
 
-	optimizeDeps : {
-		// Required because npm workspaces use links, and vite
-		// won't optimize linked packages by default
-		include : [
-			"@modular-css/processor",
-		],
+    // Bundle @modular-css/processor and its dependencies via
+    // embedded rollup within rollup because vite doesn't handle
+    // cjs modules and node globals very well
+    viteBuildMcss(),
 
-		// Teach esbuild how to bundle modular-css since it's CJS that assumes a node
-		// environment, and by default esbuild chokes on it in devserver mode
-		esbuildOptions : {
-			plugins : [
-				modulesPolyfill(),
-			],
-		},
-	},
+    // Bundle markdown documents
+    viteMd(),
 
-	server : {
-		fs : {
-			// See the allow list below for why this has to be disabled 😒
-			strict : false,
+    // Bundle .mcss files
+    mcss({
+      processor,
+    }),
+  ],
 
-			// This is configured but useless due to vite prepending all
-			// these paths weirdly on windows. They come out like this:
-			// /C:/Users/.../node_modules/@modular-css/CHANGELOG.md which is.... never
-			// gonna match anything on windows.
-			allow : [
-				path.resolve("./package.json"),
-				path.resolve("../../CHANGELOG.md"),
-			],
-		},
-	},
+  optimizeDeps: {
+    // Required because npm workspaces use links, and vite
+    // won't optimize linked packages by default
+    include: ["@modular-css/processor"],
+
+    // Teach esbuild how to bundle modular-css since it's CJS that assumes a node
+    // environment, and by default esbuild chokes on it in devserver mode
+    esbuildOptions: {
+      plugins: [modulesPolyfill()],
+    },
+  },
+
+  server: {
+    fs: {
+      // See the allow list below for why this has to be disabled 😒
+      strict: false,
+
+      // This is configured but useless due to vite prepending all
+      // these paths weirdly on windows. They come out like this:
+      // /C:/Users/.../node_modules/@modular-css/CHANGELOG.md which is.... never
+      // gonna match anything on windows.
+      allow: [
+        path.resolve("./package.json"),
+        path.resolve("../../CHANGELOG.md"),
+      ],
+    },
+  },
 };
 
 export default config;
