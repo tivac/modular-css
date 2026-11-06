@@ -111,8 +111,8 @@ exports.transform = (file, processor, opts = {}) => {
         };
     }
 
-    console.log(id);
-    console.log(graph);
+    // console.log(id);
+    // console.log(graph);
     // console.log("direct dependencies", graph.directDependenciesOf(Processor.fileKey(id)));
 
     // create import statements for all of the selectors & values used in compositions

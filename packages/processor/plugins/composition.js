@@ -3,7 +3,7 @@
 const createParser = require("postcss-selector-parser");
 
 const identifiers = require("../lib/identifiers.js");
-const { selectorKey } = require("../lib/keys.js");
+const { selectorKey, fileKey } = require("../lib/keys.js");
 const relative = require("../lib/relative.js");
 
 const parser = require("../parsers/composes.js");
@@ -104,13 +104,18 @@ module.exports = () => ({
                         const classSelectors = parent.selectors.map(identifiers.parse);
 
                         // Update graph with all the dependency information
-                        classSelectors.forEach((parts) =>
-                            parts.forEach((part) => {
+                        for(const parts of classSelectors) {
+                            for(const part of parts) {
                                 const src = processor._addSelector(from, selectorMap.get(part));
-
+                                
+                                // Can't use processor._addDependency since there's not always an external source file here
                                 graph.addDependency(src, ref);
-                            })
-                        );
+
+                                if(source) {
+                                    graph.addDependency(fileKey(from), fileKey(source));
+                                }
+                            }
+                        }
                     });
 
                     // Remove just the composes declaration if there are other declarations

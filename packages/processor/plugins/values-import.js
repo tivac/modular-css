@@ -44,9 +44,7 @@ module.exports = () => ({
                                 throw rule.error(`Could not find @value ${name} in "${parsed.source}"`);
                             }
 
-                            console.log("Adding imported value", { from, file, name });
-
-                            processor._addDependency({ name: from, dependency: file, refs: [{ name }] });
+                            processor._addDependency(from, file, false, [{ name }]);
 
                             values[name] = {
                                 ...value,
@@ -64,17 +62,7 @@ module.exports = () => ({
                             throw rule.error(`Cannot import values as ${parsed.name}, it already exists`, { word: parsed.name });
                         }
 
-                        console.log({ from, file, name : parsed.name, values : source.values });
-
-                        // Add the namespaced values from the import to the dependency graph for the importing file
-                        const namespaceKey = processor._addValue(from, parsed.name, { namespace: true, source : file });
-
-                        processor.graph.addDependency(namespaceKey, fileKey(file));
-
-                        // processor._addDependency({ name : from, dependency : file })
-
-                        // And make the current file that imported it depend on it
-                        // processor._addDependency({ name : from, dependency : file, refs : [{ name : parsed.name }]});
+                        processor._addDependency(from, file, false, [{ name : parsed.name, namespace: true, source : file }]);
 
                         for(const key in source.values) {
                             const name = `${parsed.name}.${key}`;
@@ -103,10 +91,7 @@ module.exports = () => ({
                             throw rule.error(`Could not find @value ${name} in "${parsed.source}"`);
                         }
 
-                        const sourceKey = processor._addValue(file, name);
-                        const aliasKey = processor._addValue(from, parsed.alias, { alias: name });
-
-                        processor.graph.addDependency(aliasKey, sourceKey);
+                        processor._addDependency(from, file, false, [{ name : parsed.alias, alias : name, }]);
 
                         values[parsed.alias] = {
                             ...value,
