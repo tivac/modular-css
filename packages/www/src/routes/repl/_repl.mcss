@@ -1,5 +1,5 @@
-@value borderColor from "$lib/site.mcss";
-@value bigSize from "$lib/site.mcss";
+@value borderColor from "#lib/site.mcss";
+@value bigSize from "#lib/site.mcss";
 
 @value tabHeight: 2.5rem;
 
@@ -11,17 +11,17 @@
     padding-left: 0;
 
     grid-template:
-            "tabs" tabHeight
-            "input" 1fr
-            "output" 1fr /
-            auto;
+        "tabs" tabHeight
+        "input" 1fr
+        "output" 1fr /
+        auto;
 
     @media bigSize {
         grid-template:
             "  tabs   tabs  " tabHeight
             " input  output " auto /
             50% 50%;
-        
+
         height: 100%;
     }
 }
@@ -36,7 +36,7 @@
     border-top: 2px solid borderColor;
 }
 
-.column + .column {
+.column+.column {
     border-left: 2px solid borderColor;
 }
 

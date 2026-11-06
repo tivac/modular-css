@@ -1,4 +1,4 @@
-@value bigSize from "$lib/site.mcss";
+@value bigSize from "#lib/site.mcss";
 
 .page {
     width: 100vw;
@@ -25,7 +25,7 @@
 .header {
     grid-area: header;
 }
-  
+
 .content {
     grid-area: content;
 
@@ -35,12 +35,12 @@
     flex-flow: column nowrap;
 
     padding: 0 5vw;
-    
+
     @media bigSize {
         padding-left: 1.8rem;
 
     }
-    
+
     .page[data-fullscreen="true"] & {
         padding: 0;
     }
@@ -53,20 +53,20 @@
 .toc {
     grid-area: toc;
     display: none;
-    
+
     padding-left: 1rem;
-    
+
     font-size: 85%;
 
     @media bigSize {
         display: flex;
         min-width: 5rem;
     }
-    
+
     :global(.toc-item) {
         list-style: none;
 
-        & + :global(.toc-item) {
+        &+ :global(.toc-item) {
             margin-top: 0.3rem;
         }
     }
@@ -74,11 +74,11 @@
     :global(.toc-item-h2 + .toc-item-h2) {
         margin-top: 1rem;
     }
-    
+
     :global(.toc-link-h2) {
         text-transform: uppercase;
     }
-    
+
     :global(.toc-level) {
         padding-left: 0;
 

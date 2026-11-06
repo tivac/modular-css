@@ -2,7 +2,6 @@ import staticAdapter from "@sveltejs/adapter-static";
 import { preprocess } from "./build/mcss-setup.js";
 import path from "path";
 
-import { NodeModulesPolyfillPlugin as modulesPolyfill } from "@esbuild-plugins/node-modules-polyfill";
 import mcss from "@modular-css/vite";
 import { sveltekit } from "@sveltejs/kit/vite";
 
@@ -51,12 +50,6 @@ import { processor } from "./build/mcss-setup.js";
     // Required because npm workspaces use links, and vite
     // won't optimize linked packages by default
     include: ["@modular-css/processor"],
-
-    // Teach esbuild how to bundle modular-css since it's CJS that assumes a node
-    // environment, and by default esbuild chokes on it in devserver mode
-    esbuildOptions: {
-      plugins: [modulesPolyfill()],
-    },
   },
 
   server: {

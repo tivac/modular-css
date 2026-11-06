@@ -1,4 +1,4 @@
-@value * as main from "$lib/site.mcss";
+@value * as main from "#lib/site.mcss";
 
 .home {
     width: 90vw;
@@ -6,7 +6,7 @@
     flex-flow: column nowrap;
     align-self: center;
 
-    
+
     @media main.bigSize {
         width: 80vw;
         max-width: 60rem;
@@ -15,8 +15,8 @@
             " title    title  " 10rem
             " intro   example " auto /
             50% 50%;
-        
-            margin-top: 2rem;
+
+        margin-top: 2rem;
     }
 }
 
@@ -60,7 +60,7 @@
 }
 
 .learn {
-    composes: center from "$lib/site.mcss";
+    composes: center from "#lib/site.mcss";
 
     margin-top: 1rem;
 }
@@ -69,7 +69,7 @@
 @value ctaText: #ECEFF4;
 
 .cta {
-    composes: center from "$lib/site.mcss";
+    composes: center from "#lib/site.mcss";
 }
 
 .cta,
@@ -78,7 +78,7 @@
 
     padding: 2rem 4rem;
     background: ctaBg;
-    
+
     color: ctaText;
     font-weight: bold;
     font-size: 1.3rem;

@@ -1,4 +1,4 @@
-@value site: "$lib/site.mcss";
+@value site: "#lib/site.mcss";
 
 @value hoverInTime from site;
 
@@ -45,8 +45,8 @@
     border-bottom: 1px solid transparent;
 }
 
-.add + .tab,
-.tab + .tab {
+.add+.tab,
+.tab+.tab {
     margin-left: 0.25rem;
 }
 
@@ -78,7 +78,7 @@
     width: 20px;
 
     filter: grayscale();
-    
+
     transition: opacity hoverInTime ease-in;
 }
 

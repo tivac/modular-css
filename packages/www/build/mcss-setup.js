@@ -25,7 +25,7 @@ const { preprocess, processor } = preprocessor({
     resolvers : [
         aliases({
             aliases : {
-                $lib : "./src/lib",
+                "#lib" : "./src/lib",
             },
         }),
     ],

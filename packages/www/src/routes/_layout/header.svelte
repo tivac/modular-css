@@ -15,9 +15,6 @@ import css from "./header.mcss";
         <a href={resolve('api/')} class={css.link}>API</a>
         <a href={resolve('repl/')} class={css.link}>REPL</a>
 
-        <a
-            href="https://github.com/tivac/modular-css"
-            class={css.link}
-        >GitHub</a>
+        <a href="https://github.com/tivac/modular-css" class={css.link}>GitHub</a>
     </div>
 </div>
