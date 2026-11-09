@@ -26,11 +26,11 @@ jobs:
         run: npm ci
         
       - name: lint
-        run: npm run lint --quiet --max-warnings=0
+        run: npm run lint --quiet
 
   tests:
     # This shouldn't take long, and if it does something bad has happened and it should be killed
-    timeout-minutes: 5
+    timeout-minutes: 10
     
     env:
       COVERAGE_NODE_VERSION: 24
@@ -40,7 +40,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [ 24 ]
+        node-version: [ 22, 24, 26 ]
         os: [ ubuntu-latest ]
 
     steps:

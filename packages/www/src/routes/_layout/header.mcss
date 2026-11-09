@@ -1,5 +1,5 @@
-@value * as site from "$lib/site.mcss";
-@value bigSize from "$lib/site.mcss";
+@value * as site from "#lib/site.mcss";
+@value bigSize from "#lib/site.mcss";
 
 .header {
     composes: header from "./layout.mcss";
@@ -9,7 +9,7 @@
         "name version" auto
         "links links" /
         2fr 1fr;
-    
+
     row-gap: 0.5rem;
     align-items: center;
 
@@ -25,18 +25,17 @@
 
     @media bigSize {
         grid-template:
-            "name spacer links" auto 
-            "version spacer links" auto /
+            "name spacer links" auto "version spacer links" auto /
             auto 1fr 0.5fr;
-        
+
         row-gap: 0;
     }
-    
+
     a,
     a:visited {
         color: site.headerColor;
     }
-    
+
     a:hover {
         color: site.linkcolor;
     }
@@ -51,7 +50,7 @@
 .version {
     grid-area: version;
     justify-self: flex-end;
-    
+
     font-size: 0.9rem;
 
     @media bigSize {
@@ -69,7 +68,7 @@
 
     margin-top: 0.75rem;
     padding: 0;
-    
+
     @media bigSize {
         margin: 0;
         justify-content: flex-end;
@@ -86,7 +85,7 @@
         flex: 0;
     }
 
-    + .link {
+    +.link {
         @media bigSize {
             margin-left: 0.5rem;
             padding-left: 0.5rem;

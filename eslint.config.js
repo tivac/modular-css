@@ -1,7 +1,5 @@
 const { defineConfig, globalIgnores } = require("eslint/config");
 
-const svelteConfig = require("./packages/www/svelte.config.js");
-
 const globals = require("globals");
 const js = require("@eslint/js");
 const svelte = require("eslint-plugin-svelte");
@@ -74,10 +72,6 @@ module.exports = defineConfig([
         languageOptions: {
             globals : {
                 ...globals.browser,
-            },
-
-            parserOptions : {
-                svelteConfig,
             },
         },
 

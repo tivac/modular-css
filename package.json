@@ -22,7 +22,8 @@
     "test:watch": "node --test --watch **/*.test.js",
     "start": "npm start --workspace=@modular-css/www",
     "www:build": "npm run build --workspace=@modular-css/www",
-    "www:deploy": "npm run build --workspace=@modular-css/www"
+    "www:deploy": "npm run build --workspace=@modular-css/www",
+    "www:preview": "npm run preview --workspace=@modular-css/www"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.2",
