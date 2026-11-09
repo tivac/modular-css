@@ -1,5 +1,11 @@
 # Change Log
 
+## 29.3.2
+
+### Patch Changes
+
+- [#1177](https://github.com/tivac/modular-css/pull/1177) [`c04459f`](https://github.com/tivac/modular-css/commit/c04459f969b38f53eb4b918b3a334266d7d0a9b8) Thanks [@tivac](https://github.com/tivac)! - Fix: vite not refreshing output when `.mcss` files have a composed class removed
+
 ## 29.3.1
 
 ### Patch Changes
