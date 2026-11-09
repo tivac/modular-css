@@ -7,7 +7,6 @@ const { replaceTrailingNewlines } = require("./replacer.js");
 const linkRegex = /<link\b[^<>]*?\bhref=\s*(?:"([^"]+)"|'([^']+)'|([^>\s]+))[^>]*>/gm;
 const scriptRegex = /<script[^>]*?>([\S\s]*?)<\/script[^>]*?>/im;
 
-// eslint-disable-next-line max-statements -- complex, oh well
 exports.extractLink = async ({
     source,
     file,
@@ -17,6 +16,7 @@ exports.extractLink = async ({
     filter,
     missing,
     warn,
+// eslint-disable-next-line max-statements -- complex, oh well
 }) => {
     linkRegex.lastIndex = 0;
     
